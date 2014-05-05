@@ -1,0 +1,5 @@
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\ThanhToanDiDong\bin\ThanhToanDiDong.Admin.dll
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\ThanhToanDiDong\bin\ThanhToanDiDong.Admin.pdb
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\ThanhToanDiDong\ThanhToanDiDong.Admin\obj\Debug\ThanhToanDiDong.Admin.csprojResolveAssemblyReference.cache
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\ThanhToanDiDong\ThanhToanDiDong.Admin\obj\Debug\ThanhToanDiDong.Admin.dll
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\ThanhToanDiDong\ThanhToanDiDong.Admin\obj\Debug\ThanhToanDiDong.Admin.pdb
