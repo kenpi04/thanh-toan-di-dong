@@ -1,0 +1,9 @@
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\Domain\bin\Debug\Domain.dll.config
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\Domain\bin\Debug\Domain.dll
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\Domain\bin\Debug\Domain.pdb
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\Domain\bin\Debug\EntityFramework.dll
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\Domain\bin\Debug\PagedList.dll
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\Domain\bin\Debug\EntityFramework.xml
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\Domain\bin\Debug\PagedList.xml
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\Domain\obj\Debug\Domain.dll
+E:\Du an\ThanhToanDiDong\Source\ThanhToanDiDong\Domain\obj\Debug\Domain.pdb
