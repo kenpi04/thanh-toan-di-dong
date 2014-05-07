@@ -1,10 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
    
 }
-
-
-@Html.Action("Topup","Payment")
+<a href="@Url.Action("Topup","Payment")">Nạp top-up</a>
 
 
 

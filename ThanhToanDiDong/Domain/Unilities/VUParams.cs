@@ -26,6 +26,8 @@ namespace Domain.Unilities
         public string Capcha;
         public string Area;
         public string HouseNumber;
+        public string ProviderName;
+        public string ServiceName;
     }
     public class Issuer
     {
@@ -84,7 +86,7 @@ namespace Domain.Unilities
 
     public class PayOnlineBillExRequest
     {
-        public int AgentId;
+        public string AgentId;
         public string ApprovalCode;
         public string BankCode;
         public BillInfoEx[] Bills;
@@ -102,6 +104,11 @@ namespace Domain.Unilities
         public string SystemTraceEx;
         public string TransactionTime;
         public string UserId;
+    }
+    public class PayOnlineBillExResult
+    {
+        public int ReturnCode { get; set; }
+        public string OrderNo { get; set; }
     }
     public class GetEwalletInfoBERequest
     {

@@ -188,20 +188,29 @@
     <Compile Include="Configuration\ThemeableVirtualPathProviderViewEngine.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OnePayController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Payment\OrderModel.cs" />
     <Compile Include="Models\Payment\TopupModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unities\Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\beeline.jpg" />
+    <Content Include="Content\Images\mobifone.jpg" />
+    <Content Include="Content\Images\sfone.jpg" />
+    <Content Include="Content\Images\viettel.jpg" />
+    <Content Include="Content\Images\vinaphone.jpg" />
+    <Content Include="Content\Images\vnmobile.jpg" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -306,7 +315,6 @@
     <Content Include="Images\orderedList7.png" />
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
@@ -324,6 +332,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Payment\Topup.cshtml" />
+    <Content Include="Views\Payment\PaymentSuccess.cshtml" />
+    <Content Include="Views\OnePay\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -26,6 +26,7 @@ namespace ThanhToanDiDong
             //except the themeable razor view engine we use
             ViewEngines.Engines.Add(new ThemeableRazorViewEngine());
             AreaRegistration.RegisterAllAreas();
+         
             Database.SetInitializer<Domain.DAO.Entities>(null);
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
