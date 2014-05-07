@@ -9,14 +9,19 @@
     @Html.ValidationSummary(true);
   <div class="form-group">
     <label for="txtPhone">Nhà mạng:</label>
-    @Html.DropDownList("CateId", Model.CateCard, "Chọn nhà mạng", new {@class="form-control" })
+   <select id="ddlNetworks" class="form-control">
+       @foreach (var i in Model.CateCards)
+       { 
+        <option value="@i.Id" data-img="@i.Image">@i.Name</option>
+       }
+   </select>
      <span>
          <img id="imglogo" style="display:none" />
      </span>  
   </div>
    <div class="form-group">
        <label for="ddlPrice">Mệnh giá:</label>
-       @Html.DropDownListFor(x => x.CardId, new {@class="form-control" })
+       @Html.DropDownListFor(x => x.CardId,new List<SelectListItem>(), new {@class="form-control" })
    </div>
     <div class="form-group">
         <label>Thành tiền</label><br />
@@ -26,3 +31,29 @@
 
 
 }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ddlNetworks").change(function () {
+            var img = "/Content/Images/" + $(this).attr("data-img");
+            var value = $(this).val();
+            $("#imglogo").attr("src", img).show("slow");
+            var ddlCate = $("#@Html.IdFor(x=>x.CardId)");
+            ddlCate.html("<option value=0>Chọn mệnh giá</option");
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetCategory")",
+            data: { phone: value },
+            success: function (data) {
+                if (data == "")
+                    return;
+                $.each(data, function (index, value) {
+                    ddlCate.append($("<option></option>").val(value.Value).text(value.Text).attr("data-price", value.price));
+                })
+            },
+            error: function () {
+                ddlCate.html("<option value=0>Chọn mệnh giá</option");
+            }
+        });
+        })
+    })
+</script>
