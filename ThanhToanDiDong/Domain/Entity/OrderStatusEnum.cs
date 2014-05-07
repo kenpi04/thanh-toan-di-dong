@@ -9,7 +9,7 @@ namespace Domain.Entity
      public enum OrderStatusEnum
     {
        PENDING=0,
-        WAITTING=10,
+        PROCESSING=10,
        COMPLETE=20,
        CANCEL=30
     }

@@ -17,8 +17,8 @@ namespace ThanhToanDiDong.Controllers
         CategoryCardMobileService _cateService = new CategoryCardMobileService();
         OrderService _orderService = new OrderService();
         PayooService _payooService = new PayooService();
-      
-      
+
+
         //
         // GET: /Payment/
         public ActionResult Topup()
@@ -31,48 +31,49 @@ namespace ThanhToanDiDong.Controllers
         [HttpPost]
         public ActionResult Topup(TopupModel model)
         {
-            
+
             var cardmobile = _cardMobileService.GetById(model.PriceListId);
             if (cardmobile == null)
                 throw new Exception("Thẻ đã hết !");
             var order = new Order
             {
-              
-                CardMobileId=model.PriceListId,
-                UnitPrice=cardmobile.UnitPrice,
-                UnitSellingPrice=cardmobile.UnitSellingPrice,
-               Quantity=1,
-               OrderStatusId=(int)OrderStatusEnum.PENDING,
-               Price=cardmobile.UnitSellingPrice,
-               NumberPhone=model.Phone,
-              PartnerId =(int)ProviderEnum.PAYOO,
-               OrderTypeId=(int)OrderType.CARD,
-               ProviderId=0,
-               CustomerIp=Helper.GetIp(),
-               PaymentStatusId=(int)PaymentStatus.CHUATHANHTOAN,
-               TotalAmount=cardmobile.UnitSellingPrice,
-               OrderGuid=Guid.NewGuid(),
-               CreatedOn=DateTime.UtcNow
+
+                CardMobileId = model.PriceListId,
+                UnitPrice = cardmobile.UnitPrice,
+                UnitSellingPrice = cardmobile.UnitSellingPrice,
+                Quantity = 1,
+                OrderStatusId = (int)OrderStatusEnum.PENDING,
+                Price = cardmobile.UnitSellingPrice,
+                NumberPhone = model.Phone,
+                PartnerId = (int)ProviderEnum.PAYOO,
+                OrderTypeId = (int)OrderType.CARD,
+                ProviderId = 0,
+                CustomerIp = Helper.GetIp(),
+                PaymentStatusId = (int)PaymentStatus.CHUATHANHTOAN,
+                TotalAmount = cardmobile.UnitSellingPrice,
+                OrderGuid = Guid.NewGuid(),
+                CreatedOn = DateTime.UtcNow
+
 
 
             };
             _orderService.InsertOrUpdate(order);
 
             return RedirectToAction("Index", "OnePay", new { orderId = order.Id });
-              
+
         }
         public ActionResult PaymentSuccess(int id)
         {
             var order = _orderService.GetById(id);
             var model = new OrderModel
             {
-                Id=order.Id,
-                CustomerPhone=order.NumberPhone,
-                Price=String.Format("{0:0,0 đ}",order.Price),
-                Quantity=order.Quantity,
-                TotalPrice=String.Format("{0:0,0 đ}",order.TotalAmount),
-                CreateDate=order.CreatedOn.ToString(),
-                
+                Id = order.Id,
+                CustomerPhone = order.NumberPhone,
+                Price = String.Format("{0:0,0 đ}", order.Price),
+                Quantity = order.Quantity,
+                TotalPrice = String.Format("{0:0,0 đ}", order.TotalAmount),
+                CreateDate = order.CreatedOn.ToString(),
+
             };
             if (order.OrderTypeId == (int)OrderType.CARD)
             {
@@ -84,18 +85,17 @@ namespace ThanhToanDiDong.Controllers
             }
             if (order == null)
                 return RedirectToAction("/");
-            order.PaymentStatusId = (int)PaymentStatus.DATHANHTOAN;
-             _orderService.InsertOrUpdate(order);
+            _orderService.InsertOrUpdate(order);
             if (order.OrderTypeId == (int)OrderType.CARD)
             {
-                int i =_payooService.TopupPaymentBE(order);
+                int i = _payooService.TopupPaymentBE(order);
                 if (i != 0)
-                { 
-                    ViewBag.Error="Có phát sinh lỗi trong quá trình xử lý đơn hàng của bạn!";
+                {
+                    ViewBag.Error = "Có phát sinh lỗi trong quá trình xử lý đơn hàng của bạn!";
                     return View(model);
                 }
             }
-            
+
             return View(model);
         }
         [HttpGet]
@@ -106,21 +106,31 @@ namespace ThanhToanDiDong.Controllers
                 lengt = 4;
 
             Regex rg = new Regex(phone.Substring(0, lengt));
-            var cate = _cateService.GetAll(x =>rg.IsMatch(x.DauSo)).FirstOrDefault();
+            var cate = _cateService.GetAll(x => rg.IsMatch(x.DauSo)).FirstOrDefault();
             if (cate != null)
             {
 
-                var listCardType =cate.CardMobile.Select(x => new 
+                var listCardType = cate.CardMobile.Select(x => new
                 {
                     Text = x.Name,
                     Value = x.Id.ToString(),
-                    price=x.UnitSellingPrice
+                    price = x.UnitSellingPrice
                 }).ToList();
                 return Json(listCardType, JsonRequestBehavior.AllowGet);
             }
-            return Json("",JsonRequestBehavior.AllowGet);
+            return Json("", JsonRequestBehavior.AllowGet);
         }
-        
+
+        public ActionResult BuyCard()
+        {
+            var model = new BuyCardModel();
+            model.CateCard = _cateService.GetAll().Select(x => new SelectListItem
+            {
+                Value=x.Id.ToString(),
+                Text=x.Name
+            }).ToList();
+            return View(model);
+        }
 
     }
 }

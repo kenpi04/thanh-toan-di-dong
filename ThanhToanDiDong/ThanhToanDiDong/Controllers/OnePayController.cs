@@ -6,12 +6,13 @@ using System.Web;
 using System.Web.Mvc;
 using Domain.OnePay;
 using Domain.Services;
+using Domain.Entity;
 
 namespace ThanhToanDiDong
 {
     public class OnePayController : Controller
     {
-       
+        OrderService _orderService = new OrderService();
        
         public ActionResult Index(int orderId)
         {
@@ -81,7 +82,7 @@ namespace ThanhToanDiDong
             string transactionNo = conn.GetResultField("vpc_TransactionNo", "Unknown");
             string txnResponseCode = vpc_TxnResponseCode;
             string message = conn.GetResultField("vpc_Message", "Unknown");
-
+            var order = _orderService.GetById(int.Parse(orderInfo));
             ResultTran resultTran = new ResultTran();
             if (hashvalidateResult == "INVALIDATED")
             {
@@ -93,6 +94,11 @@ namespace ThanhToanDiDong
                 if (txnResponseCode.Trim() == "0")
                 {
                     resultTran.vpc_Result = "Giao dịch thành công";
+                    order.PaymentStatusId = (int)PaymentStatus.DATHANHTOAN;
+                    order.AuthorizationTransactionCode = resultTran.vpc_ResponseCode;
+                    order.AuthorizationTransactionResult = resultTran.vpc_Result;
+                    order.PaidDate = DateTime.UtcNow;
+                    _orderService.InsertOrUpdate(order);
                     return RedirectToAction("PaymentSuccess", "Payment", new { id = orderInfo });
                    
                 }
@@ -113,6 +119,11 @@ namespace ThanhToanDiDong
             resultTran.vpc_TracsactionNo = transactionNo;
             resultTran.hashvalidate = hashvalidateResult;
             resultTran.vpc_Message = message;
+            order.AuthorizationTransactionCode = resultTran.vpc_ResponseCode;
+            order.AuthorizationTransactionResult = resultTran.vpc_Result;
+            order.PaidDate = DateTime.UtcNow;
+            _orderService.InsertOrUpdate(order);
+
             return View(resultTran);
         }
 
