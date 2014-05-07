@@ -23,7 +23,7 @@ namespace Domain.Entity
         public string Name { get; set; }
         public bool Published { get; set; }
         public bool Deleted { get; set; }
-        public int PictureId { get; set; }
+        public string PictureUrl { get; set; }
         public int DisplayOrder { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<System.DateTime> UpdatedOn { get; set; }

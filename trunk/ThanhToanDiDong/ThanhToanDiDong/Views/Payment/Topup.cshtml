@@ -1,28 +1,83 @@
 ﻿@model ThanhToanDiDong.Models.Payment.TopupModel
 @{
-    Layout = null;
+    ViewBag.Title = "Nạp topup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     }
 
-@using (Html.BeginForm("Topup", "Payment", new {role="form",id="frmBuy" }))
+@using (Html.BeginForm("Topup", "Payment",FormMethod.Post, new {role="form",id="frmBuy" }))
 { 
     @Html.ValidationSummary(true);
   <div class="form-group">
     <label for="txtPhone">Số điện thoại:</label>
     @Html.TextBoxFor(x => x.Phone, new {maxlength = "15", @class = "form-control", placeholder = "Nhập số điện thoại" })
+     <span>
+         <img id="imglogo" style="display:none" />
+     </span>
     @Html.ValidationMessageFor(x => x.Phone)
   </div>
    <div class="form-group">
        <label for="ddlPrice">Mệnh giá:</label>
        @Html.DropDownListFor(x => x.PriceListId, Model.PriceList, "Chọn mệnh giá", new {@class="form-control" })
    </div>
-  <button type="submit" class="btn btn-primary">Gửi</button>
+    <div class="form-group">
+        <label>Thành tiền</label><br />
+        <span style="color:orange;font-size:16px"><b id="totalMoney"></b> </span>
+    </div>
+  <button type="submit" class="btn btn-primary">Tiếp tục</button>
 
 
 }
 <script type="text/javascript">
-    $(document).ready(function () { 
-    $("#@Html.IdFor(x=>x.Phone)").focusout(function () {
-        var value = $("#@Html.IdFor(x=>x.Phone)").val();      
+    $(document).ready(function () {
+        var CATE = [
+            @foreach(var i in ViewBag.Cate as Dictionary<string,string>)
+            {
+                <text>{img:'@i.Key',dauso:'@i.Value'},</text>
+            }
+        ];
+        $("#frmBuy").submit(function () {
+            if (ValidPhoneNumber($("#@Html.IdFor(x=>x.Phone)")))
+            {
+                alert("Số điện thoại không hợp lệ");
+                return false;
+            }
+            return true;
+        })
+        
+       
+        $("#@Html.IdFor(x=>x.Phone)").keyup(function (e) {
+            var val=$(this).val();
+            if (isNaN(val))
+            {
+                $(this).val(val.substring(0,val.length-1));
+                return;
+            }
+            
+            if (val.length > 4)
+                val = val.substring(0, 3);
+            if(val.length<3)
+                $("#imglogo").hide();
+            if(val.length==3||val.length==4)
+            {
+              
+                $.each(CATE, function (index, item) {
+                    var dausos=item.dauso.split(',');
+                    for (var i in dausos ) {
+                        if (dausos[i]==val) {
+                            $("#imglogo").attr("src", "/Content/Images/" + item.img).show('slow');
+                            return;
+                        }
+                    }
+                   
+                });
+            }
+
+        })
+        $("#@Html.IdFor(x=>x.Phone)").change(function () {
+            $("#@Html.IdFor(x=>x.Phone)").keyup();
+        var value = $("#@Html.IdFor(x=>x.Phone)").val();    
+        if (value.length < 4)
+            return;
         var ddlCate = $("#@Html.IdFor(x=>x.PriceListId)");
         ddlCate.html("<option value=0>Chọn mệnh giá</option");
         $.ajax({
@@ -33,7 +88,7 @@
                 if(data == "")
                     return;
                 $.each(data, function (index, value) {
-                    ddlCate.append($("<option></option>").val(value.Value).text(value.Text));
+                    ddlCate.append($("<option></option>").val(value.Value).text(value.Text).attr("data-price",value.price));
                 })
             },
             error: function () {
@@ -41,6 +96,61 @@
             }
         });
     })
+        $("#@Html.IdFor(x=>x.PriceListId)").change(function () {
+            var price = $(this).find("option:selected").attr("data-price");
+            $("#totalMoney").html(FormatNumeric(price)+" đ");
+        })
     })
+    ValidPhoneNumber = function (val) {
+    
+        val = val.replace(/-/g, '');
+        if (val == '' || val.length < 10 || val.length > 11) {
+            return false;
+        }
+        var strCheck = '';
+        if (val.length == 11) {
+            strCheck = val.substr(0, 4);
+        }
+        else {
+            strCheck = val.substr(0, 3);
+        }
+        if (strCheck == '099'
+            || strCheck == '0199'
+            || strCheck == '091'
+            || strCheck == '094'
+            || strCheck == '0123'
+            || strCheck == '0125'
+            || strCheck == '0127'
+            || strCheck == '0129'
+            || strCheck == '0124'
+            || strCheck == '095'
+            || strCheck == '092'
+            || strCheck == '0188'
+            || strCheck == '0186'
+            || strCheck == '097'
+            || strCheck == '098'
+            || strCheck == '096'
+            || strCheck == '0162'
+            || strCheck == '0163'
+            || strCheck == '0164'
+            || strCheck == '0165'
+            || strCheck == '0166'
+            || strCheck == '0167'
+            || strCheck == '0168'
+            || strCheck == '0169'
+            || strCheck == '0197'
+            || strCheck == '0198'
+            || strCheck == '090'
+            || strCheck == '093'
+            || strCheck == '0122'
+            || strCheck == '0126'
+            || strCheck == '0121'
+            || strCheck == '0128'
+            || strCheck == '0120') {
+            return true;
+        }
+    
+        return false;
+    }
 </script>
 

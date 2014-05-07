@@ -19,5 +19,6 @@ namespace ThanhToanDiDong.Models.Payment
         [Required(ErrorMessage="Vui lòng chọn mệnh giá")]
         public int PriceListId { get; set; }
         public IList<SelectListItem> PriceList { get; set; }
+       
     }
 }
