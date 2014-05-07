@@ -124,11 +124,16 @@ namespace ThanhToanDiDong.Controllers
         public ActionResult BuyCard()
         {
             var model = new BuyCardModel();
-            model.CateCard = _cateService.GetAll().Select(x => new SelectListItem
+            var cate = _cateService.GetAll();
+            model.CateCards = cate.Select(x => new BuyCardModel.CateCard
             {
-                Value=x.Id.ToString(),
-                Text=x.Name
+                Id=x.Id,
+                Name=x.Name,
+                Image=x.PictureUrl
+               
             }).ToList();
+            
+           
             return View(model);
         }
 
