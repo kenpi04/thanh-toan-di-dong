@@ -29,13 +29,13 @@ namespace Domain.Services
             _cardMobileService = new CardMobileService();
             _service = new ServicesService();
             _vuiExe = new VUService.UniGWSSoapClient();
-           
+
         }
-       
+
         public bool UpdateListFrtCardMobileFromPayoo(int categoryCardMobileId)
         {
             // Create new instance.
-          
+
 
             // Set UniGWS Request
 
@@ -111,15 +111,15 @@ namespace Domain.Services
                         var objQueryGetCardProvider = objQueryGetCardProviderListResult.ProviderList.FirstOrDefault(p => p.ProviderCode == cateCardMobile.Name);
                         var ListCardValue = objQueryGetCardProvider.CardValues.Select(p => p.CardValue);
 
-                        var listCardMobile = _cardMobileService.GetAll(x=>x.CategoryCardMobileId==categoryCardMobileId).ToList();
+                        var listCardMobile = _cardMobileService.GetAll(x => x.CategoryCardMobileId == categoryCardMobileId).ToList();
 
                         foreach (var cardmobile in listCardMobile)
                         {
                             if (!ListCardValue.Contains(cardmobile.UnitPrice))
-                               _cardMobileService.Delete(cardmobile);
+                                _cardMobileService.Delete(cardmobile);
                         }
 
-                        listCardMobile =_cardMobileService.GetAll(x=>x.CategoryCardMobileId==categoryCardMobileId).ToList();
+                        listCardMobile = _cardMobileService.GetAll(x => x.CategoryCardMobileId == categoryCardMobileId).ToList();
                         foreach (var cardvalue in ListCardValue)
                         {
                             var cardMobie = listCardMobile.FirstOrDefault(p => p.UnitPrice == cardvalue);
@@ -127,13 +127,13 @@ namespace Domain.Services
                             {
                                 cardMobie = new CardMobile()
                                 {
-                                    Name = cateCardMobile.Name + "_" + cardvalue,                                  
+                                    Name = cateCardMobile.Name + "_" + cardvalue,
                                     CategoryCardMobileId = cateCardMobile.Id,
                                     UnitPrice = cardvalue,
                                     UnitSellingPrice = cardvalue
-                                  
+
                                 };
-                               _cardMobileService.InsertOrUpdate(cardMobie);
+                                _cardMobileService.InsertOrUpdate(cardMobie);
                             }
                         }
 
@@ -176,7 +176,7 @@ namespace Domain.Services
 
             try
             {
-                var cardMobile =_cardMobileService.GetById(cardMobileId);
+                var cardMobile = _cardMobileService.GetById(cardMobileId);
                 if (cardMobile == null)
                     return false;
                 // Demo for QueryBillEx
@@ -233,7 +233,7 @@ namespace Domain.Services
                     if (objPaycodeInquiryBEResult.ReturnCode == 0) // Sucessfully
                     {
                         cardMobile.UnitSellingPrice = objPaycodeInquiryBEResult.ReferPrice;
-                      //  cardMobile.PurchasingPrice = objPaycodeInquiryBEResult.PurchasingPrice;
+                        //  cardMobile.PurchasingPrice = objPaycodeInquiryBEResult.PurchasingPrice;
                         cardMobile.Name = providerId + "_" + cardMobile.UnitPrice;
                         _cardMobileService.InsertOrUpdate(cardMobile);
                         return true;
@@ -546,7 +546,7 @@ namespace Domain.Services
                 string strRequestTime = DateTime.Now.ToString("dd/MM/yyyy HHmmss");
                 request.RequestTime = strRequestTime;
 
-                request.Checksum =MD5Encrypt.MD5Hash(strRequestTime + CommonSettings.ClientPassword);
+                request.Checksum = MD5Encrypt.MD5Hash(strRequestTime + CommonSettings.ClientPassword);
                 //// End
                 request.Operation = CommonSettings.MMS_QueryBillEx;
 
@@ -727,9 +727,9 @@ namespace Domain.Services
         //                    order.OrderNotes.Add(new OrderNote()
         //                    {
         //                        Note = "Payoo - Giao dịch thanh toán thất bại - Verify signature is not valid",
-                                
+
         //                        CreatedOn = DateTime.UtcNow,
-                                
+
         //                        FunctionName = CommonSettings.MMS_PayOnlineBillEx,
         //                        FunctionReturnCode = -112,
         //                       FunctionMessage = CommonSettings.GetPayOnlineBillExMessage(-112),
@@ -744,7 +744,7 @@ namespace Domain.Services
         //                else
         //                {
         //                    // Deserialize ResponseData in UniGWSResponse object for check ReturnCode
-                          
+
         //                    PayOnlineBillExResult objPayOnlineBillExResult = XmlSerializeLib.Deserialize(objResponsePayment.ResponseData, typeof(PayOnlineBillExResult))
         //                        as PayOnlineBillExResult;
         //                    order.FunctionNameFinalCall = CommonSettings.MMS_PayOnlineBillEx;
@@ -878,222 +878,221 @@ namespace Domain.Services
         #endregion
 
         //#region Paycode
-        //public bool CodePaymentBE(FrtPayooOrder order)
-        //{
-        //    // Create new instance.
-        //    UniGWSSoapClient uniGW = new UniGWSSoapClient();
-        //    // Set UniGWS Request
-        //    UniGWSRequest request = new UniGWSRequest();
-        //    request.ClientId = CommonSettings.ClientId;
-        //    // End
+        public bool CodePaymentBE(Order order)
+        {
+            // Create new instance.
+            UniGWSSoapClient uniGW = new UniGWSSoapClient();
+            // Set UniGWS Request
+            UniGWSRequest request = new UniGWSRequest();
+            request.ClientId = CommonSettings.ClientId;
+            // End
 
-        //    System.Net.ServicePointManager.CertificatePolicy = new CertPolicy();
+            System.Net.ServicePointManager.CertificatePolicy = new CertPolicy();
 
-        //    string data = string.Empty;
+            string data = string.Empty;
 
-        //    try
-        //    {
-        //        string strRequestTime = DateTime.Now.ToString("dd/MM/yyyy HHmmss");
-        //        request.RequestTime = strRequestTime;
-        //        request.Checksum = GetMD5Hash(strRequestTime + CommonSettings.ClientPassword);
+            try
+            {
+                string strRequestTime = DateTime.Now.ToString("dd/MM/yyyy HHmmss");
+                request.RequestTime = strRequestTime;
+                request.Checksum = MD5Encrypt.MD5Hash(strRequestTime + CommonSettings.ClientPassword);
 
-        //        request.Operation = CommonSettings.MMS_CodePaymentBE;
-        //        var cardmobile = order.PayooOrderItems.FirstOrDefault();
+                request.Operation = CommonSettings.MMS_CodePaymentBE;
+                var cardmobile = _cardMobileService.GetById(order.CardMobileId);
 
-        //        CodePaymentBERequest objCodePaymentBERequest = new CodePaymentBERequest();
-        //        objCodePaymentBERequest.CardValue = cardmobile.UnitPrice;
-        //        objCodePaymentBERequest.InvoiceNo = order.PayooOrderGuid.ToString();
-        //        objCodePaymentBERequest.ProviderId = cardmobile.CardMobile.CategoryCardMobile.Name;
-        //        objCodePaymentBERequest.Quantity = cardmobile.Quantity;
-        //        objCodePaymentBERequest.SystemTrace = order.PayooOrderGuid.ToString();
-        //        objCodePaymentBERequest.TotalPurchasingAmount = order.TotalPurchasingAmount;
-        //        objCodePaymentBERequest.TotalReferAmount = order.TotalReferAmount;
-        //        objCodePaymentBERequest.TransactionTime = DateTime.Now.ToString("yyyyMMddHHmmss");
+                CodePaymentBERequest objCodePaymentBERequest = new CodePaymentBERequest();
+                objCodePaymentBERequest.CardValue = cardmobile.UnitPrice;
+                objCodePaymentBERequest.InvoiceNo = order.OrderGuid.ToString();
+                objCodePaymentBERequest.ProviderId = cardmobile.Name;
+                objCodePaymentBERequest.Quantity = 1;
+                objCodePaymentBERequest.SystemTrace = order.OrderGuid.ToString();
+                objCodePaymentBERequest.TotalPurchasingAmount = order.TotalAmount;
+                objCodePaymentBERequest.TotalReferAmount = order.TotalAmount;
+                objCodePaymentBERequest.TransactionTime = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-        //        data = XmlSerializeLib.XmlSerialize(objCodePaymentBERequest);
-        //        request.Signature = SignData(data, CommonSettings.PrivateKeyUrl, CommonSettings.PasswordForPrivateKey);
-        //        request.RequestData = data;
-
-
-        //        //string strRequest = XmlSerializeLib.XmlSerialize(request);
-
-        //        // Call to Service
-
-        //        order.OrderNotes.Add(new OrderNote()
-        //        {
-        //            Note = "Payoo Requesting - Giao dịch mua thẻ ",
-        //            CreatedOn = DateTime.UtcNow,
-
-        //        });
-        //        _OrderService.InsertOrUpdate(order);
-
-        //        UniGWSResponse objResponse = uniGW.Execute2(request);
-        //        // End
+                data = XmlSerializeLib.XmlSerialize(objCodePaymentBERequest);
+                request.Signature = SignData(data, CommonSettings.PrivateKeyUrl, CommonSettings.PasswordForPrivateKey);
+                request.RequestData = data;
 
 
-        //        // Verify signature.
-        //        bool isCorrect = Verify(objResponse.ResponseData, objResponse.Signature, CommonSettings.PublicKeyUrl);
-        //        if (!isCorrect)
-        //        {
-        //            order.OrderNotes.Add(new OrderNote()
-        //            {
-        //                Note = "Payoo Response - Giao dịch mua thẻ thất bại - Verify signature is not valid",
-        //                CreatedOn = DateTime.UtcNow,
-        //                FunctionName = CommonSettings.MMS_CodePaymentBE,
-        //                FunctionReturnCode = -112,
-        //                FunctionMessage = CommonSettings.GetTopupPaymentMessage(-112),
-        //            });
-        //            order.PayooReturnCode = -112;
-        //            order.PayooFunctionFinalReturnCode = -112;
-        //            order.FunctionNameFinalCall = CommonSettings.MMS_CodePaymentBE;
-        //            order.PayooTransactionDescription = CommonSettings.GetCodePaymentMessage(-112);
-        //            _OrderService.InsertOrUpdate(order);
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            // Deserialize ResponseData in UniGWSResponse object for check ReturnCode
+                //string strRequest = XmlSerializeLib.XmlSerialize(request);
 
-        //            CodePaymentBEResult objCodePaymentBEResult = XmlSerializeLib.Deserialize(objResponse.ResponseData, typeof(CodePaymentBEResult))
-        //                as CodePaymentBEResult;
+                // Call to Service
 
-        //            order.FunctionName = CommonSettings.MMS_CodePaymentBE;
-        //            order.PayooReturnCode = objCodePaymentBEResult.ReturnCode;
+                order.OrderNotes.Add(new OrderNote()
+                {
+                    Note = "Payoo Requesting - Giao dịch mua thẻ ",
+                    CreatedOn = DateTime.UtcNow,
 
-        //            switch (objCodePaymentBEResult.ReturnCode)
-        //            {
-        //                case 0:
-        //                    order.OrderNotes.Add(new OrderNote()
-        //                    {
-        //                        Note = "Payoo Response - Giao dịch mua thẻ thành công",
-        //                        CreatedOn = DateTime.UtcNow,
-        //                        FunctionName = CommonSettings.MMS_CodePaymentBE,
-        //                        FunctionReturnCode = objCodePaymentBEResult.ReturnCode,
-        //                        FunctionMessage = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode),
-        //                    });
-        //                    order.OrderStatusId = (int)OrderStatus.Complete;
-        //                    order.PayooReturnCode = objCodePaymentBEResult.ReturnCode;
-        //                    order.FunctionNameFinalCall = CommonSettings.MMS_CodePaymentBE;
-        //                    order.PayooTransactionDescription = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode);
-        //                    _OrderService.InsertOrUpdate(order);
-        //                    SendSMSToCustomer(order, objCodePaymentBEResult.PayCodes.ToList());
-        //                    _workflowMessageService.PayooSendEmailToCustumerBuyCard(order, objCodePaymentBEResult.PayCodes.ToList(), 3);
-        //                    return true;
+                });
+                _OrderService.InsertOrUpdate(order);
 
-        //                case -3:
-        //                    order.OrderNotes.Add(new OrderNote()
-        //                    {
-        //                        Note = "Payoo Response - Giao dịch mua thẻ bị time out",
-        //                        CreatedOn = DateTime.UtcNow,
-        //                        FunctionName = CommonSettings.MMS_CodePaymentBE,
-        //                        FunctionReturnCode = objCodePaymentBEResult.ReturnCode,
-        //                        FunctionMessage = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode),
-        //                    });
-        //                    order.OrderStatusId = (int)OrderStatus.IsSent;
-        //                    order.PayooReturnCode = objCodePaymentBEResult.ReturnCode;
-        //                    _OrderService.InsertOrUpdate(order);
-        //                    //var objCodeGetCardListBEResult = CodeGetCardListBE(order);
-        //                    //switch (objCodeGetCardListBEResult.ReturnCode)
-        //                    //{
-        //                    //    case 0:
-        //                    //        order.OrderNotes.Add(new OrderNote()
-        //                    //        {
-        //                    //            Note = "Payoo - Giao dịch mua thẻ thành công",
-        //                    //            CreatedOn = DateTime.UtcNow,
-        //                    //            FunctionName = CommonSettings.MMS_CodeGetCardListBE,
-        //                    //            FunctionReturnCode = objCodeGetCardListBEResult.ReturnCode,
-        //                    //            FunctionMessage = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode),
-        //                    //        });
-        //                    //        order.OrderStatusId = (int)OrderStatus.Complete;
-        //                    //        order.PayooFunctionFinalReturnCode = objCodeGetCardListBEResult.ReturnCode;
-        //                    //        order.FunctionNameFinalCall = CommonSettings.MMS_CodeGetCardListBE;
-        //                    //        order.PayooTransactionDescription = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode);
-        //                    //        _OrderService.InsertOrUpdate(order);
+                UniGWSResponse objResponse = uniGW.Execute2(request);
+                // End
 
-        //                    //        SendSMSToCustomer(order, objCodeGetCardListBEResult.PayCodes.ToList());
-        //                    //        _workflowMessageService.PayooSendEmailToCustumerBuyCard(order, objCodeGetCardListBEResult.PayCodes.ToList(), 3);
-        //                    //        return true;
-        //                    //    case -1:
 
-        //                    //        order.OrderNotes.Add(new OrderNote()
-        //                    //        {
-        //                    //            Note = "Payoo - " + CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode),
-        //                    //            CreatedOn = DateTime.UtcNow,
-        //                    //            FunctionName = CommonSettings.MMS_CodeGetCardListBE,
-        //                    //            FunctionReturnCode = objCodeGetCardListBEResult.ReturnCode,
-        //                    //            FunctionMessage = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode),
-        //                    //        });
+                // Verify signature.
+                bool isCorrect = Verify(objResponse.ResponseData, objResponse.Signature, CommonSettings.PublicKeyUrl);
+                if (!isCorrect)
+                {
+                    order.OrderNotes.Add(new OrderNote()
+                    {
+                        Note = "Payoo Response - Giao dịch mua thẻ thất bại - Verify signature is not valid",
+                        CreatedOn = DateTime.UtcNow,
+                        FunctionName = CommonSettings.MMS_CodePaymentBE,
+                        FunctionReturnCode = -112,
+                        FunctionMessage = CommonSettings.GetTopupPaymentMessage(-112),
+                    });
+                    order.ResultCode = -112;
+                    order.FunctionFinalReturnCode = -112;
+                    order.FunctionNameFinalCall = CommonSettings.MMS_CodePaymentBE;
+                    order.ResultName = CommonSettings.GetCodePaymentMessage(-112);
+                    _OrderService.InsertOrUpdate(order);
+                    return false;
+                }
+                else
+                {
+                    // Deserialize ResponseData in UniGWSResponse object for check ReturnCode
 
-        //                    //        order.OrderStatusId = (int)OrderStatus.IsSent;
-        //                    //        order.PayooFunctionFinalReturnCode = objCodeGetCardListBEResult.ReturnCode;
-        //                    //        order.FunctionNameFinalCall = CommonSettings.MMS_CodeGetCardListBE;
-        //                    //        order.PayooTransactionDescription = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode);
-        //                    //        _OrderService.InsertOrUpdate(order);
-        //                    //        return false;
-        //                    //    case -2:
-        //                    //        order.OrderNotes.Add(new OrderNote()
-        //                    //        {
-        //                    //            Note = "Payoo - " + CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode),
-        //                    //            CreatedOn = DateTime.UtcNow,
-        //                    //            FunctionName = CommonSettings.MMS_CodeGetCardListBE,
-        //                    //            FunctionReturnCode = objCodeGetCardListBEResult.ReturnCode,
-        //                    //            FunctionMessage = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode),
-        //                    //        });
-        //                    //        order.OrderStatusId = (int)OrderStatus.Refunded;
-        //                    //        order.PayooFunctionFinalReturnCode = objCodeGetCardListBEResult.ReturnCode;
-        //                    //        order.FunctionNameFinalCall = CommonSettings.MMS_CodeGetCardListBE;
-        //                    //        order.PayooTransactionDescription = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode);
-        //                    //        _OrderService.InsertOrUpdate(order);
-        //                    //        return false;
-        //                    //    default:
-        //                    //return false;
-        //                    //}
-        //                    return false;
-        //                case -1:
-        //                case -5:
-        //                case -6:
-        //                case -7:
-        //                    order.OrderNotes.Add(new OrderNote()
-        //                    {
-        //                        Note = "Payoo Response - Thanh toán mã thẻ thất bại.",
-        //                        CreatedOn = DateTime.UtcNow,
-        //                        FunctionName = CommonSettings.MMS_CodePaymentBE,
-        //                        FunctionReturnCode = objCodePaymentBEResult.ReturnCode,
-        //                        FunctionMessage = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode),
-        //                    });
+                    CodePaymentBEResult objCodePaymentBEResult = XmlSerializeLib.Deserialize(objResponse.ResponseData, typeof(CodePaymentBEResult))
+                        as CodePaymentBEResult;
 
-        //                    order.OrderStatusId = (int)OrderStatus.Refunded;
-        //                    order.PayooFunctionFinalReturnCode = objCodePaymentBEResult.ReturnCode;
-        //                    order.FunctionNameFinalCall = CommonSettings.MMS_CodePaymentBE;
-        //                    order.PayooTransactionDescription = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode);
-        //                    _OrderService.InsertOrUpdate(order);
-        //                    return false;
-        //                default:
-        //                    return false;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        order.OrderNotes.Add(new OrderNote()
-        //        {
-        //            Note = "Payoo Response - " + CommonSettings.GetCodePaymentMessage(-111),
-        //            CreatedOn = DateTime.UtcNow,
-        //            FunctionName = CommonSettings.MMS_CodePaymentBE,
-        //            FunctionReturnCode = -111,
-        //            FunctionMessage = CommonSettings.GetCodePaymentMessage(-111),
-        //        });
+                    order.FunctionNameFinalCall = CommonSettings.MMS_CodePaymentBE;
+                    order.ResultCode = objCodePaymentBEResult.ReturnCode;
 
-        //        //order.OrderStatusId = (int)OrderStatus.Pending;
-        //        order.PayooReturnCode = -111;
-        //        order.PayooFunctionFinalReturnCode = -111;
-        //        order.FunctionName = CommonSettings.MMS_CodePaymentBE;
-        //        order.FunctionNameFinalCall = CommonSettings.MMS_CodePaymentBE;
-        //        order.PayooTransactionDescription = CommonSettings.GetCodePaymentMessage(-111);
-        //        _OrderService.InsertOrUpdate(order);
-        //        return false;
-        //    }
-        //}
+                    switch (objCodePaymentBEResult.ReturnCode)
+                    {
+                        case 0:
+                            order.OrderNotes.Add(new OrderNote()
+                            {
+                                Note = "Payoo Response - Giao dịch mua thẻ thành công",
+                                CreatedOn = DateTime.UtcNow,
+                                FunctionName = CommonSettings.MMS_CodePaymentBE,
+                                FunctionReturnCode = objCodePaymentBEResult.ReturnCode,
+                                FunctionMessage = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode),
+                            });
+                            order.OrderStatusId = (int)OrderStatusEnum.COMPLETE;
+                            order.ResultCode = objCodePaymentBEResult.ReturnCode;
+                            order.FunctionNameFinalCall = CommonSettings.MMS_CodePaymentBE;
+                            order.ResultName = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode);
+                            _OrderService.InsertOrUpdate(order);
+                            // SendSMSToCustomer(order, objCodePaymentBEResult.PayCodes.ToList());
+                            //_workflowMessageService.PayooSendEmailToCustumerBuyCard(order, objCodePaymentBEResult.PayCodes.ToList(), 3);
+                            return true;
+
+                        case -3:
+                            order.OrderNotes.Add(new OrderNote()
+                            {
+                                Note = "Payoo Response - Giao dịch mua thẻ bị time out",
+                                CreatedOn = DateTime.UtcNow,
+                                FunctionName = CommonSettings.MMS_CodePaymentBE,
+                                FunctionReturnCode = objCodePaymentBEResult.ReturnCode,
+                                FunctionMessage = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode),
+                            });
+                            order.OrderStatusId = (int)OrderStatusEnum.PROCESSING;
+                            order.ResultCode = objCodePaymentBEResult.ReturnCode;
+                            _OrderService.InsertOrUpdate(order);
+                            //var objCodeGetCardListBEResult = CodeGetCardListBE(order);
+                            //switch (objCodeGetCardListBEResult.ReturnCode)
+                            //{
+                            //    case 0:
+                            //        order.OrderNotes.Add(new OrderNote()
+                            //        {
+                            //            Note = "Payoo - Giao dịch mua thẻ thành công",
+                            //            CreatedOn = DateTime.UtcNow,
+                            //            FunctionName = CommonSettings.MMS_CodeGetCardListBE,
+                            //            FunctionReturnCode = objCodeGetCardListBEResult.ReturnCode,
+                            //            FunctionMessage = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode),
+                            //        });
+                            //        order.OrderStatusId = (int)OrderStatus.Complete;
+                            //        order.PayooFunctionFinalReturnCode = objCodeGetCardListBEResult.ReturnCode;
+                            //        order.FunctionNameFinalCall = CommonSettings.MMS_CodeGetCardListBE;
+                            //        order.PayooTransactionDescription = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode);
+                            //        _OrderService.InsertOrUpdate(order);
+
+                            //        SendSMSToCustomer(order, objCodeGetCardListBEResult.PayCodes.ToList());
+                            //        _workflowMessageService.PayooSendEmailToCustumerBuyCard(order, objCodeGetCardListBEResult.PayCodes.ToList(), 3);
+                            //        return true;
+                            //    case -1:
+
+                            //        order.OrderNotes.Add(new OrderNote()
+                            //        {
+                            //            Note = "Payoo - " + CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode),
+                            //            CreatedOn = DateTime.UtcNow,
+                            //            FunctionName = CommonSettings.MMS_CodeGetCardListBE,
+                            //            FunctionReturnCode = objCodeGetCardListBEResult.ReturnCode,
+                            //            FunctionMessage = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode),
+                            //        });
+
+                            //        order.OrderStatusId = (int)OrderStatus.IsSent;
+                            //        order.PayooFunctionFinalReturnCode = objCodeGetCardListBEResult.ReturnCode;
+                            //        order.FunctionNameFinalCall = CommonSettings.MMS_CodeGetCardListBE;
+                            //        order.PayooTransactionDescription = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode);
+                            //        _OrderService.InsertOrUpdate(order);
+                            //        return false;
+                            //    case -2:
+                            //        order.OrderNotes.Add(new OrderNote()
+                            //        {
+                            //            Note = "Payoo - " + CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode),
+                            //            CreatedOn = DateTime.UtcNow,
+                            //            FunctionName = CommonSettings.MMS_CodeGetCardListBE,
+                            //            FunctionReturnCode = objCodeGetCardListBEResult.ReturnCode,
+                            //            FunctionMessage = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode),
+                            //        });
+                            //        order.OrderStatusId = (int)OrderStatus.Refunded;
+                            //        order.PayooFunctionFinalReturnCode = objCodeGetCardListBEResult.ReturnCode;
+                            //        order.FunctionNameFinalCall = CommonSettings.MMS_CodeGetCardListBE;
+                            //        order.PayooTransactionDescription = CommonSettings.GetCardListMessage(objCodeGetCardListBEResult.ReturnCode);
+                            //        _OrderService.InsertOrUpdate(order);
+                            //        return false;
+                            //    default:
+                            //return false;
+                            //}
+                            return false;
+                        case -1:
+                        case -5:
+                        case -6:
+                        case -7:
+                            order.OrderNotes.Add(new OrderNote()
+                            {
+                                Note = "Payoo Response - Thanh toán mã thẻ thất bại.",
+                                CreatedOn = DateTime.UtcNow,
+                                FunctionName = CommonSettings.MMS_CodePaymentBE,
+                                FunctionReturnCode = objCodePaymentBEResult.ReturnCode,
+                                FunctionMessage = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode),
+                            });
+
+                            order.OrderStatusId = (int)OrderStatusEnum.PROCESSING;
+                            order.FunctionFinalReturnCode = objCodePaymentBEResult.ReturnCode;
+                            order.FunctionNameFinalCall = CommonSettings.MMS_CodePaymentBE;
+                            order.ResultName = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode);
+                            _OrderService.InsertOrUpdate(order);
+                            return false;
+                        default:
+                            return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                order.OrderNotes.Add(new OrderNote()
+                {
+                    Note = "Payoo Response - " + CommonSettings.GetCodePaymentMessage(-111),
+                    CreatedOn = DateTime.UtcNow,
+                    FunctionName = CommonSettings.MMS_CodePaymentBE,
+                    FunctionReturnCode = -111,
+                    FunctionMessage = CommonSettings.GetCodePaymentMessage(-111),
+                });
+
+                //order.OrderStatusId = (int)OrderStatus.Pending;
+                order.ResultCode = -111;
+                order.FunctionFinalReturnCode = -111;
+                order.FunctionNameFinalCall = CommonSettings.MMS_CodePaymentBE;
+                order.ResultName = CommonSettings.GetCodePaymentMessage(-111);
+                _OrderService.InsertOrUpdate(order);
+                return false;
+            }
+        }
 
         //public void GetCardCodeList(FrtPayooOrder order)
         //{
@@ -1406,7 +1405,7 @@ namespace Domain.Services
                 string strRequestTime = DateTime.Now.ToString("dd/MM/yyyy HHmmss");
                 request.RequestTime = strRequestTime;
                 // Checksum = MD5(RequestTime + ClientPassword)
-                request.Checksum =MD5Encrypt.MD5Hash(strRequestTime + clientPassword);
+                request.Checksum = MD5Encrypt.MD5Hash(strRequestTime + clientPassword);
                 // End
 
 
@@ -1451,14 +1450,14 @@ namespace Domain.Services
                     {
                         Note = "Payoo Response - Giao dịch nạp topup thất bại - Verify signature is not valid",
                         CreatedOn = DateTime.UtcNow,
-                       FunctionName = CommonSettings.MMS_TopupPaymentBE,
+                        FunctionName = CommonSettings.MMS_TopupPaymentBE,
                         FunctionReturnCode = -112,
-                       FunctionMessage = CommonSettings.GetTopupPaymentMessage(-112),
+                        FunctionMessage = CommonSettings.GetTopupPaymentMessage(-112),
                     });
-                    order.FunctionNameFinalCall = CommonSettings.MMS_TopupPaymentBE;              
+                    order.FunctionNameFinalCall = CommonSettings.MMS_TopupPaymentBE;
                     order.ResultCode = -112;
                     order.FunctionFinalReturnCode = -112;
-                    order.AuthorizationTransactionResult = CommonSettings.GetTopupPaymentMessage(-112);
+                    order.ResultName = CommonSettings.GetTopupPaymentMessage(-112);
                     _OrderService.InsertOrUpdate(order);
                     return -112;
                 }
@@ -1482,11 +1481,11 @@ namespace Domain.Services
                                 FunctionReturnCode = objTopupPaymentBEResult.ReturnCode,
                                 FunctionMessage = CommonSettings.GetTopupPaymentMessage(objTopupPaymentBEResult.ReturnCode),
                             });
-                           // order. = "Nạp topup thành công cho số " + order.CustomerPhone + " số tiền " + _priceFormatter.FormatPrice(order.OrderCashAmount);
+                            // order. = "Nạp topup thành công cho số " + order.CustomerPhone + " số tiền " + _priceFormatter.FormatPrice(order.OrderCashAmount);
                             order.OrderStatusId = (int)OrderStatusEnum.COMPLETE;
-                           
+
                             order.FunctionFinalReturnCode = objTopupPaymentBEResult.ReturnCode;
-                            order.AuthorizationTransactionResult = "Nạp topup thành công cho số " + order.NumberPhone + " số tiền " + order.TotalAmount;
+                            order.ResultName = "Nạp topup thành công cho số " + order.NumberPhone + " số tiền " + order.TotalAmount;
                             _OrderService.InsertOrUpdate(order);
                             break;
 
@@ -1515,10 +1514,10 @@ namespace Domain.Services
                                 FunctionMessage = CommonSettings.GetTopupPaymentMessage(objTopupPaymentBEResult.ReturnCode),
                             });
 
-                            order.OrderStatusId = (int)OrderStatusEnum.WAITTING;
+                            order.OrderStatusId = (int)OrderStatusEnum.PROCESSING;
                             order.FunctionFinalReturnCode = objTopupPaymentBEResult.ReturnCode;
                             order.FunctionNameFinalCall = CommonSettings.MMS_TopupPaymentBE;
-                            order.AuthorizationTransactionResult = CommonSettings.GetTopupPaymentMessage(objTopupPaymentBEResult.ReturnCode);
+                            order.ResultName = CommonSettings.GetTopupPaymentMessage(objTopupPaymentBEResult.ReturnCode);
                             _OrderService.InsertOrUpdate(order);
                             break;
                         default:
@@ -1539,7 +1538,7 @@ namespace Domain.Services
                 order.FunctionFinalReturnCode = -111;
                 order.FunctionNameFinalCall = CommonSettings.MMS_TopupPaymentBE;
                 order.FunctionNameFinalCall = CommonSettings.MMS_TopupPaymentBE;
-                order.AuthorizationTransactionResult = CommonSettings.GetTopupPaymentMessage(-111);
+                order.ResultName = CommonSettings.GetTopupPaymentMessage(-111);
                 _OrderService.InsertOrUpdate(order);
                 return -111;
             }
@@ -1626,7 +1625,7 @@ namespace Domain.Services
 
 
         #endregion
-      
+
         #region Unities
         public static bool Verify(string signedData, string signature, string publicKeyUrl)
         {
@@ -1741,7 +1740,7 @@ namespace Domain.Services
                 string strRequestTime = DateTime.Now.ToString("dd/MM/yyyy HHmmss");
                 request.RequestTime = strRequestTime;
                 // Checksum = MD5(RequestTime + ClientPassword)
-                request.Checksum =MD5Encrypt.MD5Hash(strRequestTime + clientPassword);
+                request.Checksum = MD5Encrypt.MD5Hash(strRequestTime + clientPassword);
                 // End
 
                 request.Operation = CommonSettings.MMS_GetTransactionStatusBE;// Ten cua API giong nhu trong tai lieu API ma Payoo gui. Tuy vao chuc nang ma co Ten khac nhau.
@@ -1786,7 +1785,7 @@ namespace Domain.Services
                     });
                     order.FunctionFinalReturnCode = -112;
                     order.FunctionNameFinalCall = CommonSettings.MMS_GetTransactionStatusBE;
-                    order.AuthorizationTransactionResult = CommonSettings.GetTransactionStatusMessage(-112);
+                    order.ResultName = CommonSettings.GetTransactionStatusMessage(-112);
                     _OrderService.InsertOrUpdate(order);
                     return -112;
                 }
@@ -1806,13 +1805,13 @@ namespace Domain.Services
                                 Note = "Payoo Reponse - " + CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode),
                                 CreatedOn = DateTime.UtcNow,
                                 FunctionName = CommonSettings.MMS_GetTransactionStatusBE,
-                               FunctionReturnCode = objGetTransactionStatusBEResult.ReturnCode,
+                                FunctionReturnCode = objGetTransactionStatusBEResult.ReturnCode,
                                 FunctionMessage = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode),
                             });
-                            order.OrderStatusId = (int)OrderStatusEnum.WAITTING;
+                            order.OrderStatusId = (int)OrderStatusEnum.PROCESSING;
                             order.FunctionFinalReturnCode = objGetTransactionStatusBEResult.ReturnCode;
                             order.FunctionNameFinalCall = CommonSettings.MMS_GetTransactionStatusBE;
-                            order.AuthorizationTransactionResult = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode);
+                            order.ResultName = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode);
                             _OrderService.InsertOrUpdate(order);
                             break;
                         case -2:
@@ -1827,7 +1826,7 @@ namespace Domain.Services
                             order.OrderStatusId = (int)OrderStatusEnum.PENDING;
                             order.FunctionFinalReturnCode = objGetTransactionStatusBEResult.ReturnCode;
                             order.FunctionNameFinalCall = CommonSettings.MMS_GetTransactionStatusBE;
-                            order.AuthorizationTransactionResult = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode);
+                            order.ResultName = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode);
                             _OrderService.InsertOrUpdate(order);
                             break;
                         default:
@@ -1845,14 +1844,14 @@ namespace Domain.Services
                                     Note = "Payoo Reponse - Chưa biết được kết quả cuối cùng từ Payoo",
                                     CreatedOn = DateTime.UtcNow,
                                     FunctionName = CommonSettings.MMS_GetTransactionStatusBE,
-                                   FunctionReturnCode = objGetTransactionStatusBEResult.ReturnCode,
+                                    FunctionReturnCode = objGetTransactionStatusBEResult.ReturnCode,
                                     FunctionMessage = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode),
                                 });
 
-                                order.OrderStatusId = (int)OrderStatusEnum.WAITTING;
+                                order.OrderStatusId = (int)OrderStatusEnum.PROCESSING;
                                 order.FunctionFinalReturnCode = objGetTransactionStatusBEResult.ReturnCode;
                                 order.FunctionNameFinalCall = CommonSettings.MMS_GetTransactionStatusBE;
-                                order.AuthorizationTransactionResult = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode);
+                                order.ResultName = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode);
                                 _OrderService.InsertOrUpdate(order);
                                 break;
 
@@ -1861,15 +1860,15 @@ namespace Domain.Services
                                 {
                                     Note = "Payoo Reponse - Trạng thái giao dịch thành công",
                                     CreatedOn = DateTime.UtcNow,
-                                   FunctionName = CommonSettings.MMS_GetTransactionStatusBE,
+                                    FunctionName = CommonSettings.MMS_GetTransactionStatusBE,
                                     FunctionReturnCode = objGetTransactionStatusBEResult.ReturnCode,
-                                   FunctionMessage = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode),
+                                    FunctionMessage = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode),
                                 });
 
                                 order.OrderStatusId = (int)OrderStatusEnum.COMPLETE;
                                 order.FunctionFinalReturnCode = objGetTransactionStatusBEResult.ReturnCode;
                                 order.FunctionNameFinalCall = CommonSettings.MMS_GetTransactionStatusBE;
-                                order.AuthorizationTransactionResult = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode);
+                                order.ResultName = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode);
                                 _OrderService.InsertOrUpdate(order);
                                 break;
                             case 5:
@@ -1886,7 +1885,7 @@ namespace Domain.Services
                                 order.OrderStatusId = (int)OrderStatusEnum.CANCEL;
                                 order.FunctionFinalReturnCode = objGetTransactionStatusBEResult.ReturnCode;
                                 order.FunctionNameFinalCall = CommonSettings.MMS_GetTransactionStatusBE;
-                                order.AuthorizationTransactionResult = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode);
+                                order.ResultName = CommonSettings.GetTransactionStatusMessage(objGetTransactionStatusBEResult.ReturnCode);
                                 _OrderService.InsertOrUpdate(order);
                                 break;
                         }
@@ -1904,7 +1903,7 @@ namespace Domain.Services
                 });
                 order.FunctionFinalReturnCode = -111;
                 order.FunctionNameFinalCall = CommonSettings.MMS_TopupPaymentBE;
-                order.AuthorizationTransactionResult = CommonSettings.GetTransactionStatusMessage(-111);
+                order.ResultName = CommonSettings.GetTransactionStatusMessage(-111);
                 _OrderService.InsertOrUpdate(order);
                 return -111;
             }

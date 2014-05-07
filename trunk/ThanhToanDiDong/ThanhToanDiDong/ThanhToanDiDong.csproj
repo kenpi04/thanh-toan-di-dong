@@ -195,6 +195,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Payment\BuyCardModel.cs" />
     <Compile Include="Models\Payment\OrderModel.cs" />
     <Compile Include="Models\Payment\TopupModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -334,6 +335,7 @@
     <Content Include="Views\Payment\Topup.cshtml" />
     <Content Include="Views\Payment\PaymentSuccess.cshtml" />
     <Content Include="Views\OnePay\Index.cshtml" />
+    <Content Include="Views\Payment\BuyCard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
