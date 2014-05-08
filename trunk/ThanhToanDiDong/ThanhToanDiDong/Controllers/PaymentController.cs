@@ -73,6 +73,7 @@ namespace ThanhToanDiDong.Controllers
                 Quantity = order.Quantity,
                 TotalPrice = String.Format("{0:0,0 đ}", order.TotalAmount),
                 CreateDate = order.CreatedOn.ToString(),
+                
 
             };
             if (order.OrderTypeId == (int)OrderType.CARD)
@@ -99,14 +100,26 @@ namespace ThanhToanDiDong.Controllers
             return View(model);
         }
         [HttpGet]
-        public ActionResult GetCategory(string phone)
+        public ActionResult GetCategory(int? id,string phone)
         {
+            if (id.HasValue)
+            {
+                var catex = _cateService.GetById(id.Value);
+                var listCardType = catex.CardMobile.Select(x => new
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString(),
+                    price = x.UnitSellingPrice
+                }).ToList();
+                return Json(listCardType, JsonRequestBehavior.AllowGet);
+            }
+          
             int lengt = 3;
             if (phone.Length > 10)
                 lengt = 4;
 
             Regex rg = new Regex(phone.Substring(0, lengt));
-            var cate = _cateService.GetAll(x => rg.IsMatch(x.DauSo)).FirstOrDefault();
+           var cate = _cateService.GetAll(x => rg.IsMatch(x.DauSo)).FirstOrDefault();
             if (cate != null)
             {
 
@@ -135,6 +148,35 @@ namespace ThanhToanDiDong.Controllers
             
            
             return View(model);
+        }
+        [HttpPost]
+        public ActionResult BuyCard(BuyCardModel model)
+        {
+            var cardmobile = _cardMobileService.GetById(model.CardId);
+            var order = new Order
+            {
+
+                CardMobileId = cardmobile.Id,
+                UnitPrice = cardmobile.UnitPrice,
+                UnitSellingPrice = cardmobile.UnitSellingPrice,
+                Quantity = 1,
+                OrderStatusId = (int)OrderStatusEnum.PENDING,
+                Price = cardmobile.UnitSellingPrice,              
+                PartnerId = (int)ProviderEnum.PAYOO,
+                OrderTypeId = (int)OrderType.CARD,
+                ProviderId = 0,
+                CustomerIp = Helper.GetIp(),
+                PaymentStatusId = (int)PaymentStatus.CHUATHANHTOAN,
+                TotalAmount = cardmobile.UnitSellingPrice,
+                OrderGuid = Guid.NewGuid(),
+                CreatedOn = DateTime.UtcNow
+
+
+
+            };
+            _orderService.InsertOrUpdate(order);
+            return RedirectToAction("Index", "OnePay", new { orderId = order.Id });
+
         }
 
     }

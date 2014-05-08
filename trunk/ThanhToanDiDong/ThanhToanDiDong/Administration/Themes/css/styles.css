@@ -1,0 +1,10 @@
+﻿.div-home .box-content {height:426px !important }
+.view-more {text-align:right;margin-right: 7px}
+.clearboth {clear:both }
+.div-home > span:nth-child(3) {margin-left: 0}
+.div-home .box-header{cursor:default }
+.div-home > span:nth-child(2) > div > div.box-content > ul > li:nth-child(1) > div:nth-child(4) { margin-left:0}
+.div-home  .dashboard-list > li > div:nth-child(4) {margin-left:0}
+.div-home > span:nth-child(5) {margin-left:0 }
+#tabs-admin .box-content,.auto-height .box-content,.div-chart .box-content {height:auto !important}
+#orderTotal{font-size:14px;color:#d41212;text-align:right}

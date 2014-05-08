@@ -1,0 +1,47 @@
+﻿@model IPagedList<Order>
+@{
+   
+    }
+
+<div id ="NormalView">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Mã giao dịch</th>
+                <th>Thời gian giao dịch</th>
+                <th>Số tiền</th>
+                <th>Số điện thoại</th>           
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+           </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Model)
+            { 
+                
+                <tr>
+                    <td>@i.Id</td>
+                    <td>@i.CreatedOn.ToString("hh:mm:ss dd-MM-yyyy")</td>
+                    <td>@string.Format("{0:0,0}",i.TotalAmount)</td>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(i.NumberPhone))
+                        { 
+                            <text>@i.NumberPhone</text>
+                        }
+                        else
+                        {
+                            <text>MUA THẺ</text>
+                        }
+                    </td>
+              
+                    <td>@Enum.GetName(typeof(Domain.Entity.OrderStatusEnum),i.OrderStatusId)</td>
+                    <td><a href="#" onclick="showNote(@i.Id)">Chi tiết</a></td>
+                </tr>
+            }
+        </tbody>
+        </table>
+    <div class="pagination pagination-centered span12">
+  
+   @Html.PagedListPager(Model, page => Url.Action("OrderPage", new {page }), new PagedListRenderOptions { LinkToFirstPageFormat = "Đầu", LinkToLastPageFormat = "Cuối", LinkToNextPageFormat = "Sau", LinkToPreviousPageFormat = "Trước", DisplayLinkToNextPage = PagedListDisplayMode.Always, DisplayLinkToPreviousPage = PagedListDisplayMode.Always }) 
+    </div>
+        </div>

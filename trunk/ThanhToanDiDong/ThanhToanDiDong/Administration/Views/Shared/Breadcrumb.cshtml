@@ -1,0 +1,17 @@
+﻿@model IDictionary<string, string>
+
+<div>
+	<ul class="breadcrumb">
+		<li>
+			<a href="/">HOME</a>
+		</li>
+        @if (Model != null) {
+            foreach(KeyValuePair<string, string> entry in Model) {
+                <span class="divider">/</span>
+                <li>
+			       <a href="@entry.Value">@entry.Key</a>
+		        </li>
+            }
+        }
+	</ul>
+</div>
