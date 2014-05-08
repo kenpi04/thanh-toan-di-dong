@@ -1,0 +1,15 @@
+﻿@model IEnumerable<OrderNote>
+<div style="width:600px;height:500px;overflow-y:scroll">
+<ul>
+    @foreach(var i in Model)
+    {
+    <li>
+       @i.CreatedOn - <b>@i.Note</b><br />
+        Hàm gọi:@i.FunctionName<br />
+        Kết quả hàm:@i.FunctionMessage<br />
+        Mã kết quả:@i.FunctionReturnCode<br />
+        
+    </li>
+    }
+</ul>
+    </div>

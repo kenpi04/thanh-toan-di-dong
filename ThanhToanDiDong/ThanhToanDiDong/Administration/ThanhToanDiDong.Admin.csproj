@@ -40,6 +40,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -110,9 +117,46 @@
   <ItemGroup>
     <Compile Include="AdminAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Models\OrderItemModel.cs" />
+    <Compile Include="Models\OrderListModel.cs" />
+    <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Scripts\public.common.js" />
+    <Content Include="Themes\css\bootstrap-cerulean.css" />
+    <Content Include="Themes\css\bootstrap-classic.css" />
+    <Content Include="Themes\css\bootstrap-classic.min.css" />
+    <Content Include="Themes\css\bootstrap-cyborg.css" />
+    <Content Include="Themes\css\bootstrap-journal.css" />
+    <Content Include="Themes\css\bootstrap-redy.css" />
+    <Content Include="Themes\css\bootstrap-responsive.css" />
+    <Content Include="Themes\css\bootstrap-responsive.min.css" />
+    <Content Include="Themes\css\bootstrap-simplex.css" />
+    <Content Include="Themes\css\bootstrap-slate.css" />
+    <Content Include="Themes\css\bootstrap-spacelab.css" />
+    <Content Include="Themes\css\bootstrap-tree.css" />
+    <Content Include="Themes\css\bootstrap-united.css" />
+    <Content Include="Themes\css\charisma-app.css" />
+    <Content Include="Themes\css\chosen.css" />
+    <Content Include="Themes\css\colorbox.css" />
+    <Content Include="Themes\css\datepicker.css" />
+    <Content Include="Themes\css\elfinder.min.css" />
+    <Content Include="Themes\css\elfinder.theme.css" />
+    <Content Include="Themes\css\fullcalendar.css" />
+    <Content Include="Themes\css\fullcalendar.print.css" />
+    <Content Include="Themes\css\jquery-ui-1.8.21.custom.css" />
+    <Content Include="Themes\css\jquery.cleditor.css" />
+    <Content Include="Themes\css\jquery.iphone.toggle.css" />
+    <Content Include="Themes\css\jquery.noty.css" />
+    <Content Include="Themes\css\noty_theme_default.css" />
+    <Content Include="Themes\css\opa-icons.css" />
+    <Content Include="Themes\css\openidstyles.css" />
+    <Content Include="Themes\css\site-validate.css" />
+    <Content Include="Themes\css\styles.css" />
+    <Content Include="Themes\css\uniform.default.css" />
+    <Content Include="Themes\css\uploadify.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -124,13 +168,36 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Breadcrumb.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Domain.csproj">
+      <Project>{f69fe585-5503-4250-a9f2-1ff032811665}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\_OrderList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\OrderList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\_BillList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Note.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

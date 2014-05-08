@@ -4,12 +4,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("Topup", "BuyCard",FormMethod.Post, new {role="form",id="frmBuy" }))
+@using (Html.BeginForm("BuyCard", "Topup", FormMethod.Post, new { role = "form", id = "frmBuy" }))
 { 
     @Html.ValidationSummary(true);
   <div class="form-group">
     <label for="txtPhone">Nhà mạng:</label>
    <select id="ddlNetworks" class="form-control">
+       <option value="0">Chọn mạng</option>
        @foreach (var i in Model.CateCards)
        { 
         <option value="@i.Id" data-img="@i.Image">@i.Name</option>
@@ -34,7 +35,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#ddlNetworks").change(function () {
-            var img = "/Content/Images/" + $(this).attr("data-img");
+            var img = "/Content/Images/" + $(this).find("option:selected").attr("data-img");
             var value = $(this).val();
             $("#imglogo").attr("src", img).show("slow");
             var ddlCate = $("#@Html.IdFor(x=>x.CardId)");
@@ -42,7 +43,7 @@
             $.ajax({
                 type: "GET",
                 url: "@Url.Action("GetCategory")",
-            data: { phone: value },
+            data: { id: value },
             success: function (data) {
                 if (data == "")
                     return;

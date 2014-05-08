@@ -11,17 +11,31 @@ namespace Domain.Services
     public partial class OrderService : BaseService
     {
         IRepository<Order> _orderRepository = new EfRepository<Order>();
+        IRepository<CardMobile> _CardmobileRepository = new EfRepository<CardMobile>();
         public Order GetById(int id)
         {
             return _orderRepository.GetById(id);
         }
-        public IPagedList<Order> GetPage(int pageIndex = 1, int pageSize = 15)
+        public IPagedList<Order> GetPage(int? cateId,DateTime? startDate=null,DateTime?endDate=null,OrderType?type=null, OrderStatusEnum? status=null, int pageIndex = 1, int pageSize = 15)
         {
             var q = _orderRepository.Table.Where(x => !x.Deleted);
-            
-            q.OrderBy(x=>x.Id);
+            if (type.HasValue)
+                q = q.Where(x => x.OrderTypeId == (int)type);
+            if (cateId.HasValue)
+            {
+                var cate = _CardmobileRepository.Table.Where(x => x.CategoryCardMobileId == cateId).Select(x => x.Id);
+                q = q.Where(x => cate.Contains(x.CardMobileId));
+            }
+            if (startDate.HasValue)
+                q = q.Where(x => x.CreatedOn >= startDate.Value);
+            if (endDate.HasValue)
+                q = q.Where(x => x.CreatedOn <= endDate.Value);
+            if (status.HasValue)
+                q = q.Where(x => x.OrderStatusId == (int)status);            
+           q=q.OrderByDescending(x=>x.CreatedOn);
             return q.ToPagedList(pageIndex, pageSize);
         }
+      
         public IEnumerable<Order> GetAll(Func<Order, Boolean> where = null)
         {
             var q = _orderRepository.Table.Where(x => !x.Deleted);

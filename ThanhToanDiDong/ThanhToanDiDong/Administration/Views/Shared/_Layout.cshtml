@@ -1,0 +1,109 @@
+﻿@using System.Web.Optimization;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>THANHTOANDIDONG - HỆ THỐNG QUẢN TRỊ - @ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+    <meta name="author" content="Muhammad Usman">
+
+    <!-- The styles -->
+
+    <style type="text/css">
+        body { padding-bottom: 40px; }
+
+        .sidebar-nav { padding: 9px 0; }
+    </style>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-responsive.css" rel="stylesheet" />
+    @Styles.Render("~/Content/themes/base/css")
+    
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Administration/Scripts/public.common.js"></script>
+</head>
+
+<body>
+   
+    <div class="progress-bar progress-bar-success" id="divPopupInfo" style="display:none;width:100%">
+        <span id="spanInfo" class="noty_text">This is a success information</span>
+
+    </div>
+    <div class="navbar" style="background: #22A767; ">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a>
+
+                <div class="btn-group pull-right">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="icon-user"></i><span class="hidden-phone"></span><span class="caret"></span>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- topbar ends -->
+
+    <div class="container-fluid">
+        <div class="row-fluid" style="min-height:400px">
+            <!-- left menu starts -->
+            <div class="span2 main-menu-span">
+                <div class="well nav-collapse sidebar-nav">
+                    <ul class="nav nav-tabs nav-stacked main-menu">
+                        <li class="nav-header hidden-tablet">ADMIN PANEL
+                        </li>
+                         <li>
+                           <a class="ajax-link" href="@Url.Action("OrderList","Home")">NẠP TIỀN</a>
+                         </li>
+                          <li>
+                           <a class="ajax-link">HÓA ĐƠN</a>
+                         </li>
+                          <li>
+                           <a class="ajax-link">CÀI ĐẶT GIÁ</a>
+                         </li>
+                          <li>
+                           <a class="ajax-link">KHUYẾN MÃI</a>
+                         </li>
+                             </ul>
+                </div>
+                <!--/.well -->
+            </div>
+            <!--/span-->
+            <!-- left menu ends -->
+
+            <noscript>
+                <div class="alert alert-block span10">
+                    <h4 class="alert-heading">Warning!</h4>
+                    <p>
+                        You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.
+                    </p>
+                </div>
+            </noscript>
+
+            <div id="content" class="span10">
+                <!-- content starts -->
+                @RenderBody()
+            </div>
+            <hr>
+
+            <footer style="clear:both">
+                
+                <p style="text-align:center">
+                       &copy; <a href="" target="_blank">THANHTOADIDONG.COM.VN</a> 2013-2014
+                    Powered by: <a href="http://thanhtoandidong.com.vn">THANHTOADIDONG.COM.VN</a>
+                </p>
+            </footer>
+
+        </div>
+        <!--/.fluid-container-->
+    </div>
+
+    <div id="dialog"></div>
+    <script type="text/javascript" src="@Scripts.Url("~/bundles/jqueryui")"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
