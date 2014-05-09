@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\OrderStatusEnum.cs" />
+    <Compile Include="Entity\User.cs" />
     <Compile Include="Maps\CardMobileMap.cs" />
     <Compile Include="Maps\CategoryCardMobileMap.cs" />
     <Compile Include="Maps\ProviderMap.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Maps\ServiceMap.cs" />
     <Compile Include="Maps\PromotionEventMap.cs" />
     <Compile Include="Maps\OrderMap.cs" />
+    <Compile Include="Maps\UserMap.cs" />
     <Compile Include="OnePay\ResultTran.cs" />
     <Compile Include="OnePay\Transaction.cs" />
     <Compile Include="OnePay\VPCRequest.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Services\ProviderService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderNoteService.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Compile Include="Unilities\CmsCryptography.cs" />
     <Compile Include="Unilities\CommonSettings.cs" />
     <Compile Include="Unilities\MD5Encrypt.cs" />

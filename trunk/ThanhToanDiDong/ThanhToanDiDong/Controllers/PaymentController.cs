@@ -31,10 +31,7 @@ namespace ThanhToanDiDong.Controllers
         [HttpPost]
         public ActionResult Topup(TopupModel model)
         {
-
             var cardmobile = _cardMobileService.GetById(model.PriceListId);
-            if (cardmobile == null)
-                throw new Exception("Thẻ đã hết !");
             var order = new Order
             {
 
@@ -46,7 +43,7 @@ namespace ThanhToanDiDong.Controllers
                 Price = cardmobile.UnitSellingPrice,
                 NumberPhone = model.Phone,
                 PartnerId = (int)ProviderEnum.PAYOO,
-                OrderTypeId = (int)OrderType.CARD,
+                OrderTypeId = (int)OrderType.TOPUP,
                 ProviderId = 0,
                 CustomerIp = Helper.GetIp(),
                 PaymentStatusId = (int)PaymentStatus.CHUATHANHTOAN,
@@ -62,9 +59,14 @@ namespace ThanhToanDiDong.Controllers
             return RedirectToAction("Index", "OnePay", new { orderId = order.Id });
 
         }
-        public ActionResult PaymentSuccess(int id)
+        public ActionResult PaymentSuccess()
         {
-            var order = _orderService.GetById(id);
+            if (Session["ORDERID"] == null)
+              return RedirectToRoute("HomePage");
+            var order = _orderService.GetById(Convert.ToInt32(Session["ORDERID"]));
+            if (order == null)
+                return RedirectToRoute("HomePage");
+            Session["ORDERID"] = null;
             var model = new OrderModel
             {
                 Id = order.Id,
@@ -73,9 +75,36 @@ namespace ThanhToanDiDong.Controllers
                 Quantity = order.Quantity,
                 TotalPrice = String.Format("{0:0,0 đ}", order.TotalAmount),
                 CreateDate = order.CreatedOn.ToString(),
-                
+                CardId=order.CardId,
+                ExpiredDate=order.Expired,
+                Name=_cardMobileService.GetById(order.CardMobileId).CategoryCardMobile.Name,
+                CardSerie=order.SeriNumber,
+                Status=order.OrderStatusId==(int)OrderStatusEnum.COMPLETE?"Thành công":"Đang xử lý",
+                OrderType=(order.OrderTypeId==(int)OrderType.CARD)?"Mua card":(order.OrderTypeId==(int)OrderType.TOPUP?"Nạp thẻ":"Thanh toán hóa đơn"),
+                OrderStatusId=order.OrderTypeId
+
 
             };
+            
+            int i = 0;
+            if (order.OrderTypeId == (int)OrderType.TOPUP)
+            {
+                i = _payooService.TopupPaymentBE(order);
+                if (i != 0)
+                {
+                    ViewBag.Error = "Có phát sinh lỗi trong quá trình xử lý đơn hàng của bạn! Vui lòng liên hệ với chúng tôi để được giải quyết";
+                    return View(model);
+                }
+            }
+            else if (order.OrderTypeId == (int)OrderType.CARD)
+            {
+                if (!_payooService.CodePaymentBE(order))
+                {
+                    ViewBag.Error = "Có phát sinh lỗi trong quá trình xử lý đơn hàng của bạn! Vui lòng liên hệ với chúng tôi để được giải quyết";
+                    return View(model);
+                }
+            }
+
             if (order.OrderTypeId == (int)OrderType.CARD)
             {
                 model.Name = "Mua thẻ mệnh giá " + order.UnitPrice;
@@ -84,23 +113,12 @@ namespace ThanhToanDiDong.Controllers
             {
                 model.Name = "Thanh toán hóa đơn";
             }
-            if (order == null)
-                return RedirectToAction("/");
-            _orderService.InsertOrUpdate(order);
-            if (order.OrderTypeId == (int)OrderType.CARD)
-            {
-                int i = _payooService.TopupPaymentBE(order);
-                if (i != 0)
-                {
-                    ViewBag.Error = "Có phát sinh lỗi trong quá trình xử lý đơn hàng của bạn!";
-                    return View(model);
-                }
-            }
+
 
             return View(model);
         }
         [HttpGet]
-        public ActionResult GetCategory(int? id,string phone)
+        public ActionResult GetCategory(int? id, string phone)
         {
             if (id.HasValue)
             {
@@ -113,13 +131,13 @@ namespace ThanhToanDiDong.Controllers
                 }).ToList();
                 return Json(listCardType, JsonRequestBehavior.AllowGet);
             }
-          
+
             int lengt = 3;
             if (phone.Length > 10)
                 lengt = 4;
 
             Regex rg = new Regex(phone.Substring(0, lengt));
-           var cate = _cateService.GetAll(x => rg.IsMatch(x.DauSo)).FirstOrDefault();
+            var cate = _cateService.GetAll(x => rg.IsMatch(x.DauSo)).FirstOrDefault();
             if (cate != null)
             {
 
@@ -140,13 +158,13 @@ namespace ThanhToanDiDong.Controllers
             var cate = _cateService.GetAll();
             model.CateCards = cate.Select(x => new BuyCardModel.CateCard
             {
-                Id=x.Id,
-                Name=x.Name,
-                Image=x.PictureUrl
-               
+                Id = x.Id,
+                Name = x.Name,
+                Image = x.PictureUrl
+
             }).ToList();
-            
-           
+
+
             return View(model);
         }
         [HttpPost]
@@ -161,7 +179,7 @@ namespace ThanhToanDiDong.Controllers
                 UnitSellingPrice = cardmobile.UnitSellingPrice,
                 Quantity = 1,
                 OrderStatusId = (int)OrderStatusEnum.PENDING,
-                Price = cardmobile.UnitSellingPrice,              
+                Price = cardmobile.UnitSellingPrice,
                 PartnerId = (int)ProviderEnum.PAYOO,
                 OrderTypeId = (int)OrderType.CARD,
                 ProviderId = 0,

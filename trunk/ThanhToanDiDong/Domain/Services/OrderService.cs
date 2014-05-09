@@ -16,9 +16,12 @@ namespace Domain.Services
         {
             return _orderRepository.GetById(id);
         }
-        public IPagedList<Order> GetPage(int? cateId,DateTime? startDate=null,DateTime?endDate=null,OrderType?type=null, OrderStatusEnum? status=null, int pageIndex = 1, int pageSize = 15)
+        public IPagedList<Order> GetPage(int? cateId,bool isCard=true, DateTime? startDate=null,DateTime?endDate=null,OrderType?type=null, OrderStatusEnum? status=null, int pageIndex = 1, int pageSize = 15)
         {
             var q = _orderRepository.Table.Where(x => !x.Deleted);
+            if (isCard)
+                q = q.Where(x => x.OrderTypeId != (int)OrderType.BILLING);
+
             if (type.HasValue)
                 q = q.Where(x => x.OrderTypeId == (int)type);
             if (cateId.HasValue)

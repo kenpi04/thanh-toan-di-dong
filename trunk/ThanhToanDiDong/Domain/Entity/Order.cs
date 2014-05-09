@@ -54,6 +54,10 @@ namespace Domain.Entity
         public string RecipientBillName { get; set; }
         public string RecipientBillPhone { get; set; }
         public string RecipientBillAddress { get; set; }
+        public string CardId { get; set; }
+        public string Expired { get; set; }
+        public string SeriNumber { get; set; }
+        public string TypeCard { get; set; }
     
         public virtual ICollection<OrderNote> OrderNotes { get; set; }
     }

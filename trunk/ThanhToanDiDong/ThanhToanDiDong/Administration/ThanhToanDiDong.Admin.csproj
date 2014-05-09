@@ -116,7 +116,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminAreaRegistration.cs" />
+    <Compile Include="Filter\Auth.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OrderItemModel.cs" />
     <Compile Include="Models\OrderListModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
@@ -198,6 +201,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Note.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,10 +1,7 @@
 ﻿@model ThanhToanDiDong.Models.Payment.BuyCardModel
-@{
-    ViewBag.Title = "Mua card";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
 
-@using (Html.BeginForm("BuyCard", "Topup", FormMethod.Post, new { role = "form", id = "frmBuy" }))
+<div class="col-md-6">
+@using (Html.BeginForm("BuyCard", "Payment", FormMethod.Post, new { role = "form", id = "frmBuy" }))
 { 
     @Html.ValidationSummary(true);
   <div class="form-group">
@@ -22,16 +19,18 @@
   </div>
    <div class="form-group">
        <label for="ddlPrice">Mệnh giá:</label>
-       @Html.DropDownListFor(x => x.CardId,new List<SelectListItem>(), new {@class="form-control" })
+       @Html.DropDownListFor(x => x.CardId,new List<SelectListItem>(),"Chọn mệnh giá", new {@class="form-control" })
+    @Html.ValidationMessageFor(x=>x.CardId)
    </div>
     <div class="form-group">
         <label>Thành tiền</label><br />
-        <span style="color:orange;font-size:16px"><b id="totalMoney"></b> </span>
+        <span style="color:orange;font-size:16px"><b id="totalMoney-card"></b> </span>
     </div>
   <button type="submit" class="btn btn-primary">Tiếp tục</button>
 
 
 }
+    </div>
 <script type="text/javascript">
     $(document).ready(function () {
         $("#ddlNetworks").change(function () {
@@ -55,6 +54,10 @@
                 ddlCate.html("<option value=0>Chọn mệnh giá</option");
             }
         });
+        })
+        $("#@Html.IdFor(x=>x.CardId)").change(function () {
+            var price = $(this).find("option:selected").attr("data-price");
+            $("#totalMoney-card").html(FormatNumeric(price) + " đ");
         })
     })
 </script>

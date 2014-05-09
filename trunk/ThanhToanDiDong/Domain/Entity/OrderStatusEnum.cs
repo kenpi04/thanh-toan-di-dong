@@ -19,8 +19,10 @@ namespace Domain.Entity
         MSERVICE=20
      }
      public enum OrderType { 
-        CARD=10,
-        PAYMENT=20
+        TOPUP=10,
+         CARD=20,
+        BILLING=30,
+
      }
      public enum PaymentStatus { 
         CHUATHANHTOAN=0,

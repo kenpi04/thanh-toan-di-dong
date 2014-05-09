@@ -3,42 +3,65 @@
     ViewBag.Title = "Kết quả giao dịch";
     Layout = "~/Views/Shared/_Layout.cshtml";
     }
-@if (ViewBag.Error == null)
+@if (ViewBag.Error != null)
 { 
-    <h4>Thông tin đơn hàng của bạn</h4>
-    <table class="table able-striped">
-        <thead>
-            <tr>
-                <th>
-                   Mã đơn hàng
-                </th>
-                <th>
-                    Tên
-                </th>
-                <th>
-                    Số điện thoại
-                </th>
-                <th>
-                    Số tiền
-                </th>
-                <th>
-                    Số lượng
-                </th>
-                <th>
-                    Tổng tiền
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@Model.Id</td>
-                <td>@Model.Name</td>
-                <td>@Model.CustomerPhone</td>
-                <td>@Model.Price</td>
-                <td>@Model.Quantity</td>
-                <td>@Model.TotalPrice</td>
-            </tr>
-        </tbody>
-
-    </table>
+<p class="bg-warning" style="color:red;height:30px">@ViewBag.Error</p>
 }
+    <div class="col-md-6 center-block">
+           <h4>Thông tin đơn hàng của bạn</h4>
+            <table>
+                <tr>
+                    <td>Loại giao dịch:</td>
+                    <td>@Model.OrderType</td>
+                </tr>
+                @if(!string.IsNullOrWhiteSpace(Model.CustomerPhone))
+                {
+                <tr>
+                    <td>Số điện thoại:</td>
+                    <td>@Model.CustomerPhone</td>
+                </tr>
+                }
+                <tr>
+                    <td>Số tiền nạp</td>
+                    <td>@Model.Price</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <b>Thông tin giao dịch</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Số giao dịch:</td>
+                    <td>@Model.Id</td>
+                </tr>
+                <tr><td>Trạng thái:</td>
+                    <td>@Model.Status</td>
+                </tr>
+                @if (!string.IsNullOrWhiteSpace(Model.CardId))
+                { 
+                    <tr>
+                        <td colspan="2">Thông tin thẻ</td>
+                    </tr>
+                    <tr>
+                        <td>Mã số thẻ:</td>
+                        <td>@Model.CardId</td>
+                    </tr>
+                    <tr>
+                        <td>Số serie:</td>
+                        <td>@Model.CardSerie</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày hết hạn:</td>
+                        <td>@Model.ExpiredDate</td>
+                    </tr>
+                }
+            </table>
+        @if(Model.OrderStatusId==(int)Domain.Entity.OrderType.CARD)
+        {
+             <button onclick="window.location.href='@Url.RouteUrl("HomePage")'" type="button" class="btn btn-primary btn-lg btn-block">Tiếp tục mua thẻ</button>
+        }
+        else if (Model.OrderStatusId == (int)Domain.Entity.OrderType.TOPUP)
+        { 
+         <button onclick="window.location.href='@Url.RouteUrl("HomePage")'" type="button" class="btn btn-primary btn-lg btn-block">Tiếp tục nap thẻ</button>
+        }
+    </div>
