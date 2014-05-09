@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="WebApplication1">
+</Property><Property Name="Solution File" Value="D:\WorkingCopy\ECom\document\05-Develop\Payment\OnePAY\Tích hợp thanh toán Quốc tế\quocte_c\WebApplication2\WebApplication1.sln">
+</Property><Property Name="Date" Value="Wednesday, September 19, 2012">
+</Property><Property Name="Time" Value="15:09 PM">
+</Property></Properties><Event ErrorLevel="0" Project="WebApplication1" Source="WebApplication1.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="WebApplication1" Source="WebApplication1.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="" Source="WebApplication1.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="WebApplication1.sln" Description="Converted">
+</Event></UpgradeLog>

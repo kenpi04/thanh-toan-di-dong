@@ -1,0 +1,14 @@
+H:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\bin\_mvcOnePay.dll
+H:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\bin\_mvcOnePay.pdb
+H:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\bin\EntityFramework.dll
+H:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\bin\EntityFramework.xml
+H:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\obj\Debug\_mvcOnePay.csprojResolveAssemblyReference.cache
+H:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\obj\Debug\_mvcOnePay.dll
+H:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\obj\Debug\_mvcOnePay.pdb
+E:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\bin\_mvcOnePay.dll
+E:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\bin\_mvcOnePay.pdb
+E:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\bin\EntityFramework.dll
+E:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\bin\EntityFramework.xml
+E:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\obj\Debug\ResolveAssemblyReference.cache
+E:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\obj\Debug\_mvcOnePay.dll
+E:\_fpt\_onePay\_mvcOnePay\_mvcOnePay\obj\Debug\_mvcOnePay.pdb

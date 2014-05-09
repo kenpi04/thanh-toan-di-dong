@@ -1,0 +1,30 @@
+﻿@model _mvcOnePay.Models.Transaction
+@{
+    ViewBag.Title = "Index";
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <table width="440px" align="center" style="border: 1px solid #CCC;">
+        <tr>
+            <td valign="top" style="text-align: right; width: 160px; font-size: 16px; color: #0393f6;">
+                @Html.Label("Thông tin đặt hàng: ")
+            </td>
+            <td>
+                @Html.TextAreaFor(model => model.vpc_OrderInfo)
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" style="text-align: right; width: 160px; font-size: 16px; color: #0393f6;">@Html.Label("Tổng tiền: ")
+            </td>
+            <td>
+                @Html.TextBoxFor(model => model.vpc_Amount)
+            </td>
+        </tr>
+        <tr align="center">
+            <td colspan="2">
+                <input type="submit" value="Thanh toán" />
+            </td>
+        </tr>
+    </table>
+}
