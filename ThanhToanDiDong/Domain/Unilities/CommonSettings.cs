@@ -8,14 +8,20 @@ using System.Threading.Tasks;
 namespace Domain.Unilities
 {
   public  class CommonSettings
-    {
-        public static string ClientId = ConfigurationSettings.AppSettings["ClientId"];
-        public static string ClientPassword = ConfigurationSettings.AppSettings["ClientPassword"];
-        public static string PrivateKeyUrl = ConfigurationSettings.AppSettings["PrivateKeyUrl"];
-        public static string PasswordForPrivateKey = ConfigurationSettings.AppSettings["PasswordForPrivateKey"];
-        public static string PublicKeyUrl = ConfigurationSettings.AppSettings["PublicKeyUrl"];
-        public static String AgentId = ConfigurationSettings.AppSettings["AgentId"];
-        public static String UserId = ConfigurationSettings.AppSettings["UserId"];
+  {
+      #region OnePay Info
+      public static string vpc_Merchant = ConfigurationSettings.AppSettings["vpc_Merchant"];
+      public static string vpc_AccessCode = ConfigurationSettings.AppSettings["vpc_AccessCode"];
+      #endregion
+
+
+      public static string ClientId = ConfigurationSettings.AppSettings["PayooClientId"];
+      public static string ClientPassword = ConfigurationSettings.AppSettings["PayooClientPassword"];
+      public static string PrivateKeyUrl = ConfigurationSettings.AppSettings["PayooPrivateKeyUrl"];
+      public static string PasswordForPrivateKey = ConfigurationSettings.AppSettings["PayooPasswordForPrivateKey"];
+      public static string PublicKeyUrl = ConfigurationSettings.AppSettings["PayooPublicKeyUrl"];
+      public static String AgentId = ConfigurationSettings.AppSettings["PayooAgentId"];
+      public static String UserId = ConfigurationSettings.AppSettings["PayooUserId"];
         public static string MMS_GetTopupValueList = "MMS_GetTopupValueList";
         public static string MMS_TopupPaymentBE = "MMS_TopupPaymentBE";
         public static string MMS_CodePaymentBE = "MMS_CodePaymentBE";

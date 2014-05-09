@@ -1,0 +1,48 @@
+﻿@model LoginModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Đăng nhập</title>
+     <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-responsive.css" rel="stylesheet" />
+    @Styles.Render("~/Content/themes/base/css")
+    
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+</head>
+<body>
+   <div class="col-md-6">
+@using (Html.BeginForm())
+{ 
+    if(ViewBag.Error!=null)
+    {
+  <p class="bg-warning" style="color:red;height:30px">@ViewBag.Error</p>
+}
+  <div class="form-group">
+    <label for="txtPhone">Tên đăng nhập:</label>
+    @Html.TextBoxFor(x => x.User, new { @class = "form-control", placeholder = "Nhập tên đăng nhập" })
+    @Html.ValidationMessageFor(x => x.User)
+  
+  </div>
+  <div class="form-group">
+    <label for="txtPhone">Tên đăng nhập:</label>
+    @Html.TextBoxFor(x => x.Password, new { @class = "form-control", placeholder = "Nhập mật khẩu" })
+    @Html.ValidationMessageFor(x => x.Password)
+  
+  </div>
+    
+  <button type="submit" class="btn btn-primary">Đăng nhập</button>
+
+
+}
+    </div>
+</body>
+</html>

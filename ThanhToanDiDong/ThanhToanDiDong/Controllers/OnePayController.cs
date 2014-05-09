@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Domain.OnePay;
 using Domain.Services;
 using Domain.Entity;
+using Domain.Unilities;
 
 namespace ThanhToanDiDong
 {
@@ -29,8 +30,8 @@ namespace ThanhToanDiDong
                 conn.AddDigitalOrderField("vpc_Locale", "vn"); //Chọn ngôn ngữ hiển thị khi thanh toán(vn/en)
                 conn.AddDigitalOrderField("vpc_Version", "2"); // Gán giá trị Version mặc định = 2
                 conn.AddDigitalOrderField("vpc_Command", "pay"); // Gán giá trị Type_Comment mặc định là pay
-                conn.AddDigitalOrderField("vpc_Merchant", "ONEPAY"); // Mở file info.txt để lấy thông tin MerchantID. ONEPAY chỉ là ví dụ
-                conn.AddDigitalOrderField("vpc_AccessCode", "D67342C2"); // Mở file info.txt để lấy thông tin AccessCode. D67342C2 chỉ là ví dụ
+                conn.AddDigitalOrderField("vpc_Merchant",CommonSettings.vpc_Merchant); // Mở file info.txt để lấy thông tin MerchantID. ONEPAY chỉ là ví dụ
+                conn.AddDigitalOrderField("vpc_AccessCode", CommonSettings.vpc_AccessCode); // Mở file info.txt để lấy thông tin AccessCode. D67342C2 chỉ là ví dụ
                 conn.AddDigitalOrderField("vpc_MerchTxnRef", order.OrderGuid.ToString()); // Mã giao dịch, lập trình viên lập trình ra mã giao dịch (viết hàm tự tăng hoặc ghi theo thời gian)
                 conn.AddDigitalOrderField("vpc_OrderInfo",order.Id.ToString()); // Thông tin giao dịch
                 conn.AddDigitalOrderField("vpc_Amount", order.TotalAmount.ToString("#")); // Tổng giá tiền giao dịch
@@ -99,7 +100,8 @@ namespace ThanhToanDiDong
                     order.AuthorizationTransactionResult = resultTran.vpc_Result;
                     order.PaidDate = DateTime.UtcNow;
                     _orderService.InsertOrUpdate(order);
-                    return RedirectToAction("PaymentSuccess", "Payment", new { id = orderInfo });
+                    Session["ORDERID"] = order.Id;
+                    return RedirectToRoute("Success");
                    
                 }
                 else
@@ -120,8 +122,7 @@ namespace ThanhToanDiDong
             resultTran.hashvalidate = hashvalidateResult;
             resultTran.vpc_Message = message;
             order.AuthorizationTransactionCode = resultTran.vpc_ResponseCode;
-            order.AuthorizationTransactionResult = resultTran.vpc_Result;
-            order.PaidDate = DateTime.UtcNow;
+            order.AuthorizationTransactionResult = resultTran.vpc_Result;          
             _orderService.InsertOrUpdate(order);
 
             return View(resultTran);

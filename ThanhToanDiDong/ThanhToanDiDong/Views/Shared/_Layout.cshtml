@@ -13,6 +13,10 @@
         <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
     </head>
     <body>
+         <div class="progress-bar progress-bar-success" id="divPopupInfo" style="display:none;width:100%">
+        <span id="spanInfo" class="noty_text">This is a success information</span>
+
+    </div>
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
@@ -41,7 +45,7 @@
         <footer>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+                    <p>&copy; @DateTime.Now.Year - thanhtoandidong.com.vn</p>
                 </div>
             </div>
         </footer>
@@ -49,6 +53,7 @@
      
         @Scripts.Render("~/bundles/knockout")
         @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/jqueryval")
         <script src="~/Scripts/bootstrap.min.js"></script>
         <script src="~/Scripts/public.common.js"></script>
         @RenderSection("scripts", required: false)

@@ -6,9 +6,11 @@ using System.Web.Mvc;
 using Domain.Entity;
 using Domain.Services;
 using ThanhToanDiDong.Admin.Models;
+using ThanhToanDiDong.Admin.Filter;
 
 namespace ThanhToanDiDong.Admin.Controllers
 {
+    [Auth]
     public class HomeController : Controller
     {
         //
@@ -44,7 +46,7 @@ namespace ThanhToanDiDong.Admin.Controllers
             DateTime? endDateValue = (model.EndDate == null) ? null
                             : (DateTime?)model.EndDate;
 
-            var order = _orderService.GetPage(cate, startDateValue, endDateValue,OrderType.CARD, (OrderStatusEnum)model.Status, model.PagingModel.CurrentPage, model.PagingModel.ItemsPerPage);
+            var order = _orderService.GetPage(cate,true, startDateValue, endDateValue,OrderType.CARD, (OrderStatusEnum)model.Status, model.PagingModel.CurrentPage, model.PagingModel.ItemsPerPage);
             return PartialView("_OrderList", order);
         }
         public ActionResult BillList()
@@ -67,7 +69,7 @@ namespace ThanhToanDiDong.Admin.Controllers
             DateTime? endDateValue = (model.EndDate == null) ? null
                             : (DateTime?)model.EndDate;
 
-            var order = _orderService.GetPage(null, startDateValue, endDateValue, OrderType.PAYMENT, (OrderStatusEnum)model.Status, model.PagingModel.CurrentPage, model.PagingModel.ItemsPerPage).Select(x => {
+            var order = _orderService.GetPage(null,false, startDateValue, endDateValue, OrderType.BILLING, (OrderStatusEnum)model.Status, model.PagingModel.CurrentPage, model.PagingModel.ItemsPerPage).Select(x => {
                 var provider = _providerService.GetById(x.ProviderId);
                 return new OrderItemModel
                 {

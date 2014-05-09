@@ -29,6 +29,8 @@ namespace Domain.Services
             _cardMobileService = new CardMobileService();
             _service = new ServicesService();
             _vuiExe = new VUService.UniGWSSoapClient();
+            _OrderService = new OrderService();
+            request = new UniGWSRequest();
 
         }
 
@@ -918,11 +920,12 @@ namespace Domain.Services
                 //string strRequest = XmlSerializeLib.XmlSerialize(request);
 
                 // Call to Service
-
+                order.DataSign = request.Signature;
                 order.OrderNotes.Add(new OrderNote()
                 {
                     Note = "Payoo Requesting - Giao dịch mua thẻ ",
                     CreatedOn = DateTime.UtcNow,
+
 
                 });
                 _OrderService.InsertOrUpdate(order);
@@ -975,9 +978,19 @@ namespace Domain.Services
                             order.ResultCode = objCodePaymentBEResult.ReturnCode;
                             order.FunctionNameFinalCall = CommonSettings.MMS_CodePaymentBE;
                             order.ResultName = CommonSettings.GetCodePaymentMessage(objCodePaymentBEResult.ReturnCode);
-                            _OrderService.InsertOrUpdate(order);
+               
                             // SendSMSToCustomer(order, objCodePaymentBEResult.PayCodes.ToList());
-                            //_workflowMessageService.PayooSendEmailToCustumerBuyCard(order, objCodePaymentBEResult.PayCodes.ToList(), 3);
+                           // _workflowMessageService.PayooSendEmailToCustumerBuyCard(order, objCodePaymentBEResult.PayCodes.ToList(), 3);
+                            if (objCodePaymentBEResult.PayCodes.Count() > 0)
+                            {
+                                var payCodes = objCodePaymentBEResult.PayCodes[0];
+                                order.Expired = payCodes.Expired;
+                                order.TypeCard = payCodes.TypeCard;
+                                order.SeriNumber = payCodes.SeriNumber;
+                                order.CardId = payCodes.CardId;
+                            }
+                             _OrderService.InsertOrUpdate(order);
+
                             return true;
 
                         case -3:
@@ -1430,6 +1443,7 @@ namespace Domain.Services
                 //string demo = XmlSerializeLib.XmlSerialize(request);
 
                 // Call to Service
+                order.DataSign = request.Signature;
                 order.OrderNotes.Add(new OrderNote()
                 {
                     Note = "Payoo Request - Giao dịch nạp topup",

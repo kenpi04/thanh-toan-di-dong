@@ -13,8 +13,7 @@ namespace ThanhToanDiDong.Models.Payment
         {
             PriceList = new List<SelectListItem>();
         }
-        [Required(ErrorMessage="Nhập số điện thoại")]
-        [DataType(DataType.PhoneNumber,ErrorMessage="Số điện thoại không hợp lệ")]
+        [Required(ErrorMessage="Nhập số điện thoại")]       
         public string Phone { get; set; }
         [Required(ErrorMessage="Vui lòng chọn mệnh giá")]
         public int PriceListId { get; set; }
