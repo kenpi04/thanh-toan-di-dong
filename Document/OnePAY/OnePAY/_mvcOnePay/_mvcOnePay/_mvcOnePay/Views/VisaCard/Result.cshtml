@@ -1,0 +1,108 @@
+﻿@model _mvcOnePay.Models.ResultTran
+@{
+    ViewBag.Title = "Result";
+}
+@using (Html.BeginForm())
+{
+    <table id="Table2" cellpadding="5" cellspacing="1" width="85%" align="center" border="1">
+        <tr bgcolor="#0074c4">
+            <td colspan="2" height="25">
+                <p>
+                    <strong>&nbsp;Basic Transaction Fields</strong></p>
+            </td>
+        </tr>
+        <tr align="center">
+            <td colspan="2" width="45%">
+            @Model.vpc_Result
+            </td>
+        </tr>
+        <tr>
+            <td align="right" width="55%">
+                <strong><i>VPC API Version: </i></strong>
+            </td>
+            <td width="45%">
+                @Model.vpc_Version
+            </td>
+        </tr>
+        <tr bgcolor="#ced7ef">
+            <td align="right">
+                <strong><i>Command: </i></strong>
+            </td>
+            <td>
+                @Model.vpc_Command
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <strong><i>Merchant Transaction Reference: </i></strong>
+            </td>
+            <td>
+                @Model.vpc_MerchantRef
+            </td>
+        </tr>
+        <tr bgcolor="#ced7ef">
+            <td align="right">
+                <strong><i>Merchant ID: </i></strong>
+            </td>
+            <td>
+                @Model.vpc_MerchantID
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <strong><i>Order Information: </i></strong>
+            </td>
+            <td>
+                @Model.vpc_OrderInfor
+            </td>
+        </tr>
+        <tr bgcolor="#ced7ef">
+            <td align="right">
+                <strong><i>Amount: </i></strong>
+            </td>
+            <td>
+                @Model.vpc_Amount
+            </td>
+        </tr>
+        <tr>
+            <td align="center" colspan="2">
+                <font color="#0074c4">Những giá trị trả về sau khi thanh toán.<br>
+                    <hr>
+                    Các fields dưới đây là những fields trả về sau một giao hợp lệ.<br>
+                </font>
+            </td>
+        </tr>
+        <tr bgcolor="#ced7ef">
+            <td align="right">
+                <strong><i>VPC Transaction Response Code: </i></strong>
+            </td>
+            <td>
+                @Model.vpc_ResponseCode
+            </td>
+        </tr>
+        <tr bgcolor="#ced7ef">
+            <td align="right">
+                <strong><i>Message: </i></strong>
+            </td>
+            <td>
+                @Model.vpc_Message
+            </td>
+        </tr>
+        <tr bgcolor="#ced7ef">
+            <td align="right">
+                <strong><i>Transaction Number: </i></strong>
+            </td>
+            <td>
+                @Model.vpc_TracsactionNo
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <strong><i>Hash Validated Correctly: </i></strong>
+            </td>
+            <td>
+                @Model.hashvalidate
+            </td>
+        </tr>
+    </table>
+}
