@@ -14,10 +14,11 @@ namespace Domain.Services
 
          public int Login(string user, string pass)
          {
-             var q= _userRepository.Table.FirstOrDefault(x => string.Compare(user, x.UserName, false) == 1 && x.Password.Equals(MD5Encrypt.MD5Hash(pass)));
-             if (q != null)
+              pass = MD5Encrypt.MD5Hash(pass);
+             var q= _userRepository.Table.Where(x =>x.UserName == user&& x.Password==pass);
+             if (q.Count()>0)
              {
-                 return q.Id;
+                 return q.FirstOrDefault().Id;
              }
              return -1;
          }
