@@ -1,8 +1,9 @@
 ﻿@model LoginModel
 @{
     Layout = null;
-}
-
+    
+    }
+@using System.Web.Optimization
 <!DOCTYPE html>
 
 <html>
@@ -33,8 +34,8 @@
   
   </div>
   <div class="form-group">
-    <label for="txtPhone">Tên đăng nhập:</label>
-    @Html.TextBoxFor(x => x.Password, new { @class = "form-control", placeholder = "Nhập mật khẩu" })
+    <label for="txtPhone">Mật khẩu:</label>
+    @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Nhập mật khẩu" })
     @Html.ValidationMessageFor(x => x.Password)
   
   </div>

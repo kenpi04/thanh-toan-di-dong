@@ -12,5 +12,8 @@ namespace ThanhToanDiDong.Admin.Models
         public string User { get; set; }
         [Required(ErrorMessage="Vui lòng nhập mật khẩu")]
         public string Password { get; set; }
+        [Required(ErrorMessage="Nhập lại mật khẩu")]
+        [Compare("Password",ErrorMessage="Nhập lại mật khẩu không đúng")]
+        public string RePassword { get; set; }
     }
 }

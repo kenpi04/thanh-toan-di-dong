@@ -32,13 +32,13 @@ namespace ThanhToanDiDong.Admin.Controllers
             ViewBag.Error = "Tên đăng nhập hoặc mật khẩu không hợp lệ";
             return View(model);
         }
-        [Auth]
+       
         public ActionResult Register()
         {
             var model = new LoginModel();
             return View(model);
         }
-        [Auth]
+      
         public ActionResult Register(LoginModel model)
         {
             new UserService().InsertOrUpdate(new User
