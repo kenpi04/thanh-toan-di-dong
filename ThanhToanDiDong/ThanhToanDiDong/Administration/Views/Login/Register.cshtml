@@ -17,7 +17,7 @@
   </div>
   <div class="form-group">
     <label for="txtPhone">Mật khẩu:</label>
-    @Html.TextBoxFor(x => x.Password, new { @class = "form-control", placeholder = "Nhập mật khẩu" })
+    @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Nhập mật khẩu" })
     @Html.ValidationMessageFor(x => x.Password)
   
   </div>

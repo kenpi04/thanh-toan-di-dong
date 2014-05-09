@@ -27,7 +27,7 @@ namespace ThanhToanDiDong.Admin.Controllers
             if (id!=-1)
             {
                 Session["User"]=id;
-                return RedirectToAction("Index", "Home");
+                return Redirect("/admin");
             }
             ViewBag.Error = "Tên đăng nhập hoặc mật khẩu không hợp lệ";
             return View(model);
@@ -38,7 +38,7 @@ namespace ThanhToanDiDong.Admin.Controllers
             var model = new LoginModel();
             return View(model);
         }
-      
+      [HttpPost]
         public ActionResult Register(LoginModel model)
         {
             new UserService().InsertOrUpdate(new User
