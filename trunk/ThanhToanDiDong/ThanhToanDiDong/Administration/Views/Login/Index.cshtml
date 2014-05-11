@@ -18,11 +18,22 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
+    <link href="/Administration/Themes/css/charisma-app.css" rel="stylesheet" />
 </head>
 <body>
-   <div class="col-md-6 center-block">
+   <div class="row-fluid">
+	        <div class="span12 center login-header" style="text-align:center;background:#ffd800;color:#fff">
+		        <h2>THANHTOANDIDONG.COM.VN ADMIN PANEL</h2>
+	        </div><!--/span-->
+        </div><!--/row-->
+			
+        <div class="row-fluid">
+	        <div class="well span5 center login-box" style="text-align:left">
+		        <div style="text-align:center" class="alert alert-info">
+			        Vui lòng đăng nhâp để vào khu vực quản trị.
+		        </div>
 @using (Html.BeginForm())
-{ 
+{ @Html.AntiForgeryToken()
     if(ViewBag.Error!=null)
     {
   <p class="bg-warning" style="color:red;height:30px">@ViewBag.Error</p>
@@ -45,5 +56,7 @@
 
 }
     </div>
+            </div>
+    
 </body>
 </html>

@@ -1,0 +1,54 @@
+﻿@model List<CardMobile>
+@{
+    ViewBag.Title = "ChangePrice";
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<table id="tbPrice" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+        <th>Tên card</th>
+        <th>Giá bán</th>
+          
+            </tr>
+    </thead>
+    <tbody>
+       @foreach (var i in Model)
+       { 
+        <tr>
+            <td>@i.Name</td>
+            <td data-id="@i.Id" data-price="@i.UnitSellingPrice">@string.Format("{0:0,0}",i.UnitSellingPrice)</td>
+            
+        </tr>
+       }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("td[data-price]").click(function () {
+            var price = parseInt($(this).attr("data-price"));
+            var txt = $("<input/>").attr("name", "price").val(price);
+            
+            $(this).html(txt);
+        });
+        $(document).on("keyup", "input[name=price]", function (e) {
+            key = e.keyCode | e.which;
+            if (key != 13)
+                return;
+            var input = $("input[name=price]");
+          
+            var price = $(this).val();
+            var tr = $(this).parent();
+            var id = tr.attr("id");
+            $.post("@Url.Action("EditPrice")", {price: price,id: id}, function (d) {
+                if (d.success) {
+                    tr.attr("data-price", price).html(d.mgs);
+                }
+                else
+                    alert(d.mgs);
+            }).error(function () {
+                alert("lỗi cập nhật không thành công!");
+            })
+        })
+    })
+</script>
