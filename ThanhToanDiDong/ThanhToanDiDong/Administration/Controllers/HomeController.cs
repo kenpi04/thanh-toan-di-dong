@@ -18,6 +18,7 @@ namespace ThanhToanDiDong.Admin.Controllers
         OrderService _orderService = new OrderService();
         ProviderService _providerService = new ProviderService();
         ServicesService _service = new ServicesService();
+        CardMobileService _cardMobile = new CardMobileService();
         public ActionResult Index()
         {
             return View();
@@ -92,5 +93,31 @@ namespace ThanhToanDiDong.Admin.Controllers
             var note = new OrderNoteService().GetAll(x => x.OrderId == id);
             return View(note);
         }
+        public ActionResult ChangePrice()
+        {
+            var model = new List<CardMobile>();
+            model = _cardMobile.GetAll().ToList();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditPrice(int id, decimal price)
+        {
+            var card = _cardMobile.GetById(id);
+            if (card == null)
+                return Json(new
+                {
+                    success=false,
+                    mgs="lỗi ! ko tìm thấy card này"
+                });
+            card.UnitSellingPrice = price;
+            _cardMobile.InsertOrUpdate(card);
+            return Json(new
+            {
+                success = true
+               ,
+                mgs = string.Format("{0:0,0}",card.UnitSellingPrice)
+            });
+        }
+        
     }
 }

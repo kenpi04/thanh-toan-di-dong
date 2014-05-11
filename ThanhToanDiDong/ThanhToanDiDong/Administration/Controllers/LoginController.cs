@@ -21,6 +21,7 @@ namespace ThanhToanDiDong.Admin.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(LoginModel model)
         {
             int id = new UserService().Login(model.User, model.Password);
@@ -32,13 +33,15 @@ namespace ThanhToanDiDong.Admin.Controllers
             ViewBag.Error = "Tên đăng nhập hoặc mật khẩu không hợp lệ";
             return View(model);
         }
-       
+       [Auth]
         public ActionResult Register()
         {
             var model = new LoginModel();
             return View(model);
         }
       [HttpPost]
+        [Auth]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(LoginModel model)
         {
             new UserService().InsertOrUpdate(new User
