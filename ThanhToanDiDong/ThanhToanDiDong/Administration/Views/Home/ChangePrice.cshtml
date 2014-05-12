@@ -26,20 +26,25 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("td[data-price]").click(function () {
+            if ($("input[name=price]").length>0)
+                return;
             var price = parseInt($(this).attr("data-price"));
             var txt = $("<input/>").attr("name", "price").val(price);
-            
+            var btnUpdate = $("<input/>").attr("type","button").attr("name", "btnupdate").val("Cập nhật");
+            var btnCancel = $("<input/>").attr("type", "button").attr("name", "btnCancel").val("Bỏ qua");
             $(this).html(txt);
+            $(this).append(btnUpdate);
+            $(this).append(btnCancel);
         });
-        $(document).on("keyup", "input[name=price]", function (e) {
-            key = e.keyCode | e.which;
-            if (key != 13)
-                return;
-            var input = $("input[name=price]");
-          
-            var price = $(this).val();
-            var tr = $(this).parent();
-            var id = tr.attr("id");
+        $(document).on("click", "input[name=btnCancel]", function (e) {
+            var input = $(this).parent().children("input[name=price]"); 
+            $(this).parent().attr("data-price", input.val()).html(formatnumber(input.val()));
+        })
+        $(document).on("click", "input[name=btnupdate]", function (e) {            
+            var input = $(this).parent().children("input[name=price]");           
+            var price = input.val();
+            var tr =$(this).parent();
+            var id = tr.attr("data-id");
             $.post("@Url.Action("EditPrice")", {price: price,id: id}, function (d) {
                 if (d.success) {
                     tr.attr("data-price", price).html(d.mgs);
