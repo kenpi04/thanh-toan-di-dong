@@ -1,0 +1,2 @@
+DataProvider: sqlserver
+DataConnectionString: Data Source=ISC-QUANGNT8\SQLEXPRESS;Initial Catalog=zhouse;Integrated Security=True;Persist Security Info=False;MultipleActiveResultSets=True
