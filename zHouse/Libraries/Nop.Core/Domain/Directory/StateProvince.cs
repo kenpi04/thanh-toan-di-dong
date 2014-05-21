@@ -44,7 +44,7 @@ namespace Nop.Core.Domain.Directory
 
         public virtual ICollection<District> Districts
         {
-            get { return _Districts ?? (_Districts = new List<StateProvince>()); }
+            get { return _Districts ?? (_Districts = new List<District>()); }
             protected set { _Districts = value; }
         }
     }
