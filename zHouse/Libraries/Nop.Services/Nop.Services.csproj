@@ -42,9 +42,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EPPlus.3.1.3.3\lib\net35\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp, Version=5.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\nopCommerce_3.20_Source\Libraries\Nop.Services\bin\Debug\itextsharp.dll</HintPath>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\packages\nopCommerceCustom\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="MaxMind.Db, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
