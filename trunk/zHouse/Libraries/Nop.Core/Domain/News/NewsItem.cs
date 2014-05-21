@@ -12,6 +12,7 @@ namespace Nop.Core.Domain.News
     public partial class NewsItem : BaseEntity, ISlugSupported, IStoreMappingSupported
     {
         private ICollection<NewsComment> _newsComments;
+        private ICollection<NewsCategoryNews> _newsCategoriesNews;
 
         /// <summary>
         /// Gets or sets the language identifier
@@ -94,7 +95,13 @@ namespace Nop.Core.Domain.News
             get { return _newsComments ?? (_newsComments = new List<NewsComment>()); }
             protected set { _newsComments = value; }
         }
-        
+
+        public virtual ICollection<NewsCategoryNews> NewsCategoriesMap
+        {
+            get { return _newsCategoriesNews ?? (_newsCategoriesNews = new List<NewsCategoryNews>()); }
+            protected set { _newsCategoriesNews = value; }
+        }
+                
         /// <summary>
         /// Gets or sets the language
         /// </summary>

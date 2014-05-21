@@ -1,21 +1,12 @@
-﻿using System;
-using Nop.Core.Domain.Localization;
-using System.Collections.Generic;
+﻿using Nop.Core.Domain.Localization;
 
 namespace Nop.Core.Domain.Directory
-{
-    /// <summary>
-    /// Represents a FrtDistrict
-    /// 
-    /// Revision History
-    /// Date			Author		                    Reason for Change
-    /// -----------------------------------------------------------
-    /// 20/09/2012      XuanDT@fpt.com.vn               Created.
-    /// 
-    /// </summary>
-    public partial class District : BaseEntity, ILocalizedEntity
+{  
+    public partial class District : BaseEntity
     {
-
+        /// <summary>
+        /// Gets or sets the Stateprovince Id
+        /// </summary>
         public virtual int StateProvinceId { get; set; }
 
         /// <summary>
