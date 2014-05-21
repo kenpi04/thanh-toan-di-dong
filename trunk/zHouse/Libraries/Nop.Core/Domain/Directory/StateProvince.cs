@@ -1,5 +1,7 @@
 
 using Nop.Core.Domain.Localization;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Nop.Core.Domain.Directory
 {
@@ -37,6 +39,14 @@ namespace Nop.Core.Domain.Directory
         /// Gets or sets the country
         /// </summary>
         public virtual Country Country { get; set; }
+
+        private ICollection<District> _Districts;
+
+        public virtual ICollection<District> Districts
+        {
+            get { return _Districts ?? (_Districts = new List<StateProvince>()); }
+            protected set { _Districts = value; }
+        }
     }
 
 }

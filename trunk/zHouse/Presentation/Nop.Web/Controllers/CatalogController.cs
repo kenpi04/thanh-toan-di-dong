@@ -94,6 +94,8 @@ namespace Nop.Web.Controllers
         private readonly CustomerSettings _customerSettings;
         private readonly ICacheManager _cacheManager;
         private readonly CaptchaSettings _captchaSettings;
+
+        private readonly IStateProvinceService _stateProvinceService;
         
         #endregion
 
@@ -142,8 +144,11 @@ namespace Nop.Web.Controllers
             LocalizationSettings localizationSettings, 
             CustomerSettings customerSettings, 
             CaptchaSettings captchaSettings,
-            ICacheManager cacheManager)
+            ICacheManager cacheManager,
+            IStateProvinceService stateProvinceService
+            )
         {
+            this._stateProvinceService = stateProvinceService;
             this._categoryService = categoryService;
             this._manufacturerService = manufacturerService;
             this._productService = productService;
@@ -3270,6 +3275,46 @@ namespace Nop.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        #endregion
+
+        #region Insert/Update Product
+        public Action InsertProduct()
+        {
+            var model = new InsertProductModel();
+            PreparingInsertProductModel(model);
+            return View(model);
+         
+
+        }
+        private void PreparingInsertProductModel(InsertProductModel model)
+        {
+            model.Districts = _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.Id.ToString());
+            model.Directors = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.Environments = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Enviroment).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.Facilities = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.CoSoVatChat).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+        }
         #endregion
     }
 }

@@ -47,5 +47,7 @@ namespace Nop.Services.Directory
         /// </summary>
         /// <param name="stateProvince">State/province</param>
         void UpdateStateProvince(StateProvince stateProvince);
+
+        IList<District> GetDistHCM();
     }
 }

@@ -57,7 +57,18 @@ namespace Nop.Services.Directory
         #endregion
 
         #region Methods
-        /// <summary>
+
+        public virtual IList<District> GetDistHCM()
+        {
+            return _cacheManager.Get("Nop.district_HCM", () =>
+            {
+                var dist = GetStateProvinceById(23);
+                return dist.Districts.ToList();
+            });
+          
+        }
+            
+            /// <summary>
         /// Deletes a state/province
         /// </summary>
         /// <param name="stateProvince">The state/province</param>
