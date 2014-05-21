@@ -254,6 +254,7 @@
     <Compile Include="Models\Catalog\BackInStockSubscribeModel.cs" />
     <Compile Include="Models\Catalog\CategorySimpleModel.cs" />
     <Compile Include="Models\Catalog\CompareProductsModel.cs" />
+    <Compile Include="Models\Catalog\InsertProductModel.cs" />
     <Compile Include="Models\Catalog\VendorModel.cs" />
     <Compile Include="Models\Catalog\VendorNavigationModel.cs" />
     <Compile Include="Models\Catalog\ProductOverviewModel.cs" />
@@ -356,6 +357,7 @@
     <Compile Include="Validators\Boards\EditForumTopicValidator.cs" />
     <Compile Include="Validators\Catalog\ProductEmailAFriendValidator.cs" />
     <Compile Include="Validators\Catalog\ProductReviewsValidator.cs" />
+    <Compile Include="Validators\Catalog\ProductValidator.cs" />
     <Compile Include="Validators\Common\AddressValidator.cs" />
     <Compile Include="Validators\Install\InstallValidator.cs" />
     <Compile Include="Validators\News\NewsItemValidator.cs" />
