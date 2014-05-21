@@ -90,7 +90,13 @@
     <Compile Include="Domain\Common\SearchTermReportLine.cs" />
     <Compile Include="Domain\Common\SearchTerm.cs" />
     <Compile Include="Domain\Customers\CustomerLoginResults.cs" />
+    <Compile Include="Domain\Directory\Banner.cs" />
     <Compile Include="Domain\Directory\District.cs" />
+    <Compile Include="Domain\Directory\Street.cs" />
+    <Compile Include="Domain\Directory\Ward.cs" />
+    <Compile Include="Domain\Messages\Message.cs" />
+    <Compile Include="Domain\News\CategoryNews.cs" />
+    <Compile Include="Domain\News\NewsCategoryNews.cs" />
     <Compile Include="Domain\Seo\WwwRequirement.cs" />
     <Compile Include="Domain\Shipping\Events.cs" />
     <Compile Include="Domain\Shipping\Warehouse.cs" />
