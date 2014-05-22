@@ -7,11 +7,12 @@ using System.Web.Mvc;
 using Nop.Web.Models.Media;
 using FluentValidation.Attributes;
 using Nop.Web.Validators.Catalog;
+using Nop.Web.Framework;
 
 namespace Nop.Web.Models.Catalog
 {
-     [Validator(typeof(ProductValidator))]
-    public class InsertProductModel:BaseNopEntityModel
+    [Validator(typeof(ProductValidator))]
+    public class InsertProductModel : BaseNopEntityModel
     {
         public InsertProductModel()
         {
@@ -25,25 +26,43 @@ namespace Nop.Web.Models.Catalog
             Environments = new List<SelectListItem>();
             PictureModels = new List<PictureModel>();
             Districts = new List<SelectListItem>();
+            PictureIds = new List<int>();
 
 
 
         }
+        [NopResourceDisplayName("Product.Fields.Name")]
+        public string Name { get; set; }
+        [NopResourceDisplayName("Product.Fields.ContactName")]
         public string ContactName { get; set; }
+        [NopResourceDisplayName("Product.Fields.ContactPhone")]
         public string ContactPhone { get; set; }
+        [NopResourceDisplayName("Product.Fields.Email")]
         public string Email { get; set; }
+        [NopResourceDisplayName("Product.Fields.Price")]
         public decimal Price { get; set; }
+        [NopResourceDisplayName("Product.Fields.CateId")]
         public int CateId { get; set; }
-        public int Area { get; set; }
-
-        public int Width { get; set; }
-        public int Dept { get; set; }
-        public string NumberOfHome  { get; set; }
-        public string Street { get; set; }
+        [NopResourceDisplayName("Product.Fields.Area")]
+        public decimal Area { get; set; }
+        [NopResourceDisplayName("Product.Fields.Width")]
+        public decimal Width { get; set; }
+        [NopResourceDisplayName("Product.Fields.Dept")]
+        public decimal Dept { get; set; }
+        [NopResourceDisplayName("Product.Fields.NumberOfHome")]
+        public string NumberOfHome { get; set; }
+        [NopResourceDisplayName("Product.Fields.StreetId")]
+        public int StreetId { get; set; }
+        [NopResourceDisplayName("Product.Fields.DistrictId")]
         public int DistrictId { get; set; }
+        [NopResourceDisplayName("Product.Fields.WardId")]
         public int WardId { get; set; }
+        [AllowHtml]
+        [NopResourceDisplayName("Product.Fields.Desription")]
         public string Desription { get; set; }
+
         public List<int> SelectedOptionAttributes { get; set; }
+        public List<int> PictureIds { get; set; }
 
         #region select
         public IList<SelectListItem> Categories { get; set; }
@@ -57,5 +76,7 @@ namespace Nop.Web.Models.Catalog
         public IList<SelectListItem> Districts { get; set; }
         #endregion
 
+
+        public decimal AreaUse { get; set; }
     }
 }

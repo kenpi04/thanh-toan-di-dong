@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
+using System.Web;
 using System.Web.Mvc;
 using Nop.Core;
 using Nop.Core.Caching;
@@ -83,6 +86,7 @@ namespace Nop.Web.Controllers
         private readonly ISearchTermService _searchTermService;
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly IShippingService _shippingService;
+        private readonly IUrlRecordService _urlRecordService;
 
         private readonly MediaSettings _mediaSettings;
         private readonly CatalogSettings _catalogSettings;
@@ -145,9 +149,11 @@ namespace Nop.Web.Controllers
             CustomerSettings customerSettings, 
             CaptchaSettings captchaSettings,
             ICacheManager cacheManager,
-            IStateProvinceService stateProvinceService
+            IStateProvinceService stateProvinceService,
+            IUrlRecordService urlRecordService
             )
         {
+            this._urlRecordService = urlRecordService;
             this._stateProvinceService = stateProvinceService;
             this._categoryService = categoryService;
             this._manufacturerService = manufacturerService;
@@ -3278,14 +3284,330 @@ namespace Nop.Web.Controllers
         #endregion
 
         #region Insert/Update Product
-        public Action InsertProduct()
+        public ActionResult InsertProduct()
         {
+            if (!_workContext.CurrentCustomer.IsRegistered())
+                return new HttpUnauthorizedResult();
             var model = new InsertProductModel();
             PreparingInsertProductModel(model);
             return View(model);
          
 
         }
+        [HttpPost]
+        public ActionResult InsertProduct(InsertProductModel model,FormCollection form)
+        {
+            if (!_workContext.CurrentCustomer.IsRegistered())
+                return new HttpUnauthorizedResult();
+            if (model == null)
+                throw new Exception("Product is null");
+            
+            var product =new Product();
+            var selectedId = form.GetValues("SelectedOptionAttributes");
+            model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+
+            var pictures = form.GetValues("PictureIds");
+            model.PictureIds = pictures.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+             PreapringProductModel(model,product);
+             product.Price = model.Price * 1000000;
+             string seName = product.ValidateSeName(product.Name, product.Name, true);
+            _productService.InsertProduct(product);
+            _urlRecordService.SaveSlug(product, seName, 0);
+            #region Insert Categories
+            var productCate = new ProductCategory
+            {
+                CategoryId=model.CateId,
+                ProductId=product.Id,
+                IsFeaturedProduct=false
+                
+            
+            };
+            _categoryService.InsertProductCategory(productCate);
+            #endregion
+
+            #region InsertPictures
+            foreach (var i in model.PictureIds)
+            {
+                var pictureproduct = new ProductPicture
+                {
+                    PictureId=i,
+                    ProductId=product.Id
+                    
+                };
+                _productService.InsertProductPicture(pictureproduct);
+                _pictureService.SetSeoFilename(i, _pictureService.GetPictureSeName(product.Name));
+            }
+            #endregion
+
+            #region Insert SPA
+            foreach (var i in model.SelectedOptionAttributes)
+            {
+                var SPAProduct = new ProductSpecificationAttribute
+                {
+                    ProductId=product.Id,
+                    SpecificationAttributeOptionId=i,
+                    ShowOnProductPage=false,
+                    AllowFiltering=true,
+                    
+                };
+                _specificationAttributeService.InsertProductSpecificationAttribute(SPAProduct);
+            }
+            #endregion
+            return RedirectToAction("EditProduct", new { id = product.Id });
+
+        }
+        public ActionResult EditProduct(int id)
+        {
+            if (!_workContext.CurrentCustomer.IsRegistered())
+                return new HttpUnauthorizedResult();
+            var product = _productService.GetProductById(id);
+            if (product == null)
+                return RedirectToRoute("HomePage");
+            var model = ProductToInsertModel(product);
+            PreparingInsertProductModel(model);
+            PreapringProductModel(model, product);
+            
+            return View(model);
+
+
+        }
+        [HttpPost]
+        public ActionResult EditProduct(InsertProductModel model,FormCollection form)
+        {
+            if (!_workContext.CurrentCustomer.IsRegistered())
+                return new HttpUnauthorizedResult();
+            if (model == null)
+                throw new Exception("Product is null");
+
+            var product = _productService.GetProductById(model.Id);
+            if(product==null)
+                return RedirectToRoute("HomePage");
+
+            if (product.CustomerId != _workContext.CurrentCustomer.Id)
+                return RedirectToRoute("HomePage");
+            PreapringProductModel(model, product);
+            product.Price = model.Price * 1000000;
+            var selectedId=form.GetValues("SelectedOptionAttributes");
+            model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+
+            var pictures = form.GetValues("PictureIds");
+            model.PictureIds = pictures.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+            
+            #region Insert Categories
+            var cate=product.ProductCategories.FirstOrDefault();
+            if (cate != null)
+            {
+                cate.CategoryId = model.CateId;
+                _categoryService.UpdateProductCategory(cate);
+            }
+           
+            #endregion
+
+            #region EditPictures
+            //delete
+          
+            //add new
+            foreach (var i in model.PictureIds)
+            {
+               
+                    var pictureproduct = new ProductPicture
+                    {
+                        PictureId = i,
+                        ProductId = product.Id
+
+                    };
+                    _productService.InsertProductPicture(pictureproduct);
+                    _pictureService.SetSeoFilename(i, _pictureService.GetPictureSeName(product.Name));          
+            }
+            #endregion
+
+            #region Edit SPA
+            //delete
+            foreach (var i in product.ProductSpecificationAttributes.Where(x => !model.SelectedOptionAttributes.Contains(x.SpecificationAttributeOptionId)))
+            {
+                product.ProductSpecificationAttributes.Remove(i);
+            }
+            //add new
+            foreach (var i in model.SelectedOptionAttributes)
+            {
+                if (product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOptionId == i).Count()==0)
+                {
+                    var SPAProduct = new ProductSpecificationAttribute
+                    {
+                        ProductId = product.Id,
+                        SpecificationAttributeOptionId = i,
+                        ShowOnProductPage = false,
+                        AllowFiltering = true,
+
+                    };
+                    _specificationAttributeService.InsertProductSpecificationAttribute(SPAProduct);
+               }
+            }
+            #endregion
+            _productService.UpdateProduct(product);
+            return RedirectToAction("EditProduct", new { id = product.Id });
+
+        }
+
+        private void PreapringProductModel(InsertProductModel inPd,Product p)
+        {
+           
+              
+            #region default Properties
+            if (p.Id == 0)
+            {
+                p.Id = inPd.Id;
+                p.Price = inPd.Price;
+                p.CreatedOnUtc = DateTime.Now;
+                p.UpdatedOnUtc = DateTime.Now;
+                //p.OriginId = inPd.pOriginId;
+                p.AvailableEndDateTimeUtc = null;
+                p.AvailableStartDateTimeUtc = null;
+                p.SpecialPriceEndDateTimeUtc = null;
+                p.SpecialPriceStartDateTimeUtc = null;
+                p.UpdatedOnUtc = DateTime.Now;
+                p.StartConstructionDate = null;
+                p.FinishConstructionDate = null;
+                p.ConstructionDate = null;
+
+                //p.ProductStatus = inPd.pPStatus;
+                p.ProductTypeId = 5;
+                p.ParentGroupedProductId = 0;
+                p.VisibleIndividually = true;
+                p.ProductTemplateId = 1;
+                p.VendorId = 0;
+                p.ShowOnHomePage = false;
+                p.AllowCustomerReviews = true;
+                p.ApprovedRatingSum = 0;
+                p.NotApprovedRatingSum = 0;
+                p.ApprovedTotalReviews = 0;
+                p.NotApprovedTotalReviews = 0;
+
+                p.SubjectToAcl = false;
+                p.LimitedToStores = false;
+                p.IsGiftCard = false;
+                p.GiftCardTypeId = 0;
+                p.RequireOtherProducts = false;
+
+                p.AutomaticallyAddRequiredProducts = false;
+
+                p.IsDownload = false;
+                p.DownloadId = 0;
+                p.UnlimitedDownloads = false;
+
+                p.MaxNumberOfDownloads = 0;
+                p.DownloadActivationTypeId = 0;
+                p.HasSampleDownload = false;
+                p.SampleDownloadId = 0;
+                p.HasUserAgreement = false;
+                p.IsRecurring = false;
+                p.RecurringCycleLength = 0;
+                p.RecurringCyclePeriodId = 0;
+                p.RecurringTotalCycles = 0;
+                p.IsShipEnabled = true;
+                p.IsFreeShipping = false;
+                p.AdditionalShippingCharge = 0;
+
+                p.IsTaxExempt = false;
+                p.TaxCategoryId = 0;
+                p.ManageInventoryMethodId = 0;
+                p.StockQuantity = 10;
+                p.DisplayStockAvailability = false;
+
+                p.DisplayStockQuantity = false;
+                p.MinStockQuantity = 0;
+                p.OrderMaximumQuantity = 10;
+                p.LowStockActivityId = 1;
+
+                p.NotifyAdminForQuantityBelow = 1;
+                p.BackorderModeId = 0;
+                p.AllowBackInStockSubscriptions = false;
+                p.OrderMinimumQuantity = 1;
+                p.DisableBuyButton = true;
+                p.DisableWishlistButton = false;
+                p.AvailableForPreOrder = false;
+                p.OldPrice = 0;
+                p.ProductCost = 0;
+                p.CustomerEntersPrice = false;
+                p.MinimumCustomerEnteredPrice = 0;
+                p.MaximumCustomerEnteredPrice = 0;
+
+                p.HasTierPrices = false;
+                p.HasDiscountsApplied = false;
+                p.Weight = 0;
+                p.Width = 0;
+                p.Height = 0;
+                p.Length = 0;
+                p.DisplayOrder = 0;
+                p.Published = true;
+                p.Deleted = false;
+            }
+            #endregion
+
+            p.ContactEmail = inPd.Email;
+            p.ContactName = inPd.ContactName;
+            p.ContactPhone = inPd.ContactPhone;
+            p.CallForPrice = inPd.Price == 0;          
+            p.FullDescription = inPd.Desription;
+            p.Width = inPd.Width;
+            p.Height = inPd.Dept;
+            p.DistrictId = inPd.DistrictId;
+            p.WardId = inPd.WardId;
+            p.StreetId = inPd.StreetId;
+            p.Area = inPd.Area;
+            p.AreaUse = inPd.AreaUse;
+            p.Status = (int)ProductStatusEnum.PendingAproved;
+            p.CurrencyId = 0;
+            p.CustomerId = _workContext.CurrentCustomer.Id;
+            p.Name = inPd.Name;
+            p.HouseNumber = inPd.NumberOfHome;
+           
+
+
+
+          
+            
+        }
+
+        private InsertProductModel ProductToInsertModel(Product p)
+        {
+            var model = new InsertProductModel { 
+                Id=p.Id,
+                Dept=p.Height,
+                Width=p.Width,
+                Desription=p.FullDescription,
+                DistrictId=p.DistrictId,
+                WardId=p.WardId,
+                StreetId=p.StreetId,
+                ContactName=p.ContactName,
+                Email=p.ContactEmail,
+                ContactPhone=p.ContactPhone,
+                Area=p.Area,
+                AreaUse=p.AreaUse,
+                Price=p.Price,
+                NumberOfHome=p.HouseNumber,
+              
+                SelectedOptionAttributes=p.ProductSpecificationAttributes.Select(x=>x.SpecificationAttributeOptionId).ToList(),
+                Name=p.Name,
+                PictureIds=p.ProductPictures.Select(x=>x.PictureId).ToList()
+            };
+            var cate = p.ProductCategories.FirstOrDefault();
+            if (cate != null)
+                model.CateId = cate.CategoryId;
+
+            model.PictureModels =p.ProductPictures.Select(x => new PictureModel
+            {
+                ImageUrl=_pictureService.GetPictureUrl(x.PictureId,100)
+                
+            }).ToList();
+
+            return model;
+          
+
+        }
+
+       
+        [NonAction]
         private void PreparingInsertProductModel(InsertProductModel model)
         {
             model.Districts = _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.Id.ToString());
@@ -3314,6 +3636,160 @@ namespace Nop.Web.Controllers
                 Value = x.Id.ToString(),
                 Text = x.Name
             }).ToList();
+            model.NumberFloors = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfFloor).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.Categories = _categoryService.GetAllCategories().Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+            
+        }
+
+        public ActionResult UploadPicture(HttpPostedFileBase Filedata)
+        {
+            Stream stream = null;
+            var fileName = "";
+            var contentType = "";
+            if (Filedata != null)
+            {
+                // IE
+                HttpPostedFileBase httpPostedFile = Filedata;
+                if (httpPostedFile == null)
+                    throw new ArgumentException("No file uploaded");
+                stream = httpPostedFile.InputStream;
+                fileName = Path.GetFileName(httpPostedFile.FileName);
+                //contentType = httpPostedFile.ContentType;
+            }
+            //else
+            //{
+            //    //Webkit, Mozilla
+            //    stream = Request.InputStream;
+            //    fileName = Request[fileControl];
+            //}
+
+            var fileBinary = new byte[stream.Length];
+            stream.Read(fileBinary, 0, fileBinary.Length);
+
+            var fileExtension = Path.GetExtension(fileName);
+            if (!String.IsNullOrEmpty(fileExtension))
+                fileExtension = fileExtension.ToLowerInvariant();
+
+            if (String.IsNullOrEmpty(contentType))
+            {
+                switch (fileExtension)
+                {
+                    case ".bmp":
+                        contentType = "image/bmp";
+                        break;
+                    case ".gif":
+                        contentType = "image/gif";
+                        break;
+                    case ".jpeg":
+                    case ".jpg":
+                    case ".jpe":
+                    case ".jfif":
+                    case ".pjpeg":
+                    case ".pjp":
+                        contentType = "image/jpeg";
+                        break;
+                    case ".png":
+                        contentType = "image/png";
+                        break;
+                    case ".tiff":
+                    case ".tif":
+                        contentType = "image/tiff";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            fileBinary = CreateThumbnail(fileBinary, 700);
+            var picture = _pictureService.InsertPicture(fileBinary, contentType, null, true);
+            return Content(picture.Id.ToString());
+            //return Json(new { data = picture.Id},JsonRequestBehavior.AllowGet);
+            //return picture.Id;
+        }
+        [NonAction]
+        public byte[] CreateThumbnail(byte[] PassedImage, int LargestSide)
+        {
+            byte[] ReturnedThumbnail;
+
+            using (MemoryStream StartMemoryStream = new MemoryStream(),
+                                NewMemoryStream = new MemoryStream())
+            {
+                // write the string to the stream  
+                StartMemoryStream.Write(PassedImage, 0, PassedImage.Length);
+
+                // create the start Bitmap from the MemoryStream that contains the image  
+                Bitmap startBitmap = new Bitmap(StartMemoryStream);
+
+                // set thumbnail height and width proportional to the original image.  
+                int newHeight;
+                int newWidth;
+                double HW_ratio;
+                if (startBitmap.Height > startBitmap.Width)
+                {
+                    if (startBitmap.Height <= LargestSide)
+                    {
+                        newHeight = startBitmap.Height;
+                        newWidth = startBitmap.Width;
+                    }
+                    else
+                    {
+                        newHeight = LargestSide;
+                        HW_ratio = (double)((double)LargestSide / (double)startBitmap.Height);
+                        newWidth = (int)(HW_ratio * (double)startBitmap.Width);
+                    }
+                }
+                else
+                {
+                    if (startBitmap.Width > LargestSide)
+                    {
+                        newWidth = LargestSide;
+                        HW_ratio = (double)((double)LargestSide / (double)startBitmap.Width);
+                        newHeight = (int)(HW_ratio * (double)startBitmap.Height);
+                    }
+                    else
+                    {
+                        newHeight = startBitmap.Height;
+                        newWidth = startBitmap.Width;
+                    }
+                }
+
+                // create a new Bitmap with dimensions for the thumbnail.  
+                Bitmap newBitmap = new Bitmap(newWidth, newHeight);
+
+                // Copy the image from the START Bitmap into the NEW Bitmap.  
+                // This will create a thumnail size of the same image.  
+                newBitmap = ResizeImage(startBitmap, newWidth, newHeight);
+
+                // Save this image to the specified stream in the specified format.  
+                newBitmap.Save(NewMemoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                // Fill the byte[] for the thumbnail from the new MemoryStream.  
+                ReturnedThumbnail = NewMemoryStream.ToArray();
+            }
+
+            // return the resized image as a string of bytes.  
+            return ReturnedThumbnail;
+        }
+
+        // Resize a Bitmap  
+        [NonAction]
+        public Bitmap ResizeImage(Bitmap image, int width, int height)
+        {
+
+            Bitmap resizedImage = new Bitmap(width, height);
+            using (Graphics gfx = Graphics.FromImage(resizedImage))
+            {
+                gfx.DrawImage(image, new Rectangle(0, 0, width, height),
+                    new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+            }
+            return resizedImage;
         }
         #endregion
     }

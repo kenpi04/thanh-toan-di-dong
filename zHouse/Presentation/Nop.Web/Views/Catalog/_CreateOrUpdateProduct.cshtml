@@ -1,0 +1,339 @@
+﻿@model Nop.Web.Models.Catalog.InsertProductModel
+<link href="~/Content/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="~/Content/uploadify/jquery.uploadify.min.js"></script>
+@{
+    Html.AppendScriptParts("~/Scripts/jquery-te-1.4.0.min.js");
+    Html.AppendCssFileParts("~/Themes/DefaultClean/Content/editorsimple.css");
+    Html.AppendCssFileParts("~/Themes/DefaultClean/Content/jquery-te-1.4.0.css");
+}
+@Html.HiddenFor(x => x.Id)
+<div class="fieldset">
+    <div class="title">
+        <strong>Thông tin liên hệ</strong>
+    </div>
+    <div class="form-fields">
+        <div class="inputs">
+            @Html.NopLabelFor(x => x.ContactName)
+            @Html.RequiredHint()
+            @Html.EditorFor(x => x.ContactName)
+            @Html.ValidationMessageFor(x => x.ContactName)
+        </div>
+        <div class="inputs">
+            @Html.NopLabelFor(x => x.ContactPhone)
+            @Html.RequiredHint()
+            @Html.EditorFor(x => x.ContactPhone)
+            @Html.ValidationMessageFor(x => x.ContactPhone)
+        </div>
+        <div class="inputs">
+            @Html.NopLabelFor(x => x.Email)
+            @Html.RequiredHint()
+            @Html.EditorFor(x => x.Email)
+            @Html.ValidationMessageFor(x => x.Email)
+        </div>
+
+    </div>
+</div>
+
+<div class="fieldset">
+    <div class="title">
+        <strong>Thông tin căn nhà</strong>
+    </div>
+    <div class="form-fields">
+        <div style="width: 50%; float: left">
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.Price)
+                @Html.RequiredHint()
+                @Html.TextBoxFor(x => x.Price, new { maxlength = "5", @class = "number" })
+                @Html.ValidationMessageFor(x => x.Price)
+                <span id="price-text">vnđ</span>
+            </div>
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.CateId)
+                @Html.RequiredHint()
+                @Html.DropDownListFor(x => x.CateId, Model.Categories)
+                @Html.ValidationMessageFor(x => x.CateId)
+
+            </div>
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.Area)
+                @Html.RequiredHint()
+                @Html.TextBoxFor(x => x.Area, new { maxlength = "5", @class = "number" })
+                @Html.ValidationMessageFor(x => x.Area)
+                <span>m<sub>2</sub></span>
+            </div>
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.Width)
+
+                @Html.TextBoxFor(x => x.Width, new { maxlength = "5", @class = "number" })
+                @Html.ValidationMessageFor(x => x.Width)
+
+            </div>
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.Dept)
+
+                @Html.TextBoxFor(x => x.Dept, new { maxlength = "5", @class = "number" })
+                @Html.ValidationMessageFor(x => x.Dept)
+
+            </div>
+
+        </div>
+        <div style="width: 50%; float: left">
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.NumberFloors)
+                @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.NumberFloors)
+                @Html.ValidationMessageFor(x => x.CateId)
+
+            </div>
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.AreaUse)
+                @Html.TextBoxFor(x => x.AreaUse, new { maxlength = "5", @class = "number" })
+                @Html.ValidationMessageFor(x => x.AreaUse)
+
+            </div>
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.BedRooms)
+                @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.BedRooms)
+                @Html.ValidationMessageFor(x => x.BedRooms)
+
+            </div>
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.BadRooms)
+                @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.BadRooms)
+                @Html.ValidationMessageFor(x => x.BadRooms)
+
+            </div>
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.Directors)
+                @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.Directors)
+                @Html.ValidationMessageFor(x => x.Directors)
+
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="inputs">
+        @Html.NopLabelFor(x => x.Facilities)
+        <ul style="list-style: none">
+            @foreach (var i in Model.Facilities)
+            { 
+                <li style="float: left; width: 20%">
+                    <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") />
+                    @Html.Label(i.Text)
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="clearfix"></div>
+    <div class="inputs">
+        @Html.NopLabelFor(x => x.Environments)
+        <ul style="list-style: none">
+            @foreach (var i in Model.Environments)
+            { 
+                <li style="float: left; width: 20%">
+                    <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") />
+                    @Html.Label(i.Text)
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+<div class="fieldset">
+    <div class="title">
+        <strong>Thông tin vị trí</strong>
+    </div>
+    <div class="form-fields">
+        <div class="inputs">
+            <div style="float: left; width: 50%">
+                <div class="inputs">
+                    @Html.NopLabelFor(x => x.NumberOfHome)
+                    @Html.TextBoxFor(x => x.NumberOfHome)
+                    @Html.ValidationMessageFor(x => x.NumberOfHome)
+                </div>
+                <div class="inputs">
+                    @Html.NopLabelFor(x => x.DistrictId)
+                    @Html.RequiredHint()
+                    @Html.DropDownListFor(x => x.DistrictId, Model.Districts, "Chọn Quận")
+                    @Html.ValidationMessageFor(x => x.DistrictId)
+                </div>
+            </div>
+            <div style="float: left; width: 50%">
+                <div class="inputs">
+                    @Html.NopLabelFor(x => x.StreetId)
+                    @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường")
+
+                </div>
+                <div class="inputs">
+                    @Html.NopLabelFor(x => x.WardId)
+                    @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường")
+                    @Html.ValidationMessageFor(x => x.WardId)
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div class="fieldset">
+    <div class="title">
+        <strong>Mô tả căn nhà</strong>
+    </div>
+    <div class="form-fields">
+        <div class="inputs">
+            @Html.NopLabelFor(x => x.Name)
+            @Html.TextAreaFor(x => x.Name)
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="inputs">
+            @Html.NopLabelFor(x => x.Desription)
+            @Html.TextAreaFor(x => x.Desription, new { @class = "jqte-test" })
+            @Html.ValidationMessageFor(x => x.Desription)
+        </div>
+        <div class="inputs">
+            <input type="file" id="FileUpload" />
+            <div id="pictures">
+                @foreach (var i in Model.PictureIds)
+                { 
+                    <input type="hidden" name="PictureIds" value="@i" />
+                }
+
+            </div>
+            <ul>
+                @foreach (var i in Model.PictureModels)
+                {
+                    <li>
+                        <img width="100" height="100" src="@i.ImageUrl" /></li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+   
+
+
+    $(function () {
+     
+        var pictureids = [];
+        $("#Price").keyup(function () {
+            var price = $(this).val();
+            $("#price-text").html(StringPrice(price, "vnđ"));
+            
+         
+        })
+       
+        $("#insertProduct-button").click(function () {
+            if(!$("#frmProduct").valid())
+                return false;
+            
+            if ($("#pictures > input").size() == 0) {
+                alert('Vui lòng chọn hình ảnh đăng');
+            
+            }
+           
+            else if (Checkfiles($("#FileUpload")))
+            {
+                alert("File không hợp lệ");
+            }
+            else {
+                if($("div[id^=SWFUpload_]").size()==0)
+                {
+                    $("#frmProduct").submit();
+                }
+                else
+                    $('#FileUpload').uploadify('upload', '*')
+             
+            }
+          
+            return false;
+        })
+
+        $("#@Html.FieldIdFor(x => x.DistrictId)").change(function () {
+            var selectedId = $(this).val();
+            var ddlWard = $("#@Html.FieldIdFor(x => x.WardId)");
+            var ddlStreet = $("#@Html.FieldIdFor(x => x.StreetId)");
+            ddlWard.html("<option value=0>Chọn phường</option>");
+            ddlStreet.html("<option value=0>Chọn đường</option>");
+            $.get("@Url.Action("GetWardByDistrictId", "Common")", { id: selectedId }, function (d) {
+                $.each(d.Ward, function (i, o) {
+                    ddlWard.append($("<option/>").val(o.Id).text(o.Name));
+                })
+              
+                $.each(d.Street, function (i, o) {
+                    ddlStreet.append($("<option/>").val(o.Id).text(o.Name));
+                })
+                ddlStreet.val(@Model.StreetId);
+                ddlWard.val(@Model.WardId);
+            }).error(function () {
+               
+                alert("Fail receice from server!");
+            })
+           
+        })
+        $('#FileUpload').uploadify({
+            'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
+            'uploader': '@Url.Action("UploadPicture", "Catalog")',
+            'multi': true,
+            'method': 'post',
+            'buttonText': 'CHỌN ẢNH ĐĂNG...',
+            'auto': false,
+            'fileSizeLimit': '3MB',
+            'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg',
+            'uploadLimit': 10,
+            'cancelImg': '@Url.Content("~/Content/uploadify/uploadify-cancel.png")',
+            'removeCompleted': false,
+            'onSelect': function (file) {
+                flag_error = 1;
+            },
+            'onUploadStart': function (file) {
+
+                if (file == null || file.name == '') {
+                    alert('Vui lòng chọn hình ảnh đăng');
+                    $('#FileUpload').uploadify('stop');
+                    return;
+                }
+                
+            },
+            'onUploadSuccess': function (file, data, response) {
+                pictureids.push(data);
+            },
+            'onQueueComplete': function (queueData) {
+                $.each(pictureids, function (i, p) {
+                    $("#pictures").append($("<input type=hidden name='PictureIds' />").val(p));
+                })
+
+                if ($("#frmProduct").valid()) {
+                    $('#frmProduct').submit();
+                }
+                //alert(queueData.uploadsSuccessful + ' files were successfully uploaded.');
+            }
+        });
+    });
+    function Checkfiles(fup) {
+        //var fup = document.getElementById(filename);
+        var fileName = fup.val();
+        var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+        if (ext == "gif" || ext == "GIF" || ext == "JPEG" || ext == "jpeg" || ext == "jpg" || ext == "JPG" || ext == "png" || ext == "PNG") {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+</script>
+@if (Model.Id > 0)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var price=@Model.Price.ToString("#");
+                  $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
+                  $("#@Html.FieldIdFor(x => x.Width)").val(@Math.Floor(Model.Width));
+                  $("#@Html.FieldIdFor(x => x.Dept)").val(@Math.Floor(Model.Dept));
+                  $("#@Html.FieldIdFor(x => x.Area)").val(@Math.Floor(Model.Area));
+                  $("#@Html.FieldIdFor(x => x.AreaUse)").val(@Math.Floor(Model.AreaUse));
+                  $("#@Html.FieldIdFor(x => x.DistrictId)").change();
+                  $("#@Html.FieldIdFor(x => x.StreetId)").val(@Model.StreetId);
+                  $("#@Html.FieldIdFor(x => x.WardId)").val(@Model.WardId);
+              })
+    </script> 
+}

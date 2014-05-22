@@ -80,6 +80,7 @@ namespace Nop.Web.Controllers
         private readonly ForumSettings _forumSettings;
         private readonly LocalizationSettings _localizationSettings;
         private readonly CaptchaSettings _captchaSettings;
+        private readonly IStateProvinceService _stateProvinceService;
 
         #endregion
 
@@ -101,8 +102,11 @@ namespace Nop.Web.Controllers
             StoreInformationSettings storeInformationSettings, EmailAccountSettings emailAccountSettings,
             CommonSettings commonSettings, BlogSettings blogSettings, 
             NewsSettings newsSettings, ForumSettings forumSettings,
-            LocalizationSettings localizationSettings, CaptchaSettings captchaSettings)
+            LocalizationSettings localizationSettings, CaptchaSettings captchaSettings,
+            IStateProvinceService stateProvinceService
+            )
         {
+            this._stateProvinceService = stateProvinceService;
             this._categoryService = categoryService;
             this._productService = productService;
             this._manufacturerService = manufacturerService;
@@ -816,7 +820,20 @@ namespace Nop.Web.Controllers
             Response.Write(sb.ToString());
             return null;
         }
+        [HttpGet]
+        public ActionResult GetWardByDistrictId(int id)
+        {
+            var model = _stateProvinceService.GetDistHCM().First(x => x.Id == id);
+            return Json(new
+            {
+                Ward = model.Wards.Select(x => new { x.Id, x.Name }),
+                Street = model.Streets.Select(x => new {x.Id,x.Name })
 
+            }, JsonRequestBehavior.AllowGet);
+
+            
+            
+        }
         public ActionResult GenericUrl()
         {
             //seems that no entity was found
