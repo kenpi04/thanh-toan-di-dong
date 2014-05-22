@@ -5,6 +5,8 @@ using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Security;
 using Nop.Core.Domain.Seo;
 using Nop.Core.Domain.Stores;
+using Nop.Core.Domain.Directory;
+using Nop.Core.Domain.Customers;
 
 namespace Nop.Core.Domain.Catalog
 {
@@ -474,10 +476,37 @@ namespace Nop.Core.Domain.Catalog
         /// </summary>
         public DateTime UpdatedOnUtc { get; set; }
 
+        public int StateProvinceId { get; set; }
+        public int DistrictId { get; set; }
+        public int WardId { get; set; }
+        public int StreetId { get; set; }
+        public string HouseNumber { get; set; }
+        public string FullAddress { get; set; }
+        public decimal Area { get; set; }
+        public decimal AreaUse { get; set; }
+        public string LatTiTudeGoogleMap { get; set; }
+        public string LongTiTudeGoogleMap { get; set; }
+        public int CurrencyId { get; set; }
+        public int CustomerId { get; set; }
+        public string ContactName { get; set; }
+        public string ContactPhone { get; set; }
+        public string ContactEmail{ get; set; }
+        public int ViewNumber { get; set; }
+        public Int16 Status { get; set; }
+        public DateTime? ConstructionDate { get; set; }
+        public DateTime? StartConstructionDate { get; set; }
+        public DateTime? FinishConstructionDate { get; set; }
 
 
 
-
+        public ProductStatusEnum ProductStatus 
+        {
+            get { return (ProductStatusEnum)this.Status; }
+            set { this.Status = (Int16)value; }
+        
+        }
+        public District District { get; set; }
+        public Customer Customer { get; set; }
 
         /// <summary>
         /// Gets or sets the product type
