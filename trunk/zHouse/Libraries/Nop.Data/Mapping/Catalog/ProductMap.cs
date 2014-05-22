@@ -36,10 +36,17 @@ namespace Nop.Data.Mapping.Catalog
             this.Ignore(p => p.LowStockActivity);
             this.Ignore(p => p.ManageInventoryMethod);
             this.Ignore(p => p.RecurringCyclePeriod);
+            this.Ignore(p=>p.ProductStatus);
 
             this.HasMany(p => p.ProductTags)
                 .WithMany(pt => pt.Products)
                 .Map(m => m.ToTable("Product_ProductTag_Mapping"));
+            this.HasRequired(p => p.Customer)
+                .WithMany()
+                .HasForeignKey(p => p.CurrencyId);
+            this.HasRequired(p => p.District)
+                .WithMany()
+                .HasForeignKey(p => p.DistrictId);
         }
     }
 }

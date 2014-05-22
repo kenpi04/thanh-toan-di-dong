@@ -22,6 +22,8 @@ namespace Nop.Data.Mapping.Directory
             this.HasRequired(x => x.StateProvince)
                 .WithMany(x => x.Districts)
                 .HasForeignKey(x => x.StateProvinceId);
+            
+           
            
         }
 
