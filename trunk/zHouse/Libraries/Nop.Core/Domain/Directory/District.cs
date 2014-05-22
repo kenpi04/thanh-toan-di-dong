@@ -17,6 +17,18 @@ namespace Nop.Core.Domain.Directory
         /// Gets or sets the display order
         /// </summary>
         public virtual int DisplayOrder { get; set; }
+        private ICollection<Ward> _Wards;
+        public virtual ICollection<Ward> Wards
+        {
+            get { return _Wards ?? (_Wards = new List<Ward>()); }
+            protected set { this._Wards = value; }
+        }
+        private ICollection<Street> _Streets ;
+        public virtual ICollection<Street> Streets
+        {
+            get { return _Streets ?? (_Streets = new List<Street>()); }
+            protected set { this._Streets = value; }
+        }
         public virtual StateProvince StateProvince { get; set; }
 
 
