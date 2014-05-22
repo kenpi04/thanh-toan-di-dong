@@ -115,3 +115,29 @@ function htmlEncode(value) {
 function htmlDecode(value) {
     return $('<div/>').html(value).text();
 }
+function StringPrice(price, symbol) {
+    var temp;
+    if (Math.floor(price / 1000) > 0) {
+        if (price % 1000 != 0) {
+            return Math.floor(price / 1000) + " tỉ " + price % 1000 + " triệu " + symbol;
+        }
+        else {
+            return Math.floor(price / 1000) + " tỉ " + symbol;
+        }
+    }
+    else {
+        return price + " triệu " + symbol;
+    }
+}
+$(function () {
+ 
+        $(".jqte-test").jqte();
+ 
+    $("input.number").keypress(function () {
+        if (/\D/g.test($(this).val()))
+        {
+            // Filter non-digits from input value.
+                $(this).val($(this).val().replace(/\D/g, ''));
+        }
+    })
+})

@@ -29,8 +29,9 @@ textarea{width:100%;font-family:Verdana,Arial,sans-serif;font-size:11px;border:1
 checkbox,input,radio,select,button{}
 fieldset{margin:0px 0px 15px;border:1px solid #c9c9c9;padding:15px;}
 legend{font-weight:bold;line-height:20px;font-size:16px;}
-input[type="text"],input[type="password"]{border:1px solid #eee;}
+input[type="text"],input[type="password"]{border:1px solid #ddd;padding:2px 3px}
 input[type="text"]:disabled{background:none repeat scroll 0 0 #FFF;}
+.clearfix {clear:both }
 
 
 /* MASTER PAGE WRAPPERS */
