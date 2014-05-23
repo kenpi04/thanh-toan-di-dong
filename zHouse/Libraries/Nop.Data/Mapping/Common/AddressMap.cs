@@ -17,6 +17,16 @@ namespace Nop.Data.Mapping.Common
             this.HasOptional(a => a.StateProvince)
                 .WithMany()
                 .HasForeignKey(a => a.StateProvinceId).WillCascadeOnDelete(false);
+
+            this.HasOptional(a => a.District)
+                .WithMany()
+                .HasForeignKey(a => a.DistrictId).WillCascadeOnDelete(false);
+            this.HasOptional(a => a.Ward)
+                .WithMany()
+                .HasForeignKey(a => a.WardId).WillCascadeOnDelete(false);
+            this.HasOptional(a => a.Street)
+                .WithMany()
+                .HasForeignKey(a => a.StreetId).WillCascadeOnDelete(false);
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace Nop.Core.Domain.Catalog
 {
@@ -26,6 +22,6 @@ namespace Nop.Core.Domain.Catalog
         /// <summary>
         /// khong duyet
         /// </summary>
-        NotApproved = 3,
+        NotApproved = 3
     }
 }

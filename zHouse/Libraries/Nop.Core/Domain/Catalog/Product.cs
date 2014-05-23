@@ -497,14 +497,13 @@ namespace Nop.Core.Domain.Catalog
         public DateTime? StartConstructionDate { get; set; }
         public DateTime? FinishConstructionDate { get; set; }
 
-
-
-        public ProductStatusEnum ProductStatus 
+        public ProductStatusEnum ProductStatus
         {
             get { return (ProductStatusEnum)this.Status; }
             set { this.Status = (Int16)value; }
-        
-        }
+
+        }       
+      
         public District District { get; set; }
         public Customer Customer { get; set; }
 

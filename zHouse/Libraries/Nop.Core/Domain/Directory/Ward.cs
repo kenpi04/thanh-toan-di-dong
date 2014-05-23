@@ -7,13 +7,12 @@ namespace Nop.Core.Domain.Directory
         /// Gets or sets the district id
         /// </summary>
         public virtual int DistrictId { get; set; }
-        /// <summary>
-        /// Gets or sets the state province id
-        /// </summary>
-        public virtual int StateProvinceId { get; set; }
+
+
         /// <summary>
         /// Gets or sets name
         /// </summary>
-        public virtual string Name { get; set; }        
+        public virtual string Name { get; set; }
+        public virtual District District { get; set; }
     }
 }

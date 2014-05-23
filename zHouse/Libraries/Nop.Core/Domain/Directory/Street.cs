@@ -12,6 +12,7 @@ namespace Nop.Core.Domain.Directory
         /// Get or set Name
         /// </summary>
         public virtual string Name { get; set; }
+        public virtual District District { get; set; }
 
     }
 }
