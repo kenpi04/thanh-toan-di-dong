@@ -57,9 +57,14 @@ namespace Nop.Web.Models.Catalog
         public int DistrictId { get; set; }
         [NopResourceDisplayName("Product.Fields.WardId")]
         public int WardId { get; set; }
-        [AllowHtml]
+      
         [NopResourceDisplayName("Product.Fields.Desription")]
+        [AllowHtml]
         public string Desription { get; set; }
+        [NopResourceDisplayName("Product.Fields.FullAddress")]
+        public string FullAddress { get; set; }
+       
+       
 
         public List<int> SelectedOptionAttributes { get; set; }
         public List<int> PictureIds { get; set; }

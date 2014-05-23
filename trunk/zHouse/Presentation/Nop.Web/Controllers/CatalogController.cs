@@ -3237,6 +3237,8 @@ namespace Nop.Web.Controllers
             }
 
             model.PagingFilteringContext.LoadPagedList(products);
+            if (Request.IsAjaxRequest())
+                return PartialView("_ProductListPartial", model);
             return View(model);
         }
 
@@ -3286,8 +3288,7 @@ namespace Nop.Web.Controllers
         #region Insert/Update Product
         public ActionResult InsertProduct()
         {
-            if (!_workContext.CurrentCustomer.IsRegistered())
-                return new HttpUnauthorizedResult();
+           
             var model = new InsertProductModel();
             PreparingInsertProductModel(model);
             return View(model);
@@ -3295,121 +3296,42 @@ namespace Nop.Web.Controllers
 
         }
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult InsertProduct(InsertProductModel model,FormCollection form)
         {
-            if (!_workContext.CurrentCustomer.IsRegistered())
-                return new HttpUnauthorizedResult();
-            if (model == null)
-                throw new Exception("Product is null");
-            
-            var product =new Product();
-            var selectedId = form.GetValues("SelectedOptionAttributes");
-            model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
-
-            var pictures = form.GetValues("PictureIds");
-            model.PictureIds = pictures.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
-             PreapringProductModel(model,product);
-             product.Price = model.Price * 1000000;
-             string seName = product.ValidateSeName(product.Name, product.Name, true);
-            _productService.InsertProduct(product);
-            _urlRecordService.SaveSlug(product, seName, 0);
-            #region Insert Categories
-            var productCate = new ProductCategory
-            {
-                CategoryId=model.CateId,
-                ProductId=product.Id,
-                IsFeaturedProduct=false
-                
-            
-            };
-            _categoryService.InsertProductCategory(productCate);
-            #endregion
-
-            #region InsertPictures
-            foreach (var i in model.PictureIds)
-            {
-                var pictureproduct = new ProductPicture
-                {
-                    PictureId=i,
-                    ProductId=product.Id
-                    
-                };
-                _productService.InsertProductPicture(pictureproduct);
-                _pictureService.SetSeoFilename(i, _pictureService.GetPictureSeName(product.Name));
-            }
-            #endregion
-
-            #region Insert SPA
-            foreach (var i in model.SelectedOptionAttributes)
-            {
-                var SPAProduct = new ProductSpecificationAttribute
-                {
-                    ProductId=product.Id,
-                    SpecificationAttributeOptionId=i,
-                    ShowOnProductPage=false,
-                    AllowFiltering=true,
-                    
-                };
-                _specificationAttributeService.InsertProductSpecificationAttribute(SPAProduct);
-            }
-            #endregion
-            return RedirectToAction("EditProduct", new { id = product.Id });
-
-        }
-        public ActionResult EditProduct(int id)
-        {
-            if (!_workContext.CurrentCustomer.IsRegistered())
-                return new HttpUnauthorizedResult();
-            var product = _productService.GetProductById(id);
-            if (product == null)
-                return RedirectToRoute("HomePage");
-            var model = ProductToInsertModel(product);
-            PreparingInsertProductModel(model);
-            PreapringProductModel(model, product);
-            
-            return View(model);
-
-
-        }
-        [HttpPost]
-        public ActionResult EditProduct(InsertProductModel model,FormCollection form)
-        {
-            if (!_workContext.CurrentCustomer.IsRegistered())
-                return new HttpUnauthorizedResult();
-            if (model == null)
-                throw new Exception("Product is null");
-
-            var product = _productService.GetProductById(model.Id);
-            if(product==null)
-                return RedirectToRoute("HomePage");
-
-            if (product.CustomerId != _workContext.CurrentCustomer.Id)
-                return RedirectToRoute("HomePage");
-            PreapringProductModel(model, product);
-            product.Price = model.Price * 1000000;
-            var selectedId=form.GetValues("SelectedOptionAttributes");
-            model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
-
-            var pictures = form.GetValues("PictureIds");
-            model.PictureIds = pictures.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
-            
-            #region Insert Categories
-            var cate=product.ProductCategories.FirstOrDefault();
-            if (cate != null)
-            {
-                cate.CategoryId = model.CateId;
-                _categoryService.UpdateProductCategory(cate);
-            }
            
-            #endregion
-
-            #region EditPictures
-            //delete
-          
-            //add new
-            foreach (var i in model.PictureIds)
+            if (model == null)
+                throw new Exception("Product is null");
+            if (ModelState.IsValid)
             {
-               
+                var product = new Product();
+                var selectedId = form.GetValues("SelectedOptionAttributes");
+                if (selectedId.Length > 0)
+                    model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+
+                var pictures = form.GetValues("PictureIds");
+                if (pictures.Length > 0)
+                    model.PictureIds = pictures.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+                PreapringProductToEntity(model, product);
+                product.Price = model.Price * 1000000;
+                string seName = product.ValidateSeName(product.Name, product.Name, true);
+                _productService.InsertProduct(product);
+                _urlRecordService.SaveSlug(product, seName, 0);
+                #region Insert Categories
+                var productCate = new ProductCategory
+                {
+                    CategoryId = model.CateId,
+                    ProductId = product.Id,
+                    IsFeaturedProduct = false
+
+
+                };
+                _categoryService.InsertProductCategory(productCate);
+                #endregion
+
+                #region InsertPictures
+                foreach (var i in model.PictureIds)
+                {
                     var pictureproduct = new ProductPicture
                     {
                         PictureId = i,
@@ -3417,20 +3339,12 @@ namespace Nop.Web.Controllers
 
                     };
                     _productService.InsertProductPicture(pictureproduct);
-                    _pictureService.SetSeoFilename(i, _pictureService.GetPictureSeName(product.Name));          
-            }
-            #endregion
+                    _pictureService.SetSeoFilename(i, _pictureService.GetPictureSeName(product.Name));
+                }
+                #endregion
 
-            #region Edit SPA
-            //delete
-            foreach (var i in product.ProductSpecificationAttributes.Where(x => !model.SelectedOptionAttributes.Contains(x.SpecificationAttributeOptionId)))
-            {
-                product.ProductSpecificationAttributes.Remove(i);
-            }
-            //add new
-            foreach (var i in model.SelectedOptionAttributes)
-            {
-                if (product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOptionId == i).Count()==0)
+                #region Insert SPA
+                foreach (var i in model.SelectedOptionAttributes)
                 {
                     var SPAProduct = new ProductSpecificationAttribute
                     {
@@ -3441,15 +3355,124 @@ namespace Nop.Web.Controllers
 
                     };
                     _specificationAttributeService.InsertProductSpecificationAttribute(SPAProduct);
-               }
+                }
+                #endregion
+
+                if (!_workContext.CurrentCustomer.IsRegistered())
+                {
+                    return RedirectToRoute("EditProduct", new { id = product.Id });
+                }
+                else
+                    return RedirectToRoute("EditPostNews", new { id = product.Id });
             }
-            #endregion
-            _productService.UpdateProduct(product);
-            return RedirectToAction("EditProduct", new { id = product.Id });
+            return View(model);
+
+        }
+        public ActionResult EditProduct(int id)
+        {
+           
+              
+            var product = _productService.GetProductById(id);
+            if (product == null)
+                return RedirectToRoute("HomePage");
+            var model = ProductToInsertModel(product);
+            PreparingInsertProductModel(model);
+            PreapringProductToEntity(model, product);
+            
+            return View(model);
+
+
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult EditProduct(InsertProductModel model,FormCollection form)
+        {
+           
+            if (model == null)
+                throw new Exception("Product is null");
+
+            var product = _productService.GetProductById(model.Id);
+            if(product==null)
+                return RedirectToRoute("HomePage");
+
+            if (product.CustomerId != _workContext.CurrentCustomer.Id)
+                return RedirectToRoute("HomePage");
+            if (ModelState.IsValid)
+            {
+                PreapringProductToEntity(model, product);
+                product.Price = model.Price * 1000000;
+                var selectedId = form.GetValues("SelectedOptionAttributes");
+                if (selectedId.Length > 0)
+                    model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+
+                var pictures = form.GetValues("PictureIds");
+                if (pictures != null)
+                    model.PictureIds = pictures.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+
+                #region Insert Categories
+                var cate = product.ProductCategories.FirstOrDefault();
+                if (cate != null)
+                {
+                    cate.CategoryId = model.CateId;
+                    _categoryService.UpdateProductCategory(cate);
+                }
+
+                #endregion
+
+                #region EditPictures
+                //delete
+
+                //add new
+                foreach (var i in model.PictureIds)
+                {
+
+                    var pictureproduct = new ProductPicture
+                    {
+                        PictureId = i,
+                        ProductId = product.Id
+
+                    };
+                    _productService.InsertProductPicture(pictureproduct);
+                    _pictureService.SetSeoFilename(i, _pictureService.GetPictureSeName(product.Name));
+                }
+                #endregion
+
+                #region Edit SPA
+                //delete
+                foreach (var i in product.ProductSpecificationAttributes.Where(x => !model.SelectedOptionAttributes.Contains(x.SpecificationAttributeOptionId)))
+                {
+                    _specificationAttributeService.DeleteProductSpecificationAttribute(i);
+                }
+                //add new
+                foreach (var i in model.SelectedOptionAttributes)
+                {
+                    if (product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOptionId == i).Count() == 0)
+                    {
+                        var SPAProduct = new ProductSpecificationAttribute
+                        {
+                            ProductId = product.Id,
+                            SpecificationAttributeOptionId = i,
+                            ShowOnProductPage = false,
+                            AllowFiltering = true,
+
+                        };
+                        _specificationAttributeService.InsertProductSpecificationAttribute(SPAProduct);
+                    }
+                }
+                #endregion
+                _productService.UpdateProduct(product);
+                if (!_workContext.CurrentCustomer.IsRegistered())
+                {
+                    return RedirectToRoute("EditProduct", new { id = product.Id });
+                }
+                else
+                    return RedirectToRoute("EditPostNews", new { id = product.Id });
+            }
+            return View(model);
 
         }
 
-        private void PreapringProductModel(InsertProductModel inPd,Product p)
+        private void PreapringProductToEntity(InsertProductModel inPd,Product p)
         {
            
               
@@ -3544,23 +3567,43 @@ namespace Nop.Web.Controllers
             }
             #endregion
 
-            p.ContactEmail = inPd.Email;
-            p.ContactName = inPd.ContactName;
-            p.ContactPhone = inPd.ContactPhone;
-            p.CallForPrice = inPd.Price == 0;          
-            p.FullDescription = inPd.Desription;
-            p.Width = inPd.Width;
-            p.Height = inPd.Dept;
+            if (!_workContext.CurrentCustomer.IsRegistered())
+            {
+                p.ContactEmail = inPd.Email;
+                p.ContactName = inPd.ContactName;
+                p.ContactPhone = inPd.ContactPhone;
+              
+            }
+            else
+            {
+                p.ContactEmail = _workContext.CurrentCustomer.Email;
+                p.ContactName = _workContext.CurrentCustomer.GetFullName();
+                p.ContactPhone = _workContext.CurrentCustomer.GetAttribute<string>(SystemCustomerAttributeNames.Phone);
+                var add = _workContext.CurrentCustomer.Addresses.FirstOrDefault();
+                if (add!=null)
+                {
+                    p.DistrictId = add.DistrictId??0;
+                    p.WardId = add.WardId ?? 0;
+                    p.StreetId = add.StreetId ?? 0;
+
+                }
+            }
+            p.HouseNumber = inPd.NumberOfHome;
             p.DistrictId = inPd.DistrictId;
             p.WardId = inPd.WardId;
             p.StreetId = inPd.StreetId;
+            p.StateProvinceId = 23;//23 ho chi minh
+            p.CallForPrice = inPd.Price == 0;          
+            p.FullDescription = inPd.Desription;
+            p.Width = inPd.Width;
+            p.Height = inPd.Dept;        
             p.Area = inPd.Area;
             p.AreaUse = inPd.AreaUse;
             p.Status = (int)ProductStatusEnum.PendingAproved;
             p.CurrencyId = 0;
             p.CustomerId = _workContext.CurrentCustomer.Id;
             p.Name = inPd.Name;
-            p.HouseNumber = inPd.NumberOfHome;
+          
            
 
 
@@ -3605,7 +3648,6 @@ namespace Nop.Web.Controllers
           
 
         }
-
        
         [NonAction]
         private void PreparingInsertProductModel(InsertProductModel model)
@@ -3791,6 +3833,26 @@ namespace Nop.Web.Controllers
             }
             return resizedImage;
         }
+        #endregion
+
+        #region productListCustomer
+         #region ProductList
+        [NopHttpsRequirement(SslRequirement.Yes)]
+        public ActionResult ProductList()
+        {
+          
+            if (!_workContext.CurrentCustomer.IsRegistered())
+                return new HttpUnauthorizedResult();
+            var model = new SearchModel();
+            model.AvailableCategories = _categoryService.GetAllCategories().ToSelectList(x =>x.Name, x => x.Id.ToString()).ToList();
+            model.AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"),Selected=true,Value="0" });
+            model.Districts = _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+            model.Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectDistrict"), Selected = true,Value="0" });
+            model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => ((int)x).ToString(), x => _localizationService.GetResource("Product.Status.Enum." + x.ToString()));
+            model.Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true,Value="0" });
+            return View(model);
+        }
+        #endregion
         #endregion
     }
 }

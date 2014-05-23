@@ -131,7 +131,8 @@ function StringPrice(price, symbol) {
 }
 $(function () {
  
-        $(".jqte-test").jqte();
+
+    $(".datepicker").datepicker();
  
     $("input.number").keypress(function () {
         if (/\D/g.test($(this).val()))

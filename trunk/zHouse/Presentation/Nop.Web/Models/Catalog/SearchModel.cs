@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Mvc;
+using System;
 
 namespace Nop.Web.Models.Catalog
 {
@@ -11,9 +12,13 @@ namespace Nop.Web.Models.Catalog
         {
             PagingFilteringContext = new SearchPagingFilteringModel();
             Products = new List<ProductOverviewModel>();
-
             this.AvailableCategories = new List<SelectListItem>();
             this.AvailableManufacturers = new List<SelectListItem>();
+            PriceRange = new List<SelectListItem>();
+            PriceRange.Add(new SelectListItem { Value = "0-0", Text = "Chọn mức giá" });
+            PriceRange.Add(new SelectListItem { Value = "1000-1500", Text = "1 tỷ ~ 1.5 tỷ" });
+            PriceRange.Add(new SelectListItem { Value = "1500-3000", Text = "1.5 tỷ ~ 3 tỷ" });
+            PriceRange.Add(new SelectListItem { Value = "3000-0", Text = "Trên 3 tỷ" });
         }
 
         public string Warning { get; set; }
@@ -64,5 +69,13 @@ namespace Nop.Web.Models.Catalog
 
         public SearchPagingFilteringModel PagingFilteringContext { get; set; }
         public IList<ProductOverviewModel> Products { get; set; }
+
+        public IList<SelectListItem> Districts { get; set; }
+        public IList<SelectListItem> PriceRange { get; set;}
+        public IList<SelectListItem> Status { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int DistrictId { get; set; }
+        public int StatusId { get; set; }
     }
 }

@@ -1,0 +1,17 @@
+﻿@model Nop.Web.Models.Catalog.SearchModel
+@using Nop.Web.Extensions;
+@{
+   
+    }
+<div id="ListProduct">
+@foreach (var i in Model.Products)
+{ 
+   <div class="item-box">
+        @Html.Partial("_ProductBox",i)
+       </div>
+    
+}
+<div class="pager">
+    @Html.Pager(Model.PagingFilteringContext)
+</div>
+    </div>

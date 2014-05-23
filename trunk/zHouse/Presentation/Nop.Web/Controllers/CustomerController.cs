@@ -32,7 +32,7 @@ using Nop.Web.Framework.Security;
 using Nop.Web.Framework.UI.Captcha;
 using Nop.Web.Models.Common;
 using Nop.Web.Models.Customer;
-
+using Nop.Web.Models.Catalog;
 namespace Nop.Web.Controllers
 {
     public partial class CustomerController : BaseNopController
@@ -1879,5 +1879,7 @@ namespace Nop.Web.Controllers
         }
 
         #endregion
+
+       
     }
 }

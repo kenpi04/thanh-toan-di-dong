@@ -80,6 +80,12 @@ namespace Nop.Core.Domain.Common
         /// </summary>
         public virtual StateProvince StateProvince { get; set; }
 
+        public int? DistrictId { get; set; }
+        public int? WardId { get; set; }
+        public int? StreetId { get; set; }
+        public virtual District District { get; set; }
+        public virtual Ward Ward { get; set; }
+        public virtual Street Street { get; set; }
 
         public object Clone()
         {
@@ -100,6 +106,9 @@ namespace Nop.Core.Domain.Common
                 PhoneNumber = this.PhoneNumber,
                 FaxNumber = this.FaxNumber,
                 CreatedOnUtc = this.CreatedOnUtc,
+                DistrictId=this.DistrictId,
+                WardId=this.WardId,
+                StreetId=this.StreetId
             };
             return addr;
         }

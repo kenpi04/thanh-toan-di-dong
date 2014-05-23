@@ -1,0 +1,46 @@
+﻿@model Nop.Web.Models.Catalog.SearchModel
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+}
+ <div class="page registration-page">
+        <div class="page-title">
+            <h1>@T("Account.ListProducts")</h1>
+        </div>
+        <div class="page-body">
+            @using (Ajax.BeginForm("Search", new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct" }))
+            {
+            <div>
+              <span>
+                  @Html.DropDownListFor(x => x.DistrictId, Model.Districts)
+              </span>
+                <span>
+                    @Html.DropDownList("Price", Model.PriceRange);
+                </span>
+                <span>
+                    @Html.DropDownListFor(x => x.Cid, Model.AvailableCategories)
+                </span>
+                <span>
+                    @Html.DropDownListFor(x => x.StatusId, Model.Status)
+                </span>
+                <span>
+                  @Html.TextBoxFor(x => x.StartDate, new { @class = "datepicker" })
+                </span>
+                <span>
+                    @Html.TextBoxFor(x => x.EndDate, new { @class = "datepicker" })
+                </span>
+                
+
+            </div>
+            <div>
+                <input type="submit" id="btnSearchProduct" value="Tìm kiếm" />
+            </div>
+                <script type="text/javascript">
+                    $("#btnSearchProduct").click();
+                </script>
+            }
+        @Html.Partial("_ProductListPartial", Model)
+            </div>
+     </div>
+
+
+
