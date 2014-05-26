@@ -1,6 +1,6 @@
 ﻿@model SearchModel
 @{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
     //title
     Html.AddTitleParts(T("PageTitle.Search").Text);
@@ -32,56 +32,16 @@
     </div>
     <div class="page-body">
         <div class="search-input">
-            @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get))
+            @using (Ajax.BeginForm("ProductSeach", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct",LoadingElementId="ajax-loading" }, new {id="frmSearchLeft" }))
             {
-                <div class="basic-search">
-                    <div class="inputs">
-                        @Html.LabelFor(model => model.Q, new { }, ":")
-                        @Html.TextBoxFor(model => model.Q, new { @class = "search-text" })
-                    </div>
-                    @Html.Widget("productsearch_page_basic")
-                    <div class="inputs reversed">
-                        @Html.CheckBoxFor(model => model.As)
-                        @Html.LabelFor(model => model.As)
-                    </div>
-                </div>
-                <div class="advanced-search" id="advanced-search-block">
-                    @if (Model.AvailableCategories.Count > 0)
-                    {
-                        <div class="inputs">
-                            @Html.LabelFor(model => model.Cid, new { }, ":")
-                            @Html.DropDownListFor(model => model.Cid, Model.AvailableCategories)
-                        </div>
-                        <div class="inputs reversed">
-                            @Html.CheckBoxFor(model => model.Isc)
-                            @Html.LabelFor(model => model.Isc)
-                        </div>
-                    }
-                    @if (Model.AvailableManufacturers.Count > 0)
-                    {
-                        <div class="inputs">
-                            @Html.LabelFor(model => model.Mid, new { }, ":")
-                            @Html.DropDownListFor(model => model.Mid, Model.AvailableManufacturers)
-                        </div>
-                    }
-                    <div class="inputs">
-                        <label>@T("Search.PriceRange"):</label>
-                        <span class="price-range">
-                            @T("Search.PriceRange.From")
-                            @Html.TextBoxFor(model => model.Pf, new { @class = "price-from" })
-                            @T("Search.PriceRange.To")
-                            @Html.TextBoxFor(model => model.Pt, new { @class = "price-to" })
-                        </span>
-                    </div>
-                    <div class="inputs reversed">
-                        @Html.CheckBoxFor(model => model.Sid)
-                        @Html.LabelFor(model => model.Sid)
-                    </div>
-                    @Html.Widget("productsearch_page_advanced")
-                </div>
-                <div class="buttons">
-                    <input type="submit" class="button-1 search-button" value="@T("Search")" />
-                </div>
+                
+                @Html.Action("SearchBox")
+                <script>
+                    $("#frmSearchLeft input[type=checkbox]").click(function () {
+                        $("#frmSearchLeft").submit();
+                    })
+
+                </script>
             }
         </div>
         <div class="search-results">
@@ -99,13 +59,8 @@
             }
             @if (Model.Products.Count > 0)
             {
-                <div class="product-list">
-                    @foreach (var product in Model.Products)
-                    {
-                        <div class="item-box">
-                            @Html.Partial("_ProductBox", product)
-                        </div>
-                    }
+                <div class="product-list" id="ProductList">
+                   @Html.Partial("_ProductListPartial",Model)
                 </div>
             }
             <div class="pager">

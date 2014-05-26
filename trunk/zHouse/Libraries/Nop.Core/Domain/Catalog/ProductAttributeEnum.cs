@@ -14,6 +14,7 @@ namespace Nop.Core.Domain.Catalog
       CoSoVatChat=4,
       Enviroment=5,
       ChuDauTu=6,
-      Director=7
+      Director=7,
+      Status=8
     }
 }
