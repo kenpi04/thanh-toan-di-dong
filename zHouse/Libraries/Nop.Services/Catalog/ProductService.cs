@@ -294,7 +294,12 @@ namespace Nop.Services.Catalog
             bool searchSku = true,
             bool searchProductTags = false,
             int languageId = 0,
+             int customerId = 0,
             IList<int> filteredSpecs = null,
+            ProductStatusEnum?status=null,
+             IList<int> dictrictIds = null,
+            DateTime? startDateTimeUtc = null,
+            DateTime? endDateTimeUtc = null,
             ProductSortingEnum orderBy = ProductSortingEnum.Position,
             bool showHidden = false)
         {
@@ -304,7 +309,7 @@ namespace Nop.Services.Catalog
                 storeId, vendorId, warehouseId,
                 parentGroupedProductId, productType, visibleIndividuallyOnly, featuredProducts,
                 priceMin, priceMax, productTagId, keywords, searchDescriptions, searchSku,
-                searchProductTags, languageId, filteredSpecs, orderBy, showHidden);
+                searchProductTags, languageId,customerId, filteredSpecs,status,dictrictIds,startDateTimeUtc,endDateTimeUtc, orderBy, showHidden);
         }
 
         /// <summary>
@@ -357,7 +362,12 @@ namespace Nop.Services.Catalog
             bool searchSku = true,
             bool searchProductTags = false,
             int languageId = 0,
+             int customerId = 0,
             IList<int> filteredSpecs = null,
+            ProductStatusEnum ?status=null,
+             IList<int> dictrictIds = null,
+            DateTime? startDateTimeUtc = null,
+            DateTime? endDateTimeUtc = null,
             ProductSortingEnum orderBy = ProductSortingEnum.Position,
             bool showHidden = false)
         {
@@ -435,7 +445,20 @@ namespace Nop.Services.Catalog
                         }
                     }
                 }
-
+                //pass specification identifiers as comma-delimited string
+                string commaSeparatedDistrictIds = "";          
+                if (dictrictIds != null)
+                {
+                    ((List<int>)dictrictIds).Sort();
+                    for (int i = 0; i < dictrictIds.Count; i++)
+                    {
+                        commaSeparatedDistrictIds += dictrictIds[i].ToString();
+                        if (i != dictrictIds.Count - 1)
+                        {
+                            commaSeparatedDistrictIds += ",";
+                        }
+                    }
+                }
                 //some databases don't support int.MaxValue
                 if (pageSize == int.MaxValue)
                     pageSize = int.MaxValue - 1;
@@ -455,6 +478,11 @@ namespace Nop.Services.Catalog
                 pStoreId.ParameterName = "StoreId";
                 pStoreId.Value = storeId;
                 pStoreId.DbType = DbType.Int32;
+
+                var pCustomerId = _dataProvider.GetParameter();
+                pCustomerId.ParameterName = "CustomerId";
+                pCustomerId.Value = storeId;
+                pCustomerId.DbType = DbType.Int32;
 
                 var pVendorId = _dataProvider.GetParameter();
                 pVendorId.ParameterName = "VendorId";
@@ -535,6 +563,27 @@ namespace Nop.Services.Catalog
                 pFilteredSpecs.ParameterName = "FilteredSpecs";
                 pFilteredSpecs.Value = commaSeparatedSpecIds != null ? (object)commaSeparatedSpecIds : DBNull.Value;
                 pFilteredSpecs.DbType = DbType.String;
+                //Add
+                var pProducStatus = _dataProvider.GetParameter();
+                pProducStatus.ParameterName = "ProductStatus";
+                pProducStatus.Value = status.HasValue ? (object)status.Value : DBNull.Value;
+                pProducStatus.DbType = DbType.Int16;
+
+                var pdistricts = _dataProvider.GetParameter();
+                pdistricts.ParameterName = "DistrictIds";
+                pdistricts.Value = commaSeparatedDistrictIds !=null? (object)commaSeparatedDistrictIds : DBNull.Value;
+                pdistricts.DbType = DbType.String;
+
+                var pStartDate = _dataProvider.GetParameter();
+                pStartDate.ParameterName = "StartDate";
+                pStartDate.Value = startDateTimeUtc.HasValue ? (object)startDateTimeUtc.Value : DBNull.Value;
+                pStartDate.DbType = DbType.DateTime;
+
+                var pEndDate = _dataProvider.GetParameter();
+                pEndDate.ParameterName = "EndDate";
+                pEndDate.Value = endDateTimeUtc.HasValue ? (object)endDateTimeUtc.Value : DBNull.Value;
+                pEndDate.DbType = DbType.DateTime;
+
 
                 var pLanguageId = _dataProvider.GetParameter();
                 pLanguageId.ParameterName = "LanguageId";
@@ -604,6 +653,11 @@ namespace Nop.Services.Catalog
                     pUseFullTextSearch,
                     pFullTextMode,
                     pFilteredSpecs,
+                    pdistricts,
+                    pStartDate,
+                    pEndDate,
+                    pProducStatus,
+                    pCustomerId,
                     pLanguageId,
                     pOrderBy,
                     pAllowedCustomerRoleIds,

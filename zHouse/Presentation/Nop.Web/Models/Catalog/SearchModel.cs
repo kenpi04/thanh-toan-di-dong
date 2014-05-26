@@ -19,6 +19,10 @@ namespace Nop.Web.Models.Catalog
             PriceRange.Add(new SelectListItem { Value = "1000-1500", Text = "1 tỷ ~ 1.5 tỷ" });
             PriceRange.Add(new SelectListItem { Value = "1500-3000", Text = "1.5 tỷ ~ 3 tỷ" });
             PriceRange.Add(new SelectListItem { Value = "3000-0", Text = "Trên 3 tỷ" });
+            SelectedOptionIds = new List<int>();
+            DistrictIds = new List<int>();
+            Cids = new List<int>();
+            Mids = new List<int>();
         }
 
         public string Warning { get; set; }
@@ -73,9 +77,15 @@ namespace Nop.Web.Models.Catalog
         public IList<SelectListItem> Districts { get; set; }
         public IList<SelectListItem> PriceRange { get; set;}
         public IList<SelectListItem> Status { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
         public int DistrictId { get; set; }
         public int StatusId { get; set; }
+        public string PriceString { get; set; }
+        public bool OnlyCustomer { get; set; }
+        public IList<int> Cids { get; set; }
+        public IList<int> DistrictIds { get; set; }
+        public IList<int> Mids { get; set; }
+        public IList<int> SelectedOptionIds { get; set; }
     }
 }

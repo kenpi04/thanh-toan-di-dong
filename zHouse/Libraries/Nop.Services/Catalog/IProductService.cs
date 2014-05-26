@@ -97,7 +97,12 @@ namespace Nop.Services.Catalog
             bool searchSku = true,
             bool searchProductTags = false,
             int languageId = 0,
+            int customerId=0,
             IList<int> filteredSpecs = null,
+            ProductStatusEnum? status=null,
+            IList<int> dictrictIds = null,
+            DateTime?startDateTimeUtc=null,
+            DateTime?endDateTimeUtc=null,
             ProductSortingEnum orderBy = ProductSortingEnum.Position,
             bool showHidden = false);
 
@@ -151,7 +156,12 @@ namespace Nop.Services.Catalog
             bool searchSku = true,
             bool searchProductTags = false, 
             int languageId = 0,
+             int customerId = 0,
             IList<int> filteredSpecs = null, 
+            ProductStatusEnum?status=null,
+             IList<int> dictrictIds = null,
+            DateTime? startDateTimeUtc = null,
+            DateTime? endDateTimeUtc = null,
             ProductSortingEnum orderBy = ProductSortingEnum.Position,
             bool showHidden = false);
 

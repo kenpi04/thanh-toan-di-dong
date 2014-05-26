@@ -7,14 +7,15 @@
             <h1>@T("Account.ListProducts")</h1>
         </div>
         <div class="page-body">
-            @using (Ajax.BeginForm("Search", new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct" }))
+            @using (Ajax.BeginForm("ProductSearch", new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct" }))
             {
+                @Html.HiddenFor(x=>x.OnlyCustomer)
             <div>
               <span>
                   @Html.DropDownListFor(x => x.DistrictId, Model.Districts)
               </span>
                 <span>
-                    @Html.DropDownList("Price", Model.PriceRange);
+                    @Html.DropDownListFor(x=>x.PriceString, Model.PriceRange)
                 </span>
                 <span>
                     @Html.DropDownListFor(x => x.Cid, Model.AvailableCategories)

@@ -19,7 +19,18 @@ namespace Nop.Web.Models.Catalog
         public string ShortDescription { get; set; }
         public string FullDescription { get; set; }
         public string SeName { get; set; }
-
+        public string ContactName { get; set; }
+        public string ContactPhone { get; set; }
+        public string Email { get; set; }
+        public int CateId { get; set; }
+        public decimal Area { get; set; }
+        public decimal Width { get; set; }
+        public decimal Dept { get; set; }
+        public string NumberOfHome { get; set; }
+        public string NumBedRoom { get; set; }
+        public string NumBadRoom { get; set; }
+        public string Status { get; set; }
+        public string DictrictName { get; set; }
         //price
         public ProductPriceModel ProductPrice { get; set; }
         //picture

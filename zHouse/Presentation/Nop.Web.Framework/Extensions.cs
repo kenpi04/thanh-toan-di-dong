@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Web.Mvc;
 using Nop.Core;
 using Nop.Core.Infrastructure;
@@ -275,6 +276,37 @@ namespace Nop.Web.Framework
                 }
             }
             return result;
+        }
+        /// <summary>
+        /// Trim String by length
+        /// </summary>
+        /// <param name="s">String</param>
+        /// <param name="length">length trim include space char</param>
+        /// <returns>String</returns>
+        public static string TrimString(this string s, int length)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(s))
+                    return null;
+                if (s.Length <= length)
+                    return s;
+                var words = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (words[0].Length > length)
+                    throw new ArgumentException("Từ đầu tiên dài hơn chuỗi cần cắt");
+                var sb = new StringBuilder();
+                foreach (var word in words)
+                {
+                    if ((sb + word).Length > length)
+                        return string.Format("{0}...", sb.ToString().TrimEnd(' '));
+                    sb.Append(word + " ");
+                }
+                return string.Format("{0}...", sb.ToString().TrimEnd(' '));
+            }
+            catch
+            {
+                return "";
+            }
         }
     }
 }
