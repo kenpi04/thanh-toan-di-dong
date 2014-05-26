@@ -3960,7 +3960,7 @@ namespace Nop.Web.Controllers
            
         }
         [ChildActionOnly]
-        public ActionResult SearchBox()
+        public ActionResult SearchBoxLeft()
         {
             var model = new SearchModel();
             PreparingSearchModel(model);
