@@ -10,7 +10,7 @@ namespace Nop.Web.Validators.Catalog
         {
             RuleFor(x => x.FriendEmail).NotEmpty().WithMessage(localizationService.GetResource("Products.EmailAFriend.FriendEmail.Required"));
             RuleFor(x => x.FriendEmail).EmailAddress().WithMessage(localizationService.GetResource("Common.WrongEmail"));
-
+            RuleFor(x => x.Name).NotEmpty().WithMessage(localizationService.GetResource("Products.EmailAFriend.Name.Required"));
             RuleFor(x => x.YourEmailAddress).NotEmpty().WithMessage(localizationService.GetResource("Products.EmailAFriend.YourEmailAddress.Required"));
             RuleFor(x => x.YourEmailAddress).EmailAddress().WithMessage(localizationService.GetResource("Common.WrongEmail"));
         }}

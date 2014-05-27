@@ -15,6 +15,9 @@ namespace Nop.Web.Models.Catalog
 
         public string ProductSeName { get; set; }
 
+        public string Name { get; set; }
+        public string Phone { get; set; }
+
         [AllowHtml]
         [NopResourceDisplayName("Products.EmailAFriend.FriendEmail")]
         public string FriendEmail { get; set; }

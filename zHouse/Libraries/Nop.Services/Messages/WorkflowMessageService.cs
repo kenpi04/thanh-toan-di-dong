@@ -33,6 +33,7 @@ namespace Nop.Services.Messages
         private readonly IStoreContext _storeContext;
         private readonly EmailAccountSettings _emailAccountSettings;
         private readonly IEventPublisher _eventPublisher;
+        private readonly IMessagesService _messagesService;
 
         #endregion
 
@@ -47,6 +48,7 @@ namespace Nop.Services.Messages
             IStoreService storeService,
             IStoreContext storeContext,
             EmailAccountSettings emailAccountSettings,
+            IMessagesService messagesService,
             IEventPublisher eventPublisher)
         {
             this._messageTemplateService = messageTemplateService;
@@ -59,6 +61,7 @@ namespace Nop.Services.Messages
             this._storeContext = storeContext;
             this._emailAccountSettings = emailAccountSettings;
             this._eventPublisher = eventPublisher;
+            this._messagesService = messagesService;
         }
 
         #endregion
@@ -804,7 +807,57 @@ namespace Nop.Services.Messages
                 languageId, tokens,
                 toEmail, toName);
         }
+        public virtual int SendProductEmailAFriendMessage2(Product product, string name, string phone, string email, string title, string mess, int languageId)
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
 
+            var store = _storeContext.CurrentStore;
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("Service.EmailAFriend2", languageId, store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+            //toekns
+            var tokens = new List<Token>();
+            _messageTokenProvider.AddStoreTokens(tokens, store);
+            _messageTokenProvider.AddProductTokens(tokens, product,languageId);
+            tokens.Add(new Token("EmailAFriend.PersonalMessage", mess, true));
+            tokens.Add(new Token("EmailAFriend.Phone", phone));
+            tokens.Add(new Token("EmailAFriend.Name", name));
+            tokens.Add(new Token("EmailAFriend.Title", title));
+            tokens.Add(new Token("EmailAFriend.Email", email));
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+            var toEmail = "";
+            if (product.ContactEmail != null)
+                toEmail = product.ContactEmail;
+            else
+                toEmail = product.ContactEmail;
+            var toName = "";
+
+            var message = new Message();
+            message.Name = name;
+            message.Phone = phone;
+            message.ProductId = product.Id;
+            //message.StoreId = _workContext.CurrentStore.Id;
+            //message.SiteId = _workContext.CurrentSiteId;
+            message.Title = title;
+            message.Body = mess;
+            message.Deleted = false;
+            message.Email = email;
+            message.CustomerId = product.CustomerId;
+            message.CreatedOn = DateTime.UtcNow;
+            message.Type = (int)MessageType.EmailAFriend;
+
+            _messagesService.InsertMessage(message);
+            return SendNotification(messageTemplate, emailAccount,
+                languageId, tokens,
+                toEmail, toName);
+        }
         #endregion
 
         #region Return requests
