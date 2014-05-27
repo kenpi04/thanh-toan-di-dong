@@ -141,8 +141,7 @@ namespace Nop.Web.Models.Customer
             public string ExternalIdentifier { get; set; }
 
             public string AuthMethodName { get; set; }
-        }
-        
+        }        
         #endregion
     }
 }

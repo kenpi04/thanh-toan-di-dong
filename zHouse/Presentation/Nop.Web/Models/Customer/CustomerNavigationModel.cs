@@ -29,6 +29,7 @@ namespace Nop.Web.Models.Customer
         RewardPoints,
         ChangePassword,
         Avatar,
-        ForumSubscriptions
+        ForumSubscriptions,
+        PostNews,
     }
 }
