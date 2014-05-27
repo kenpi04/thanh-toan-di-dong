@@ -23,13 +23,13 @@ namespace Nop.Web.Infrastructure
                          new[] { "Nop.Web.Controllers" });
             //yeu cau tin request
             routes.MapLocalizedRoute("PostNews",
-                         "dang-tin",
+                         "customer/dang-tin",
                          new { controller = "Catalog", action = "InsertProduct" },
                          new[] { "Nop.Web.Controllers" });
 
             //yeu cau tin request
             routes.MapLocalizedRoute("EditPostNews",
-                         "sua-tin/{id}",
+                         "customer/sua-tin/{id}",
                          new { controller = "Catalog", action = "EditProduct" },
                           new { id = @"\d+" },
                          new[] { "Nop.Web.Controllers" });
