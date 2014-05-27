@@ -1821,6 +1821,12 @@
   <ItemGroup>
     <Content Include="Views\Catalog\SearchProductBox.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Catalog\ProductDetail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_ColumnTwoRight.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

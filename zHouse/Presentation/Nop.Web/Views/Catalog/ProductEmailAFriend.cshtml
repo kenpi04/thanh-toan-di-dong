@@ -1,26 +1,7 @@
 ﻿@model ProductEmailAFriendModel
 @using Nop.Web.Models.Catalog;
-@{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
 
-    //title
-    Html.AddTitleParts(Model.ProductName);
-    Html.AddTitleParts(T("PageTitle.ProductEmailAFriend").Text);
-}
-<div class="page email-a-friend-page">
-    <div class="page-title">
-        <h1>@T("Products.EmailAFriend.Title")</h1>
-    </div>
-    <div class="page-body">
-        @if (Model.SuccessfullySent)
-        {
-            <div class="result">
-                @Model.Result
-            </div>
-        }
-        else
-        {
-            using (Html.BeginForm())
+            @using (Html.BeginForm())
             {         
             <div class="title">
                 <h2><a href="@Url.RouteUrl("Product", new { SeName = Model.ProductSeName })" class="product">@Model.ProductName</a></h2>
@@ -59,6 +40,5 @@
                 <input type="submit" name="send-email" class="button-1 send-email-a-friend-button" value="@T("Products.EmailAFriend.Button")" />
             </div>
             }
-        }
-    </div>
-</div>
+        
+

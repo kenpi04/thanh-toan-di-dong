@@ -20,6 +20,10 @@ namespace Nop.Web.Models.Catalog
             ProductVariantAttributes = new List<ProductVariantAttributeModel>();
             AssociatedProducts = new List<ProductDetailsModel>();
             VendorModel = new VendorBriefInfoModel();
+            Facilities = new List<SelectListItem>();
+            Environments = new List<SelectListItem>();
+            PictureModels = new List<PictureModel>();
+           
         }
 
         //picture(s)
@@ -71,6 +75,20 @@ namespace Nop.Web.Models.Catalog
     
         //a list of associated products. For example, "Grouped" products could have several child "simple" products
         public IList<ProductDetailsModel> AssociatedProducts { get; set; }
+        public string Status { get; set; }
+
+        public string DistrictName { get; set; }
+
+        public string HinhThuc { get; set; }
+
+        public string Area { get; set; }
+
+        public string NumberFloors { get; set; }
+        public string BadRooms { get; set; }
+        public string BedRooms { get; set; }
+        public string Directors { get; set; }
+        public IList<SelectListItem> Facilities { get; set; }
+        public IList<SelectListItem> Environments { get; set; }
 
 		#region Nested Classes
 
@@ -237,5 +255,7 @@ namespace Nop.Web.Models.Catalog
         }
 
 		#endregion
+
+       
     }
 }

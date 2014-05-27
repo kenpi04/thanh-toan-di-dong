@@ -172,6 +172,8 @@
     <Compile Include="Common\PdfService.cs" />
     <Compile Include="Common\IAddressService.cs" />
     <Compile Include="Common\FulltextService.cs" />
+    <Compile Include="Messages\IMessagesService.cs" />
+    <Compile Include="Messages\MessagesService.cs" />
     <Compile Include="Shipping\EventPublisherExtensions.cs" />
     <Compile Include="Vendors\VendorService.cs" />
     <Compile Include="Vendors\IVendorService.cs" />

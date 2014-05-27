@@ -21,6 +21,7 @@ namespace Nop.Web.Models.Catalog
             PriceRange.Add(new SelectListItem { Value = "3000-0", Text = "Trên 3 tỷ" });
             SelectedOptionIds = new List<int>();
             DistrictIds = new List<int>();
+            Districts = new List<SelectListItem>();
             Cids = new List<int>();
             Mids = new List<int>();
         }

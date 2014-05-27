@@ -1,6 +1,6 @@
 ﻿@model Nop.Web.Models.Catalog.ProductDetailsModel
 @{
-    Layout = "~/Views/Shared/_ColumnTwoRight.cshtml";
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
     Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
     Html.AddMetaDescriptionParts(Model.MetaDescription);
     Html.AddMetaKeywordParts(Model.MetaKeywords);
@@ -77,12 +77,7 @@
                     <p>@Html.Raw(Model.FullDescription)</p>
                       </div>
                     </div>
-
-              @Html.Action("ProductReviews", new {productId=Model.Id })
               </div>
         </div>
     </div>
-@section right{
-         @Html.Action("ProductEmailAFriend", "Catalog", new { productId = Model.Id })
-    }
 

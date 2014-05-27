@@ -110,7 +110,7 @@ namespace Nop.Web.Framework
                 builder.Register<IDbContext>(c => new NopObjectContext(dataSettingsManager.LoadSettings().DataConnectionString)).InstancePerHttpRequest();
             }
 
-
+            builder.RegisterType<MessagesService>().As<IMessagesService>().InstancePerHttpRequest();
             builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IRepository<>)).InstancePerHttpRequest();
             
             //plugins
