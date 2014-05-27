@@ -7,6 +7,12 @@
     <div class="listbox">
         <ul class="list">
             @Html.Widget("account_navigation_before")
+            
+            <li><a href="@Url.RouteUrl("PostNews")" class="@if (Model.SelectedTab == CustomerNavigationEnum.PostNews)
+                                                                   {<text>active</text>}
+                                                                   else
+                                                                   {<text>inactive</text>}">@T("Account.PostNews")</a></li>
+
             @if (!Model.HideInfo)
             {
                 <li><a href="@Url.RouteUrl("CustomerInfo")" class="@if (Model.SelectedTab == CustomerNavigationEnum.Info)
