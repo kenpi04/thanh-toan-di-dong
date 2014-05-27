@@ -7,7 +7,7 @@
 <div class="product-item" data-productid="@Model.Id">
     <div class="picture">
         <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-            <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+            <img width="100" height="100" alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
         </a>
     </div>
     <div class="details">
@@ -25,10 +25,13 @@
                <p>Tình trạng:@Model.Status</p>
                <p>@Model.NumBadRoom</p>
                <p>@Model.NumBedRoom</p>
+               
            </div>
+           
            <div class="clearfix">
-               <p>@Model.ShortDescription</p>
+              
            </div>
+            <p>@Model.ShortDescription</p>
        </div>
     </div>
 </div>

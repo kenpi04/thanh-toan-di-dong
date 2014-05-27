@@ -78,6 +78,7 @@
     <Compile Include="Mapping\Directory\DistrictMap.cs" />
     <Compile Include="Mapping\Directory\StreetMap.cs" />
     <Compile Include="Mapping\Directory\WardMap.cs" />
+    <Compile Include="Mapping\Messages\MessageMap.cs" />
     <Compile Include="Mapping\News\CategoryNewsMap.cs" />
     <Compile Include="Mapping\News\NewsCategoryNewsMap.cs" />
     <Compile Include="Mapping\Shipping\WarehouseMap.cs" />

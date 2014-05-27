@@ -504,8 +504,8 @@ namespace Nop.Core.Domain.Catalog
 
         }       
       
-        public District District { get; set; }
-        public Customer Customer { get; set; }
+        public virtual District District { get; set; }
+        public virtual Customer Customer { get; set; }
 
         /// <summary>
         /// Gets or sets the product type

@@ -57,5 +57,7 @@ namespace Nop.Web.Models.Catalog
         }
 
 		#endregion
+
+        public string FullAddress { get; set; }
     }
 }
