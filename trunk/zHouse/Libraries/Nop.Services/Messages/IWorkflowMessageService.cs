@@ -307,5 +307,6 @@ namespace Nop.Services.Messages
         int SendBackInStockNotification(BackInStockSubscription subscription, int languageId);
 
         #endregion
+        int SendProductEmailAFriendMessage2(Product product, string name, string phone, string email, string title, string mess, int languageId);
     }
 }

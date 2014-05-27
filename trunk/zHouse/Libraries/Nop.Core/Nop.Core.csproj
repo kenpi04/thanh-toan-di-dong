@@ -98,6 +98,7 @@
     <Compile Include="Domain\Directory\Street.cs" />
     <Compile Include="Domain\Directory\Ward.cs" />
     <Compile Include="Domain\Messages\Message.cs" />
+    <Compile Include="Domain\Messages\MessageType.cs" />
     <Compile Include="Domain\News\CategoryNews.cs" />
     <Compile Include="Domain\News\NewsCategoryNews.cs" />
     <Compile Include="Domain\Seo\WwwRequirement.cs" />

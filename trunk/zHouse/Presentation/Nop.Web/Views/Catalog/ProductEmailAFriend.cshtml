@@ -1,7 +1,7 @@
 ﻿@model ProductEmailAFriendModel
 @using Nop.Web.Models.Catalog;
 
-            @using (Html.BeginForm())
+            @using (Ajax.BeginForm("ProductEmailAFriendSend",new AjaxOptions{HttpMethod="POST",OnComplete="sendComplete"}))
             {         
             <div class="title">
                 <h2><a href="@Url.RouteUrl("Product", new { SeName = Model.ProductSeName })" class="product">@Model.ProductName</a></h2>
@@ -12,15 +12,26 @@
             <div class="form-fields">
                 <div class="inputs-left">
                     <div class="inputs">
-                        @Html.LabelFor(model => model.FriendEmail)
-                        @Html.TextBoxFor(model => model.FriendEmail, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.FriendEmail.Hint") })
-                        @Html.ValidationMessageFor(model => model.FriendEmail)
+                        @Html.LabelFor(model => model.Name)
+                        @Html.TextBoxFor(model => model.Name, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.Name.Hint") })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                     <div class="inputs">
+                        @Html.LabelFor(model => model.Phone)
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.Phone.Hint") })
+                        @Html.ValidationMessageFor(model => model.Phone)
                     </div>
                     <div class="inputs">
                         @Html.LabelFor(model => model.YourEmailAddress)
                         @Html.TextBoxFor(model => model.YourEmailAddress, new { @class = "your-email", placeholder = T("Products.EmailAFriend.YourEmailAddress.Hint") })
                         @Html.ValidationMessageFor(model => model.YourEmailAddress)
                     </div>
+                    <div class="inputs">
+                        @Html.LabelFor(model => model.PersonalMessage)
+                        @Html.TextBoxFor(model => model.PersonalMessage, new { @class = "your-email", placeholder = T("Products.EmailAFriend.YourEmailAddress.Hint") })
+                        @Html.ValidationMessageFor(model => model.PersonalMessage)
+                    </div>
+
                     @if (Model.DisplayCaptcha)
                     {
                         <div class="captcha-box">
@@ -28,17 +39,17 @@
                         </div>
                     }
                 </div>
-                <div class="inputs-right">
-                    <div class="inputs">
-                        @Html.LabelFor(model => model.PersonalMessage)
-                        @Html.TextAreaFor(model => model.PersonalMessage, new { @class = "personal-message", placeholder = T("Products.EmailAFriend.PersonalMessage.Hint") })
-                        @Html.ValidationMessageFor(model => model.PersonalMessage)
-                    </div>
-                </div>
+              
             </div>
             <div class="buttons">
                 <input type="submit" name="send-email" class="button-1 send-email-a-friend-button" value="@T("Products.EmailAFriend.Button")" />
             </div>
+                <script type="text/javascript">
+                    function sendComplete(d)
+                    {
+                        alert(d);
+                    }
+                </script>
             }
         
 
