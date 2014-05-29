@@ -647,6 +647,9 @@ namespace Nop.Web.Controllers
                 HasSampleDownload = product.IsDownload && product.HasSampleDownload,
                 IsCurrentCustomerRegistered = _workContext.CurrentCustomer.IsRegistered(),
                 Area=product.Area.ToString("#"),
+                ContactEmail=product.ContactEmail,
+                ContactName=product.ContactName,
+                ContactPhone=product.ContactPhone
                
                
             };
@@ -2723,14 +2726,14 @@ namespace Nop.Web.Controllers
             return View(model);
         }
 
-        [HttpPost, ActionName("ProductEmailAFriend")]
+        [HttpPost]
         [FormValueRequired("send-email")]
         [CaptchaValidator]
         public ActionResult ProductEmailAFriendSend(ProductEmailAFriendModel model, bool captchaValid)
         {
             var product = _productService.GetProductById(model.ProductId);
             if (product == null || product.Deleted || !product.Published || !_catalogSettings.EmailAFriendEnabled)
-                return RedirectToRoute("HomePage");
+                return Json("Lỗi");
 
             //validate CAPTCHA
             if (_captchaSettings.Enabled && _captchaSettings.ShowOnEmailProductToFriendPage && !captchaValid)

@@ -3,9 +3,7 @@
 
             @using (Ajax.BeginForm("ProductEmailAFriendSend",new AjaxOptions{HttpMethod="POST",OnComplete="sendComplete"}))
             {         
-            <div class="title">
-                <h2><a href="@Url.RouteUrl("Product", new { SeName = Model.ProductSeName })" class="product">@Model.ProductName</a></h2>
-            </div>
+            
             <div class="message-error">
                 @Html.ValidationSummary(true)
             </div>
@@ -28,7 +26,7 @@
                     </div>
                     <div class="inputs">
                         @Html.LabelFor(model => model.PersonalMessage)
-                        @Html.TextBoxFor(model => model.PersonalMessage, new { @class = "your-email", placeholder = T("Products.EmailAFriend.YourEmailAddress.Hint") })
+                        @Html.TextAreaFor(model => model.PersonalMessage, new { @class = "your-email", placeholder = T("Products.EmailAFriend.PersonalMessage.Hint") })
                         @Html.ValidationMessageFor(model => model.PersonalMessage)
                     </div>
 
