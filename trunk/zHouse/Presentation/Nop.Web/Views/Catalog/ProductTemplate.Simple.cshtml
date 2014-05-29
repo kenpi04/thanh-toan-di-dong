@@ -83,6 +83,13 @@
         </div>
     </div>
 @section right{
+        <div class="contact">
+            <h2>Bạn cần thêm thông tin</h2>
+            <div class="info">
+                @Model.ContactName<br />
+                @Model.ContactPhone
+            </div>
          @Html.Action("ProductEmailAFriend", "Catalog", new { productId = Model.Id })
+            </div>
     }
 

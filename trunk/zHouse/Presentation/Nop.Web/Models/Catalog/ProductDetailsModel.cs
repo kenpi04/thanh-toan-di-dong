@@ -87,6 +87,9 @@ namespace Nop.Web.Models.Catalog
         public string BadRooms { get; set; }
         public string BedRooms { get; set; }
         public string Directors { get; set; }
+        public string ContactName { get; set; }
+        public string ContactEmail { get; set; }
+        public string ContactPhone { get; set; }
         public IList<SelectListItem> Facilities { get; set; }
         public IList<SelectListItem> Environments { get; set; }
 
