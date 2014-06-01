@@ -3,9 +3,9 @@ using Nop.Core.Domain.Directory;
 
 namespace Nop.Data.Mapping.Directory
 {
-    public partial class FBannerMap : EntityTypeConfiguration<FBanner>
+    public partial class BannerMap : EntityTypeConfiguration<Banner>
     {
-        public FBannerMap()
+        public BannerMap()
         {
             this.ToTable("Banner");
             this.HasKey(fb => fb.Id);

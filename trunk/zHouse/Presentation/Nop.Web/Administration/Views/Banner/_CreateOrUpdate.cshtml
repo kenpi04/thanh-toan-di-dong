@@ -1,0 +1,165 @@
+﻿@model BannerModel
+
+@using Telerik.Web.Mvc.UI;
+
+@Html.ValidationSummary(false) 
+@Html.HiddenFor(model => model.Id)
+
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Name):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Name)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Url):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(x => x.Url)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Position):
+            </td>
+            <td class="adminData">
+                @(Html.Telerik().ComboBoxFor(x => x.Position)
+                .BindTo(new List<SelectListItem>() 
+                    { new SelectListItem() {Text = "1 - Banner Logo Top",Value = "1"},
+                      new SelectListItem() {Text = "2 - Banner Top",Value = "2"},
+                      new SelectListItem() {Text = "3 - Banner Top Trái Dưới LogoTop",Value = "3"},
+                      new SelectListItem() {Text = "4 - Banner Top Phải Dưới LogoTop",Value = "4"},
+                      new SelectListItem() {Text = "5 - Banner Dưới Câu Hỏi Thường Gặp 1 (Banner Right 1)",Value = "5"},
+                      new SelectListItem() {Text = "6 - Banner Dưới Câu Hỏi Thường Gặp 2 (Banner Right 2)",Value = "6"},
+                      new SelectListItem() {Text = "7 - Banner Dưới Câu Hỏi Thường Gặp 3 (Banner Right 3)",Value = "7"},
+                      new SelectListItem() {Text = "8 - Banner Footer 1",Value = "8"},
+                      new SelectListItem() {Text = "9 - Banner Popup Phải",Value = "9"},
+                      new SelectListItem() {Text = "10 - Banner Bên Trái",Value = "10"},
+                      new SelectListItem() {Text = "11 - Banner Bên Phải",Value = "11"},
+                       new SelectListItem() {Text = "12 - Banner dưới VIP",Value = "12"},
+                           new SelectListItem() {Text = "13 - Banner dưới tin VIP",Value = "13"},
+                    })
+                .Encode(true)
+                .AutoFill(false)
+                .Filterable(x => { x.Enabled(false); }))
+            @Html.ValidationMessageFor(model => model.Position)
+            </td>
+        </tr>
+             <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Type):
+            </td>
+            <td class="adminData">
+                @(Html.Telerik().DropDownListFor(x => x.Type)
+                .BindTo(new List<SelectListItem>() 
+                    { 
+                      new SelectListItem() {Text = "Sử dụng Picture",Value = "1"},
+                      new SelectListItem() {Text = "Sử dụng Description",Value = "2", Selected=true}
+                    }).HtmlAttributes(new { style = "width:255px" })
+                .ClientEvents(events => events.OnChange("onChange"))
+
+                )
+            @Html.ValidationMessageFor(model => model.Type)
+            </td>
+        </tr>
+        <script type="text/javascript">
+            $(document).ready(function () { 
+                var typeId = @(Model.Type);
+                if(typeId == 1)
+                    $('.type2').hide();
+                else
+                    $('.type1').hide();
+                
+            });
+            function onChange() {
+                typeId = $('#@Html.FieldIdFor(model => model.Type)').val();
+                $('.type' + typeId).show();
+                if(typeId == 1){
+                    $('.type2').hide();
+                }
+                else{
+                    $('.type1').hide();
+                }
+                return false;
+            }
+        </script>
+   
+        
+        <tr class="type1">
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.PictureId)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.PictureId)
+                @Html.ValidationMessageFor(model => model.PictureId)
+            </td>
+        </tr>
+        <tr class="type2">
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Description):
+            </td>
+            <td class="adminData">
+               @Html.EditorFor(x => x.Description, "RichEditor")
+               @Html.ValidationMessageFor(model => model.Description)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Target):
+            </td>
+            <td class="adminData">
+                @(Html.Telerik().ComboBoxFor(x => x.Target)
+                .BindTo(new List<SelectListItem>() 
+                    { new SelectListItem() {Text = "_black",Value = "_black", Selected=true},
+                      new SelectListItem() {Text = "_parent",Value = "_parent"}
+                    })
+                .Encode(true)
+                .AutoFill(false)
+                .Filterable(x => { x.Enabled(false); }))
+            @Html.ValidationMessageFor(model => model.Target)
+            </td>
+        </tr>
+   
+        
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Published):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(x => x.Published)
+                @Html.ValidationMessageFor(model => model.Published)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.StartDate):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.StartDate)
+                @Html.ValidationMessageFor(model => model.StartDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.EndDate):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.EndDate)
+                @Html.ValidationMessageFor(model => model.EndDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.DisplayOrder):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.DisplayOrder)
+                @Html.ValidationMessageFor(model => model.DisplayOrder)
+            </td>
+        </tr>   
+    </table>
+

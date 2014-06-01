@@ -804,6 +804,13 @@ namespace Nop.Admin.Infrastructure
             Mapper.CreateMap<ProductTemplate, ProductTemplateModel>()
                 .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
             Mapper.CreateMap<ProductTemplateModel, ProductTemplate>();
+
+            //Banner
+            Mapper.CreateMap<Banner, BannerModel>()
+                .ForMember(dest => dest.DisplayOrder, mo => mo.MapFrom(src => src.DisplayOrder))
+                ;
+
+            Mapper.CreateMap<BannerModel, Banner>();
         }
         
         public int Order
