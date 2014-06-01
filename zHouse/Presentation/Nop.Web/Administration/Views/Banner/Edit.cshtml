@@ -1,0 +1,22 @@
+﻿@model BannerModel
+@{
+    //page title
+    ViewBag.Title = @T("Admin.Configuration.Banner.EditBannerDetails").Text;
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "banner-form" }))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            @T("Admin.Configuration.Banner.EditBannerDetails") - @Model.Name @Html.ActionLink("(" + T("Admin.Configuration.Banner.BackToList") + ")", "List")
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
+            <input type="submit" name="save-continue" class="t-button" value="@T("Admin.Common.SaveContinue")" />
+            <span id="banner-delete" class="t-button">@T("Admin.Common.Delete")</span>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}
+
+@Html.DeleteConfirmation("banner-delete")

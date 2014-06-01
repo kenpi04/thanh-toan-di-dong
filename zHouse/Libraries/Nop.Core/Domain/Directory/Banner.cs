@@ -6,7 +6,7 @@ namespace Nop.Core.Domain.Directory
     /// <summary>
     /// Create by Tiennn
     /// </summary>
-    public partial class FBanner : BaseEntity
+    public partial class Banner : BaseEntity
     {
         /// <summary>
         /// Get or set the PictureId
@@ -44,7 +44,6 @@ namespace Nop.Core.Domain.Directory
         /// </summary>
         public virtual string Url { get; set; }
         
-        
         /// <summary>
         /// Get or set the displayorder
         /// </summary>
@@ -56,22 +55,13 @@ namespace Nop.Core.Domain.Directory
         public virtual bool Published { get; set; }
         
         /// <summary>
-        /// Get or set the deleted
-        /// </summary>
-        public virtual bool Deleted { get; set; }
-        
-        /// <summary>
         /// Get or set the start date
         /// </summary>
         public virtual DateTime? StartDate { get; set; }
-        
         
         /// <summary>
         /// Get or set the end date
         /// </summary>
         public virtual DateTime? EndDate { get; set; }
-        //public virtual StateProvince StateProvince { get; set; }
-
-
     }
 }

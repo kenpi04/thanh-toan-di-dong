@@ -306,6 +306,8 @@ namespace Nop.Web.Framework
             builder.RegisterType<EventPublisher>().As<IEventPublisher>().SingleInstance();
             builder.RegisterType<SubscriptionService>().As<ISubscriptionService>().SingleInstance();
 
+            //banner
+            builder.RegisterType<BannerService>().As<IBannerService>().InstancePerHttpRequest();
         }
 
         public int Order

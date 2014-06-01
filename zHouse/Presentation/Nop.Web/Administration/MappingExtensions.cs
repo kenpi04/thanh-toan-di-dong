@@ -968,5 +968,23 @@ namespace Nop.Admin
         }
         #endregion
 
+        #region Banner
+
+        public static BannerModel ToModel(this Banner entity)
+        {
+            return Mapper.Map<Banner, BannerModel>(entity);
+        }
+
+        public static Banner ToEntity(this BannerModel model)
+        {
+            return Mapper.Map<BannerModel, Banner>(model);
+        }
+
+        public static Banner ToEntity(this BannerModel model, Banner destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+
+        #endregion
     }
 }
