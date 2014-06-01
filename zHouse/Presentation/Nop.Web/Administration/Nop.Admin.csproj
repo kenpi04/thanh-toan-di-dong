@@ -135,9 +135,9 @@
   <ItemGroup>
     <Compile Include="AdminAreaRegistration.cs" />
     <Compile Include="Controllers\ActivityLogController.cs" />
-    <Compile Include="Controllers\BannerController.cs" />
     <Compile Include="Controllers\BaseNopController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\CategoryNewsController.cs" />
     <Compile Include="Controllers\CheckoutAttributeController.cs" />
     <Compile Include="Controllers\AffiliateController.cs" />
     <Compile Include="Controllers\CampaignController.cs" />
@@ -210,9 +210,9 @@
     <Compile Include="Models\Common\MaintenanceModel.cs" />
     <Compile Include="Models\Common\SystemWarningModel.cs" />
     <Compile Include="Models\Common\SystemInfoModel.cs" />
-    <Compile Include="Models\Directory\BannerListModel.cs" />
-    <Compile Include="Models\Directory\BannerModel.cs" />
     <Compile Include="Models\Home\DashboardModel.cs" />
+    <Compile Include="Models\News\CategoryNewsListModel.cs" />
+    <Compile Include="Models\News\CategoryNewsModel.cs" />
     <Compile Include="Models\Payments\PaymentMethodRestrictionModel.cs" />
     <Compile Include="Models\Settings\VendorSettingsModel.cs" />
     <Compile Include="Models\Shipping\WarehouseModel.cs" />
@@ -1222,10 +1222,8 @@
     <Content Include="Views\Template\ProductTemplates.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Banner\Create.cshtml" />
-    <Content Include="Views\Banner\Edit.cshtml" />
-    <Content Include="Views\Banner\List.cshtml" />
-    <Content Include="Views\Banner\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\News\EditorTemplates\NewsCate.cshtml" />
+    <Content Include="Views\News\EditorTemplates\NewsCategory.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
