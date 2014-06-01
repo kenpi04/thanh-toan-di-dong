@@ -57,7 +57,14 @@ namespace Nop.Admin.Infrastructure
         public void Execute()
         {
             //TODO remove 'CreatedOnUtc' ignore mappings because now presentation layer models have 'CreatedOn' property and core entities have 'CreatedOnUtc' property (distinct names)
-            
+            #region newscate
+            Mapper.CreateMap<CategoryNewsModel, CategoryNews>()
+               .ForMember(dest => dest.CreatedOnUtc, mo => mo.Ignore())
+               .ForMember(dest => dest.UpdatedOnUtc, mo => mo.Ignore());
+
+            Mapper.CreateMap<CategoryNews, CategoryNewsModel>()
+                .ForMember(dest => dest.Locales, mo => mo.Ignore());
+            #endregion
             //address
             Mapper.CreateMap<Address, AddressModel>()
                 .ForMember(dest => dest.AddressHtml, mo => mo.Ignore())

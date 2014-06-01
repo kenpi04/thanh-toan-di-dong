@@ -986,5 +986,23 @@ namespace Nop.Admin
         }
 
         #endregion
+        #region newscate
+
+        public static CategoryNewsModel ToModel(this CategoryNews entity)
+        {
+            return Mapper.Map<CategoryNews, CategoryNewsModel>(entity);
+        }
+
+        public static CategoryNews ToEntity(this CategoryNewsModel model)
+        {
+            return Mapper.Map<CategoryNewsModel, CategoryNews>(model);
+        }
+
+        public static CategoryNews ToEntity(this CategoryNewsModel model, CategoryNews destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+
+        #endregion
     }
 }
