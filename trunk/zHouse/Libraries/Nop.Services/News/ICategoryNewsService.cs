@@ -6,7 +6,6 @@ namespace Nop.Services.News
 {
     public partial interface ICategoryNewsService
     {
-        // Create by Hung Lai 2012-09-12
         /// <summary>
         /// Delete category
         /// </summary>
@@ -110,7 +109,6 @@ namespace Nop.Services.News
         /// <param name="newsCategory">>News category mapping</param>
         void UpdateNewsCategory(NewsCategoryNews newsCategory);
 
-        IList<CategoryNews> GetAll();
     }
 
 }
