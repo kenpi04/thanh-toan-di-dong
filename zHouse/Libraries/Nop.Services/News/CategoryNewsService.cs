@@ -6,7 +6,6 @@ using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.News;
 using Nop.Services.Events;
-using System.Transactions;
 
 namespace Nop.Services.News
 {
@@ -14,7 +13,7 @@ namespace Nop.Services.News
     {
         #region Constants
 
-        private const string CATEGORIES_ALL = "Nop.category.All-{0}";
+        //private const string CATEGORIES_ALL = "Nop.category.All-{0}";
         private const string CATEGORIES_BY_ID_KEY = "Nop.category.id-{0}";
         private const string CATEGORIES_BY_PARENT_CATEGORY_ID_KEY = "Nop.category.byparent-{0}-{1}";
         private const string NEWSCATEGORIES_ALLBYCATEGORYID_KEY = "Nop.newscategorymap.allbycategoryid-{0}-{1}-{2}-{3}";
@@ -32,7 +31,7 @@ namespace Nop.Services.News
         private readonly IRepository<NewsItem> _newsRepository;
         private readonly IEventPublisher _eventPublisher;
         private readonly ICacheManager _cacheManager;
-        private readonly IWebHelper _webHelper;
+        //private readonly IWebHelper _webHelper;
         #endregion
 
         #region Ctor
@@ -55,8 +54,8 @@ namespace Nop.Services.News
             this._categoryRepository = categoryRepository;
             this._newsCategoryRepository = newsCategoryRepository;
             this._newsRepository = newsRepository;
-            _eventPublisher = eventPublisher;
-            this._webHelper = webHelper;
+            this._eventPublisher = eventPublisher;
+            //this._webHelper = webHelper;
         }
 
         #endregion
@@ -121,11 +120,8 @@ namespace Nop.Services.News
             string key = string.Format(CATEGORIES_BY_ID_KEY, categoryId);
             return _cacheManager.Get(key, () =>
             {
-                using (var transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted }))
-                {
-                    var category = _categoryRepository.GetById(categoryId);
-                    return category;
-                }
+                var category = _categoryRepository.GetById(categoryId);
+                return category;
             });
         }
 
@@ -147,26 +143,23 @@ namespace Nop.Services.News
         /// <returns>Categories</returns>
         public virtual IList<CategoryNews> GetAllCategories(string categoryName, bool showHidden = false)
         {
-            string key = string.Format(CATEGORIES_ALL, showHidden);
 
-            return _cacheManager.Get(key, () =>
-                {
-                    using (var transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted }))
-                    {
-                        var query = _categoryRepository.Table;
-                        if (!showHidden)
-                            query = query.Where(c => c.Published);
-                        if (!String.IsNullOrWhiteSpace(categoryName))
-                            query = query.Where(c => c.Name.Contains(categoryName));
-                        query = query.Where(c => !c.Deleted && c.SiteId==_webHelper.CurrentSiteId);
-                        query = query.OrderBy(c => c.ParentCategoryNewsId).ThenBy(c => c.DisplayOrder);
-                        var unsortedCategories = query.ToList();
+            var query = _categoryRepository.Table;
+            if (!showHidden)
+                query = query.Where(c => c.Published);
 
-                        //sort categories
-                        var sortedCategories = unsortedCategories;//.SortCategoriesForTree();
-                        return sortedCategories;
-                    }
-                });
+            if (!String.IsNullOrWhiteSpace(categoryName))
+                query = query.Where(c => c.Name.Contains(categoryName));
+
+            query = query.Where(c => !c.Deleted);
+
+            query = query.OrderBy(c => c.ParentCategoryNewsId).ThenBy(c => c.DisplayOrder);
+
+            var unsortedCategories = query.ToList();
+
+            //sort categories
+            var sortedCategories = unsortedCategories;//.SortCategoriesForTree();
+            return sortedCategories;
         }
 
         /// <summary>
@@ -191,26 +184,22 @@ namespace Nop.Services.News
         /// <param name="parentCategoryId">Parent category identifier</param>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Category collection</returns>
-        public IList<CategoryNews> GetAllCategoriesByParentCategoryId(int parentCategoryId,
-            bool showHidden = false)
+        public IList<CategoryNews> GetAllCategoriesByParentCategoryId(int parentCategoryId, bool showHidden = false)
         {
             string key = string.Format(CATEGORIES_BY_PARENT_CATEGORY_ID_KEY, parentCategoryId, showHidden);
             return _cacheManager.Get(key, () =>
             {
-                using (var transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted }))
-                {
-                    var query = _categoryRepository.Table;
-                    if (!showHidden)
-                        query = query.Where(c => c.Published);
-                    query = query.Where(c => c.ParentCategoryNewsId == parentCategoryId && !c.Deleted && c.SiteId==_webHelper.CurrentSiteId).OrderBy(x => x.DisplayOrder);
-                    
-                    if (query == null)
-                        return null;
-                    return query.ToList();                    
-                }
+                var query = _categoryRepository.Table;
+                if (!showHidden)
+                    query = query.Where(c => c.Published);
+                query = query.Where(c => c.ParentCategoryNewsId == parentCategoryId && !c.Deleted).OrderBy(x => x.DisplayOrder);
+
+                if (query == null)
+                    return null;
+                return query.ToList();
             });
         }
-        
+
         /// <summary>
         /// Inserts category
         /// </summary>
@@ -219,12 +208,11 @@ namespace Nop.Services.News
         {
             if (category == null)
                 throw new ArgumentNullException("category");
-            category.SiteId = _webHelper.CurrentSiteId;
+
             _categoryRepository.Insert(category);
 
             //cache
             _cacheManager.RemoveByPattern(CATEGORIES_PATTERN_KEY);
-            _cacheManager.RemoveByPattern("categorynews");
             _cacheManager.RemoveByPattern(NEWSCATEGORIES_PATTERN_KEY);
 
             //event notification
@@ -267,16 +255,13 @@ namespace Nop.Services.News
             string key = string.Format(NEWSCATEGORIES_ALLBYCATEGORYID_KEY, showHidden, categoryId, pageIndex, pageSize);
             return _cacheManager.Get(key, () =>
             {
-                using (var transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted }))
-                {
-                    var query = from pc in _newsCategoryRepository.Table
-                                join p in _newsRepository.Table on pc.NewsId equals p.Id
-                                where pc.CategoryNewsId == categoryId &&
-                                      (showHidden || p.Published)
-                                select pc;
-                    var newsCategories = new PagedList<NewsCategoryNews>(query, pageIndex, pageSize);
-                    return newsCategories;
-                }
+                var query = from pc in _newsCategoryRepository.Table
+                            join p in _newsRepository.Table on pc.NewsId equals p.Id
+                            where pc.CategoryNewsId == categoryId &&
+                                  (showHidden || p.Published)
+                            select pc;
+                var newsCategories = new PagedList<NewsCategoryNews>(query, pageIndex, pageSize);
+                return newsCategories;
             });
         }
 
@@ -294,18 +279,15 @@ namespace Nop.Services.News
             string key = string.Format(NEWSCATEGORIES_ALLBYNEWSID_KEY, showHidden, newsId);
             return _cacheManager.Get(key, () =>
             {
-                using (var transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted }))
-                {
-                    var query = from pc in _newsCategoryRepository.Table
-                                join c in _newsRepository.Table on pc.NewsId equals c.Id
-                                where pc.NewsId == newsId &&
-                                      (showHidden || c.Published)
-                                select pc;
+                var query = from pc in _newsCategoryRepository.Table
+                            join c in _newsRepository.Table on pc.NewsId equals c.Id
+                            where pc.NewsId == newsId &&
+                                  (showHidden || c.Published)
+                            select pc;
 
-                    if (query == null)
-                        return null;
-                    return query.ToList();                    
-                }
+                if (query == null)
+                    return null;
+                return query.ToList();
             });
         }
 
@@ -322,10 +304,7 @@ namespace Nop.Services.News
             string key = string.Format(NEWSCATEGORIES_BY_ID_KEY, newsCategoryId);
             return _cacheManager.Get(key, () =>
             {
-                using (var transaction = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted }))
-                {
-                    return _newsCategoryRepository.GetById(newsCategoryId);
-                }
+                return _newsCategoryRepository.GetById(newsCategoryId);
             });
         }
 
@@ -337,7 +316,7 @@ namespace Nop.Services.News
         {
             if (newsCategory == null)
                 throw new ArgumentNullException("newsCategoryMap");
-           
+
             _newsCategoryRepository.Insert(newsCategory);
 
             //cache
@@ -369,14 +348,6 @@ namespace Nop.Services.News
             _eventPublisher.EntityUpdated(newsCategory);
         }
 
-        public virtual IList<CategoryNews> GetAll()
-        {
-                    var query = _categoryRepository.Table;
-                    query = query.Where(c => !c.Deleted && c.SiteId == _webHelper.CurrentSiteId);
-                    query = query.OrderBy(c => c.ParentCategoryNewsId).ThenBy(c => c.DisplayOrder);
-                    return query.ToList();          
-        }
-        
         #endregion
 
     }
