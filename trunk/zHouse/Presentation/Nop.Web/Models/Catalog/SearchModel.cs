@@ -88,5 +88,7 @@ namespace Nop.Web.Models.Catalog
         public IList<int> DistrictIds { get; set; }
         public IList<int> Mids { get; set; }
         public IList<int> SelectedOptionIds { get; set; }
+
+        public bool IsProject { get; set; }
     }
 }

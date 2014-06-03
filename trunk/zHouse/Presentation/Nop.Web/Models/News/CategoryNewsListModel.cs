@@ -1,16 +1,23 @@
-﻿using System.Web.Mvc;
-using Nop.Web.Framework;
-using Nop.Web.Framework.Mvc;
-using Telerik.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Nop.Core.Domain.Catalog;
+using Nop.Core.Domain.News;
 
-namespace Nop.Admin.Models.News
+namespace Nop.Web.Models.News
 {
-    public partial class CategoryNewsListModel : BaseNopModel
+    public partial class CategoryNewsListModel
     {
-        [NopResourceDisplayName("Admin.ContentManagement.News.List.SearchNewsTitle")]
-        [AllowHtml]
-        public string SearchCategoryName { get; set; }
+        public CategoryNewsListModel()
+        {
+            CheckedCategoryNewsId = 0;
+            CategoryNews = new List<CategoryNews>();
+        }
 
-        public GridModel<CategoryNewsModel> Categories { get; set; }
+        public int WorkingLanguageId { get; set; }
+        public IList<CategoryNews> CategoryNews { get; set; }
+        public int CheckedCategoryNewsId { get; set; }
     }
+    
 }

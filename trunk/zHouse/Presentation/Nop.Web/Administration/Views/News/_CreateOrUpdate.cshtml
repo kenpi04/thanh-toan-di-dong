@@ -1,23 +1,33 @@
-﻿@model NewsItemModel
-@using Telerik.Web.Mvc.UI
+﻿@*
+/// <summary>
+/// Create or Update News
+/// 
+/// Revision History
+/// Date			Author		                    Reason for Change
+/// -----------------------------------------------------------
+///                 NopCommerce                     Created.
+/// 
+///
+/// </summary>
+*@
+
+@model NewsItemModel
+
+@using Telerik.Web.Mvc.UI;
 @Html.ValidationSummary(true)
 @Html.HiddenFor(model => model.Id)
-
-@Html.Telerik().TabStrip().Name("news-edit").Items(x =>
+@Html.Telerik().TabStrip().Name("News-edit").Items(x =>
 {
-    x.Add().Text(T("Admin.ContentManagement.News.NewsItems.Info").Text).Content(TabInfo().ToHtmlString());
-    x.Add().Text(T("Admin.Common.SEO").Text).Content(TabSeo().ToHtmlString());
-    x.Add().Text(T("Admin.ContentManagement.News.NewsItems.Stores").Text).Content(TabStores().ToHtmlString());
+    x.Add().Text("Info").Content(TabInfo().ToHtmlString()).Selected(true);
+    x.Add().Text("News Category News").Content(TabMapping().ToHtmlString());
+  
 
     //generate an event
-    EngineContext.Current.Resolve<IEventPublisher>().Publish(new AdminTabStripCreated(x, "news-edit"));
-}).ClientEvents(events => events.OnSelect("telerik_on_tab_select")).SetSelectedTabIndex(GetSelectedTabIndex())
-
-@*save selected tab index*@
-<input type="hidden" id="selected-tab-index" name="selected-tab-index" value="@(GetSelectedTabIndex())">
+    EngineContext.Current.Resolve<IEventPublisher>().Publish(new AdminTabStripCreated(x, "News-edit"));
+})
 
 @helper TabInfo()
-{
+    { 
     <table class="adminContent">
         <tr>
             <td class="adminTitle">
@@ -56,11 +66,30 @@
         </tr>
         <tr>
             <td class="adminTitle">
+                @Html.NopLabelFor(model => model.PictureId)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.PictureId)
+                @Html.ValidationMessageFor(model => model.PictureId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
                 @Html.NopLabelFor(model => model.AllowComments):
             </td>
             <td class="adminData">
                 @Html.EditorFor(model => model.AllowComments)
                 @Html.ValidationMessageFor(model => model.AllowComments)
+            </td>
+        </tr>
+
+         <tr style="display:none">
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.LimitedToStores):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.LimitedToStores)
+               
             </td>
         </tr>
         <tr>
@@ -90,100 +119,75 @@
                 @Html.ValidationMessageFor(model => model.Published)
             </td>
         </tr>
+      
+         <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.SeName):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.SeName)
+            @Html.ValidationMessageFor(model => model.SeName)
+        </td>
+    </tr>
+
+
     </table>
 }
 
-@helper TabSeo()
-{
-    <table class="adminContent">
-        <tr>
-            <td class="adminTitle">
-                @Html.NopLabelFor(model => model.MetaKeywords):
-            </td>
-            <td class="adminData">
-                @Html.EditorFor(x => x.MetaKeywords)
-                @Html.ValidationMessageFor(model => model.MetaKeywords)
-            </td>
-        </tr>
-        <tr>
-            <td class="adminTitle">
-                @Html.NopLabelFor(model => model.MetaDescription):
-            </td>
-            <td class="adminData">
-                @Html.EditorFor(x => x.MetaDescription)
-                @Html.ValidationMessageFor(model => model.MetaDescription)
-            </td>
-        </tr>
-        <tr>
-            <td class="adminTitle">
-                @Html.NopLabelFor(model => model.MetaTitle):
-            </td>
-            <td class="adminData">
-                @Html.EditorFor(x => x.MetaTitle)
-                @Html.ValidationMessageFor(model => model.MetaTitle)
-            </td>
-        </tr>
-        <tr>
-            <td class="adminTitle">
-                @Html.NopLabelFor(model => model.SeName):
-            </td>
-            <td class="adminData">
-                @Html.EditorFor(model => model.SeName)
-                @Html.ValidationMessageFor(model => model.SeName)
-            </td>
-        </tr>
-    </table>
-}
-@helper TabStores()
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            $("#@Html.FieldIdFor(model => model.LimitedToStores)").click(toggleStoreMapping);
-
-            toggleStoreMapping();
-        });
-
-
-        function toggleStoreMapping() {
-            if ($('#@Html.FieldIdFor(model => model.LimitedToStores)').is(':checked')) {
-                $('#pnl-available-stores').show();
+@helper TabMapping()
+    {        
+        if (Model.Id > 0)
+        {
+            if (Model.NumberOfAvailableCategories > 0)
+            {
+                @(Html.Telerik().Grid<NewsItemModel.CateNewsMapModel>()
+                    .Name("newscategories-grid")
+                       .DataKeys(keys =>
+                       {
+                           keys.Add(x => x.Id);
+                       })
+                       .DataBinding(dataBinding =>
+                       {
+                           dataBinding.Ajax()
+                               .Select("NewsCateList", "News", new { newsId = Model.Id })
+                               .Insert("NewsCateInsert", "News", new { newsId = Model.Id })
+                               .Update("NewsCateUpdate", "News")
+                               .Delete("NewsCateDelete", "News");
+                       })
+                       .Columns(columns =>
+                       {
+                           columns.Bound(x => x.NewsCate)
+                               .Width(500)
+                               .Centered();
+                           
+                           columns.Command(commands =>
+                           {
+                               commands.Edit();
+                               commands.Delete();
+                           })
+                           .Width(180);
+                       })
+                       .ToolBar(commands => commands.Insert())
+                       .ClientEvents(events => events.OnEdit("onNewsCategoryEdit"))
+                       .EnableCustomBinding(true))
+    
+                <script type="text/javascript">
+                    function onNewsCategoryEdit(e) {
+                        $(e.form).find('#Category').data('tDropDownList').select(function (dataItem) {
+                            return dataItem.Value == e.dataItem['CategoryNewsId'];
+                        });
+                    }
+                </script>
             }
-            else {
-                $('#pnl-available-stores').hide();
+            else
+            {
+                    @T("Admin.Catalog.News.Categories.NoCategoriesAvailable")
             }
         }
-
-    </script>
-    <table class="adminContent">
-        <tr>
-            <td class="adminTitle">
-                @Html.NopLabelFor(model => model.LimitedToStores):
-            </td>
-            <td class="adminData">
-                @Html.EditorFor(model => model.LimitedToStores)
-                @Html.ValidationMessageFor(model => model.LimitedToStores)
-            </td>
-        </tr>
-        <tr id="pnl-available-stores">
-            <td class="adminTitle">
-                @Html.NopLabelFor(model => model.AvailableStores):
-            </td>
-            <td class="adminData">
-                @if (Model.AvailableStores != null && Model.AvailableStores.Count > 0)
-                {
-                    foreach (var store in Model.AvailableStores)
-                    {
-                    <div>
-                        <input type="checkbox" name="SelectedStoreIds" value="@store.Id" checked="@(Model.SelectedStoreIds != null && Model.SelectedStoreIds.Contains(store.Id))" />@store.Name
-                    </div>
-                    }
-                }
-                else
-                {
-                    <div>No stores defined</div>
-                }</td>
-        </tr>
-    </table>
+        else
+        {
+            @T("Admin.Catalog.News.Categories.SaveBeforeEdit")
+        }
+        
 }
 

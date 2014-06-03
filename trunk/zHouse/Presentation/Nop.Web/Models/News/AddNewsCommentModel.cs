@@ -6,14 +6,17 @@ namespace Nop.Web.Models.News
 {
     public partial class AddNewsCommentModel : BaseNopModel
     {
-        [NopResourceDisplayName("News.Comments.CommentTitle")]
+        [NopResourceDisplayName("Web.News.Comments.CommentTitle")]
         [AllowHtml]
         public string CommentTitle { get; set; }
 
-        [NopResourceDisplayName("News.Comments.CommentText")]
+        [NopResourceDisplayName("Web.News.Comments.CommentContent")]
         [AllowHtml]
         public string CommentText { get; set; }
 
         public bool DisplayCaptcha { get; set; }
+        [NopResourceDisplayName("Web.News.Comments.CommentName")]
+        [AllowHtml]
+        public string AppName { get; set; }
     }
 }

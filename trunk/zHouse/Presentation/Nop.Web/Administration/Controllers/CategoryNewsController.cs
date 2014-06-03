@@ -19,6 +19,7 @@ using Nop.Web.Framework.Controllers;
 using Telerik.Web.Mvc;
 using Telerik.Web.Mvc.UI;
 using Nop.Services.Seo;
+using Nop.Web.Framework;
 
 namespace Nop.Admin.Controllers
 {
@@ -78,23 +79,27 @@ namespace Nop.Admin.Controllers
         [NonAction]
         protected void UpdateLocales(CategoryNews category, CategoryNewsModel model)
         {
-            foreach (var localized in model.Locales)
-            {
-                _localizedEntityService.SaveLocalizedValue(category,
-                                                               x => x.Name,
-                                                               localized.Name,
-                                                               localized.LanguageId);
+            //foreach (var localized in model.Locales)
+            //{
+            //    _localizedEntityService.SaveLocalizedValue(category,
+            //                                                   x => x.Name,
+            //                                                   localized.Name,
+            //                                                   localized.LanguageId);
 
-                _localizedEntityService.SaveLocalizedValue(category,
-                                                           x => x.MetaTitle,
-                                                           localized.MetaTitle,
-                                                           localized.LanguageId);
-            }
+            //    _localizedEntityService.SaveLocalizedValue(category,
+            //                                               x => x.MetaTitle,
+            //                                               localized.MetaTitle,
+            //                                               localized.LanguageId);
+            //}
         }
 
         #endregion
 
         #region List
+        public ActionResult a()
+        {
+            return View();
+        }
         public ActionResult Index()
         {
             return RedirectToAction("List");
@@ -104,7 +109,7 @@ namespace Nop.Admin.Controllers
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
                 return AccessDeniedView();
-            Permission();
+            //Permission();
             var model = new CategoryNewsListModel();
             var category = _categoryService.GetAllCategories(null, 0, _adminAreaSettings.GridPageSize, true);
             model.Categories = new GridModel<CategoryNewsModel>
@@ -133,7 +138,7 @@ namespace Nop.Admin.Controllers
                 Data = categories.Select(x =>
                 {
                     var categoryModel = x.ToModel();
-                    categoryModel.Breadcrumb = x.GetCategoryBreadCrumb(_categoryService);
+                  //  categoryModel.Breadcrumb = x.GetCategoryBreadCrumb(_categoryService);
                     return categoryModel;
                 }),
                 Total = categories.TotalCount
@@ -154,7 +159,7 @@ namespace Nop.Admin.Controllers
                 selectList.Add(new SelectListItem()
                 {
                     Value = c.Id.ToString(),
-                    Text = c.GetCategoryBreadCrumb(_categoryService),
+                    Text = c.Name,
                     Selected = c.Id == selectedId
                 });
 
@@ -265,7 +270,7 @@ namespace Nop.Admin.Controllers
                 var category = model.ToEntity();
                 category.CreatedOnUtc = DateTime.UtcNow;
                 category.UpdatedOnUtc = DateTime.UtcNow;
-                string SeName = category.ValidateSeName("", Nop.Web.Framework.Extensions.RemoveSign4VietnameseString(category.Name), true);
+                string SeName = category.ValidateSeName("", category.Name.RemoveSign4VietnameseString(), true);
                 _urlRecordService.SaveSlug(category,SeName,0);
                 _categoryService.InsertCategory(category);
 
@@ -288,7 +293,7 @@ namespace Nop.Admin.Controllers
                 if (parentCategory != null && !parentCategory.Deleted)
                     model.ParentCategories.Add(
                         new DropDownItem { 
-                            Text = parentCategory.GetCategoryBreadCrumb(_categoryService), 
+                            Text = parentCategory.GetCategoryBreadCrumb(_categoryService),
                             Value = parentCategory.Id.ToString() });
                 else
                     model.ParentCategoryNewsId = 0;
@@ -319,7 +324,7 @@ namespace Nop.Admin.Controllers
                 var parentCategory = _categoryService.GetCategoryById(model.ParentCategoryNewsId);
                 if (parentCategory != null && !parentCategory.Deleted)
                     model.ParentCategories.Add(new DropDownItem { 
-                        Text = parentCategory.GetCategoryBreadCrumb(_categoryService), 
+                       // Text = parentCategory.GetCategoryBreadCrumb(_categoryService), 
                         Value = parentCategory.Id.ToString() });
                 else
                     model.ParentCategoryNewsId = 0;
@@ -327,8 +332,8 @@ namespace Nop.Admin.Controllers
             //locales
             AddLocales(_languageService, model.Locales, (locale, languageId) =>
             {
-                locale.Name = category.GetLocalized(x => x.Name, languageId, false, false);
-                locale.MetaTitle = category.GetLocalized(x => x.MetaTitle, languageId, false, false);
+               // locale.Name = category.GetLocalized(x => x.Name, languageId, false, false);
+                //locale.MetaTitle = category.GetLocalized(x => x.MetaTitle, languageId, false, false);
             });
             return View(model);
         }
@@ -347,7 +352,7 @@ namespace Nop.Admin.Controllers
             if (ModelState.IsValid)
             {
                 //2012-09-13 HUNGLAI ADD STT Update last User Update this category
-                model.CreatedBy = category.CreatedBy;
+              //  model.CreatedBy = category.CreatedOnUtc;
                 // 03.12.2012 Chuyển sang dùng email thay vì user cập nhật cuối cùng trong hàm Edit()
                 var email = _workContext.CurrentCustomer.Email;
                 if (email == null)
@@ -385,7 +390,7 @@ namespace Nop.Admin.Controllers
                 //No manufacturer found with the specified id
                 return RedirectToAction("List");
             //2012-09-12 HUNGLAI ADD STT - Update User Delete
-            category.UpdatedBy = _workContext.CurrentCustomer.Email;
+            //category.UpdatedBy = _workContext.CurrentCustomer.Email;
             //2012-09-12 HUNGLAI ADD END
             _categoryService.DeleteCategory(category);
 

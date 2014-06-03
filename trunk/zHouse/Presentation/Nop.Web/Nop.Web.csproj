@@ -300,12 +300,14 @@
     <Compile Include="Models\Cms\RenderWidgetModel.cs" />
     <Compile Include="Models\News\AddNewsCommentModel.cs" />
     <Compile Include="Models\News\CategoryNewsListModel.cs" />
-    <Compile Include="Models\News\CategoryNewsModel.cs" />
+    <Compile Include="Models\News\FNewsItemListModel.cs" />
+    <Compile Include="Models\News\FNewsListModel.cs" />
+    <Compile Include="Models\News\FProductComentListModel.cs" />
     <Compile Include="Models\News\HomePageNewsItemsModel.cs" />
     <Compile Include="Models\News\NewsCommentModel.cs" />
-    <Compile Include="Models\News\NewsPagingFilteringModel.cs" />
     <Compile Include="Models\News\NewsItemListModel.cs" />
     <Compile Include="Models\News\NewsItemModel.cs" />
+    <Compile Include="Models\News\NewsPagingFilteringModel.cs" />
     <Compile Include="Models\Customer\AccountActivationModel.cs" />
     <Compile Include="Models\Newsletter\SubscriptionActivationModel.cs" />
     <Compile Include="Models\Newsletter\NewsletterBoxModel.cs" />
@@ -1821,13 +1823,19 @@
     <Content Include="Views\Shared\_ProductListPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Catalog\SearchProductBox.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Catalog\ProductDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_ColumnTwoRight.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Catalog\SearchBoxLeft.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Catalog\ProjectSearchBoxLeft.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Catalog\ProjectCatalogTemplate.ProductsInGridOrLines.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -16,12 +16,30 @@
     </div>
 </div>
 <table width="100%">
-    <tr>
+    @*<tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.SearchStoreId):
         </td>
         <td class="adminData">
             @Html.DropDownList("SearchStoreId", Model.AvailableStores)
+        </td>
+    </tr>*@
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.SearchTileName):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => Model.SearchTileName)
+        </td>
+        
+    </tr>
+    <tr>
+     <td class="adminTitle">
+            @Html.NopLabelFor(model => model.SearchCategoryName):
+        </td>
+        <td class="adminData">
+           @* @Html.EditorFor(model => model.SearchCategoryName)*@
+           @Html.DropDownListFor(model => model.SearchCategoryName, (IEnumerable<SelectListItem>)ViewBag.ListCates,"Chọn danh mục")
         </td>
     </tr>
     <tr>
@@ -92,10 +110,26 @@
         });
     });
 
+    //function onDataBinding(e) {
+    //    var searchModel = {
+    //        SearchStoreId: $('#SearchStoreId').val()
+    //    };
+    //    e.data = searchModel;
+    //}
+
+    $("#@Html.FieldIdFor(model => model.SearchTileName)").keydown(function (event) {
+        if (event.keyCode == 13) {
+            $("#btnSearch").click();
+            return false;
+        }
+    });
+
     function onDataBinding(e) {
         var searchModel = {
-            SearchStoreId: $('#SearchStoreId').val()
+            SearchTileName: $("#@Html.FieldIdFor(model => model.SearchTileName)").val(),
+            SearchCategoryName: $("#@Html.FieldIdFor(model => model.SearchCategoryName)").val()
         };
         e.data = searchModel;
     }
+
 </script>

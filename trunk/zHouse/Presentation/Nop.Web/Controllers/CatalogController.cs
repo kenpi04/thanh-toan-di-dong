@@ -2824,7 +2824,7 @@ namespace Nop.Web.Controllers
             var products = _compareProductsService.GetComparedProducts();
 
             //ACL and store mapping
-            products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
+           // products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
 
             //prepare model
             PrepareProductOverviewModels(products, prepareSpecificationAttributes: true)
@@ -3721,10 +3721,15 @@ namespace Nop.Web.Controllers
             return PartialView("_ProductListPartial", model);
   
         }
-        private void PreparingSearchModel(SearchModel model)
+        private void PreparingSearchModel(SearchModel model,bool isproject=false)
         {
+            IList<Category> cate=null;
+            if (!isproject)
+                cate = _categoryService.GetAllCategories().ToList();
+            else
+                cate = _categoryService.GetAllCategoriesByParentCategoryId(2);
            
-            model.AvailableCategories = _categoryService.GetAllCategories().ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+            model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
             model.AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
             model.Districts = _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
             model.Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectDistrict"), Selected = true, Value = "0" });
@@ -3763,13 +3768,15 @@ namespace Nop.Web.Controllers
            
         }
         [ChildActionOnly]
-        public ActionResult SearchBoxLeft()
+        public ActionResult SearchBoxLeft(bool isProject=false)
         {
             var model = new SearchModel();
-            PreparingSearchModel(model);
+            PreparingSearchModel(model,isProject);
             model.Districts.RemoveAt(0);
             model.AvailableCategories.RemoveAt(0);
-            return PartialView("SearchProductBox",model);
+            if (isProject)
+                return PartialView("ProjectSearchBoxLeft",model);
+            return PartialView("SearchBoxLeft",model);
         }
         [NonAction]
         public string GetShortDes(string input)

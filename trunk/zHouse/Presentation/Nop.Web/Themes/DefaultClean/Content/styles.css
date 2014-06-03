@@ -804,9 +804,9 @@ a.eu-cookie-privacyinfo-tag{color:#B80709 !important;text-decoration:underline;}
 /* SEARCH */
 .search-page{}
 .search-page .page-title{}
-.search-page .search-input { border: 1px solid #D7D7D7; padding: 10px; float: left; width: 230px; }
+ .search-input { border: 1px solid #D7D7D7; padding: 10px; float: left; width: 230px; }
 .search-page .search-input .buttons{text-align:right;}
-.search-page .search-results{padding-top:10px;float:left;width:640px;margin-left:10px}
+ .search-results{padding-top:10px;float:left;width:640px;margin-left:10px}
 .search-page .search-results .result{font-weight:700;color:#555;}
 .search-page .basic-search label{line-height:25px;}
 .search-page .search-text{width:560px;}

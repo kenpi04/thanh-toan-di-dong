@@ -109,7 +109,7 @@ namespace Nop.Web.Controllers
             model.AllowComments = newsItem.AllowComments;
             model.CreatedOn = _dateTimeHelper.ConvertToUserTime(newsItem.CreatedOnUtc, DateTimeKind.Utc);
             model.NumberOfComments = newsItem.CommentCount;
-            model.AddNewComment.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage;
+         //  model.AddNewComment.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage;
             if (prepareComments)
             {
                 var newsComments = newsItem.NewsComments.OrderBy(pr => pr.CreatedOnUtc);
@@ -119,21 +119,21 @@ namespace Nop.Web.Controllers
                     {
                         Id = nc.Id,
                         CustomerId = nc.CustomerId,
-                        CustomerName = nc.Customer.FormatUserName(),
+                       // CustomerName = nc.Customer.FormatUserName(),
                         CommentTitle = nc.CommentTitle,
                         CommentText = nc.CommentText,
                         CreatedOn = _dateTimeHelper.ConvertToUserTime(nc.CreatedOnUtc, DateTimeKind.Utc),
-                        AllowViewingProfiles = _customerSettings.AllowViewingProfiles && nc.Customer != null && !nc.Customer.IsGuest(),
+                       // AllowViewingProfiles = _customerSettings.AllowViewingProfiles && nc.Customer != null && !nc.Customer.IsGuest(),
                     };
                     if (_customerSettings.AllowCustomersToUploadAvatars)
                     {
-                        commentModel.CustomerAvatarUrl = _pictureService.GetPictureUrl(
-                            nc.Customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 
-                            _mediaSettings.AvatarPictureSize, 
-                            _customerSettings.DefaultAvatarEnabled,
-                            defaultPictureType:PictureType.Avatar);
+                        //commentModel.CustomerAvatarUrl = _pictureService.GetPictureUrl(
+                        //    nc.Customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 
+                        //    _mediaSettings.AvatarPictureSize, 
+                        //    _customerSettings.DefaultAvatarEnabled,
+                        //    defaultPictureType:PictureType.Avatar);
                     }
-                    model.Comments.Add(commentModel);
+                   // model.Comments.Add(commentModel);
                 }
             }
         }
@@ -169,8 +169,8 @@ namespace Nop.Web.Controllers
             //Furthermore, we just don't need it for home page news. So let's reset it.
             //But first we need to clone the cached model (the updated one should not be cached)
             var model = (HomePageNewsItemsModel)cachedModel.Clone();
-            foreach (var newsItemModel in model.NewsItems)
-                newsItemModel.Comments.Clear();
+            //foreach (var newsItemModel in model.NewsItems)
+            //    newsItemModel.Comments.Clear();
             return PartialView(model);
         }
 
@@ -180,23 +180,23 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("HomePage");
 
             var model = new NewsItemListModel();
-            model.WorkingLanguageId = _workContext.WorkingLanguage.Id;
+           // model.WorkingLanguageId = _workContext.WorkingLanguage.Id;
 
             if (command.PageSize <= 0) command.PageSize = _newsSettings.NewsArchivePageSize;
             if (command.PageNumber <= 0) command.PageNumber = 1;
 
             var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id,
                 command.PageNumber - 1, command.PageSize);
-            model.PagingFilteringContext.LoadPagedList(newsItems);
+          //  model.PagingFilteringContext.LoadPagedList(newsItems);
 
-            model.NewsItems = newsItems
-                .Select(x =>
-                {
-                    var newsModel = new NewsItemModel();
-                    PrepareNewsItemModel(newsModel, x, false);
-                    return newsModel;
-                })
-                .ToList();
+            //model.NewsItems = newsItems
+            //    .Select(x =>
+            //    {
+            //        var newsModel = new NewsItemModel();
+            //        PrepareNewsItemModel(newsModel, x, false);
+            //        return newsModel;
+            //    })
+            //    .ToList();
 
             return View(model);
         }
@@ -273,8 +273,8 @@ namespace Nop.Web.Controllers
                 {
                     NewsItemId = newsItem.Id,
                     CustomerId = _workContext.CurrentCustomer.Id,
-                    CommentTitle = model.AddNewComment.CommentTitle,
-                    CommentText = model.AddNewComment.CommentText,
+                    //CommentTitle = model.AddNewComment.CommentTitle,
+                   // CommentText = model.AddNewComment.CommentText,
                     CreatedOnUtc = DateTime.UtcNow,
                 };
                 newsItem.NewsComments.Add(comment);
