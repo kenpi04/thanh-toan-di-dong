@@ -19,19 +19,30 @@
                 levelClass = "firstLevel";
                 <div class="top-menu-triangle"></div>
             }
-           
-                <ul class="sublist @levelClass">
-                   @* @foreach (var subCategory in  category.SubCategories)
-                    {
-                        @RenderCategoryLine(subCategory, level + 1)
-                    }*@
+             <div class="sublist">
+                <ul>
+                    <li><b>Theo địa điểm</b></li>
                     @foreach(var d in Model.Districts)
                     {
-                    <li>
-                        <a href="@Url.Action("ProductSearch", new {DistrictId=d.Value })">@d.Text</a>
-                    </li>
+                        <li><a href="#">@d.Text</a></li>
                     }
                 </ul>
+                <ul>
+                    <li>Theo loại</li>
+                    @foreach (var subCategory in  category.SubCategories)
+                    {
+                        <li><a href="">@subCategory.Name</a></li>
+                    }
+                  
+                </ul>
+                <ul>
+                    <li><b>Giá</b></li>
+                    @foreach (var d in Model.PriceRange)
+                    {
+                        <li><a href="#">@d.Text</a></li>
+                    }
+                </ul>
+            </div>
             
         }
     </li>
