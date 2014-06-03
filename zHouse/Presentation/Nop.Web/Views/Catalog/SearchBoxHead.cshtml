@@ -1,0 +1,28 @@
+﻿@model Nop.Web.Models.Catalog.SearchModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frmSearchHead" }))
+{
+    <div>
+       <span>
+           @Html.DropDownListFor(x=>x.DistrictId,Model.Districts)
+       </span>
+        <span>
+            @Html.DropDownListFor(x=>x.PriceString,Model.PriceRange)
+        </span>
+        <span>
+            @Html.DropDownListFor(x=>x.Cid,Model.AvailableCategories)
+        </span>
+        <span>
+            @Html.DropDownListFor(x=>x.SelectedOptionIds,Model.BedRooms,"Số phòng ngủ")
+        </span>
+        <span>
+            @Html.DropDownListFor(x=>x.SelectedOptionIds,Model.BadRooms,"Số phòng tắm")
+        </span>
+        <span>
+            <input type="submit" value="Tìm kiếm" />
+        </span>
+    </div>
+}

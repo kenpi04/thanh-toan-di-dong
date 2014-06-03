@@ -19,15 +19,20 @@
                 levelClass = "firstLevel";
                 <div class="top-menu-triangle"></div>
             }
-            if (category.SubCategories.Count > 0)
-            {
+           
                 <ul class="sublist @levelClass">
-                    @foreach (var subCategory in  category.SubCategories)
+                   @* @foreach (var subCategory in  category.SubCategories)
                     {
                         @RenderCategoryLine(subCategory, level + 1)
+                    }*@
+                    @foreach(var d in Model.Districts)
+                    {
+                    <li>
+                        <a href="@Url.Action("ProductSearch", new {DistrictId=d.Value })">@d.Text</a>
+                    </li>
                     }
                 </ul>
-            }
+            
         }
     </li>
 }

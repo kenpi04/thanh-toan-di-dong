@@ -24,6 +24,8 @@ namespace Nop.Web.Models.Catalog
             Districts = new List<SelectListItem>();
             Cids = new List<int>();
             Mids = new List<int>();
+            BedRooms = new List<SelectListItem>();
+            BadRooms = new List<SelectListItem>();
         }
 
         public string Warning { get; set; }
@@ -88,7 +90,8 @@ namespace Nop.Web.Models.Catalog
         public IList<int> DistrictIds { get; set; }
         public IList<int> Mids { get; set; }
         public IList<int> SelectedOptionIds { get; set; }
-
+        public IList<SelectListItem> BadRooms { get; set; }
+        public IList<SelectListItem> BedRooms { get; set; }
         public bool IsProject { get; set; }
     }
 }

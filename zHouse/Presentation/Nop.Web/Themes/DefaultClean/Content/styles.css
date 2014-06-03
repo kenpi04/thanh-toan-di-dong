@@ -91,12 +91,12 @@ ul.language-list li:hover{cursor:pointer;}
 .header-menu .top-menu li:last-child{background:none;}
 .header-menu .top-menu li a{min-height:20px;display:block;line-height:20px;text-transform:uppercase;margin-bottom:9px;white-space:nowrap;padding:0 5px;}
 .header-menu .top-menu li a.hover{background:#696969;}
-.header-menu .top-menu li .sublist{position:absolute;background-color:#404040;background-image:url(images/top-menu-background.png);background-repeat:no-repeat;border:3px double #696969;margin-left:-10px;z-index:9;display:none;margin-left:-15px;white-space:nowrap;}
+.header-menu .top-menu li .sublist{position:absolute;background-color:#404040;background-image:url(images/top-menu-background.png);background-repeat:no-repeat;border:3px double #696969;margin-left:-10px;z-index:9;display:none;margin-left:-15px;white-space:nowrap;width:600px}
 .header-menu .top-menu li .sublist.active{display:block}
 .header-menu .top-menu li .sublist.firstLevel{}
 .header-menu .top-menu li .sublist .sublist.active{left:100px;margin-top:-30px;top:auto;}
 .header-menu .top-menu .sublist li a{text-transform:none;min-height:22px;margin:0 8px 0 28px;}
-.header-menu .top-menu .sublist li{background:url(images/top-menu-list-image.png) no-repeat 5% 8px;height:22px;margin:6px 5px;text-align:left;float:none;padding:0;} 
+.header-menu .top-menu .sublist li{background:url(images/top-menu-list-image.png) no-repeat 5% 8px;height:22px;margin:6px 5px;text-align:left;float:none;padding:0;width:100px;float:left} 
 .header-menu .top-menu .sublist li:hover{background:#696969 url(images/top-menu-list-image-hover.png) no-repeat 5% 8px;}
 .header-menu .top-menu-triangle.active{display:none;}
 .header-menu .top-menu-triangle{background:url(images/top-menu-triangle.png) no-repeat;margin-top:-9px;margin-left:10px;width:10px;height:5px;position:absolute;z-index:10;display:none;}
@@ -1292,4 +1292,4 @@ pre{white-space:pre-wrap;white-space:normal;word-wrap:break-word;}
 .detail-head .option {float:left;width:200px }
 .detail-head .price-box {background:#ddd;padding: 17px;line-height:20px}
 .detail-head ul li{padding:10px 0px }
-.detai-head .picture {float:left }
+.detail-head .picture {float:left }
