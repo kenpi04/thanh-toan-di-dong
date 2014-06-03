@@ -1243,8 +1243,10 @@ namespace Nop.Web.Controllers
                 Categories = cachedModel,
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
                 BlogEnabled = _blogSettings.Enabled,
-                ForumEnabled = _forumSettings.ForumsEnabled
+                ForumEnabled = _forumSettings.ForumsEnabled,
+                Districts=_stateProvinceService.GetDistHCM().ToSelectList(x=>x.Name,x=>x.Id.ToString())
             };
+
             return PartialView(model);
         }
         
@@ -3735,6 +3737,10 @@ namespace Nop.Web.Controllers
             model.Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectDistrict"), Selected = true, Value = "0" });
             model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList( x => _localizationService.GetResource("Product.Status.Enum." + x.ToString()),x => ((int)x).ToString());
             model.Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
+
+            model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
+            model.BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
+            
           
         }
 
@@ -3777,6 +3783,14 @@ namespace Nop.Web.Controllers
             if (isProject)
                 return PartialView("ProjectSearchBoxLeft",model);
             return PartialView("SearchBoxLeft",model);
+        }
+        [ChildActionOnly]
+        public ActionResult SearchBoxHead()
+        {
+
+            var model = new SearchModel();
+            PreparingSearchModel(model);
+            return View(model);
         }
         [NonAction]
         public string GetShortDes(string input)

@@ -14,6 +14,9 @@
         <div class="header-menu">
             @Html.Action("TopMenu", "Catalog")
         </div>
+        <div class="search-box">
+            @Html.Action("SearchBoxHead","Catalog")
+        </div>
         @Html.Widget("content_before")
         @*ajax loading window*@
         <div class="ajax-loading-block-window" id="ajax-loading" style="display: none">
@@ -21,6 +24,7 @@
             </div>
         </div>
         <div class="master-wrapper-main">
+            
             @RenderBody()
         </div>
         @Html.Widget("content_after")

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using Nop.Web.Framework.Mvc;
+
 
 namespace Nop.Web.Models.Catalog
 {
@@ -8,9 +10,11 @@ namespace Nop.Web.Models.Catalog
         public TopMenuModel()
         {
             Categories = new List<CategorySimpleModel>();
+            Districts = new List<SelectListItem>();
         }
 
         public IList<CategorySimpleModel> Categories { get; set; }
+        public IList<SelectListItem> Districts { get; set; }
 
         public bool BlogEnabled { get; set; }
         public bool RecentlyAddedProductsEnabled { get; set; }
