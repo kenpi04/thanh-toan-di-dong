@@ -17,5 +17,6 @@ namespace Nop.Web.Framework
                 return urlHelper.Action("Logout", "Customer", new { ReturnUrl = returnUrl });
             return urlHelper.Action("Logout", "Customer");
         }
+        
     }
 }
