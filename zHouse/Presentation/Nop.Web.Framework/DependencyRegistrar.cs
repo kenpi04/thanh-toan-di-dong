@@ -127,7 +127,8 @@ namespace Nop.Web.Framework
             builder.RegisterType<WebStoreContext>().As<IStoreContext>().InstancePerHttpRequest();
 
             //services
-            builder.RegisterType<CategoryNewsService>().As<CategoryNewsService>().InstancePerHttpRequest();
+
+            builder.RegisterType<CategoryNewsService>().As<ICategoryNewsService>().InstancePerHttpRequest();
             builder.RegisterType<BackInStockSubscriptionService>().As<IBackInStockSubscriptionService>().InstancePerHttpRequest();
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerHttpRequest();
             builder.RegisterType<CompareProductsService>().As<ICompareProductsService>().InstancePerHttpRequest();

@@ -2,17 +2,16 @@
 @using Telerik.Web.Mvc.UI;
 @using Nop.Core.Domain.Catalog;
 @using Nop.Services.News;
-@using Nop.Services.Catalog;
 
 @{    
-    var _categoryService = EngineContext.Current.Resolve<Nop.Services.Catalog.ICategoryService>();
+    var _categoryService = EngineContext.Current.Resolve<Nop.Services.News.ICategoryNewsService>();
     var allCategories = _categoryService.GetAllCategories();
     
 
     var categoryList = new List<SelectListItem>();
     foreach (var c in allCategories)
     {
-        var name = _categoryService.GetCategoryById(c.Id).GetFormattedBreadCrumb(_categoryService);
+        var name = _categoryService.GetCategoryById(c.Id).GetCategoryBreadCrumb(_categoryService);
         if (name != null)
         {
             //Telerik has an issue when quotes are used. That'why we manually remove all quotes

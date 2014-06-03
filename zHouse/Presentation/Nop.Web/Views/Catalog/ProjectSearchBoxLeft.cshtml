@@ -1,0 +1,30 @@
+﻿@model Nop.Web.Models.Catalog.SearchModel
+
+<div>
+    <div class="box-search">
+    <b>Theo vị trí</b>
+    <ul>
+        @foreach (var i in Model.Districts)
+        { 
+            <li>
+                <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />
+                <label for="ckDist_@i.Value">@i.Text</label>
+            </li>
+        }
+    </ul>
+        </div>
+        <div class="box-search">
+        <b>Căn hộ cao cấp</b>
+        <ul>
+            @foreach (var i in Model.AvailableManufacturers)
+            { 
+                <li>
+                    <input type="checkbox" name="@Model.Mids" value="@i.Value" id="Manu_@i.Value" />
+                    <label for="Manu_@i.Value">@i.Text</label>
+                </li>
+            }
+        </ul>
+        </div>
+  
+  
+</div>

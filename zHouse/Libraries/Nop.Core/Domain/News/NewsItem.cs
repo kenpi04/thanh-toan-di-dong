@@ -87,6 +87,8 @@ namespace Nop.Core.Domain.News
         /// </summary>
         public DateTime CreatedOnUtc { get; set; }
 
+        public int? PictureId { get; set; }
+
         /// <summary>
         /// Gets or sets the news comments
         /// </summary>

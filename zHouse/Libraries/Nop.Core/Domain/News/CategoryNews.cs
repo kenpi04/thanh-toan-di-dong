@@ -18,12 +18,12 @@ namespace Nop.Core.Domain.News
         /// <summary>
         /// Get or set the MetaKeywords
         /// </summary>
-        public virtual string MetaKeywords { get; set; }
+       // public virtual string MetaKeywords { get; set; }
 
         /// <summary>
         /// Get or set the MetaDescription
         /// </summary>
-        public virtual string MetaDescription { get; set; }
+       // public virtual string MetaDescription { get; set; }
 
         /// <summary>
         /// Get or set the Parent category news id

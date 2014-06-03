@@ -14,6 +14,9 @@
         @T("Admin.ContentManagement.News.Comments")
     </div>
     <div class="options">
+    <input type="button" id="approve-selected" class="t-button" value="@T("Admin.Catalog.ProductReviews.ApproveSelected")" />
+    <input type="button" id="disapprove-selected" class="t-button" value="@T("Admin.Catalog.ProductReviews.DisapproveSelected")" />
+    <input type="button" id="delete-selected" class="t-button" value="@T("Admin.Common.Delete.Selected")" />
     </div>
 </div>
 <table class="adminContent">
@@ -21,21 +24,26 @@
         <td>
             @(Html.Telerik().Grid<NewsCommentModel>()
                     .Name("comments-grid")
+                    .ClientEvents(events => events.OnDataBound("onDataBound"))
                     .DataKeys(x => {
                         x.Add(y => y.Id).RouteKey("Id");
                     })
                     .Columns(columns =>
                     {
                         columns.Bound(x => x.Id)
+                            .ClientTemplate("<input type='checkbox' name='checkedRecords' value='<#= Id #>' class='checkboxGroups'/>")
+                            .Title("<input id='mastercheckbox' type='checkbox'/>")
                             .Width(50);
                         columns.Bound(x => x.NewsItemTitle)
                             .Width(200)
                             .Template(x => Html.ActionLink(x.NewsItemTitle, "Edit", "News", new { id = x.NewsItemId }, new { }))
                             .ClientTemplate("<a href=\"" + @Url.Content("~/Admin/News/Edit/") + "<#= NewsItemId #>\"><#= NewsItemTitle #></a>");
-                        columns.Bound(x => x.CustomerId)
-                            .Width(100)
-                            .Template(x => Html.ActionLink(x.CustomerInfo, "Edit", "Customer", new { id = x.CustomerId }, new { }))
-                            .ClientTemplate("<a href=\"" + @Url.Content("~/Admin/Customer/Edit/") + "<#= CustomerId #>\"><#= CustomerInfo #></a>");
+                        columns.Bound(x => x.AppName)
+                            .Width(150);
+                        //columns.Bound(x => x.CustomerId)
+                        //    .Width(100)
+                        //    .Template(x => Html.ActionLink(x.CustomerInfo, "Edit", "Customer", new { id = x.CustomerId }, new { }))
+                        //    .ClientTemplate("<a href=\"" + @Url.Content("~/Admin/Customer/Edit/") + "<#= CustomerId #>\"><#= CustomerInfo #></a>");
                         columns.Bound(x => x.CommentTitle)
                             .Width(150)
                             .Centered();
@@ -43,29 +51,177 @@
                             .Width(350)
                             .Encoded(false)
                             .Centered();
+                        columns.Bound(x => x.IsApproved)
+                            .Template(
+                                @<img alt="" src="@Url.Content("~/Administration/Content/images/active-" + item.IsApproved.ToString().ToLowerInvariant() + ".gif")" />
+                            )
+                            .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= IsApproved #>.gif' />")
+                            .Centered()
+                            .Width(100);
                         columns.Bound(x => x.CreatedOn)
                             .Width(150)
                             .Centered();
-                        columns.Command(commands =>
-                        {
-                            commands.Delete().Text(T("Admin.Common.Delete").Text);
-                        }).Title(T("Admin.Common.Delete").Text).Width(50);
+                        //columns.Command(commands =>
+                        //{
+                        //    commands.Delete().Text(T("Admin.Common.Delete").Text);
+                        //}).Title(T("Admin.Common.Delete").Text).Width(50);
                     })
                     .Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
-                    .DataBinding(dataBinding => {
-                        var settingBuilder = dataBinding.Ajax();
-                        if (filterByNewsItemId.HasValue)
-                        {
-                            settingBuilder = settingBuilder.Select("Comments", "News", new { filterByNewsItemId = filterByNewsItemId.Value });
-                            settingBuilder = settingBuilder.Delete("CommentDelete", "News", new { filterByNewsItemId = filterByNewsItemId.Value });
-                        }
-                        else
-                        {
-                            settingBuilder = settingBuilder.Select("Comments", "News");
-                            settingBuilder = settingBuilder.Delete("CommentDelete", "News");
-                        }
-                    })
+                    //.DataBinding(dataBinding =>
+                    //{
+                    //    var settingBuilder = dataBinding.Ajax().Select("Comments", "News");
+                    //    if (filterByNewsItemId.HasValue)
+                    //    {
+                    //        settingBuilder = settingBuilder.Select("Comments", "News", new { filterByNewsItemId = filterByNewsItemId.Value });
+                    //        settingBuilder = settingBuilder.Delete("CommentDelete", "News", new { filterByNewsItemId = filterByNewsItemId.Value });
+                    //    }
+                    //    else
+                    //    {
+                    //        settingBuilder = settingBuilder.Select("Comments", "News");
+                    //        settingBuilder = settingBuilder.Delete("CommentDelete", "News");
+                    //    },
+                    //    dataBinding.Ajax().Select("Comments", "News");
+                    //})
+                    .DataBinding(dataBinding => dataBinding.Ajax().Select("Comments", "News"))
                     .EnableCustomBinding(true))
         </td>
     </tr>
 </table>
+<script type="text/javascript">
+    var selectedIds = [];
+    $(document).ready(function () {
+    });
+    $('#mastercheckbox').click(function () {
+        $('.checkboxGroups').attr('checked', $(this).is(':checked')).change();
+    });
+
+    $('#comments-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function (e) {
+        var $check = $(this);
+        if ($check.is(":checked") == true) {
+            var checked = jQuery.inArray($check.val(), selectedIds);
+            if (checked == -1) {
+                //add id to selectedIds.  
+                selectedIds.push($check.val());
+            }
+        }
+        else {
+            var checked = jQuery.inArray($check.val(), selectedIds);
+            if (checked > -1) {
+                //remove id from selectedIds.  
+                selectedIds = $.grep(selectedIds, function (item, index) {
+                    return item != $check.val();
+                });
+            }
+        }
+        updateMasterCheckbox();
+    });
+
+    @*function onDataBinding(e) {
+        var searchModel = {
+            CreatedOnFrom: $('#@Html.FieldIdFor(model => model.)').val(),
+                CreatedOnTo: $('#@Html.FieldIdFor(model => model.CreatedOnTo)').val()
+            };
+            e.data = searchModel;
+        }*@
+
+        function onDataBound(e) {
+
+            $('#comments-grid input[type=checkbox][id!=mastercheckbox]').each(function () {
+                var currentId = $(this).val();
+                var checked = jQuery.inArray(currentId, selectedIds);
+                //set checked based on if current checkbox's value is in selectedIds.  
+                $(this).attr('checked', checked > -1);
+            });
+
+            updateMasterCheckbox();
+        }
+
+        function updateMasterCheckbox() {
+            var numChkBoxes = $('#comments-grid input[type=checkbox][id!=mastercheckbox]').length;
+            var numChkBoxesChecked = $('#comments-grid input[type=checkbox][checked][id!=mastercheckbox]').length;
+            $('#mastercheckbox').attr('checked', numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
+        }
+
+        $('#approve-selected').click(function (e) {
+            e.preventDefault();
+
+            var postData = {
+                selectedIds: selectedIds
+            };
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("ApproveSelected", "News"))",
+                    data: postData,
+                    complete: function (data) {
+                        //reload grid
+                        var grid = $('#comments-grid').data('tGrid');
+                        //grid.currentPage = 1; //new search. Set page size to 1
+                        grid.ajaxRequest();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(thrownError);
+                    },
+                    traditional: true
+                });
+        return false;
+    });
+
+            //"disapprove selected" button
+    $('#disapprove-selected').click(function (e) {
+
+                e.preventDefault();
+
+                var postData = {
+                    selectedIds: selectedIds
+                };
+
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("DisapproveSelected", "News"))",
+                    data: postData,
+                    complete: function (data) {
+                        //reload grid
+                        var grid = $('#comments-grid').data('tGrid');
+                        //grid.currentPage = 1; //new search. Set page size to 1
+                        grid.ajaxRequest();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(thrownError);
+                    },
+                    traditional: true
+                });
+                return false;
+            });
+
+    //"disapprove selected" button
+    $('#delete-selected').click(function (e) {
+        e.preventDefault();
+        if (confirm('Bạn có chắc chắn xóa các lựa chọn đã chọn')) {
+            var postData = {
+                selectedIds: selectedIds
+            };
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("DeleteCommentSelected", "News"))",
+                data: postData,
+                complete: function (data) {
+                    //reload grid
+                    var grid = $('#comments-grid').data('tGrid');
+                    //grid.currentPage = 1; //new search. Set page size to 1
+                    grid.ajaxRequest();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(thrownError);
+                },
+                traditional: true
+            });
+            return false;
+        }
+        });
+    
+</script>

@@ -32,14 +32,19 @@
     </div>
     <div class="page-body">
         <div class="search-input">
-            @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct",LoadingElementId="ajax-loading" }, new {id="frmSearchLeft" }))
+            @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct",LoadingElementId="ajax-loading",OnSuccess="searchSuccess" }, new {id="frmSearchLeft" }))
             {
+                  
+                @Html.Action("SearchBoxLeft", new {isProject=Model.IsProject })
                 
-                @Html.Action("SearchBoxLeft")
                 <script>
                     $("#frmSearchLeft input[type=checkbox]").click(function () {
                         $("#frmSearchLeft").submit();
                     })
+                    function searchSuccess()
+                    {
+                            
+                    }
 
                 </script>
             }

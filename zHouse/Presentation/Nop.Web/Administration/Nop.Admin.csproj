@@ -135,6 +135,7 @@
   <ItemGroup>
     <Compile Include="AdminAreaRegistration.cs" />
     <Compile Include="Controllers\ActivityLogController.cs" />
+    <Compile Include="Controllers\BannerController.cs" />
     <Compile Include="Controllers\BaseNopController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CategoryNewsController.cs" />
@@ -210,6 +211,8 @@
     <Compile Include="Models\Common\MaintenanceModel.cs" />
     <Compile Include="Models\Common\SystemWarningModel.cs" />
     <Compile Include="Models\Common\SystemInfoModel.cs" />
+    <Compile Include="Models\Directory\BannerListModel.cs" />
+    <Compile Include="Models\Directory\BannerModel.cs" />
     <Compile Include="Models\Home\DashboardModel.cs" />
     <Compile Include="Models\News\CategoryNewsListModel.cs" />
     <Compile Include="Models\News\CategoryNewsModel.cs" />
@@ -321,6 +324,7 @@
     <Compile Include="Models\Settings\TaxSettingsModel.cs" />
     <Compile Include="Models\Cms\WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\News\CategoryNewsValidator.cs" />
     <Compile Include="Validators\Templates\ProductTemplateValidator.cs" />
     <Compile Include="Validators\Templates\ManufacturerTemplateValidator.cs" />
     <Compile Include="Validators\Templates\CategoryTemplateValidator.cs" />
@@ -1223,7 +1227,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\News\EditorTemplates\NewsCate.cshtml" />
-    <Content Include="Views\News\EditorTemplates\NewsCategory.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CategoryNews\Create.cshtml" />
+    <Content Include="Views\CategoryNews\Edit.cshtml" />
+    <Content Include="Views\CategoryNews\List.cshtml" />
+    <Content Include="Views\CategoryNews\Tree.cshtml" />
+    <Content Include="Views\CategoryNews\_CreateOrUpdate.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -79,5 +79,47 @@ namespace Nop.Admin.Models.News
 
         [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.CreatedOn")]
         public DateTime CreatedOn { get; set; }
+
+        public int NumberOfAvailableCategories { get; set; }
+
+        #region Nested classes
+
+        public partial class CategoryNewsMapModel : BaseNopEntityModel
+        {
+            [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.Category")]
+            [UIHint("NewsCate")]
+            public string Category { get; set; }
+
+            public int CategoryNewsId { get; set; }
+
+            public int NewsId { get; set; }
+
+            [NopResourceDisplayName("Admin.ContentManager.News.Categories.Fields.NewsTitle")]
+            public string NewsTitle { get; set; }
+        }
+
+        public partial class CateNewsMapModel : BaseNopEntityModel
+        {
+            [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.Category")]
+            [UIHint("NewsCate")]
+            public string NewsCate { get; set; }
+
+            public int CategoryId { get; set; }
+
+            public int NewsId { get; set; }
+
+            [NopResourceDisplayName("Admin.ContentManager.News.Categories.Fields.NewsTitle")]
+            public string NewsTitle { get; set; }
+        }
+
+
+        #endregion
+
+        [UIHint("Picture")]
+        [NopResourceDisplayName("Admin.News.Fields.Picture")]
+        public int PictureId { get; set; }
+
+        [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.IsMainNew")]
+        public bool IsMainNews { get; set; }
     }
 }
