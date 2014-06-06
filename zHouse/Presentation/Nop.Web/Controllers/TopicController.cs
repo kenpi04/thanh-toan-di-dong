@@ -5,6 +5,7 @@ using Nop.Services.Localization;
 using Nop.Services.Topics;
 using Nop.Web.Infrastructure.Cache;
 using Nop.Web.Models.Topics;
+using System.Collections.Generic;
 
 namespace Nop.Web.Controllers
 {
@@ -99,6 +100,13 @@ namespace Nop.Web.Controllers
 
             return PartialView(cacheModel);
         }
+
+        [ChildActionOnly]
+        public ActionResult TopicHomePage()
+        { 
+            return View();
+        }
+
 
         [HttpPost, ValidateInput(false)]
         public ActionResult Authenticate(int id, string password)

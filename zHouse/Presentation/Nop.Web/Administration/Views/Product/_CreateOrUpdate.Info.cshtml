@@ -403,7 +403,7 @@
             @Html.ValidationMessageFor(model => model.VendorId)
         </td>
     </tr>
-    <tr @(Model.IsLoggedInAsVendor ? Html.Raw("style='display: none;'") : null)>
+    <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.ShowOnHomePage):
         </td>

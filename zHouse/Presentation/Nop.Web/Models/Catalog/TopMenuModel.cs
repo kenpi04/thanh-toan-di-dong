@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Nop.Web.Framework.Mvc;
 
 
+
 namespace Nop.Web.Models.Catalog
 {
     public partial class TopMenuModel : BaseNopModel
@@ -16,6 +17,7 @@ namespace Nop.Web.Models.Catalog
             PriceRange.Add(new SelectListItem { Value = "1000-1500", Text = "1 tỷ ~ 1.5 tỷ" });
             PriceRange.Add(new SelectListItem { Value = "1500-3000", Text = "1.5 tỷ ~ 3 tỷ" });
             PriceRange.Add(new SelectListItem { Value = "3000-0", Text = "Trên 3 tỷ" });
+            CategoriesNews = new List<SelectListItem>();
         }
 
         public IList<CategorySimpleModel> Categories { get; set; }
@@ -26,5 +28,6 @@ namespace Nop.Web.Models.Catalog
         public bool RecentlyAddedProductsEnabled { get; set; }
         public bool ForumEnabled { get; set; }
         public List<SelectListItem> PriceRange { get; set; }
+        public List<SelectListItem> CategoriesNews { get; set; }
     }
 }

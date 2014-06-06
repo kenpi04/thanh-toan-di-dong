@@ -19,6 +19,7 @@ namespace Nop.Services.News
         private readonly IRepository<NewsItem> _newsItemRepository;
         private readonly IRepository<NewsComment> _newsCommentRepository;
         private readonly IRepository<StoreMapping> _storeMappingRepository;
+        private readonly IRepository<NewsCategoryNews> _newsCategoryNews;
         private readonly IEventPublisher _eventPublisher;
 
         #endregion
@@ -28,8 +29,10 @@ namespace Nop.Services.News
         public NewsService(IRepository<NewsItem> newsItemRepository, 
             IRepository<NewsComment> newsCommentRepository,
             IRepository<StoreMapping> storeMappingRepository,
+             IRepository<NewsCategoryNews> newsCategoryNews,
             IEventPublisher eventPublisher)
         {
+            this._newsCategoryNews = newsCategoryNews;
             this._newsItemRepository = newsItemRepository;
             this._newsCommentRepository = newsCommentRepository;
             this._storeMappingRepository = storeMappingRepository;
@@ -77,7 +80,7 @@ namespace Nop.Services.News
         /// <param name="pageSize">Page size</param>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>News items</returns>
-        public virtual IPagedList<NewsItem> GetAllNews(int languageId, int storeId,
+        public virtual IPagedList<NewsItem> GetAllNews(int languageId, int storeId,int cateid,
             int pageIndex, int pageSize, bool showHidden = false)
         {
             var query = _newsItemRepository.Table;
@@ -90,8 +93,17 @@ namespace Nop.Services.News
                 query = query.Where(n => !n.StartDateUtc.HasValue || n.StartDateUtc <= utcNow);
                 query = query.Where(n => !n.EndDateUtc.HasValue || n.EndDateUtc >= utcNow);
             }
-            query = query.OrderByDescending(n => n.CreatedOnUtc);
+            if (cateid > 0)
+            {
+                query = from a in query
+                        join cn in _newsCategoryNews.Table on a.Id equals cn.NewsId
+                        where cn.CategoryNewsId == cateid
+                        select a;
+                       
 
+            }
+            query = query.OrderByDescending(n => n.CreatedOnUtc);
+           
             //Store mapping
             if (storeId > 0)
             {

@@ -24,6 +24,7 @@ using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Security;
 using Nop.Web.Framework.UI.Captcha;
 using Nop.Web.Infrastructure.Cache;
+using Nop.Web.Models.Media;
 using Nop.Web.Models.News;
 
 namespace Nop.Web.Controllers
@@ -90,7 +91,7 @@ namespace Nop.Web.Controllers
         #region Utilities
 
         [NonAction]
-        protected void PrepareNewsItemModel(NewsItemModel model, NewsItem newsItem, bool prepareComments)
+        protected void PrepareNewsItemModel(NewsItemModel model, NewsItem newsItem, bool prepareComments,bool preparePicture=false)
         {
             if (newsItem == null)
                 throw new ArgumentNullException("newsItem");
@@ -110,6 +111,29 @@ namespace Nop.Web.Controllers
             model.CreatedOn = _dateTimeHelper.ConvertToUserTime(newsItem.CreatedOnUtc, DateTimeKind.Utc);
             model.NumberOfComments = newsItem.CommentCount;
          //  model.AddNewComment.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage;
+            if (preparePicture&&newsItem.PictureId.HasValue)
+            {
+                #region Prepare product picture
+
+                //If a size has been set in the view, we use it in priority
+              
+                //prepare picture model
+                var defaultProductPictureCacheKey = string.Format(ModelCacheEventConsumer.NEWS_PICTURE_KEY, newsItem.Id);
+                model.DefaultPictureModel = _cacheManager.Get(defaultProductPictureCacheKey, () =>
+                {
+                    var picture = _pictureService.GetPictureById((int)newsItem.PictureId);
+                    var pictureModel = new PictureModel()
+                    {
+                        ImageUrl = _pictureService.GetPictureUrl(picture, 150),
+                        FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
+                        Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat"), newsItem.Title),
+                        AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), model.Title)
+                    };
+                    return pictureModel;
+                });
+
+                #endregion
+            }
             if (prepareComments)
             {
                 var newsComments = newsItem.NewsComments.OrderBy(pr => pr.CreatedOnUtc);
@@ -150,7 +174,7 @@ namespace Nop.Web.Controllers
             var cacheKey = string.Format(ModelCacheEventConsumer.HOMEPAGE_NEWSMODEL_KEY, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
             var cachedModel = _cacheManager.Get(cacheKey, () =>
             {
-                var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id, 0, _newsSettings.MainPageNewsCount);
+                var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id,0,0, 0, _newsSettings.MainPageNewsCount);
                 return new HomePageNewsItemsModel()
                 {
                     WorkingLanguageId = _workContext.WorkingLanguage.Id,
@@ -158,7 +182,7 @@ namespace Nop.Web.Controllers
                         .Select(x =>
                                     {
                                         var newsModel = new NewsItemModel();
-                                        PrepareNewsItemModel(newsModel, x, false);
+                                        PrepareNewsItemModel(newsModel, x, false,true);
                                         return newsModel;
                                     })
                         .ToList()
@@ -185,18 +209,18 @@ namespace Nop.Web.Controllers
             if (command.PageSize <= 0) command.PageSize = _newsSettings.NewsArchivePageSize;
             if (command.PageNumber <= 0) command.PageNumber = 1;
 
-            var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id,
+            var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id,command.CateId,
                 command.PageNumber - 1, command.PageSize);
-          //  model.PagingFilteringContext.LoadPagedList(newsItems);
+            model.PagingFilteringContext.LoadPagedList(newsItems);
 
-            //model.NewsItems = newsItems
-            //    .Select(x =>
-            //    {
-            //        var newsModel = new NewsItemModel();
-            //        PrepareNewsItemModel(newsModel, x, false);
-            //        return newsModel;
-            //    })
-            //    .ToList();
+            model.NewsItems = newsItems
+                .Select(x =>
+                {
+                    var newsModel = new NewsItemModel();
+                    PrepareNewsItemModel(newsModel, x, false);
+                    return newsModel;
+                })
+                .ToList();
 
             return View(model);
         }
@@ -214,7 +238,7 @@ namespace Nop.Web.Controllers
                 return new RssActionResult() { Feed = feed };
 
             var items = new List<SyndicationItem>();
-            var newsItems = _newsService.GetAllNews(languageId, _storeContext.CurrentStore.Id, 0, int.MaxValue);
+            var newsItems = _newsService.GetAllNews(languageId, _storeContext.CurrentStore.Id,0, 0, int.MaxValue);
             foreach (var n in newsItems)
             {
                 string newsUrl = Url.RouteUrl("NewsItem", new { SeName = n.GetSeName(n.LanguageId, ensureTwoPublishedLanguages: false) }, "http");

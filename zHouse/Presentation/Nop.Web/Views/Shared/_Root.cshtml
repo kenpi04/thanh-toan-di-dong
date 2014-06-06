@@ -7,16 +7,17 @@
 <div class="master-wrapper-page">
     @Html.Action("JavaScriptDisabledWarning", "Common")
     <div class="master-wrapper-content">
-        <script type="text/javascript">
+      @*  <script type="text/javascript">
             AjaxCart.init(false, '.header-links .cart-qty', '.header-links .wishlist-qty', '#flyout-cart');
         </script>
-        @Html.Partial("Header")
+  *@
         <div class="header-menu">
             @Html.Action("TopMenu", "Catalog")
         </div>
-        <div class="search-box">
-            @Html.Action("SearchBoxHead","Catalog")
+       <div class="search-box">
+            @Html.Action("SearchBoxHead", "Catalog", new {isHome=Url.RequestContext.RouteData.Values["controller"].ToString().Equals("home", StringComparison.InvariantCultureIgnoreCase) })
         </div>
+        
         @Html.Widget("content_before")
         @*ajax loading window*@
         <div class="ajax-loading-block-window" id="ajax-loading" style="display: none">

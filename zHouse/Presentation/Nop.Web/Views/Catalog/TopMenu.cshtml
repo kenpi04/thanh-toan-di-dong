@@ -31,7 +31,7 @@
                     <li>Theo loại</li>
                     @foreach (var subCategory in  category.SubCategories)
                     {
-                        <li><a href="">@subCategory.Name</a></li>
+                        <li><a href="@Url.RouteUrl("Category", new {SeName=subCategory.SeName })">@subCategory.Name</a></li>
                     }
                   
                 </ul>
@@ -79,6 +79,31 @@
         }
         <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
     }
+    <li><a href="#">Dịch vụ</a>
+         <div class="top-menu-triangle"></div>
+        <div class="sublist service">
+            <ul>
+                <li><a href="#">Tư vấn mua bán Nhà Đất</a></li>
+                 <li><a href="#">Hổ trợ pháp lý</a></li>
+                 <li><a href="#">Quảng cáo nhà đất</a></li>
+                 <li><a href="#">Hổ trợ vay vốn ngân hàng</a></li>
+                 <li><a href="#">Tư vấn đầu tư</a></li>
+
+            </ul>
+        </div>
+    </li>
+    <li><a>Kiến thức</a>
+          <div class="top-menu-triangle"></div>
+        <div class="sublist kienthuc">
+            <ul>
+                @foreach (var c in Model.CategoriesNews)
+                { 
+                    <li><a href="@Url.RouteUrl("NewsArchive", new {SeName=c.Value })">@c.Text</a></li>
+                }
+              </ul>
+            </div>
+
+    </li>
     @Html.Widget("header_menu_after")
 </ul>
 <script type="text/javascript">

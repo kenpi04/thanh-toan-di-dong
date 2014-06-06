@@ -96,10 +96,7 @@ namespace Nop.Admin.Controllers
         #endregion
 
         #region List
-        public ActionResult a()
-        {
-            return View();
-        }
+      
         public ActionResult Index()
         {
             return RedirectToAction("List");

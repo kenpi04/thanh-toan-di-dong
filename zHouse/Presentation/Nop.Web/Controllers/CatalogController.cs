@@ -30,6 +30,7 @@ using Nop.Services.Localization;
 using Nop.Services.Logging;
 using Nop.Services.Media;
 using Nop.Services.Messages;
+using Nop.Services.News;
 using Nop.Services.Orders;
 using Nop.Services.Security;
 using Nop.Services.Seo;
@@ -88,6 +89,7 @@ namespace Nop.Web.Controllers
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly IShippingService _shippingService;
         private readonly IUrlRecordService _urlRecordService;
+        private readonly ICategoryNewsService _catenewsService;
 
         private readonly MediaSettings _mediaSettings;
         private readonly CatalogSettings _catalogSettings;
@@ -151,9 +153,11 @@ namespace Nop.Web.Controllers
             CaptchaSettings captchaSettings,
             ICacheManager cacheManager,
             IStateProvinceService stateProvinceService,
-            IUrlRecordService urlRecordService
+            IUrlRecordService urlRecordService,
+            ICategoryNewsService catenewsService
             )
         {
+            this._catenewsService = catenewsService;
             this._urlRecordService = urlRecordService;
             this._stateProvinceService = stateProvinceService;
             this._categoryService = categoryService;
@@ -349,7 +353,7 @@ namespace Nop.Web.Controllers
                     Status=GetOptionValue(ProductAttributeEnum.Status),
                     Area=product.Area,
                     FullAddress=product.FullAddress,
-                     DictrictName=product.District.Name
+                    DictrictName=product.District.Name
                    
 
                 };
@@ -1246,6 +1250,7 @@ namespace Nop.Web.Controllers
                 ForumEnabled = _forumSettings.ForumsEnabled,
                 Districts=_stateProvinceService.GetDistHCM().ToSelectList(x=>x.Name,x=>x.Id.ToString())
             };
+            model.CategoriesNews = _catenewsService.GetAllCategories().ToSelectList(x => x.Name, x => x.GetSeName());
 
             return PartialView(model);
         }
@@ -3785,11 +3790,13 @@ namespace Nop.Web.Controllers
             return PartialView("SearchBoxLeft",model);
         }
         [ChildActionOnly]
-        public ActionResult SearchBoxHead()
+        public ActionResult SearchBoxHead(bool isHome)
         {
 
             var model = new SearchModel();
             PreparingSearchModel(model);
+            if (isHome)
+                return View("SearchHome", model);
             return View(model);
         }
         [NonAction]

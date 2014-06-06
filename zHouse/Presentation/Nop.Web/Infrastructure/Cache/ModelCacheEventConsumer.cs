@@ -418,6 +418,9 @@ namespace Nop.Web.Infrastructure.Cache
         public const string POLL_BY_SYSTEMNAME__MODEL_KEY = "Nop.pres.poll.systemname-{0}-{1}";
         public const string POLLS_PATTERN_KEY = "Nop.pres.poll.";
 
+        public const string NEWS_PICTURE_KEY = "Nop.pres.news.picture-{0}";
+
+
         /// <summary>
         /// Key for blog tag list model
         /// </summary>
