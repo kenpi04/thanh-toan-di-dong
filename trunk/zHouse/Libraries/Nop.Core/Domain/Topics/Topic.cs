@@ -58,5 +58,7 @@ namespace Nop.Core.Domain.Topics
         /// </summary>
         public bool LimitedToStores { get; set; }
 
+        public int GroupId { get; set; }
+
     }
 }

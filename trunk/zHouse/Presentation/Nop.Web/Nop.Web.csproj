@@ -975,11 +975,14 @@
     <Content Include="Scripts\public.common.mobile.js" />
     <Content Include="Themes\DefaultClean\Content\editorsimple.css" />
     <Content Include="Themes\DefaultClean\Content\images\free-shipping.png" />
+    <Content Include="Themes\DefaultClean\Content\images\search-bg.png" />
     <Content Include="Themes\DefaultClean\Content\images\top-menu-background.png" />
     <Content Include="Themes\DefaultClean\Content\images\top-menu-divider.png" />
     <Content Include="Themes\DefaultClean\Content\images\top-menu-list-image-hover.png" />
     <Content Include="Themes\DefaultClean\Content\images\top-menu-list-image.png" />
     <Content Include="Themes\DefaultClean\Content\images\top-menu-triangle.png" />
+    <Content Include="Themes\DefaultClean\Content\images\u43.jpg" />
+    <Content Include="Themes\DefaultClean\Content\images\u45.jpg" />
     <Content Include="Themes\DefaultClean\Content\jquery-te-1.4.0.css" />
     <Content Include="Themes\DefaultClean\Content\jquery-te.png" />
     <Content Include="Themes\Mobile\preview.jpg" />
@@ -1839,6 +1842,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Catalog\SearchBoxHead.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Catalog\SearchHome.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Topic\TopicHomePage.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
