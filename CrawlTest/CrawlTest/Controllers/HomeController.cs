@@ -7,9 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
-using System.Windows.Forms;
 using CrawlTest.Models;
-using WatiN.Core;
+using System.Windows.Forms;
+
 
 namespace CrawlTest.Controllers
 {
@@ -17,7 +17,9 @@ namespace CrawlTest.Controllers
     public class HomeController : Controller
     {
         public static string COOKIE = "";
-        IE _browser = null;
+        public static string hidden = "";
+        CookieCollection cookies = new CookieCollection();
+        CookieContainer cookieContainer = new CookieContainer();
         public ActionResult Index()
         {
             ViewBag.Message = "Welcome to ASP.NET MVC!";
@@ -106,33 +108,32 @@ namespace CrawlTest.Controllers
         [HttpPost]
         public ActionResult Login(LoginModel model)
         {
-            WebRequest request = (HttpWebRequest)WebRequest.Create("https://vinaphone.com.vn/auth/login?service=http%3A%2F%2Fvinaphone.com.vn%3A80%2Flogin.jsp%3Flang%3Dvi");
-            request.Credentials = CredentialCache.DefaultCredentials;
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.Method = "POST";           
-            string data = "username=0946866544&password=vzzgsz";
-            byte[] byteArray = Encoding.UTF8.GetBytes(data);
-            request.ContentLength = byteArray.Length;
-            // Get the request stream.
-            Stream dataStream = request.GetRequestStream();
-            // Write the data to the request stream.
-            dataStream.Write(byteArray, 0, byteArray.Length);
-            // Close the Stream object.
-            dataStream.Close();
-            WebResponse response = request.GetResponse();
-
-            CookieContainer cookies = new CookieContainer();
-            var cookieHeader = response.Headers["Set-cookie"];
-            //_browser.SetCookie("vinaphone.com.vn",cookieHeader);
-            COOKIE = cookieHeader;
-            // Get the stream containing content returned by the server.
-            dataStream = response.GetResponseStream();
-            // Open the stream using a StreamReader for easy access.
-            StreamReader reader = new StreamReader(dataStream);
-            // Read the content.
-            string responseFromServer = reader.ReadToEnd();
+            HttpWebRequest getRequest = (HttpWebRequest)WebRequest.Create("https://vinaphone.com.vn/auth/login?service=http%3A%2F%2Fvinaphone.com.vn%3A80%2Flogin.jsp%3Flang%3Dvi");
+            getRequest.CookieContainer = cookieContainer;
+            getRequest.CookieContainer.Add(cookies); //recover cookies First request
+            getRequest.Method = WebRequestMethods.Http.Post;
+            getRequest.UserAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2";
+            getRequest.AllowWriteStreamBuffering = true;
+            getRequest.ProtocolVersion = HttpVersion.Version11;
+            getRequest.AllowAutoRedirect = true;
+            getRequest.ContentType = "application/x-www-form-urlencoded";
+            string postData = "username=0946866544&password=vzzgsz&_eventId=submit&lt="+hidden;
+            var data = Encoding.UTF8.GetBytes(postData);
+            getRequest.ContentLength = data.Length;
+            Stream newStream = getRequest.GetRequestStream();
+            // Send the data.
+            newStream.Write(data, 0, data.Length);
+            newStream.Close();
+            HttpWebResponse response = getRequest.GetResponse() as HttpWebResponse;
+            //textBox4.Text=(((HttpWebResponse)response).StatusDescription);
+            foreach (Cookie c in response.Cookies)
+                    cookieContainer.Add(c);
+            newStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(newStream);
+            string responseFromServer = reader.ReadToEnd();          
             reader.Close();
-            dataStream.Close();
+            response.GetResponseStream().Close();
+            response.GetResponseStream().Dispose();
             response.Close();
             return Json(responseFromServer);
         }
@@ -140,20 +141,33 @@ namespace CrawlTest.Controllers
         {
             
             var model = new SendSmsModel();
+            var getRequest = (HttpWebRequest)WebRequest.Create("https://vinaphone.com.vn/auth/login?service=http%3A%2F%2Fvinaphone.com.vn%3A80%2Flogin.jsp%3Flang%3Dvi");
+            getRequest.Method="GET";
+             HttpWebResponse response = getRequest.GetResponse() as HttpWebResponse;
+            //textBox4.Text=(((HttpWebResponse)response).StatusDescription);
+           var newStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(newStream);
+            string responseFromServer = reader.ReadToEnd();          
+            reader.Close();
+            response.GetResponseStream().Close();
+            response.GetResponseStream().Dispose();
+            response.Close();
+           string pattern2 = @"name=""lt"" value=""([^""]*)""";
+           hidden=Regex.Match(responseFromServer, pattern2 ).Groups[1].Value;
             ViewBag.COOKIE = COOKIE;
+          
             return View(model);
         }
         [HttpPost]
         public ActionResult SendSms(SendSmsModel model)
         {
-            if (_browser.GetCookiesForUrl(new Uri("http://vinaphone.com.vn"))==null)
-                return Json("NOTLOGIN");
-            WebRequest request = (HttpWebRequest)WebRequest.Create("http://vinaphone.com.vn/messaging/sms/sendSms.do");
+            
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://vinaphone.com.vn/messaging/sms/sendSms.do");
             request.Credentials = new NetworkCredential("0946866544", "vzzgsz", "vinaphone.com.vn");
             request.ContentType = "application/x-www-form-urlencoded";
-            request.Headers.Add("Cookie", COOKIE);
+            request.CookieContainer = cookieContainer;
             request.Method = "POST";
-            string data = string.Format("bSubs={0}&message={1}&number={2}", model.PhoneNumber, model.Content, model.Captcha);
+            string data = string.Format("bSubs=0979909863&message={1}&number={2}", model.PhoneNumber, model.Content, model.Captcha);
             byte[] byteArray = Encoding.UTF8.GetBytes(data);
             request.ContentLength = byteArray.Length;
             // Get the request stream.
@@ -164,7 +178,6 @@ namespace CrawlTest.Controllers
             dataStream.Close();
             WebResponse response = request.GetResponse();
 
-            CookieContainer cookies = new CookieContainer();
             // Get the stream containing content returned by the server.
             dataStream = response.GetResponseStream();
             // Open the stream using a StreamReader for easy access.
@@ -173,31 +186,12 @@ namespace CrawlTest.Controllers
             string responseFromServer = reader.ReadToEnd();
             reader.Close();
             dataStream.Close();
-            response.Close();
+            response.Close();           
             return Json(responseFromServer);
         
         }
      
-        public ActionResult Send()
-        {
-            var model = new SendSmsModel();
-            _browser = new IE("http://vinaphone.com.vn/messaging/sms/sms.do");
-            model.CaptchaImageUrl = _browser.Image("captchaImg1").Src;
-            return View(model);
-        }
-        [HttpPost]
-        public ActionResult Send(SendSmsModel model)
-        {
-           
-                _browser.TextField(Find.ByName("bSubs")).TypeText(model.PhoneNumber);
-                _browser.TextField(Find.ByName("message")).TypeText(model.Content);
-                _browser.TextField(Find.ByName("number")).TypeText(model.Captcha);
-                _browser.Button(Find.ByName("submit")).Click();
-                string html = _browser.Html;
-                _browser.Dispose();
-
-                return Json(html);
-        }
+     
     }
    
 }
