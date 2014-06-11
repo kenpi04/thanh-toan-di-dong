@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>@ViewBag.Message</h2>
+<p>
+    To learn more about ASP.NET MVC visit <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
+</p>
+<input type="button" onclick="getData()" value="Get" />
+<script type="text/javascript">
+    function getData() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetData", new {page=1 })",
+            success: function (d) {
+                $("a").html(d)
+            }
+        })
+    }
+</script>
+<div class="a"></div>
+

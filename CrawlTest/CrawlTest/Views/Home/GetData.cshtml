@@ -1,0 +1,138 @@
+﻿@model CrawlTest.Models.GetDataModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Model.PageSize = 10;
+    Model.PageIndex = 1;
+}
+
+@using (Ajax.BeginForm(new AjaxOptions { UpdateTargetId = "result",OnBegin="onBegin", InsertionMode = InsertionMode.InsertAfter, HttpMethod = "POST" }))
+{ 
+    @Html.HiddenFor(x=>x.PageIndex)
+    <input type="hidden" id="pageIndex" value="@Model.PageIndex" />
+    <table id="tblSearch">
+        <tr>
+            <td style="width: 15%" class="td_label">Tìm số:</td>
+            <td style="width: 15%">
+                <select style="width: 100%" class="textField" id="cboSubRange" name="DauSo">
+                    <option value="8491">091</option>
+                    <option value="8494">094</option>
+                    <option value="84123">0123</option>
+                    <option value="84124">0124</option>
+                    <option value="84125">0125</option>
+                    <option value="84127">0127</option>
+                    <option value="84129">0129</option>
+                </select></td>
+            <td style="width: 20%">
+                <input id="txtSoTB" type="text" name="SoDT" style="width: 100%">
+                <input type="hidden" value="-1" name="33z~zYuZH3tu3ul3ozksy">
+            </td>
+            <td style="width: 15%" class="td_label">Trạng thái:</td>
+            <td style="width: 50%">
+                <select id="cboTrangthai" style="WIDTH: 98%" name="StatusId" onkeydown="allow_number_keypress()" class="textField">
+                    <option value="" selected="">Không chọn</option>
+                    <option value="1">Đã đăng ký</option>
+                    <option value="2">Chưa đăng ký</option>
+                </select></td>
+        </tr>
+        <tr>
+            <td style="width: 10%" class="td_label">Kiểu số:</td>
+            <td colspan="4" id="kieuso_s">
+                <select style="width: 99%" class="textField" id="cboLoaiSo" name="NumberType">
+                    <option value="" selected="">Không chọn</option>
+                    <option value="2">11 số tứ quý AAA.6666/8888/9999</option>
+                    <option value="3">11 số ngũ quý</option>
+                    <option value="11">11 số tứ quý: AA.6666/8888/9999</option>
+                    <option value="12">11 số AAAA.666/888/999</option>
+                    <option value="109">11 số tam hoa: AAA.666/888/999</option>
+                    <option value="108">11 số tứ quý 6666/8888/9999</option>
+                    <option value="122">11 số AAA.BB.AA</option>
+                    <option value="123">11 số AAA.2222/3333/5555/7777</option>
+                    <option value="121">11 số lặp 3: AB.AB.AB</option>
+                    <option value="124">11 số A66.A66/A88.A88/A99.A99</option>
+                    <option value="120">11 số tam hoa: AAA.BBB</option>
+                    <option value="119">11 số A6666A/A8888A/A9999A</option>
+                    <option value="141">11 số ABC.ABC</option>
+                    <option value="140">11 số AA.BB.CC</option>
+                    <option value="148">11 số A2222A/A3333A/A5555A/A7777A</option>
+                    <option value="145">11 số A66.B66/A88.B88/A99.B99</option>
+                    <option value="147">11 số 6666/8888/9999.AA</option>
+                    <option value="139">11 số tứ quý AA.2222/3333/5555/7777 </option>
+                    <option value="142">11 số AA.6688/6868/8866/8686/6699/6969/8899/8989/3399/3939/7799/7979</option>
+                    <option value="143">11 số AA.BB.AA</option>
+                    <option value="144">11 số tam hoa: BBB.AAA</option>
+                    <option value="172">11 số AB.AC.AD</option>
+                    <option value="165">11 số AAA.B.CCC</option>
+                    <option value="166">11 số B66.A66/B88.A88/B99.A99</option>
+                    <option value="171">11 số AB.AB.AB.C</option>
+                    <option value="170">11 số 6666/8888/9999.AB</option>
+                    <option value="162">11 số tứ quý 2222/3333/5555/7777</option>
+                    <option value="161">11 số tam quý AA.666/888/999</option>
+                    <option value="160">11 số AA.3399/7799/6969/9696/8989</option>
+                    <option value="146">11 số A68B68/A86.B86/A69.B69/A89.B89</option>
+                    <option value="168">11 số ABB.CBB</option>
+                    <option value="163">11 số 6688/6868/8866/8686/6699/6969/8899/3939/3399/7979/7799</option>
+                    <option value="169">11 số AAB.CCB</option>
+                    <option value="164">11 số &nbsp;tiến 4 số cuối (6789)</option>
+                    <option value="158">11 số ABC.ABC</option>
+                    <option value="178">11 số tứ quý 0000/1111/4444</option>
+                    <option value="167">11 số A39B39/A79.B79/A96.B96/A98.B98</option>
+                    <option value="180">11 số CCB.AAB</option>
+                    <option value="181">11 số 0000/1111/2222/3333/4444/5555/7777.AA</option>
+                    <option value="179">11 số CBB.ABB</option>
+                    <option value="159">11 số AA.BB.CC</option>
+                    <option value="61">11 số lặp 2 BA.BA (vd: 32.32)</option>
+                    <option value="60">11 số kép 2 AA.BB (vd: 22.33)</option>
+                    <option value="59">11 số lặp 2 AB.AB (vd: 23.23)</option>
+                    <option value="56">11 số AB.CB.DB</option>
+                    <option value="55">11 số gánh đảo: xxx.ABBA/xxxBAAB (vd: xxx.6886/ xxx.9889)</option>
+                    <option value="193">11 số tam quý AA.000/111/444</option>
+                    <option value="188">11 số 0000/1111/2222/3333/4444/5555/7777.AB</option>
+                    <option value="191">11 số tiến 4 số cuối</option>
+                    <option value="185">11 số tam quý AA.222/333/555/777</option>
+                    <option value="183">11 số AB.AC.AD</option>
+                    <option value="182">11 số AA.BC.AA</option>
+                    <option value="177">11 số tam quý xxx666/xxx888/xxx999</option>
+                    <option value="192">11 số tam quý xxx222/xxx333/xxx555/xxx777</option>
+                    <option value="195">11 số 000,111,444</option>
+                    <option value="198">11 số theo sở thích (phong thủy, ngày tháng năm sinh)</option>
+                    <option value="187">11 số 666ABC, 888ABC,999ABC (*)</option>
+                    <option value="62">11 số kép 2 BB.AA (vd: 33.22)</option>
+                </select></td>
+        </tr>
+    </table>
+    <input type="submit" id="btnSearch" value="Tìm Kiếm" />
+   <script type="text/javascript">
+       function onBegin()
+       {
+           $("#result").html("");
+       }
+       function layds_thuebao(pageindex, pagesize)
+       {
+           $("#pageIndex").val(pageindex);
+           $("#btnSearch").click();
+       }
+       function foward_thongtin(so_tb, trangthai) {
+           if (trangthai != 1) {
+               alert("Thue bao dang trong kho! ");
+               return;
+           }
+           OpenWindow( "http://chonso.vinaphone.com.vn/numstore/main?1iutlomLork=jgtmq5lxsznutmzot&yuezh=" + so_tb, "", 300, 100);
+           
+       }
+
+       function OpenWindow(query, w, h, scroll) {
+           var l = (screen.width - w) / 2;
+           var t = (screen.height - h) / 2;
+
+           winprops = 'resizable=1, height=' + h + ',width=' + w + ',top=' + t + ',left=' + l + 'w';
+           if (scroll) winprops += ',scrollbars=1';
+           var f = window.open(query, "_blank", winprops);
+       }
+
+
+   </script>
+    <div id="result">
+      
+    </div>
+    
+}
