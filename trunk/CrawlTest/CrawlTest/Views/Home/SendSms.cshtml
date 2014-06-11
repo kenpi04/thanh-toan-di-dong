@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "SendSms";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form name="smsFormOnline" method="post" action="/messaging/sms/sendSms.do">
+								<ul class="form-list clearfix">
+									<li class="clearfix">
+										<div class="title">Gửi tới:
+
+</div>
+										<div class="sms-input">
+											<input type="text" value="" maxlength="360" class="fieldText" style="width:130px" id="bSubs" name="bSubs">
+                                    	<img width="20" height="20" align="middle" alt="Sá» Äá»a chá»" onclick="openContactList('/service/vinasync/popupContact2.jsp?des=smsFormOnline.bSubs','Contact')" src="/vnp_files/image/ContactIcon.jpg">
+																			
+										</div>
+									</li>
+									<li class="clearfix">
+										<label class="title">Nội dung:</label>
+										<div class="sms-input">
+											<textarea onkeyup="limitText();" onkeydown="limitText();" cols="36" rows="5" name="message" id="message"></textarea>
+										</div>
+									</li>		
+									<li class="clearfix">
+										<label class="title">Số ký tự còn lại:</label>
+										<div class="sms-input">
+											<input type="text" readonly="" style="width:60px" class="fieldText" id="countdown" name="countdown">
+										</div>
+									</li>
+									
+								<!--	<li class="clearfix">
+										<label class="title">M&atilde; an to&agrave;n</label>
+										<div class="sms-input">
+												<input type="text" name="captcha" id="captcha" style= "font-size:16px;font-weight:bold;width:60px" class="fieldText" maxlength="6" value=""/>	<img src="http://vinaphone.com.vn/anhtutaoday" width="50" height="30">    
+										</div>
+									</li>	-->
+									<li class="clearfix">
+										<label class="title">Mã an toàn(4 ký tự)<br><!--<img src="http://vinaphone.com.vn/mathimage?c=1">--></label>
+										<div class="sms-input">
+												<!--<input name="number" style= "font-size:16px;font-weight:bold;width:60px" class="fieldText"  type="text">    -->
+												<input type="text" class="bg2" name="number">
+										</div>
+									</li>
+									
+								
+									<table border="0">
+									<tbody><tr>
+											<td></td>
+											<td><img border="0" src="http://vinaphone.com.vn/PassImageServlet/VHhFYzlZcTdWMWNaZENFYkVnRjZjT0x1WjlEQWZKVFBmSzUvN3lsbFE2dG5yTFBSNmRVUjBHbkxlcHI5VksxWEttWW1JaXBYdE5FVw0KSVU5VjVWSG14WkVpdyt4M3VORDhEVDlVZkZDQzdjTFpsYytnNENOUVFRPT0=" id="captchaImg"><!--<img id="captchaImg"  src="http://localhost/Kaptcha.jpg">--><img width="25" style="cursor:pointer" id="captchaRef" src="http://vinaphone.com.vn/style/images/refresh.png"><!--<a style="cursor:pointer" id="captchaRef">Ch&#7885;n m&#227; kh&#225;c </a>--></td>
+										</tr>
+									 <input type="hidden" value="VHhFYzlZcTdWMWNaZENFYkVnRjZjT0x1WjlEQWZKVFBmSzUvN3lsbFE2dG5yTFBSNmRVUjBHbkxlcHI5VksxWEttWW1JaXBYdE5FVw0KSVU5VjVWSG14WkVpdyt4M3VORDhEVDlVZkZDQzdjTFpsYytnNENOUVFRPT0=" name="passline_enc">
+									
+										<tr>
+											<td><input type="radio" checked="checked" onclick="updateCountdown();" value="FREE" name="note"></td>
+											<td>Bản tin miễn phí (có kèm quảng cáo)</td>
+										</tr>
+										<tr>
+											<td><input type="radio" onclick="updateCountdown();" value="HAS_FEE" name="note"></td>
+											<td>Bản tin trả tiền (không kèm quảng cáo)</td>
+										</tr>									
+									</tbody></table>
+									<li class="clearfix">
+										<input type="submit" value="Gửi" name="submit" class="submit"> 
+									</li>	
+																															
+								</ul>
+								</form>
