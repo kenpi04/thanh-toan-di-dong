@@ -19,6 +19,7 @@ namespace CrawlTest.Controllers
         public static string COOKIE = "";
         public static string hidden = "";
         CookieCollection cookies = new CookieCollection();
+        NetworkHelper net = new NetworkHelper();
         CookieContainer cookieContainer = new CookieContainer();
         public ActionResult Index()
         {
@@ -105,57 +106,70 @@ namespace CrawlTest.Controllers
             return PostData(url, "POST", data);
            
         }
-        [HttpPost]
-        public ActionResult Login(LoginModel model)
+      
+        public ActionResult SendSms()
         {
+            var model = new SendSmsModel();
+
+            #region open login page
             HttpWebRequest getRequest = (HttpWebRequest)WebRequest.Create("https://vinaphone.com.vn/auth/login?service=http%3A%2F%2Fvinaphone.com.vn%3A80%2Flogin.jsp%3Flang%3Dvi");
-            getRequest.CookieContainer = cookieContainer;
-            getRequest.CookieContainer.Add(cookies); //recover cookies First request
+            getRequest.Method = "GET";
+             var response  = getRequest.GetResponse() as HttpWebResponse;
+            var newStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(newStream);
+             string responseFromServerLogin = reader.ReadToEnd();
+            string pattern2 = @"name=""lt"" value=""([^""]*)""";
+            hidden = Regex.Match(responseFromServerLogin, pattern2).Groups[1].Value;
+          
+            reader.Close();
+            response.GetResponseStream().Close();
+            response.GetResponseStream().Dispose();
+            response.Close();
+            #endregion
+            #region Login
+            getRequest = (HttpWebRequest)WebRequest.Create("https://vinaphone.com.vn/auth/login?service=http%3A%2F%2Fvinaphone.com.vn%3A80%2Flogin.jsp%3Flang%3Dvi");
+            getRequest.CookieContainer = cookieContainer;          
             getRequest.Method = WebRequestMethods.Http.Post;
             getRequest.UserAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2";
             getRequest.AllowWriteStreamBuffering = true;
             getRequest.ProtocolVersion = HttpVersion.Version11;
             getRequest.AllowAutoRedirect = true;
             getRequest.ContentType = "application/x-www-form-urlencoded";
-            string postData = "username=0946866544&password=vzzgsz&_eventId=submit&lt="+hidden;
+            string postData = "username=0946866544&password=vzzgsz&_eventId=submit&lt=" + hidden;
             var data = Encoding.UTF8.GetBytes(postData);
             getRequest.ContentLength = data.Length;
-            Stream newStream = getRequest.GetRequestStream();
+             newStream = getRequest.GetRequestStream();
             // Send the data.
             newStream.Write(data, 0, data.Length);
             newStream.Close();
-            HttpWebResponse response = getRequest.GetResponse() as HttpWebResponse;
-            //textBox4.Text=(((HttpWebResponse)response).StatusDescription);
-            foreach (Cookie c in response.Cookies)
-                    cookieContainer.Add(c);
+             response = getRequest.GetResponse() as HttpWebResponse;         
             newStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(newStream);
-            string responseFromServer = reader.ReadToEnd();          
+            cookieContainer.Add(new Uri("http://vinaphone.com.vn"),response.Cookies);
+             reader = new StreamReader(newStream);
+             responseFromServerLogin = reader.ReadToEnd();
+             getRequest.Abort();
             reader.Close();
             response.GetResponseStream().Close();
             response.GetResponseStream().Dispose();
             response.Close();
-            return Json(responseFromServer);
-        }
-        public ActionResult SendSms()
-        {
-            
-            var model = new SendSmsModel();
-            var getRequest = (HttpWebRequest)WebRequest.Create("https://vinaphone.com.vn/auth/login?service=http%3A%2F%2Fvinaphone.com.vn%3A80%2Flogin.jsp%3Flang%3Dvi");
-            getRequest.Method="GET";
-             HttpWebResponse response = getRequest.GetResponse() as HttpWebResponse;
+
+    #endregion
+            //Get login page
+            getRequest = (HttpWebRequest)WebRequest.Create("http://vinaphone.com.vn/messaging/sms/sendSms.do");
+            getRequest.Method = "GET";
+            getRequest.CookieContainer = cookieContainer;
+            response = getRequest.GetResponse() as HttpWebResponse;
             //textBox4.Text=(((HttpWebResponse)response).StatusDescription);
-           var newStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(newStream);
-            string responseFromServer = reader.ReadToEnd();          
+            newStream = response.GetResponseStream();
+            reader = new StreamReader(newStream);
+            string responseFromServerCatcha = reader.ReadToEnd();
             reader.Close();
             response.GetResponseStream().Close();
             response.GetResponseStream().Dispose();
             response.Close();
-           string pattern2 = @"name=""lt"" value=""([^""]*)""";
-           hidden=Regex.Match(responseFromServer, pattern2 ).Groups[1].Value;
-            ViewBag.COOKIE = COOKIE;
-          
+            //string pattern2 = @"id=""captchaImg1"" src=""([^""]*)""";
+            //model.Captcha = Regex.Match(responseFromServerCatcha, pattern2).Groups[1].Value;
+            ViewBag.Login = responseFromServerCatcha;
             return View(model);
         }
         [HttpPost]
@@ -163,7 +177,7 @@ namespace CrawlTest.Controllers
         {
             
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://vinaphone.com.vn/messaging/sms/sendSms.do");
-            request.Credentials = new NetworkCredential("0946866544", "vzzgsz", "vinaphone.com.vn");
+            request.Credentials = new NetworkCredential("84946866544", "vzzgsz", "vinaphone.com.vn");
             request.ContentType = "application/x-www-form-urlencoded";
             request.CookieContainer = cookieContainer;
             request.Method = "POST";
@@ -190,7 +204,12 @@ namespace CrawlTest.Controllers
             return Json(responseFromServer);
         
         }
-     
+
+        public string Demologin()
+        {
+            return net.login("0946866544", "vzzgsz");
+        }
+
      
     }
    
