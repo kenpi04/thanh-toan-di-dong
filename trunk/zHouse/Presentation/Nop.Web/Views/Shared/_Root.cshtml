@@ -3,20 +3,21 @@
 }
 @Html.Widget("body_start_html_tag_after")
 @Html.Partial("_Notifications")
-@Html.Action("AdminHeaderLinks", "Common")
 <div class="master-wrapper-page">
     @Html.Action("JavaScriptDisabledWarning", "Common")
     <div class="master-wrapper-content">
       @*  <script type="text/javascript">
             AjaxCart.init(false, '.header-links .cart-qty', '.header-links .wishlist-qty', '#flyout-cart');
         </script>
-  *@
-        <div class="header-menu">
-            @Html.Action("TopMenu", "Catalog")
-        </div>
-       <div class="search-box">
+  *@<div class="top">
+    	<div class="wrapper">
+			<div class="logo"><a href="#"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder"></a></div>
+              @Html.Action("TopMenu", "Catalog")
+		</div><!---wrapper---->
+    </div>       
+     
             @Html.Action("SearchBoxHead", "Catalog", new {isHome=Url.RequestContext.RouteData.Values["controller"].ToString().Equals("home", StringComparison.InvariantCultureIgnoreCase) })
-        </div>
+     
         
         @Html.Widget("content_before")
         @*ajax loading window*@

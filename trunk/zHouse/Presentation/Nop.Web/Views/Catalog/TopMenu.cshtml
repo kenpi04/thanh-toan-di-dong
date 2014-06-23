@@ -5,6 +5,7 @@
 }
 @helper RenderCategoryLine(CategorySimpleModel category, int level)
 {
+    <li class="verLine"></li>
     <li>
         <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name
         @if (category.NumberOfProducts.HasValue)
@@ -17,10 +18,11 @@
             if (level == 0)
             {
                 levelClass = "firstLevel";
-                <div class="top-menu-triangle"></div>
+            
             }
              <div class="sublist">
                 <ul>
+  
                     <li><b>Theo địa điểm</b></li>
                     @foreach(var d in Model.Districts)
                     {
@@ -48,7 +50,8 @@
     </li>
 }
 
-<ul class="top-menu">
+<div class="menu">
+<ul>
     @Html.Widget("header_menu_before")
     @if (Model.Categories.Count > 0)
     {
@@ -79,6 +82,7 @@
         }
         <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
     }
+<li class="verLine"></li>
     <li><a href="#">Dịch vụ</a>
          <div class="top-menu-triangle"></div>
         <div class="sublist service">
@@ -92,6 +96,7 @@
             </ul>
         </div>
     </li>
+    <li class="verLine"></li>
     <li><a>Kiến thức</a>
           <div class="top-menu-triangle"></div>
         <div class="sublist kienthuc">
@@ -104,8 +109,18 @@
             </div>
 
     </li>
+  <li class="verLine"></li>
+<li>
+    <a href="#">Hỏi đáp</a>
+</li>
+
+ <li class="verLine"></li>
+
+<li><input type="button" class="searchBtn"></li>
+ <li class="verLine"></li>
     @Html.Widget("header_menu_after")
 </ul>
+</div>
 <script type="text/javascript">
     $('li', '.top-menu').on('mouseenter', function () {
         $('a', $(this)).first().addClass('hover');
