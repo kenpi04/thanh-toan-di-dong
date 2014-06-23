@@ -3,10 +3,10 @@
 }
 <div class="page home-page">
     <div class="page-body">
-        @Html.Widget("home_page_top")       
-        @Html.Action("HomepageProducts", "Catalog", new {pageSize=4 })
+       @Html.Widget("home_page_top")       
+        @Html.Action("HomepageProducts", "Catalog", new {pageSize=3 })
         @Html.Action("TopicHomePage","Topic")
-        @Html.Action("HomePageNews","News")
+       
         @Html.Widget("home_page_bottom")
     </div>
 </div>

@@ -1420,6 +1420,77 @@
     <Content Include="Themes\Mobile\Content\images\ico-forum.gif" />
     <Content Include="Themes\Mobile\Content\styles.css" />
     <Content Include="Themes\print.css" />
+    <Content Include="Themes\Zhouse\Content\editorsimple.css" />
+    <Content Include="Themes\Zhouse\Content\ie6.css" />
+    <Content Include="Themes\Zhouse\Content\ie7.css" />
+    <Content Include="Themes\Zhouse\Content\images\ajax_loader_large.gif" />
+    <Content Include="Themes\Zhouse\Content\images\ajax_loader_small.gif" />
+    <Content Include="Themes\Zhouse\Content\images\arrow-up.png" />
+    <Content Include="Themes\Zhouse\Content\images\back.png" />
+    <Content Include="Themes\Zhouse\Content\images\backhover.png" />
+    <Content Include="Themes\Zhouse\Content\images\bbeditor-button-bg.gif" />
+    <Content Include="Themes\Zhouse\Content\images\bullet-left.gif" />
+    <Content Include="Themes\Zhouse\Content\images\bullet-right.gif" />
+    <Content Include="Themes\Zhouse\Content\images\closelabel.gif" />
+    <Content Include="Themes\Zhouse\Content\images\download-sample-bg.gif" />
+    <Content Include="Themes\Zhouse\Content\images\footerLine.png" />
+    <Content Include="Themes\Zhouse\Content\images\footerLink.png" />
+    <Content Include="Themes\Zhouse\Content\images\forum-footer-bg.gif" />
+    <Content Include="Themes\Zhouse\Content\images\forum-header-bg.gif" />
+    <Content Include="Themes\Zhouse\Content\images\free-shipping.png" />
+    <Content Include="Themes\Zhouse\Content\images\h1.png" />
+    <Content Include="Themes\Zhouse\Content\images\h2.png" />
+    <Content Include="Themes\Zhouse\Content\images\h3.png" />
+    <Content Include="Themes\Zhouse\Content\images\h4.png" />
+    <Content Include="Themes\Zhouse\Content\images\ico-arrow-r.gif" />
+    <Content Include="Themes\Zhouse\Content\images\ico-close-notification-bar.png" />
+    <Content Include="Themes\Zhouse\Content\images\ico-delete.gif" />
+    <Content Include="Themes\Zhouse\Content\images\ico-edit.gif" />
+    <Content Include="Themes\Zhouse\Content\images\ico-forum-post-add.gif" />
+    <Content Include="Themes\Zhouse\Content\images\ico-forum-post-high.gif" />
+    <Content Include="Themes\Zhouse\Content\images\ico-forum-post.gif" />
+    <Content Include="Themes\Zhouse\Content\images\ico-forum-watch.gif" />
+    <Content Include="Themes\Zhouse\Content\images\ico-forum.gif" />
+    <Content Include="Themes\Zhouse\Content\images\ico-move-topic.gif" />
+    <Content Include="Themes\Zhouse\Content\images\ico-pm.png" />
+    <Content Include="Themes\Zhouse\Content\images\ico-rss.gif" />
+    <Content Include="Themes\Zhouse\Content\images\list.png" />
+    <Content Include="Themes\Zhouse\Content\images\loading.gif" />
+    <Content Include="Themes\Zhouse\Content\images\logo.gif" />
+    <Content Include="Themes\Zhouse\Content\images\logo.png" />
+    <Content Include="Themes\Zhouse\Content\images\new.png" />
+    <Content Include="Themes\Zhouse\Content\images\next.png" />
+    <Content Include="Themes\Zhouse\Content\images\nexthover.png" />
+    <Content Include="Themes\Zhouse\Content\images\nextlabel.gif" />
+    <Content Include="Themes\Zhouse\Content\images\nhon.png" />
+    <Content Include="Themes\Zhouse\Content\images\nhonDown.png" />
+    <Content Include="Themes\Zhouse\Content\images\p1.png" />
+    <Content Include="Themes\Zhouse\Content\images\p2.png" />
+    <Content Include="Themes\Zhouse\Content\images\p3.png" />
+    <Content Include="Themes\Zhouse\Content\images\pinkTag.png" />
+    <Content Include="Themes\Zhouse\Content\images\prevlabel.gif" />
+    <Content Include="Themes\Zhouse\Content\images\progress-step-active.gif" />
+    <Content Include="Themes\Zhouse\Content\images\progress-step-inactive.gif" />
+    <Content Include="Themes\Zhouse\Content\images\search-bg.png" />
+    <Content Include="Themes\Zhouse\Content\images\searchBtn.png" />
+    <Content Include="Themes\Zhouse\Content\images\searchBtnhover.png" />
+    <Content Include="Themes\Zhouse\Content\images\star-x-active.png" />
+    <Content Include="Themes\Zhouse\Content\images\star-x-inactive.png" />
+    <Content Include="Themes\Zhouse\Content\images\stretchImg.png" />
+    <Content Include="Themes\Zhouse\Content\images\top-menu-background.png" />
+    <Content Include="Themes\Zhouse\Content\images\top-menu-divider.png" />
+    <Content Include="Themes\Zhouse\Content\images\top-menu-list-image-hover.png" />
+    <Content Include="Themes\Zhouse\Content\images\top-menu-list-image.png" />
+    <Content Include="Themes\Zhouse\Content\images\top-menu-triangle.png" />
+    <Content Include="Themes\Zhouse\Content\images\u43.jpg" />
+    <Content Include="Themes\Zhouse\Content\images\u45.jpg" />
+    <Content Include="Themes\Zhouse\Content\images\verLine.png" />
+    <Content Include="Themes\Zhouse\Content\images\zhouse.png" />
+    <Content Include="Themes\Zhouse\Content\jquery-te-1.4.0.css" />
+    <Content Include="Themes\Zhouse\Content\jquery-te.png" />
+    <Content Include="Themes\Zhouse\Content\styles.css" />
+    <Content Include="Themes\Zhouse\Content\styles.rtl.css" />
+    <Content Include="Themes\Zhouse\preview.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1848,6 +1919,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Topic\TopicHomePage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\Zhouse\theme.config" />
+    <Content Include="Themes\Zhouse\Views\Shared\Head.cshtml" />
+    <Content Include="Themes\Zhouse\Views\Web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

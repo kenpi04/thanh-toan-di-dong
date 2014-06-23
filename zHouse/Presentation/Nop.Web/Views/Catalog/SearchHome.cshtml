@@ -1,24 +1,20 @@
 ﻿@model Nop.Web.Models.Catalog.SearchModel
-@using(Html.BeginRouteForm("ProductSearch",FormMethod.Get))
-{
-<div class="search-home">
-    <div class="search-center">
-        <h1>ZHouse.com.vn địa chỉ bất động sản tin cậy</h1>
-        <div class="control">
-            @Html.DropDownListFor(x=>x.DistrictId,Model.Districts,"Chọn địa điểm")
-        </div>
-        <div class="control">
-            @Html.DropDownListFor(x=>x.PriceString,Model.PriceRange,"Chọn mức giá")
-        </div>
-        <div class="control">
-            @Html.DropDownListFor(x=>x.Cid,Model.AvailableCategories,"Chọn danh mục")
-        </div>
-        <div class="control btn">
-            <input type="submit" class="btn-pink" value="Tìm kiếm" />
-        </div>
-        <div class="clearfix"></div>
-        <h3>Giúp bạn tìm được một tổ ấm hạnh phúc là sứ mệnh của chúng tôi</h3>
 
-    </div>
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get))
+{
+  <div class="wrapper">
+<div class="topInfo">
+        	<div class="pinkBg">            	
+                <img src="@Url.Content("~/Themes/Zhouse/Content/images/zhouse.png")"/> <br>
+                @Html.DropDownList("DistrictId",Model.Districts,new{@class="box"})
+               @Html.DropDownList("PriceString",Model.PriceRange,new{@class="box"})<br>
+                @Html.DropDownList("Cid",Model.AvailableCategories,new{@class="box"})
+                 @Html.DropDownList("SelectedOptionIds",Model.BedRooms,"Số phòng ngủ",new{@class="box"})
+<br>
+                <input type="submit" class="blueBtn" value="tìm kiếm">
+            </div>
+        </div>
 </div>
+<img src="@Url.Content("~/Themes/Zhouse/Content/images/stretchImg.png")" class="stretchImg">
 }
+
