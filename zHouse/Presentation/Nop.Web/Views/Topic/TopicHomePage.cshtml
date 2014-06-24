@@ -1,4 +1,5 @@
-﻿<div class="wrapper">
+﻿@model List<Nop.Web.Models.Topics.TopicModel>
+<div class="wrapper">
     <div class="frame">
         <table>
             <tbody>
@@ -34,40 +35,21 @@
         </center>
 
         <div class="intro">
-            <div class="threeCol">
-                <div class="whiteBgBig">
-                    <ul>
-                        <li><a href="#">BĐS tuần 2 tháng 6: Thị trường "nóng" với hàng loạt con số ấn tượng</a></li>
-                        <li><a href="#">Lập đoàn kiểm tra việc giải ngân gói hỗ trợ nhà ở 30.000 tỷ</a></li>
-                        <li><a href="#">TPHCM sẽ thành lập khu kinh tế đặc biệt </a></li>
-                        <li><a href="#">Nóng: Giao dịch BĐS 6 tháng đầu năm 2014 tăng gấp đôi cùng kỳ</a></li>
-                    </ul>
-                    <div class="nhonDown"></div>
-                </div><!---whiteBgBig---->
-                <div class="pinkNarrowTitle">Tin tức</div>
-            </div><!--threeCol--->
-
-            <div class="threeCol">
-                <div class="whiteBgBig">
-                    <ul>
-                        <li><a href="#">BĐS tuần 2 tháng 6: Thị trường "nóng" với hàng loạt con số ấn tượng</a></li>
-                        <li><a href="#">Lập đoàn kiểm tra việc giải ngân gói hỗ trợ nhà ở 30.000 tỷ</a></li>
-                        <li><a href="#">TPHCM sẽ thành lập khu kinh tế đặc biệt </a></li>
-                        <li><a href="#">Nóng: Giao dịch BĐS 6 tháng đầu năm 2014 tăng gấp đôi cùng kỳ</a></li>
-                    </ul>
-                    <div class="nhonDown"></div>
-                </div><!---whiteBgBig---->
-                <div class="pinkNarrowTitle">Kiến thức</div>
-            </div><!--threeCol--->
+         
+            @Html.Action("HomePageNewsCate","News")
+          
 
 
             <div class="threeCol" style="margin: 0;float:right">
                 <div class="whiteBgBig">
                     <ul>
-                        <li><a href="#">BĐS tuần 2 tháng 6: Thị trường "nóng" với hàng loạt con số ấn tượng</a></li>
-                        <li><a href="#">Lập đoàn kiểm tra việc giải ngân gói hỗ trợ nhà ở 30.000 tỷ</a></li>
-                        <li><a href="#">TPHCM sẽ thành lập khu kinh tế đặc biệt </a></li>
-                        <li><a href="#">Nóng: Giao dịch BĐS 6 tháng đầu năm 2014 tăng gấp đôi cùng kỳ</a></li>
+                        @foreach(var i in Model)
+                        {
+                            <li><a title="@i.Title" href="@Url.RouteUrl("Topic", new {SystemName=i.SystemName })">@i.Title</a></li> 
+                        
+                        }
+                        
+                      
                     </ul>
                     <div class="nhonDown"></div>
                 </div><!---whiteBgBig---->

@@ -361,6 +361,19 @@ namespace Nop.Web.Framework
         {
             return helper.Action("WidgetsByZone", "Widget", new { widgetZone = widgetZone });
         }
+        /// <summary>
+        /// quangnt8 Hiển thị banner
+        /// </summary>     
+        /// <param name="Position">Vị trí banner</param>
+        /// <param name="stateId">Mã thành phố</param>
+        /// <param name="storeId">Mã Store</param>
+        /// <param name="viewName">Tên View </param>
+        /// <returns>Banner</returns>
+        public static MvcHtmlString FptBanner(this HtmlHelper helper, int? Position = null, int? stateId = null, int? storeId = null, string viewName = "")
+        {
+            return helper.Action("BannerShow", "FptBanner", new { Position = Position, StateId = stateId, StoreId = storeId, viewName = viewName });
+        }
+
 
         /// <summary>
         /// Renders the standard label with a specified suffix added to label text

@@ -16,6 +16,7 @@ namespace Nop.Web.Models.News
             FNewListByCateHv2 = new FNewListModel();
         }
         public int CateId { get; set; }
+     
         public int WorkingLanguageId { get; set; }
         
         public int PageIndex { get; set; }
