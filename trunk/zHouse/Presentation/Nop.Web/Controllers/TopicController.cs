@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Nop.Core;
+using System.Linq;
 using Nop.Core.Caching;
 using Nop.Services.Localization;
 using Nop.Services.Topics;
@@ -103,8 +104,17 @@ namespace Nop.Web.Controllers
 
         [ChildActionOnly]
         public ActionResult TopicHomePage()
-        { 
-            return View();
+        {
+
+            var model = _topicService.GetAllTopics(0).Take(5).Select(x => new TopicModel
+            {
+                Id=x.Id,
+                Title=x.Title,
+                SystemName=x.SystemName,
+                
+                
+            }).ToList();
+            return View(model);
         }
 
 

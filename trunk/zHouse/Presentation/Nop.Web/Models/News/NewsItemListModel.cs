@@ -11,6 +11,7 @@ namespace Nop.Web.Models.News
             NewsItems = new List<NewsItemModel>();
         }
 
+       
         public int WorkingLanguageId { get; set; }
         public NewsPagingFilteringModel PagingFilteringContext { get; set; }
         public IList<NewsItemModel> NewsItems { get; set; }

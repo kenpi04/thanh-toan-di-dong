@@ -45,6 +45,7 @@ namespace Nop.Web.Controllers
         private readonly ICacheManager _cacheManager;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly IStoreMappingService _storeMappingService;
+        private readonly ICategoryNewsService _cateNewsService;
 
         private readonly MediaSettings _mediaSettings;
         private readonly NewsSettings _newsSettings;
@@ -65,8 +66,9 @@ namespace Nop.Web.Controllers
             IStoreMappingService storeMappingService,
             MediaSettings mediaSettings, NewsSettings newsSettings,
             LocalizationSettings localizationSettings, CustomerSettings customerSettings,
-            CaptchaSettings captchaSettings)
+            CaptchaSettings captchaSettings,ICategoryNewsService cateNewsService)
         {
+            this._cateNewsService = cateNewsService;
             this._newsService = newsService;
             this._workContext = workContext;
             this._storeContext = storeContext;
@@ -196,6 +198,31 @@ namespace Nop.Web.Controllers
             //foreach (var newsItemModel in model.NewsItems)
             //    newsItemModel.Comments.Clear();
             return PartialView(model);
+        }
+
+        public ActionResult HomePageNewsCate()
+        {
+            var model = new List<FNewsItemListModel>();
+            var newsCate = _cateNewsService.GetAllCategoriesByParentCategoryId(0).Take(2);
+            foreach(var cn in newsCate)
+            {
+                var row = new FNewsItemListModel
+                {
+                    CateName = cn.Name,
+                    CateId = cn.Id,
+                    NewsItems = _newsService.GetAllNews(0, 0, cn.Id, 0, 4).Select(x => {
+                        var item = new NewsItemModel();
+                        PrepareNewsItemModel(item, x, false);
+                        return item;
+                    
+                    }).ToList()
+
+                };
+                model.Add(row);
+               
+            }
+            return View(model);
+           
         }
 
         public ActionResult List(NewsPagingFilteringModel command)

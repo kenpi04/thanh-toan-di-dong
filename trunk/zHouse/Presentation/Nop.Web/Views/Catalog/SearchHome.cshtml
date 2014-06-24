@@ -1,5 +1,8 @@
 ﻿@model Nop.Web.Models.Catalog.SearchModel
-
+@{
+    
+    Html.AppendScriptParts("~/Scripts/jquery.nivo.slider.js");
+}
 @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get))
 {
   <div class="wrapper">
@@ -15,6 +18,19 @@
             </div>
         </div>
 </div>
-<img src="@Url.Content("~/Themes/Zhouse/Content/images/stretchImg.png")" class="stretchImg">
+    <div id="slider">
+        @for(int i=0;i<4;i++)
+        { 
+          <img src="@Url.Content("~/Themes/Zhouse/Content/images/stretchImg.png")" class="stretchImg">
+        }
+      
+    </div>
 }
+<script type="text/javascript">
+    $(function () {
+        $('#slider').nivoSlider();
 
+
+    })
+</script>
+    
