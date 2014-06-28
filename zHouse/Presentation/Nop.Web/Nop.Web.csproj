@@ -982,6 +982,7 @@
     </Content>
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\public.common.mobile.js" />
+    <Content Include="Scripts\tab.js" />
     <Content Include="Themes\DefaultClean\Content\editorsimple.css" />
     <Content Include="Themes\DefaultClean\Content\images\free-shipping.png" />
     <Content Include="Themes\DefaultClean\Content\images\search-bg.png" />
@@ -1432,6 +1433,7 @@
     <Content Include="Themes\Zhouse\Content\editorsimple.css" />
     <Content Include="Themes\Zhouse\Content\ie6.css" />
     <Content Include="Themes\Zhouse\Content\ie7.css" />
+    <Content Include="Themes\Zhouse\Content\images\ad.png" />
     <Content Include="Themes\Zhouse\Content\images\ajax_loader_large.gif" />
     <Content Include="Themes\Zhouse\Content\images\ajax_loader_small.gif" />
     <Content Include="Themes\Zhouse\Content\images\arrow-up.png" />
@@ -1441,6 +1443,9 @@
     <Content Include="Themes\Zhouse\Content\images\bullet-left.gif" />
     <Content Include="Themes\Zhouse\Content\images\bullet-right.gif" />
     <Content Include="Themes\Zhouse\Content\images\closelabel.gif" />
+    <Content Include="Themes\Zhouse\Content\images\d1.png" />
+    <Content Include="Themes\Zhouse\Content\images\d2.png" />
+    <Content Include="Themes\Zhouse\Content\images\d3.png" />
     <Content Include="Themes\Zhouse\Content\images\download-sample-bg.gif" />
     <Content Include="Themes\Zhouse\Content\images\footerLine.png" />
     <Content Include="Themes\Zhouse\Content\images\footerLink.png" />
@@ -1451,6 +1456,7 @@
     <Content Include="Themes\Zhouse\Content\images\h2.png" />
     <Content Include="Themes\Zhouse\Content\images\h3.png" />
     <Content Include="Themes\Zhouse\Content\images\h4.png" />
+    <Content Include="Themes\Zhouse\Content\images\i1.png" />
     <Content Include="Themes\Zhouse\Content\images\ico-arrow-r.gif" />
     <Content Include="Themes\Zhouse\Content\images\ico-close-notification-bar.png" />
     <Content Include="Themes\Zhouse\Content\images\ico-delete.gif" />
@@ -1465,6 +1471,8 @@
     <Content Include="Themes\Zhouse\Content\images\ico-rss.gif" />
     <Content Include="Themes\Zhouse\Content\images\list.png" />
     <Content Include="Themes\Zhouse\Content\images\loading.gif" />
+    <Content Include="Themes\Zhouse\Content\images\lockBtn.png" />
+    <Content Include="Themes\Zhouse\Content\images\lockBtnhover.png" />
     <Content Include="Themes\Zhouse\Content\images\logo.gif" />
     <Content Include="Themes\Zhouse\Content\images\logo.png" />
     <Content Include="Themes\Zhouse\Content\images\new.png" />
@@ -1473,6 +1481,7 @@
     <Content Include="Themes\Zhouse\Content\images\nextlabel.gif" />
     <Content Include="Themes\Zhouse\Content\images\nhon.png" />
     <Content Include="Themes\Zhouse\Content\images\nhonDown.png" />
+    <Content Include="Themes\Zhouse\Content\images\nhonReply.png" />
     <Content Include="Themes\Zhouse\Content\images\p1.png" />
     <Content Include="Themes\Zhouse\Content\images\p2.png" />
     <Content Include="Themes\Zhouse\Content\images\p3.png" />
@@ -1480,12 +1489,21 @@
     <Content Include="Themes\Zhouse\Content\images\prevlabel.gif" />
     <Content Include="Themes\Zhouse\Content\images\progress-step-active.gif" />
     <Content Include="Themes\Zhouse\Content\images\progress-step-inactive.gif" />
+    <Content Include="Themes\Zhouse\Content\images\r1.png" />
+    <Content Include="Themes\Zhouse\Content\images\r2.png" />
     <Content Include="Themes\Zhouse\Content\images\search-bg.png" />
     <Content Include="Themes\Zhouse\Content\images\searchBtn.png" />
     <Content Include="Themes\Zhouse\Content\images\searchBtnhover.png" />
+    <Content Include="Themes\Zhouse\Content\images\share.png" />
     <Content Include="Themes\Zhouse\Content\images\star-x-active.png" />
     <Content Include="Themes\Zhouse\Content\images\star-x-inactive.png" />
     <Content Include="Themes\Zhouse\Content\images\stretchImg.png" />
+    <Content Include="Themes\Zhouse\Content\images\t1.png" />
+    <Content Include="Themes\Zhouse\Content\images\t2.png" />
+    <Content Include="Themes\Zhouse\Content\images\t3.png" />
+    <Content Include="Themes\Zhouse\Content\images\t4.png" />
+    <Content Include="Themes\Zhouse\Content\images\t5.png" />
+    <Content Include="Themes\Zhouse\Content\images\tablePic.png" />
     <Content Include="Themes\Zhouse\Content\images\top-menu-background.png" />
     <Content Include="Themes\Zhouse\Content\images\top-menu-divider.png" />
     <Content Include="Themes\Zhouse\Content\images\top-menu-list-image-hover.png" />

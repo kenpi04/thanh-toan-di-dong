@@ -653,11 +653,16 @@ namespace Nop.Web.Controllers
                 Area=product.Area.ToString("#"),
                 ContactEmail=product.ContactEmail,
                 ContactName=product.ContactName,
-                ContactPhone=product.ContactPhone
+                ContactPhone=product.ContactPhone,
+                FullAddress=product.FullAddress
+
                
                
             };
-
+            if(product.ProductCategories.Count>0)
+            {
+                model.CateName = product.ProductCategories.FirstOrDefault().Category.Name;
+            }
             #endregion
             //vendor
             if (_vendorSettings.ShowVendorOnProductDetailsPage)
