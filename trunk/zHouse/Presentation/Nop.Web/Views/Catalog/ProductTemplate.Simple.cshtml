@@ -1,95 +1,299 @@
 ﻿@model Nop.Web.Models.Catalog.ProductDetailsModel
 @{
-    Layout = "~/Views/Shared/_ColumnTwoRight.cshtml";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
     Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
     Html.AddMetaDescriptionParts(Model.MetaDescription);
     Html.AddMetaKeywordParts(Model.MetaKeywords);
+    Html.AppendScriptParts("~/Scripts/tab.js");
 }
 @Html.Action("ProductBreadcrumb", "Catalog", new { productId = Model.Id })
 <div class="page product-details-page">
     <div class="page-body">
-          <div itemscope itemtype="http://schema.org/Product" data-productid="@Model.Id">
-                <div class="product-essential">
-                    <div class="detail-head">
-                        <div class="option">
-                           <div class="price-box">
-                               <span>ID: @Model.Id</span><br />
-                              <span><b>Giá:</b> @Model.ProductPrice.Price</span><br />
-                               <span><b>Tình trạng: @Model.Status</b></span>
-                               
-                           </div>
-                            <ul>
-                                <li>
-                                    <b>Khu vực:</b> @Model.DistrictName                                    
-                                </li>
-                                 <li>
-                                    <b>Hình thức:</b> @Model.HinhThuc                                    
-                                </li>
-                                 <li>
-                                    <b>Diện tích:</b> @Model.Area m<sub>2</sub>                                    
-                                </li>
-                                 <li>
-                                    <b>Hướng:</b> @Model.Directors                                    
-                                </li>
-                                 <li>
-                                    <b>Tình trạng:</b> @Model.Status
-                                                                         
-                                </li>
-                                 <li>
-                                    <b>Phòng tắm:</b> @Model.BadRooms                                    
-                                </li>
-                                 <li>
-                                    <b>Phòng ngủ:</b> @Model.BedRooms                                    
-                                </li>
-                                  <li>
-                                    <b>Cơ sở vật chất:</b> 
-                                     <ul>
-                                         @foreach (var i in Model.Facilities)
-                                         { 
-                                            <li><input type="checkbox" disabled="disabled" checked="checked" />@i.Text</li>
-                                         }
-                                     </ul>                                   
-                                </li>
-                                  <li>
-                                    <b>Mô trường xung quanh:</b>
-                                      <ul>
-                                         @foreach (var i in Model.Environments)
-                                         { 
-                                            <li><input type="checkbox" disabled="disabled" checked="checked" />@i.Text</li>
-                                         }
-                                     </ul>                                 
-                                </li>
+        <div class="mainContent">
+            <div class="leftContent">
+                <div class="whiteBgLeft">
+                    <div class="blueTitle"><h1>@Model.Name</h1></div>
+                    ID: @Model.Id
+                    <div class="pinkPrice">@Model.ProductPrice.Price</div>
+                    Tình trạng: <a class="blueText">@Model.Status</a>
+                    <div class="share">@Html.Action("ShareButton", "Catalog")</div>
+                </div><!---whiteBgLeft----->
+                <div class="detailTable">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="greyBgTD">Khu vực</td>
+                                <td>@Model.DistrictName</td>
+                                <td style="padding:0;position:relative;" rowspan="8">
+                                    <img src="images/tablePic.png">
+                                    <div class="blackBg">@Model.ShortDescription</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Hình thức</td>
+                                <td>@Model.CateName</td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Hướng</td>
+                                <td>@Model.Directors</td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Phòng ngủ</td>
+                                <td>@Model.BedRooms phòng</td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Phòng tắm</td>
+                                <td>@Model.BadRooms phòng</td>
+                            </tr>
 
+                            <tr>
+                                <td class="greyBgTD">Cơ sở vật chất</td>
+                                <td>
+                                    @if (Model.Facilities.Count > 0)
+                                    {
+                                        foreach (var s in Model.Facilities)
+                                        {
+                                            <text>@s.Text</text><br />
+                                        }
+                                    }
+                                    else
+                                    { <text>-</text>}
 
-                            </ul>
-                        </div>
-                        <div class="picture">
-                            @Html.Widget("productdetails_before_pictures")
-                    <!--product pictures-->
-                        @Html.Partial("_ProductDetailsPictures", Model)
-                        @Html.Widget("productdetails_after_pictures")
-                        </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Diện tích</td>
+                                <td>@(!string.IsNullOrWhiteSpace(Model.Area) ? Model.Area : "-") m2 </td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Tình trạng</td>
+                                <td>Nhà mới</td>
+
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Tiện nghi</td>
+                                <td>Nhà trống</td>
+                                <td rowspan="2" valign="top">
+                                    <div class="thumbnail">
+                                        <div class="thumbnailPic"><a href="#"><img src="images/t1.png" class="noborder"></a></div>
+                                        <div class="thumbnailPic"><a href="#"><img src="images/t2.png" class="noborder"></a></div>
+                                        <div class="thumbnailPic"><a href="#"><img src="images/t3.png" class="noborder"></a></div>
+                                        <div class="thumbnailPic"><a href="#"><img src="images/t4.png" class="noborder"></a></div>
+                                        <div class="thumbnailPic"><a href="#"><img src="images/t5.png" class="noborder"></a></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @if (Model.Environments.Count > 0)
+                            {
+                                <tr>
+                                    <td class="greyBgTD">Môi trường xung quanh</td>
+                                    <td>@Model.Environments.Select(x => x.Text).Aggregate((a, b) => a + "," + b)</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div><!----detailTable---->
+
+                <div class="floatLeft">
+                    <center>
+                        <input type="button" class="blueBtn" value="so sánh">
+                        <input type="button" class="blueBtn" value="gửi email">
+                        <input type="button" class="blueBtn" value="in ra">
+                        <input type="button" class="blueBtn" value="download pdf">
+                    </center>
+                </div><!---floatLeft-------------->
+
+                <div class="whiteBgTab" id="tabs">
+                    <div class="tabBtnActive" tab="#tab-detail"><a href="#">MÔ TẢ CHI TIẾT</a></div>
+                    <div class="tabBtn" tab="#tab-pictures"><a href="#">HÌNH ẢNH CLIP</a></div>
+                    <div class="tabBtn" tab="#tab-map"><a href="#">BẢN ĐỒ</a></div>
+                </div><!---whiteBgTab-->
+
+                <div id="tab-detail" class="whiteBgLeft" style="margin-top:-1px;">
+                    @Html.Raw(Model.FullDescription)
+                </div><!---whiteBgLeft-->
+                <div id="tab-pictures" class="whiteBgLeft" style="margin-top:-1px;">
+                    Pictures
+                </div>
+                <div id="tab-map" class="whiteBgLeft" style="margin-top:-1px;">
+                    Maps
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $.tabs("#tabs div");
+                    })
+                </script>
+                <div class="floatLeft">
+                    <div class="col1"><div class="pinkNarrowTitleSmall">Bình luận</div></div>
+                    <div class="col2">
+                        <div class="col2Whole">
+                            <div class="col2a"><img src="images/d1.png" class="circleImg"></div>
+                            <div class="col2b">
+                                <input type="text" class="formBox"><br>
+                                <textarea rows="2" class="formBox" style="width: 508px"></textarea><br>
+                                <input type="button" class="blueBtn" value="bình luận" style="float:right">
+                            </div>
+                        </div><!--col2Whole--->
+
+                        <div class="col2Whole">
+                            <div class="col2a"><img src="images/d2.png" class="circleImg"></div>
+                            <div class="col2b">
+                                <b>Pokemon</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
+                                <br>
+                                Donec ac est dictum, laoreet lectus vel, iaculis magna. Duis enim quam, sagittis et lobortis sit amet, lobortis quis odio. Mauris urna ligula.
+                                <div class="actionBottom">
+                                    <div class="blueLinkSmall"><a href="#">...xem thêm</a></div>
+                                    <div style="float:right">
+                                        <div class="blueLinkSmall"><a href="#">Trả lời</a></div>
+                                        <a class="blueDot">•</a>
+                                        <div class="blueLinkSmall"><a href="#">Thích </a></div>
+                                        <a class="blueDot">•</a>
+                                        <a class="greyText">2 giờ trước</a>
+                                    </div>
+                                </div><!---actionBottom--->
+                            </div><!---col2b--->
+                        </div><!--col2Whole--->
+
+                        <div class="col2Whole">
+                            <div class="col2a"><img src="images/d3.png" class="circleImg"></div>
+                            <div class="col2b">
+                                <b>Kame</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
+                                <br>
+                                Donec ac est dictum, laoreet lectus vel, iaculis magna. Duis enim quam, sagittis et lobortis sit amet, lobortis quis odio. Mauris urna ligula.
+                                <div class="actionBottom">
+                                    <div class="blueLinkSmall"><a href="#">...xem thêm</a></div>
+                                    <div style="float:right">
+                                        <div class="blueLinkSmall"><a href="#">Trả lời</a></div>
+                                        <a class="blueDot">•</a>
+                                        <div class="blueLinkSmall"><a href="#">Thích </a></div>
+                                        <a class="blueDot">•</a>
+                                        <a class="greyText">2 giờ trước</a>
+                                    </div>
+                                </div><!---actionBottom--->
+
+                                <div class="floatLeft">
+                                    <div class="replyBg">
+                                        <div class="nhonReply"></div>
+                                        <div class="col2WholeInside">
+                                            <div class="col2aInside"><img src="images/d1.png" class="circleImg"></div>
+                                            <div class="col2bInside">
+                                                <b>Kame</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
+                                                <br>
+                                                Donec ac est dictum, laoreet lectus vel, iaculis magna. Duis enim quam, sagittis et lobortis sit amet, lobortis quis odio. Mauris urna ligula.
+                                                <div class="actionBottom">
+                                                    <div class="blueLinkSmall"><a href="#">...xem thêm</a></div>
+                                                    <div style="float:right">
+                                                        <div class="blueLinkSmall"><a href="#">Trả lời</a></div>
+                                                        <a class="blueDot">•</a>
+                                                        <div class="blueLinkSmall"><a href="#">Thích </a></div>
+                                                        <a class="blueDot">•</a>
+                                                        <a class="greyText">2 giờ trước</a>
+                                                    </div>
+                                                </div><!---actionBottom--->
+                                            </div><!---col2bInside--->
+                                        </div><!---col2WholeInside-->
+                                    </div><!---replyBg---->
+
+                                    <div class="replyBg">
+                                        <div class="col2WholeInside">
+                                            <div class="col2aInside"><img src="images/d2.png" class="circleImg"></div>
+                                            <div class="col2bInside">
+                                                <b>Kame</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
+                                                <br>
+                                                Donec ac est dictum, laoreet lectus vel, iaculis magna. Duis enim quam, sagittis et lobortis sit amet, lobortis quis odio. Mauris urna ligula.
+                                                <div class="actionBottom">
+                                                    <div class="blueLinkSmall"><a href="#">...xem thêm</a></div>
+                                                    <div style="float:right">
+                                                        <div class="blueLinkSmall"><a href="#">Trả lời</a></div>
+                                                        <a class="blueDot">•</a>
+                                                        <div class="blueLinkSmall"><a href="#">Thích </a></div>
+                                                        <a class="blueDot">•</a>
+                                                        <a class="greyText">2 giờ trước</a>
+                                                    </div>
+                                                </div><!---actionBottom--->
+                                            </div><!---col2bInside--->
+                                        </div><!---col2WholeInside-->
+                                    </div><!---replyBg---->
+
+                                    <input type="button" class="blueBtn" value="xem tất cả" style="float:right">
+
+                                </div><!---floatLeft--->
+
+                            </div><!---col2b--->
+                        </div><!--col2Whole--->
+
                     </div>
-                    <div class="clearfix"></div>
-                    <div class="detail">
-                    <h3>Mô tả chi tiết</h3>
-                    <hr />
-                    <p>@Html.Raw(Model.FullDescription)</p>
-                      </div>
-                    </div>
+                </div>
 
-              @Html.Action("ProductReviews", new {productId=Model.Id })
-              </div>
+            </div><!-----leftContent-------------->
+
+            <div class="rightContent">
+                <div class="pinkBgRight">
+                    <b>BẠN CẦN THÊM THÔNG TIN?</b>
+                    <div class="twoColRight">
+                        <div class="twoColRightPic"><a href="#"><img src="images/i1.png" class="circleImg"></a></div>
+                        <div class="twoColRightText">
+                            @Model.ContactName<br>
+                            <b>@Model.ContactPhone</b>
+                        </div>
+                    </div><!---twoColRight---->
+                </div><!--pinkBgRight----->
+
+                <div class="introColRight">
+                    <div class="nhonRight"></div>
+                    <div class="pinkTagRight">2 tỉ 400tr</div>
+                    <img src="images/r1.png">
+                    <div class="whiteBgRight">Nhà mặt tiền 4x12 Hoàng Hoa Thám, quận Tân Bình, Tp. HCM</div>
+                </div><!----introColRight---->
+
+                <div class="introColRight">
+                    <div class="nhonRight"></div>
+                    <div class="pinkTagRight">2 tỉ 400tr</div>
+                    <img src="images/r2.png">
+                    <div class="whiteBgRight">Nhà mặt tiền 4x12 Hoàng Hoa Thám, quận Tân Bình, Tp. HCM</div>
+                </div><!----introColRight---->
+
+                <div class="ad"><a href="#"><img src="images/ad.png" class="adBorder"></a></div>
+                <div class="ad"><a href="#"><img src="images/ad.png" class="adBorder"></a></div>
+
+            </div><!----rightContent---------------->
+
+
+            <div class="floatLeft">
+                <div class="pinkNarrowTitleSmall" style="margin-bottom:10px">Bạn vừa xem</div>
+                <div class="introColRight" style="margin-right:15px">
+                    <div class="nhonRight"></div>
+                    <div class="pinkTagRight">2 tỉ 400tr</div>
+                    <img src="images/r1.png">
+                    <div class="whiteBgRight">Nhà mặt tiền 4x12 Hoàng Hoa Thám, quận Tân Bình, Tp. HCM</div>
+                </div><!----introColRight---->
+
+                <div class="introColRight" style="margin-right:15px">
+                    <div class="nhonRight"></div>
+                    <div class="pinkTagRight">2 tỉ 400tr</div>
+                    <img src="images/r2.png">
+                    <div class="whiteBgRight">Nhà mặt tiền 4x12 Hoàng Hoa Thám, quận Tân Bình, Tp. HCM</div>
+                </div><!----introColRight---->
+
+                <div class="introColRight" style="margin-right:15px">
+                    <div class="nhonRight"></div>
+                    <div class="pinkTagRight">2 tỉ 400tr</div>
+                    <img src="images/r1.png">
+                    <div class="whiteBgRight">Nhà mặt tiền 4x12 Hoàng Hoa Thám, quận Tân Bình, Tp. HCM</div>
+                </div><!----introColRight---->
+
+                <div class="pinkBgRightBottom">
+                    <a style="font-size:32px">SO SÁNH</a><br>
+                    CÁC BĐS VỪA XEM
+                </div>
+
+            </div><!---floatLeft--->
+
+        </div>
         </div>
     </div>
-@section right{
-        <div class="contact">
-            <h2>Bạn cần thêm thông tin</h2>
-            <div class="info">
-                @Model.ContactName<br />
-                @Model.ContactPhone
-            </div>
-         @Html.Action("ProductEmailAFriend", "Catalog", new { productId = Model.Id })
-            </div>
-    }
+
+     
+    
 

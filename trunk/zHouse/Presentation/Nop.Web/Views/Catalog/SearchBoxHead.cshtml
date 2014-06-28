@@ -4,25 +4,18 @@
 }
 
 @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frmSearchHead" }))
-{
-    <div>
-       <span>
-           @Html.DropDownListFor(x=>x.DistrictId,Model.Districts)
-       </span>
-        <span>
-            @Html.DropDownListFor(x=>x.PriceString,Model.PriceRange)
-        </span>
-        <span>
-            @Html.DropDownListFor(x=>x.Cid,Model.AvailableCategories)
-        </span>
-        <span>
-            @Html.DropDownListFor(x=>x.SelectedOptionIds,Model.BedRooms,"Số phòng ngủ")
-        </span>
-        <span>
-            @Html.DropDownListFor(x=>x.SelectedOptionIds,Model.BadRooms,"Số phòng tắm")
-        </span>
-        <span>
-            <input type="submit" value="Tìm kiếm" />
-        </span>
+{<div class="top2">
+    	<div class="wrapper">
+            <div class="wholeSearch">
+               
+              @Html.DropDownList("DistrictId",Model.Districts,new{@class="formBoxSelect"})
+              @Html.DropDownList("PriceString",Model.PriceRange,new{@class="formBoxSelect"})
+              @Html.DropDownList("Cid",Model.AvailableCategories,new{@class="formBoxSelect"})
+              @Html.DropDownList("SelectedOptionIds",Model.BedRooms,"Số phòng ngủ",new{@class="formBoxSelect"})
+              @Html.DropDownList("SelectedOptionIds",Model.BadRooms,"Số phòng tắm",new{@class="formBoxSelect"})
+                <input type="button" class="blueBtn" value="tìm kiếm">
+            </div>
+        </div>
     </div>
+  
 }

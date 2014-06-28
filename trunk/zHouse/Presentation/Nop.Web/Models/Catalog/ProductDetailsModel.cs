@@ -39,6 +39,8 @@ namespace Nop.Web.Models.Catalog
         public string MetaDescription { get; set; }
         public string MetaTitle { get; set; }
         public string SeName { get; set; }
+        public string CateName { get; set; }
+        public string FullAddress { get; set; }
 
         public bool ShowSku { get; set; }
         public string Sku { get; set; }
@@ -259,6 +261,8 @@ namespace Nop.Web.Models.Catalog
 
 		#endregion
 
-       
+
+
+      
     }
 }
