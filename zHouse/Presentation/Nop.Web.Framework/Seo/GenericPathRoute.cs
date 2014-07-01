@@ -64,7 +64,7 @@ namespace Nop.Web.Framework.Seo
         }
 
         #endregion
-        
+
         #region Methods
 
         /// <summary>
@@ -81,7 +81,9 @@ namespace Nop.Web.Framework.Seo
             {
                 var urlRecordService = EngineContext.Current.Resolve<IUrlRecordService>();
                 var slug = data.Values["generic_se_name"] as string;
-                var urlRecord = urlRecordService.GetBySlug(slug);
+                int categoryId, streetId, wardId, districtId, stateProvinceId;
+                //var urlRecord = urlRecordService.GetBySlug(slug);
+                var urlRecord = urlRecordService.GetBySlug(slug, out categoryId, out streetId, out wardId, out districtId, out stateProvinceId);
                 if (urlRecord == null)
                 {
                     //no URL record found
@@ -114,14 +116,14 @@ namespace Nop.Web.Framework.Seo
                     else
                     {
                         //no active slug found
-                        
+
                         //var webHelper = EngineContext.Current.Resolve<IWebHelper>();
                         //var response = httpContext.Response;
                         //response.Status = "302 Found";
                         //response.RedirectLocation = webHelper.GetStoreLocation(false);
                         //response.End();
                         //return null;
-                        
+
                         data.Values["controller"] = "Common";
                         data.Values["action"] = "PageNotFound";
                         return data;
@@ -173,12 +175,25 @@ namespace Nop.Web.Framework.Seo
                         break;
                     case "categorynews":
                         {
-                          data.Values["controller"] = "News";
-                             data.Values["action"] = "List";
+                            data.Values["controller"] = "News";
+                            data.Values["action"] = "List";
                             data.Values["CateId"] = urlRecord.EntityId;
                             data.Values["SeName"] = urlRecord.Slug;
-                            break;
+
                         }
+                        break;
+                    case "search":
+                        {
+                            data.Values["controller"] = "Catalog";
+                            data.Values["action"] = "ProductSearch1";
+                            data.Values["categoryId"] = categoryId;
+                            data.Values["streetId"] = streetId;
+                            data.Values["wardId"] = wardId;
+                            data.Values["districtId"] = districtId;
+                            data.Values["stateProvinceId"] = stateProvinceId;
+                            data.Values["SeName"] = urlRecord.Slug;                            
+                        }
+                        break;
                     default:
                         {
                             //no record found
