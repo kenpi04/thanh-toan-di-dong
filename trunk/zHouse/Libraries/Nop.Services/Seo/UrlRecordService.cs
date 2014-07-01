@@ -6,6 +6,8 @@ using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Seo;
+using System.Data;
+using Nop.Data;
 
 namespace Nop.Services.Seo
 {
@@ -41,7 +43,8 @@ namespace Nop.Services.Seo
         private readonly IRepository<UrlRecord> _urlRecordRepository;
         private readonly ICacheManager _cacheManager;
         private readonly LocalizationSettings _localizationSettings;
-
+        private readonly IDataProvider _dataProvider;
+        private readonly IDbContext _dbContext;
         #endregion
 
         #region Ctor
@@ -54,11 +57,15 @@ namespace Nop.Services.Seo
         /// <param name="localizationSettings">Localization settings</param>
         public UrlRecordService(ICacheManager cacheManager,
             IRepository<UrlRecord> urlRecordRepository,
-            LocalizationSettings localizationSettings)
+            LocalizationSettings localizationSettings,
+            IDataProvider dataProvider,
+            IDbContext dbContext)
         {
             this._cacheManager = cacheManager;
             this._urlRecordRepository = urlRecordRepository;
             this._localizationSettings = localizationSettings;
+            this._dataProvider = dataProvider;
+            this._dbContext = dbContext;
         }
 
         #endregion
@@ -209,6 +216,65 @@ namespace Nop.Services.Seo
                         where ur.Slug == slug
                         select ur;
             var urlRecord = query.FirstOrDefault();
+            return urlRecord;
+        }
+
+        public virtual UrlRecord GetBySlug(string slug, out int categoryId, out int streetId, out int wardId, out int districtId, out int stateProvinceId)
+        {
+            categoryId = streetId = wardId = districtId = stateProvinceId = 0;
+            if (String.IsNullOrEmpty(slug))
+                return null;
+
+            //prepare parameters
+            var pSlug = _dataProvider.GetParameter();
+            pSlug.ParameterName = "slug";
+            pSlug.Value = slug;
+            pSlug.DbType = DbType.String;
+            //out
+            var pCategoryId = _dataProvider.GetParameter();
+            pCategoryId.ParameterName = "categoryId";
+            pCategoryId.Direction = ParameterDirection.Output;
+            pCategoryId.DbType = DbType.Int32;
+
+            var pStreetId = _dataProvider.GetParameter();
+            pStreetId.ParameterName = "streetId";
+            pStreetId.Direction = ParameterDirection.Output;
+            pStreetId.DbType = DbType.Int32;
+
+            var pWardId = _dataProvider.GetParameter();
+            pWardId.ParameterName = "wardId";
+            pWardId.Direction = ParameterDirection.Output;
+            pWardId.DbType = DbType.Int32;
+
+            var pDistrictId = _dataProvider.GetParameter();
+            pDistrictId.ParameterName = "districtId";
+            pDistrictId.Direction = ParameterDirection.Output;
+            pDistrictId.DbType = DbType.Int32;
+
+            var pStateProvinceId = _dataProvider.GetParameter();
+            pStateProvinceId.ParameterName = "stateProvinceId";
+            pStateProvinceId.Direction = ParameterDirection.Output;
+            pStateProvinceId.DbType = DbType.Int32;
+
+            var urlRecords = _dbContext.ExecuteStoredProcedureList<UrlRecord>(
+                    "GetUrlLink",
+                    pSlug,
+                    pCategoryId,
+                    pStreetId,
+                    pWardId,
+                    pDistrictId,
+                    pStateProvinceId
+                    );
+
+            var urlRecord = urlRecords.FirstOrDefault();
+            if (urlRecord != null)
+            {
+                categoryId = (pCategoryId.Value != DBNull.Value) ? Convert.ToInt32(pCategoryId.Value) : 0;
+                streetId = (pStreetId.Value != DBNull.Value) ? Convert.ToInt32(pStreetId.Value) : 0;
+                wardId = (pWardId.Value != DBNull.Value) ? Convert.ToInt32(pWardId.Value) : 0;
+                districtId = (pDistrictId.Value != DBNull.Value) ? Convert.ToInt32(pDistrictId.Value) : 0;
+                stateProvinceId = (pStateProvinceId.Value != DBNull.Value) ? Convert.ToInt32(pStateProvinceId.Value) : 0;
+            }
             return urlRecord;
         }
 
