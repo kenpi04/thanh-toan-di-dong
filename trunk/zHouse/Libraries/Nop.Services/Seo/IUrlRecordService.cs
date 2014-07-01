@@ -39,7 +39,19 @@ namespace Nop.Services.Seo
         /// <param name="slug">Slug</param>
         /// <returns>Found URL record</returns>
         UrlRecord GetBySlug(string slug);
-        
+
+        /// <summary>
+        /// Find URL record
+        /// </summary>
+        /// <param name="slug">slug</param>
+        /// <param name="categoryId">Category output</param>
+        /// <param name="streetId">Street output</param>
+        /// <param name="wardId">Ward out put</param>
+        /// <param name="districtId">District out put</param>
+        /// <param name="stateProvinceId">Stateprovince out put</param>
+        /// <returns></returns>
+        UrlRecord GetBySlug(string slug, out int categoryId, out int streetId, out int wardId, out int districtId, out int stateProvinceId);
+
         /// <summary>
         /// Gets all URL records
         /// </summary>
