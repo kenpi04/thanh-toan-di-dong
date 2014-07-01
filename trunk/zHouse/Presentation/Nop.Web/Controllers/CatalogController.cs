@@ -1895,6 +1895,76 @@ namespace Nop.Web.Controllers
             return View(model.ProductTemplateViewPath, model);
         }
 
+        //product details page
+        [NopHttpsRequirement(SslRequirement.No)]
+        public ActionResult Product(int productId, int stateProvinceId, int districtId, int wardId, int streetId, int updatecartitemid = 0)
+        {
+            var product = _productService.GetProductById(productId);
+            if (product == null || product.Deleted)
+                return InvokeHttp404();
+
+            //Is published?
+            //Check whether the current user has a "Manage catalog" permission
+            //It allows him to preview a product before publishing
+            if (!product.Published && !_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
+                return InvokeHttp404();
+
+            //ACL (access control list)
+            if (!_aclService.Authorize(product))
+                return InvokeHttp404();
+
+            //Store mapping
+            if (!_storeMappingService.Authorize(product))
+                return InvokeHttp404();
+
+            //visible individually?
+            if (!product.VisibleIndividually)
+            {
+                //is this one an associated products?
+                var parentGroupedProduct = _productService.GetProductById(product.ParentGroupedProductId);
+                if (parentGroupedProduct != null)
+                {
+                    return RedirectToRoute("Product", new { SeName = parentGroupedProduct.GetSeName() });
+                }
+                else
+                {
+                    return RedirectToRoute("HomePage");
+                }
+            }
+
+            //update existing shopping cart item?
+            ShoppingCartItem updatecartitem = null;
+            if (_shoppingCartSettings.AllowCartItemEditing && updatecartitemid > 0)
+            {
+                var cart = _workContext.CurrentCustomer.ShoppingCartItems
+                    .Where(x => x.ShoppingCartType == ShoppingCartType.ShoppingCart)
+                    .Where(x => x.StoreId == _storeContext.CurrentStore.Id)
+                    .ToList();
+                updatecartitem = cart.FirstOrDefault(x => x.Id == updatecartitemid);
+                //not found?
+                if (updatecartitem == null)
+                {
+                    return RedirectToRoute("Product", new { SeName = product.GetSeName() });
+                }
+                //is it this product?
+                if (product.Id != updatecartitem.ProductId)
+                {
+                    return RedirectToRoute("Product", new { SeName = product.GetSeName() });
+                }
+            }
+
+            //prepare the model
+            var model = PrepareProductDetailsPageModel(product, updatecartitem, false);
+
+            //save as recently viewed
+            _recentlyViewedProductsService.AddProductToRecentlyViewedList(product.Id);
+
+            //activity log
+            _customerActivityService.InsertActivity("PublicStore.ViewProduct", _localizationService.GetResource("ActivityLog.PublicStore.ViewProduct"), product.Name);
+
+            return View(model.ProductTemplateViewPath, model);
+        }
+
         [ChildActionOnly]
         public ActionResult ProductBreadcrumb(int productId)
         {
@@ -3815,7 +3885,79 @@ namespace Nop.Web.Controllers
 
             return input.TrimString(150);
         }
-        #endregion
+
+
+        //public ActionResult SearchNew(int categoryId, int streetId, int wardId, int districtId, int stateProvinceId)
+        //{
+
+        //}
+
+        [NopHttpsRequirement(SslRequirement.No)]
+        public ActionResult ProductSearch1(int categoryId, int streetId, int wardId, int districtId, int stateProvinceId, SearchModel model)
+        {
+            if (model == null) model = new SearchModel();
+
+            if (model.PagingFilteringContext.PageSize <= 0) model.PagingFilteringContext.PageSize = _catalogSettings.SearchPageProductsPerPage;
+            if (model.PagingFilteringContext.PageNumber <= 0) model.PagingFilteringContext.PageNumber = 1;
+            decimal minPriceConverted = decimal.Zero, maxPriceConverted = decimal.Zero;
+            if (!string.IsNullOrEmpty(model.PriceString))
+            {
+                var priceString = model.PriceString.Split('-');
+                if (priceString.Length > 1)
+                {
+                    decimal.TryParse(priceString[0], out minPriceConverted);
+                    decimal.TryParse(priceString[1], out maxPriceConverted);
+                }
+            }
+
+            ProductStatusEnum? status = null;
+            IList<int> categories = null;
+            IList<int> districtIds = new List<int>();
+            if (model.Cid > 0)
+                categories.Add(model.Cid);
+            if (model.DistrictId > 0)
+                districtIds.Add(model.DistrictId);
+            model.DistrictIds.Select(x =>
+            {
+                districtIds.Add(x);
+                return x;
+            }).ToList();
+            if (model.StatusId != 0)
+                status = (ProductStatusEnum)model.StatusId;
+            DateTime? startDate = null, endDate = null;
+            if (!string.IsNullOrWhiteSpace(model.StartDate))
+                startDate = Convert.ToDateTime(model.StartDate);
+            if (!string.IsNullOrWhiteSpace(model.EndDate))
+                endDate = Convert.ToDateTime(model.EndDate);
+
+            var products = _productService.SearchProducts(
+                            categoryIds: categories,
+                            manufacturerId: 0,
+                            storeId: 0,
+                            customerId: model.OnlyCustomer ? _workContext.CurrentCustomer.Id : 0,
+                            visibleIndividuallyOnly: true,
+                            priceMin: minPriceConverted,
+                            priceMax: maxPriceConverted,
+                            keywords: null,
+                            searchDescriptions: false,
+                            searchSku: false,
+                            searchProductTags: false,
+                            languageId: 0,
+                            filteredSpecs: model.SelectedOptionIds,
+                            dictrictIds: districtIds,
+                            status: status,
+                            startDateTimeUtc: startDate,
+                            endDateTimeUtc: endDate,
+                            pageIndex: model.PagingFilteringContext.PageNumber - 1,
+                            pageSize: model.PagingFilteringContext.PageSize);
+            model.Products = PrepareProductOverviewModels(products).ToList();
+            if (products.Count > 0)
+                model.PagingFilteringContext.LoadPagedList(products);
+            return PartialView("_ProductListPartial", model);
+
+        }
+
+         #endregion
         #endregion
     }
 }
