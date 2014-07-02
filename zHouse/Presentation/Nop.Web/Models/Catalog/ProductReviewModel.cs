@@ -4,6 +4,7 @@ using FluentValidation.Attributes;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Mvc;
 using Nop.Web.Validators.Catalog;
+using System.ComponentModel.DataAnnotations;
 
 namespace Nop.Web.Models.Catalog
 {
@@ -34,6 +35,8 @@ namespace Nop.Web.Models.Catalog
 
         public IList<ProductReviewModel> Items { get; set; }
         public AddProductReviewModel AddProductReview { get; set; }
+
+       
     }
 
     public partial class ProductReviewModel : BaseNopEntityModel
@@ -53,6 +56,9 @@ namespace Nop.Web.Models.Catalog
         public ProductReviewHelpfulnessModel Helpfulness { get; set; }
 
         public string WrittenOnStr { get; set; }
+
+        public string CustomerEmail { get; set; }
+        public IList<ProductReviewModel> Childrens { get; set; }
     }
 
 
@@ -68,7 +74,6 @@ namespace Nop.Web.Models.Catalog
     public partial class AddProductReviewModel : BaseNopModel
     {
         [AllowHtml]
-        [NopResourceDisplayName("Reviews.Fields.Title")]
         public string Title { get; set; }
 
         [AllowHtml]
@@ -77,9 +82,11 @@ namespace Nop.Web.Models.Catalog
 
         [NopResourceDisplayName("Reviews.Fields.Rating")]
         public int Rating { get; set; }
-
+        [AllowHtml]
+       
+        public string CustomerName { get; set; }
         public bool DisplayCaptcha { get; set; }
-
+        public int ParentId { get; set; }
         public bool CanCurrentCustomerLeaveReview { get; set; }
         public bool SuccessfullyAdded { get; set; }
         public string Result { get; set; }

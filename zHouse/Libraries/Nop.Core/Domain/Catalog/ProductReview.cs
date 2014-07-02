@@ -56,6 +56,10 @@ namespace Nop.Core.Domain.Catalog
         /// </summary>
         public DateTime CreatedOnUtc { get; set; }
 
+        public int ParentId { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerEmail { get; set; }
+
         /// <summary>
         /// Gets or sets the product
         /// </summary>

@@ -30,9 +30,10 @@ textarea{width:100%;font-family:Verdana,Arial,sans-serif;font-size:11px;border:1
 checkbox,input,radio,select,button{}
 fieldset{margin:0px 0px 15px;border:1px solid #c9c9c9;padding:15px;}
 legend{font-weight:bold;line-height:20px;font-size:16px;}
-input[type="text"],input[type="password"]{border:1px solid #ddd;padding:4px 3px}
+input[type="text"],input[type="password"]{background: #fff; border: 1px solid #c2c2c2; padding: 5px; color: #333; margin-bottom: 3px;}
 input[type="text"]:disabled{background:none repeat scroll 0 0 #FFF;}
 .clearfix {clear:both }
+select { border: 1px solid #c2c2c2; color: #666; font-size: 11px; padding: 5px 5px 5px 10px; width: 150px; }
 
 
 /* MASTER PAGE WRAPPERS */
@@ -154,6 +155,7 @@ td.fieldname{font-size:12px;}
 .fieldset .inputs{margin-bottom:5px;}
 .fieldset .inputs label{display:inline-block;width:130px;margin-left:10px;}
 .fieldset .inputs label.forcheckbox{margin:0 0 0 .4em;display:inline;}
+.inputs label {font-weight:bold }
 .clearer{zoom:1;}
 .clearer:after{content:".";display:block;clear:both;height:0;font-size:0;line-height:0;visibility:hidden;}
 
@@ -670,7 +672,7 @@ a.eu-cookie-privacyinfo-tag{color:#B80709 !important;text-decoration:underline;}
 
 
 /* BREADCRUMB */
-.breadcrumb{font-size:1.1em;font-weight:bold;margin:10px 0 10px;padding:0;text-transform:uppercase;}
+.breadcrumb{font-size:1.1em;font-weight: normal;margin:10px 0 10px;padding:0;text-transform: none;}
 .breadcrumb ul{margin:0px;padding:0px;}
 .breadcrumb li{list-style:none;display:inline;}
 .breadcrumb li strong{font-weight:bold;}
@@ -942,8 +944,9 @@ a.eu-cookie-privacyinfo-tag{color:#B80709 !important;text-decoration:underline;}
 .product-details-page{border:1px solid #d3d3d3;margin-top:10px;padding:10px;}
 .product-collateral{margin-top:10px;margin-bottom:10px;clear:both;}
 .product-essential{}
-.product-details-page .gallery{float:left;width:300px;margin-top:25px;margin-bottom:15px;}
+.product-details-page .gallery{float:left;margin-top:25px;margin-bottom:15px;}
 .product-details-page .gallery .picture{}
+.product-details-page .gallery .picture img {width:100%; }
 .product-details-page .gallery .picture-thumbs{margin-top:10px;}
 .product-details-page .gallery .picture-thumbs a{margin-right:3px;}
 .product-details-page .overview{float:right;width:330px;margin:5px 5px 10px;padding:10px;border:1px solid #eee;}
@@ -1060,8 +1063,9 @@ a.eu-cookie-privacyinfo-tag{color:#B80709 !important;text-decoration:underline;}
 .product-review-list .product-review-item .review-text{float:left;margin-bottom:5px;clear:both;}
 .product-review-list .product-review-item .review-info{float:left;margin-bottom:5px;clear:both;}
 .product-review-list .product-review-item .review-info .separator{margin:0 2px;}
-.product-review-helpfulness{font-size:11px;color:#333;clear:both;}
-.product-review-helpfulness .vote{color:#B80709;font-weight:700;text-decoration:none;}
+.product-review-helpfulness{font-size:11px;color:#333;clear:both;margin-top:3px}
+.product-review-helpfulness .result { background: none repeat scroll 0 0 #fff; box-shadow: 2px 2px 2px #ccc; color: #d41212; display: none; padding: 3px; position: absolute; }
+.product-review-helpfulness .vote{color:#1e98d5;text-decoration:none;}
 .product-review-helpfulness .vote:hover{cursor:pointer;text-decoration:none;}
 
 
@@ -1365,7 +1369,7 @@ ul {
 .menu li {
 	display: inline;
 	float: left;
-    width:87px;
+	padding: 5px 10px;
     height:50px
 }
 .menu li a {
@@ -1377,12 +1381,12 @@ ul {
 .menu li a:hover {
 	color: #d21f79;
 }
-.verLine {
-	background: url(images/verLine.png) no-repeat scroll 0 0;
+<!--verLine {
+<!--	background: url(images/verLine.png) no-repeat scroll 0 0;
 	width: 1px !important;
 	height: 100px;
 	margin: -12px 2px 0 6px;
-}
+} 
 .searchBtn {
 	background: url(images/searchBtn.png) no-repeat;
 	width: 27px;
@@ -1410,7 +1414,7 @@ ul {
 	font-family: "Myriad Pro", Arial, Helvetica, sans-serif;
 	font-size:35px;
 	color: #cc0066;
-    text-align:left
+    text-align: center;
 }
 .box {
 	background: #fff;
@@ -1469,6 +1473,7 @@ ul {
 	width: 270px;
 	position: relative;
 	margin-right: 30px;
+	border: 1px solid #cccccc;
 }
 .new {
 	position: absolute;
@@ -1526,13 +1531,16 @@ margin-top: 63px;
 }
 .whiteBg {
 	background: #fff;
-	border: 1px solid #c2c2c2;
+	border: 0px solid #c2c2c2;
 	width: 238px;
 	padding: 25px 15px 15px 15px;
 	color: #2d9fd8;
-	font-size: 12px;
+	font-size: 13px;
+	font-weight: bold;
 	float: left;
-    height:23px
+	height: 40px;
+   
+	
 }
 .whiteBgBig {
 	background: #fff;
@@ -1543,15 +1551,17 @@ margin-top: 63px;
 	float: left;
 	position: relative;
 	margin-bottom: 10px;
-    height:105px
+    height:130px
 }
 .whiteBgBig li {
 	list-style-image: url(images/list.png);
     margin-left: 46px;
 text-align: left;
+padding: 3px 0px;
+
 }
 .whiteBgBig li a {
-	color: #000;
+	color: #666666;
 	text-decoration: none;
 	font-size: 12px;
 }
@@ -1695,7 +1705,7 @@ have a fixed width and height (but it's not required).
 .nivo-caption a{display:inline !important}
 .nivo-html-caption{display:none}
 .nivo-directionNav a{cursor:pointer;display:block;padding:25px;position:absolute;top:45%;z-index:99}
-.nivo-controlNav{bottom:-12px;height:28px;line-height:28px;padding:0 11px;position:absolute;right:45%;z-index:999}
+.nivo-controlNav{bottom:-12px;height:28px;line-height:28px;padding:0 11px;position:relative;left:45%;top:-15px; z-index:999}
 .service li{width:140px !important}
 .kienthuc li{width:140px !important}
 .menu-title span{display:block;float:left;width:33%;font-weight:bold}
@@ -1705,8 +1715,8 @@ have a fixed width and height (but it's not required).
 .lockBtn { background: url(images/lockBtn.png) no-repeat; width: 30px; height: 30px; border: none; cursor: pointer; }
 .lockBtn:hover { background: url(images/lockBtnhover.png); }
 .wholeSearch { float: left; width: 100%; margin-top: 4px; }
-.formBoxSelect { border: 1px solid #c2c2c2; width: 150px; padding: 5px 5px 5px 10px; color: #666; font-size: 11px; }
-.mainContent { float: left; width: 945px; margin: 20px 0; }
+.formBoxSelect { border: 1px solid #c2c2c2; width: 150px; padding: 5px 5px 5px 10px; color: #666; font-size: 12px; }
+.mainContent { float: left; width: 945px; margin: 0px 0; }
 .rightContent { width: 230px; float: right; }
 .leftContent { width: 705px; float: left; margin-right: 10px; }
 .pinkBgRight { background: #cc0066; width: 200px; float: left; padding: 20px 10px 20px 20px; color: #fff; margin-bottom: 5px; }
@@ -1715,9 +1725,9 @@ have a fixed width and height (but it's not required).
 .twoColRightPic { float: left; width: 60px; margin-right: 20px; }
 .twoColRightText { float: left; width: 120px; margin-top: 10px; font-size: 14px; }
 .introColRight { float: left; width: 220px; position: relative; margin: 5px 0; }
-.whiteBgRight { background: #fff; border: 1px solid #c2c2c2; width: 188px; padding: 25px 15px 15px 15px; color: #2d9fd8; font-size: 12px; float: left; }
+.whiteBgRight { background: #fff; border: 1px solid #c2c2c2; width: 198px; padding: 10px; color: #2d9fd8; font-size: 12px; float: left; font-weight: bold; min-height: 45px; margin-top: -3px; }
 .nhonRight { position: absolute; top: 118px; left: 20px; background: url(images/nhon.png) no-repeat; width: 23px; height: 13px; }
-.pinkTagRight { background: url(images/pinkTag.png) no-repeat; width: 106px; height: 36px; padding-top: 4px; position: absolute; right: -10px; top: 116px; color: #fff; text-align: center; font-weight: bold; font-size: 13px; }
+.pinkTagRight { background: url(images/pinkTag.png) no-repeat; width: 106px; height: 36px; padding-top: 4px; position: absolute; right: -10px; top: 100px; color: #fff; text-align: center; font-weight: bold; font-size: 13px; }
 .ad { width: 218px; float: left; margin: 5px 0; }
 .adBorder { border: 1px solid #c2c2c2; }
 .whiteBgLeft { float: left; width: 663px; background: #fff; border: 1px solid #c2c2c2; padding: 15px 20px; position: relative; z-index: 100; }
@@ -1725,13 +1735,15 @@ have a fixed width and height (but it's not required).
 .pinkPrice { color: #cc0066; font-size: 30px; font-weight: bold; }
 .blueText { color: #1e98d5; }
 .pinkText { color: #cc0066; }
-.share { position: absolute; top: 15px; right: 15px; }
-.detailTable { float: left; width: 705px; margin-top: -1px; }
+.share { position: absolute; top: 62px; right: 15px; }
+.detailTable { float: left; width: 703px; margin-top: -2px;background:#fff; border: 1px solid #cccccc; }
+.detailTable .detail-info {float:left;width:35%; margin-left: -1px; }
+.detailTable .detail-picture {float:left;width:65% }
 .detailTable table { width: 100%; border-collapse: collapse; position: relative; border: 1px solid #c2c2c2; }
-.detailTable td { background: #fff; border: 1px solid #c2c2c2; padding: 3px 10px; font-size: 12px; }
+.detailTable td { background: #fff; border: 1px solid #c2c2c2; padding: 6px 10px; font-size: 12px; line-height: 20px; }
 .greyBgTD { background: #fafafa !important; width: 80px; }
 .thumbnail { float: left; width: 100%; }
-.thumbnailPic { width: 80px; height: 52px; margin-right: 8px; float: left; }
+.thumbnailPic { width: 80px; height: 52px; margin-right: 8px; margin-bottom: 8px; float: left; }
 .thumbnailPic:hover { border: 2px solid #cc0066; }
 .blackBg { background: #000; opacity: 0.8; width: 410px; padding: 15px 20px; color: #fff; position: absolute; right: 10px; bottom: 10px; }
 .floatLeft { float: left; width: 100%; margin: 10px 0; }
@@ -1761,3 +1773,28 @@ have a fixed width and height (but it's not required).
 .col2bInside { float: left; width: 410px; font-size: 13px; }
 .nhonReply { background: url(images/nhonReply.png) no-repeat; width: 13px; height: 8px; position: absolute; top: -8px; right: 130px; }
 .pinkBgRightBottom { background: #cc0066; width: 220px; padding: 70px 0; float: right; color: #fff; font-size: 15px; margin: 5px 10px 5px 0; text-align: center; }
+/* Overlay */
+#simplemodal-overlay {background-color:#000;}
+/* Container */
+#simplemodal-container {}
+#simplemodal-container .simplemodal-data {padding: 6px 12px;}
+#popup { background: none repeat scroll 0 0 #fff;padding:4px }
+.friend-email {width:100% }
+.simplemodal-close {background:url(images/x.png) no-repeat;width:22px;height:22px;position:absolute;right:-5px;top:-5px }
+#popup h1 {padding:5px 0px;background:#cc0066;color:#fff;font-weight:bold;font-size:14px;text-align:center;text-transform:uppercase }
+.whiteBgCata {
+	background: #fff;
+	border: 1px solid #c2c2c2;
+	width: 188px;
+	padding: 5px 15px;
+	font-size: 12px;17339
+	float: left;
+	margin-top: -1px;
+}
+.pinkNarrowTitle30 {
+	font-weight: 900;
+	font-stretch: ultra-condensed;
+	font-family: "Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:30px;
+	color: #cc0066;
+}

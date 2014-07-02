@@ -46,45 +46,14 @@
     @Html.Widget("categorydetails_after_breadcrumb")
 }
 <div class="page category-page">
-    <div class="page-title">
-        <h1>@Model.Name</h1>
-    </div>
-    <div class="page-body">
-         <div class="search-input">
-            @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct",LoadingElementId="ajax-loading",OnSuccess="searchSuccess" }, new {id="frmSearchLeft" }))
-            {
-                  
-                @Html.Action("SearchBoxLeft", new {})
-                
-                <script>
-                    $("#frmSearchLeft input[type=checkbox]").click(function () {
-                        $("#frmSearchLeft").submit();
-                    })
-                    function searchSuccess()
-                    {
-                            
-                    }
 
-                </script>
-            }
-        </div>
-        <div class="search-results">
-           
-            @if (Model.Products.Count > 0)
-            {
-                <div class="product-list" id="ProductList">
-                    @foreach (var product in Model.Products)
-                    { 
-                         <div class="item-box">
-        @Html.Partial("_ProductBox",product)
+    <div class="page-body">
+       <div id="list-product">
+           @foreach (var product in Model.Products)
+           { 
+            @Html.Partial("_ProductBox",product)
+           }
        </div>
-                    }
-                </div>
-            }
-            <div class="pager">
-                @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
-            </div>
-        </div>
         <div class="clearfix"></div>
         <div class="pager">
             @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")

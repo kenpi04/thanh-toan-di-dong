@@ -59,5 +59,7 @@ namespace Nop.Web.Models.Catalog
 		#endregion
 
         public string FullAddress { get; set; }
+
+        public string CateName { get; set; }
     }
 }
