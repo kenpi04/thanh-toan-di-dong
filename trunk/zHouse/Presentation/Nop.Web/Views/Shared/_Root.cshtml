@@ -11,7 +11,7 @@
         </script>
   *@<div class="top">
     	<div class="wrapper">
-			<div class="logo"><a href="#"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder"></a></div>
+			<div class="logo"><a href="@Url.RouteUrl("HomePage")"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder"></a></div>
               @Html.Action("TopMenu", "Catalog")
 		</div><!---wrapper---->
     </div>       
@@ -35,3 +35,4 @@
     @Html.Action("Footer", "Common")
 </div>
 @Html.Widget("body_end_html_tag_before")
+<div id="popup"></div>

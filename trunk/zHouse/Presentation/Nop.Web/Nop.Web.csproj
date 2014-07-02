@@ -981,6 +981,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.simplemodal.js" />
     <Content Include="Scripts\public.common.mobile.js" />
     <Content Include="Scripts\tab.js" />
     <Content Include="Themes\DefaultClean\Content\editorsimple.css" />
@@ -1512,6 +1513,7 @@
     <Content Include="Themes\Zhouse\Content\images\u43.jpg" />
     <Content Include="Themes\Zhouse\Content\images\u45.jpg" />
     <Content Include="Themes\Zhouse\Content\images\verLine.png" />
+    <Content Include="Themes\Zhouse\Content\images\x.png" />
     <Content Include="Themes\Zhouse\Content\images\zhouse.png" />
     <Content Include="Themes\Zhouse\Content\jquery-te-1.4.0.css" />
     <Content Include="Themes\Zhouse\Content\jquery-te.png" />
@@ -1679,6 +1681,10 @@
     <Content Include="Views\Shared\_Notifications.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\News\HomePageNewsCate.cshtml" />
+    <Content Include="Views\Catalog\GetProductReview.cshtml" />
+    <Content Include="Views\Catalog\RelatedProductCustomer.cshtml" />
+    <Content Include="Views\Catalog\_ProductBoxSmall.cshtml" />
+    <Content Include="Views\Catalog\_Map.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

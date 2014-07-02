@@ -1,46 +1,40 @@
 ﻿@model Nop.Web.Models.Catalog.SearchModel
 
-<div>
-    <div class="box-search">
-    <b>Theo vị trí</b>
-    <ul>
+
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#">lọc theo vị trí</a></div>
+    <div class="whiteLeftColContent">
         @foreach (var i in Model.Districts)
-        { 
-            <li>
-                <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />
-                <label for="ckDist_@i.Value">@i.Text</label>
-            </li>
+        {
+            <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
         }
-    </ul>
-        </div>
-    <div class="box-search">
-      <b>Theo giá</b>
-        @Html.DropDownListFor(x=>x.PriceString,Model.PriceRange)
-        </div>
-    <div class="box-search">
-        <b>Theo loại</b>
-        <ul>
-            @foreach (var i in Model.AvailableCategories)
-            { 
-                <li>
-                    <input type="checkbox" name="Cids" value="@i.Value" id="cate_@i.Value" />
-                    <label for="cate_@i.Value">@i.Text</label>
-                </li>
-            }
-        </ul>
-        </div>
-        <div class="box-search">
-        <b>Căn hộ cao cấp</b>
-        <ul>
-            @foreach (var i in Model.AvailableManufacturers)
-            { 
-                <li>
-                    <input type="checkbox" name="@Model.Mids" value="@i.Value" id="Manu_@i.Value" />
-                    <label for="Manu_@i.Value">@i.Text</label>
-                </li>
-            }
-        </ul>
-        </div>
-  
-  
+
+    </div>
+</div>
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#">Lọc theo giá</a></div>
+    <div class="whiteLeftColContent">
+        @Html.DropDownListFor(x => x.PriceString, Model.PriceRange)}
+              
+    </div>
+</div>
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#">Lọc theo loại</a></div>
+    <div class="whiteLeftColContent">
+        @foreach (var i in Model.AvailableCategories)
+        {
+            <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+        }
+
+    </div>
+</div>
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#">Lọc theo dự án</a></div>
+    <div class="whiteLeftColContent">
+        @foreach (var i in Model.AvailableManufacturers)
+        {
+            <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+        }
+
+    </div>
 </div>

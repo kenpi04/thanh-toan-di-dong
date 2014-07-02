@@ -31,7 +31,8 @@
         <h1>@T("Search")</h1>
     </div>
     <div class="page-body">
-        <div class="search-input">
+        <div class="mainContent"></div>
+        <div class="leftContentTwist">
             @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct",LoadingElementId="ajax-loading",OnSuccess="searchSuccess" }, new {id="frmSearchLeft" }))
             {
                   
@@ -49,13 +50,7 @@
                 </script>
             }
         </div>
-        <div class="search-results">
-            @if (!String.IsNullOrEmpty(Model.Warning))
-            {
-                <strong class="warning">
-                    @Model.Warning
-                </strong>
-            }
+        <div class="rightContentTwist">          
             @if (Model.NoResults)
             {
                 <strong class="result">
@@ -65,7 +60,7 @@
             @if (Model.Products.Count > 0)
             {
                 <div class="product-list" id="ProductList">
-                   @Html.Partial("_ProductListPartial",Model)
+                   @Html.Partial("_ProductBox",Model)
                 </div>
             }
             <div class="pager">

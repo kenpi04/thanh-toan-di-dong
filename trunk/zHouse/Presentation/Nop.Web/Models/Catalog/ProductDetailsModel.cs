@@ -94,6 +94,7 @@ namespace Nop.Web.Models.Catalog
         public string ContactPhone { get; set; }
         public IList<SelectListItem> Facilities { get; set; }
         public IList<SelectListItem> Environments { get; set; }
+        public int CustomerId { get; set; }
 
 		#region Nested Classes
 

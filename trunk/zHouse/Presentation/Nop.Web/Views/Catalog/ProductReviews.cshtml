@@ -2,9 +2,61 @@
 @using Nop.Web.Models.Catalog;
 @{
     
+    
 }
 
-      <div class="write-review" id="review-form">
+ <div class="col1"><div class="pinkNarrowTitleSmall">Bình luận</div></div>
+                    <div class="col2">
+                        <div class="col2Whole" id="form-coment-0">
+                            <div class="col2a"><img src="../Themes/Zhouse/Content/images/d1.png" class="circleImg"></div>
+                            <div class="col2b">
+                                <form class="frmAddComment" id="frmAddComment-0" action="" method="post">                                   
+                                    @Html.TextBoxFor(x => Model.AddProductReview.CustomerName, new {@class="formBox",placeholder="Tên của bạn",@readonly=Model.AddProductReview.CustomerName!=null?"readonly":"" })<br />
+                                    @Html.ValidationMessageFor(x => x.AddProductReview.CustomerName)<br />
+                                    @Html.TextAreaFor(x => Model.AddProductReview.ReviewText, new {@class="formBox",rows=2,style="width:508px" })<br />
+                                    @Html.ValidationMessageFor(x=>x.AddProductReview.ReviewText)<br />
+                                    <input type="submit" class="blueBtn" value="bình luận" style="float:right">
+                                </form>
+                            </div>
+                        </div><!--col2Whole--->
+
+                       <div id="list-comment"></div>
+
+                    </div>
+<script type="text/javascript">
+    getComment(0);
+    $(document).on(".frmAddComment","submit", function () {
+        var form = $(this);
+        if (form.valid())
+        {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ProductReviewsAdd", new {productId=Model.ProductId })",
+                data: form.serialize(),
+                success: function (d)
+                {
+                    if (d == "OK") {
+                        alert("Bình luận thành công!");
+                        form.children(".formBox").val("");
+                        getComment(0);
+                    }
+                    else
+                        alert(d);
+                  
+                }
+            })
+        }
+        return false;
+    })
+    function getComment(pageIndex)
+    {
+        $.get("@Url.Action("GetProductReview", new {productId=Model.ProductId })", { pageIndex: pageIndex }, function (d) {
+            $("#list-comment").hide().html(d).show("slow");
+        })
+    }
+
+</script>
+    @*  <div class="write-review" id="review-form">
                 <div class="title">
                     <strong>@T("Reviews.Write")</strong>
                 </div>
@@ -97,5 +149,5 @@
                 }
             </div>
         }
-      
+      *@
   
