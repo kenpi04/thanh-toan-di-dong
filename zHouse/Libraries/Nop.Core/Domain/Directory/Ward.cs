@@ -1,7 +1,8 @@
 ﻿
+using Nop.Core.Domain.Seo;
 namespace Nop.Core.Domain.Directory
 {
-    public partial class Ward : BaseEntity
+    public partial class Ward : BaseEntity, ISlugSupported
     {
         /// <summary>
         /// Gets or sets the district id

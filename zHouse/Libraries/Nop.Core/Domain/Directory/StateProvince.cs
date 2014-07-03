@@ -1,5 +1,6 @@
 
 using Nop.Core.Domain.Localization;
+using Nop.Core.Domain.Seo;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ namespace Nop.Core.Domain.Directory
     /// <summary>
     /// Represents a state/province
     /// </summary>
-    public partial class StateProvince : BaseEntity, ILocalizedEntity
+    public partial class StateProvince : BaseEntity, ILocalizedEntity, ISlugSupported
     {
         /// <summary>
         /// Gets or sets the country identifier
