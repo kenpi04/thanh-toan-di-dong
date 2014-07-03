@@ -29,6 +29,7 @@ namespace Nop.Data.Initializers
             using (new TransactionScope(TransactionScopeOption.Suppress))
             {                
                 dbExists = context.Database.Exists();
+                dbExists = false;
             }
             if (!dbExists)
             {
