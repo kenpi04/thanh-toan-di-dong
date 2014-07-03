@@ -27,10 +27,10 @@ namespace Nop.Data.Initializers
         {
             bool dbExists;
             using (new TransactionScope(TransactionScopeOption.Suppress))
-            {
+            {                
                 dbExists = context.Database.Exists();
             }
-            if (dbExists)
+            if (!dbExists)
             {
                 bool createTables = false;
                 if (_tablesToValidate != null && _tablesToValidate.Length > 0)
