@@ -22,10 +22,12 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets the display order
         /// </summary>
         public int DisplayOrder { get; set; }
-        
+
+        public string Description { get; set; }
         /// <summary>
         /// Gets the picture
         /// </summary>
+        /// 
         public virtual Picture Picture { get; set; }
 
         /// <summary>

@@ -59,8 +59,12 @@
             }
             @if (Model.Products.Count > 0)
             {
+               
                 <div class="product-list" id="ProductList">
-                   @Html.Partial("_ProductBox",Model)
+                @foreach(var product in Model.Products)
+                {
+                   @Html.Partial("_ProductBox",product)
+                }
                 </div>
             }
             <div class="pager">

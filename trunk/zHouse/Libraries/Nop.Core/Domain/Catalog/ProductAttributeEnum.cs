@@ -15,6 +15,7 @@ namespace Nop.Core.Domain.Catalog
       Enviroment=5,
       ChuDauTu=6,
       Director=7,
-      Status=8
+      Status=8,
+      NumberBlock=9
     }
 }

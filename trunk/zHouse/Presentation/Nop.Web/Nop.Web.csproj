@@ -982,6 +982,7 @@
     </Content>
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.simplemodal.js" />
+    <Content Include="Scripts\jquery.uniform.min.js" />
     <Content Include="Scripts\public.common.mobile.js" />
     <Content Include="Scripts\tab.js" />
     <Content Include="Themes\DefaultClean\Content\editorsimple.css" />
@@ -1453,6 +1454,7 @@
     <Content Include="Themes\Zhouse\Content\images\forum-footer-bg.gif" />
     <Content Include="Themes\Zhouse\Content\images\forum-header-bg.gif" />
     <Content Include="Themes\Zhouse\Content\images\free-shipping.png" />
+    <Content Include="Themes\Zhouse\Content\images\greyBgTitle.png" />
     <Content Include="Themes\Zhouse\Content\images\h1.png" />
     <Content Include="Themes\Zhouse\Content\images\h2.png" />
     <Content Include="Themes\Zhouse\Content\images\h3.png" />
@@ -1519,6 +1521,12 @@
     <Content Include="Themes\Zhouse\Content\jquery-te.png" />
     <Content Include="Themes\Zhouse\Content\styles.css" />
     <Content Include="Themes\Zhouse\Content\styles.rtl.css" />
+    <Content Include="Themes\Zhouse\Content\uniform\css\uniform.default.css" />
+    <Content Include="Themes\Zhouse\Content\uniform\css\uniform.default.min.css" />
+    <Content Include="Themes\Zhouse\Content\uniform\images\arrow.png" />
+    <Content Include="Themes\Zhouse\Content\uniform\images\bg-input-focus.png" />
+    <Content Include="Themes\Zhouse\Content\uniform\images\bg-input.png" />
+    <Content Include="Themes\Zhouse\Content\uniform\images\sprite.png" />
     <Content Include="Themes\Zhouse\preview.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1685,6 +1693,7 @@
     <Content Include="Views\Catalog\RelatedProductCustomer.cshtml" />
     <Content Include="Views\Catalog\_ProductBoxSmall.cshtml" />
     <Content Include="Views\Catalog\_Map.cshtml" />
+    <Content Include="Themes\Zhouse\Content\uniform\css\uniform.default.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

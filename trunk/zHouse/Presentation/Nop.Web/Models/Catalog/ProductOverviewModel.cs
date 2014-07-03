@@ -30,6 +30,8 @@ namespace Nop.Web.Models.Catalog
         public string NumBedRoom { get; set; }
         public string NumBadRoom { get; set; }
         public string Status { get; set; }
+
+        public string NumberBlock { get; set; }
         public string DictrictName { get; set; }
         //price
         public ProductPriceModel ProductPrice { get; set; }
