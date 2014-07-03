@@ -141,4 +141,5 @@ $(function () {
                 $(this).val($(this).val().replace(/\D/g, ''));
         }
     })
+   $("select").uniform();
 })

@@ -11,5 +11,9 @@ namespace Nop.Web.Models.Media
         public string Title { get; set; }
 
         public string AlternateText { get; set; }
+
+        public string Description { get; set; }
+
+        public int PictureId { get; set; }
     }
 }

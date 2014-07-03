@@ -351,9 +351,10 @@ namespace Nop.Web.Controllers
                     ContactPhone = product.ContactPhone,
                     Email = product.ContactEmail,
 
-                    NumBedRoom = GetOptionValue(ProductAttributeEnum.NumberOfBedRoom),
-                    NumBadRoom = GetOptionValue(ProductAttributeEnum.NumberOfBadRoom),
-                    Status = GetOptionValue(ProductAttributeEnum.Status),
+                    NumBedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
+                    NumBadRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBadRoom),
+                    Status = GetOptionName(product, ProductAttributeEnum.Status),
+                    NumberBlock = GetOptionName(product, ProductAttributeEnum.NumberBlock),
                     Area = product.Area,
                     FullAddress = product.FullAddress,
                     DictrictName = product.District.Name
@@ -3193,10 +3194,17 @@ namespace Nop.Web.Controllers
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
 
-                var pictures = form.GetValues("PictureIds");
-                if (pictures.Length > 0)
-                    model.PictureIds = pictures.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
-                PreapringProductToEntity(model, product);
+                var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
+                foreach (var tit in titlePic)
+                {
+                    model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                    {
+                        Id = int.Parse(tit.Replace("PictureTitle_", "")),
+                        Title = form.GetValue(tit).AttemptedValue
+
+                    });
+                }        
+                    PreapringProductToEntity(model, product);
                 product.Price = model.Price * 1000000;
                 string seName = product.ValidateSeName(product.Name, product.Name, true);
                 _productService.InsertProduct(product);
@@ -3218,12 +3226,13 @@ namespace Nop.Web.Controllers
                 {
                     var pictureproduct = new ProductPicture
                     {
-                        PictureId = i,
-                        ProductId = product.Id
+                        PictureId = i.Id,
+                        ProductId = product.Id,
+                        Description=i.Title
 
                     };
                     _productService.InsertProductPicture(pictureproduct);
-                    _pictureService.SetSeoFilename(i, _pictureService.GetPictureSeName(product.Name));
+                    _pictureService.SetSeoFilename(i.Id, _pictureService.GetPictureSeName(product.Name));
                 }
                 #endregion
 
@@ -3255,7 +3264,8 @@ namespace Nop.Web.Controllers
         public ActionResult EditProduct(int id)
         {
 
-
+            if (!_workContext.CurrentCustomer.IsAdmin())
+                return RedirectToRoute("HomePage");
             var product = _productService.GetProductById(id);
             if (product == null)
                 return RedirectToRoute("HomePage");
@@ -3271,6 +3281,8 @@ namespace Nop.Web.Controllers
         [ValidateInput(false)]
         public ActionResult EditProduct(InsertProductModel model, FormCollection form)
         {
+            if (!_workContext.CurrentCustomer.IsAdmin())
+                return RedirectToRoute("HomePage");
 
             if (model == null)
                 throw new Exception("Product is null");
@@ -3289,9 +3301,16 @@ namespace Nop.Web.Controllers
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
 
-                var pictures = form.GetValues("PictureIds");
-                if (pictures != null)
-                    model.PictureIds = pictures.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+                var titlePic = form.AllKeys.Where(x=>x.Contains("PictureTitle_"));                
+                foreach (var tit in titlePic)
+                {
+                    model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                    {
+                        Id = int.Parse(tit.Replace("PictureTitle_","")),
+                        Title = form.GetValue(tit).AttemptedValue
+
+                    });
+                }               
 
                 #region Insert Categories
                 var cate = product.ProductCategories.FirstOrDefault();
@@ -3307,17 +3326,30 @@ namespace Nop.Web.Controllers
                 //delete
 
                 //add new
+                var productPic = product.ProductPictures;
                 foreach (var i in model.PictureIds)
                 {
 
-                    var pictureproduct = new ProductPicture
-                    {
-                        PictureId = i,
-                        ProductId = product.Id
 
-                    };
-                    _productService.InsertProductPicture(pictureproduct);
-                    _pictureService.SetSeoFilename(i, _pictureService.GetPictureSeName(product.Name));
+
+                    if (!productPic.All(x => x.PictureId == i.Id))
+                    {
+                        var pictureproduct = new ProductPicture
+                        {
+                            PictureId = i.Id,
+                            ProductId = product.Id,
+                            Description = i.Title
+
+                        };
+                        _productService.InsertProductPicture(pictureproduct);
+                        _pictureService.SetSeoFilename(i.Id, _pictureService.GetPictureSeName(product.Name));
+                    }
+                    else
+                    {
+                        var pictureProduct = productPic.FirstOrDefault(x => x.PictureId == i.Id);
+                        pictureProduct.Description = i.Title;
+                        _productService.UpdateProductPicture(pictureProduct);
+                    }
                 }
                 #endregion
 
@@ -3522,7 +3554,7 @@ namespace Nop.Web.Controllers
                 NumberOfHome = p.HouseNumber,
                 SelectedOptionAttributes = p.ProductSpecificationAttributes.Select(x => x.SpecificationAttributeOptionId).ToList(),
                 Name = p.Name,
-                PictureIds = p.ProductPictures.Select(x => x.PictureId).ToList(),
+                PictureIds = p.ProductPictures.Select(x => new InsertProductModel.PictureUploadModel {Id=x.PictureId,Title=x.Description }).ToList(),
                 FullAddress = p.FullAddress
             };
             var cate = p.ProductCategories.FirstOrDefault();
@@ -3531,7 +3563,9 @@ namespace Nop.Web.Controllers
 
             model.PictureModels = p.ProductPictures.Select(x => new PictureModel
             {
-                ImageUrl = _pictureService.GetPictureUrl(x.PictureId, 100)
+                ImageUrl = _pictureService.GetPictureUrl(x.PictureId, 100),
+                Description=x.Description,
+                PictureId=x.PictureId
 
             }).ToList();
 
@@ -3842,17 +3876,7 @@ namespace Nop.Web.Controllers
                 return ((int)price).ToString() + " triệu " + symbol;
             }
         }
-        private string GetOptionValue(ProductAttributeEnum att)
-        {
-            var sp = _cacheManager.Get("SPECATTRIBUTE_" + (int)att, () =>
-            {
-                return _specificationAttributeService.GetSpecificationAttributeById((int)att);
-            });
-            if (sp != null)
-                return sp.Name;
-            return "";
-
-        }
+      
         [ChildActionOnly]
         public ActionResult SearchBoxLeft(bool isProject = false)
         {

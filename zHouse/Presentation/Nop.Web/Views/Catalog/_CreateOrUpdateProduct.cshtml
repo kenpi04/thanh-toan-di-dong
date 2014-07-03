@@ -97,19 +97,25 @@
             <div class="inputs">
                 @Html.NopLabelFor(x => x.BedRooms)
                 @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.BedRooms)
-                @Html.ValidationMessageFor(x => x.BedRooms)
+             
 
             </div>
             <div class="inputs">
                 @Html.NopLabelFor(x => x.BadRooms)
                 @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.BadRooms)
-                @Html.ValidationMessageFor(x => x.BadRooms)
+             
 
             </div>
             <div class="inputs">
                 @Html.NopLabelFor(x => x.Directors)
                 @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.Directors)
-                @Html.ValidationMessageFor(x => x.Directors)
+               
+
+            </div>
+            <div class="inputs">
+                @Html.NopLabelFor(x => x.NumberBlocks)
+                @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.NumberBlocks)
+             
 
             </div>
 
@@ -158,7 +164,7 @@
                 <div class="inputs">
                     @Html.NopLabelFor(x => x.DistrictId)
                     @Html.RequiredHint()
-                    @Html.DropDownListFor(x => x.DistrictId, Model.Districts, "Chọn Quận")
+                    @Html.DropDownListFor(x => x.DistrictId, Model.Districts,new {id="ddlQuan" })
                     @Html.ValidationMessageFor(x => x.DistrictId)
                 </div>
             </div>
@@ -207,7 +213,9 @@
                 @foreach (var i in Model.PictureModels)
                 {
                     <li style="float:left;margin-right:10px">
-                        <img width="100" height="100" src="@i.ImageUrl" /></li>
+                        <img width="100" height="100" src="@i.ImageUrl" /><br />
+                        <textarea maxlength="500" name="PictureTitle_@i.PictureId" cols="10" rows="5">@i.Description</textarea>
+                    </li>
                 }
             </ul>
         </div>
@@ -215,7 +223,7 @@
 </div>
 
 <script type="text/javascript">
-   
+
 
 
     $(function () {
@@ -224,21 +232,21 @@
         $("#Price").keyup(function () {
             var price = $(this).val();
             $("#price-text").html(StringPrice(price, "vnđ"));
-            
-         
-        })       
+
+
+        })
         $("#@Html.FieldIdFor(x=>x.NumberOfHome)").keyup(formatAdd);
         $("#@Html.FieldIdFor(x=>x.StreetId),#@Html.FieldIdFor(x=>x.DistrictId),#@Html.FieldIdFor(x=>x.WardId)").change(formatAdd);
-       
+
         $("#insertProduct-button").click(function () {
             if(!$("#frmProduct").valid())
                 return false;
-            
+
             if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
                 alert('Vui lòng chọn hình ảnh đăng');
-            
+
             }
-           
+
             else if (Checkfiles($("#FileUpload")))
             {
                 alert("File không hợp lệ");
@@ -250,13 +258,13 @@
                 }
                 else
                     $('#FileUpload').uploadify('upload', '*')
-             
+
             }
-          
+
             return false;
         })
 
-        $("#@Html.FieldIdFor(x => x.DistrictId)").change(function () {
+        $("#ddlQuan").change(function () {
             var selectedId = $(this).val();
             var ddlWard = $("#@Html.FieldIdFor(x => x.WardId)");
             var ddlStreet = $("#@Html.FieldIdFor(x => x.StreetId)");
@@ -266,17 +274,17 @@
                 $.each(d.Ward, function (i, o) {
                     ddlWard.append($("<option/>").val(o.Id).text(o.Name));
                 })
-              
+
                 $.each(d.Street, function (i, o) {
                     ddlStreet.append($("<option/>").val(o.Id).text(o.Name));
                 })
                 ddlStreet.val(@Model.StreetId);
                 ddlWard.val(@Model.WardId);
             }).error(function () {
-               
+
                 alert("Fail receice from server!");
             })
-           
+
         })
         $('#FileUpload').uploadify({
             'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
@@ -292,6 +300,13 @@
             'removeCompleted': false,
             'onSelect': function (file) {
                 flag_error = 1;
+                $("div[id^=SWFUpload]").each(function(){
+                    if($(this).find("textarea[name=PictureTitle]").length==0)
+                    {
+                        $(this).append('<textarea name="PictureTitle" cols="10" rows="5"></textarea>')
+                    }
+                })
+
             },
             'onUploadStart': function (file) {
 
@@ -300,15 +315,16 @@
                     $('#FileUpload').uploadify('stop');
                     return;
                 }
-                
+
             },
             'onUploadSuccess': function (file, data, response) {
                 pictureids.push(data);
             },
             'onQueueComplete': function (queueData) {
-                $.each(pictureids, function (i, p) {
-                    $("#pictures").append($("<input type=hidden name='PictureIds' />").val(p));
-                })
+                alert("a");
+                $("textarea[name=PictureTitle]").each(function(i,p){
+                    $(this).attr("name","PictureTitle_"+pictureids[i]);
+                });              
 
                 if ($("#frmProduct").valid()) {
                     $('#frmProduct').submit();
@@ -331,10 +347,10 @@
     var add=[3];
     function formatAdd()
     {
-            add[0]=($("#@Html.FieldIdFor(x=>x.NumberOfHome)").val());
-            add[1]=($("#@Html.FieldIdFor(x=>x.StreetId) option[value!=0]:selected").text());
-            add[2]=($("#@Html.FieldIdFor(x=>x.WardId) option[value!=0]:selected").text());
-            add[3]=($("#@Html.FieldIdFor(x=>x.DistrictId) option[value!=0]:selected").text());       
+        add[0]=($("#@Html.FieldIdFor(x=>x.NumberOfHome)").val());
+        add[1]=($("#@Html.FieldIdFor(x=>x.StreetId) option[value!=0]:selected").text());
+        add[2]=($("#@Html.FieldIdFor(x=>x.WardId) option[value!=0]:selected").text());
+        add[3]=($("#ddlQuan option[value!=0]:selected").text());
         var result="";
         for(var i in add)
         {
@@ -354,7 +370,7 @@
                   $("#@Html.FieldIdFor(x => x.Dept)").val(@Math.Floor(Model.Dept));
                   $("#@Html.FieldIdFor(x => x.Area)").val(@Math.Floor(Model.Area));
                   $("#@Html.FieldIdFor(x => x.AreaUse)").val(@Math.Floor(Model.AreaUse));
-                  $("#@Html.FieldIdFor(x => x.DistrictId)").change();
+                  $("#ddlQuan").change();
                   $("#@Html.FieldIdFor(x => x.StreetId)").val(@Model.StreetId);
                   $("#@Html.FieldIdFor(x => x.WardId)").val(@Model.WardId);
               })

@@ -26,7 +26,8 @@ namespace Nop.Web.Models.Catalog
             Environments = new List<SelectListItem>();
             PictureModels = new List<PictureModel>();
             Districts = new List<SelectListItem>();
-            PictureIds = new List<int>();
+            PictureIds = new List<PictureUploadModel>();
+            NumberBlocks = new List<SelectListItem>();
 
 
 
@@ -67,7 +68,7 @@ namespace Nop.Web.Models.Catalog
        
 
         public List<int> SelectedOptionAttributes { get; set; }
-        public List<int> PictureIds { get; set; }
+        public List<PictureUploadModel> PictureIds { get; set; }
 
         #region select
         public IList<SelectListItem> Categories { get; set; }
@@ -79,9 +80,16 @@ namespace Nop.Web.Models.Catalog
         public IList<SelectListItem> Environments { get; set; }
         public IList<PictureModel> PictureModels { get; set; }
         public IList<SelectListItem> Districts { get; set; }
+
+        public IList<SelectListItem> NumberBlocks { get; set; }
         #endregion
 
 
         public decimal AreaUse { get; set; }
+        public class PictureUploadModel
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+        }
     }
 }
