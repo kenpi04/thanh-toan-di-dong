@@ -227,7 +227,7 @@ namespace Nop.Services.Seo
 
             //prepare parameters
             var pSlug = _dataProvider.GetParameter();
-            pSlug.ParameterName = "link";
+            pSlug.ParameterName = "slug";
             pSlug.Value = slug;
             pSlug.DbType = DbType.String;
             //out

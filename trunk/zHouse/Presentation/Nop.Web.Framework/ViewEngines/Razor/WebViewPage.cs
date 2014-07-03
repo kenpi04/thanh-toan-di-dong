@@ -22,6 +22,7 @@ namespace Nop.Web.Framework.ViewEngines.Razor
         private ILocalizationService _localizationService;
         private Localizer _localizer;
         private IWorkContext _workContext;
+        private IWebHelper _webHelper;
 
         /// <summary>
         /// Get a localized resources
@@ -51,6 +52,32 @@ namespace Nop.Web.Framework.ViewEngines.Razor
                 }
                 return _localizer;
             }
+        }
+
+        //public string GetSeName(string hostName, string categorySename, string streetSename, string wardSename, string districtSename, string stateProvinceSename)
+        //{
+        //    if (String.IsNullOrEmpty(categorySename)) return string.Format("http://{0}", hostName);
+        //    return string.Format("http://{0}/{1}{2}{3}{4}{5}", hostName, categorySename, "-" + streetSename, "-" + wardSename, "-" + districtSename, "-" + stateProvinceSename);
+        //}
+
+        public string GetSeName(string hostName, string categorySename)
+        {
+            return string.Format("http://{0}/{1}", hostName, categorySename);
+            //_webHelper = EngineContext.Current.Resolve<IWebHelper>();
+            //var url = _webHelper.ServerVariables("HTTP_HOST");
+        }
+
+        public string GetSeName(string hostName, string categorySename, string directionSeName)
+        {
+            return string.Format("http://{0}/{1}{2}", hostName, categorySename, "-" + directionSeName);
+            //_webHelper = EngineContext.Current.Resolve<IWebHelper>();
+            //var url = _webHelper.ServerVariables("HTTP_HOST");
+        }
+
+        public string GetSeName(string hostName, string categorySename, string streetSename, string wardSename)
+        {
+            if (String.IsNullOrEmpty(categorySename)) return string.Format("http://{0}", hostName);
+            return string.Format("http://{0}/{1}{2}{3}", hostName, categorySename, String.IsNullOrEmpty(streetSename) ? "-" + streetSename : null, String.IsNullOrEmpty(wardSename) ? "-" + wardSename : "");
         }
 
         public IWorkContext WorkContext

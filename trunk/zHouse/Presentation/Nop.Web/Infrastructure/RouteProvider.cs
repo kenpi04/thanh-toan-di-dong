@@ -34,6 +34,12 @@ namespace Nop.Web.Infrastructure
                           new { id = @"\d+" },
                          new[] { "Nop.Web.Controllers" });
 
+            //router search
+            //routes.MapLocalizedRoute("Search",
+            //             "{senameCategory}-{senameStreet}-{senameWard}-{senameDistrict}-{senameStateProvince}",
+            //             new { controller = "Catalog", action = "EditProduct" },
+            //             new[] { "Nop.Web.Controllers" });
+
 
             //home page
             routes.MapLocalizedRoute("HomePage",
