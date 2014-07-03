@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Nop.Core.Domain.Localization;
+using Nop.Core.Domain.Seo;
 
 namespace Nop.Core.Domain.Directory
-{  
-    public partial class District : BaseEntity
+{
+    public partial class District : BaseEntity, ISlugSupported
     {
         /// <summary>
         /// Gets or sets the Stateprovince Id

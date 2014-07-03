@@ -83,9 +83,9 @@ namespace Nop.Web.Framework.Seo
                 var slug = data.Values["generic_se_name"] as string;
                 int categoryId, streetId, wardId, districtId, stateProvinceId;
                 categoryId = streetId = wardId = districtId = stateProvinceId = 0;
-                var urlRecord = urlRecordService.GetBySlug(slug);
+                //var urlRecord = urlRecordService.GetBySlug(slug);
                 
-               // var urlRecord = urlRecordService.GetBySlug(slug, out categoryId, out streetId, out wardId, out districtId, out stateProvinceId);
+                var urlRecord = urlRecordService.GetBySlug(slug, out categoryId, out streetId, out wardId, out districtId, out stateProvinceId);
                 if (urlRecord == null)
                 {
                     //no URL record found

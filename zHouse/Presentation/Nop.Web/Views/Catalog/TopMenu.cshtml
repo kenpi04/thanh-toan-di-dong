@@ -1,7 +1,7 @@
 ﻿@model TopMenuModel
 @using Nop.Web.Models.Catalog;
 @{
-    var isRtl = this.ShouldUseRtlTheme();
+    var isRtl = this.ShouldUseRtlTheme();    
 }
 @helper RenderCategoryLine(CategorySimpleModel category, int level)
 {
@@ -33,7 +33,7 @@
   
                     @foreach(var d in Model.Districts)
                     {
-                        <li><a href="#">@d.Text</a></li>
+                        <li><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>
                     }
                 </ul>
                 @if(category.SubCategories.Count>0)
