@@ -13,16 +13,21 @@
             <input type="button" class="nextBtn" />
             <div id="list-product-home" class="jcarousel">
                 <ul>
-                    @foreach (var item in Model)
+                    @for (int i = 0; i < 3;i++ )
                     {
+                        var item = Model[0];
                         <li>
                             <a href="@Url.RouteUrl("Product", new { SeName = item.SeName })" title="@item.DefaultPictureModel.Title">
                                 <div class="introCol">
-                                    <div class="new"></div>
-                                    <div class="nhon"></div>
-                                    <div class="pinkTag">@item.ProductPrice.Price</div>
-                                    <img width="270" height="160" alt="@item.DefaultPictureModel.AlternateText" src="@item.DefaultPictureModel.ImageUrl" title="@item.DefaultPictureModel.Title" />
-                                    <div class="whiteBg">@item.Name</div>
+                                    <div class="info-picture">
+                                        <div class="new"></div>
+                                        <div class="nhon"></div>
+                                        <div class="pinkTag">@item.ProductPrice.Price</div>
+                                        <img alt="@item.DefaultPictureModel.AlternateText" src="@item.DefaultPictureModel.ImageUrl" title="@item.DefaultPictureModel.Title" />
+                                    </div>
+                                        <div class="whiteBg">@item.Name</div>
+                                    <div class="whiteBgCata">@item.CateName</div>
+                                   
                                 </div>
                             </a>
                         </li>

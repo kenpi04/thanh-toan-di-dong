@@ -10,25 +10,27 @@
         	<div class="pinkBg">            	
                 <img src="@Url.Content("~/Themes/Zhouse/Content/images/zhouse.png")"/> <br>
                 @Html.DropDownList("DistrictId",Model.Districts,new{@class="box"})
-               @Html.DropDownList("PriceString",Model.PriceRange,new{@class="box"})<br>
-                @Html.DropDownList("Cid",Model.AvailableCategories,new{@class="box"})
-                 @Html.DropDownList("SelectedOptionIds",Model.BedRooms,"Số phòng ngủ",new{@class="box"})
+               @Html.DropDownList("PriceString",Model.PriceRange,new{@class="box"})
+                @Html.DropDownList("Cid",Model.AvailableCategories,new{@class="box"})              
 <br>
-                <input type="submit" class="blueBtn" value="tìm kiếm">
+                <input type="submit" style="float:right" class="blueBtn" value="tìm kiếm">
+                <div class="clearBoth"></div>
             </div>
         </div>
 </div>
     <div id="slider">
-        @for(int i=0;i<4;i++)
-        { 
-          <img src="@Url.Content("~/Themes/Zhouse/Content/images/stretchImg.png")" class="stretchImg">
-        }
+    
+       
+        <img src="@Url.Content("~/Themes/Zhouse/Content/images/slide2.jpg")" class="stretchImg">
+        <img src="@Url.Content("~/Themes/Zhouse/Content/images/slide4.jpg")" class="stretchImg">
+        <img src="@Url.Content("~/Themes/Zhouse/Content/images/slide5.jpg")" class="stretchImg">
+        
       
     </div>
 }
 <script type="text/javascript">
     $(function () {
-        $('#slider').nivoSlider();
+        $('#slider').nivoSlider({ effect: 'fade' });
 
 
     })

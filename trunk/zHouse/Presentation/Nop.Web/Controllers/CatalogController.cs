@@ -3355,9 +3355,9 @@ namespace Nop.Web.Controllers
 
                 #region Edit SPA
                 //delete
-                var listAttrDelete = product.ProductSpecificationAttributes.Where(x => !model.SelectedOptionAttributes.Contains(x.SpecificationAttributeOptionId));
-                foreach (var i in listAttrDelete)
-                {
+                var listAttrDelete = product.ProductSpecificationAttributes.Where(x => !model.SelectedOptionAttributes.Contains(x.SpecificationAttributeOptionId)).ToList();
+                foreach (var i in listAttrDelete)                {
+                    
                     _specificationAttributeService.DeleteProductSpecificationAttribute(i);
                 }
                 //add new

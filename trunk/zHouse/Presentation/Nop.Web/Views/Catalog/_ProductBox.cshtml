@@ -11,7 +11,7 @@
                 	<div class="nhonRight"></div>
 					<div class="pinkTagRight">@Model.ProductPrice.Price</div>
                      <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-            <img style="max-height:130px" alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+            <img  alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
         </a>
                     <div class="whiteBgRight"><a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">@Model.Name</a></div>
                     <div class="whiteBgCata">@Model.CateName</div>

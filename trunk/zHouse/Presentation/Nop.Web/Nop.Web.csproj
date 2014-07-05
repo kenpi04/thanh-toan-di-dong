@@ -1498,6 +1498,9 @@
     <Content Include="Themes\Zhouse\Content\images\searchBtn.png" />
     <Content Include="Themes\Zhouse\Content\images\searchBtnhover.png" />
     <Content Include="Themes\Zhouse\Content\images\share.png" />
+    <Content Include="Themes\Zhouse\Content\images\slide2.jpg" />
+    <Content Include="Themes\Zhouse\Content\images\slide4.jpg" />
+    <Content Include="Themes\Zhouse\Content\images\slide5.JPG" />
     <Content Include="Themes\Zhouse\Content\images\star-x-active.png" />
     <Content Include="Themes\Zhouse\Content\images\star-x-inactive.png" />
     <Content Include="Themes\Zhouse\Content\images\stretchImg.png" />

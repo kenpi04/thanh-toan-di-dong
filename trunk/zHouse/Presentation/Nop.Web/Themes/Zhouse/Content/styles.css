@@ -6370,7 +6370,7 @@ ul {
 .topInfo {
     position: absolute;
     top: 30px;
-    right: 0;
+  margin-left:24%;
     z-index: 100;
 }
 
@@ -6391,7 +6391,7 @@ ul {
 
 .box {
     background: #fff;
-    width: 190px;
+    width: 130px;
     padding: 5px 5px 5px 10px;
     border: none;
     margin: 5px 5px 5px 0;
@@ -6445,7 +6445,7 @@ ul {
     float: left;
     width: 920px;
     margin: 50px 0 10px 0;
-    height: 245px;
+   
 }
 
 .introCol {
@@ -6846,13 +6846,12 @@ have a fixed width and height (but it's not required).
 }
 
 .nivo-controlNav {
-    bottom: -12px;
     height: 28px;
     line-height: 28px;
     padding: 0 11px;
     position: relative;
-    left: 45%;
-    top: -15px;
+    margin-left: 45%;
+    top: -27px;
     z-index: 999;
 }
 

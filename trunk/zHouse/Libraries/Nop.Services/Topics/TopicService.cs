@@ -106,10 +106,12 @@ namespace Nop.Services.Topics
         /// </summary>
         /// <param name="storeId">Store identifier; pass 0 to load all records</param>
         /// <returns>Topics</returns>
-        public virtual IList<Topic> GetAllTopics(int storeId)
+        public virtual IList<Topic> GetAllTopics(int storeId,int groupId=0)
         {
             var query = _topicRepository.Table;
             query = query.OrderBy(t => t.SystemName);
+            if (groupId > 0)
+                query = query.Where(x => x.GroupId == groupId);
 
             //Store mapping
             if (storeId > 0)
