@@ -48,16 +48,44 @@
 <div class="page category-page">
 
     <div class="page-body">
-       <div id="list-product">
-           @foreach (var product in Model.Products)
-           { 
-            @Html.Partial("_ProductBox",product)
-           }
-       </div>
-        <div class="clearfix"></div>
-        <div class="pager">
-            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+        <div class="mainContent"></div>
+        <div class="leftContentTwist">
+            @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct", LoadingElementId = "ajax-loading", OnSuccess = "searchSuccess" }, new { id = "frmSearchLeft" }))
+            {
+
+                @Html.Action("SearchBoxLeft", new { isProject = Model.IsProject })
+
+                <script>
+                    $("#frmSearchLeft input[type=checkbox]").click(function () {
+                        $("#frmSearchLeft").submit();
+                    })
+                    function searchSuccess()
+                    {
+
+                    }
+
+                </script>
+            }
         </div>
-        @Html.Widget("categorydetails_bottom")
+        <div class="rightContentTwist">
+           
+            @if (Model.Products.Count > 0)
+            {
+
+                <div class="product-list" id="ListProduct">
+                    @foreach (var product in Model.Products)
+                    {
+                        @Html.Partial("_ProductBox", product)
+                    }
+                    <div class="clearBoth"></div>
+                    <div class="pager">
+                        @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
+                    </div>
+                </div>
+            }
+        
+        </div>
+        <div class="clearfix"></div>
+       
     </div>
 </div>

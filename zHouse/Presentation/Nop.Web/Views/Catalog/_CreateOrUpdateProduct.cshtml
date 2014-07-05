@@ -39,6 +39,61 @@
 </div>
 }
 <div class="fieldset">
+    <div class="form-fields">
+        <div class="inputs">
+            <div>@Html.NopLabelFor(x => x.PhapLy)</div>
+            <ul>
+                @foreach (var i in Model.PhapLy)
+                {
+                    <li> @Html.RadioButton("SelectedOptionAttributes", i.Value,Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))) @Html.Label(i.Text)</li>
+                }
+            </ul>
+
+
+        </div>
+    </div>
+</div>
+<div class="fieldset">
+    <div class="title">
+        <strong>Thông tin vị trí</strong>
+    </div>
+    <div class="form-fields">
+        <div class="inputs">
+            <div style="float: left; width: 50%">
+                <div class="inputs">
+                    @Html.NopLabelFor(x => x.NumberOfHome)
+                    @Html.TextBoxFor(x => x.NumberOfHome)
+                    @Html.ValidationMessageFor(x => x.NumberOfHome)
+                </div>
+                <div class="inputs">
+                    @Html.NopLabelFor(x => x.DistrictId)
+                    @Html.RequiredHint()
+                    @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { id = "ddlQuan" })
+                    @Html.ValidationMessageFor(x => x.DistrictId)
+                </div>
+            </div>
+            <div style="float: left; width: 50%">
+                <div class="inputs">
+                    @Html.NopLabelFor(x => x.StreetId)
+                    @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường")
+
+                </div>
+                <div class="inputs">
+                    @Html.NopLabelFor(x => x.WardId)
+                    @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường")
+                    @Html.ValidationMessageFor(x => x.WardId)
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+        </div>
+        <div class="inputs">
+            <label>@Html.NopLabelFor(x => x.FullAddress)</label>
+            @Html.TextBoxFor(x => x.FullAddress, new { @style = "width:200px" })
+        </div>
+    </div>
+</div>
+<div class="fieldset">
     <div class="title">
         <strong>Thông tin căn nhà</strong>
     </div>
@@ -118,6 +173,7 @@
              
 
             </div>
+          
 
         </div>
         <div class="clearfix"></div>
@@ -133,6 +189,9 @@
                 </li>
             }
         </ul>
+        <div class="clearBoth"></div>
+        Ghi chú về cơ sở vật chất / nội thất căn nhà ( vd: thiết kế kiểu châu âu, nhà ống hiện đại .... )<br />
+        @Html.TextAreaFor(x=>x.NoteFacilities)
     </div>
     <div class="clearfix"></div>
     <div class="inputs">
@@ -146,49 +205,29 @@
                 </li>
             }
         </ul>
+        <div class="clearBoth"></div>
+        Ghi chú về môi trường sung quanh ( vd: Gần siêu thị nào, cách bao nhiêu mét .... )<br />
+        @Html.TextAreaFor(x => x.NoteEnvironments)
+    </div>
+</div>
+<div class="clearBoth"></div>
+<div class="fieldset">
+    <div class="inputs">
+        <div>Thích hợp:</div>
+        <ul>
+            @foreach (var i in Model.ThichHop)
+            {
+                <li> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"checked=checked":"")/> @Html.Label(i.Text)</li>
+            }
+        </ul>
+        <div class="clearBoth"></div>
+        Ghi chú ( vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)<br />
+        @Html.TextAreaFor(x=>x.NoteThichHop)
+
     </div>
 </div>
 <div class="clearfix" style="height:23px"></div>
-<div class="fieldset">
-    <div class="title">
-        <strong>Thông tin vị trí</strong>
-    </div>
-    <div class="form-fields">
-        <div class="inputs">
-            <div style="float: left; width: 50%">
-                <div class="inputs">
-                    @Html.NopLabelFor(x => x.NumberOfHome)
-                    @Html.TextBoxFor(x => x.NumberOfHome)
-                    @Html.ValidationMessageFor(x => x.NumberOfHome)
-                </div>
-                <div class="inputs">
-                    @Html.NopLabelFor(x => x.DistrictId)
-                    @Html.RequiredHint()
-                    @Html.DropDownListFor(x => x.DistrictId, Model.Districts,new {id="ddlQuan" })
-                    @Html.ValidationMessageFor(x => x.DistrictId)
-                </div>
-            </div>
-            <div style="float: left; width: 50%">
-                <div class="inputs">
-                    @Html.NopLabelFor(x => x.StreetId)
-                    @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường")
 
-                </div>
-                <div class="inputs">
-                    @Html.NopLabelFor(x => x.WardId)
-                    @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường")
-                    @Html.ValidationMessageFor(x => x.WardId)
-                </div>
-            </div>
-            <div class="clearfix"></div>
-
-        </div>
-        <div class="inputs">
-            <label>@Html.NopLabelFor(x=>x.FullAddress)</label>
-                @Html.TextBoxFor(x => x.FullAddress, new {@style="width:200px" })
-        </div>
-    </div>
-</div>
 <div class="fieldset">
     <div class="title">
         <strong>Mô tả căn nhà</strong>
@@ -212,12 +251,15 @@
             <ul id="lstPic">
                 @foreach (var i in Model.PictureModels)
                 {
-                    <li style="float:left;margin-right:10px">
+                    <li id="picture_id_@i.PictureId" style="float:left;margin-right:10px">
+
+                        <input type="button" class="orangeBtn" value="Xóa" onclick="deletePicture(@i.Id)" />
                         <img width="100" height="100" src="@i.ImageUrl" /><br />
                         <textarea maxlength="500" name="PictureTitle_@i.PictureId" cols="10" rows="5">@i.Description</textarea>
                     </li>
                 }
             </ul>
+            <div class="clearBoth"></div>
         </div>
     </div>
 </div>
@@ -286,6 +328,7 @@
             })
 
         })
+       
         $('#FileUpload').uploadify({
             'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
             'uploader': '@Url.Action("UploadPicture", "Catalog")',
@@ -295,7 +338,7 @@
             'auto': false,
             'fileSizeLimit': '3MB',
             'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg',
-            'uploadLimit': 10,
+            'uploadLimit': 20,
             'cancelImg': '@Url.Content("~/Content/uploadify/uploadify-cancel.png")',
             'removeCompleted': false,
             'onSelect': function (file) {
@@ -321,7 +364,7 @@
                 pictureids.push(data);
             },
             'onQueueComplete': function (queueData) {
-                alert("a");
+               
                 $("textarea[name=PictureTitle]").each(function(i,p){
                     $(this).attr("name","PictureTitle_"+pictureids[i]);
                 });              
@@ -373,6 +416,39 @@
                   $("#ddlQuan").change();
                   $("#@Html.FieldIdFor(x => x.StreetId)").val(@Model.StreetId);
                   $("#@Html.FieldIdFor(x => x.WardId)").val(@Model.WardId);
-              })
+        })
+        var CLICK=false;
+        function deletePicture(id) {
+            if($("#lstPic li").length==1||CLICK)
+                return;
+            var picture_id = $("#picture_id_"+id);   
+            CLICK=true;
+            $.ajax({
+                cache: false,
+                type: "POST",
+                data: { "id": id },
+                url: "@Url.Action("ProductPictureDelete")",
+                dataType: 'json',
+                success: function (data, textStatus, jqXHR) {
+                    if (data.error == 0) {
+                    
+                        alert(data.message);    
+                        CLICK=false;
+                    }
+                    else {
+                        CLICK=false;
+                      alert(data.message);
+                       
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                   
+                    alert('Failed to retrieve data.');
+                    //statesProgressd.hide();
+                }
+            });
+            //return event.defaultPrevented || event.returnValue == false;
+            return false;
+        }
     </script> 
 }

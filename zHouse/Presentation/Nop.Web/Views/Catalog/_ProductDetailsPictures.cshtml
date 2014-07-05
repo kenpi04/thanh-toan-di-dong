@@ -12,12 +12,12 @@
         @if (Model.DefaultPictureZoomEnabled)
         {
             <a href="@Model.DefaultPictureModel.FullSizeImageUrl" data-gallery="lightbox-pd" title="@Model.Name"  id="main-product-img-lightbox-anchor-@Model.Id">
-                <img  style="width:100%" alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
+                <img   alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
             </a>
         }
         else
         {
-            <img style="width:100%" height="320" alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
+            <img  alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
         }
     </div>
     @if (Model.PictureModels.Count > 1)
@@ -29,7 +29,7 @@
 
                <div class="thumbnailPic">
                     <a href="@picture.FullSizeImageUrl" data-gallery="lightbox-p" title="@Model.Name">
-                    <img width="80" height="52" src="@picture.ImageUrl" alt="@picture.AlternateText" class="noborder" title="@picture.Title" />
+                        <img  src="@picture.ImageUrl" alt="@picture.AlternateText" class="noborder" title="@picture.Title" />
                 </a>     
                </div>
             }
@@ -38,6 +38,9 @@
             $(document).ready(function () {
                 $(".thumbnailPic a").click(function () {
                     var src=$(this).attr("href");
+                    $("#main-pic img").attr("src", src);
+                }).mouseover(function () {
+                    var src = $(this).attr("href");
                     $("#main-pic img").attr("src", src);
                 })
             })

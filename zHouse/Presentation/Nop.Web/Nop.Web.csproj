@@ -1697,6 +1697,7 @@
     <Content Include="Views\Catalog\_ProductBoxSmall.cshtml" />
     <Content Include="Views\Catalog\_Map.cshtml" />
     <Content Include="Themes\Zhouse\Content\uniform\css\uniform.default.scss" />
+    <Content Include="Views\Catalog\BookDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

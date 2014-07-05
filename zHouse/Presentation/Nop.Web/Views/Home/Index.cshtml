@@ -4,11 +4,9 @@
 <div class="page home-page">
     <div class="page-body">
        @Html.Widget("home_page_top")       
-        @Html.Action("HomepageProducts", "Catalog", new {pageSize=4}) 
+        @Html.Action("HomepageProducts", "Catalog", new {pageSize=8}) 
 
-        <div class="clearBoth"></div>
-          @Html.Action("HomepageProducts", "Catalog", new {pageSize=4 })
-        @*@Html.Action("TopicHomePage","Topic")*@
+        @Html.Action("TopicHomePage","Topic")
        
         @Html.Widget("home_page_bottom")
     </div>

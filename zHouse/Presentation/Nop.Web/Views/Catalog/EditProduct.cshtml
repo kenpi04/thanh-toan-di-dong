@@ -3,22 +3,22 @@
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 }
 
- <div class="page registration-page">
-        <div class="page-title">
-            <h1>@T("Account.Register")</h1>
-        </div>
-        <div class="page-body">
-            @using(Html.BeginForm("EditProduct","Catalog",FormMethod.Post,new{id="frmProduct"}))
-            {
-                <div class="message-error">
-                    @Html.ValidationSummary(true)
-                </div>
-                @Html.Partial("_CreateOrUpdateProduct",Model)
-               
-               <div class="buttons">
+ <div class="page createproduct-page">
+    <div class="page-title">
+        <h1>@T("Account.Register")</h1>
+    </div>
+    <div class="page-body">
+        @using (Html.BeginForm("EditProduct", "Catalog", FormMethod.Post, new { id = "frmProduct" }))
+        {
+            <div class="message-error">
+                @Html.ValidationSummary(true)
+            </div>
+            @Html.Partial("_CreateOrUpdateProduct", Model)
+
+            <div class="buttons">
                 <input type="button" id="insertProduct-button" class="button-1 register-next-step-button" value="@T("Product.Insert")" name="register-button" />
             </div>
-            }
-           </div>
-     </div>
+        }
+    </div>
+</div>
 

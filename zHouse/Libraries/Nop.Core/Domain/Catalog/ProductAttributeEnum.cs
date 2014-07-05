@@ -16,6 +16,15 @@ namespace Nop.Core.Domain.Catalog
       ChuDauTu=6,
       Director=7,
       Status=8,
-      NumberBlock=9
+      NumberBlock=11,
+      PhapLy=9,
+      ThichHop=12,
+    }
+    public enum ProductStatusText
+    {
+       CONTRONG=0,
+       DADATCOC=1,
+       DABAN=2
+       
     }
 }

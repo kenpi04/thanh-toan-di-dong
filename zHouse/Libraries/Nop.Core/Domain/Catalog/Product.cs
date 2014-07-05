@@ -502,8 +502,11 @@ namespace Nop.Core.Domain.Catalog
             get { return (ProductStatusEnum)this.Status; }
             set { this.Status = (Int16)value; }
 
-        }       
-      
+        }
+        public ProductStatusText ProductStatusText {
+            get { return (ProductStatusText)this.MinStockQuantity; }
+            set { this.MinStockQuantity = (Int16)value; }
+        }
         public virtual District District { get; set; }
         public virtual Customer Customer { get; set; }
 

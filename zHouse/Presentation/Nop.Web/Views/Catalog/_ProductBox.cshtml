@@ -6,25 +6,16 @@
 }
 
 
-<div class="introColRight" style="margin-right:15px">
-                	<div class="new"></div>
-                	<div class="nhonRight"></div>
-					<div class="pinkTagRight">@Model.ProductPrice.Price</div>
-                     <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-            <img  alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
-        </a>
-                    <div class="whiteBgRight"><a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">@Model.Name</a></div>
-                    <div class="whiteBgCata">@Model.CateName</div>
-                    @if(!string.IsNullOrWhiteSpace(Model.Status))
-                    {  
-                      <div class="whiteBgCata">@Model.Status</div>                    }
-                  
-                    <div class="whiteBgCata">@Model.Area m2</div>
-                    @if(!string.IsNullOrWhiteSpace(Model.NumberBlock))
-                    {
-                    <div class="whiteBgCata">@Model.NumberBlock</div>
-                    }
-                    <div class="whiteBgCata shortdes">@Html.Raw(Model.ShortDescription.TrimString(100))</div>
-                </div>
+<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+    <div class="introCol">
+        <div class="info-picture">
+            <div class="new"></div>
+            <div class="nhon"></div>
+            <div class="pinkTag">@Model.ProductPrice.Price</div>
+            <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+        </div>
+        <div class="whiteBg">@Model.Name</div>
+        <div class="whiteBgCata">@Model.DictrictName | @Model.CateName | @Model.Area.ToString("#") m2 | @Model.NumBedRoom | @Model.NumBadRoom | Hướng @Model.Directors</div>
 
-
+    </div>
+</a>

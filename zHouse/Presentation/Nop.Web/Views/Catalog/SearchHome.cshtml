@@ -11,9 +11,11 @@
                 <img src="@Url.Content("~/Themes/Zhouse/Content/images/zhouse.png")"/> <br>
                 @Html.DropDownList("DistrictId",Model.Districts,new{@class="box"})
                @Html.DropDownList("PriceString",Model.PriceRange,new{@class="box"})
-                @Html.DropDownList("Cid",Model.AvailableCategories,new{@class="box"})              
+                @Html.DropDownList("Cid",Model.AvailableCategories,new{@class="box"})         
+                @Html.DropDownList("SelectedOptionIds", Model.Directories,  new { @class = "box" })
+                     
 <br>
-                <input type="submit" style="float:right" class="blueBtn" value="tìm kiếm">
+                <input type="submit" style="float:right;margin-right:4px" class="blueBtn" value="tìm kiếm">
                 <div class="clearBoth"></div>
             </div>
         </div>
@@ -30,7 +32,7 @@
 }
 <script type="text/javascript">
     $(function () {
-        $('#slider').nivoSlider({ effect: 'fade' });
+        $('#slider').nivoSlider({ effect: 'fade',controlNav:false });
 
 
     })

@@ -37,6 +37,7 @@ namespace Nop.Data.Mapping.Catalog
             this.Ignore(p => p.ManageInventoryMethod);
             this.Ignore(p => p.RecurringCyclePeriod);
             this.Ignore(p=>p.ProductStatus);
+            this.Ignore(p => p.ProductStatusText);
 
             this.HasMany(p => p.ProductTags)
                 .WithMany(pt => pt.Products)

@@ -28,43 +28,49 @@ namespace Nop.Web.Models.Catalog
             Districts = new List<SelectListItem>();
             PictureIds = new List<PictureUploadModel>();
             NumberBlocks = new List<SelectListItem>();
+            PhapLy = new List<SelectListItem>();
+            ThichHop = new List<SelectListItem>();
 
 
 
         }
-        [NopResourceDisplayName("Product.Fields.Name")]
+        public string NoteFacilities { get; set; }
+        public string NoteEnvironments { get; set; }
+        public string NoteThichHop { get; set; }
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Name")]
         public string Name { get; set; }
-        [NopResourceDisplayName("Product.Fields.ContactName")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactName")]
         public string ContactName { get; set; }
-        [NopResourceDisplayName("Product.Fields.ContactPhone")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactPhone")]
         public string ContactPhone { get; set; }
-        [NopResourceDisplayName("Product.Fields.Email")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Email")]
         public string Email { get; set; }
-        [NopResourceDisplayName("Product.Fields.Price")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Price")]
         public decimal Price { get; set; }
-        [NopResourceDisplayName("Product.Fields.CateId")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.CateId")]
         public int CateId { get; set; }
-        [NopResourceDisplayName("Product.Fields.Area")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Area")]
         public decimal Area { get; set; }
-        [NopResourceDisplayName("Product.Fields.Width")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Width")]
         public decimal Width { get; set; }
-        [NopResourceDisplayName("Product.Fields.Dept")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Dept")]
         public decimal Dept { get; set; }
-        [NopResourceDisplayName("Product.Fields.NumberOfHome")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.NumberOfHome")]
         public string NumberOfHome { get; set; }
-        [NopResourceDisplayName("Product.Fields.StreetId")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.StreetId")]
         public int StreetId { get; set; }
-        [NopResourceDisplayName("Product.Fields.DistrictId")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.DistrictId")]
         public int DistrictId { get; set; }
-        [NopResourceDisplayName("Product.Fields.WardId")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.WardId")]
         public int WardId { get; set; }
       
-        [NopResourceDisplayName("Product.Fields.Desription")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Description")]
         [AllowHtml]
         public string Desription { get; set; }
-        [NopResourceDisplayName("Product.Fields.FullAddress")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.FullAddress")]
         public string FullAddress { get; set; }
-       
+
+      
        
 
         public List<int> SelectedOptionAttributes { get; set; }
@@ -72,15 +78,24 @@ namespace Nop.Web.Models.Catalog
 
         #region select
         public IList<SelectListItem> Categories { get; set; }
+          [NopResourceDisplayName("Admin.Catalog.Products.Fields.NumberFloors")]
         public IList<SelectListItem> NumberFloors { get; set; }
+           [NopResourceDisplayName("Admin.Catalog.Products.Fields.BadRooms")]
         public IList<SelectListItem> BadRooms { get; set; }
+           [NopResourceDisplayName("Admin.Catalog.Products.Fields.BedRooms")]
         public IList<SelectListItem> BedRooms { get; set; }
+           [NopResourceDisplayName("Admin.Catalog.Products.Fields.Directors")]
         public IList<SelectListItem> Directors { get; set; }
+           [NopResourceDisplayName("Admin.Catalog.Products.Fields.Facilities")]
         public IList<SelectListItem> Facilities { get; set; }
+           [NopResourceDisplayName("Admin.Catalog.Products.Fields.Environments")]
         public IList<SelectListItem> Environments { get; set; }
+    
         public IList<PictureModel> PictureModels { get; set; }
         public IList<SelectListItem> Districts { get; set; }
-
+           [NopResourceDisplayName("Admin.Catalog.Products.Fields.PhapLy")]
+        public IList<SelectListItem> PhapLy { get; set; }
+           [NopResourceDisplayName("Admin.Catalog.Products.Fields.NumberBlocks")]
         public IList<SelectListItem> NumberBlocks { get; set; }
         #endregion
 
@@ -91,5 +106,7 @@ namespace Nop.Web.Models.Catalog
             public int Id { get; set; }
             public string Title { get; set; }
         }
+
+        public List<SelectListItem> ThichHop { get; set; }
     }
 }

@@ -33,6 +33,8 @@ namespace Nop.Web.Models.Catalog
 
         public string NumberBlock { get; set; }
         public string DictrictName { get; set; }
+
+        public string Directors { get; set; }
         //price
         public ProductPriceModel ProductPrice { get; set; }
         //picture
@@ -63,5 +65,7 @@ namespace Nop.Web.Models.Catalog
         public string FullAddress { get; set; }
 
         public string CateName { get; set; }
+
+        public string ProductStatusText { get; set; }
     }
 }

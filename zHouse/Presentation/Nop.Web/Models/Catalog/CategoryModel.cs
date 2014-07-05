@@ -22,6 +22,7 @@ namespace Nop.Web.Models.Catalog
         public string MetaDescription { get; set; }
         public string MetaTitle { get; set; }
         public string SeName { get; set; }
+        public bool IsProject { get; set; }
         
         public PictureModel PictureModel { get; set; }
 
