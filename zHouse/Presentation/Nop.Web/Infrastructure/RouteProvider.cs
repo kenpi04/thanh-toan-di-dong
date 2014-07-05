@@ -641,7 +641,7 @@ namespace Nop.Web.Infrastructure
 
             //product search
             routes.MapLocalizedRoute("ProductSearch",
-                            "search/",
+                            "tim-kiem/",
                             new { controller = "Catalog", action = "Search" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("ProductSearchAutoComplete",
