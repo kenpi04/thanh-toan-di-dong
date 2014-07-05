@@ -1,2 +1,2 @@
 DataProvider: sqlserver
-DataConnectionString: Data Source=ISC-QUANGNT8\SQLEXPRESS;Initial Catalog=zhouse;Integrated Security=True;Persist Security Info=False;MultipleActiveResultSets=True
+DataConnectionString: Data Source=dungvt\dungvt;Initial Catalog=DB_9B0E81_zhouse;Integrated Security=False;User Id=sa; Password =123456; Persist Security Info=False;MultipleActiveResultSets=True

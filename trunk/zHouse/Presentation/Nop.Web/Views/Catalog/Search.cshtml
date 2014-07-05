@@ -28,49 +28,20 @@
 </script>
 <div class="page search-page">
     <div class="page-title">
-        <h1>@T("Search")</h1>
+        <h1> Tìm thấy @Model.PagingFilteringContext.TotalItems kết quả  "@ViewBag.ResultString"</h1>
     </div>
     <div class="page-body">
-        <div class="mainContent"></div>
-        <div class="leftContentTwist">
-            @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct",LoadingElementId="ajax-loading",OnSuccess="searchSuccess" }, new {id="frmSearchLeft" }))
+        <div id="list-product">
+            @foreach (var product in Model.Products)
             {
-                  
-                @Html.Action("SearchBoxLeft", new {isProject=Model.IsProject })
-                
-                <script>
-                    $("#frmSearchLeft input[type=checkbox]").click(function () {
-                        $("#frmSearchLeft").submit();
-                    })
-                    function searchSuccess()
-                    {
-                            
-                    }
-
-                </script>
+                @Html.Partial("_ProductBox", product)
             }
-        </div>
-        <div class="rightContentTwist">          
-            @if (Model.NoResults)
-            {
-                <strong class="result">
-                    @T("Search.NoResultsText")
-                </strong>
-            }
-            @if (Model.Products.Count > 0)
-            {
-               
-                <div class="product-list" id="ProductList">
-                @foreach(var product in Model.Products)
-                {
-                   @Html.Partial("_ProductBox",product)
-                }
-                </div>
-            }
-            <div class="pager">
-                @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
-            </div>
         </div>
         <div class="clearfix"></div>
+        <div class="pager">
+            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+        </div>
+        @Html.Widget("categorydetails_bottom")
     </div>
+  
 </div>

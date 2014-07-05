@@ -6,12 +6,13 @@
 <div id="ListProduct">
 @foreach (var i in Model.Products)
 { 
-   <div class="item-box">
+  
         @Html.Partial("_ProductBox",i)
-       </div>
+    
     
 }
-<div class="pager">
-    @Html.Pager(Model.PagingFilteringContext)
-</div>
+    <div class="clearBoth"></div>
+    <div class="pager">
+        @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
+    </div>
     </div>

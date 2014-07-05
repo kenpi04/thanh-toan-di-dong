@@ -26,6 +26,7 @@ namespace Nop.Web.Models.Catalog
             Mids = new List<int>();
             BedRooms = new List<SelectListItem>();
             BadRooms = new List<SelectListItem>();
+            Directories = new List<SelectListItem>();
         }
 
         public string Warning { get; set; }
@@ -92,6 +93,7 @@ namespace Nop.Web.Models.Catalog
         public IList<int> SelectedOptionIds { get; set; }
         public IList<SelectListItem> BadRooms { get; set; }
         public IList<SelectListItem> BedRooms { get; set; }
+        public IList<SelectListItem> Directories { get; set; }
         public bool IsProject { get; set; }
     }
 }

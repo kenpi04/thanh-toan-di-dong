@@ -264,6 +264,16 @@ namespace Nop.Web.Models.Catalog
 
 
 
-      
+
+
+        public string ProductStatusText { get; set; }
+
+        public decimal AreaUse { get; set; }
+
+        public decimal Width { get; set; }
+
+        public decimal Dept { get; set; }
+
+        public string PhapLy { get; set; }
     }
 }

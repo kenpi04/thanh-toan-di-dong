@@ -47,6 +47,7 @@ using Nop.Web.Framework.UI.Captcha;
 using Nop.Web.Infrastructure.Cache;
 using Nop.Web.Models.Catalog;
 using Nop.Web.Models.Media;
+using Nop.Core.Domain.Messages;
 
 namespace Nop.Web.Controllers
 {
@@ -90,6 +91,7 @@ namespace Nop.Web.Controllers
         private readonly IShippingService _shippingService;
         private readonly IUrlRecordService _urlRecordService;
         private readonly ICategoryNewsService _catenewsService;
+        private readonly IMessagesService _messagesService;
 
         private readonly MediaSettings _mediaSettings;
         private readonly CatalogSettings _catalogSettings;
@@ -156,9 +158,11 @@ namespace Nop.Web.Controllers
             IStateProvinceService stateProvinceService,
             IUrlRecordService urlRecordService,
             ICategoryNewsService catenewsService,
-            ICustomerService customerService
+            ICustomerService customerService,
+            IMessagesService messagesService
             )
         {
+            this._messagesService = messagesService;
             this._catenewsService = catenewsService;
             this._urlRecordService = urlRecordService;
             this._stateProvinceService = stateProvinceService;
@@ -355,9 +359,11 @@ namespace Nop.Web.Controllers
                     NumBadRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBadRoom),
                     Status = GetOptionName(product, ProductAttributeEnum.Status),
                     NumberBlock = GetOptionName(product, ProductAttributeEnum.NumberBlock),
+                    Directors=GetOptionName(product,ProductAttributeEnum.Director),
                     Area = product.Area,
                     FullAddress = product.FullAddress,
-                    DictrictName = product.District.Name
+                    DictrictName = product.District.Name,
+                 
 
 
                 };
@@ -663,7 +669,11 @@ namespace Nop.Web.Controllers
                 ContactName = product.ContactName,
                 ContactPhone = product.ContactPhone,
                 FullAddress = product.FullAddress,
-                CustomerId = product.CustomerId
+                CustomerId = product.CustomerId,
+                ProductStatusText = _localizationService.GetResource("Product.StatusText." + product.ProductStatusText),
+                AreaUse=product.AreaUse,
+               Width=product.Width,
+               Dept=product.Height
 
 
 
@@ -699,6 +709,8 @@ namespace Nop.Web.Controllers
             model.NumberFloors = GetOptionName(product, ProductAttributeEnum.NumberOfFloor);
             model.Status = GetOptionName(product, ProductAttributeEnum.Status);
             model.Directors = GetOptionName(product, ProductAttributeEnum.Director);
+            model.PhapLy = GetOptionName(product, ProductAttributeEnum.PhapLy);
+            
 
             #endregion
 
@@ -721,11 +733,11 @@ namespace Nop.Web.Controllers
 
             model.DefaultPictureZoomEnabled = _mediaSettings.DefaultPictureZoomEnabled;
             //default picture
-            var defaultPictureSize = isAssociatedProduct ?
-                _mediaSettings.AssociatedProductPictureSize :
-                _mediaSettings.ProductDetailsPictureSize;
+            var defaultPictureSize =
+                _mediaSettings.ProductThumbPictureSizeOnProductDetailsPage;
+            var defaultPictureFullSize = _mediaSettings.ProductDetailsPictureSize;
             //prepare picture models
-            var productPicturesCacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_DETAILS_PICTURES_MODEL_KEY, product.Id, defaultPictureSize, isAssociatedProduct, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id);
+            var productPicturesCacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_DETAILS_PICTURES_MODEL_KEY, product.Id, defaultPictureSize, defaultPictureFullSize, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id);
             var cachedPictures = _cacheManager.Get(productPicturesCacheKey, () =>
             {
                 var pictures = _pictureService.GetPicturesByProductId(product.Id);
@@ -733,7 +745,7 @@ namespace Nop.Web.Controllers
                 var defaultPictureModel = new PictureModel()
                 {
                     ImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(), defaultPictureSize, !isAssociatedProduct),
-                    FullSizeImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(), 0, !isAssociatedProduct),
+                    FullSizeImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(),defaultPictureFullSize, !isAssociatedProduct),
                     Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
                     AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
                 };
@@ -743,8 +755,8 @@ namespace Nop.Web.Controllers
                 {
                     pictureModels.Add(new PictureModel()
                     {
-                        ImageUrl = _pictureService.GetPictureUrl(picture, _mediaSettings.ProductThumbPictureSizeOnProductDetailsPage),
-                        FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
+                        ImageUrl = _pictureService.GetPictureUrl(picture, defaultPictureSize),
+                        FullSizeImageUrl = _pictureService.GetPictureUrl(picture, defaultPictureFullSize),
                         Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
                         AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
                     });
@@ -894,7 +906,7 @@ namespace Nop.Web.Controllers
         #region Categories
 
         [NopHttpsRequirement(SslRequirement.No)]
-        public ActionResult Category(int categoryId, CatalogPagingFilteringModel command)
+        public ActionResult Category(int categoryId,SearchModel searchModel, CatalogPagingFilteringModel command,int streetId=0, int wardId=0, int districtId=0, int stateProvinceId=0 )
         {
             var category = _categoryService.GetCategoryById(categoryId);
             if (category == null || category.Deleted)
@@ -1164,6 +1176,7 @@ namespace Nop.Web.Controllers
 
             var categoryIds = new List<int>();
             categoryIds.Add(category.Id);
+            
             if (_catalogSettings.ShowProductsFromSubcategories)
             {
                 //include subcategories
@@ -1179,6 +1192,10 @@ namespace Nop.Web.Controllers
                 featuredProducts: _catalogSettings.IncludeFeaturedProductsInNormalLists ? null : (bool?)false,
                 priceMin: minPriceConverted, priceMax: maxPriceConverted,
                 filteredSpecs: alreadyFilteredSpecOptionIds,
+                dictrictIds:new List<int>{districtId},
+                wardId:wardId,
+                stateProvinceId:stateProvinceId,
+                streetId:streetId,
                 orderBy: (ProductSortingEnum)command.OrderBy,
                 pageIndex: command.PageNumber - 1,
                 pageSize: command.PageSize);
@@ -1895,7 +1912,7 @@ namespace Nop.Web.Controllers
             }
 
             //prepare the model
-            var model = PrepareProductDetailsPageModel(product, updatecartitem, false);
+            var model = PrepareProductDetailsPageModel(product,null, false);
 
             //save as recently viewed
             _recentlyViewedProductsService.AddProductToRecentlyViewedList(product.Id);
@@ -2785,7 +2802,7 @@ namespace Nop.Web.Controllers
         }
 
         [NopHttpsRequirement(SslRequirement.No)]
-        public ActionResult ProductEmailAFriend(int productId)
+        public ActionResult ProductEmailAFriend(int productId, bool isBook = false)
         {
             var product = _productService.GetProductById(productId);
             if (product == null || product.Deleted || !product.Published || !_catalogSettings.EmailAFriendEnabled)
@@ -2797,6 +2814,8 @@ namespace Nop.Web.Controllers
             model.ProductSeName = product.GetSeName();
             model.YourEmailAddress = _workContext.CurrentCustomer.Email;
             model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnEmailProductToFriendPage;
+            if (isBook)
+                return View("BookDate", model);
             return View(model);
         }
 
@@ -2805,6 +2824,8 @@ namespace Nop.Web.Controllers
         [CaptchaValidator]
         public ActionResult ProductEmailAFriendSend(ProductEmailAFriendModel model, bool captchaValid)
         {
+            DateTime d = new DateTime(model.Year,model.Month,model.Date,model.Hour,model.Minute,0);
+            
             var product = _productService.GetProductById(model.ProductId);
             if (product == null || product.Deleted || !product.Published || !_catalogSettings.EmailAFriendEnabled)
                 return Json("Lỗi");
@@ -2824,6 +2845,26 @@ namespace Nop.Web.Controllers
             if (ModelState.IsValid)
             {
                 //email
+                if(model.Year>0)
+                {
+                    var mes = new Message
+                    {
+                        Email=model.FriendEmail,
+                        Body=model.PersonalMessage,
+                        CreatedOn=DateTime.Now,
+                        BookDate=d,
+                        ProductId=model.ProductId,
+                        Phone=model.Phone,
+                        Name=model.Name,
+                        Type=(int)MessageType.Book
+
+                    };
+                    _messagesService.InsertMessage(mes);
+                    return Json("Gửi thành công");
+                    
+                }
+
+
                 _workflowMessageService.SendProductEmailAFriendMessage(_workContext.CurrentCustomer,
                         _workContext.WorkingLanguage.Id, product,
                         model.YourEmailAddress, model.FriendEmail,
@@ -2835,8 +2876,8 @@ namespace Nop.Web.Controllers
 
                 model.SuccessfullySent = true;
                 model.Result = _localizationService.GetResource("Products.EmailAFriend.SuccessfullySent");
-
-                return View(model);
+                return Json("Gửi thành công!");
+               // return View(model);
             }
 
             //If we got this far, something failed, redisplay form
@@ -2844,7 +2885,7 @@ namespace Nop.Web.Controllers
             model.ProductName = product.GetLocalized(x => x.Name);
             model.ProductSeName = product.GetSeName();
             model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnEmailProductToFriendPage;
-            return View(model);
+            return Json("Gửi thành công!");
         }
 
         #endregion
@@ -3122,6 +3163,16 @@ namespace Nop.Web.Controllers
 
 
             model.PagingFilteringContext.LoadPagedList(products);
+            string districtName,cateName,priceName,huong;
+            districtName=cateName=priceName=huong="";
+            if (model.DistrictId > 0)
+                districtName = _stateProvinceService.GetDistHCM().Where(x => x.Id == model.DistrictId).FirstOrDefault().Name;// model.Districts.FirstOrDefault(x => x.Value == model.DistrictId.ToString()).Text;
+            if (model.Cid > 0)
+                cateName = model.AvailableCategories.FirstOrDefault(x => x.Value == model.Cid.ToString()).Text;
+            //if (model.PriceString!="0-0")
+            //    priceName = model.PriceRange.FirstOrDefault(x => x.Value == model.PriceRange.ToString()).Text;
+            ViewBag.ResultString = string.Format("{0} {1} {2}",cateName,districtName,priceName);
+            
             if (Request.IsAjaxRequest())
                 return PartialView("_ProductListPartial", model);
             return View(model);
@@ -3526,7 +3577,9 @@ namespace Nop.Web.Controllers
             p.Name = inPd.Name;
             p.FullAddress = inPd.FullAddress;
 
-
+            p.FullDescription +="<br><br>" +inPd.NoteFacilities;
+            p.FullDescription += "<br><br>" + inPd.NoteEnvironments;
+            p.FullDescription += "<br><br>" + inPd.NoteThichHop;
 
 
 
@@ -3565,7 +3618,8 @@ namespace Nop.Web.Controllers
             {
                 ImageUrl = _pictureService.GetPictureUrl(x.PictureId, 100),
                 Description=x.Description,
-                PictureId=x.PictureId
+                PictureId=x.PictureId,
+                Id=x.Id
 
             }).ToList();
 
@@ -3608,11 +3662,31 @@ namespace Nop.Web.Controllers
                 Value = x.Id.ToString(),
                 Text = x.Name
             }).ToList();
+
+            model.NumberBlocks = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberBlock).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.PhapLy = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.PhapLy).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+            model.ThichHop = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.ThichHop).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+
             model.Categories = _categoryService.GetAllCategories().Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
             }).ToList();
+           
+
+           
 
         }
 
@@ -3854,7 +3928,9 @@ namespace Nop.Web.Controllers
 
             model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
             model.BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
-
+            model.Directories = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).ToSelectList(x => x.Name, x => x.Id.ToString());
+            model.Directories.Insert(0, new SelectListItem { Text = _localizationService.GetResource(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
+           
 
         }
 
@@ -4116,6 +4192,45 @@ namespace Nop.Web.Controllers
                 return PartialView("_ProductListPartial", model);
             return View("Search", model);
 
+        }
+        [HttpPost]
+        public ActionResult ProductPictureDelete(int id)
+        {
+            if ( !_workContext.CurrentCustomer.IsAdmin())
+            {
+                return Json("Bạn không có quyền thực hiện thao tác!");
+            }
+            var productPicture = _productService.GetProductPictureById(id);
+            var product = _productService.GetProductById(productPicture.ProductId);
+            if (product == null)
+                return Json("Product is null");
+
+           
+
+            //var productimage = _productService.GetProductPicturesByProductId(product.Id);
+
+            if (productPicture == null)
+            {
+                return Json(new { error = 1, message = "Ảnh không tồn tại" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var productId = productPicture.ProductId;
+
+            //a vendor should have access only to his products
+            if (_workContext.CurrentVendor != null)
+            {
+                //var product = _productService.GetProductById(productId);
+                if (product != null && product.VendorId != _workContext.CurrentVendor.Id)
+                {
+                    return Content("This is not your product");
+                }
+            }
+            var pictureId = productPicture.PictureId;
+            _productService.DeleteProductPicture(productPicture);
+            var picture = _pictureService.GetPictureById(pictureId);
+            _pictureService.DeletePicture(picture);
+
+            return Json(new { error = 0, message = "Xóa ảnh thành công" }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

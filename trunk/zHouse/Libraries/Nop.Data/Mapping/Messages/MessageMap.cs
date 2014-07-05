@@ -12,7 +12,7 @@ namespace Nop.Data.Mapping.Messages
     {
         public MessageMap()
         {
-            this.ToTable("Fland_Message");
+            this.ToTable("Message");
             this.HasKey(mt => mt.Id);
 
         }

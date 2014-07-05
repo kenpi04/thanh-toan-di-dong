@@ -6334,8 +6334,11 @@ ul {
     .menu li {
         display: inline;
         float: left;
-        padding: 5px 10px;
-        height: 50px;
+        padding: 5px 20px;
+       border-right:1px #c2c2c2 solid
+    }
+    .menu li:last-child,.sublist li{
+        border:none
     }
 
         .menu li a {
@@ -6348,8 +6351,8 @@ ul {
             .menu li a:hover {
                 color: #d21f79;
             }
-<!-- verLine {
-    <!-- background: url(images/verLine.png) no-repeat scroll 0 0;
+ .verLine {
+     background: url(images/verLine.png) no-repeat scroll 0 0;
     width: 1px !important;
     height: 100px;
     margin: -12px 2px 0 6px;
@@ -6369,22 +6372,22 @@ ul {
 
 .topInfo {
     position: absolute;
-    top: 30px;
-  margin-left:24%;
+    top: 100px;
+    margin-left: 14%;
     z-index: 100;
 }
 
 .pinkBg {
     background: #cf1070;
     opacity: 0.85;
-    padding: 15px 15px 15px 25px;
+    padding:25px;
 }
 
 .pinkNarrowTitle {
     font-weight: 900;
     font-stretch: ultra-condensed;
     font-family: "Myriad Pro", Arial, Helvetica, sans-serif;
-    font-size: 35px;
+    font-size: 30px;
     color: #cc0066;
     text-align: center;
 }
@@ -6443,19 +6446,22 @@ ul {
 
 .intro-product {
     float: left;
-    width: 920px;
-    margin: 50px 0 10px 0;
-   
+    width: 100%;
 }
 
 .introCol {
     float: left;
-    width: 270px;
+    width: 220px;
     position: relative;
-    margin-right: 30px;
+    margin-right: 14px;
     border: 1px solid #cccccc;
+    margin-bottom: 14px;
+    background: #fff;
+    height:345px
 }
-
+.introCol .info-picture{
+    min-height:220px
+}
 .new {
     position: absolute;
     top: 0;
@@ -6467,7 +6473,7 @@ ul {
 
 .nhon {
     position: absolute;
-    top: 148px;
+    top: 207px;
     left: 20px;
     background: url(images/nhon.png) no-repeat;
     width: 23px;
@@ -6481,7 +6487,7 @@ ul {
     padding-top: 4px;
     position: absolute;
     right: -10px;
-    top: 145px;
+    top: 190px;
     color: #fff;
     text-align: center;
     font-weight: bold;
@@ -6520,8 +6526,7 @@ ul {
 .whiteBg {
     background: #fff;
     border: 0px solid #c2c2c2;
-    width: 238px;
-    padding: 25px 15px 15px 15px;
+    padding: 5px 10px 10px 10px;
     color: #2d9fd8;
     font-size: 13px;
     font-weight: bold;
@@ -6564,13 +6569,13 @@ ul {
     height: 17px;
     position: absolute;
     bottom: -17px;
-    left: 40px;
+    left: 160px;
 }
 
 .frame {
     float: left;
     width: 945px;
-    margin: 10px 0;
+    margin: 20px 0 10px 0;
 }
 
     .frame table {
@@ -6590,7 +6595,7 @@ ul {
 
 .smallPinkText {
     color: #cc0066;
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .threeCol {
@@ -6625,7 +6630,7 @@ ul {
 .blueLink a {
     color: #1e98d5;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 13px;
 }
 
     .blueLink a:hover {
@@ -6637,11 +6642,11 @@ ul {
     width: 180px;
     padding: 8px 10px;
     color: #666;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .footerEnd {
-    font-size: 11px;
+    font-size: 13px;
     color: #666;
     padding: 20px 0;
     float: left;
@@ -6803,6 +6808,7 @@ have a fixed width and height (but it's not required).
     width: 100%;
     margin-left: 3px;
     margin-top: 2px;
+    margin-bottom:10px;
 }
 
 .nivo-slice {
@@ -6851,7 +6857,7 @@ have a fixed width and height (but it's not required).
     padding: 0 11px;
     position: relative;
     margin-left: 45%;
-    top: -27px;
+    top: -10px;
     z-index: 999;
 }
 
@@ -6977,7 +6983,7 @@ have a fixed width and height (but it's not required).
 
 .nhonRight {
     position: absolute;
-    top: 118px;
+    top: 208px;
     left: 20px;
     background: url(images/nhon.png) no-repeat;
     width: 23px;
@@ -6991,7 +6997,7 @@ have a fixed width and height (but it's not required).
     padding-top: 4px;
     position: absolute;
     right: -10px;
-    top: 100px;
+    top: 190px;
     color: #fff;
     text-align: center;
     font-weight: bold;
@@ -7089,15 +7095,14 @@ have a fixed width and height (but it's not required).
 }
 
 .thumbnailPic {
-    width: 80px;
-    height: 52px;
-    margin-right: 8px;
-    margin-bottom: 8px;
+
+    margin-right: 11px;
+    margin-bottom: 11px;
     float: left;
 }
 
     .thumbnailPic:hover {
-        border: 2px solid #cc0066;
+       
     }
 
 .blackBg {
@@ -7326,13 +7331,13 @@ have a fixed width and height (but it's not required).
 }
 
 .whiteBgCata {
-    background: #fff;
-    border: 1px solid #c2c2c2;
-    width: 188px;
-    padding: 5px 15px;
+    padding: 5px 10px;
     font-size: 12px;
-    17339 float: left;
-    margin-top: -1px;
+    border-top: 1px #ddd dashed;
+    float:left;
+    width:200px;
+    margin-top:10px;
+    height:55px
 }
 
 .pinkNarrowTitle30 {
@@ -7387,9 +7392,22 @@ have a fixed width and height (but it's not required).
     float: left;
     color: #555;
 }
-.introColRight .shortdes{
-    height:72px
+
+.introColRight .shortdes {
+    height: 72px;
 }
-.product-list .introColRight{
-    height:377px
+
+.product-list .introColRight {
+    height: 377px;
 }
+
+
+.select-datetime .lb{color:gray}
+.select-datetime select{width:40px;float:left;margin-right:5px}
+.email-friend .date-book select{width:58px;float:left;}
+.email-friend label{margin-bottom:5px}
+.book-email-friend .friend-email{width:90%}
+.book-email-friend .friend-email-textarea{width:93%}
+.createproduct-page{background:#fff;padding:14px}
+.createproduct-page h1{font-size:30px;font-weight:bold}
+.createproduct-page .text-i{line-height:30px}

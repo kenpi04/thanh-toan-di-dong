@@ -187,7 +187,7 @@ namespace Nop.Web.Framework.Seo
                     case "search":
                         {
                             data.Values["controller"] = "Catalog";
-                            data.Values["action"] = "ProductSearch1";
+                            data.Values["action"] = "Category";
                             data.Values["categoryId"] = categoryId;
                             data.Values["streetId"] = streetId;
                             data.Values["wardId"] = wardId;

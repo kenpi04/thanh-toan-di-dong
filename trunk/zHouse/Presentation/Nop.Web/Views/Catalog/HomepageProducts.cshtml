@@ -9,27 +9,15 @@
 
     <div class="wrapper">
         <div class="intro-product">
-            <input type="button" class="backBtn" />
-            <input type="button" class="nextBtn" />
-            <div id="list-product-home" class="jcarousel">
+            @*<input type="button" class="backBtn" />
+            <input type="button" class="nextBtn" />*@
+            <div id="list-product-home">
                 <ul>
-                    @for (int i = 0; i < 3;i++ )
+                    @foreach(var item in Model)
                     {
-                        var item = Model[0];
+                      
                         <li>
-                            <a href="@Url.RouteUrl("Product", new { SeName = item.SeName })" title="@item.DefaultPictureModel.Title">
-                                <div class="introCol">
-                                    <div class="info-picture">
-                                        <div class="new"></div>
-                                        <div class="nhon"></div>
-                                        <div class="pinkTag">@item.ProductPrice.Price</div>
-                                        <img alt="@item.DefaultPictureModel.AlternateText" src="@item.DefaultPictureModel.ImageUrl" title="@item.DefaultPictureModel.Title" />
-                                    </div>
-                                        <div class="whiteBg">@item.Name</div>
-                                    <div class="whiteBgCata">@item.CateName</div>
-                                   
-                                </div>
-                            </a>
+                            @Html.Partial("_ProductBox",item)
                         </li>
                     }
                 </ul>
@@ -41,15 +29,15 @@
 
     </div>
     <script>
-        $("#list-product-home").jcarousel({
+        //$("#list-product-home").jcarousel({
 
-        })
-        $('.backBtn').jcarouselControl({
-            target: '-=1'
-        });
+        //})
+        //$('.backBtn').jcarouselControl({
+        //    target: '-=1'
+        //});
 
-        $('.nextBtn').jcarouselControl({
-            target: '+=1'
-        });
+        //$('.nextBtn').jcarouselControl({
+        //    target: '+=1'
+        //});
     </script>
 }
