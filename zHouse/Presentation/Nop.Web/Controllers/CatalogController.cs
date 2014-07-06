@@ -906,7 +906,7 @@ namespace Nop.Web.Controllers
         #region Categories
 
         [NopHttpsRequirement(SslRequirement.No)]
-        public ActionResult Category(int categoryId,SearchModel searchModel, CatalogPagingFilteringModel command,int streetId=0, int wardId=0, int districtId=0, int stateProvinceId=0 )
+        public ActionResult Category(int categoryId, SearchModel searchModel, CatalogPagingFilteringModel command, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0)
         {
             var category = _categoryService.GetCategoryById(categoryId);
             if (category == null || category.Deleted)
@@ -2983,7 +2983,7 @@ namespace Nop.Web.Controllers
 
         [NopHttpsRequirement(SslRequirement.No)]
         [ValidateInput(false)]
-        public ActionResult Search(SearchModel model, SearchPagingFilteringModel command)
+        public ActionResult Search(SearchModel model, SearchPagingFilteringModel command, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0, string priceString="", string attributeOptionIds="")
         {
             if (model == null)
                 model = new SearchModel();

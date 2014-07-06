@@ -52,7 +52,7 @@
                    
                     @foreach (var d in Model.PriceRange)
                     {
-                        <li><a href="#">@d.Text</a></li>
+                        <li><a href="@GetSeName(Request.Url.Host, category.SeName, null, null, d.Value, null)">@d.Text</a></li>
                     }
                 </ul>
             </div>
