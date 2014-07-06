@@ -8,6 +8,7 @@ using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Seo;
 using System.Data;
 using Nop.Data;
+using System.Data.SqlClient;
 
 namespace Nop.Services.Seo
 {
@@ -219,9 +220,10 @@ namespace Nop.Services.Seo
             return urlRecord;
         }
 
-        public virtual UrlRecord GetBySlug(string slug, out int categoryId, out int streetId, out int wardId, out int districtId, out int stateProvinceId)
+        public virtual UrlRecord GetBySlug(string slug, out int categoryId, out int streetId, out int wardId, out int districtId, out int stateProvinceId, out string priceString, out string specAttributeOptionIds)
         {
             categoryId = streetId = wardId = districtId = stateProvinceId = 0;
+            priceString = specAttributeOptionIds = "";
             if (String.IsNullOrEmpty(slug))
                 return null;
 
@@ -256,6 +258,18 @@ namespace Nop.Services.Seo
             pStateProvinceId.Direction = ParameterDirection.Output;
             pStateProvinceId.DbType = DbType.Int32;
 
+            var pPriceString = _dataProvider.GetParameter();
+            pPriceString.ParameterName = "priceString";
+            pPriceString.Size = 100;
+            pPriceString.Direction = ParameterDirection.Output;
+            pPriceString.DbType = DbType.String;
+
+            var pAttributeOptions = _dataProvider.GetParameter();
+            pAttributeOptions.ParameterName = "attributeOptions";
+            pAttributeOptions.Size = 200;
+            pAttributeOptions.Direction = ParameterDirection.Output;
+            pAttributeOptions.DbType = DbType.String;
+
             var urlRecords = _dbContext.ExecuteStoredProcedureList<UrlRecord>(
                     "GetUrlLink",
                     pSlug,
@@ -263,7 +277,9 @@ namespace Nop.Services.Seo
                     pStreetId,
                     pWardId,
                     pDistrictId,
-                    pStateProvinceId
+                    pStateProvinceId,
+                    pPriceString,
+                    pAttributeOptions
                     );
 
             var urlRecord = urlRecords.FirstOrDefault();
@@ -274,6 +290,8 @@ namespace Nop.Services.Seo
                 wardId = (pWardId.Value != DBNull.Value) ? Convert.ToInt32(pWardId.Value) : 0;
                 districtId = (pDistrictId.Value != DBNull.Value) ? Convert.ToInt32(pDistrictId.Value) : 0;
                 stateProvinceId = (pStateProvinceId.Value != DBNull.Value) ? Convert.ToInt32(pStateProvinceId.Value) : 0;
+                priceString = pPriceString.Value.ToString();
+                specAttributeOptionIds = pAttributeOptions.Value.ToString();
             }
             return urlRecord;
         }
@@ -451,6 +469,36 @@ namespace Nop.Services.Seo
 
                 }
             }
+        }
+
+        /// <summary>
+        /// Get Slug from id elements
+        /// </summary>
+        /// <param name="domainName">Domain name: zhouse.com</param>
+        /// <param name="categoryId">Category Id</param>
+        /// <param name="stateProvinceId">Stateprovince id</param>
+        /// <param name="districtId">District id</param>
+        /// <param name="wardId">Ward id</param>
+        /// <param name="streetId">Street id</param>
+        /// <param name="priceString">Price string: 1000-1500</param>
+        /// <param name="attributeOptionIds">id specification options id:  1-2-3-4-5</param>
+        /// <returns>Link request: http://zhouse.com/nha-o-quan-1_pr-1000-15000_sa-1-2-3-4-5</returns>
+        public virtual string GetSlugFromId(string domainName, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string priceString = "", string @attributeOptionIds = "")
+        {
+            string slug = "";
+            var excute = _dbContext.ExecuteSqlCommand("execute [GetSlugFromId] @domainName, @categoryId, @stateProvinceId, @districtId, @wardId, @streetId, @priceString, @attibuteOptionIds, @slug output", false, null,
+                new SqlParameter("domainName", domainName),
+                new SqlParameter("categoryId", categoryId),
+                new SqlParameter("stateProvinceId", stateProvinceId),
+                new SqlParameter("districtId", districtId),
+                new SqlParameter("wardId", wardId),
+                new SqlParameter("streetId", streetId),
+                new SqlParameter("priceString", priceString),
+                new SqlParameter("attibuteOptionIds", attributeOptionIds),
+                new SqlParameter("slug", slug)
+                );
+
+            return slug;
         }
 
         #endregion

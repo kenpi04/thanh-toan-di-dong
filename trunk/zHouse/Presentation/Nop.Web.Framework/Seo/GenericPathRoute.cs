@@ -82,10 +82,11 @@ namespace Nop.Web.Framework.Seo
                 var urlRecordService = EngineContext.Current.Resolve<IUrlRecordService>();
                 var slug = data.Values["generic_se_name"] as string;
                 int categoryId, streetId, wardId, districtId, stateProvinceId;
+                string priceString, attributeOptionIds;
                 categoryId = streetId = wardId = districtId = stateProvinceId = 0;
                 //var urlRecord = urlRecordService.GetBySlug(slug);
                 
-                var urlRecord = urlRecordService.GetBySlug(slug, out categoryId, out streetId, out wardId, out districtId, out stateProvinceId);
+                var urlRecord = urlRecordService.GetBySlug(slug, out categoryId, out streetId, out wardId, out districtId, out stateProvinceId, out priceString, out attributeOptionIds);
                 if (urlRecord == null)
                 {
                     //no URL record found
@@ -187,12 +188,14 @@ namespace Nop.Web.Framework.Seo
                     case "search":
                         {
                             data.Values["controller"] = "Catalog";
-                            data.Values["action"] = "Category";
+                            data.Values["action"] = "Search";
                             data.Values["categoryId"] = categoryId;
                             data.Values["streetId"] = streetId;
                             data.Values["wardId"] = wardId;
                             data.Values["districtId"] = districtId;
                             data.Values["stateProvinceId"] = stateProvinceId;
+                            data.Values["priceString"] = priceString;
+                            data.Values["attributeOptionIds"] = attributeOptionIds;
                             data.Values["SeName"] = urlRecord.Slug;                            
                         }
                         break;

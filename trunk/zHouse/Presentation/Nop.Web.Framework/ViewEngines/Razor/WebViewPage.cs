@@ -54,30 +54,35 @@ namespace Nop.Web.Framework.ViewEngines.Razor
             }
         }
 
-        //public string GetSeName(string hostName, string categorySename, string streetSename, string wardSename, string districtSename, string stateProvinceSename)
-        //{
-        //    if (String.IsNullOrEmpty(categorySename)) return string.Format("http://{0}", hostName);
-        //    return string.Format("http://{0}/{1}{2}{3}{4}{5}", hostName, categorySename, "-" + streetSename, "-" + wardSename, "-" + districtSename, "-" + stateProvinceSename);
-        //}
-
+       
         public string GetSeName(string hostName, string categorySename)
         {
-            return string.Format("http://{0}/{1}", hostName, categorySename);
-            //_webHelper = EngineContext.Current.Resolve<IWebHelper>();
-            //var url = _webHelper.ServerVariables("HTTP_HOST");
+            return GetSeName(hostName, categorySename, null);//string.Format("http://{0}/{1}", hostName, categorySename);            
         }
 
         public string GetSeName(string hostName, string categorySename, string directionSeName)
         {
-            return string.Format("http://{0}/{1}{2}", hostName, categorySename, "-" + directionSeName);
-            //_webHelper = EngineContext.Current.Resolve<IWebHelper>();
-            //var url = _webHelper.ServerVariables("HTTP_HOST");
+            return GetSeName(hostName, categorySename, directionSeName, null);
+            //return string.Format("http://{0}/{1}{2}", hostName, categorySename, "-" + directionSeName);            
         }
 
         public string GetSeName(string hostName, string categorySename, string streetSename, string wardSename)
         {
+            //if (String.IsNullOrEmpty(categorySename)) return string.Format("http://{0}", hostName);
+            return GetSeName(hostName, categorySename, streetSename, wardSename, null, null);
+            //return string.Format("http://{0}/{1}{2}{3}", hostName, categorySename, String.IsNullOrEmpty(streetSename) ? "-" + streetSename : null, String.IsNullOrEmpty(wardSename) ? "-" + wardSename : "");
+        }
+
+        public string GetSeName(string hostName, string categorySename, string streetSename, string wardSename, string priceString, string attributeOptionIds)
+        {
             if (String.IsNullOrEmpty(categorySename)) return string.Format("http://{0}", hostName);
-            return string.Format("http://{0}/{1}{2}{3}", hostName, categorySename, String.IsNullOrEmpty(streetSename) ? "-" + streetSename : null, String.IsNullOrEmpty(wardSename) ? "-" + wardSename : "");
+            return string.Format("http://{0}/{1}{2}{3}{4}{5}",
+                hostName,
+                categorySename,
+                !String.IsNullOrEmpty(streetSename) ? "-" + streetSename : null,
+                !String.IsNullOrEmpty(wardSename) ? "-" + wardSename : null,
+                !String.IsNullOrEmpty(priceString) ? "_pr-" + priceString : null,
+                !String.IsNullOrEmpty(attributeOptionIds) ? "_sa-" + attributeOptionIds: null);
         }
 
         public IWorkContext WorkContext
