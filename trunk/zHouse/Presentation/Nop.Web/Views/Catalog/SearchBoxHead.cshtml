@@ -8,14 +8,30 @@
     	<div class="wrapper">
             <div class="wholeSearch">
                
-              @Html.DropDownList("DistrictId",Model.Districts,new{@class="formBoxSelect"})
-              @Html.DropDownList("PriceString",Model.PriceRange,new{@class="formBoxSelect"})
-              @Html.DropDownList("Cid",Model.AvailableCategories,new{@class="formBoxSelect"})
-              @Html.DropDownList("SelectedOptionIds",Model.BedRooms,"Số phòng ngủ",new{@class="formBoxSelect"})
-              @Html.DropDownList("SelectedOptionIds",Model.BadRooms,"Số phòng tắm",new{@class="formBoxSelect"})
+              @Html.DropDownList("districtId",Model.Districts,new{@class="formBoxSelect"})
+              @Html.DropDownList("priceString",Model.PriceRange,new{@class="formBoxSelect"})
+              @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "formBoxSelect" })
+              @Html.DropDownList("attributeOptionIds", Model.BedRooms, "Số phòng ngủ", new { @class = "formBoxSelect" })
+              @Html.DropDownList("attributeOptionIds", Model.BadRooms, "Số phòng tắm", new { @class = "formBoxSelect" })
                 <input type="submit" class="blueBtn" value="tìm kiếm">
             </div>
         </div>
     </div>
   
 }
+<script type="text/javascript">
+    $(function () {
+        $("#frmSearchHead").submit(function () {
+            var data = $(this).serialize();
+            $("select[name=attributeOptionIds]").each(function () {
+                data.attributeOptionIds += $(this).val() + ",";
+               
+            })
+            data.attributeOptionIds += 0;
+            $.get("@Url.Action("GetSlugFromId")", data, function (d) {
+                window.location.href = d;
+            })
+            return false;
+        })
+    })
+</script>

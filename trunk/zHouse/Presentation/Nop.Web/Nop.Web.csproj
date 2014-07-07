@@ -1473,6 +1473,7 @@
     <Content Include="Themes\Zhouse\Content\images\ico-pm.png" />
     <Content Include="Themes\Zhouse\Content\images\ico-rss.gif" />
     <Content Include="Themes\Zhouse\Content\images\list.png" />
+    <Content Include="Themes\Zhouse\Content\images\listIcon.png" />
     <Content Include="Themes\Zhouse\Content\images\loading.gif" />
     <Content Include="Themes\Zhouse\Content\images\lockBtn.png" />
     <Content Include="Themes\Zhouse\Content\images\lockBtnhover.png" />
@@ -1698,6 +1699,7 @@
     <Content Include="Views\Catalog\_Map.cshtml" />
     <Content Include="Themes\Zhouse\Content\uniform\css\uniform.default.scss" />
     <Content Include="Views\Catalog\BookDate.cshtml" />
+    <Content Include="Views\News\NewsCateNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
