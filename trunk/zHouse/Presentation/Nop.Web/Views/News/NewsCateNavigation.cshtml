@@ -1,0 +1,16 @@
+﻿@model IList<Nop.Core.Domain.News.CategoryNews>
+@using Nop.Services.Seo;
+
+<div class="whiteLeftCol">
+                	<div class="greyBgTitle"><a href="#">lọc theo vị trí</a></div>
+                    <div class="whiteLeftColContent">
+                    	<div class="ulStyle">
+                        	<ul>
+                            @foreach(var item in Model)
+                            { 
+                                <li><a href="@Url.RouteUrl("NewsCate", new {SeName=item.GetSeName() })">@item.Name</a></li>
+                            }
+                            </ul>
+                        </div>
+                    </div><!----whiteLeftColContent----->
+                </div>
