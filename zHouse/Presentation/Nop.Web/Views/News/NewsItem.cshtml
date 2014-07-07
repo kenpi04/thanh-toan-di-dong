@@ -9,104 +9,133 @@
     Html.AddMetaKeywordParts(Model.MetaKeywords);
 }
 <div class="page news-item-page">
-    <div class="page-title">
-        <h1>@Model.Title</h1>
-    </div>
-    <div class="page-body">
-        <div class="news-date">
-            @Model.CreatedOn.ToString("D")
-        </div>
-        @Html.Widget("newsitem_page_before_body")
-        <div class="news-body">
-            @Html.Raw(Model.Full)
-        </div>
-        @Html.Widget("newsitem_page_before_comments")
-        @if (Model.AllowComments)
-        {
-            <div class="fieldset new-comment">
-                <div class="title">
-                    <strong>@T("News.Comments.LeaveYourComment")</strong>
-                </div>
-                <div class="notifications">
-                    <div class="message-error">@Html.ValidationSummary(true)</div>
-                    @{
-            var result = TempData["nop.news.addcomment.result"] as string;
-                    }
-                    @if (!String.IsNullOrEmpty(result))
-                    {
-                        <div class="result">@result</div>
-                    }
-                </div>
-                @using (Html.BeginForm())
-                {
-                    <div class="form-fields">
-                        <div class="inputs">
-                            @Html.LabelFor(model => model.AddNewComment.CommentTitle, new {}, ":")
-                            @Html.TextBoxFor(model => model.AddNewComment.CommentTitle, new { @class = "comment-title" })
-                            @Html.ValidationMessageFor(model => model.AddNewComment.CommentTitle)
-                        </div>
-                        <div class="inputs">
-                            @Html.LabelFor(model => model.AddNewComment.CommentText, new {}, ":")
-                            @Html.TextAreaFor(model => model.AddNewComment.CommentText, new { @class = "comment-text" })
-                            @Html.ValidationMessageFor(model => model.AddNewComment.CommentText)
-                        </div>
-                        @if (Model.AddNewComment.DisplayCaptcha)
-                        {
-                            <div class="captcha-box">
-                                @Html.Raw(Html.GenerateCaptcha())
-                            </div>
-                        }
-                    </div>
-                    <div class="buttons">
-                        <input type="submit" name="add-comment" class="button-1 news-item-add-comment-button" value="@T("News.Comments.SubmitButton")" />
-                    </div>
-                }
+    
+    <div class="mainContent">
+        <div class="leftContentTwist">
+@Html.Action("NewsCatenavigation")
+
+
+
+            <div class="ad"><a href="#"><img src="images/ad.png" class="adBorder"></a></div>
+
+        </div><!---leftContentTwist----->
+
+        <div class="rightContentTwist">
+            <div class="share">
+             @Html.Action("ShareButton","Catalog")
             </div>
-                if (Model.Comments.Count > 0)
-                {
-            <div class="comment-list">
-                <div class="title">
-                    <strong>@T("News.Comments")</strong>
-                </div>
-                @foreach (var comment in Model.Comments)
-                {
-                    <div class="news-comment">
-                        <div class="comment-info">
-                            <div class="user-info">
-                                @if (comment.AllowViewingProfiles)
-                                {
-                                    <a href="@Url.RouteUrl("CustomerProfile", new { id = comment.CustomerId })" class="username">@(comment.CustomerName)</a>
-                                }
-                                else
-                                {
-                                    <span class="username">@(comment.CustomerName)</span>
-                                }
-                                <div class="avatar">
-                                    @if (!String.IsNullOrEmpty(comment.CustomerAvatarUrl))
-                                    {
-                                        <img src="@(comment.CustomerAvatarUrl)" class="avatar-img" title="avatar" alt="avatar" />
-                                    }
+            <div class="news">
+                <div class="blueTitle">@Model.Title</div>
+                <p>@Html.Raw(Model.Full)</p>
+            </div><!--news--->
+
+
+            <div class="floatLeft">
+                <div class="col1" style="margin-left:20px;"><div class="pinkNarrowTitleSmall">Bình luận</div></div>
+                <div class="col2" style="margin-left:-10px">
+                    <div class="col2Whole">
+                        <div class="col2a"><img src="images/d1.png" class="circleImg"></div>
+                        <div class="col2b">
+                            <input type="text" class="formBox"><br>
+                            <textarea rows="2" class="formBox" style="width: 508px"></textarea><br>
+                            <input type="button" class="blueBtn" value="bình luận" style="float:right">
+                        </div>
+                    </div><!--col2Whole--->
+
+                    <div class="col2Whole">
+                        <div class="col2a"><img src="images/d2.png" class="circleImg"></div>
+                        <div class="col2b">
+                            <b>Pokemon</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
+                            <br>
+                            Donec ac est dictum, laoreet lectus vel, iaculis magna. Duis enim quam, sagittis et lobortis sit amet, lobortis quis odio. Mauris urna ligula.
+                            <div class="actionBottom">
+                                <div class="blueLinkSmall"><a href="#">...xem thêm</a></div>
+                                <div style="float:right">
+                                    <div class="blueLinkSmall"><a href="#">Trả lời</a></div>
+                                    <a class="blueDot">•</a>
+                                    <div class="blueLinkSmall"><a href="#">Thích </a></div>
+                                    <a class="blueDot">•</a>
+                                    <a class="greyText">2 giờ trước</a>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="comment-content">
-                            <div class="comment-time">
-                                <label>@T("News.Comments.CreatedOn"):</label>
-                                <span class="stat-value">@comment.CreatedOn.ToString("g")</span>
-                            </div>
-                            <div class="comment-title">
-                                <strong class="comment-text">@comment.CommentTitle</strong>
-                            </div>
-                            <div class="comment-body">
-                                <p class="comment-text">@Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(comment.CommentText, false, true, false, false, false, false))</p>
-                            </div>
-                        </div>
-                        @Html.Widget("newsitem_page_inside_comment")
-                    </div>
-                }
-            </div>
-                }
-        }
-        @Html.Widget("newsitem_page_after_comments")
+                            </div><!---actionBottom--->
+                        </div><!---col2b--->
+                    </div><!--col2Whole--->
+
+                    <div class="col2Whole">
+                        <div class="col2a"><img src="images/d3.png" class="circleImg"></div>
+                        <div class="col2b">
+                            <b>Kame</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
+                            <br>
+                            Donec ac est dictum, laoreet lectus vel, iaculis magna. Duis enim quam, sagittis et lobortis sit amet, lobortis quis odio. Mauris urna ligula.
+                            <div class="actionBottom">
+                                <div class="blueLinkSmall"><a href="#">...xem thêm</a></div>
+                                <div style="float:right">
+                                    <div class="blueLinkSmall"><a href="#">Trả lời</a></div>
+                                    <a class="blueDot">•</a>
+                                    <div class="blueLinkSmall"><a href="#">Thích </a></div>
+                                    <a class="blueDot">•</a>
+                                    <a class="greyText">2 giờ trước</a>
+                                </div>
+                            </div><!---actionBottom--->
+
+                            <div class="floatLeft">
+                                <div class="replyBg">
+                                    <div class="nhonReply"></div>
+                                    <div class="col2WholeInside">
+                                        <div class="col2aInside"><img src="images/d1.png" class="circleImg"></div>
+                                        <div class="col2bInside">
+                                            <b>Kame</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
+                                            <br>
+                                            Donec ac est dictum, laoreet lectus vel, iaculis magna. Duis enim quam, sagittis et lobortis sit amet, lobortis quis odio. Mauris urna ligula.
+                                            <div class="actionBottom">
+                                                <div class="blueLinkSmall"><a href="#">...xem thêm</a></div>
+                                                <div style="float:right">
+                                                    <div class="blueLinkSmall"><a href="#">Trả lời</a></div>
+                                                    <a class="blueDot">•</a>
+                                                    <div class="blueLinkSmall"><a href="#">Thích </a></div>
+                                                    <a class="blueDot">•</a>
+                                                    <a class="greyText">2 giờ trước</a>
+                                                </div>
+                                            </div><!---actionBottom--->
+                                        </div><!---col2bInside--->
+                                    </div><!---col2WholeInside-->
+                                </div><!---replyBg---->
+
+                                <div class="replyBg">
+                                    <div class="col2WholeInside">
+                                        <div class="col2aInside"><img src="images/d2.png" class="circleImg"></div>
+                                        <div class="col2bInside">
+                                            <b>Kame</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
+                                            <br>
+                                            Donec ac est dictum, laoreet lectus vel, iaculis magna. Duis enim quam, sagittis et lobortis sit amet, lobortis quis odio. Mauris urna ligula.
+                                            <div class="actionBottom">
+                                                <div class="blueLinkSmall"><a href="#">...xem thêm</a></div>
+                                                <div style="float:right">
+                                                    <div class="blueLinkSmall"><a href="#">Trả lời</a></div>
+                                                    <a class="blueDot">•</a>
+                                                    <div class="blueLinkSmall"><a href="#">Thích </a></div>
+                                                    <a class="blueDot">•</a>
+                                                    <a class="greyText">2 giờ trước</a>
+                                                </div>
+                                            </div><!---actionBottom--->
+                                        </div><!---col2bInside--->
+                                    </div><!---col2WholeInside-->
+                                </div><!---replyBg---->
+
+                                <input type="button" class="blueBtn" value="xem tất cả" style="float:right">
+
+                            </div><!---floatLeft--->
+
+                        </div><!---col2b--->
+                    </div><!--col2Whole--->
+
+                </div><!---col2--->
+            </div><!--floatLeft----->
+
+
+        </div><!----rightContentTwist------->
+
+
+
     </div>
 </div>
