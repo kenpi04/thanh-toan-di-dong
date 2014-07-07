@@ -3970,6 +3970,7 @@ a.eu-cookie-privacyinfo-tag {
 }
 
     .search-page .page-title {
+		margin-top: 6px;
     }
 
 .search-input {
@@ -6300,9 +6301,13 @@ ul {
 }
 
 .top {
-    width: 100%;
-    height: 50px;
-    background: #fff;
+
+width: 100%;
+height: 50px;
+background: #FFF;
+position: fixed;
+z-index: 1000;
+margin-top: -2px;
 }
 
 .wrapper {
@@ -6372,7 +6377,7 @@ ul {
 
 .topInfo {
     position: absolute;
-    top: 100px;
+    top: 200px;
     margin-left: 14%;
     z-index: 100;
 }
@@ -6484,7 +6489,7 @@ ul {
     background: url(images/pinkTag.png) no-repeat;
     width: 106px;
     height: 36px;
-    padding-top: 4px;
+    padding-top: 7px;
     position: absolute;
     right: -10px;
     top: 190px;
@@ -6803,7 +6808,7 @@ have a fixed width and height (but it's not required).
 
 #slider {
     background: url("images/loading.gif") no-repeat scroll 50% 50% transparent;
-    height: 400px;
+    height: 665px;
     position: relative;
     width: 100%;
     margin-left: 3px;
@@ -6879,7 +6884,7 @@ have a fixed width and height (but it's not required).
 /*----trang2--------*/
 .top2 {
     width: 100%;
-    height: 50px;
+    height: 45px;
     background: #fff;
     border-top: 1px solid #c2c2c2;
     border-bottom: 1px solid #c2c2c2;
@@ -7079,9 +7084,10 @@ have a fixed width and height (but it's not required).
     .detailTable td {
         background: #fff;
         border: 1px solid #c2c2c2;
-        padding: 6px 10px;
-        font-size: 12px;
+        padding: 7px 10px;
+        font-size: 13px;
         line-height: 20px;
+		font-weight: bold;
     }
 
 .greyBgTD {
@@ -7411,3 +7417,31 @@ have a fixed width and height (but it's not required).
 .createproduct-page{background:#fff;padding:14px}
 .createproduct-page h1{font-size:30px;font-weight:bold}
 .createproduct-page .text-i{line-height:30px}
+.detailTable .greyBgTD { font-weight: normal; }
+.zhouse { font-size: 50px; color: #ffffff; text-align: center; text-shadow:0 0 10px rgba(0, 0, 0, 1); }
+.slogan { font-size: 25px; color: #ffffff; text-align: center; margin-bottom: 20px;text-shadow:0 0 10px rgba(0, 0, 0, 1);}
+/*-------news------------------*/
+.ulStyle {
+	margin-left: -20px;
+}
+.ulStyle li {
+	list-style-image: url(images/listIcon.png);
+	padding-top: 5px;
+}
+.ulStyle li a {
+	text-decoration: none;
+	color: #555;
+}
+.ulStyle li a:hover {
+	color: #000;
+}
+.news {
+	float: left;
+	width: 680px;
+	margin: 10px 0 0 20px;
+	font-size: 13px;
+	text-align: justify;
+}
+.newsImgBorder{
+	border: 3px solid #d3d3d3;
+}
