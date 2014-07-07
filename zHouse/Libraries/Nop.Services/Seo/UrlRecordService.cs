@@ -486,6 +486,9 @@ namespace Nop.Services.Seo
         public virtual string GetSlugFromId(string domainName, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string priceString = "", string @attributeOptionIds = "")
         {
             string slug = "";
+            SqlParameter pSlug = new SqlParameter("slug", SqlDbType.NVarChar, 1000);
+            pSlug.Direction = ParameterDirection.Output;
+
             var excute = _dbContext.ExecuteSqlCommand("execute [GetSlugFromId] @domainName, @categoryId, @stateProvinceId, @districtId, @wardId, @streetId, @priceString, @attibuteOptionIds, @slug output", false, null,
                 new SqlParameter("domainName", domainName),
                 new SqlParameter("categoryId", categoryId),
@@ -495,10 +498,10 @@ namespace Nop.Services.Seo
                 new SqlParameter("streetId", streetId),
                 new SqlParameter("priceString", priceString),
                 new SqlParameter("attibuteOptionIds", attributeOptionIds),
-                new SqlParameter("slug", slug)
+                pSlug
                 );
 
-            return slug;
+            return slug = pSlug.Value == DBNull.Value ? "" : pSlug.Value.ToString();
         }
 
         #endregion
