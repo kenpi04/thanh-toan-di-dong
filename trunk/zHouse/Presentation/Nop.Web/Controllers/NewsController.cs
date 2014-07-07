@@ -167,7 +167,13 @@ namespace Nop.Web.Controllers
         #endregion
 
         #region Methods
+        public ActionResult NewsCateNavigation()
+        {
+            var model = new CategoryNewsListModel();
 
+            model.CategoryNews = _cateNewsService.GetAllCategoriesByParentCategoryId(0).ToList();
+            return View(model);
+        }
         public ActionResult HomePageNews()
         {
             if (!_newsSettings.Enabled || !_newsSettings.ShowNewsOnMainPage)

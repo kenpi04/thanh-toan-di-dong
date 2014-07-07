@@ -3220,7 +3220,7 @@ namespace Nop.Web.Controllers
         }
 
         [HttpGet]
-        public string GetSlugFromId(string domainName, int categoryId, int stateProvinceId, int districtId, int wardId, int streetId, string priceString, string attributeOptionIds)
+        public string GetSlugFromId(string domainName,string priceString, string attributeOptionIds, int categoryId=0, int stateProvinceId=0, int districtId=0, int wardId=0, int streetId=0)
         {
             var slug = _urlRecordService.GetSlugFromId(domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds);
             return slug;
