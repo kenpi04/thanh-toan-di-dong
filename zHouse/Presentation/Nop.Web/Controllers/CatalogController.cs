@@ -3219,6 +3219,11 @@ namespace Nop.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetSlugFromId(string domainName, int categoryId, int stateProvinceId, int districtId, int wardId, int streetId, string priceString, string attributeOptionIds)
+        {
+            var slug = _urlRecordService.GetSlugFromId(domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds);
+            return Json(slug, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region Insert/Update Product
