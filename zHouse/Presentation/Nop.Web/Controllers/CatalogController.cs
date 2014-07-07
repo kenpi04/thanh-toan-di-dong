@@ -3068,6 +3068,7 @@ namespace Nop.Web.Controllers
             IPagedList<Product> products = new PagedList<Product>(new List<Product>(), 0, 1);            // only search if query string search keyword is set (used to avoid searching or displaying search term min length error message on /search page load)
 
             var categoryIds = new List<int>();
+            var selectedOptionIds = new List<int>();
             int manufacturerId = 0;
             decimal? minPriceConverted = null;
             decimal? maxPriceConverted = null;
@@ -3088,7 +3089,7 @@ namespace Nop.Web.Controllers
 
 
                 manufacturerId = model.Mid;
-
+               
                 //min price
                 if (!string.IsNullOrEmpty(model.Pf))
                 {
@@ -3103,8 +3104,30 @@ namespace Nop.Web.Controllers
                     if (decimal.TryParse(model.Pt, out maxPrice))
                         maxPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(maxPrice, _workContext.WorkingCurrency);
                 }
-
+                
                 searchInDescriptions = model.Sid;
+                                
+               
+            }else
+            {
+                if (!String.IsNullOrEmpty(priceString))
+                {
+                    var p = priceString.Split('-');                   
+                    decimal minPrice = decimal.Zero;
+                    if (decimal.TryParse(p[0].ToString(), out minPrice))
+                        minPriceConverted = minPrice;
+                    decimal maxPrice = decimal.Zero;
+                    if (decimal.TryParse(p[1].ToString(), out maxPrice))
+                        maxPriceConverted = maxPrice;
+                }
+                if (!String.IsNullOrEmpty(attributeOptionIds))
+                {
+                    var options = attributeOptionIds.Split('-');
+                    foreach (var option in options)
+                    {
+                        selectedOptionIds.Add(Int32.Parse(option));
+                    }
+                }
             }
 
             //var searchInProductTags = false;
@@ -3124,7 +3147,12 @@ namespace Nop.Web.Controllers
                 searchProductTags: searchInProductTags,
                 languageId: _workContext.WorkingLanguage.Id,
                 pageIndex: command.PageNumber - 1,
-                pageSize: command.PageSize);
+                pageSize: command.PageSize,
+                filteredSpecs: selectedOptionIds,
+                stateProvinceId: stateProvinceId,
+                dictrictIds: new List<int> { districtId },
+                wardId: wardId,
+                streetId: streetId);
             model.Products = PrepareProductOverviewModels(products).ToList();
 
             model.NoResults = !model.Products.Any();
