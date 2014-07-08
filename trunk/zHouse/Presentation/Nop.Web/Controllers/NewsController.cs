@@ -126,7 +126,7 @@ namespace Nop.Web.Controllers
                     var picture = _pictureService.GetPictureById((int)newsItem.PictureId);
                     var pictureModel = new PictureModel()
                     {
-                        ImageUrl = _pictureService.GetPictureUrl(picture, 150),
+                        ImageUrl = _pictureService.GetPictureUrl(picture, 220,true),
                         FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
                         Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat"), newsItem.Title),
                         AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), model.Title)
@@ -250,7 +250,7 @@ namespace Nop.Web.Controllers
                 .Select(x =>
                 {
                     var newsModel = new NewsItemModel();
-                    PrepareNewsItemModel(newsModel, x, false);
+                    PrepareNewsItemModel(newsModel, x, true);
                     return newsModel;
                 })
                 .ToList();
