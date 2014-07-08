@@ -1,4 +1,5 @@
 ﻿/* RESET STYLESHEET (html5doctor.com) v1.6.1 */
+/* RESET STYLESHEET (html5doctor.com) v1.6.1 */
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
     margin: 0;
     padding: 0;
@@ -461,16 +462,22 @@ ul.language-list {
 
 .menu li .sublist {
     position: absolute;
-    background-color: #fff;
-    border: 1px solid #696969;
-    margin-left: -36px;
-    margin-top: 19px;
-    z-index: 1000;
-    display: none;
-    white-space: nowrap;
-    width: 600px;
+background-color: #fff;
+border: 1px solid #c2c2c2;
+padding: 10px;
+margin-left: -36px;
+margin-top: 10px;
+z-index: 1000;
+display: none;
+white-space: nowrap;
+width: 600px;
+border-top: none;
 }
+.menu li .sublist li.title{
 
+    font-size:14px;
+    font-weight:bold
+}
     .menu li .sublist.active {
         display: block;
     }
@@ -491,10 +498,11 @@ ul.language-list {
     color: #373737;
     font-weight: normal;
     font-size: 12px;
+      border:0px !important
 }
 
 .menu .sublist ul {
-    width: 300px;
+    width: 100%;
     float: left;
 }
 
@@ -504,8 +512,9 @@ ul.language-list {
     text-align: left;
     float: none;
     padding: 0;
-    width: 100px;
+    width: 80px;
     float: left;
+  
 }
 
     .menu .sublist li:hover {
@@ -6308,6 +6317,7 @@ background: #FFF;
 position: fixed;
 z-index: 1000;
 margin-top: -2px;
+border-bottom: 1px solid #c2c2c2;
 }
 
 .wrapper {
@@ -6337,20 +6347,25 @@ margin-top: -2px;
     }
 
     .menu li {
-        display: inline;
-        float: left;
-        padding: 5px 20px;
-       border-right:1px #c2c2c2 solid
+       display: inline;
+float: left;
+padding: 6px 13px;
+height: 27px;
     }
     .menu li:last-child,.sublist li{
         border:none
     }
 
         .menu li a {
-            text-decoration: none;
-            color: #000;
-            font-size: 14px;
-            font-weight: bold;
+           text-decoration: none;
+color: #666;
+font-size: 14px;
+font-weight: normal;
+text-transform: uppercase;
+display: block;
+border-right: solid 1px #ddd;
+padding: 2px 4px;
+width: 100%;
         }
 
             .menu li a:hover {
@@ -6378,7 +6393,7 @@ margin-top: -2px;
 .topInfo {
     position: absolute;
     top: 200px;
-    margin-left: 14%;
+    margin-left: 8%;
     z-index: 100;
 }
 
@@ -6467,7 +6482,7 @@ margin-top: -2px;
 .introCol .info-picture{
     min-height:220px
 }
-.new {
+<!--new {
     position: absolute;
     top: 0;
     right: -5px;
@@ -6531,7 +6546,7 @@ margin-top: -2px;
 .whiteBg {
     background: #fff;
     border: 0px solid #c2c2c2;
-    padding: 5px 10px 10px 10px;
+    padding: 5px 10px 5px 10px;
     color: #2d9fd8;
     font-size: 13px;
     font-weight: bold;
@@ -6543,12 +6558,12 @@ margin-top: -2px;
     background: #fff;
     border: 1px solid #c2c2c2;
     width: 270px;
-    padding: 20px 20px 20px 10px;
+    padding: 20px 20px 20px 0px;
     font-size: 12px;
     float: left;
     position: relative;
     margin-bottom: 10px;
-    height: 130px;
+    height: 140px;
 }
 
     .whiteBgBig li {
@@ -6561,7 +6576,7 @@ margin-top: -2px;
         .whiteBgBig li a {
             color: #666666;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 13px;
         }
 
             .whiteBgBig li a:hover {
@@ -6814,6 +6829,8 @@ have a fixed width and height (but it's not required).
     margin-left: 3px;
     margin-top: 2px;
     margin-bottom:10px;
+	margin-left:auto;
+	margin-right: auto;
 }
 
 .nivo-slice {
@@ -6904,8 +6921,13 @@ have a fixed width and height (but it's not required).
 
 .wholeSearch {
     float: left;
-    width: 100%;
-    margin-top: 4px;
+    width: 935px;
+    margin-top: 47px;
+	padding: 5px;
+	border: 1px solid #c2c2c2; 
+	border-top: 0px;
+	
+	background: #ffffff;
 }
 
 .formBoxSelect {
@@ -7337,8 +7359,9 @@ have a fixed width and height (but it's not required).
 }
 
 .whiteBgCata {
-    padding: 5px 10px;
-    font-size: 12px;
+    padding: 7px 10px;
+    font-size: 13px;
+	color:#666666;
     border-top: 1px #ddd dashed;
     float:left;
     width:200px;
@@ -7418,11 +7441,12 @@ have a fixed width and height (but it's not required).
 .createproduct-page h1{font-size:30px;font-weight:bold}
 .createproduct-page .text-i{line-height:30px}
 .detailTable .greyBgTD { font-weight: normal; }
-.zhouse { font-size: 50px; color: #ffffff; text-align: center; text-shadow:0 0 10px rgba(0, 0, 0, 1); }
-.slogan { font-size: 25px; color: #ffffff; text-align: center; margin-bottom: 20px;text-shadow:0 0 10px rgba(0, 0, 0, 1);}
-/*-------news------------------*/
+.zhouse { font-size: 50px; color: #ffffff; text-align: left; text-shadow:0 0 10px rgba(0, 0, 0, 1); font-family: "Myriad Pro",Arial,Helvetica,sans-serif; }
+.slogan { font-size: 25px; color: #ffffff; text-align: left; margin-bottom: 20px;text-shadow:0 0 10px rgba(0, 0, 0, 1); font-family: "Myriad Pro",Arial,Helvetica,sans-serif;}
+.gioithieu { color: #ffffff; font-size: 14px; padding-top: 10px; text-align: center; }
+
 .ulStyle {
-	margin-left: -20px;
+
 }
 .ulStyle li {
 	list-style-image: url(images/listIcon.png);
@@ -7445,3 +7469,9 @@ have a fixed width and height (but it's not required).
 .newsImgBorder{
 	border: 3px solid #d3d3d3;
 }
+.menu-col{width:200px;float:left;padding: 0 10px;
+border-right: dashed 1px #ddd;}
+.menu-col:last-child{border:none}
+.menu-col .title{font-weight:bold}
+.service{left:236px !important}
+.kienthuc{left:327px  !important}
