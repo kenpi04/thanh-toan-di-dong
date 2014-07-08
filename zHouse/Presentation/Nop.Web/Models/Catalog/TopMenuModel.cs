@@ -18,6 +18,7 @@ namespace Nop.Web.Models.Catalog
             PriceRange.Add(new SelectListItem { Value = "1500-3000", Text = "1.5 tỷ ~ 3 tỷ" });
             PriceRange.Add(new SelectListItem { Value = "3000-0", Text = "Trên 3 tỷ" });
             CategoriesNews = new List<SelectListItem>();
+            Topics = new List<SelectListItem>();
         }
 
         public IList<CategorySimpleModel> Categories { get; set; }
@@ -29,5 +30,6 @@ namespace Nop.Web.Models.Catalog
         public bool ForumEnabled { get; set; }
         public List<SelectListItem> PriceRange { get; set; }
         public List<SelectListItem> CategoriesNews { get; set; }
+        public List<SelectListItem> Topics { get; set; }
     }
 }
