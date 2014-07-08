@@ -1,7 +1,7 @@
 ﻿@model NewsItemModel
 @using Nop.Web.Models.News;
 @{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
     //title
     Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title);
@@ -16,7 +16,7 @@
 
 
 
-            <div class="ad"><a href="#"><img src="images/ad.png" class="adBorder"></a></div>
+            <div class="ad"><a href="#"><img src="@Url.Content("~/Themes/Zhouse/Content/images/ad.png")" class="adBorder"></a></div>
 
         </div><!---leftContentTwist----->
 
@@ -34,7 +34,7 @@
                 <div class="col1" style="margin-left:20px;"><div class="pinkNarrowTitleSmall">Bình luận</div></div>
                 <div class="col2" style="margin-left:-10px">
                     <div class="col2Whole">
-                        <div class="col2a"><img src="images/d1.png" class="circleImg"></div>
+                        <div class="col2a"><img src="@Url.Content("~/Themes/Zhouse/Content/images/d2.png")" class="circleImg"></div>
                         <div class="col2b">
                             <input type="text" class="formBox"><br>
                             <textarea rows="2" class="formBox" style="width: 508px"></textarea><br>
@@ -43,7 +43,7 @@
                     </div><!--col2Whole--->
 
                     <div class="col2Whole">
-                        <div class="col2a"><img src="images/d2.png" class="circleImg"></div>
+                        <div class="col2a"><img src="@Url.Content("~/Themes/Zhouse/Content/images/d2.png")" class="circleImg"></div>
                         <div class="col2b">
                             <b>Pokemon</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
                             <br>
@@ -62,7 +62,7 @@
                     </div><!--col2Whole--->
 
                     <div class="col2Whole">
-                        <div class="col2a"><img src="images/d3.png" class="circleImg"></div>
+                        <div class="col2a"><img src="@Url.Content("~/Themes/Zhouse/Content/images/d2.png")" class="circleImg"></div>
                         <div class="col2b">
                             <b>Kame</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
                             <br>
@@ -82,7 +82,7 @@
                                 <div class="replyBg">
                                     <div class="nhonReply"></div>
                                     <div class="col2WholeInside">
-                                        <div class="col2aInside"><img src="images/d1.png" class="circleImg"></div>
+                                        <div class="col2aInside"><img src="@Url.Content("~/Themes/Zhouse/Content/images/d2.png")" class="circleImg"></div>
                                         <div class="col2bInside">
                                             <b>Kame</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
                                             <br>
@@ -103,7 +103,7 @@
 
                                 <div class="replyBg">
                                     <div class="col2WholeInside">
-                                        <div class="col2aInside"><img src="images/d2.png" class="circleImg"></div>
+                                        <div class="col2aInside"><img src="@Url.Content("~/Themes/Zhouse/Content/images/d2.png")" class="circleImg"></div>
                                         <div class="col2bInside">
                                             <b>Kame</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
                                             <br>

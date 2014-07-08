@@ -5,5 +5,10 @@
                       <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
                                     <img alt="@Model.DefaultPictureModel.AlternateText"  src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
                                 </a>
-                    <div class="whiteBgRight">@Model.Name</div>
+                    <div class="whiteBgRight">@Model.Name
+     <br />
+                        <div class="whiteBgCata">
+                            @Model.DictrictName | @Model.CateName | @Model.Area.ToString("#") m2 | @Model.NumBedRoom | @Model.NumBadRoom | Hướng @Model.Directors
+                        </div>
+     </div>
                 </div><!----introColRight---->

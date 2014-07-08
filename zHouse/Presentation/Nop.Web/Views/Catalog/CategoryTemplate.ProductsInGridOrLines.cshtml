@@ -53,7 +53,7 @@
             @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct", LoadingElementId = "ajax-loading", OnSuccess = "searchSuccess" }, new { id = "frmSearchLeft" }))
             {
 
-                @Html.Action("SearchBoxLeft", new { isProject = Model.IsProject })
+                @Html.Action("SearchBoxLeft", new { isProject =Model.Id==2})
 
                 <script>
                     $("#frmSearchLeft input[type=checkbox]").click(function () {

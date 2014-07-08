@@ -11,8 +11,8 @@
               @Html.DropDownList("districtId",Model.Districts,new{@class="formBoxSelect"})
               @Html.DropDownList("priceString",Model.PriceRange,new{@class="formBoxSelect"})
               @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "formBoxSelect" })
-              @Html.DropDownList("attributeOptionIds", Model.BedRooms, "Số phòng ngủ", new { @class = "formBoxSelect" })
-              @Html.DropDownList("attributeOptionIds", Model.BadRooms, "Số phòng tắm", new { @class = "formBoxSelect" })
+              @Html.DropDownList("attributeOptionIds", Model.BedRooms, "Số phòng ngủ", new { @class = "formBoxSelect",id="ddlBed" })
+              @Html.DropDownList("attributeOptionIds", Model.BadRooms, "Số phòng tắm", new { @class = "formBoxSelect",id="ddlBath" })
                 <input type="submit" class="blueBtn" value="tìm kiếm">
             </div>
         </div>
@@ -22,12 +22,14 @@
 <script type="text/javascript">
     $(function () {
         $("#frmSearchHead").submit(function () {
-            var data = $(this).serialize();
-            $("select[name=attributeOptionIds]").each(function () {
-                data.attributeOptionIds += $(this).val() + ",";
-               
-            })
-            data.attributeOptionIds += 0;
+            var data = {
+                districtId:$("#districtId").val(),
+                priceString:$("#priceString").val(),
+                categoryId:$("#categoryId").val(),
+                attributeOptionIds: $("#ddlBath").val()+"-"+$("#ddlBed").val()
+            };
+          
+         
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {
                 window.location.href = d;
             })
