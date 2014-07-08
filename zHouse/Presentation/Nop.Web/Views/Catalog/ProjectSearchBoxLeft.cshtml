@@ -21,4 +21,13 @@
 
     </div>
 </div>      
-  
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#">Lọc theo loại</a></div>
+    <div class="whiteLeftColContent">
+        @foreach (var i in Model.AvailableCategories)
+        {
+            <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+        }
+
+    </div>
+</div>  
