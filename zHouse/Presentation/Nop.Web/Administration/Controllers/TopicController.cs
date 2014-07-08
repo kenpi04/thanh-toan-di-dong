@@ -9,6 +9,7 @@ using Nop.Services.Stores;
 using Nop.Services.Topics;
 using Nop.Web.Framework.Controllers;
 using Telerik.Web.Mvc;
+using Nop.Web.Framework;
 
 namespace Nop.Admin.Controllers
 {
@@ -207,6 +208,7 @@ namespace Nop.Admin.Controllers
                 }
 
                 var topic = model.ToEntity();
+                model.SystemName = model.Title.RemoveSign4VietnameseString();
                 _topicService.InsertTopic(topic);
                 //Stores
                 SaveStoreMappings(topic, model);
@@ -235,6 +237,7 @@ namespace Nop.Admin.Controllers
                 return RedirectToAction("List");
 
             var model = topic.ToModel();
+
             model.Url = Url.RouteUrl("Topic", new { SystemName = topic.SystemName }, "http");
             //Store
             PrepareStoresMappingModel(model, topic, false);
@@ -272,6 +275,8 @@ namespace Nop.Admin.Controllers
             if (ModelState.IsValid)
             {
                 topic = model.ToEntity(topic);
+                if (string.IsNullOrWhiteSpace(model.SystemName))
+                model.SystemName = model.Title.RemoveSign4VietnameseString();
                 _topicService.UpdateTopic(topic);
                 //Stores
                 SaveStoreMappings(topic, model);
