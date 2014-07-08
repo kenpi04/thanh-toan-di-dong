@@ -30,6 +30,16 @@
                            <table>
                         <tbody>
                             <tr>
+                                <td class="greyBgTD">Tình trạng</td>
+                                <td>@Model.Status</td>
+
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Pháp lý</td>
+                                <td>@Model.PhapLy</td>
+
+                            </tr>
+                            <tr>
                                 <td class="greyBgTD">Khu vực</td>
                                 <td>@(Model.DistrictName??"-")</td>
                                
@@ -64,16 +74,7 @@
                                 <td>@(Model.AreaUse>0 ? Model.AreaUse.ToString("#") +"m2": "-") </td>
                             </tr>
                          
-                            <tr>
-                                <td class="greyBgTD">Tình trạng</td>
-                                <td>@Model.Status</td>
-
-                            </tr>
-                            <tr>
-                                <td class="greyBgTD">Pháp lý</td>
-                                <td>@Model.PhapLy</td>
-
-                            </tr>
+                          
                             <tr>
                                 <td class="greyBgTD">Tiện nghi</td>
                                 <td>Nhà trống</td>

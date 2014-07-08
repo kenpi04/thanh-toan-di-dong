@@ -1,6 +1,8 @@
 ﻿@model Nop.Web.Models.Catalog.SearchModel
 
-
+@{
+    Model.PriceRange.RemoveAt(0);
+}
 <div class="whiteLeftCol">
     <div class="greyBgTitle"><a href="#">lọc theo vị trí</a></div>
     <div class="whiteLeftColContent">
@@ -14,7 +16,11 @@
 <div class="whiteLeftCol">
     <div class="greyBgTitle"><a href="#">Lọc theo giá</a></div>
     <div class="whiteLeftColContent">
-        @Html.DropDownListFor(x => x.PriceString, Model.PriceRange)
+    
+        @foreach (var i in Model.PriceRange)
+        {
+            <input type="radio" id="ckDist_@i.Value" name="PriceString" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+        }
               
     </div>
 </div>

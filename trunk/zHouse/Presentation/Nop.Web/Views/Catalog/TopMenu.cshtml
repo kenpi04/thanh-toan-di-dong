@@ -1,7 +1,8 @@
 ﻿@model TopMenuModel
 @using Nop.Web.Models.Catalog;
 @{
-    var isRtl = this.ShouldUseRtlTheme();    
+    var isRtl = this.ShouldUseRtlTheme();
+    Model.PriceRange.RemoveAt(0);
 }
 @helper RenderCategoryLine(CategorySimpleModel category, int level)
 {
@@ -21,40 +22,40 @@
             
             }
              <div class="sublist">
-                 <div class="menu-title">
-                     <span>Theo địa điểm</span>
-@if(category.SubCategories.Count>0)
-                {
-                     <span>Theo loại</span>
-}
-                     <span>Giá</span>
+                 <div class="menu-col">
+                     <span class="title">Theo địa điểm</span>
+                     <ul>
+
+                         @foreach(var d in Model.Districts)
+                    {
+                             <li><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>
+                    }
+                     </ul>
                  </div>
-                <ul>
-  
-                    @foreach(var d in Model.Districts)
-                    {
-                        <li><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>
-                    }
-                </ul>
-                @if(category.SubCategories.Count>0)
-                { 
-                <ul>
-                    <li></li>
-                    @foreach (var subCategory in  category.SubCategories)
-                    {
-                        <li><a href="@Url.RouteUrl("Category", new {SeName=subCategory.SeName })">@subCategory.Name</a></li>
-                    }
-                  
-                </ul>
+
+                @if (category.SubCategories.Count > 0)
+                { <div class="menu-col" style="width:176px">
+                    <span class="title">Theo loại</span>
+                    <ul>
+
+                        @foreach (var subCategory in category.SubCategories)
+                        {
+                            <li><a href="@Url.RouteUrl("Category", new {SeName=subCategory.SeName })">@subCategory.Name</a></li>
+                        }
+
+                    </ul>
+                </div>
                 }
-                
-                <ul>
-                   
-                    @foreach (var d in Model.PriceRange)
-                    {
-                        <li><a href="@GetSeName(Request.Url.Host, category.SeName, null, null, d.Value, null)">@d.Text</a></li>
-                    }
-                </ul>
+                 <div class="menu-col" style="width:100px">
+                     <span class="title">Theo giá</span>
+                     <ul>
+
+                         @foreach (var d in Model.PriceRange)
+                         {
+                             <li><a href="@GetSeName(Request.Url.Host, category.SeName, null, null, d.Value, null)">@d.Text</a></li>
+                         }
+                     </ul>
+                 </div>
             </div>
             
         }
@@ -96,13 +97,14 @@
 
     <li><a href="#">Dịch vụ</a>
          <div class="top-menu-triangle"></div>
-        <div class="sublist service">
+        <div class="sublist service" not-resize="" style="width:200px;left:236px">
             <ul>
-                <li><a href="#">Tư vấn mua bán Nhà Đất</a></li>
-                 <li><a href="#">Hổ trợ pháp lý</a></li>
-                 <li><a href="#">Quảng cáo nhà đất</a></li>
-                 <li><a href="#">Hổ trợ vay vốn ngân hàng</a></li>
-                 <li><a href="#">Tư vấn đầu tư</a></li>
+                @foreach(var i in Model.Topics)
+                {
+                     <li><a title="@i.Value" href="~/t/@i.Value">@i.Text</a></li>
+                }
+               
+                
 
             </ul>
         </div>
@@ -110,14 +112,14 @@
 
     <li><a>Kiến thức</a>
           <div class="top-menu-triangle"></div>
-        <div class="sublist kienthuc">
+        <div class="sublist kienthuc" not-resize="" style="width:200px">
             <ul>
                 @foreach (var c in Model.CategoriesNews)
-                { 
-                    <li><a href="@Url.RouteUrl("NewsArchive", new {SeName=c.Value })">@c.Text</a></li>
+                {
+                    <li><a href="@Url.RouteUrl("CateNews", new { SeName = c.Value })">@c.Text</a></li>
                 }
-              </ul>
-            </div>
+            </ul>
+        </div>
 
     </li>
 
@@ -140,7 +142,7 @@
 <script type="text/javascript">
     $('#top-menu li[class!=verLine]').on('mouseenter', function () {
         $('a', $(this)).first().addClass('hover');
-        if (!$(this).parent().hasClass('top-menu')) {
+        if (!$('.sublist', $(this)).first().attr("not-resize") && !$(this).parent().hasClass('top-menu')) {
             var width = $(this).innerWidth();
             $('.sublist', $(this)).first().css('@(isRtl ? "right" : "left")', width -45);
         }

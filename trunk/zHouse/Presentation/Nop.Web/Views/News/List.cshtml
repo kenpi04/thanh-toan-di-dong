@@ -2,7 +2,7 @@
 @using Nop.Web.Extensions;
 @using Nop.Web.Models.News;
 @{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
     //title
     Html.AddTitleParts(T("PageTitle.NewsArchive").Text);
@@ -15,23 +15,24 @@
 
 
 
-            <div class="ad"><a href="#"><img src="@Url.Content("~/Themes/Zhouse/Content/images/ad.png") class="adBorder"></a></div>
+            <div class="ad"><a href="#"><img src="@Url.Content("~/Themes/Zhouse/Content/images/ad.png")" class="adBorder"></a></div>
 
-        </div><!
-
+        </div>  
         <div class="rightContentTwist">
             
             @foreach(var item in Model.NewsItems)
             { 
-            <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@item.DefaultPictureModel.Title">
+            <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@item.Title">
             <div class="introCol">
                 <div class="info-picture">              
                     <div class="nhon"></div>
-                 
+                @if(item.DefaultPictureModel!=null)
+                {
                     <img alt="@item.DefaultPictureModel.AlternateText" src="@item.DefaultPictureModel.ImageUrl" title="@item.DefaultPictureModel.Title" />
+                }
                 </div>
                 <div class="whiteBg">@item.Title</div>
-                <div class="whiteBgCata">@item.Short.TrimString(100)</div>
+                <div class="whiteBgCata">@item.Short.TrimString(50)</div>
 
             </div>
         </a>
