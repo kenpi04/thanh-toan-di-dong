@@ -48,6 +48,7 @@ using Nop.Web.Infrastructure.Cache;
 using Nop.Web.Models.Catalog;
 using Nop.Web.Models.Media;
 using Nop.Core.Domain.Messages;
+using Nop.Services.Topics;
 
 namespace Nop.Web.Controllers
 {
@@ -93,6 +94,7 @@ namespace Nop.Web.Controllers
         private readonly ICategoryNewsService _catenewsService;
         private readonly IMessagesService _messagesService;
 
+        private readonly ITopicService _topicService;
         private readonly MediaSettings _mediaSettings;
         private readonly CatalogSettings _catalogSettings;
         private readonly VendorSettings _vendorSettings;
@@ -159,9 +161,11 @@ namespace Nop.Web.Controllers
             IUrlRecordService urlRecordService,
             ICategoryNewsService catenewsService,
             ICustomerService customerService,
-            IMessagesService messagesService
+            IMessagesService messagesService,
+            ITopicService topicService
             )
         {
+            this._topicService = topicService;
             this._messagesService = messagesService;
             this._catenewsService = catenewsService;
             this._urlRecordService = urlRecordService;
@@ -1284,10 +1288,10 @@ namespace Nop.Web.Controllers
                 Districts = _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.GetSeName())
             };
             model.CategoriesNews = _catenewsService.GetAllCategories().ToSelectList(x => x.Name, x => x.GetSeName());
-
+            model.Topics = _topicService.GetAllTopics(0, 1).Select(x => new SelectListItem { Text = x.Title, Value = x.SystemName }).ToList();
             return PartialView(model);
         }
-
+        
         [ChildActionOnly]
         public ActionResult HomepageCategories()
         {
@@ -3251,6 +3255,7 @@ namespace Nop.Web.Controllers
         public string GetSlugFromId(string domainName,string priceString, string attributeOptionIds, int categoryId=0, int stateProvinceId=0, int districtId=0, int wardId=0, int streetId=0)
         {
             if (String.IsNullOrEmpty(domainName)) domainName = Request.Url.Host;
+            if (categoryId == 0) categoryId = 1;
             var slug = _urlRecordService.GetSlugFromId(domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds);
             return slug;
         }
