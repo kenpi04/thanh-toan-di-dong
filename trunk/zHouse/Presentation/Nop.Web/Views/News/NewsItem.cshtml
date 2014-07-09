@@ -21,12 +21,15 @@
         </div><!---leftContentTwist----->
 
         <div class="rightContentTwist">
-            <div class="share">
-             @Html.Action("ShareButton","Catalog")
-            </div>
+            
             <div class="news">
                 <div class="blueTitle">@Model.Title</div>
-                <p>@Html.Raw(Model.Full)</p>
+                <div class="share">
+                    @Html.Action("ShareButton", "Catalog")
+                </div>
+                <div>
+                    <p>@Html.Raw(Model.Full)</p>
+                </div>
             </div><!--news--->
 
 

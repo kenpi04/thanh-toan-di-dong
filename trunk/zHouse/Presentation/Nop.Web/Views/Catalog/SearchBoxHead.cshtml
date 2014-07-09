@@ -11,6 +11,7 @@
               @Html.DropDownList("districtId",Model.Districts,new{@class="formBoxSelect"})
               @Html.DropDownList("priceString",Model.PriceRange,new{@class="formBoxSelect"})
               @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "formBoxSelect" })
+              @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "formBoxSelect",id="ddlDir" })
               @Html.DropDownList("attributeOptionIds", Model.BedRooms, "Số phòng ngủ", new { @class = "formBoxSelect",id="ddlBed" })
               @Html.DropDownList("attributeOptionIds", Model.BadRooms, "Số phòng tắm", new { @class = "formBoxSelect",id="ddlBath" })
                 <input type="submit" class="blueBtn" value="tìm kiếm">
@@ -26,7 +27,7 @@
                 districtId:$("#districtId").val(),
                 priceString:$("#priceString").val(),
                 categoryId:$("#categoryId").val(),
-                attributeOptionIds: $("#ddlBath").val()+"-"+$("#ddlBed").val()
+                attributeOptionIds: $("#ddlDir").val() + "-" + $("#ddlBath").val() + "-" + $("#ddlBed").val()
             };
           
          

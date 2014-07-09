@@ -14,11 +14,22 @@ namespace Nop.Web.Models.Catalog
             Products = new List<ProductOverviewModel>();
             this.AvailableCategories = new List<SelectListItem>();
             this.AvailableManufacturers = new List<SelectListItem>();
-            PriceRange = new List<SelectListItem>();
-            PriceRange.Add(new SelectListItem { Value = "0-0", Text = "Chọn mức giá" });
-            PriceRange.Add(new SelectListItem { Value = "1000-1500", Text = "1 tỷ ~ 1.5 tỷ" });
-            PriceRange.Add(new SelectListItem { Value = "1500-3000", Text = "1.5 tỷ ~ 3 tỷ" });
-            PriceRange.Add(new SelectListItem { Value = "3000-0", Text = "Trên 3 tỷ" });
+            PriceRange = new List<SelectListItem>{
+                new SelectListItem { Value = "0-0", Text = "Chọn mức giá" },
+                new SelectListItem { Value = "0-500", Text = "< 500 triệu" },
+                new SelectListItem { Value = "500-1000", Text = "500 triệu ~ 1 tỷ" },
+                new SelectListItem { Value = "1000-1500", Text = "1 tỷ ~ 1.5 tỷ" },
+                new SelectListItem { Value = "1500-2000", Text = "1.5 tỷ ~ 2 tỷ" },
+                new SelectListItem { Value = "2000-2500", Text = "2 tỷ ~ 2.5 tỷ" },
+                new SelectListItem { Value = "2500-3000", Text = "2.5 tỷ ~ 3 tỷ" },
+                new SelectListItem { Value = "3000-3500", Text = "3 tỷ ~ 3.5 tỷ" },
+                new SelectListItem { Value = "3500-4000", Text = "3.5 tỷ ~ 4 tỷ" },
+                new SelectListItem { Value = "4000-0", Text = "> 4 tỷ" }
+            };
+            //PriceRange.Add(new SelectListItem { Value = "0-0", Text = "Chọn mức giá" });
+            //PriceRange.Add(new SelectListItem { Value = "1000-1500", Text = "1 tỷ ~ 1.5 tỷ" });
+            //PriceRange.Add(new SelectListItem { Value = "1500-3000", Text = "1.5 tỷ ~ 3 tỷ" });
+            //PriceRange.Add(new SelectListItem { Value = "3000-0", Text = "Trên 3 tỷ" });
             SelectedOptionIds = new List<int>();
             DistrictIds = new List<int>();
             Districts = new List<SelectListItem>();

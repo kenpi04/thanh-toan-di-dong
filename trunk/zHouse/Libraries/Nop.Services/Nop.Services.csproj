@@ -177,7 +177,7 @@
     <Compile Include="Directory\IBannerService.cs" />
     <Compile Include="Messages\IMessagesService.cs" />
     <Compile Include="Messages\MessagesService.cs" />
-    <Compile Include="News\CategoryExtension.cs" />
+    <Compile Include="News\CategoryNewsExtension.cs" />
     <Compile Include="News\CategoryNewsService.cs" />
     <Compile Include="News\ICategoryNewsService.cs" />
     <Compile Include="Shipping\EventPublisherExtensions.cs" />

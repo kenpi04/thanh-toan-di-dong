@@ -110,9 +110,7 @@ namespace Nop.Web.Controllers
             {
                 Id=x.Id,
                 Title=x.Title,
-                SystemName=x.SystemName,
-                
-                
+                SystemName=x.SystemName
             }).ToList();
             return View(model);
         }
@@ -144,6 +142,17 @@ namespace Nop.Web.Controllers
             return Json(new { Authenticated = authResult, Title = title, Body = body, Error = error });
         }
 
+        public ActionResult TopicNavigation()
+        {
+            var model = _topicService.GetAllTopics(0,1).Select(x => new TopicModel
+            {
+                Id = x.Id,
+                Title = x.Title,
+                SystemName = x.SystemName,
+                Body = x.Body
+            }).ToList();
+            return View(model);
+        }
         #endregion
     }
 }
