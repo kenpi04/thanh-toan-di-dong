@@ -3951,13 +3951,13 @@ namespace Nop.Web.Controllers
             return PartialView("_ProductListPartial", model);
 
         }
-        private void PreparingSearchModel(SearchModel model, bool isproject = false)
-        {
+        private void PreparingSearchModel(SearchModel model, bool isproject = false, int categoryId = 0)
+        {            
             IList<Category> cate = null;
-            if (!isproject)
-                cate = _categoryService.GetAllCategories().ToList();
-            else
-                cate = _categoryService.GetAllCategoriesByParentCategoryId(2);
+            //if (!isproject)
+                cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId);
+            //else
+                //cate = _categoryService.GetAllCategoriesByParentCategoryId(2);
 
             model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
             model.AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
@@ -3995,10 +3995,10 @@ namespace Nop.Web.Controllers
         }
       
         [ChildActionOnly]
-        public ActionResult SearchBoxLeft(bool isProject = false)
+        public ActionResult SearchBoxLeft(bool isProject = false, int categoryId = 0)
         {
             var model = new SearchModel();
-            PreparingSearchModel(model, isProject);
+            PreparingSearchModel(model, isProject, categoryId);
             model.Districts.RemoveAt(0);
             model.AvailableCategories.RemoveAt(0);
             if (isProject)

@@ -149,6 +149,10 @@ namespace Nop.Web.Framework.Seo
                             data.Values["controller"] = "Catalog";
                             data.Values["action"] = "Category";
                             data.Values["categoryid"] = urlRecord.EntityId;
+                            data.Values["streetId"] = streetId;
+                            data.Values["wardId"] = wardId;
+                            data.Values["districtId"] = districtId;
+                            data.Values["stateProvinceId"] = stateProvinceId;
                             data.Values["SeName"] = urlRecord.Slug;
                         }
                         break;
