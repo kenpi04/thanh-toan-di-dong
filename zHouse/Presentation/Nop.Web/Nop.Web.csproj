@@ -1700,6 +1700,7 @@
     <Content Include="Themes\Zhouse\Content\uniform\css\uniform.default.scss" />
     <Content Include="Views\Catalog\BookDate.cshtml" />
     <Content Include="Views\News\NewsCateNavigation.cshtml" />
+    <Content Include="Views\Topic\TopicNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

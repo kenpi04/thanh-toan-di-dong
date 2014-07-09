@@ -1,0 +1,15 @@
+﻿@model List<Nop.Web.Models.Topics.TopicModel>
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#">Dịch vụ</a></div>
+    <div class="whiteLeftColContent">
+        <div class="ulStyle">
+            <ul>
+                <li><a href="@Url.RouteUrl("Topic", new { SystemName = "tai-sao-mua-nha-tren-zhouse"})">Tại sao chọn chúng tôi?</a></li>
+                @foreach (var item in Model)
+                {
+                    <li><a href="@Url.RouteUrl("Topic", new { SystemName = item.SystemName })">@item.Title</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

@@ -4,7 +4,7 @@
     var isPopup = ViewBag.IsPopup;
     if (isPopup == null || isPopup == false)
     {
-        Layout = "~/Views/Shared/_ColumnsThree.cshtml";
+        Layout = "~/Views/Shared/_ColumnsOne.cshtml";
     }
     else
     {
@@ -70,14 +70,29 @@
         }
     </div>
 }
-<div class="page topic-page" id="ph-topic">
-    <div id="ph-title">
-        <div class="page-title">
-            <h1>
-                @Model.Title</h1>
+<div class="page news-item-page">
+
+    <div class="mainContent">
+        <div class="leftContentTwist">
+            @Html.Action("TopicNavigation")
+
+            <div class="ad"><a href="#"><img src="@Url.Content("~/Themes/Zhouse/Content/images/ad.png")" class="adBorder"></a></div>
+
         </div>
-    </div>
-    <div class="page-body">
-        @Html.Raw(Model.Body)
+
+        <div class="rightContentTwist">
+            
+            <div class="news">
+                <div>
+                    <div class="blueTitle">@Model.Title</div>
+                    <div class="share">
+                        @Html.Action("ShareButton", "Catalog")
+                    </div>
+                </div>                
+                <div>
+                    <p>@Html.Raw(Model.Body)</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

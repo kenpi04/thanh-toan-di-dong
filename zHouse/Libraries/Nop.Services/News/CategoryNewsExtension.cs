@@ -13,7 +13,7 @@ namespace Nop.Services.News
     /// -----------------------------------------------------------
     /// 
     /// </summary>
-    public static class CategoryExtensions
+    public static class CategoryNewsExtensions
     {
         /// <summary>
         /// Sort categories news for tree representation

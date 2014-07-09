@@ -1285,9 +1285,9 @@ namespace Nop.Web.Controllers
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
                 BlogEnabled = _blogSettings.Enabled,
                 ForumEnabled = _forumSettings.ForumsEnabled,
-                Districts = _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.GetSeName())
+                Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
             };
-            model.CategoriesNews = _catenewsService.GetAllCategories().ToSelectList(x => x.Name, x => x.GetSeName());
+            model.CategoriesNews = _catenewsService.GetAllCategories().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName());
             model.Topics = _topicService.GetAllTopics(0, 1).Select(x => new SelectListItem { Text = x.Title, Value = x.SystemName }).ToList();
             return PartialView(model);
         }
@@ -3099,14 +3099,14 @@ namespace Nop.Web.Controllers
                 {
                     decimal minPrice = decimal.Zero;
                     if (decimal.TryParse(model.Pf, out minPrice))
-                        minPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(minPrice, _workContext.WorkingCurrency);
+                        minPriceConverted = minPrice * 1000000;//_currencyService.ConvertToPrimaryStoreCurrency(minPrice, _workContext.WorkingCurrency);
                 }
                 //max price
                 if (!string.IsNullOrEmpty(model.Pt))
                 {
                     decimal maxPrice = decimal.Zero;
                     if (decimal.TryParse(model.Pt, out maxPrice))
-                        maxPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(maxPrice, _workContext.WorkingCurrency);
+                        maxPriceConverted = maxPrice * 1000000;//_currencyService.ConvertToPrimaryStoreCurrency(maxPrice, _workContext.WorkingCurrency);
                 }
                 
                 searchInDescriptions = model.Sid;
@@ -3119,10 +3119,10 @@ namespace Nop.Web.Controllers
                     var p = priceString.Split('-');                   
                     decimal minPrice = decimal.Zero;
                     if (decimal.TryParse(p[0].ToString(), out minPrice))
-                        minPriceConverted = minPrice;
+                        minPriceConverted = minPrice * 1000000;
                     decimal maxPrice = decimal.Zero;
                     if (decimal.TryParse(p[1].ToString(), out maxPrice))
-                        maxPriceConverted = maxPrice;
+                        maxPriceConverted = maxPrice * 1000000;
                 }
                 if (!String.IsNullOrEmpty(attributeOptionIds))
                 {
@@ -3902,6 +3902,8 @@ namespace Nop.Web.Controllers
                 {
                     decimal.TryParse(priceString[0], out minPriceConverted);
                     decimal.TryParse(priceString[1], out maxPriceConverted);
+                    minPriceConverted = minPriceConverted * 1000000;
+                    maxPriceConverted = maxPriceConverted * 1000000;
                 }
             }
 
@@ -3955,13 +3957,13 @@ namespace Nop.Web.Controllers
         {            
             IList<Category> cate = null;
             //if (!isproject)
-                cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId);
+                cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).OrderBy(x => x.DisplayOrder).ToList();
             //else
                 //cate = _categoryService.GetAllCategoriesByParentCategoryId(2);
 
             model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
             model.AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
-            model.Districts = _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+            model.Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
             model.Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectDistrict"), Selected = true, Value = "0" });
             model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResource("Product.Status.Enum." + x.ToString()), x => ((int)x).ToString());
             model.Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
@@ -4010,7 +4012,7 @@ namespace Nop.Web.Controllers
         {
 
             var model = new SearchModel();
-            PreparingSearchModel(model);
+            PreparingSearchModel(model, categoryId:1);
             if (isHome)
                 return View("SearchHome", model);
             return View(model);

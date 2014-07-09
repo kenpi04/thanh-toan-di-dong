@@ -7076,9 +7076,10 @@ have a fixed width and height (but it's not required).
 }
 
 .share {
-    position: absolute;
+    /*position: absolute;
     top: 62px;
-    right: 15px;
+    right: 15px;*/
+    margin-top: 7px;
 }
 
 .detailTable {
