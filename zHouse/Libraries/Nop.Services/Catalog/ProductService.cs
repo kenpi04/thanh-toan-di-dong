@@ -487,7 +487,7 @@ namespace Nop.Services.Catalog
 
                 var pCustomerId = _dataProvider.GetParameter();
                 pCustomerId.ParameterName = "CustomerId";
-                pCustomerId.Value = storeId;
+                pCustomerId.Value = customerId;
                 pCustomerId.DbType = DbType.Int32;
 
                 var pVendorId = _dataProvider.GetParameter();
