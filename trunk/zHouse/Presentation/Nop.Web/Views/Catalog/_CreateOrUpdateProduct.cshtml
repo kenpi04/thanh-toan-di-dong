@@ -10,6 +10,9 @@
 }
 @Html.HiddenFor(x => x.Id)
 
+    <div id="panel-error" class="message-error">
+        @Html.ValidationSummary()
+    </div>
 
     <div class="blueTitle">QUẢNG CÁO NGÔI NHÀ CỦA BẠN</div>
     <p>
@@ -351,6 +354,10 @@
 
                 if ($("#frmProduct").valid()) {
                     $('#frmProduct').submit();
+                }
+                else
+                {
+                   
                 }
                 //alert(queueData.uploadsSuccessful + ' files were successfully uploaded.');
             }

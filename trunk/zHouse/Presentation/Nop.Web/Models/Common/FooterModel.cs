@@ -1,9 +1,16 @@
 ﻿using Nop.Web.Framework.Mvc;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Nop.Web.Models.Common
 {
     public partial class FooterModel : BaseNopModel
     {
+        public FooterModel()
+        {
+            Topics = new List<SelectListItem>();
+            Districts = new List<SelectListItem>();
+        }
         public string StoreName { get; set; }
         public string FacebookLink { get; set; }
         public string TwitterLink { get; set; }
@@ -22,5 +29,8 @@ namespace Nop.Web.Models.Common
         public bool RecentlyViewedProductsEnabled { get; set; }
         public bool RecentlyAddedProductsEnabled { get; set; }
         public int WorkingLanguageId { get; set; }
+
+        public List<SelectListItem> Districts { get; set; }
+        public List<SelectListItem> Topics { get; set; }
     }
 }
