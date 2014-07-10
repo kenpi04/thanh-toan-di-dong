@@ -1,16 +1,10 @@
 ﻿@model Nop.Web.Models.Catalog.InsertProductModel
 @{
-    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Layout = "~/Views/Shared/_RootNoHeadFoot.cshtml";
 }
 
- <div class="page createproduct-page">
-        <div class="page-title">
-            <h1>Quảng cáo ngôi nhà của bạn</h1>
-            <p class="text-i">Quảng cáo về căn nhà của bạn càng chi tiết, người mua sẽ càng dễ tìm kiếm thấy bạn hơn.<br />
 
-Nếu bạn gặp vấn đề gì trong quá trình gởi thông tin hay liên hệ với chúng tôi qua Hotline:<br />
-Nhân viên của chúng tôi sẽ hỗ trợ bạn.</p>
-        </div>
+       
         <div class="page-body">
             @using(Html.BeginForm("InsertProduct","Catalog",FormMethod.Post,new{id="frmProduct"}))
             {
@@ -19,10 +13,9 @@ Nhân viên của chúng tôi sẽ hỗ trợ bạn.</p>
                 </div>
                 @Html.Partial("_CreateOrUpdateProduct",Model)
                
-               <div class="buttons">
-                <input type="button" id="insertProduct-button" class="button-1 register-next-step-button" value="@T("Product.Insert")" name="register-button" />
-            </div>
+           
             }
            </div>
-     </div>
+     <div class="clearBoth"></div>
+     
 

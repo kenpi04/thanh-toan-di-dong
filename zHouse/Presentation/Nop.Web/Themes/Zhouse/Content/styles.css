@@ -462,22 +462,23 @@ ul.language-list {
 
 .menu li .sublist {
     position: absolute;
-background-color: #fff;
-border: 1px solid #c2c2c2;
-padding: 10px;
-margin-left: -36px;
-margin-top: 10px;
-z-index: 1000;
-display: none;
-white-space: nowrap;
-width: 600px;
-border-top: none;
+    background-color: #fff;
+    border: 1px solid #c2c2c2;
+    padding: 10px;
+    margin-left: -36px;
+    margin-top: 10px;
+    z-index: 1000;
+    display: none;
+    white-space: nowrap;
+    width: 600px;
+    border-top: none;
 }
-.menu li .sublist li.title{
 
-    font-size:14px;
-    font-weight:bold
-}
+    .menu li .sublist li.title {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
     .menu li .sublist.active {
         display: block;
     }
@@ -498,7 +499,7 @@ border-top: none;
     color: #373737;
     font-weight: normal;
     font-size: 12px;
-      border:0px !important
+    border: 0px !important;
 }
 
 .menu .sublist ul {
@@ -514,7 +515,6 @@ border-top: none;
     padding: 0;
     width: 80px;
     float: left;
-  
 }
 
     .menu .sublist li:hover {
@@ -3979,7 +3979,7 @@ a.eu-cookie-privacyinfo-tag {
 }
 
     .search-page .page-title {
-		margin-top: 6px;
+        margin-top: 6px;
     }
 
 .search-input {
@@ -6310,14 +6310,13 @@ ul {
 }
 
 .top {
-
-width: 100%;
-height: 50px;
-background: #FFF;
-position: fixed;
-z-index: 1000;
-margin-top: -2px;
-border-bottom: 1px solid #c2c2c2;
+    width: 100%;
+    height: 50px;
+    background: #FFF;
+    position: fixed;
+    z-index: 1000;
+    margin-top: -2px;
+    border-bottom: 1px solid #c2c2c2;
 }
 
 .wrapper {
@@ -6347,32 +6346,34 @@ border-bottom: 1px solid #c2c2c2;
     }
 
     .menu li {
-       display: inline;
-float: left;
-padding: 6px 13px;
-height: 27px;
-    }
-    .menu li:last-child,.sublist li{
-        border:none
+        display: inline;
+        float: left;
+        padding: 6px 13px;
+        height: 27px;
     }
 
+        .menu li:last-child, .sublist li {
+            border: none;
+        }
+
         .menu li a {
-           text-decoration: none;
-color: #666;
-font-size: 14px;
-font-weight: normal;
-text-transform: uppercase;
-display: block;
-border-right: solid 1px #ddd;
-padding: 2px 4px;
-width: 100%;
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+            font-weight: normal;
+            text-transform: uppercase;
+            display: block;
+            border-right: solid 1px #ddd;
+            padding: 2px 4px;
+            width: 100%;
         }
 
             .menu li a:hover {
                 color: #d21f79;
             }
- .verLine {
-     background: url(images/verLine.png) no-repeat scroll 0 0;
+
+.verLine {
+    background: url(images/verLine.png) no-repeat scroll 0 0;
     width: 1px !important;
     height: 100px;
     margin: -12px 2px 0 6px;
@@ -6400,7 +6401,7 @@ width: 100%;
 .pinkBg {
     background: #cf1070;
     opacity: 0.85;
-    padding:25px;
+    padding: 25px;
 }
 
 .pinkNarrowTitle {
@@ -6477,12 +6478,13 @@ width: 100%;
     border: 1px solid #cccccc;
     margin-bottom: 14px;
     background: #fff;
-    height:345px
+    height: 345px;
 }
-.introCol .info-picture{
-    min-height:220px
-}
-<!--new {
+
+    .introCol .info-picture {
+        min-height: 220px;
+    }
+<!-- new {
     position: absolute;
     top: 0;
     right: -5px;
@@ -6555,7 +6557,7 @@ width: 100%;
 }
 
     .whiteBg:hover {
-        color:#d21f79;
+        color: #d21f79;
     }
 
 .whiteBgBig {
@@ -6832,9 +6834,9 @@ have a fixed width and height (but it's not required).
     width: 100%;
     margin-left: 3px;
     margin-top: 2px;
-    margin-bottom:10px;
-	margin-left:auto;
-	margin-right: auto;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .nivo-slice {
@@ -6927,11 +6929,10 @@ have a fixed width and height (but it's not required).
     float: left;
     width: 1013px;
     margin-top: 48px;
-	padding: 5px;
-	border: 1px solid #c2c2c2; 
-	border-top: 0px;
-	
-	background: #ffffff;
+    padding: 5px;
+    border: 1px solid #c2c2c2;
+    border-top: 0px;
+    background: #ffffff;
 }
 
 .formBoxSelect {
@@ -7069,6 +7070,7 @@ have a fixed width and height (but it's not required).
 
 .blueText {
     color: #1e98d5;
+    font-weight: bold;
 }
 
 .pinkText {
@@ -7114,7 +7116,7 @@ have a fixed width and height (but it's not required).
         padding: 7px 10px;
         font-size: 13px;
         line-height: 20px;
-		font-weight: bold;
+        font-weight: bold;
     }
 
 .greyBgTD {
@@ -7128,14 +7130,12 @@ have a fixed width and height (but it's not required).
 }
 
 .thumbnailPic {
-
     margin-right: 11px;
     margin-bottom: 11px;
     float: left;
 }
 
     .thumbnailPic:hover {
-       
     }
 
 .blackBg {
@@ -7366,12 +7366,12 @@ have a fixed width and height (but it's not required).
 .whiteBgCata {
     padding: 7px 10px;
     font-size: 13px;
-	color:#666666;
+    color: #666666;
     border-top: 1px #ddd dashed;
-    float:left;
-    width:200px;
-    margin-top:10px;
-    height:55px
+    float: left;
+    width: 200px;
+    margin-top: 10px;
+    height: 55px;
 }
 
 .pinkNarrowTitle30 {
@@ -7436,47 +7436,142 @@ have a fixed width and height (but it's not required).
 }
 
 
-.select-datetime .lb{color:gray}
-.select-datetime select{width:40px;float:left;margin-right:5px}
-.email-friend .date-book select{width:58px;float:left;}
-.email-friend label{margin-bottom:5px}
-.book-email-friend .friend-email{width:90%}
-.book-email-friend .friend-email-textarea{width:93%}
-.createproduct-page{background:#fff;padding:14px}
-.createproduct-page h1{font-size:30px;font-weight:bold}
-.createproduct-page .text-i{line-height:30px}
-.detailTable .greyBgTD { font-weight: normal; }
-.zhouse { font-size: 50px; color: #ffffff; text-align: left; text-shadow:0 0 10px rgba(0, 0, 0, 1); font-family: "Myriad Pro",Arial,Helvetica,sans-serif; }
-.slogan { font-size: 25px; color: #ffffff; text-align: left; margin-bottom: 20px;text-shadow:0 0 10px rgba(0, 0, 0, 1); font-family: "Myriad Pro",Arial,Helvetica,sans-serif;}
-.gioithieu { color: #ffffff; font-size: 14px; padding-top: 10px; text-align: center; }
+.select-datetime .lb {
+    color: gray;
+}
+
+.select-datetime select {
+    width: 40px;
+    float: left;
+    margin-right: 5px;
+}
+
+.email-friend .date-book select {
+    width: 58px;
+    float: left;
+}
+
+.email-friend label {
+    margin-bottom: 5px;
+}
+
+.book-email-friend .friend-email {
+    width: 90%;
+}
+
+.book-email-friend .friend-email-textarea {
+    width: 93%;
+}
+
+.createproduct-page {
+    background: #fff;
+    padding: 20px;
+    width: 80%;
+    margin: 0 auto;
+}
+.createproduct-page .head-page{
+    background:#ddd;
+    padding:10px
+}
+.createproduct-page .info-company{
+    float:right
+}
+    .createproduct-page h1 {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .createproduct-page .text-i {
+        line-height: 30px;
+    }
+
+.detailTable .greyBgTD {
+    font-weight: normal;
+}
+
+.zhouse {
+    font-size: 50px;
+    color: #ffffff;
+    text-align: left;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    font-family: "Myriad Pro",Arial,Helvetica,sans-serif;
+}
+
+.slogan {
+    font-size: 25px;
+    color: #ffffff;
+    text-align: left;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    font-family: "Myriad Pro",Arial,Helvetica,sans-serif;
+}
+
+.gioithieu {
+    color: #ffffff;
+    font-size: 14px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.back-top {
+    top: 25px;
+    position: fixed;
+    _position: absolute;
+}
 
 .ulStyle {
+}
 
-}
-.ulStyle li {
-	list-style-image: url(images/listIcon.png);
-	padding-top: 5px;
-}
-.ulStyle li a {
-	text-decoration: none;
-	color: #555;
-}
-.ulStyle li a:hover {
-	color: #000;
-}
+    .ulStyle li {
+        list-style-image: url(images/listIcon.png);
+        padding-top: 5px;
+    }
+
+        .ulStyle li a {
+            text-decoration: none;
+            color: #555;
+        }
+
+            .ulStyle li a:hover {
+                color: #000;
+            }
+
 .news {
-	float: left;
-	width: 680px;
-	margin: 10px 0 0 20px;
-	font-size: 13px;
-	text-align: justify;
+    float: left;
+    width: 680px;
+    margin: 10px 0 0 20px;
+    font-size: 13px;
+    text-align: justify;
 }
-.newsImgBorder{
-	border: 3px solid #d3d3d3;
+
+.newsImgBorder {
+    border: 3px solid #d3d3d3;
 }
-.menu-col{width:200px;float:left;padding: 0 10px;
-border-right: dashed 1px #ddd;}
-.menu-col:last-child{border:none}
-.menu-col .title{font-weight:bold}
-.service{left:236px !important}
-.kienthuc{left:327px  !important}
+
+.menu-col {
+    width: 200px;
+    float: left;
+    padding: 0 10px;
+    border-right: dashed 1px #ddd;
+}
+
+    .menu-col:last-child {
+        border: none;
+    }
+
+    .menu-col .title {
+        font-weight: bold;
+    }
+
+.service {
+    left: 236px !important;
+}
+
+.kienthuc {
+    left: 327px !important;
+}
+
+.p-name:hover {
+    color: #D82D7F;
+}
+textarea.formBoxInText{height:70px}

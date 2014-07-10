@@ -9,251 +9,209 @@
     bool isLogin=WorkContext.CurrentCustomer.IsRegistered();
 }
 @Html.HiddenFor(x => x.Id)
-@if(!isLogin)
-{
-<div class="fieldset">
-    <div class="title">
-        <strong>Thông tin liên hệ</strong>
-    </div>
-    <div class="form-fields">
-        <div class="inputs">
-            @Html.NopLabelFor(x => x.ContactName)
+
+
+    <div class="blueTitle">QUẢNG CÁO NGÔI NHÀ CỦA BẠN</div>
+    <p>
+        Quảng cáo về căn nhà của bạn càng chi tiết, người mua sẽ càng dễ tìm kiếm thấy bạn hơn.
+        Nếu bạn gặp vấn đề gì trong quá trình gởi thông tin hãy liên hệ với chúng tôi qua Hotline: <b>1900 4545.</b><br>
+        Nhân viên của chúng tôi sẽ hỗ trợ bạn.
+    </p>
+    <div class="floatLeft">
+        <div class="blueText">THÔNG TIN LIÊN HỆ</div>
+        <div class="boxWrapper">
+        @Html.TextBoxFor(x => x.ContactName, new {@class="formBoxIn",placeholder="Họ và tên" })
+        @Html.RequiredHint()
+            @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại" })
             @Html.RequiredHint()
-            @Html.EditorFor(x => x.ContactName)
-            @Html.ValidationMessageFor(x => x.ContactName)
-        </div>
-        <div class="inputs">
-            @Html.NopLabelFor(x => x.ContactPhone)
+            @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })
             @Html.RequiredHint()
-            @Html.EditorFor(x => x.ContactPhone)
-            @Html.ValidationMessageFor(x => x.ContactPhone)
-        </div>
-        <div class="inputs">
-            @Html.NopLabelFor(x => x.Email)
-            @Html.RequiredHint()
-            @Html.EditorFor(x => x.Email)
-            @Html.ValidationMessageFor(x => x.Email)
-        </div>
-
-    </div>
-</div>
-}
-<div class="fieldset">
-    <div class="form-fields">
-        <div class="inputs">
-            <div>@Html.NopLabelFor(x => x.PhapLy)</div>
-            <ul>
-                @foreach (var i in Model.PhapLy)
-                {
-                    <li> @Html.RadioButton("SelectedOptionAttributes", i.Value,Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))) @Html.Label(i.Text)</li>
-                }
-            </ul>
-
-
-        </div>
-    </div>
-</div>
-<div class="fieldset">
-    <div class="title">
-        <strong>Thông tin vị trí</strong>
-    </div>
-    <div class="form-fields">
-        <div class="inputs">
-            <div style="float: left; width: 50%">
-                <div class="inputs">
-                    @Html.NopLabelFor(x => x.NumberOfHome)
-                    @Html.TextBoxFor(x => x.NumberOfHome)
-                    @Html.ValidationMessageFor(x => x.NumberOfHome)
-                </div>
-                <div class="inputs">
-                    @Html.NopLabelFor(x => x.DistrictId)
-                    @Html.RequiredHint()
-                    @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { id = "ddlQuan" })
-                    @Html.ValidationMessageFor(x => x.DistrictId)
-                </div>
-            </div>
-            <div style="float: left; width: 50%">
-                <div class="inputs">
-                    @Html.NopLabelFor(x => x.StreetId)
-                    @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường")
-
-                </div>
-                <div class="inputs">
-                    @Html.NopLabelFor(x => x.WardId)
-                    @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường")
-                    @Html.ValidationMessageFor(x => x.WardId)
-                </div>
-            </div>
-            <div class="clearfix"></div>
-
-        </div>
-        <div class="inputs">
-            <label>@Html.NopLabelFor(x => x.FullAddress)</label>
-            @Html.TextBoxFor(x => x.FullAddress, new { @style = "width:200px" })
-        </div>
-    </div>
-</div>
-<div class="fieldset">
-    <div class="title">
-        <strong>Thông tin căn nhà</strong>
-    </div>
-    <div class="form-fields">
-        <div style="width: 50%; float: left">
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.Price)
-                @Html.RequiredHint()
-                @Html.TextBoxFor(x => x.Price, new { maxlength = "5", @class = "number" })
-                @Html.ValidationMessageFor(x => x.Price)
-                <span id="price-text">vnđ</span>
-            </div>
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.CateId)
-                @Html.RequiredHint()
-                @Html.DropDownListFor(x => x.CateId, Model.Categories)
-                @Html.ValidationMessageFor(x => x.CateId)
-
-            </div>
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.Area)
-                @Html.RequiredHint()
-                @Html.TextBoxFor(x => x.Area, new { maxlength = "5", @class = "number" })
-                @Html.ValidationMessageFor(x => x.Area)
-                <span>m<sub>2</sub></span>
-            </div>
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.Width)
-
-                @Html.TextBoxFor(x => x.Width, new { maxlength = "5", @class = "number" })
-                @Html.ValidationMessageFor(x => x.Width)
-
-            </div>
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.Dept)
-
-                @Html.TextBoxFor(x => x.Dept, new { maxlength = "5", @class = "number" })
-                @Html.ValidationMessageFor(x => x.Dept)
-
-            </div>
-
-        </div>
-        <div style="width: 50%; float: left">
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.NumberFloors)
-                @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.NumberFloors)
-                @Html.ValidationMessageFor(x => x.CateId)
-
-            </div>
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.AreaUse)
-                @Html.TextBoxFor(x => x.AreaUse, new { maxlength = "5", @class = "number" })
-                @Html.ValidationMessageFor(x => x.AreaUse)
-
-            </div>
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.BedRooms)
-                @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.BedRooms)
-             
-
-            </div>
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.BadRooms)
-                @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.BadRooms)
-             
-
-            </div>
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.Directors)
-                @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.Directors)
-               
-
-            </div>
-            <div class="inputs">
-                @Html.NopLabelFor(x => x.NumberBlocks)
-                @Html.DropDownListFor(x => x.SelectedOptionAttributes, Model.NumberBlocks)
-             
-
-            </div>
           
+            <br>
+            @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
+            @Html.RequiredHint()
+            @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect",id="ddlQuan" })
+            @Html.RequiredHint()
+            @Html.DropDownListFor(x => x.WardId,new List<SelectListItem>(),"Chọn phường", new { @class = "formBoxInSelect" })
+            @Html.RequiredHint()
+            @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect" })
+            @Html.RequiredHint()
+            <br />
+            @Html.TextBoxFor(x => x.FullAddress, new {@class="formBoxIn",style="width:100%",placeholder="Địa chỉ đầy đủ" })
+        </div><!----boxWrapper------->
+    </div><!---floatLeft---->
 
-        </div>
-        <div class="clearfix"></div>
-    </div>
-    <div class="inputs">
-        @Html.NopLabelFor(x => x.Facilities)
-        <ul style="list-style: none">
-            @foreach (var i in Model.Facilities)
-            { 
-                <li style="float: left; width: 20%">
-                    <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") />
-                    @Html.Label(i.Text)
-                </li>
-            }
-        </ul>
-        <div class="clearBoth"></div>
-        Ghi chú về cơ sở vật chất / nội thất căn nhà ( vd: thiết kế kiểu châu âu, nhà ống hiện đại .... )<br />
-        @Html.TextAreaFor(x=>x.NoteFacilities)
-    </div>
-    <div class="clearfix"></div>
-    <div class="inputs">
-        @Html.NopLabelFor(x => x.Environments)
-        <ul style="list-style: none">
-            @foreach (var i in Model.Environments)
-            { 
-                <li style="float: left; width: 20%">
-                    <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") />
-                    @Html.Label(i.Text)
-                </li>
-            }
-        </ul>
-        <div class="clearBoth"></div>
-        Ghi chú về môi trường sung quanh ( vd: Gần siêu thị nào, cách bao nhiêu mét .... )<br />
-        @Html.TextAreaFor(x => x.NoteEnvironments)
-    </div>
-</div>
-<div class="clearBoth"></div>
-<div class="fieldset">
-    <div class="inputs">
-        <div>Thích hợp:</div>
-        <ul>
-            @foreach (var i in Model.ThichHop)
+    <div class="floatLeft">
+        <div class="blueText">THÔNG TIN PHÁP LÝ</div>
+        <div class="boxWrapperSmall">
+        @foreach(var i in Model.PhapLy)
+        {
+           
+                <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"checked=checked":"") @Html.Raw("&nbsp;"+i.Text+"&nbsp;&nbsp;&nbsp;") />
+                
+        }
+            
+            <br>
+        @Html.TextAreaFor(x => x.NotePhapLy, new { @class = "formBoxInText", placeholder = "Ghi chú về pháp lý (nếu có)" })
+           
+        </div><!---boxWrapperSmall---->
+    </div><!---floatLeft----->
+
+    <div class="floatLeft">
+        <div class="blueText">THÔNG TIN CĂN NHÀ</div>
+        <div class="boxWrapperSmall">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                        @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable number",placeholder="Giá"})
+                            @Html.RequiredHint()
+                     
+                        <td><span id="price-text">vnđ</span></td>
+                        <td>
+                        @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.NumberFloors,new{@class="formBoxInSelectTable"})
+                        @Html.RequiredHint()
+                     </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>   @Html.DropDownListFor(x=>x.CateId,Model.Categories,new{@class="formBoxInSelectTable"})
+                        @Html.RequiredHint()</td>
+                        <td></td>
+                        <td>@Html.TextBoxFor(x => x.AreaUse, new { @class = "formBoxInTable number",placeholder="Diện tích sử dụng"})
+                        @Html.RequiredHint()</td>
+                        <td>m2</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.TextBoxFor(x => x.Area, new { @class = "formBoxInTable number",placeholder="Diện tích"})
+                        @Html.RequiredHint()</td>
+                        <td>m2</td>
+                        <td>@Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BedRooms,new{@class="formBoxInSelectTable"})
+                        @Html.RequiredHint()</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>@Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable number",placeholder="Chiều ngang"})
+                        @Html.RequiredHint()</td>
+                        <td>m</td>
+                        <td>@Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BadRooms,new{@class="formBoxInSelectTable"})
+                        @Html.RequiredHint()</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>@Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable number",placeholder="Chiều sâu"})
+                        @Html.RequiredHint()</td>
+                        <td>m</td>
+                        <td>@Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.Directors,new{@class="formBoxInSelectTable"})
+                        @Html.RequiredHint()</td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div><!---boxWrapperSmall---->
+    </div><!---floatLeft----->
+
+    <div class="floatLeft">
+        <div class="colA"><div class="blueText">Cơ sở vật chất</div></div>
+        <div class="colB">
+            <ul style="list-style: none">
+                @foreach (var i in Model.Facilities)
             {
-                <li> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"checked=checked":"")/> @Html.Label(i.Text)</li>
+                    <li style="float: left; width: 20%">
+                        <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") />
+                        @Html.Label(i.Text)
+                    </li>
             }
-        </ul>
+            </ul>
+        </div>
+     
         <div class="clearBoth"></div>
-        Ghi chú ( vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)<br />
-        @Html.TextAreaFor(x=>x.NoteThichHop)
-
-    </div>
-</div>
-<div class="clearfix" style="height:23px"></div>
-
-<div class="fieldset">
-    <div class="title">
-        <strong>Mô tả căn nhà</strong>
-    </div>
-    <div class="form-fields">
-        <div class="inputs">
-            @Html.NopLabelFor(x => x.Name)
-            @Html.TextAreaFor(x => x.Name)
-            @Html.ValidationMessageFor(x => x.Name)
+        <div class="boxWrapperSmall">
+            @Html.TextAreaFor(x=>x.NoteFacilities,new{@class="formBoxInText",placeholder="Ghi chú về cơ sở vật chất / nội thất căn nhà ( vd: thiết kế kiểu châu âu, nhà ống hiện đại .... ))"})
+         
         </div>
-        <div class="inputs">
-            @Html.NopLabelFor(x => x.Desription)
-            @Html.TextAreaFor(x => x.Desription, new { @class = "jqte-test" })
-            @Html.ValidationMessageFor(x => x.Desription)
+    </div><!----floatLeft----->
+
+    <div class="floatLeft">
+        <div class="colA"><div class="blueText">Môi trường xung quanh</div></div>
+        <div class="colB">
+            <ul style="list-style: none">
+                @foreach (var i in Model.Environments)
+            {
+                    <li style="float: left; width: 20%">
+                        <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") />
+                        @Html.Label(i.Text)
+                    </li>
+            }
+            </ul>
         </div>
-        <div class="inputs">
+     
+        <div class="clearBoth"></div>
+        <div class="boxWrapperSmall">
+            @Html.TextAreaFor(x=>x.NoteEnvironments,new{@class="formBoxInText",placeholder="Ghi chú về môi trường xung quanh ( vd: Gần siêu thị nào, cách bao nhiêu mét .... )"})
+           
+        </div>
+    </div><!----floatLeft----->
+
+    <div class="floatLeft">
+        <div class="colA"><div class="blueText">Thích hợp</div></div>
+        @foreach (var i in Model.ThichHop)
+            {
+            <div class="colB"> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"checked=checked":"") /> @Html.Label(i.Text)</div>
+            }
+       
+
+        <div class="clearBoth"></div>
+        <div class="boxWrapperSmall">
+            @Html.TextAreaFor(x=>x.NoteEnvironments,new{@class="formBoxInText",placeholder="vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)"})
+           
+        </div>
+    </div><!----floatLeft----->
+
+    <div class="floatLeft">
+        <div class="blueText">HÌNH ẢNH NHÀ</div>
+        <div class="rightTable">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>-Hình đường, không gian xung quanh</td>
+                        <td></td>
+                        <td></td>
+                        <td>-Hình từ ban công, cửa xuống các hướng đường</td>
+                        <td></td>
+                        <td>/td>
+                    </tr>
+                    <tr>
+                        <td>-Hình cửa chính chụp từ ngoài vào</td>
+                        <td></td>
+                        <td></td>
+                        <td>-Hình chụp nhà bếp + kệ bếp</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>-Hình đường, không gian xung quanh</td>
+                        <td></td>
+                        <td></td>
+                        <td>-Hình chụp sân thượng</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><!---rightTable---->
+        <div class="floatLeft">
             <input type="file" id="FileUpload" />
             <div id="pictures">
-              
+
             </div>
             <ul id="lstPic">
                 @foreach (var i in Model.PictureModels)
                 {
                     <li id="picture_id_@i.PictureId" style="float:left;margin-right:10px">
 
-                        <input type="button" class="orangeBtn" value="Xóa" onclick="deletePicture(@i.Id)" />
+                        <input type="button" class="blueBtn" style="position: absolute;" value="Xóa" onclick="deletePicture(@i.Id)" />
                         <img width="100" height="100" src="@i.ImageUrl" /><br />
                         <textarea maxlength="500" name="PictureTitle_@i.PictureId" cols="10" rows="5">@i.Description</textarea>
                     </li>
@@ -261,9 +219,31 @@
             </ul>
             <div class="clearBoth"></div>
         </div>
-    </div>
+        <input type="button" class="blueBtn" value="TẢI TẤT CẢ" style="float: right;margin:20px 12px 0 0">
+    </div><!---floatLeft----->
+<div class="floatLeft">
+<div class="blueText">TIÊU ĐỀ</div>
+<div class="boxWrapperSmall">
+    @Html.TextBoxFor(x => x.Name, new { @class = "jqte-test formBoxInText" })
 </div>
+    </div><!---floatLeft---->
+    <div class="floatLeft">
+        <div class="blueText">MÔ TẢ CHI TIẾT</div>
+        <div class="boxWrapperSmall">
+            @Html.TextAreaFor(x => x.Desription, new { @class = "jqte-test formBoxInText" })
+        </div>
+    </div><!---floatLeft---->
 
+    <div class="floatLeft">
+        <div class="blueText">CHÚ Ý CỦA NGƯỜI BÁN</div>
+        <div class="boxWrapperSmall">
+            <textarea class="formBoxInText">(Để lại lời nhắn để chúng tôi có thể phục vụ bạn tốt hơn)</textarea>
+            <br>
+            <input type="submit" class="blueBigBtn" value="GỬI THÔNG TIN">
+        </div>
+    </div><!---floatLeft---->
+
+  
 <script type="text/javascript">
 
 

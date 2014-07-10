@@ -1146,6 +1146,7 @@ namespace Nop.Web.Controllers
 
 
             //featured products
+
             if (!_catalogSettings.IgnoreFeaturedProducts)
             {
                 //We cache whether we have featured products
@@ -1179,8 +1180,7 @@ namespace Nop.Web.Controllers
 
 
             var categoryIds = new List<int>();
-            categoryIds.Add(category.Id);
-            
+            categoryIds.Add(category.Id);            
             if (_catalogSettings.ShowProductsFromSubcategories)
             {
                 //include subcategories
@@ -1188,6 +1188,7 @@ namespace Nop.Web.Controllers
             }
             //products
             IList<int> alreadyFilteredSpecOptionIds = model.PagingFilteringContext.SpecificationFilter.GetAlreadyFilteredSpecOptionIds(_webHelper);
+            
             IList<int> filterableSpecificationAttributeOptionIds = null;
             var products = _productService.SearchProducts(out filterableSpecificationAttributeOptionIds, true,
                 categoryIds: categoryIds,
@@ -3262,6 +3263,16 @@ namespace Nop.Web.Controllers
         #endregion
 
         #region Insert/Update Product
+
+        public ActionResult InsertProductSuccess(int productId)
+        {
+            var product = _productService.GetProductById(productId);
+            if (product == null)
+                return HttpNotFound();
+            if (_workContext.CurrentCustomer.Id != product.Id)
+                return HttpNotFound();
+            return View(productId);
+        }
         public ActionResult InsertProduct()
         {
 
@@ -3342,12 +3353,7 @@ namespace Nop.Web.Controllers
                 }
                 #endregion
 
-                if (!_workContext.CurrentCustomer.IsRegistered())
-                {
-                    return RedirectToRoute("EditProduct", new { id = product.Id });
-                }
-                else
-                    return RedirectToRoute("EditPostNews", new { id = product.Id });
+                RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }
             return View(model);
 
@@ -3472,12 +3478,7 @@ namespace Nop.Web.Controllers
                 string seName = product.ValidateSeName(product.Name, product.Name, true);
                 _urlRecordService.SaveSlug(product, seName, 0);
 
-                if (!_workContext.CurrentCustomer.IsRegistered())
-                {
-                    return RedirectToRoute("EditProduct", new { id = product.Id });
-                }
-                else
-                    return RedirectToRoute("EditPostNews", new { id = product.Id });
+                RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }
             return View(model);
 

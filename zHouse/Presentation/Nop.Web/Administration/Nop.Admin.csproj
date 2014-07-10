@@ -1235,6 +1235,12 @@
     <Content Include="Views\CategoryNews\Tree.cshtml" />
     <Content Include="Views\CategoryNews\_CreateOrUpdate.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Banner\Create.cshtml" />
+    <Content Include="Views\Banner\Edit.cshtml" />
+    <Content Include="Views\Banner\List.cshtml" />
+    <Content Include="Views\Banner\_CreateOrUpdate.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -202,13 +202,13 @@
                     </div><!---twoColRight---->
                     @Html.Action("ProductEmailAFriend", new {isBook=true })
                 </div><!--pinkBgRight----->
+           
 
             @Html.Action("RelatedProductCustomer", new {customerId=Model.CustomerId })
+                <div class="ad">
+                    @Html.FptBanner(4);
 
-                <div class="ad"><a href="#"><img src="../Themes/Zhouse/Content/images/ad.png" class="adBorder"></a></div>
-                <div class="ad"><a href="#"><img src="../Themes/Zhouse/Content/images/ad.png" class="adBorder"></a></div>
-
-            </div><!----rightContent---------------->
+                </div><!----rightContent---------------->
 
 
             <div class="floatLeft">
@@ -220,72 +220,6 @@
        
     
 
- @* <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
-    <script type="text/javascript">
-        var map;
-        var gmarkers = [];
-        var map = null;
-        var map2 = null;
-        var lat = @Model..LatTiTudeGoogleMap;
-        var lng = @Model.Address.LongTiTudeGoogleMap;
-    
-        function initialize( str,zoom) {
-            if(zoom == 0 || zoom == null)
-                zoom = 15;
-            var mapOptions = {
-                zoom:zoom,
-                center: new google.maps.LatLng(lat,lng )
-            };
-        
-            var image = {
-                url: '../Themes/DefaultClean/Content/images/20.png',
-                origin: new google.maps.Point(0, 0),                  
-                anchor: new google.maps.Point(0, 32)
-            };
-
-            map = new google.maps.Map(document.getElementById(str),
-                mapOptions);
-        
-
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(lat,lng ),
-                map: map ,
-                icon : image        
-            });    
-               
-        
-        
-            google.maps.event.addListener(marker, 'click', function () {
-                //  infowindow.setContent(@Model.Name.ToString());
-                infowindow.open(map, marker);
-            });
-            // save the info we need to use later for the side_bar
-            gmarkers.push(marker);
-
-        }
-        function myclick(i) {
-            map.center = new google.maps.LatLng(gmarkers[i]),
-            google.maps.event.trigger(gmarkers[i], "click");
-        }
-
-        var infowindow = new google.maps.InfoWindow(
-       {
-           size: new google.maps.Size(150, 50)
-       });
-
-        if(lat != "" && lng != "")
-            google.maps.event.addDomListener(window, 'load', initialize("sidebar-map",15));
-       
-  
-
-        $('#showbigmap').click(function ()
-        {
-            setTimeout(function () {  google.maps.event.addDomListener(window, 'load', initialize("map",18)); }, 1000);
-       
-        })
-    
-
-    </script>*@
 
      
     
