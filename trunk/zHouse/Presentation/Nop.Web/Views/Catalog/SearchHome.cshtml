@@ -1,7 +1,7 @@
 ﻿@model Nop.Web.Models.Catalog.SearchModel
 @{
     
-    Html.AppendScriptParts("~/Scripts/jquery.nivo.slider.js");
+    
 }
 @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frmSearchHOme" }))
 {
@@ -15,20 +15,14 @@
                 @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "box" })
                      
 <br>
-                <input type="submit" style="float:right;margin-right:4px" class="blueBtn" value="tìm kiếm">
+                <input type="submit" style="margin-right:4px" class="blueBtn" value="tìm kiếm">
                 <div class="clearBoth"></div>
             </div>
         </div>
 </div>
-    <div id="slider">
     
-       
-        <img src="@Url.Content("~/Themes/Zhouse/Content/images/slide2.jpg")" class="stretchImg">
-        <img src="@Url.Content("~/Themes/Zhouse/Content/images/slide4.jpg")" class="stretchImg">
-        <img src="@Url.Content("~/Themes/Zhouse/Content/images/slide5.jpg")" class="stretchImg">
-        
-      
-    </div>
+    @Html.FptBanner(Position: 3, stateId: 0, viewName: "BannerSlideShow")
+
 }
 <script type="text/javascript">
     $(function () {

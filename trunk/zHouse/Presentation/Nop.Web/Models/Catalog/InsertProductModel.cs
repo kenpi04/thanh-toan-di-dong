@@ -37,6 +37,8 @@ namespace Nop.Web.Models.Catalog
         public string NoteFacilities { get; set; }
         public string NoteEnvironments { get; set; }
         public string NoteThichHop { get; set; }
+
+        public string NotePhapLy { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Name")]
         public string Name { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactName")]

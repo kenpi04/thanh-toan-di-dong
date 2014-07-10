@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+}
+<div class="mainContent">
+    <div class="leftContentTwist">
+        @if(IsSectionDefined("left"))
+        {
+            RenderSection("left");
+        }
+        else
+        {
+            
+        }
+
+    </div>
+    <div class="rightContentTwist">
+        @RenderBody()
+    </div>
+
+</div>

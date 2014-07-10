@@ -173,12 +173,15 @@ namespace Nop.Services.Catalog
         /// <returns>Specification attribute option</returns>
         public virtual IList<SpecificationAttributeOption> GetSpecificationAttributeOptionsBySpecificationAttribute(int specificationAttributeId)
         {
-            var query = from sao in _specificationAttributeOptionRepository.Table
-                        orderby sao.DisplayOrder
-                        where sao.SpecificationAttributeId == specificationAttributeId
-                        select sao;
-            var specificationAttributeOptions = query.ToList();
-            return specificationAttributeOptions;
+            return _cacheManager.Get("nop.SPA.bySAid." + specificationAttributeId, () =>
+            {
+                var query = from sao in _specificationAttributeOptionRepository.Table
+                            orderby sao.DisplayOrder
+                            where sao.SpecificationAttributeId == specificationAttributeId
+                            select sao;
+                var specificationAttributeOptions = query.ToList();
+                return specificationAttributeOptions;
+            });
         }
 
         /// <summary>

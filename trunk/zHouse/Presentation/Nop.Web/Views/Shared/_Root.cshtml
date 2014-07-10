@@ -3,12 +3,25 @@
 }
 @Html.Widget("body_start_html_tag_after")
 @Html.Partial("_Notifications")
+
+<div class="back-top" style="left: 50%; margin-left: 502px; top: 150px" id="divAdLeft">
+    @Html.FptBanner(Position: 1)
+
+</div>
+<div class="back-top" style="right: 50%; margin-right: 502px; top: 150px" id="divAdRight">
+    @Html.FptBanner(Position: 2)
+
+</div>
 <div class="master-wrapper-page">
     @Html.Action("JavaScriptDisabledWarning", "Common")
     <div class="master-wrapper-content">
       @*  <script type="text/javascript">
             AjaxCart.init(false, '.header-links .cart-qty', '.header-links .wishlist-qty', '#flyout-cart');
         </script>
+
+
+
+
   *@<div class="top">
     	<div class="wrapper">
 			<div class="logo"><a href="@Url.RouteUrl("HomePage")"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder"></a></div>

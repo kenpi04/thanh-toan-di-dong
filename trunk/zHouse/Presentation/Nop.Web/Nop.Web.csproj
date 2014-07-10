@@ -1701,6 +1701,9 @@
     <Content Include="Views\Catalog\BookDate.cshtml" />
     <Content Include="Views\News\NewsCateNavigation.cshtml" />
     <Content Include="Views\Topic\TopicNavigation.cshtml" />
+    <Content Include="Views\Shared\_ColumnsTwoZ.cshtml" />
+    <Content Include="Views\Shared\_RootNoHeadFoot.cshtml" />
+    <Content Include="Views\Catalog\InsertProductSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
