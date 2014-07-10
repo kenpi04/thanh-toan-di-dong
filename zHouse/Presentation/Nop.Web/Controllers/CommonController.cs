@@ -440,7 +440,9 @@ namespace Nop.Web.Controllers
                 AllowPrivateMessages = _workContext.CurrentCustomer.IsRegistered() && _forumSettings.AllowPrivateMessages,
                 NewsEnabled = _newsSettings.Enabled,
                 RecentlyViewedProductsEnabled = _catalogSettings.RecentlyViewedProductsEnabled,
-                RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled
+                RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
+                Districts=_stateProvinceService.GetDistHCM().ToSelectList(x=>x.Name,x=>x.GetSeName()),
+                Topics=_topicService.GetAllTopics(0,2).ToSelectList(x=>x.Title,x=>x.SystemName)
             };
 
             return PartialView(model);

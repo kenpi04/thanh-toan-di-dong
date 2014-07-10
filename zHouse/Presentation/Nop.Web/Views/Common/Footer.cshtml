@@ -4,39 +4,64 @@
 <div class="footer">
     <div class="footerBg">
         <div class="wrapper">
-            <div class="footerContent">
+           
                 <div class="footerCol">
-                    <b>Dịch vụ</b><br><br>
-                    <div class="blueLink"><a href="#">Tư vấn mua bán nhà đất</a></div>
-                    <div class="blueLink"><a href="#">Hỗ trợ pháp lý</a></div>
-                    <div class="blueLink"><a href="#">Quảng cáo nhà đất</a></div>
-                    <div class="blueLink"><a href="#">Hỗ trợ vay vốn ngân hàng</a></div>
-                    <div class="blueLink"><a href="#">Tư vấn đầu tư</a></div>
-                    <div class="blueLink"><a href="#">Hỏi và đáp</a></div>
-                </div><!---footerCol---->
-                <div class="footerLine"></div>
+                    <b>Nhà ở</b><br><br>
+                    <ul>
+                        @foreach (var i in Model.Districts)
+                        {
+                            <li><a href="@GetSeName(Request.Url.Host,"nha-o",i.Value)">Nhà ở @i.Text</a></li>
+                        }
+                    </ul>
 
+            </div>
+
+            
                 <div class="footerCol">
-                    <b>Kiến thức</b><br><br>
-                    <div class="blueLink"><a href="#">Tư vấn mua bán nhà đất</a></div>
-                    <div class="blueLink"><a href="#">Hỗ trợ pháp lý</a></div>
-                    <div class="blueLink"><a href="#">Quảng cáo nhà đất</a></div>
-                    <div class="blueLink"><a href="#">Hỗ trợ vay vốn ngân hàng</a></div>
-                    <div class="blueLink"><a href="#">Tư vấn đầu tư</a></div>
-                    <div class="blueLink"><a href="#">Hỏi và đáp</a></div>
-                </div><!---footerCol---->
-                <div class="footerLine"></div>
+                    <b>Chung cư</b><br><br>
+                    <ul>
+                        @foreach (var i in Model.Districts)
+                        {
+                            <li><a href="@GetSeName(Request.Url.Host,"du-an-nha-o",i.Value)">Chung cư @i.Text</a></li>
+                        }
+                    </ul>
 
+                </div>
+
+
+         
                 <div class="footerCol">
-                    <b>Kết nối với chúng tôi</b><br><br>
-                    <a href="http://facebook.com/zhouseonline" target="_blank"><img src="@Url.Content("~/Themes/Zhouse/Content/images/footerLink.png")" class="noborder"></a>
-                </div><!---footerCol--->
-                <div class="footerLine"></div>
+                    <b>Hướng dẫn- thủ tục mua nhà</b><br><br>
+                    <ul>
+                        @foreach (var i in Model.Topics)
+                        {
+                            <li><a href="@Url.RouteUrl("Topic", new {SystemName=i.Value })">@i.Text</a></li>
+                        }
+                    </ul>
 
-               @Html.Action("NewsletterBox","NewsLetter")
-
-            </div><!--footerContent---->
-        </div><!---wrapper--->
+                </div>
+      
+                    <div class="footerCol">
+                        <b>Kết nối với chúng tôi</b><br><br>
+                       
+                        @Html.Action("NewsletterBox", "NewsLetter")<br />
+                        <a href="http://facebook.com/zhouseonline" target="_blank"><img src="@Url.Content("~/Themes/Zhouse/Content/images/footerLink.png")" class="noborder"></a>
+                        <input type="button" class="blueBigBtn" style="width:100%" value="Kênh hỏi đáp" />
+                    </div>
+                  
+                
+        </div>
+    </div>
+    <div class="clearBoth"></div>
+    <div class="menu-footer">
+        <ul>
+            <li><a href="#">Giới thiệu</a></li>
+            <li><a href="#">Hợp tác</a></li>
+            <li><a href="#">Tuyển dụng</a></li>
+            <li><a href="#">Điều khoản sử dụng</a></li>
+            <li><a href="#">Blogs</a></li>
+            <li><a href="#">Liên hệ</a></li>
+        </ul>
     </div>
     <div class="wrapper">
         <div class="footerEnd">
@@ -45,6 +70,9 @@
             Email: info@zHouse.com.vn | Website: <a href="http://zHouse.com.vn">http://zHouse.com.vn</a><br>
             Design and SEO by <a href="http://ecomsolute.com">eCOMsolute.com</a> <br>
 
+        </div>
+        <div class="map-link">
+            <b> Bản đồ khu vực</b>   <a href="@Url.Action("map","catalog")"> <img src="~/Themes/Zhouse/Content/images/iconmap.png" /></a>
         </div>
     </div>
     @Html.Widget("footer")

@@ -4279,6 +4279,11 @@ namespace Nop.Web.Controllers
         #endregion
 
         #endregion
+
+        public ActionResult Map()
+        {
+            return View();
+        }
     }
 }
 

@@ -1472,6 +1472,7 @@
     <Content Include="Themes\Zhouse\Content\images\ico-move-topic.gif" />
     <Content Include="Themes\Zhouse\Content\images\ico-pm.png" />
     <Content Include="Themes\Zhouse\Content\images\ico-rss.gif" />
+    <Content Include="Themes\Zhouse\Content\images\iconmap.png" />
     <Content Include="Themes\Zhouse\Content\images\list.png" />
     <Content Include="Themes\Zhouse\Content\images\listIcon.png" />
     <Content Include="Themes\Zhouse\Content\images\loading.gif" />
@@ -1704,6 +1705,7 @@
     <Content Include="Views\Shared\_ColumnsTwoZ.cshtml" />
     <Content Include="Views\Shared\_RootNoHeadFoot.cshtml" />
     <Content Include="Views\Catalog\InsertProductSuccess.cshtml" />
+    <Content Include="Views\Catalog\Map.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

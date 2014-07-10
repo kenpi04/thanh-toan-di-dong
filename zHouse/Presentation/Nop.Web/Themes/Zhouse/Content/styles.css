@@ -964,10 +964,12 @@ td {
         }
 
 .validation-summary-errors {
-    font-family: Verdana,Arial,sans-serif;
-    font-size: 10px;
+
     font-weight: 700;
     color: red;
+    padding:10px;
+    text-align:center;
+    background:#c16e6e
 }
 
 .field-validation-error {
@@ -6644,8 +6646,26 @@ ul {
 
 .footerCol {
     float: left;
+    width:25%
 }
+.footerCol ul{
+   margin-left:10px
+}
+    .footerCol li {
+        padding:5px 0
+    }
+ .footerCol li a:hover{
+     color:#1e98d5
+ }
 
+.menu-footer li{
+    float:left;
+   margin:0 10px;
+}
+.map-link{
+    float:right;
+    margin-right:20px
+}
 .footerLine {
     background: url(images/footerLine.png) no-repeat;
     width: 71px;
@@ -6665,7 +6685,7 @@ ul {
 
 .footerBox {
     border: 1px solid #c2c2c2;
-    width: 180px;
+    width: 121px;
     padding: 8px 10px;
     color: #666;
     font-size: 12px;
@@ -7575,3 +7595,17 @@ have a fixed width and height (but it's not required).
     color: #D82D7F;
 }
 textarea.formBoxInText{height:70px}
+.menu-footer{
+    height:31px;
+    border-top:dashed  1px #5C5B5B;
+    border-bottom:dashed  1px #5C5B5B;
+    line-height:31px;
+    text-align:center;
+}
+.menu-footer ul{
+    width: 515px;
+    margin:0 auto;
+}
+.menu-footer ul a{
+    font-weight:bold
+}

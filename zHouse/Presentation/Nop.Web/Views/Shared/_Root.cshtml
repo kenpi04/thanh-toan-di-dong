@@ -1,9 +1,11 @@
 ﻿@{
     Layout = "~/Views/Shared/_Root.Head.cshtml";
+    bool isHome = Url.RequestContext.RouteData.Values["controller"].ToString().Equals("home", StringComparison.InvariantCultureIgnoreCase);
 }
 @Html.Widget("body_start_html_tag_after")
 @Html.Partial("_Notifications")
-
+@if(!isHome)
+{ 
 <div class="back-top" style="left: 50%; margin-left: 502px; top: 150px" id="divAdLeft">
     @Html.FptBanner(Position: 1)
 
@@ -12,6 +14,7 @@
     @Html.FptBanner(Position: 2)
 
 </div>
+}
 <div class="master-wrapper-page">
     @Html.Action("JavaScriptDisabledWarning", "Common")
     <div class="master-wrapper-content">
@@ -29,7 +32,7 @@
 		</div><!---wrapper---->
     </div>       
      
-            @Html.Action("SearchBoxHead", "Catalog", new {isHome=Url.RequestContext.RouteData.Values["controller"].ToString().Equals("home", StringComparison.InvariantCultureIgnoreCase) })
+            @Html.Action("SearchBoxHead", "Catalog", new {isHome=isHome })
      
         
         @Html.Widget("content_before")
@@ -41,6 +44,12 @@
         <div class="master-wrapper-main">
             
             @RenderBody()
+
+            <div class="clearBoth"></div>
+            @if (!isHome)
+            {
+                @Html.Action("RecentlyViewedProductsBlock", "Catalog", new { productThumbPictureSize = 220 })
+            }
         </div>
         @Html.Widget("content_after")
         @Html.Action("EuCookieLaw", "Common")

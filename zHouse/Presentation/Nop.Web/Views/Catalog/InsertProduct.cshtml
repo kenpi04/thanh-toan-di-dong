@@ -8,9 +8,7 @@
         <div class="page-body">
             @using(Html.BeginForm("InsertProduct","Catalog",FormMethod.Post,new{id="frmProduct"}))
             {
-                <div id="panel-error" class="message-error">
-                    @Html.ValidationSummary(true)
-                </div>
+               
                 @Html.Partial("_CreateOrUpdateProduct",Model)
                
            
