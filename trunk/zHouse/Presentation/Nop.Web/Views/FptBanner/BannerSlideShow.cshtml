@@ -1,0 +1,32 @@
+﻿@model Nop.Web.Models.Common.FptBannerShowModel
+@{
+    Html.AppendScriptParts("~/Scripts/jquery.nivo.slider.js");
+}
+<div id="slider">
+
+    @if(Model.Banners.Count==0)
+    { 
+    <img src="@Url.Content("~/Themes/Zhouse/Content/images/slide2.jpg")" class="stretchImg" />
+    }
+    else
+    {
+        foreach (var i in Model.Banners)
+        {
+           <a href="@i.Url" target="@i.Target"><img src="@i.PictureUrl" class="stretchImg"></a>
+        }
+    }  
+
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#slider').nivoSlider({ effect: 'fade',controlNav:false });
+        $("#frmSearchHOme").submit(function () {
+            var data=$(this).serialize();
+            $.get("@Url.Action("GetSlugFromId")", data, function (d) {
+                window.location.href = d;
+            })
+            return false;
+        })
+
+    })
+</script>
