@@ -65,15 +65,13 @@ namespace Nop.Services.Directory
         {
             return _cacheManager.Get(string.Format("Nop.district-{0}-{1}", stateId, showHidden), () =>
             {
-                var query = from d in _districtRepository.Table
-                           where d.StateProvinceId == stateId
-                           select d;
-                if (!showHidden)
-                    query.Where(x => x.Published);
-
+            var query = from d in _districtRepository.Table
+                        where (d.StateProvinceId == stateId) &&
+                        (showHidden || d.Published)
+                        select d;
+               
                 return query.ToList();
-                //var dist = GetStateProvinceById(stateId, showHidden);
-                //return dist.Districts.ToList();
+            
             });
           
         }     
