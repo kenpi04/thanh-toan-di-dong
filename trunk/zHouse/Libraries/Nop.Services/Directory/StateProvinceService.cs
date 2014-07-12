@@ -175,6 +175,55 @@ namespace Nop.Services.Directory
             _eventPublisher.EntityUpdated(stateProvince);
         }
 
+
+        public virtual District GetDistrictById(int districtId)
+        {
+            if (districtId == 0)
+                return null;
+
+            return _districtRepository.GetById(districtId);
+        }
+
+        public virtual void InsertDistrict(District district)
+        {
+            if (district == null)
+                throw new ArgumentNullException("district");
+
+            _districtRepository.Insert(district);
+
+            //_cacheManager.RemoveByPattern(STATEPROVINCES_PATTERN_KEY);
+
+            //event notification
+            _eventPublisher.EntityInserted(district);
+        }
+
+       
+        public virtual void UpdateDistrict(District district)
+        {
+            if (district == null)
+                throw new ArgumentNullException("district");
+
+            _districtRepository.Update(district);
+
+            //_cacheManager.RemoveByPattern(STATEPROVINCES_PATTERN_KEY);
+
+            //event notification
+            _eventPublisher.EntityUpdated(district);
+        }
+
+        public virtual void DeleteDistrict(District district)
+        {
+            if (district == null)
+                throw new ArgumentNullException("district");
+
+            _districtRepository.Delete(district);
+
+            //_cacheManager.RemoveByPattern(STATEPROVINCES_PATTERN_KEY);
+
+            //event notification
+            _eventPublisher.EntityDeleted(district);
+        }
+
         #endregion
     }
 }
