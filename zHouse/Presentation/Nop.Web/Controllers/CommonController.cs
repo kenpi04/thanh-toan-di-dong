@@ -421,7 +421,7 @@ namespace Nop.Web.Controllers
 
         //footer
         [ChildActionOnly]
-        public ActionResult Footer()
+        public ActionResult Footer(int stateId = 23)
         {
             var model = new FooterModel()
             {
@@ -441,7 +441,7 @@ namespace Nop.Web.Controllers
                 NewsEnabled = _newsSettings.Enabled,
                 RecentlyViewedProductsEnabled = _catalogSettings.RecentlyViewedProductsEnabled,
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
-                Districts=_stateProvinceService.GetDistHCM().ToSelectList(x=>x.Name,x=>x.GetSeName()),
+                Districts=_stateProvinceService.GetDistHCM(stateId).ToSelectList(x=>x.Name,x=>x.GetSeName()),
                 Topics=_topicService.GetAllTopics(0,2).ToSelectList(x=>x.Title,x=>x.SystemName)
             };
 
