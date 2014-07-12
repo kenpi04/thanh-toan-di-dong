@@ -12,7 +12,9 @@
     {
         foreach (var i in Model.Banners)
         {
-           <a href="@i.Url" target="@i.Target"><img src="@i.PictureUrl" class="stretchImg"></a>
+            if(i.BannerType == 1)
+            {<a href="@i.Url" target="@i.Target"><img src="@i.PictureUrl" class="stretchImg"></a>}
+            else   {<a href="@i.Url" target="@i.Target">@Html.Raw(i.Description)</a>}
         }
     }  
 
