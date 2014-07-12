@@ -1020,35 +1020,39 @@ ul{margin:0}
 .blueBigBtn:hover{color:#d3eefb}
 .intro{float:left;margin:30px 0 10px 0;height:245px}
 .intro-product{float:left;width:100%}
-.introCol{float:left;width:254px;position:relative;margin-right:14px;border:1px solid #ccc;margin-bottom:14px;background:#fff;height:345px}
+.introCol{float:left;width:254px;position:relative;margin-left:14px;border:1px solid #ccc;margin-bottom:14px;background:#fff;height:380px}
+.introCol:hover {box-shadow:2px 2px 6px #ccc }
+.product-list .introCol {margin-left:27px !important }
 .introCol .info-picture{min-height:220px}
  .new{position:absolute;top:0;right:-5px;background:url(images/new.png) no-repeat;width:96px;height:54px}
-.nhon{position:absolute;top:207px;left:20px;background:url(images/nhon.png) no-repeat;width:23px;height:13px}
-.pinkTag{background:url(images/pinkTag.png) no-repeat;width:106px;height:36px;padding-top:7px;position:absolute;right:-10px;top:190px;color:#fff;text-align:center;font-weight:bold;font-size:13px}
+.nhon{position:absolute;top:241px;left:20px;background:url(images/nhon.png) no-repeat;width:23px;height:13px}
+.pinkTag{background:url(images/pinkTag.png) no-repeat;width:106px;height:36px;padding-top:7px;position:absolute;right:-10px;top:215px;color:#fff;text-align:center;font-weight:bold;font-size:13px}
 .backBtn{background:url(images/back.png) no-repeat;width:32px;height:108px;border:0;cursor:pointer;float:left;margin-top:60px}
 .backBtn:hover{background:url(images/backhover.png)}
 .nextBtn{background:url(images/next.png) no-repeat;width:32px;height:108px;border:0;cursor:pointer;position:absolute;right:0;margin-top:63px}
 .nextBtn:hover{background:url(images/nexthover.png)}
 .whiteBg{background:#fff;border:0 solid #c2c2c2;padding:5px 10px 5px 10px;color:#2d9fd8;font-size:13px;font-weight:bold;float:left;height:40px}
 .whiteBg:hover{color:#d21f79}
-.whiteBgBig{background:#fff;border:1px solid #c2c2c2;width:270px;padding:20px 20px 20px 0;font-size:12px;float:left;position:relative;margin-bottom:10px;height:140px}
+.whiteBgBig{background:#fff;border:1px solid #c2c2c2;width:310px;padding:20px 20px 20px 0;font-size:12px;float:left;position:relative;margin-bottom:10px;height:140px}
 .whiteBgBig li{list-style-image:url(images/list.png);margin-left:46px;text-align:left;padding:3px 0}
 .whiteBgBig li a{color:#666;text-decoration:none;font-size:13px}
 .whiteBgBig li a:hover{text-decoration:underline}
 .nhonDown{background:url(images/nhonDown.png) no-repeat;width:19px;height:17px;position:absolute;bottom:-17px;left:160px}
-.frame{float:left;width:945px;margin:20px 0 10px 0}
-.frame table{border-collapse:collapse;width:945px}
+.frame{float:left;margin:20px 0 10px 0}
+.frame table{border-collapse:collapse;width:1080px}
 .frame table td{background:#fff;border:1px solid #c2c2c2;text-align:center;padding:20px 0;color:#1e98d5;font-weight:bold;width:236px}
 .smallPinkText{color:#c06;font-size:13px}
-.threeCol{width:300px;float:left;margin-right:22px}
+.threeCol{width:333px;float:left;margin-right:40px}
 .footerBg{width:100%;background:#fff;padding:20px 0;float:left}
-.footerContent{width:945px;float:left}
+.footerContent{width:100%;float:left}
 .footerCol{float:left;width:25%}
 .footerCol ul{margin-left:10px}
 .footerCol li{padding:5px 0}
 .footerCol li a:hover{color:#1e98d5}
-.menu-footer li{float:left;margin:0 10px}
+.menu-footer li{float:left;margin:0 20px}
+.menu-footer li a:hover {color:#1e98d5 }
 .map-link{float:right;margin-right:20px}
+.menu-col .title {color:#c06 }
 .footerLine{background:url(images/footerLine.png) no-repeat;width:71px;height:142px;float:left}
 .blueLink a{color:#1e98d5;text-decoration:none;font-size:13px}
 .blueLink a:hover{text-decoration:underline}
@@ -1089,9 +1093,9 @@ ul{margin:0}
 .top2{width:100%;height:45px;background:#fff;border-top:1px solid #c2c2c2;border-bottom:1px solid #c2c2c2}
 .lockBtn{background:url(images/lockBtn.png) no-repeat;width:30px;height:30px;border:0;cursor:pointer}
 .lockBtn:hover{background:url(images/lockBtnhover.png)}
-.wholeSearch{float:left;width:1013px;margin-top:48px;padding:5px;border:1px solid #c2c2c2;border-top:0;background:#fff}
+.wholeSearch{float:left;width:100%;margin-top:48px;padding:5px 0;border-bottom:1px solid #c2c2c2;background:#fff}
 .formBoxSelect{border:1px solid #c2c2c2;width:130px;padding:5px 5px 5px 10px;color:#666;font-size:12px}
-.mainContent{float:left;width:945px;margin:0}
+.mainContent{float:left;width:1080px;margin:0}
 .rightContent{width:230px;float:right}
 .leftContent{width:705px;float:left;margin-right:10px}
 .pinkBgRight{background:#c06;width:200px;float:left;padding:20px 10px 20px 20px;color:#fff;margin-bottom:5px}
@@ -1105,13 +1109,13 @@ ul{margin:0}
 .pinkTagRight{background:url(images/pinkTag.png) no-repeat;width:106px;height:36px;padding-top:4px;position:absolute;right:-10px;top:190px;color:#fff;text-align:center;font-weight:bold;font-size:13px}
 .ad{width:218px;float:left;margin:5px 0}
 .adBorder{border:1px solid #c2c2c2}
-.whiteBgLeft{float:left;width:663px;background:#fff;border:1px solid #c2c2c2;padding:15px 20px;position:relative;z-index:100}
+.whiteBgLeft{float:left;width:795px;background:#fff;border:1px solid #c2c2c2;padding:15px 20px;position:relative;z-index:100}
 .blueTitle{color:#1e98d5;font-size:15px;font-weight:bold}
 .pinkPrice{color:#c06;font-size:30px;font-weight:bold}
 .blueText{color:#1e98d5;font-weight:bold}
 .pinkText{color:#c06}
 .share{margin-top:7px}
-.detailTable{float:left;width:703px;margin-top:-2px;background:#fff;border:1px solid #ccc}
+.detailTable{float:left;width:835px;margin-top:-2px;background:#fff;border:1px solid #ccc}
 .detailTable .detail-info{float:left;width:35%;margin-left:-1px}
 .detailTable .detail-picture{float:left;width:65%}
 .detailTable table{width:100%;border-collapse:collapse;position:relative;border:1px solid #c2c2c2}
@@ -1152,10 +1156,11 @@ ul{margin:0}
 .friend-email{width:100%}
 .simplemodal-close{background:url(images/x.png) no-repeat;width:22px;height:22px;position:absolute;right:-5px;top:-5px}
 #popup h1{padding:5px 0;background:#c06;color:#fff;font-weight:bold;font-size:14px;text-align:center;text-transform:uppercase}
-.whiteBgCata{padding:7px 10px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:200px;margin-top:10px;height:55px}
+.whiteBgCata{padding:7px 5px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:245px;margin-top:10px;height:55px}
+.whiteBgCata-small{padding:7px 5px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:100%;margin-top:10px;height:55px}
 .pinkNarrowTitle30{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06}
 .whiteLeftCol{float:left;width:220px;margin:0 15px 10px 0;background:#fff}
-.rightContentTwist{width:715px;float:right}
+.rightContentTwist{width:850px;float:right}
 .leftContentTwist{width:220px;float:left;margin-right:10px}
 .greyBgTitle{float:left;background:url(images/greyBgTitle.png) no-repeat;width:220px;height:41px;text-align:center;padding-top:9px}
 .greyBgTitle a{color:#000;font-size:14px;text-transform:uppercase;text-decoration:none}
@@ -1182,7 +1187,7 @@ ul{margin:0}
 .ulStyle li{list-style-image:url(images/listIcon.png);padding-top:5px}
 .ulStyle li a{text-decoration:none;color:#555}
 .ulStyle li a:hover{color:#000}
-.news{float:left;width:680px;margin:10px 0 0 20px;font-size:13px;text-align:justify}
+.news{float:left;width:850px;margin:10px 0 0 20px;font-size:13px;text-align:justify}
 .newsImgBorder{border:3px solid #d3d3d3}
 .menu-col{width:200px;float:left;padding:0 10px;border-right:dashed 1px #ddd}
 .menu-col:last-child{border:0}
@@ -1192,6 +1197,7 @@ ul{margin:0}
 .p-name:hover{color:#d82d7f}
 textarea.formBoxInText{height:70px}
 .menu-footer{height:31px;border-top:dashed 1px #5c5b5b;border-bottom:dashed 1px #5c5b5b;line-height:31px;text-align:center}
-.menu-footer ul{width:515px;margin:0 auto}
+.menu-footer ul{width:700px;margin:0 auto}
 .menu-footer ul a{font-weight:bold}
 .picture-title{background:#000;opacity:.8;width:100%;padding:10px;text-align:center;height:40px;position:absolute;margin-top:-10px}
+#carousel li {margin-right:6px }

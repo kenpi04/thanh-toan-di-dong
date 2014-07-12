@@ -4,10 +4,13 @@
 @using Nop.Web.Models.Catalog;
 @{
     Html.AddScriptParts("~/Scripts/slimbox2.js");
+    Html.AddScriptParts("~/Scripts/jquery.flexslider.js");
+    Html.AddCssFileParts("~/Themes/Zhouse/Content/flexslider.css");
+    
 
     
 }
-<div class="gallery">
+@*<div class="gallery">
     <div class="picture" id="main-pic">
         @if (Model.DefaultPictureZoomEnabled)
         {
@@ -19,12 +22,12 @@
         {
             <img  alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
         }
-        <div class="picture-title" id="pic-title"></div>
+        <div class="picture-title" style="display:none" id="pic-title"></div>
 
     </div>
     @if (Model.PictureModels.Count > 1)
     {
-        <div class="thumbnail">
+       <div class="thumbnail">
             @for (int i = 0; i < Model.PictureModels.Count; i++)
             {
                 var picture = Model.PictureModels[i];
@@ -49,5 +52,55 @@
                 })
             })
         </script>
+        
+         <div>
+           
     }
+</div>*@
+
+@if (Model.PictureModels.Count > 0)
+{ 
+   <div id="slider-detail" class="flexslider">
+  <ul class="slides">
+      @foreach(var i in Model.PictureModels)
+      {
+    <li>
+      <img src="@i.FullSizeImageUrl" />
+    </li>
+      }
+   
+  </ul>
 </div>
+<div id="carousel" class="flexslider">
+  <ul class="slides">
+       @foreach(var i in Model.PictureModels)
+      {
+        <li>
+          <img src="@i.ImageUrl" />
+        </li>
+       }
+    
+  </ul>
+</div>
+    <script>
+        $(window).load(function () {
+            // The slider being synced must be initialized first
+            $('#carousel').flexslider({
+                animation: "slide",
+                controlNav: false,
+                animationLoop: false,
+                slideshow: false,
+                itemWidth: 80,
+                itemMargin: 5,
+                asNavFor: '#slider-detail'
+            });
+            $('#slider-detail').flexslider({
+                animation: "slide",
+                controlNav: false,
+                animationLoop: false,
+                slideshow: false,
+                sync: "#carousel"
+            });
+        });
+    </script>
+}

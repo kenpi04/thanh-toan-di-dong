@@ -1433,6 +1433,8 @@
     <Content Include="Themes\Mobile\Content\styles.css" />
     <Content Include="Themes\print.css" />
     <Content Include="Themes\Zhouse\Content\editorsimple.css" />
+    <Content Include="Themes\Zhouse\Content\flexslider.css" />
+    <Content Include="Themes\Zhouse\Content\fonts\flexslider-icon.svg" />
     <Content Include="Themes\Zhouse\Content\ie6.css" />
     <Content Include="Themes\Zhouse\Content\ie7.css" />
     <Content Include="Themes\Zhouse\Content\images\ad.png" />
@@ -1524,6 +1526,7 @@
     <Content Include="Themes\Zhouse\Content\images\zhouse.png" />
     <Content Include="Themes\Zhouse\Content\jquery-te-1.4.0.css" />
     <Content Include="Themes\Zhouse\Content\jquery-te.png" />
+    <Content Include="Scripts\jquery.flexslider.js" />
     <Content Include="Themes\Zhouse\Content\styles.css" />
     <Content Include="Themes\Zhouse\Content\styles.rtl.css" />
     <Content Include="Themes\Zhouse\Content\uniform\css\uniform.default.css" />
@@ -1708,6 +1711,9 @@
     <Content Include="Views\Catalog\Map.cshtml" />
     <Content Include="Views\FptBanner\BannerShow.cshtml" />
     <Content Include="Views\FptBanner\BannerSlideShow.cshtml" />
+    <Content Include="Themes\Zhouse\Content\fonts\flexslider-icon.eot" />
+    <Content Include="Themes\Zhouse\Content\fonts\flexslider-icon.ttf" />
+    <Content Include="Themes\Zhouse\Content\fonts\flexslider-icon.woff" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
