@@ -499,11 +499,11 @@ namespace Nop.Admin.Controllers
 
         public ActionResult RestartApplication()
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
+            //if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
+            //    return AccessDeniedView();
 
             //restart application
-            _webHelper.RestartAppDomain();
+            //_webHelper.RestartAppDomain();
             return RedirectToAction("Index", "Home");
         }
 
