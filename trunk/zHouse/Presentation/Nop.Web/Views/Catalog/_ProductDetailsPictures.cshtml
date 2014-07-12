@@ -1,68 +1,17 @@
-﻿@model ProductDetailsModel
+﻿@model IList<Nop.Web.Models.Media.PictureModel>
 @using Nop.Core.Domain.Media
 @using Nop.Core.Infrastructure
 @using Nop.Web.Models.Catalog;
 @{
     Html.AddScriptParts("~/Scripts/slimbox2.js");
     Html.AddScriptParts("~/Scripts/jquery.flexslider.js");
-    Html.AddCssFileParts("~/Themes/Zhouse/Content/flexslider.css");
-    
-
-    
+    Html.AddCssFileParts("~/Themes/Zhouse/Content/flexslider.css");  
 }
-@*<div class="gallery">
-    <div class="picture" id="main-pic">
-        @if (Model.DefaultPictureZoomEnabled)
-        {
-            <a href="@Model.DefaultPictureModel.FullSizeImageUrl" data-gallery="lightbox-pd" title="@Model.Name"  id="main-product-img-lightbox-anchor-@Model.Id">
-                <img   alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
-            </a>
-        }
-        else
-        {
-            <img  alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
-        }
-        <div class="picture-title" style="display:none" id="pic-title"></div>
-
-    </div>
-    @if (Model.PictureModels.Count > 1)
-    {
-       <div class="thumbnail">
-            @for (int i = 0; i < Model.PictureModels.Count; i++)
-            {
-                var picture = Model.PictureModels[i];
-
-               <div class="thumbnailPic">
-                    <a href="@picture.FullSizeImageUrl" rel="@picture.Description" data-gallery="lightbox-p" title="@Model.Name">
-                        <img  src="@picture.ImageUrl" alt="@picture.AlternateText" class="noborder" title="@picture.Title" />
-                </a>     
-               </div>
-            }
-        </div>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $(".thumbnailPic a").click(function () {
-                    var src=$(this).attr("href");
-                    $("#main-pic img").attr("src", src);
-                    $("#pic-title").html($(this).attr("rel"))
-                }).mouseover(function () {
-                    var src = $(this).attr("href");
-                    $("#main-pic img").attr("src", src);
-                    $("#pic-title").html($(this).attr("rel"))
-                })
-            })
-        </script>
-        
-         <div>
-           
-    }
-</div>*@
-
-@if (Model.PictureModels.Count > 0)
+@if (Model.Count > 0)
 { 
    <div id="slider-detail" class="flexslider">
   <ul class="slides">
-      @foreach(var i in Model.PictureModels)
+      @foreach(var i in Model)
       {
     <li>
       <img src="@i.FullSizeImageUrl" />
@@ -73,7 +22,7 @@
 </div>
 <div id="carousel" class="flexslider">
   <ul class="slides">
-       @foreach(var i in Model.PictureModels)
+       @foreach(var i in Model)
       {
         <li>
           <img src="@i.ImageUrl" />

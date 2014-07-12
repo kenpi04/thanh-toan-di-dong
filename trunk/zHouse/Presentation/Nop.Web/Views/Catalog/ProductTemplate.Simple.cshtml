@@ -113,9 +113,14 @@
                         </tbody>
                     </table>
                     </div>
-                    <div class="detail-picture">
-                       @Html.Partial("_ProductDetailsPictures", Model)
+                    <div class="detail-picture" id="detail-picture">
+                   
                     </div>
+                       <script>
+                           $(function(){
+                               $("#detal-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new {productId=Model.Id })")
+                           })
+                      </script>
                  <div class="clearfix"></div>
                 </div><!----detailTable---->
 
@@ -214,6 +219,7 @@
            
 
         </div>
+            </div>
        
     
 

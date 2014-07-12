@@ -48,7 +48,13 @@
             <div class="clearBoth"></div>
             @if (!isHome)
             {
-                @Html.Action("RecentlyViewedProductsBlock", "Catalog", new { productThumbPictureSize = 254})
+           
+                <div id="recent-view">
+                  
+               </div>
+                 <script type="text/javascript">
+                       $("#recent-view").html("<div class='please-wait'></div>").load("@Url.Action("RecentlyViewedProductsBlock", "Catalog", new { productThumbPictureSize = 254})")
+                   </script>
             }
         </div>
         @Html.Widget("content_after")

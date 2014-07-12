@@ -141,5 +141,8 @@ $(function () {
                 $(this).val($(this).val().replace(/\D/g, ''));
         }
     })
-   $("select").uniform();
+    $("select").uniform();
+ 
+        $("img.lazy").lazyload();
+   
 })
