@@ -1,0 +1,77 @@
+﻿@model DistrictListModel
+@using Telerik.Web.Mvc.UI
+@{
+    //page title
+    ViewBag.Title = "District";
+}
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-content.png")" alt="" />
+        @T("Admin.ContentManagement.District")
+    </div>
+    <div class="options">
+        <a href="@Url.Action("DistrictCreate")" class="t-button">@T("Admin.Common.AddNew")</a>
+    </div>
+</div>
+<table width="100%">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.StateProvinceId):
+        </td>
+        <td class="adminData">
+            @Html.DropDownList("StateProvinceId", Model.StateProvinces)
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="button" id="search-districts" class="t-button" value="@T("Admin.Common.Search")" />
+        </td>
+    </tr>
+</table>
+<p>
+</p>
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<DistrictModel>()
+                    .Name("districts-grid")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Name);
+                        columns.Bound(x => x.Published);
+                        columns.Bound(x => x.DisplayOrder);
+                        columns.Bound(x => x.Id)
+                            .Width(50)
+                            .Centered()
+                            .Template(x => Html.ActionLink(T("Admin.Common.Edit").Text, "DistrictEdit", new { id = x.Id }))
+                            .ClientTemplate("<a href=\"DistrictEdit/<#= Id #>\">" + T("Admin.Common.Edit").Text + "</a>")
+                            .Title(T("Admin.Common.Edit").Text);
+                    })
+                .DataBinding(dataBinding => dataBinding.Ajax().Select("DistrictList", "Country"))
+                .ClientEvents(events => events.OnDataBinding("onDataBinding"))
+                .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //search button
+        $('#search-districts').click(function () {
+            //search
+            var grid = $('#districts-grid').data('tGrid');
+            //no paging support in this grid
+            //grid.currentPage = 1; //new search. Set page size to 1
+            grid.ajaxRequest();
+            return false;
+        });
+    });
+
+    function onDataBinding(e) {
+        var searchModel = {
+            StateProvinceId: $('#StateProvinceId').val()
+        };
+        e.data = searchModel;
+    }
+</script>
