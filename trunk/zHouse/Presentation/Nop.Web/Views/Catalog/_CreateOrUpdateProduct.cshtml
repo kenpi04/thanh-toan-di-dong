@@ -67,45 +67,63 @@
                 <tbody>
                     <tr>
                         <td>
+                            @Html.LabelFor(x=>x.Price) 
                         @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable number",placeholder="Giá"})
                             @Html.RequiredHint()
                      
                         <td><span id="price-text">vnđ</span></td>
                         <td>
+                             @Html.LabelFor(x=>x.NumberFloors) 
                         @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.NumberFloors,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()
                      </td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td>   @Html.DropDownListFor(x=>x.CateId,Model.Categories,new{@class="formBoxInSelectTable"})
+                        <td>  
+                                @Html.LabelFor(x=>x.CateId) 
+                             @Html.DropDownListFor(x=>x.CateId,Model.Categories,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
                         <td></td>
-                        <td>@Html.TextBoxFor(x => x.AreaUse, new { @class = "formBoxInTable number",placeholder="Diện tích sử dụng"})
+                        <td>
+                              @Html.LabelFor(x=>x.AreaUse) 
+                            @Html.TextBoxFor(x => x.AreaUse, new { @class = "formBoxInTable number",placeholder="Diện tích sử dụng"})
                         @Html.RequiredHint()</td>
                         <td>m2</td>
                     </tr>
                     <tr>
-                        <td>@Html.TextBoxFor(x => x.Area, new { @class = "formBoxInTable number",placeholder="Diện tích"})
+                        <td>
+                             @Html.LabelFor(x=>x.Area) 
+                            @Html.TextBoxFor(x => x.Area, new { @class = "formBoxInTable number",placeholder="Diện tích"})
                         @Html.RequiredHint()</td>
                         <td>m2</td>
-                        <td>@Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BedRooms,new{@class="formBoxInSelectTable"})
+                        <td>
+                                @Html.LabelFor(x=>x.BedRooms) 
+                            @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BedRooms,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td>@Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable number",placeholder="Chiều ngang"})
+                        <td>
+                            @Html.LabelFor(x=>x.Width) 
+                            @Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable number",placeholder="Chiều ngang"})
                         @Html.RequiredHint()</td>
                         <td>m</td>
-                        <td>@Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BadRooms,new{@class="formBoxInSelectTable"})
+                        <td>
+                             @Html.LabelFor(x=>x.BadRooms)
+                            @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BadRooms,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td>@Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable number",placeholder="Chiều sâu"})
+                        <td>
+                             @Html.LabelFor(x=>x.Dept)
+                            @Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable number",placeholder="Chiều sâu"})
                         @Html.RequiredHint()</td>
                         <td>m</td>
-                        <td>@Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.Directors,new{@class="formBoxInSelectTable"})
+                        <td>
+                             @Html.LabelFor(x=>x.Directors)
+                            @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.Directors,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
                         <td></td>
                     </tr>
