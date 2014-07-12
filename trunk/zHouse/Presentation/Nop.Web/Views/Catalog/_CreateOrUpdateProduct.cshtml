@@ -50,7 +50,7 @@
         @foreach(var i in Model.PhapLy)
         {
            
-                <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"checked=checked":"") @Html.Raw("&nbsp;"+i.Text+"&nbsp;&nbsp;&nbsp;") />
+                <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"checked=checked":"") /> @Html.Raw("&nbsp;"+i.Text+"&nbsp;&nbsp;&nbsp;") 
                 
         }
             
