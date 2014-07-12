@@ -8,15 +8,17 @@
   <div class="wrapper">
 <div class="topInfo">
         	<div class="pinkBg">            	
-                <img src="@Url.Content("~/Themes/Zhouse/Content/images/zhouse.png")"/> <br>
+                <div class="zhouse">zHouse.com.vn </div>
+                <div class="slogan">Sàn giao dịch nhà uy tín tại TP Hồ Chí Minh</div>
                 @Html.DropDownList("districtId", Model.Districts, new { @class = "box" })
                @Html.DropDownList("priceString", Model.PriceRange, new { @class = "box" })
                 @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "box" })         
                 @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "box" })
                      
-<br>
+
                 <input type="submit" style="margin-right:4px" class="blueBtn" value="tìm kiếm">
                 <div class="clearBoth"></div>
+                <div class="gioithieu"> Hơn 200 Bất động sản uy tín trên zHouse.com.vn - Tìm ngay ngôi nhà mơ ước của bạn</div>
             </div>
         </div>
 </div>
