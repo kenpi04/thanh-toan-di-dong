@@ -751,12 +751,10 @@ namespace Nop.Web.Controllers
                     FullSizeImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(), defaultPictureFullSize, !isAssociatedProduct),
                     Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
                     AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
-                 
                 };
                 //all pictures
                 var pictureModels = new List<PictureModel>();
                 foreach (var picture in pictures)
-
                 {
                     pictureModels.Add(new PictureModel()
                     {
@@ -764,7 +762,7 @@ namespace Nop.Web.Controllers
                         FullSizeImageUrl = _pictureService.GetPictureUrl(picture, defaultPictureFullSize),
                         Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
                         AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
-                        Description=picture.ProductPictures.FirstOrDefault()!=null?picture.ProductPictures.FirstOrDefault().Description:""
+                        Description = picture.ProductPictures.FirstOrDefault() != null ? picture.ProductPictures.FirstOrDefault().Description : ""
                     });
                 }
 
@@ -1271,7 +1269,7 @@ namespace Nop.Web.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult TopMenu()
+        public ActionResult TopMenu(int stateId = 23)
         {
             var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
                 .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
@@ -1288,7 +1286,8 @@ namespace Nop.Web.Controllers
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
                 BlogEnabled = _blogSettings.Enabled,
                 ForumEnabled = _forumSettings.ForumsEnabled,
-                Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
+                Districts = _stateProvinceService.GetDistHCM(stateId, true).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName()),
+                Districts2 = _stateProvinceService.GetDistHCM(stateId, false).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
             };
             model.CategoriesNews = _catenewsService.GetAllCategories().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName());
             model.Topics = _topicService.GetAllTopics(0, 1).Select(x => new SelectListItem { Text = x.Title, Value = x.SystemName }).ToList();
@@ -3276,6 +3275,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("PageNotfound");
             return View(productId);
         }
+
         public ActionResult InsertProduct()
         {
 
@@ -3356,7 +3356,7 @@ namespace Nop.Web.Controllers
                 }
                 #endregion
 
-             return  RedirectToAction("InsertProductSuccess", new { productId = product.Id });
+                return RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }
             return View(model);
 
@@ -3482,7 +3482,7 @@ namespace Nop.Web.Controllers
                 string seName = product.ValidateSeName(product.Name, product.Name, true);
                 _urlRecordService.SaveSlug(product, seName, 0);
 
-             return   RedirectToAction("InsertProductSuccess", new { productId = product.Id });
+                return RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }
             return View(model);
 
