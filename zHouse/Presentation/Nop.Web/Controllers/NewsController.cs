@@ -250,7 +250,7 @@ namespace Nop.Web.Controllers
                 .Select(x =>
                 {
                     var newsModel = new NewsItemModel();
-                    PrepareNewsItemModel(newsModel, x, true);
+                    PrepareNewsItemModel(newsModel, x, false, true);
                     return newsModel;
                 })
                 .ToList();
