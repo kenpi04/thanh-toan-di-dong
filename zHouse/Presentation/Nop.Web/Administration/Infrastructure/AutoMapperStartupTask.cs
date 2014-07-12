@@ -117,6 +117,12 @@ namespace Nop.Admin.Infrastructure
                 .ForMember(dest => dest.DisplayOrder, mo => mo.MapFrom(src => src.DisplayOrder1))
                 .ForMember(dest => dest.Country, mo => mo.Ignore());
 
+            //District
+            Mapper.CreateMap<District, DistrictModel>();                
+            Mapper.CreateMap<DistrictModel, District>()
+                .ForMember(dest => dest.StateProvince, mo => mo.Ignore());
+
+
             //language
             Mapper.CreateMap<Language, LanguageModel>()
                 .ForMember(dest => dest.AvailableStores, mo => mo.Ignore())

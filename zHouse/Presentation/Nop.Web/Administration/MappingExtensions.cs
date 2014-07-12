@@ -673,7 +673,7 @@ namespace Nop.Admin
 
         #endregion
 
-        #region Countries / states
+        #region Countries / states / district
 
         public static CountryModel ToModel(this Country entity)
         {
@@ -705,6 +705,21 @@ namespace Nop.Admin
             return Mapper.Map(model, destination);
         }
 
+
+        public static DistrictModel ToModel(this District entity)
+        {
+            return Mapper.Map<District, DistrictModel>(entity);
+        }
+
+        public static District ToEntity(this DistrictModel model)
+        {
+            return Mapper.Map<DistrictModel, District>(model);
+        }
+
+        public static District ToEntity(this DistrictModel model, District destination)
+        {
+            return Mapper.Map(model, destination);
+        }
 
         #endregion
 

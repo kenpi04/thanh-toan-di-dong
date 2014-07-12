@@ -422,5 +422,143 @@ namespace Nop.Admin.Controllers
         }
 
         #endregion
+
+        #region district
+               
+        public ActionResult DistrictIndex()
+        {
+            return RedirectToAction("DistrictList");
+        }
+
+        public ActionResult DistrictList()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCountries))
+                return AccessDeniedView();
+
+            var model = new DistrictListModel();
+            //stores
+            //model.Countries.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });            
+            //foreach (var s in _countryService.GetAllCountries())
+            //    model.Countries.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString() });
+
+            //model.StateProvinces.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            foreach (var s in _stateProvinceService.GetStateProvincesByCountryId(230))
+                model.StateProvinces.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString() });
+
+
+            return View(model);
+        }
+
+        [HttpPost, GridAction(EnableCustomBinding = true)]
+        public ActionResult DistrictList(GridCommand command, DistrictListModel model)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageTopics))
+                return AccessDeniedView();
+
+            var districtModels = _stateProvinceService.GetDistHCM(model.StateProvinceId, true).OrderBy(x => x.DisplayOrder)
+                .Select(x => x.ToModel())
+                .ToList();
+           
+            var gridModel = new GridModel<DistrictModel>
+            {
+                Data = districtModels,
+                Total = districtModels.Count
+            };
+            return new JsonResult
+            {
+                Data = gridModel
+            };
+        }
+
+        public ActionResult DistrictCreate()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageTopics))
+                return AccessDeniedView();
+
+            var model = new DistrictModel();            
+            foreach (var s in _stateProvinceService.GetStateProvincesByCountryId(230))
+                model.StateProvinces.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString() });
+           
+            return View(model);
+        }
+
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
+        public ActionResult DistrictCreate(DistrictModel model, bool continueEditing)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageTopics))
+                return AccessDeniedView();
+
+            if (ModelState.IsValid)
+            {                
+                var district = model.ToEntity();
+                
+                _stateProvinceService.InsertDistrict(district);
+
+                SuccessNotification(_localizationService.GetResource("Admin.ContentManagement.District.Added"));
+                return continueEditing ? RedirectToAction("DistrictEdit", new { id = district.Id }) : RedirectToAction("DistrictList");
+            }
+
+            return View(model);
+        }
+
+        public ActionResult DistrictEdit(int id)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCountries))
+                return AccessDeniedView();
+
+            var district = _stateProvinceService.GetDistrictById(id);
+            if (district == null)
+                return RedirectToAction("DistrictList");
+
+            var model = district.ToModel();
+
+            foreach (var s in _stateProvinceService.GetStateProvincesByCountryId(230))
+                model.StateProvinces.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString() });           
+
+            return View(model);
+        }
+
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
+        public ActionResult DistrictEdit(DistrictModel model, bool continueEditing)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCountries))
+                return AccessDeniedView();
+
+            var district = _stateProvinceService.GetDistrictById(model.Id);
+            if (district == null)
+                //No topic found with the specified id
+                return RedirectToAction("DistrictList");
+
+            if (ModelState.IsValid)
+            {
+                district = model.ToEntity(district);
+                _stateProvinceService.UpdateDistrict(district);
+
+                SuccessNotification(_localizationService.GetResource("Admin.ContentManagement.District.Updated"));
+
+                return continueEditing ? RedirectToAction("DistrictEdit", new { id = district.Id }) : RedirectToAction("DistrictList");
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult DistrictDelete(int id)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageTopics))
+                return AccessDeniedView();
+
+            var district = _stateProvinceService.GetDistrictById(id);
+            if (district == null)
+                //No topic found with the specified id
+                return RedirectToAction("DistrictList");
+
+            _stateProvinceService.DeleteDistrict(district);
+
+            SuccessNotification(_localizationService.GetResource("Admin.ContentManagement.District.Deleted"));
+            return RedirectToAction("DistrictList");
+        }
+
+        #endregion
     }
 }
