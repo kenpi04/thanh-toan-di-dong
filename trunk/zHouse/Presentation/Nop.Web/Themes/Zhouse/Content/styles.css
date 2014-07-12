@@ -26,7 +26,7 @@ input[type="text"]:disabled{background:none repeat scroll 0 0 #FFF}
 select{border:1px solid #c2c2c2;color:#666;font-size:11px;padding:5px 5px 5px 10px;width:150px}
 .master-wrapper-page{background:none repeat scroll 0 0 #f1f1f1}
 .master-wrapper-content{margin:0 auto}
-.master-wrapper-main{color:#373737;width:945px;margin:0 auto}
+.master-wrapper-main{color:#373737;width:1080px;margin:0 auto}
 .master-wrapper-main .center-1{min-height:400px;display:inline;float:left}
 .master-wrapper-main .side-2{float:left;width:190px;margin:10px 0;display:inline}
 .master-wrapper-main .center-2{float:left;width:710px;min-height:400px;padding:10px;margin:10px 0 10px 10px;background:#FFF;display:inline;border-radius:5px}
@@ -998,7 +998,7 @@ body{background:#f1f1f1;font-family:"open sans","segoe UI",Arial,Helvetica,sans-
 .clearBoth{clear:both}
 ul{margin:0}
 .top{width:100%;height:50px;background:#FFF;position:fixed;z-index:1000;margin-top:-2px;border-bottom:1px solid #c2c2c2}
-.wrapper{width:945px;margin:0 auto;position:relative}
+.wrapper{width:1080px;margin:0 auto;position:relative}
 .stretchImg{width:100%}
 .logo{position:absolute;top:0;left:0}
 .menu{position:absolute;top:0;right:0}
@@ -1010,7 +1010,7 @@ ul{margin:0}
 .verLine{background:url(images/verLine.png) no-repeat scroll 0 0;width:1px !important;height:100px;margin:-12px 2px 0 6px}
 .searchBtn{background:url(images/searchBtn.png) no-repeat;width:27px;height:27px;border:0;cursor:pointer}
 .searchBtn:hover{background:url(images/searchBtnhover.png)}
-.topInfo{position:absolute;top:200px;margin-left:8%;z-index:100}
+.topInfo{position:absolute;top:200px;margin-left:14%;z-index:100}
 .pinkBg{background:rgba(30,30,30,0.8);border-radius:4px;padding:25px}
 .pinkNarrowTitle{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06;text-align:center}
 .box{background:#fff;width:130px;padding:5px 5px 5px 10px;border:0;margin:5px 5px 5px 0;color:#333;font-size:12px}
@@ -1018,11 +1018,11 @@ ul{margin:0}
 .blueBtn:hover{color:#d3eefb}
 .blueBigBtn{background:#1e98d5;color:#fff;font-weight:bold;font-size:15px;text-align:center;padding:10px 30px;border:0;cursor:pointer;text-transform:uppercase;margin:5px 0;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif}
 .blueBigBtn:hover{color:#d3eefb}
-.intro{float:left;width:945px;margin:30px 0 10px 0;height:245px}
+.intro{float:left;margin:30px 0 10px 0;height:245px}
 .intro-product{float:left;width:100%}
-.introCol{float:left;width:220px;position:relative;margin-right:14px;border:1px solid #ccc;margin-bottom:14px;background:#fff;height:345px}
+.introCol{float:left;width:254px;position:relative;margin-right:14px;border:1px solid #ccc;margin-bottom:14px;background:#fff;height:345px}
 .introCol .info-picture{min-height:220px}
-<!-- new{position:absolute;top:0;right:-5px;background:url(images/new.png) no-repeat;width:96px;height:54px}
+ .new{position:absolute;top:0;right:-5px;background:url(images/new.png) no-repeat;width:96px;height:54px}
 .nhon{position:absolute;top:207px;left:20px;background:url(images/nhon.png) no-repeat;width:23px;height:13px}
 .pinkTag{background:url(images/pinkTag.png) no-repeat;width:106px;height:36px;padding-top:7px;position:absolute;right:-10px;top:190px;color:#fff;text-align:center;font-weight:bold;font-size:13px}
 .backBtn{background:url(images/back.png) no-repeat;width:32px;height:108px;border:0;cursor:pointer;float:left;margin-top:60px}
@@ -1175,8 +1175,8 @@ ul{margin:0}
 .createproduct-page h1{font-size:30px;font-weight:bold}
 .createproduct-page .text-i{line-height:30px}
 .detailTable .greyBgTD{font-weight:normal}
-.zhouse{font-size:50px;color:#fff;text-align:left;text-shadow:0 0 10px rgba(0,0,0,1);font-family:"Myriad Pro",Arial,Helvetica,sans-serif}
-.slogan{font-size:25px;color:#fff;text-align:left;margin-bottom:20px;text-shadow:0 0 10px rgba(0,0,0,1);font-family:"Myriad Pro",Arial,Helvetica,sans-serif}
+.zhouse{font-size:50px;color:#fff;text-align:center;text-shadow:0 0 10px rgba(0,0,0,1);font-family:"Myriad Pro",Arial,Helvetica,sans-serif}
+.slogan{font-size:25px;color:#fff;text-align:center;margin-bottom:20px;text-shadow:0 0 10px rgba(0,0,0,1);font-family:"Myriad Pro",Arial,Helvetica,sans-serif}
 .gioithieu{color:#fff;font-size:14px;padding-top:10px;text-align:center}
 .back-top{top:25px;position:fixed;_position:absolute}
 .ulStyle li{list-style-image:url(images/listIcon.png);padding-top:5px}
