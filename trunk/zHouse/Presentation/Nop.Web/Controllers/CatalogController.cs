@@ -363,11 +363,10 @@ namespace Nop.Web.Controllers
                     NumBadRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBadRoom),
                     Status = GetOptionName(product, ProductAttributeEnum.Status),
                     NumberBlock = GetOptionName(product, ProductAttributeEnum.NumberBlock),
-                    Directors=GetOptionName(product,ProductAttributeEnum.Director),
+                    Directors = GetOptionName(product, ProductAttributeEnum.Director),
                     Area = product.Area,
                     FullAddress = product.FullAddress,
-                    DictrictName = product.District.Name,
-                 
+                    DictrictName = product.District == null ? "" : product.District.Name,
 
 
                 };
@@ -675,9 +674,9 @@ namespace Nop.Web.Controllers
                 FullAddress = product.FullAddress,
                 CustomerId = product.CustomerId,
                 ProductStatusText = _localizationService.GetResource("Product.StatusText." + product.ProductStatusText),
-                AreaUse=product.AreaUse,
-               Width=product.Width,
-               Dept=product.Height
+                AreaUse = product.AreaUse,
+                Width = product.Width,
+                Dept = product.Height
 
 
 
@@ -714,7 +713,7 @@ namespace Nop.Web.Controllers
             model.Status = GetOptionName(product, ProductAttributeEnum.Status);
             model.Directors = GetOptionName(product, ProductAttributeEnum.Director);
             model.PhapLy = GetOptionName(product, ProductAttributeEnum.PhapLy);
-            
+
 
             #endregion
 
@@ -749,7 +748,7 @@ namespace Nop.Web.Controllers
                 var defaultPictureModel = new PictureModel()
                 {
                     ImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(), defaultPictureSize, !isAssociatedProduct),
-                    FullSizeImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(),defaultPictureFullSize, !isAssociatedProduct),
+                    FullSizeImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(), defaultPictureFullSize, !isAssociatedProduct),
                     Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
                     AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
                 };
@@ -1180,7 +1179,7 @@ namespace Nop.Web.Controllers
 
 
             var categoryIds = new List<int>();
-            categoryIds.Add(category.Id);            
+            categoryIds.Add(category.Id);
             if (_catalogSettings.ShowProductsFromSubcategories)
             {
                 //include subcategories
@@ -1188,7 +1187,7 @@ namespace Nop.Web.Controllers
             }
             //products
             IList<int> alreadyFilteredSpecOptionIds = model.PagingFilteringContext.SpecificationFilter.GetAlreadyFilteredSpecOptionIds(_webHelper);
-            
+
             IList<int> filterableSpecificationAttributeOptionIds = null;
             var products = _productService.SearchProducts(out filterableSpecificationAttributeOptionIds, true,
                 categoryIds: categoryIds,
@@ -1197,10 +1196,10 @@ namespace Nop.Web.Controllers
                 featuredProducts: _catalogSettings.IncludeFeaturedProductsInNormalLists ? null : (bool?)false,
                 priceMin: minPriceConverted, priceMax: maxPriceConverted,
                 filteredSpecs: alreadyFilteredSpecOptionIds,
-                dictrictIds:new List<int>{districtId},
-                wardId:wardId,
-                stateProvinceId:stateProvinceId,
-                streetId:streetId,
+                dictrictIds: new List<int> { districtId },
+                wardId: wardId,
+                stateProvinceId: stateProvinceId,
+                streetId: streetId,
                 orderBy: (ProductSortingEnum)command.OrderBy,
                 pageIndex: command.PageNumber - 1,
                 pageSize: command.PageSize);
@@ -1292,7 +1291,7 @@ namespace Nop.Web.Controllers
             model.Topics = _topicService.GetAllTopics(0, 1).Select(x => new SelectListItem { Text = x.Title, Value = x.SystemName }).ToList();
             return PartialView(model);
         }
-        
+
         [ChildActionOnly]
         public ActionResult HomepageCategories()
         {
@@ -1917,7 +1916,7 @@ namespace Nop.Web.Controllers
             }
 
             //prepare the model
-            var model = PrepareProductDetailsPageModel(product,null, false);
+            var model = PrepareProductDetailsPageModel(product, null, false);
 
             //save as recently viewed
             _recentlyViewedProductsService.AddProductToRecentlyViewedList(product.Id);
@@ -2161,7 +2160,7 @@ namespace Nop.Web.Controllers
                 var products = _recentlyViewedProductsService.GetRecentlyViewedProducts(_catalogSettings.RecentlyViewedProductsNumber);
 
                 //ACL and store mapping
-                products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
+                //products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
 
                 //prepare model
                 model.AddRange(PrepareProductOverviewModels(products,
@@ -2829,8 +2828,8 @@ namespace Nop.Web.Controllers
         [CaptchaValidator]
         public ActionResult ProductEmailAFriendSend(ProductEmailAFriendModel model, bool captchaValid)
         {
-            DateTime d = new DateTime(model.Year,model.Month,model.Date,model.Hour,model.Minute,0);
-            
+            DateTime d = new DateTime(model.Year, model.Month, model.Date, model.Hour, model.Minute, 0);
+
             var product = _productService.GetProductById(model.ProductId);
             if (product == null || product.Deleted || !product.Published || !_catalogSettings.EmailAFriendEnabled)
                 return Json("Lỗi");
@@ -2850,23 +2849,23 @@ namespace Nop.Web.Controllers
             if (ModelState.IsValid)
             {
                 //email
-                if(model.Year>0)
+                if (model.Year > 0)
                 {
                     var mes = new Message
                     {
-                        Email=model.FriendEmail,
-                        Body=model.PersonalMessage,
-                        CreatedOn=DateTime.Now,
-                        BookDate=d,
-                        ProductId=model.ProductId,
-                        Phone=model.Phone,
-                        Name=model.Name,
-                        Type=(int)MessageType.Book
+                        Email = model.FriendEmail,
+                        Body = model.PersonalMessage,
+                        CreatedOn = DateTime.Now,
+                        BookDate = d,
+                        ProductId = model.ProductId,
+                        Phone = model.Phone,
+                        Name = model.Name,
+                        Type = (int)MessageType.Book
 
                     };
                     _messagesService.InsertMessage(mes);
                     return Json("Gửi thành công");
-                    
+
                 }
 
 
@@ -2882,7 +2881,7 @@ namespace Nop.Web.Controllers
                 model.SuccessfullySent = true;
                 model.Result = _localizationService.GetResource("Products.EmailAFriend.SuccessfullySent");
                 return Json("Gửi thành công!");
-               // return View(model);
+                // return View(model);
             }
 
             //If we got this far, something failed, redisplay form
@@ -2988,7 +2987,7 @@ namespace Nop.Web.Controllers
 
         [NopHttpsRequirement(SslRequirement.No)]
         [ValidateInput(false)]
-        public ActionResult Search(SearchModel model, SearchPagingFilteringModel command, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0, string priceString="", string attributeOptionIds="")
+        public ActionResult Search(SearchModel model, SearchPagingFilteringModel command, int categoryId = 0, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0, string priceString = "", string attributeOptionIds = "")
         {
             if (model == null)
                 model = new SearchModel();
@@ -3081,20 +3080,20 @@ namespace Nop.Web.Controllers
             if (model.As)
             {
                 //advanced search
-                var categoryId = model.Cid;
+                var categoryId1 = model.Cid;
                 if (categoryId > 0)
                 {
-                    categoryIds.Add(categoryId);
+                    categoryIds.Add(categoryId1);
                     if (model.Isc)
                     {
                         //include subcategories
-                        categoryIds.AddRange(GetChildCategoryIds(categoryId));
+                        categoryIds.AddRange(GetChildCategoryIds(categoryId1));
                     }
                 }
 
 
                 manufacturerId = model.Mid;
-               
+
                 //min price
                 if (!string.IsNullOrEmpty(model.Pf))
                 {
@@ -3109,15 +3108,18 @@ namespace Nop.Web.Controllers
                     if (decimal.TryParse(model.Pt, out maxPrice))
                         maxPriceConverted = maxPrice * 1000000;//_currencyService.ConvertToPrimaryStoreCurrency(maxPrice, _workContext.WorkingCurrency);
                 }
-                
+
                 searchInDescriptions = model.Sid;
-                                
-               
-            }else
+
+
+            }
+            else
             {
+                if (categoryId > 0)
+                    categoryIds.Add(categoryId);
                 if (!String.IsNullOrEmpty(priceString))
                 {
-                    var p = priceString.Split('-');                   
+                    var p = priceString.Split('-');
                     decimal minPrice = decimal.Zero;
                     if (decimal.TryParse(p[0].ToString(), out minPrice))
                         minPriceConverted = minPrice * 1000000;
@@ -3196,16 +3198,16 @@ namespace Nop.Web.Controllers
 
 
             model.PagingFilteringContext.LoadPagedList(products);
-            string districtName,cateName,priceName,huong;
-            districtName=cateName=priceName=huong="";
+            string districtName, cateName, priceName, huong;
+            districtName = cateName = priceName = huong = "";
             if (model.DistrictId > 0)
                 districtName = _stateProvinceService.GetDistHCM().Where(x => x.Id == model.DistrictId).FirstOrDefault().Name;// model.Districts.FirstOrDefault(x => x.Value == model.DistrictId.ToString()).Text;
             if (model.Cid > 0)
                 cateName = model.AvailableCategories.FirstOrDefault(x => x.Value == model.Cid.ToString()).Text;
             //if (model.PriceString!="0-0")
             //    priceName = model.PriceRange.FirstOrDefault(x => x.Value == model.PriceRange.ToString()).Text;
-            ViewBag.ResultString = string.Format("{0} {1} {2}",cateName,districtName,priceName);
-            
+            ViewBag.ResultString = string.Format("{0} {1} {2}", cateName, districtName, priceName);
+
             if (Request.IsAjaxRequest())
                 return PartialView("_ProductListPartial", model);
             return View(model);
@@ -3253,7 +3255,7 @@ namespace Nop.Web.Controllers
         }
 
         [HttpGet]
-        public string GetSlugFromId(string domainName,string priceString, string attributeOptionIds, int categoryId=0, int stateProvinceId=0, int districtId=0, int wardId=0, int streetId=0)
+        public string GetSlugFromId(string domainName, string priceString, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0)
         {
             if (String.IsNullOrEmpty(domainName)) domainName = Request.Url.Host;
             if (categoryId == 0) categoryId = 1;
@@ -3305,8 +3307,8 @@ namespace Nop.Web.Controllers
                         Title = form.GetValue(tit).AttemptedValue
 
                     });
-                }        
-                    PreapringProductToEntity(model, product);
+                }
+                PreapringProductToEntity(model, product);
                 product.Price = model.Price * 1000000;
                 string seName = product.ValidateSeName(product.Name, product.Name, true);
                 _productService.InsertProduct(product);
@@ -3330,7 +3332,7 @@ namespace Nop.Web.Controllers
                     {
                         PictureId = i.Id,
                         ProductId = product.Id,
-                        Description=i.Title
+                        Description = i.Title
 
                     };
                     _productService.InsertProductPicture(pictureproduct);
@@ -3398,16 +3400,16 @@ namespace Nop.Web.Controllers
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
 
-                var titlePic = form.AllKeys.Where(x=>x.Contains("PictureTitle_"));                
+                var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
                 foreach (var tit in titlePic)
                 {
                     model.PictureIds.Add(new InsertProductModel.PictureUploadModel
                     {
-                        Id = int.Parse(tit.Replace("PictureTitle_","")),
+                        Id = int.Parse(tit.Replace("PictureTitle_", "")),
                         Title = form.GetValue(tit).AttemptedValue
 
                     });
-                }               
+                }
 
                 #region Insert Categories
                 var cate = product.ProductCategories.FirstOrDefault();
@@ -3453,8 +3455,9 @@ namespace Nop.Web.Controllers
                 #region Edit SPA
                 //delete
                 var listAttrDelete = product.ProductSpecificationAttributes.Where(x => !model.SelectedOptionAttributes.Contains(x.SpecificationAttributeOptionId)).ToList();
-                foreach (var i in listAttrDelete)                {
-                    
+                foreach (var i in listAttrDelete)
+                {
+
                     _specificationAttributeService.DeleteProductSpecificationAttribute(i);
                 }
                 //add new
@@ -3618,7 +3621,7 @@ namespace Nop.Web.Controllers
             p.Name = inPd.Name;
             p.FullAddress = inPd.FullAddress;
 
-            p.FullDescription +="<br><br>" +inPd.NoteFacilities;
+            p.FullDescription += "<br><br>" + inPd.NoteFacilities;
             p.FullDescription += "<br><br>" + inPd.NoteEnvironments;
             p.FullDescription += "<br><br>" + inPd.NoteThichHop;
 
@@ -3648,7 +3651,7 @@ namespace Nop.Web.Controllers
                 NumberOfHome = p.HouseNumber,
                 SelectedOptionAttributes = p.ProductSpecificationAttributes.Select(x => x.SpecificationAttributeOptionId).ToList(),
                 Name = p.Name,
-                PictureIds = p.ProductPictures.Select(x => new InsertProductModel.PictureUploadModel {Id=x.PictureId,Title=x.Description }).ToList(),
+                PictureIds = p.ProductPictures.Select(x => new InsertProductModel.PictureUploadModel { Id = x.PictureId, Title = x.Description }).ToList(),
                 FullAddress = p.FullAddress
             };
             var cate = p.ProductCategories.FirstOrDefault();
@@ -3658,9 +3661,9 @@ namespace Nop.Web.Controllers
             model.PictureModels = p.ProductPictures.Select(x => new PictureModel
             {
                 ImageUrl = _pictureService.GetPictureUrl(x.PictureId, 100),
-                Description=x.Description,
-                PictureId=x.PictureId,
-                Id=x.Id
+                Description = x.Description,
+                PictureId = x.PictureId,
+                Id = x.Id
 
             }).ToList();
 
@@ -3725,9 +3728,9 @@ namespace Nop.Web.Controllers
                 Value = x.Id.ToString(),
                 Text = x.Name
             }).ToList();
-           
 
-           
+
+
 
         }
 
@@ -3888,7 +3891,7 @@ namespace Nop.Web.Controllers
             model.OnlyCustomer = true;
             return View(model);
         }
-        
+
         [NopHttpsRequirement(SslRequirement.No)]
         [HttpGet]
         public ActionResult ProductSearch(SearchModel model)
@@ -3955,12 +3958,12 @@ namespace Nop.Web.Controllers
 
         }
         private void PreparingSearchModel(SearchModel model, bool isproject = false, int categoryId = 0)
-        {            
+        {
             IList<Category> cate = null;
             //if (!isproject)
-                cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).OrderBy(x => x.DisplayOrder).ToList();
+            cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).OrderBy(x => x.DisplayOrder).ToList();
             //else
-                //cate = _categoryService.GetAllCategoriesByParentCategoryId(2);
+            //cate = _categoryService.GetAllCategoriesByParentCategoryId(2);
 
             model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
             model.AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
@@ -3973,7 +3976,7 @@ namespace Nop.Web.Controllers
             model.BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
             model.Directories = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).ToSelectList(x => x.Name, x => x.Id.ToString());
             model.Directories.Insert(0, new SelectListItem { Text = _localizationService.GetResource(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
-           
+
 
         }
 
@@ -3996,7 +3999,7 @@ namespace Nop.Web.Controllers
                 return ((int)price).ToString() + " triệu " + symbol;
             }
         }
-      
+
         [ChildActionOnly]
         public ActionResult SearchBoxLeft(bool isProject = false, int categoryId = 0)
         {
@@ -4013,7 +4016,7 @@ namespace Nop.Web.Controllers
         {
 
             var model = new SearchModel();
-            PreparingSearchModel(model, categoryId:1);
+            PreparingSearchModel(model, categoryId: 1);
             if (isHome)
                 return View("SearchHome", model);
             return View(model);
@@ -4187,7 +4190,7 @@ namespace Nop.Web.Controllers
                 searchProductTags: searchInProductTags,
                 languageId: _workContext.WorkingLanguage.Id,
                 pageIndex: command.PageNumber - 1,
-                pageSize: command.PageSize,                
+                pageSize: command.PageSize,
                 dictrictIds: new List<int> { districtId },
                 streetId: streetId,
                 wardId: wardId,
@@ -4239,7 +4242,7 @@ namespace Nop.Web.Controllers
         [HttpPost]
         public ActionResult ProductPictureDelete(int id)
         {
-            if ( !_workContext.CurrentCustomer.IsAdmin())
+            if (!_workContext.CurrentCustomer.IsAdmin())
             {
                 return Json("Bạn không có quyền thực hiện thao tác!");
             }
@@ -4248,7 +4251,7 @@ namespace Nop.Web.Controllers
             if (product == null)
                 return Json("Product is null");
 
-           
+
 
             //var productimage = _productService.GetProductPicturesByProductId(product.Id);
 
