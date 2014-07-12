@@ -12,6 +12,7 @@ namespace Nop.Web.Models.Catalog
         {
             Categories = new List<CategorySimpleModel>();
             Districts = new List<SelectListItem>();
+            Districts2 = new List<SelectListItem>();
             PriceRange = new List<SelectListItem>();
             PriceRange.Add(new SelectListItem { Value = "0-0", Text = "Chọn mức giá" });
             PriceRange.Add(new SelectListItem { Value = "1000-1500", Text = "1 tỷ ~ 1.5 tỷ" });
@@ -23,6 +24,7 @@ namespace Nop.Web.Models.Catalog
 
         public IList<CategorySimpleModel> Categories { get; set; }
         public IList<SelectListItem> Districts { get; set; }
+        public IList<SelectListItem> Districts2 { get; set; }
      
 
         public bool BlogEnabled { get; set; }
