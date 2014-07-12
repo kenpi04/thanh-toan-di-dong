@@ -1706,6 +1706,8 @@
     <Content Include="Views\Shared\_RootNoHeadFoot.cshtml" />
     <Content Include="Views\Catalog\InsertProductSuccess.cshtml" />
     <Content Include="Views\Catalog\Map.cshtml" />
+    <Content Include="Views\FptBanner\BannerShow.cshtml" />
+    <Content Include="Views\FptBanner\BannerSlideShow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

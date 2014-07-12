@@ -106,7 +106,7 @@ namespace Nop.Web.Controllers
         public ActionResult TopicHomePage()
         {
 
-            var model = _topicService.GetAllTopics(0).Take(5).Select(x => new TopicModel
+            var model = _topicService.GetAllTopics(0,1).Take(5).Select(x => new TopicModel
             {
                 Id=x.Id,
                 Title=x.Title,
