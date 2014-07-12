@@ -19,6 +19,13 @@ namespace Nop.Core.Domain.Directory
         /// Gets or sets the display order
         /// </summary>
         public virtual int DisplayOrder { get; set; }
+
+        /// <summary>
+        /// Get or sets Published
+        /// </summary>
+        public virtual bool Published { get; set; }
+
+
         private ICollection<Ward> _Wards;
         public virtual ICollection<Ward> Wards
         {

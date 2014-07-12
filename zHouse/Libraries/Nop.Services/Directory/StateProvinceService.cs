@@ -32,6 +32,7 @@ namespace Nop.Services.Directory
         #region Fields
 
         private readonly IRepository<StateProvince> _stateProvinceRepository;
+        private readonly IRepository<District> _districtRepository;
         private readonly IEventPublisher _eventPublisher;
         private readonly ICacheManager _cacheManager;
 
@@ -47,23 +48,32 @@ namespace Nop.Services.Directory
         /// <param name="eventPublisher">Event published</param>
         public StateProvinceService(ICacheManager cacheManager,
             IRepository<StateProvince> stateProvinceRepository,
-            IEventPublisher eventPublisher)
+            IEventPublisher eventPublisher,
+            IRepository<District> districtRepository)
         {
             _cacheManager = cacheManager;
             _stateProvinceRepository = stateProvinceRepository;
             _eventPublisher = eventPublisher;
+            _districtRepository = districtRepository;
         }
 
         #endregion
 
         #region Methods
 
-        public virtual IList<District> GetDistHCM()
+        public virtual IList<District> GetDistHCM(int stateId = 23, bool showHidden = false)
         {
-            return _cacheManager.Get("Nop.district_HCM", () =>
+            return _cacheManager.Get(string.Format("Nop.district-{0}-{1}", stateId, showHidden), () =>
             {
-                var dist = GetStateProvinceById(23);
-                return dist.Districts.ToList();
+                var query = from d in _districtRepository.Table
+                           where d.StateProvinceId == stateId
+                           select d;
+                if (!showHidden)
+                    query.Where(x => x.Published);
+
+                return query.ToList();
+                //var dist = GetStateProvinceById(stateId, showHidden);
+                //return dist.Districts.ToList();
             });
           
         }     

@@ -48,6 +48,6 @@ namespace Nop.Services.Directory
         /// <param name="stateProvince">State/province</param>
         void UpdateStateProvince(StateProvince stateProvince);
 
-        IList<District> GetDistHCM();
+        IList<District> GetDistHCM(int stateId = 23, bool showHidden = false);
     }
 }
