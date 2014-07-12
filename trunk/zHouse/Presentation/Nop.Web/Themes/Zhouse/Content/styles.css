@@ -968,13 +968,14 @@ td {
     font-weight: 700;
     color: red;
     padding:10px;
-    text-align:center;
-    background:#c16e6e
+    text-align:left;
+    background:#cc0066;
+    
+    
 }
 
 .field-validation-error {
-    font-family: Verdana,Arial,sans-serif;
-    font-size: 10px;
+
     font-weight: 700;
     color: red;
 }

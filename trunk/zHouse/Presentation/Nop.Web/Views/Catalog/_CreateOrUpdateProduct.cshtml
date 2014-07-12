@@ -66,63 +66,73 @@
             <table>
                 <tbody>
                     <tr>
+                        <td>@Html.LabelFor(x => x.Price) </td>
                         <td>
-                            @Html.LabelFor(x=>x.Price) 
+                          
                         @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable number",placeholder="Giá"})
                             @Html.RequiredHint()
                      
                         <td><span id="price-text">vnđ</span></td>
+                        <td>@Html.LabelFor(x => x.NumberFloors) </td>
                         <td>
-                             @Html.LabelFor(x=>x.NumberFloors) 
+                            
                         @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.NumberFloors,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()
                      </td>
                         <td></td>
                     </tr>
                     <tr>
+                        <td>@Html.LabelFor(x => x.CateId) </td>
                         <td>  
-                                @Html.LabelFor(x=>x.CateId) 
+                              
                              @Html.DropDownListFor(x=>x.CateId,Model.Categories,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
                         <td></td>
+                        <td>@Html.LabelFor(x => x.AreaUse) </td>
                         <td>
-                              @Html.LabelFor(x=>x.AreaUse) 
+                           
                             @Html.TextBoxFor(x => x.AreaUse, new { @class = "formBoxInTable number",placeholder="Diện tích sử dụng"})
                         @Html.RequiredHint()</td>
                         <td>m2</td>
                     </tr>
                     <tr>
+                        <td>@Html.LabelFor(x => x.Area) </td>
                         <td>
-                             @Html.LabelFor(x=>x.Area) 
+                           
                             @Html.TextBoxFor(x => x.Area, new { @class = "formBoxInTable number",placeholder="Diện tích"})
                         @Html.RequiredHint()</td>
                         <td>m2</td>
+                        <td>@Html.LabelFor(x => x.BedRooms) </td>
                         <td>
-                                @Html.LabelFor(x=>x.BedRooms) 
+                               
                             @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BedRooms,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
                         <td></td>
                     </tr>
                     <tr>
+                        <td>@Html.LabelFor(x => x.Width) </td>
                         <td>
-                            @Html.LabelFor(x=>x.Width) 
+                          
                             @Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable number",placeholder="Chiều ngang"})
                         @Html.RequiredHint()</td>
                         <td>m</td>
+                        <td>@Html.LabelFor(x => x.BadRooms)</td>
                         <td>
-                             @Html.LabelFor(x=>x.BadRooms)
+                           
                             @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BadRooms,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
                         <td></td>
                     </tr>
                     <tr>
+                        <td>@Html.LabelFor(x => x.Dept)</td>
                         <td>
-                             @Html.LabelFor(x=>x.Dept)
+                            
                             @Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable number",placeholder="Chiều sâu"})
                         @Html.RequiredHint()</td>
                         <td>m</td>
+                        <td>@Html.LabelFor(x => x.Directors)</td>
                         <td>
-                             @Html.LabelFor(x=>x.Directors)
+                           
                             @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.Directors,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
                         <td></td>
@@ -245,7 +255,7 @@
 <div class="floatLeft">
 <div class="blueText">TIÊU ĐỀ</div>
 <div class="boxWrapperSmall">
-    @Html.TextBoxFor(x => x.Name, new { @class = "jqte-test formBoxInText" })
+    @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText",style="width:100%" })
 </div>
     </div><!---floatLeft---->
     <div class="floatLeft">
@@ -260,7 +270,7 @@
         <div class="boxWrapperSmall">
             <textarea class="formBoxInText">(Để lại lời nhắn để chúng tôi có thể phục vụ bạn tốt hơn)</textarea>
             <br>
-            <input type="submit" class="blueBigBtn" value="GỬI THÔNG TIN">
+            <input type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
         </div>
     </div><!---floatLeft---->
 
@@ -283,7 +293,12 @@
 
         $("#insertProduct-button").click(function () {
             if(!$("#frmProduct").valid())
+            {
+                $('html,body').animate({
+                    scrollTop: $("#panel-error").offset().top
+                });
                 return false;
+            }
 
             if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
                 alert('Vui lòng chọn hình ảnh đăng');
@@ -329,6 +344,7 @@
             })
 
         })
+        $("#ddlQuan").change();
        
         $('#FileUpload').uploadify({
             'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
