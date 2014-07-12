@@ -983,6 +983,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.simplemodal.js" />
     <Content Include="Scripts\jquery.uniform.min.js" />
+    <Content Include="Scripts\lazyload.jquery.js" />
     <Content Include="Scripts\public.common.mobile.js" />
     <Content Include="Scripts\tab.js" />
     <Content Include="Themes\DefaultClean\Content\editorsimple.css" />
