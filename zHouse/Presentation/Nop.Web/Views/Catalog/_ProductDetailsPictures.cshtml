@@ -19,6 +19,8 @@
         {
             <img  alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
         }
+        <div class="picture-title" id="pic-title"></div>
+
     </div>
     @if (Model.PictureModels.Count > 1)
     {
@@ -28,7 +30,7 @@
                 var picture = Model.PictureModels[i];
 
                <div class="thumbnailPic">
-                    <a href="@picture.FullSizeImageUrl" data-gallery="lightbox-p" title="@Model.Name">
+                    <a href="@picture.FullSizeImageUrl" rel="@picture.Description" data-gallery="lightbox-p" title="@Model.Name">
                         <img  src="@picture.ImageUrl" alt="@picture.AlternateText" class="noborder" title="@picture.Title" />
                 </a>     
                </div>
@@ -39,9 +41,11 @@
                 $(".thumbnailPic a").click(function () {
                     var src=$(this).attr("href");
                     $("#main-pic img").attr("src", src);
+                    $("#pic-title").html($(this).attr("rel"))
                 }).mouseover(function () {
                     var src = $(this).attr("href");
                     $("#main-pic img").attr("src", src);
+                    $("#pic-title").html($(this).attr("rel"))
                 })
             })
         </script>

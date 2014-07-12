@@ -751,10 +751,12 @@ namespace Nop.Web.Controllers
                     FullSizeImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(), defaultPictureFullSize, !isAssociatedProduct),
                     Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
                     AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
+                 
                 };
                 //all pictures
                 var pictureModels = new List<PictureModel>();
                 foreach (var picture in pictures)
+
                 {
                     pictureModels.Add(new PictureModel()
                     {
@@ -762,6 +764,7 @@ namespace Nop.Web.Controllers
                         FullSizeImageUrl = _pictureService.GetPictureUrl(picture, defaultPictureFullSize),
                         Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
                         AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
+                        Description=picture.ProductPictures.FirstOrDefault()!=null?picture.ProductPictures.FirstOrDefault().Description:""
                     });
                 }
 
