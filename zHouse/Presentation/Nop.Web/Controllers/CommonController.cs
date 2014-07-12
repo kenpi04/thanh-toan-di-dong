@@ -421,6 +421,7 @@ namespace Nop.Web.Controllers
 
         //footer
         [ChildActionOnly]
+        [OutputCache(Duration=3600, VaryByParam="stateId")]
         public ActionResult Footer(int stateId = 23)
         {
             var model = new FooterModel()

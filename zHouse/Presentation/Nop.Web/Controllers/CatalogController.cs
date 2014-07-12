@@ -1269,6 +1269,7 @@ namespace Nop.Web.Controllers
         }
 
         [ChildActionOnly]
+        [OutputCache(Duration=3600, VaryByParam ="stateId")]
         public ActionResult TopMenu(int stateId = 23)
         {
             var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
