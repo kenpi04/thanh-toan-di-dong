@@ -1285,7 +1285,7 @@ namespace Nop.Web.Controllers
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
                 BlogEnabled = _blogSettings.Enabled,
                 ForumEnabled = _forumSettings.ForumsEnabled,
-                Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
+                Districts = _stateProvinceService.GetDistHCM().Where(x=>x).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
             };
             model.CategoriesNews = _catenewsService.GetAllCategories().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName());
             model.Topics = _topicService.GetAllTopics(0, 1).Select(x => new SelectListItem { Text = x.Title, Value = x.SystemName }).ToList();
@@ -3270,9 +3270,7 @@ namespace Nop.Web.Controllers
         {
             var product = _productService.GetProductById(productId);
             if (product == null)
-                return HttpNotFound();
-            if (_workContext.CurrentCustomer.Id != product.Id)
-                return HttpNotFound();
+                return RedirectToRoute("PageNotfound");
             return View(productId);
         }
         public ActionResult InsertProduct()
@@ -3355,7 +3353,7 @@ namespace Nop.Web.Controllers
                 }
                 #endregion
 
-                RedirectToAction("InsertProductSuccess", new { productId = product.Id });
+             return  RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }
             return View(model);
 
@@ -3481,7 +3479,7 @@ namespace Nop.Web.Controllers
                 string seName = product.ValidateSeName(product.Name, product.Name, true);
                 _urlRecordService.SaveSlug(product, seName, 0);
 
-                RedirectToAction("InsertProductSuccess", new { productId = product.Id });
+             return   RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }
             return View(model);
 
