@@ -24,15 +24,15 @@
             { 
             <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@item.Title">
             <div class="introCol">
-                <div class="info-picture">              
-                    <div class="nhon"></div>
-                @if(item.DefaultPictureModel!=null)
-                {
-                    <img alt="@item.DefaultPictureModel.AlternateText" src="@item.DefaultPictureModel.ImageUrl" title="@item.DefaultPictureModel.Title" />
-                }
+                <div class="info-picture" style="min-height:0px; max-height:220px;">
+                    @*<div class="nhon"></div>*@
+                    @if (item.DefaultPictureModel != null)
+                    {
+                        <img alt="@item.DefaultPictureModel.AlternateText" src="@item.DefaultPictureModel.ImageUrl" title="@item.DefaultPictureModel.Title" />
+                    }
                 </div>
                 <div class="whiteBg">@item.Title</div>
-                <div class="whiteBgCata">@item.Short.TrimString(50)</div>
+                <div class="whiteBgCata">@item.Short.TrimString(80)</div>
 
             </div>
         </a>
