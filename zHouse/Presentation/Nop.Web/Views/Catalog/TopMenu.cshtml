@@ -25,11 +25,19 @@
                  <div class="menu-col">
                      <span class="title">Theo địa điểm</span>
                      <ul>
-
-                         @foreach(var d in Model.Districts)
+                         @if(category.Id == 1)
+                         { 
+                         foreach(var d in Model.Districts2)
                     {
                              <li><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>
                     }
+                         }
+                         else { 
+                         foreach(var d in Model.Districts)
+                    {
+                             <li><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>
+                    }
+                         }
                      </ul>
                  </div>
 
