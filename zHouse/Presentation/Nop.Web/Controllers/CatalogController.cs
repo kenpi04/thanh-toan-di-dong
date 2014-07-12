@@ -1285,7 +1285,7 @@ namespace Nop.Web.Controllers
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
                 BlogEnabled = _blogSettings.Enabled,
                 ForumEnabled = _forumSettings.ForumsEnabled,
-                Districts = _stateProvinceService.GetDistHCM().Where(x=>x).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
+                Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
             };
             model.CategoriesNews = _catenewsService.GetAllCategories().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName());
             model.Topics = _topicService.GetAllTopics(0, 1).Select(x => new SelectListItem { Text = x.Title, Value = x.SystemName }).ToList();
