@@ -5,9 +5,9 @@
 
 @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frmSearchHead" }))
 {<div class="top2">
-    	<div class="wrapper">
+    	
             <div class="wholeSearch">
-               
+               <div class="wrapper">
               @Html.DropDownList("districtId",Model.Districts,new{@class="formBoxSelect"})
               @Html.DropDownList("priceString",Model.PriceRange,new{@class="formBoxSelect"})
               @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "formBoxSelect" })
@@ -15,8 +15,9 @@
               @Html.DropDownList("attributeOptionIds", Model.BedRooms, "Số phòng ngủ", new { @class = "formBoxSelect",id="ddlBed" })
               @Html.DropDownList("attributeOptionIds", Model.BadRooms, "Số phòng tắm", new { @class = "formBoxSelect",id="ddlBath" })
                 <input type="submit" class="blueBtn" value="tìm kiếm">
+                   </div>
             </div>
-        </div>
+        
     </div>
   
 }
