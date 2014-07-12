@@ -17,27 +17,29 @@ namespace Nop.Admin.Controllers
     public partial class HomeController : BaseNopController
     {
         #region Fields
-        private readonly IStoreContext _storeContext;
-        private readonly CommonSettings _commonSettings;
-        private readonly ISettingService _settingService;
-        private readonly IWorkContext _workContext;
-        private readonly ICacheManager _cacheManager;
+        //private readonly IStoreContext _storeContext;
+        //private readonly CommonSettings _commonSettings;
+        //private readonly ISettingService _settingService;
+        //private readonly IWorkContext _workContext;
+        //private readonly ICacheManager _cacheManager;
 
         #endregion
 
         #region Ctor
 
-        public HomeController(IStoreContext storeContext, 
-            CommonSettings commonSettings, 
-            ISettingService settingService,
-            IWorkContext workContext,
-            ICacheManager cacheManager)
+        public HomeController(
+            //IStoreContext storeContext, 
+            //CommonSettings commonSettings, 
+            //ISettingService settingService,
+            //IWorkContext workContext,
+            //ICacheManager cacheManager
+            )
         {
-            this._storeContext = storeContext;
-            this._commonSettings = commonSettings;
-            this._settingService = settingService;
-            this._workContext = workContext;
-            this._cacheManager= cacheManager;
+            //this._storeContext = storeContext;
+            //this._commonSettings = commonSettings;
+            //this._settingService = settingService;
+            //this._workContext = workContext;
+            //this._cacheManager= cacheManager;
         }
 
         #endregion
@@ -46,11 +48,12 @@ namespace Nop.Admin.Controllers
 
         public ActionResult Index()
         {
-            var model = new DashboardModel();
-            model.IsLoggedInAsVendor = _workContext.CurrentVendor != null;
-            return View(model);
+            //var model = new DashboardModel();
+            //model.IsLoggedInAsVendor = _workContext.CurrentVendor != null;
+            //return View(model);
+            return View();
         }
-
+        /*
         [ChildActionOnly]
         public ActionResult NopCommerceNews()
         {
@@ -90,7 +93,7 @@ namespace Nop.Admin.Controllers
             _settingService.SaveSetting(_commonSettings);
             return Content("Setting changed");
         }
-
+        */
         #endregion
     }
 }
