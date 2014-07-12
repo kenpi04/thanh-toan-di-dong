@@ -49,5 +49,13 @@ namespace Nop.Services.Directory
         void UpdateStateProvince(StateProvince stateProvince);
 
         IList<District> GetDistHCM(int stateId = 23, bool showHidden = false);
+
+        District GetDistrictById(int districtId);
+
+        void InsertDistrict(District district);
+
+        void UpdateDistrict(District district);
+
+        void DeleteDistrict(District district);
     }
 }
