@@ -32,15 +32,5 @@
             randomize:true
         });
     });
-    $(function () {
-
-        $("#frmSearchHOme").submit(function () {
-            var data = $(this).serialize();
-            $.get("@Url.Action("GetSlugFromId")", data, function (d) {
-                window.location.href = d;
-            })
-            return false;
-        })
-
-    })
+    
 </script>
