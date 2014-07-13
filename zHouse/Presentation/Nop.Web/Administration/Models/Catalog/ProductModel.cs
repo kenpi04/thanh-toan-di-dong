@@ -292,8 +292,14 @@ namespace Nop.Admin.Models.Catalog
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Height")]
         public decimal Height { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.AvailableStartDateTime")]
+       
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.StartConstructionDate")]
+        [UIHint("DateTimeNullable")]
+        public DateTime? StartConstructionDate { get; set; }
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.FinishConstructionDate")]
+        [UIHint("DateTimeNullable")]
+        public DateTime? FinishConstructionDate { get; set; }
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.AvailableStartDateTimeUtc")]
         [UIHint("DateTimeNullable")]
         public DateTime? AvailableStartDateTimeUtc { get; set; }
 

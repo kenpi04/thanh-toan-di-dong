@@ -457,6 +457,24 @@
             @Html.ValidationMessageFor(model => model.Gtin)
         </td>
     </tr>
+      <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.StartConstructionDate):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.StartConstructionDate)
+            @Html.ValidationMessageFor(model => model.StartConstructionDate)
+        </td>
+    </tr>
+      <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.FinishConstructionDate):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.FinishConstructionDate)
+            @Html.ValidationMessageFor(model => model.FinishConstructionDate)
+        </td>
+    </tr>
 </table>
 <table class="adminContent" id="group-prices">
     <tr class="adminSeparator">

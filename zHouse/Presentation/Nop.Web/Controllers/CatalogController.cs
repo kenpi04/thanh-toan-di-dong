@@ -367,7 +367,7 @@ namespace Nop.Web.Controllers
                     Area = product.Area,
                     FullAddress = product.FullAddress,
                     DictrictName = product.District == null ? "" : product.District.Name,
-
+                    ChuDauTu=product.ManufacturerPartNumber
 
                 };
                 if (product.CallForPrice)
@@ -604,7 +604,9 @@ namespace Nop.Web.Controllers
                 }
                 if (product.ProductCategories.Count > 0)
                 {
-                    model.CateName = product.ProductCategories.FirstOrDefault().Category.Name;
+                    var defaultCata=product.ProductCategories.FirstOrDefault().Category;
+                    model.CateName = defaultCata.Name;
+                    model.IsProject = defaultCata.Id == 2 || defaultCata.ParentCategoryId == 2;
                 }
 
                 //reviews
@@ -681,10 +683,15 @@ namespace Nop.Web.Controllers
 
 
             };
+            bool isProject = false;
             if (product.ProductCategories.Count > 0)
             {
-                model.CateName = product.ProductCategories.FirstOrDefault().Category.Name;
+                var defaultCata=product.ProductCategories.FirstOrDefault().Category;
+                model.CateName = defaultCata.Name;
+                isProject = defaultCata.Id == 2||defaultCata.ParentCategoryId==2;
+
             }
+            model.IsProject = isProject;
             if (product.District != null)
                 model.DistrictName = product.District.Name;
             #endregion
@@ -700,20 +707,35 @@ namespace Nop.Web.Controllers
                     model.VendorModel.SeName = SeoExtensions.GetSeName(vendor.Name);
                 }
             }
-            #region SPA
-            model.Facilities = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.CoSoVatChat)
-                .Select(x => x.SpecificationAttributeOption)
-                .ToSelectList(x => x.Name, x => x.Id.ToString());
+            #region SPA       
             model.Environments = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.Enviroment)
                .Select(x => x.SpecificationAttributeOption)
                .ToSelectList(x => x.Name, x => x.Id.ToString());
-            model.BedRooms = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom);
-            model.BadRooms = GetOptionName(product, ProductAttributeEnum.NumberOfBadRoom);
             model.NumberFloors = GetOptionName(product, ProductAttributeEnum.NumberOfFloor);
+            model.Facilities = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.CoSoVatChat)
+            .Select(x => x.SpecificationAttributeOption)
+            .ToSelectList(x => x.Name, x => x.Id.ToString());
             model.Status = GetOptionName(product, ProductAttributeEnum.Status);
-            model.Directors = GetOptionName(product, ProductAttributeEnum.Director);
-            model.PhapLy = GetOptionName(product, ProductAttributeEnum.PhapLy);
-
+            if (isProject)
+            {
+             
+                model.StartConstructionDate=product.StartConstructionDate.HasValue?product.StartConstructionDate.Value.ToString("dd-MM-yyyy"):"-";
+                model.FinishConstructionDate = product.FinishConstructionDate.HasValue ? product.FinishConstructionDate.Value.ToString("dd-MM-yyyy") : "-";
+                model.ChuDauTu = product.ManufacturerPartNumber;
+                model.TienIch = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.TienIch)
+             .Select(x => x.SpecificationAttributeOption.Name).ToList();
+            
+                model.Contructors = product.Gtin;            
+            }
+            else
+            {
+                model.BedRooms = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom);
+                 model.BadRooms = GetOptionName(product, ProductAttributeEnum.NumberOfBadRoom);            
+                model.Directors = GetOptionName(product, ProductAttributeEnum.Director);
+                model.PhapLy = GetOptionName(product, ProductAttributeEnum.PhapLy);
+                model.ThichHop = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.ThichHop)
+             .Select(x => x.SpecificationAttributeOption.Name).ToList();
+            }
 
             #endregion
 
@@ -3325,6 +3347,7 @@ namespace Nop.Web.Controllers
 
                 };
                 _categoryService.InsertProductCategory(productCate);
+                
                 #endregion
 
                 #region InsertPictures

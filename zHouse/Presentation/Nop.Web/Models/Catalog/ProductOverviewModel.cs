@@ -67,5 +67,8 @@ namespace Nop.Web.Models.Catalog
         public string CateName { get; set; }
 
         public string ProductStatusText { get; set; }
+
+        public bool IsProject { get; set; }
+        public string ChuDauTu { get; set; }
     }
 }

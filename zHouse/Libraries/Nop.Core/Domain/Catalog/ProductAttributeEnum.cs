@@ -19,6 +19,7 @@ namespace Nop.Core.Domain.Catalog
       NumberBlock=11,
       PhapLy=9,
       ThichHop=12,
+      TienIch=15
     }
     public enum ProductStatusText
     {

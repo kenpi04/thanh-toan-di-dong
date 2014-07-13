@@ -1,0 +1,79 @@
+﻿@model Nop.Web.Models.Catalog.ProductDetailsModel
+  <table>
+                        <tbody>
+                                 <tr>
+                                <td class="greyBgTD">Tình trạng</td>
+                                <td>@Model.Status</td>
+
+                            </tr>
+                             <tr>
+                                <td class="greyBgTD">Loại hình:</td>
+                                <td>@Model.CateName</td>
+
+                            </tr>
+                             <tr>
+                                <td class="greyBgTD">Khu vực</td>
+                                <td>@(Model.DistrictName??"-")</td>
+                               
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Địa chỉ:</td>
+                                <td>@(Model.FullAddress??"-")</td>
+                            </tr>
+                               <tr>
+                                <td class="greyBgTD">Diện tích</td>
+                                <td>@(!string.IsNullOrWhiteSpace(Model.Area) ? Model.Area +"m2": "-")  (@Model.Width.ToString("#") x @Model.Dept.ToString("#")) </td>
+                            </tr>
+                               <tr>
+                                <td class="greyBgTD">Số tầng</td>
+                                <td>@(Model.AreaUse > 0 ? Model.NumberFloors:"-")</td>
+                            </tr>
+                              
+                            <tr>
+                                <td class="greyBgTD">Chủ đầu tư:</td>
+                                <td>@(Model.ChuDauTu??"-")</td>
+                            </tr>
+                            <tr>
+                                 <td class="greyBgTD">ĐV Thi công:</td>
+                                   <td>@(Model.Contructors??"-")</td>
+                            </tr>
+                             <tr>
+                                <td class="greyBgTD">Khởi công:</td>
+                                <td>@Model.StartConstructionDate </td>
+                            </tr>
+                               <tr>
+                                <td class="greyBgTD">Hoàn thành:</td>
+                                <td>@Model.FinishConstructionDate </td>
+                            </tr>   
+
+                            <tr>
+                                <td class="greyBgTD">Tiện ích:</td>
+                                <td>
+                                    @if (Model.TienIch.Count > 0)
+                                    {
+                                        foreach (var s in Model.TienIch)
+                                        {
+                                            <text>@s</text><br />
+                                        }
+                                    }
+                                    else
+                                    { <text>-</text>}
+
+                                </td>
+                            </tr>
+                                <tr>
+                                    <td class="greyBgTD">Môi trường xung quanh</td>
+                            
+                                    <td>
+                                                 @if (Model.Environments.Count > 0)
+                                     {
+                                        @Model.Environments.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
+                                     }
+                                    else
+                                    {
+                                     <text>-</text>
+                                     }</td>
+                                </tr>
+                            
+                        </tbody>
+                    </table>

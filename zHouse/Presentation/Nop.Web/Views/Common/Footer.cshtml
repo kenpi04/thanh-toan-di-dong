@@ -46,7 +46,7 @@
                        
                         @Html.Action("NewsletterBox", "NewsLetter")<br />
                         <a href="http://facebook.com/zhouseonline" target="_blank"><img src="@Url.Content("~/Themes/Zhouse/Content/images/footerLink.png")" class="noborder"></a>
-                        <input type="button" onclick="setLocation('http://hoidap.zhouse.com.vn')" class="blueBigBtn" style="width:100%" value="Kênh hỏi đáp" />
+                        <input type="button" onclick="setLocation('http://hoidap.zhouse.com.vn')" class="btn-QA" />
                     </div>
                   
                 
@@ -72,7 +72,7 @@
 
         </div>
         <div class="map-link">
-            <b> Bản đồ khu vực</b>   <a href="@Url.Action("map","catalog")"> <img src="~/Themes/Zhouse/Content/images/iconmap.png" /></a>
+            <a class="btn-map" href="@Url.Action("map","catalog")"></a>
         </div>
     </div>
     @Html.Widget("footer")

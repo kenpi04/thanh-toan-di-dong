@@ -4,9 +4,10 @@
 @{
    
 }
-
-
 <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+@if(!Model.IsProject)
+{
+
     <div class="introCol">
         <div class="info-picture">
             <div class="new"></div>
@@ -18,4 +19,19 @@
         <div class="whiteBgCata">@Model.DictrictName - @Model.CateName - @Model.Area.ToString("#") m2 - @Model.NumBedRoom - @Model.NumBadRoom - Hướng @Model.Directors</div>
 
     </div>
-</a>
+
+}
+else
+{
+    <div class="introCol">
+        <div class="info-picture">
+         
+            <div class="nhon"></div>          
+            <img class="lazy" data-original="@Model.DefaultPictureModel.ImageUrl" alt="@Model.DefaultPictureModel.AlternateText" width="254" height="254" title="@Model.DefaultPictureModel.Title" />
+        </div>
+        <div class="whiteBg p-name">@Model.Name</div>
+        <div class="whiteBgCata">@Model.DictrictName - @Model.CateName - @Model.Area.ToString("#") m2 - @Model.ChuDauTu</div>
+
+    </div>
+}
+    </a>

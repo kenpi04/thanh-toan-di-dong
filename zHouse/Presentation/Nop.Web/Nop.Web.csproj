@@ -1447,11 +1447,13 @@
     <Content Include="Themes\Zhouse\Content\images\bbeditor-button-bg.gif" />
     <Content Include="Themes\Zhouse\Content\images\bullet-left.gif" />
     <Content Include="Themes\Zhouse\Content\images\bullet-right.gif" />
+    <Content Include="Themes\Zhouse\Content\images\button-request.png" />
     <Content Include="Themes\Zhouse\Content\images\closelabel.gif" />
     <Content Include="Themes\Zhouse\Content\images\d1.png" />
     <Content Include="Themes\Zhouse\Content\images\d2.png" />
     <Content Include="Themes\Zhouse\Content\images\d3.png" />
     <Content Include="Themes\Zhouse\Content\images\download-sample-bg.gif" />
+    <Content Include="Themes\Zhouse\Content\images\faq-button.gif" />
     <Content Include="Themes\Zhouse\Content\images\footerLine.png" />
     <Content Include="Themes\Zhouse\Content\images\footerLink.png" />
     <Content Include="Themes\Zhouse\Content\images\forum-footer-bg.gif" />
@@ -1462,6 +1464,7 @@
     <Content Include="Themes\Zhouse\Content\images\h2.png" />
     <Content Include="Themes\Zhouse\Content\images\h3.png" />
     <Content Include="Themes\Zhouse\Content\images\h4.png" />
+    <Content Include="Themes\Zhouse\Content\images\hotline.gif" />
     <Content Include="Themes\Zhouse\Content\images\i1.png" />
     <Content Include="Themes\Zhouse\Content\images\ico-arrow-r.gif" />
     <Content Include="Themes\Zhouse\Content\images\ico-close-notification-bar.png" />
@@ -1483,6 +1486,7 @@
     <Content Include="Themes\Zhouse\Content\images\lockBtnhover.png" />
     <Content Include="Themes\Zhouse\Content\images\logo.gif" />
     <Content Include="Themes\Zhouse\Content\images\logo.png" />
+    <Content Include="Themes\Zhouse\Content\images\maps-button.gif" />
     <Content Include="Themes\Zhouse\Content\images\new.png" />
     <Content Include="Themes\Zhouse\Content\images\next.png" />
     <Content Include="Themes\Zhouse\Content\images\nexthover.png" />
@@ -1715,6 +1719,8 @@
     <Content Include="Themes\Zhouse\Content\fonts\flexslider-icon.eot" />
     <Content Include="Themes\Zhouse\Content\fonts\flexslider-icon.ttf" />
     <Content Include="Themes\Zhouse\Content\fonts\flexslider-icon.woff" />
+    <Content Include="Views\Catalog\_ProductSpecficationOptionHouse.cshtml" />
+    <Content Include="Views\Catalog\_ProductSpecficationOptionProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
