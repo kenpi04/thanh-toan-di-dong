@@ -71,7 +71,16 @@
     </div>
 }
 <div class="page news-item-page">
-
+      <div class="breadcrumb">
+        <ul>
+            <li><a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a>
+                <span class="delimiter">/</span> </li>
+          <li>
+              @Model.Title
+          </li>
+              
+        </ul>
+    </div>
     <div class="mainContent">
         <div class="leftContentTwist">
             @Html.Action("TopicNavigation")

@@ -1,0 +1,97 @@
+﻿@model Nop.Web.Models.Catalog.ProductDetailsModel
+  <table>
+                        <tbody>
+                            <tr>
+                                <td class="greyBgTD">Tình trạng</td>
+                                <td>@Model.Status</td>
+
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Pháp lý</td>
+                                <td>@Model.PhapLy</td>
+
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Khu vực</td>
+                                <td>@(Model.DistrictName??"-")</td>
+                               
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Hình thức</td>
+                                <td>@(Model.CateName??"-")</td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Hướng</td>
+                                <td>@(Model.Directors??"-")</td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Phòng ngủ</td>
+                                <td>@Model.BedRooms </td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Phòng tắm</td>
+                                <td>@Model.BadRooms </td>
+                            </tr>
+
+                            <tr>
+                                <td class="greyBgTD">Diện tích</td>
+                                <td>@(!string.IsNullOrWhiteSpace(Model.Area) ? Model.Area +"m2": "-")  (@Model.Width.ToString("#") x @Model.Dept.ToString("#")) </td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Số tầng</td>
+                                <td>@(Model.AreaUse > 0 ? Model.NumberFloors:"-")</td>
+                            </tr>
+                            <tr>
+                                <td class="greyBgTD">Diện tích sử dụng</td>
+                                <td>@(Model.AreaUse>0 ? Model.AreaUse.ToString("#") +"m2": "-") </td>
+                            </tr>
+                         
+                          
+                            <tr>
+                                <td class="greyBgTD">Thích hợp:</td>
+                                <td>
+                                      @if (Model.ThichHop.Count > 0)
+                                    {
+                                        foreach (var s in Model.ThichHop)
+                                        {
+                                            <text>@s</text><br />
+                                        }
+                                    }
+                                    else
+                                    { <text>-</text>}
+
+                                </td>
+                                
+                            </tr>
+
+                            <tr>
+                                <td class="greyBgTD">Cơ sở vật chất</td>
+                                <td>
+                                    @if (Model.Facilities.Count > 0)
+                                    {
+                                        foreach (var s in Model.Facilities)
+                                        {
+                                            <text>@s.Text</text><br />
+                                        }
+                                    }
+                                    else
+                                    { <text>-</text>}
+
+                                </td>
+                            </tr>
+                                <tr>
+                                    <td class="greyBgTD">Môi trường xung quanh</td>
+                            
+                                    <td>
+                                                 @if (Model.Environments.Count > 0)
+                                     {
+                                        @Model.Environments.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
+                                     }
+                                    else
+                                    {
+                                     <text>-</text>
+                                     }</td>
+                                </tr>
+                            
+                        </tbody>
+                    </table>

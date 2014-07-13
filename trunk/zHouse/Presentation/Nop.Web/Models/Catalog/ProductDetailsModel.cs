@@ -23,6 +23,8 @@ namespace Nop.Web.Models.Catalog
             Facilities = new List<SelectListItem>();
             Environments = new List<SelectListItem>();
             PictureModels = new List<PictureModel>();
+            TienIch = new List<string>();
+            ThichHop = new List<string>();
            
         }
 
@@ -62,6 +64,7 @@ namespace Nop.Web.Models.Catalog
         public bool IsFreeShipping { get; set; }
         public bool FreeShippingNitificationEnabled { get; set; }
         public string DeliveryDate { get; set; }
+        public bool IsProject { get; set; }
 
         public string StockAvailability { get; set; }
 
@@ -88,10 +91,23 @@ namespace Nop.Web.Models.Catalog
         public string NumberFloors { get; set; }
         public string BadRooms { get; set; }
         public string BedRooms { get; set; }
+        public List<string> TienIch { get; set; }
+        public List<string> ThichHop { get; set; }
         public string Directors { get; set; }
         public string ContactName { get; set; }
         public string ContactEmail { get; set; }
-        public string ContactPhone { get; set; }
+        public string ContactPhone { get; set; }   
+        public string StartConstructionDate { get; set; }
+        public string FinishConstructionDate { get; set; }
+
+        /// <summary>
+        /// Manufactor partnumber
+        /// </summary>
+        public string ChuDauTu { get; set; }
+        /// <summary>
+        /// Gtin
+        /// </summary>
+        public string Contructors { get; set; }
         public IList<SelectListItem> Facilities { get; set; }
         public IList<SelectListItem> Environments { get; set; }
         public int CustomerId { get; set; }

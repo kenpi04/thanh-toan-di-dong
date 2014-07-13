@@ -8,8 +8,8 @@
   <div class="wrapper">
 <div class="topInfo">
         	<div class="pinkBg">            	
-                <div class="zhouse">zHouse.com.vn </div>
-                <div class="slogan">Sàn giao dịch nhà uy tín tại TP Hồ Chí Minh</div>
+                <div class="zhouse">zHouse.com.vn  <strong class="slogan">Sàn giao dịch nhà uy tín</strong> </div>
+            
                 @Html.DropDownList("districtId", Model.Districts, new { @class = "box" })
                @Html.DropDownList("priceString", Model.PriceRange, new { @class = "box" })
                 @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "box" })         
@@ -24,6 +24,8 @@
 </div>
     
     @Html.FptBanner(Position: 3, stateId: 0, viewName: "BannerSlideShow")
+
+    <div class="adv-yourhouse"></div>
 
 }
 <script type="text/javascript">

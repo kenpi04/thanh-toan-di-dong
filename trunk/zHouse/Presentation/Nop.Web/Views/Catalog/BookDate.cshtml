@@ -13,7 +13,8 @@
     <div class="form-fields book-email-friend">
         <div class="inputs-left">
             <div class="inputs select-datetime">
-
+                <ul>
+                    <li>
                 Chọn ngày giờ:<br /><br />
                 <select name="hour" class="time" >
                     @for (int i = 1; i <= 24;i++ )
@@ -22,7 +23,8 @@
                     }
 
                 </select>
-            
+            </li>
+                    <li>
                 <span>Giờ</span>
                 <select name="Minute" class="time">
                     @for (int i = 15; i <= 4; i++)
@@ -31,10 +33,13 @@
                     }
 
                 </select>
+                        </li>
+                    <li>
                 <span>Phút</span>
                 <br />
               <br />
-              
+                        </li>
+              </ul>
             </div>
             <div class="inputs date-book">
                 @Html.DatePickerDropDowns("Date", "Month", "Year",DateTime.Now.Year,DateTime.Now.Year+1,DateTime.Now.Day,DateTime.Now.Month,DateTime.Now.Year)

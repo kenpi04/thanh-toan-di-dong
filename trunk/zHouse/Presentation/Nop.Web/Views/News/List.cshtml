@@ -8,7 +8,16 @@
     Html.AddTitleParts(T("PageTitle.NewsArchive").Text);
 }
 <div class="page news-list-page">
-        
+         <div class="breadcrumb">
+        <ul>
+            <li><a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a>
+                <span class="delimiter">/</span> </li>
+          <li>
+              @Model.CateName
+          </li>
+              
+        </ul>
+    </div>
     <div class="mainContent">
         <div class="leftContentTwist">
      @Html.Action("NewsCateNavigation")
@@ -23,8 +32,8 @@
             @foreach(var item in Model.NewsItems)
             { 
             <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@item.Title">
-            <div class="introCol">
-                <div class="info-picture" style="min-height:0px; max-height:220px;">
+            <div class="introCol" style="height:321px">
+                <div class="info-picture-news" >
                     @*<div class="nhon"></div>*@
                     @if (item.DefaultPictureModel != null)
                     {
@@ -32,7 +41,7 @@
                     }
                 </div>
                 <div class="whiteBg">@item.Title</div>
-                <div class="whiteBgCata">@item.Short.TrimString(80)</div>
+                <div class="whiteBgCata news-short">@item.Short.TrimString(160)</div>
 
             </div>
         </a>

@@ -112,6 +112,10 @@ namespace Nop.Web.Controllers
             model.AllowComments = newsItem.AllowComments;
             model.CreatedOn = _dateTimeHelper.ConvertToUserTime(newsItem.CreatedOnUtc, DateTimeKind.Utc);
             model.NumberOfComments = newsItem.CommentCount;
+            var cateNews = newsItem.NewsCategoriesMap.FirstOrDefault();
+            if (cateNews != null)
+                model.CateName = cateNews.CategoryNews.Name;
+
          //  model.AddNewComment.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage;
             if (preparePicture&&newsItem.PictureId.HasValue)
             {
@@ -126,7 +130,7 @@ namespace Nop.Web.Controllers
                     var picture = _pictureService.GetPictureById((int)newsItem.PictureId);
                     var pictureModel = new PictureModel()
                     {
-                        ImageUrl = _pictureService.GetPictureUrl(picture, 220,true),
+                        ImageUrl = _pictureService.GetPictureUrl(picture, 254,true),
                         FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
                         Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat"), newsItem.Title),
                         AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), model.Title)
@@ -254,7 +258,8 @@ namespace Nop.Web.Controllers
                     return newsModel;
                 })
                 .ToList();
-
+            var cate = _cateNewsService.GetCategoryById(command.CateId);
+            model.CateName = cate.Name;
             return View(model);
         }
 

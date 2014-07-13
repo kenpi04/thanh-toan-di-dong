@@ -10,26 +10,27 @@
 }
 @Html.HiddenFor(x => x.Id)
 
-    <div id="panel-error" class="message-error">
+   
+    <div class="request-title blueTitle" >QUẢNG CÁO NGÔI NHÀ CỦA BẠN</div>
+    <p>
+        Quảng cáo về căn nhà của bạn càng chi tiết, người mua sẽ càng dễ tìm kiếm thấy bạn hơn.<br /><br />
+        Nếu bạn gặp vấn đề gì trong quá trình gởi thông tin hãy liên hệ với chúng tôi qua Hotline: <b>0939448124.</b><br><br />
+        Nhân viên của chúng tôi sẽ hỗ trợ bạn.
+    </p>
+ <div id="panel-error" class="message-error">
         @Html.ValidationSummary()
     </div>
 
-    <div class="blueTitle">QUẢNG CÁO NGÔI NHÀ CỦA BẠN</div>
-    <p>
-        Quảng cáo về căn nhà của bạn càng chi tiết, người mua sẽ càng dễ tìm kiếm thấy bạn hơn.
-        Nếu bạn gặp vấn đề gì trong quá trình gởi thông tin hãy liên hệ với chúng tôi qua Hotline: <b>1900 4545.</b><br>
-        Nhân viên của chúng tôi sẽ hỗ trợ bạn.
-    </p>
     <div class="floatLeft">
         <div class="blueText">THÔNG TIN LIÊN HỆ</div>
-        <div class="boxWrapper">
+        <div class="boxWrapper form-request-contact">
         @Html.TextBoxFor(x => x.ContactName, new {@class="formBoxIn",placeholder="Họ và tên" })
         @Html.RequiredHint()
-            @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại" })
+            @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại", })
             @Html.RequiredHint()
             @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })
             @Html.RequiredHint()
-          
+          <br />
             <br>
             @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
             @Html.RequiredHint()
@@ -39,7 +40,7 @@
             @Html.RequiredHint()
             @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect" })
             @Html.RequiredHint()
-            <br />
+            <br /> <br />
             @Html.TextBoxFor(x => x.FullAddress, new {@class="formBoxIn",style="width:100%",placeholder="Địa chỉ đầy đủ" })
         </div><!----boxWrapper------->
     </div><!---floatLeft---->
@@ -54,7 +55,7 @@
                 
         }
             
-            <br>
+            <br> <br />
         @Html.TextAreaFor(x => x.NotePhapLy, new { @class = "formBoxInText", placeholder = "Ghi chú về pháp lý (nếu có)" })
            
         </div><!---boxWrapperSmall---->
@@ -62,8 +63,8 @@
 
     <div class="floatLeft">
         <div class="blueText">THÔNG TIN CĂN NHÀ</div>
-        <div class="boxWrapperSmall">
-            <table>
+        <div class="boxWrapperSmall form-request-contact">
+            <table style="width:900px">
                 <tbody>
                     <tr>
                         <td>@Html.LabelFor(x => x.Price) </td>
@@ -71,15 +72,15 @@
                           
                         @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable number",placeholder="Giá"})
                             @Html.RequiredHint()
+                     <span id="price-text">vnđ</span>
                      
-                        <td><span id="price-text">vnđ</span></td>
                         <td>@Html.LabelFor(x => x.NumberFloors) </td>
                         <td>
                             
                         @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.NumberFloors,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()
                      </td>
-                        <td></td>
+                       
                     </tr>
                     <tr>
                         <td>@Html.LabelFor(x => x.CateId) </td>
@@ -87,21 +88,21 @@
                               
                              @Html.DropDownListFor(x=>x.CateId,Model.Categories,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
-                        <td></td>
+                        
                         <td>@Html.LabelFor(x => x.AreaUse) </td>
                         <td>
                            
-                            @Html.TextBoxFor(x => x.AreaUse, new { @class = "formBoxInTable number",placeholder="Diện tích sử dụng"})
+                            @Html.TextBoxFor(x => x.AreaUse, new { @class = "formBoxInTable number",placeholder="Diện tích sử dụng"}) m2
                         @Html.RequiredHint()</td>
-                        <td>m2</td>
+                      
                     </tr>
                     <tr>
                         <td>@Html.LabelFor(x => x.Area) </td>
                         <td>
                            
-                            @Html.TextBoxFor(x => x.Area, new { @class = "formBoxInTable number",placeholder="Diện tích"})
+                            @Html.TextBoxFor(x => x.Area, new { @class = "formBoxInTable number",placeholder="Diện tích"}) m2
                         @Html.RequiredHint()</td>
-                        <td>m2</td>
+                      
                         <td>@Html.LabelFor(x => x.BedRooms) </td>
                         <td>
                                
@@ -113,29 +114,29 @@
                         <td>@Html.LabelFor(x => x.Width) </td>
                         <td>
                           
-                            @Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable number",placeholder="Chiều ngang"})
+                            @Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable number",placeholder="Chiều ngang"}) m
                         @Html.RequiredHint()</td>
-                        <td>m</td>
+                      
                         <td>@Html.LabelFor(x => x.BadRooms)</td>
                         <td>
                            
                             @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BadRooms,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
-                        <td></td>
+                       
                     </tr>
                     <tr>
                         <td>@Html.LabelFor(x => x.Dept)</td>
                         <td>
                             
-                            @Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable number",placeholder="Chiều sâu"})
+                            @Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable number",placeholder="Chiều sâu"}) m
                         @Html.RequiredHint()</td>
-                        <td>m</td>
+                        
                         <td>@Html.LabelFor(x => x.Directors)</td>
                         <td>
                            
                             @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.Directors,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
-                        <td></td>
+                       
                     </tr>
 
                 </tbody>
@@ -189,11 +190,12 @@
         <div class="colA"><div class="blueText">Thích hợp</div></div>
         @foreach (var i in Model.ThichHop)
             {
-            <div class="colB"> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"checked=checked":"") /> @Html.Label(i.Text)</div>
+            <div class="colB" style="float:left;margin-right:20px"> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"checked=checked":"") /> @Html.Label(i.Text)</div>
             }
        
 
         <div class="clearBoth"></div>
+        <br />
         <div class="boxWrapperSmall">
             @Html.TextAreaFor(x=>x.NoteEnvironments,new{@class="formBoxInText",placeholder="vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)"})
            
@@ -203,34 +205,16 @@
     <div class="floatLeft">
         <div class="blueText">HÌNH ẢNH NHÀ</div>
         <div class="rightTable">
-            <table>
-                <tbody>
-                    <tr>
-                        <td>-Hình đường, không gian xung quanh</td>
-                        <td></td>
-                        <td></td>
-                        <td>-Hình từ ban công, cửa xuống các hướng đường</td>
-                        <td></td>
-                        <td>/td>
-                    </tr>
-                    <tr>
-                        <td>-Hình cửa chính chụp từ ngoài vào</td>
-                        <td></td>
-                        <td></td>
-                        <td>-Hình chụp nhà bếp + kệ bếp</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>-Hình đường, không gian xung quanh</td>
-                        <td></td>
-                        <td></td>
-                        <td>-Hình chụp sân thượng</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+
+            <ul>
+                <li>Hình đường, không gian xung quanh</li>
+                <li>Hình từ ban công, cửa xuống các hướng đường</li>
+                <li>Hình cửa chính chụp từ ngoài vào</li>
+                <li>Hình chụp nhà bếp + kệ bếp</li>
+                <li>Hình đường, không gian xung quanh</li>
+                <li>Hình chụp sân thượng</li>
+            </ul>
+           
         </div><!---rightTable---->
         <div class="floatLeft">
             <input type="file" id="FileUpload" />
@@ -250,7 +234,7 @@
             </ul>
             <div class="clearBoth"></div>
         </div>
-        <input type="button" class="blueBtn" value="TẢI TẤT CẢ" style="float: right;margin:20px 12px 0 0">
+      
     </div><!---floatLeft----->
 <div class="floatLeft">
 <div class="blueText">TIÊU ĐỀ</div>

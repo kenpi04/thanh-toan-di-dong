@@ -13,10 +13,14 @@
             <div class="leftContent">
                 <div class="whiteBgLeft">
                     <div class="blueTitle"><h1>@Model.Name</h1></div>
+                    @if(!Model.IsProject)
+                    {
+                        <text>
                     ID: @Model.Id
                     <div class="pinkPrice">@Model.ProductPrice.Price</div>
                     Tình trạng: <a class="blueText"> <b>@Model.ProductStatusText</b></a>
-                    
+                    </text>
+                    }
                     <div class="share" id="share-div">
                         <script >
                             $.get("@Url.Action("ShareButton")",function(d){
@@ -27,98 +31,21 @@
                     </div>
                 <div class="detailTable">
                     <div class="detail-info">
-                           <table>
-                        <tbody>
-                            <tr>
-                                <td class="greyBgTD">Tình trạng</td>
-                                <td>@Model.Status</td>
-
-                            </tr>
-                            <tr>
-                                <td class="greyBgTD">Pháp lý</td>
-                                <td>@Model.PhapLy</td>
-
-                            </tr>
-                            <tr>
-                                <td class="greyBgTD">Khu vực</td>
-                                <td>@(Model.DistrictName??"-")</td>
-                               
-                            </tr>
-                            <tr>
-                                <td class="greyBgTD">Hình thức</td>
-                                <td>@(Model.CateName??"-")</td>
-                            </tr>
-                            <tr>
-                                <td class="greyBgTD">Hướng</td>
-                                <td>@(Model.Directors??"-")</td>
-                            </tr>
-                            <tr>
-                                <td class="greyBgTD">Phòng ngủ</td>
-                                <td>@Model.BedRooms </td>
-                            </tr>
-                            <tr>
-                                <td class="greyBgTD">Phòng tắm</td>
-                                <td>@Model.BadRooms </td>
-                            </tr>
-
-                            <tr>
-                                <td class="greyBgTD">Diện tích</td>
-                                <td>@(!string.IsNullOrWhiteSpace(Model.Area) ? Model.Area +"m2": "-")  (@Model.Width.ToString("#") x @Model.Dept.ToString("#")) </td>
-                            </tr>
-                            <tr>
-                                <td class="greyBgTD">Số tầng</td>
-                                <td>@(Model.AreaUse > 0 ? Model.NumberFloors:"-")</td>
-                            </tr>
-                            <tr>
-                                <td class="greyBgTD">Diện tích sử dụng</td>
-                                <td>@(Model.AreaUse>0 ? Model.AreaUse.ToString("#") +"m2": "-") </td>
-                            </tr>
-                         
-                          
-                            <tr>
-                                <td class="greyBgTD">Tiện nghi</td>
-                                <td>Nhà trống</td>
-                                
-                            </tr>
-
-                            <tr>
-                                <td class="greyBgTD">Cơ sở vật chất</td>
-                                <td>
-                                    @if (Model.Facilities.Count > 0)
-                                    {
-                                        foreach (var s in Model.Facilities)
-                                        {
-                                            <text>@s.Text</text><br />
-                                        }
-                                    }
-                                    else
-                                    { <text>-</text>}
-
-                                </td>
-                            </tr>
-                                <tr>
-                                    <td class="greyBgTD">Môi trường xung quanh</td>
-                            
-                                    <td>
-                                                 @if (Model.Environments.Count > 0)
-                                     {
-                                        @Model.Environments.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
-                                     }
-                                    else
-                                    {
-                                     <text>-</text>
-                                     }</td>
-                                </tr>
-                            
-                        </tbody>
-                    </table>
+                        @if(Model.IsProject)
+                        {
+                         @Html.Partial("_ProductSpecficationOptionProject",Model)
+                        }
+                        else
+                        {
+                          @Html.Partial("_ProductSpecficationOptionHouse", Model)
+                        }
                     </div>
                     <div class="detail-picture" id="detail-picture">
                    
                     </div>
                        <script>
                            $(function(){
-                               $("#detal-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new {productId=Model.Id })")
+                               $("#detal-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new { productId = Model.Id })")
                            })
                       </script>
                  <div class="clearfix"></div>
@@ -152,7 +79,7 @@
                 </div>
                 <div id="tab-map" class="whiteBgLeft" style="margin-top:-1px;">
                   <div style="width:663px;height:400px">
-                          @Html.Partial("_Map",Model)
+                          @Html.Partial("_Map", Model)
                     </div>
                 </div>
                    
@@ -174,7 +101,7 @@
                     function sendMailFriend()
                     {
                        
-                        $.get("@Url.Action("ProductEmailAFriend","Catalog")", function (d) {
+                        $.get("@Url.Action("ProductEmailAFriend", "Catalog")", function (d) {
                             $("#popup").html(d);
                             $("#popup").modal({
                                 onClose: function () {
@@ -189,7 +116,7 @@
                     }
                 </script>
                 <div class="floatLeft">
-                   @Html.Action("ProductReviews", "Catalog", new {productId=Model.Id })
+                   @Html.Action("ProductReviews", "Catalog", new { productId = Model.Id })
                 </div>
                   
 
@@ -205,11 +132,11 @@
                             <b>@Model.ContactPhone</b>
                         </div>
                     </div><!---twoColRight---->
-                    @Html.Action("ProductEmailAFriend", new {isBook=true })
+                    @Html.Action("ProductEmailAFriend", new { isBook = true })
                 </div><!--pinkBgRight----->
            
 
-            @Html.Action("RelatedProductCustomer", new {customerId=Model.CustomerId })
+            @Html.Action("RelatedProductCustomer", new { customerId = Model.CustomerId })
                 <div class="ad">
                     @Html.FptBanner(4)
 
