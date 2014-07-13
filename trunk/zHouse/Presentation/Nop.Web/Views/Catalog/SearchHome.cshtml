@@ -24,9 +24,9 @@
 </div>
     
     @Html.FptBanner(Position: 3, stateId: 0, viewName: "BannerSlideShow")
-
-    <div class="adv-yourhouse"></div>
-
+ 
+    <div class="adv-yourhouse" onclick="setLocation('@Url.RouteUrl("InsertProduct")')"></div>
+  
 }
 <script type="text/javascript">
     $(function () {
