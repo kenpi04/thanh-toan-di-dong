@@ -1449,6 +1449,7 @@
     <Content Include="Themes\Zhouse\Content\images\bullet-right.gif" />
     <Content Include="Themes\Zhouse\Content\images\button-request.png" />
     <Content Include="Themes\Zhouse\Content\images\closelabel.gif" />
+    <Content Include="Themes\Zhouse\Content\images\contacticon.jpg" />
     <Content Include="Themes\Zhouse\Content\images\d1.png" />
     <Content Include="Themes\Zhouse\Content\images\d2.png" />
     <Content Include="Themes\Zhouse\Content\images\d3.png" />
@@ -1503,6 +1504,7 @@
     <Content Include="Themes\Zhouse\Content\images\progress-step-inactive.gif" />
     <Content Include="Themes\Zhouse\Content\images\r1.png" />
     <Content Include="Themes\Zhouse\Content\images\r2.png" />
+    <Content Include="Themes\Zhouse\Content\images\requesticon.png" />
     <Content Include="Themes\Zhouse\Content\images\search-bg.png" />
     <Content Include="Themes\Zhouse\Content\images\searchBtn.png" />
     <Content Include="Themes\Zhouse\Content\images\searchBtnhover.png" />

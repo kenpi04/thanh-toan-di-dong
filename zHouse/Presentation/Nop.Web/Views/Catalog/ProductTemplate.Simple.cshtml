@@ -6,6 +6,8 @@
     Html.AddMetaKeywordParts(Model.MetaKeywords);
     Html.AppendScriptParts("~/Scripts/tab.js");
     Html.AppendScriptParts("~/Scripts/jquery.simplemodal.js");
+    Html.AddScriptParts("~/Scripts/jquery.flexslider.js");
+    Html.AddCssFileParts("~/Themes/Zhouse/Content/flexslider.css");  
 }
 @Html.Action("ProductBreadcrumb", "Catalog", new { productId = Model.Id })
 
@@ -45,7 +47,25 @@
                     </div>
                        <script>
                            $(function(){
-                               $("#detal-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new { productId = Model.Id })")
+                               $("#detail-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new { productId = Model.Id })",function(d){
+                               
+                                   $('#carousel').flexslider({
+                                       animation: "slide",
+                                       controlNav: false,
+                                       animationLoop: false,
+                                       slideshow: false,
+                                       itemWidth: 80,
+                                       itemMargin: 5,
+                                       asNavFor: '#slider-detail'
+                                   });
+                                   $('#slider-detail').flexslider({
+                                       animation: "slide",
+                                       controlNav: false,
+                                       animationLoop: false,
+                                       slideshow: false,
+                                       sync: "#carousel"
+                                   });
+                               })
                            })
                       </script>
                  <div class="clearfix"></div>
@@ -78,7 +98,7 @@
                     </ul>
                 </div>
                 <div id="tab-map" class="whiteBgLeft" style="margin-top:-1px;">
-                  <div style="width:663px;height:400px">
+                  <div style="width:800px;height:400px">
                           @Html.Partial("_Map", Model)
                     </div>
                 </div>

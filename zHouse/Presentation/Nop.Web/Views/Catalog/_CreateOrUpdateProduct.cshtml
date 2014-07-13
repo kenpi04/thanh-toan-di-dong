@@ -20,7 +20,7 @@
  <div id="panel-error" class="message-error">
         @Html.ValidationSummary()
     </div>
-
+<i class="note">(*) Không được để trống</i>
     <div class="floatLeft">
         <div class="blueText">THÔNG TIN LIÊN HỆ</div>
         <div class="boxWrapper form-request-contact">
@@ -41,7 +41,7 @@
             @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect" })
             @Html.RequiredHint()
             <br /> <br />
-            @Html.TextBoxFor(x => x.FullAddress, new {@class="formBoxIn",style="width:100%",placeholder="Địa chỉ đầy đủ" })
+            @Html.TextBoxFor(x => x.FullAddress, new {@class="formBoxIn",style="width:68%",placeholder="Địa chỉ đầy đủ" })
         </div><!----boxWrapper------->
     </div><!---floatLeft---->
 
@@ -207,16 +207,22 @@
         <div class="rightTable">
 
             <ul>
-                <li>Hình đường, không gian xung quanh</li>
-                <li>Hình từ ban công, cửa xuống các hướng đường</li>
-                <li>Hình cửa chính chụp từ ngoài vào</li>
-                <li>Hình chụp nhà bếp + kệ bếp</li>
-                <li>Hình đường, không gian xung quanh</li>
+               <li>Hình đường, không gian xung quanh</li>
+                <li> Hình cửa chính chụp từ ngoài vào</li>
+                <li>Hình từ cửa nhà chụp ra</li>
+                <li> Hình chụp số tầng nhà </li>
+                <li> Hình chụp phòng khách</li>
+                <li>Hình chụp cầu thang</li>
+                <li>Hình chụp nhà bếp + kệ bếp </li>
+                <li>Hình chụp nhà vệ sinh</li>
                 <li>Hình chụp sân thượng</li>
-            </ul>
+                <li>Hình chụp phòng ngủ</li>
+                <li>Hình chụp sân thượng</li>
+                <li>Hình từ ban công, cửa xuống các hướng đường</li>
+            </ul>          
            
         </div><!---rightTable---->
-        <div class="floatLeft">
+        <div  style="float:right; margin-right: 36px;">
             <input type="file" id="FileUpload" />
             <div id="pictures">
 
@@ -233,6 +239,9 @@
                 }
             </ul>
             <div class="clearBoth"></div>
+        </div>
+        <div class="clearBoth">
+             <i class="note">(*)Hình ảnh đầy đủ giúp quảng cáo ngôi nhà của bạn tốt hơn (Kích thước đề nghị 700x700 px hình vuông,dung lượng nhỏ hơn 2Mb)</i>
         </div>
       
     </div><!---floatLeft----->
@@ -254,7 +263,7 @@
         <div class="boxWrapperSmall">
             <textarea class="formBoxInText">(Để lại lời nhắn để chúng tôi có thể phục vụ bạn tốt hơn)</textarea>
             <br>
-            <input type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
+            <input style="float:right" type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
         </div>
     </div><!---floatLeft---->
 

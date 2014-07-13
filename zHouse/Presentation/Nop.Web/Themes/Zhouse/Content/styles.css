@@ -142,7 +142,7 @@ td.fieldname{font-size:12px}
 .message-error{font-family:Verdana,Arial,sans-serif;font-size:10px;font-weight:700;color:red}
 .message-error ul{padding:0}
 .message-error ul li{list-style:none}
-.validation-summary-errors{font-weight:700;color:red;padding:10px;text-align:left;background:#c06}
+.validation-summary-errors{font-weight:bold;color:red;padding:10px;text-align:left;background:#ddd}
 .field-validation-error{font-weight:700;color:red}
 .required{color:red}
 .not-found-page ul li{list-style:none;margin-top:10px}
@@ -1036,7 +1036,7 @@ ul{margin:0}
 .whiteBgBig{background:#fff;border:1px solid #c2c2c2;width:310px;padding:20px 20px 20px 0;font-size:12px;float:left;position:relative;margin-bottom:10px;height:140px}
 .whiteBgBig li{list-style-image:url(images/list.png);margin-left:46px;text-align:left;padding:3px 0}
 .whiteBgBig li a{color:#666;text-decoration:none;font-size:13px}
-.whiteBgBig li a:hover{text-decoration:underline}
+.whiteBgBig li a:hover{color:#1e98d5}
 .nhonDown{background:url(images/nhonDown.png) no-repeat;width:19px;height:17px;position:absolute;bottom:-17px;left:160px}
 .frame{float:left;margin:20px 0 10px 0}
 .frame table{border-collapse:collapse;width:1080px}
@@ -1098,7 +1098,7 @@ ul{margin:0}
 .mainContent{float:left;width:1080px;margin:0}
 .rightContent{width:230px;float:right}
 .leftContent{width:705px;float:left;margin-right:10px}
-.pinkBgRight{background:#c06;width:200px;float:left;padding:20px 10px 20px 20px;color:#fff;margin-bottom:5px}
+.pinkBgRight{background:#c06;width:100%;float:left;padding:20px 10px 20px 20px;color:#fff;margin-bottom:5px}
 .circleImg{border-radius:100px;border:0}
 .twoColRight{float:left;width:100%;margin:10px 0}
 .twoColRightPic{float:left;width:60px;margin-right:20px}
@@ -1130,7 +1130,7 @@ ul{margin:0}
 .tabBtn a:hover{color:#1e98d5}
 .tabBtnActive{background:#fff;border:1px solid #c2c2c2;border-bottom:1px solid #fff;cursor:pointer;text-align:center;float:left;margin:-1px 0 -1px -1px;padding:15px 20px}
 .tabBtnActive a{color:#1e98d5;font-size:15px;font-weight:bold;text-decoration:none}
-.whiteBgTab{float:left;width:703px;background:#fff;border:1px solid #c2c2c2;position:relative;z-index:110}
+.whiteBgTab{float:left;width:835px;background:#fff;border:1px solid #c2c2c2;position:relative;z-index:110}
 .col1{float:left;width:100px;margin-right:15px}
 .col2{float:left;width:590px}
 .pinkNarrowTitleSmall{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:23px;color:#c06}
@@ -1173,10 +1173,10 @@ ul{margin:0}
 .email-friend .date-book select{width:58px;float:left}
 .email-friend label{margin-bottom:5px}
 .book-email-friend .friend-email{width:90%}
-.book-email-friend .friend-email-textarea{width:93%}
-.createproduct-page{background:#fff;padding:20px;width:80%;margin:0 auto}
-.createproduct-page .head-page{background:#ddd;padding:10px}
-.createproduct-page .info-company{float:right}
+.book-email-friend .friend-email-textarea{ width: 215px;}
+.createproduct-page{background:#fff;width:80%;margin:0 auto;font-size:13px}
+.createproduct-page .head-page{background:#1e98d5;padding:20px;color:#fff}
+.createproduct-page .info-company{float:right;font-size:14px}
 .createproduct-page h1{font-size:30px;font-weight:bold}
 .createproduct-page .text-i{line-height:30px}
 .detailTable .greyBgTD{font-weight:normal}
@@ -1196,13 +1196,13 @@ ul{margin:0}
 .kienthuc{left:327px !important}
 .p-name:hover{color:#d82d7f}
 textarea.formBoxInText{height:70px}
-.menu-footer{height:31px;border-top:dashed 1px #5c5b5b;border-bottom:dashed 1px #5c5b5b;line-height:31px;text-align:center}
+.menu-footer{height:38x;line-height:38px;text-align:center}
 .menu-footer ul{width:700px;margin:0 auto}
 .menu-footer ul a{font-weight:bold}
 .picture-title{background:#000;opacity:.8;width:100%;padding:10px;text-align:center;height:40px;position:absolute;margin-top:-10px}
 #carousel li {margin-right:6px }
 .block-title {font-size:35px;color:#999;text-align:center;font-family:"Myriad Pro",Arial,Helvetica,sans-serif‏;padding:25px 0}
-.adv-yourhouse {background:url(images/button-request.png) no-repeat;width:344px;height:86px;position:relative;z-index:10000; left: 199px;top: -130px; }
+.adv-yourhouse {background:url(images/button-request.png) no-repeat;width:344px;height:86px;position:absolute;z-index:100; left: 199px;margin-top: -130px;cursor:pointer }
 .btn-map {background:url(images/maps-button.gif) no-repeat;width:193px;height:50px;display:block;    margin-top: 20px; }
 .btn-QA {background:url(images/faq-button.gif) no-repeat;width:171px;height:50px;display:block;border:none;}
 .news-short {line-height: 17px;    padding: 3px 12px;    width: 230px; }
@@ -1210,5 +1210,15 @@ textarea.formBoxInText{height:70px}
 .request-title {margin:10px 0;font-size:20px }
 .form-request-contact input { width: 158px; }
 .colB li {margin:10px 0 }
-.rightTable li {margin:5px 0;list-style:circle}
+.rightTable li {margin:5px 0;list-style:circle;width:300px;float:left}
 .rightTable ul {margin-left:30px }
+.createproduct-page .page-body {padding:20px }
+.note {color:#d41212 }
+.date-book select {width:50px; }
+.date-book .selector {margin-right:5px }
+.lb {padding:10px 0px;color:#fff;font-weight:bold }
+#btnSend-request {float:right;margin-top:5px;margin-right:11px }
+.icon-list {position:fixed;right:0;top:50%;   z-index: 1000;}
+.icon-list a {display:block;width:50px;height:50px;margin-bottom:5px }
+.icon-list a.icon-contact {background:url(images/contacticon.jpg) no-repeat; }
+.icon-list a.icon-request {background:url(images/requesticon.png) no-repeat; }

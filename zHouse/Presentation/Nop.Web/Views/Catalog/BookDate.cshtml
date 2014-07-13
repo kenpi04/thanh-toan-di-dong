@@ -13,8 +13,7 @@
     <div class="form-fields book-email-friend">
         <div class="inputs-left">
             <div class="inputs select-datetime">
-                <ul>
-                    <li>
+               
                 Chọn ngày giờ:<br /><br />
                 <select name="hour" class="time" >
                     @for (int i = 1; i <= 24;i++ )
@@ -23,8 +22,8 @@
                     }
 
                 </select>
-            </li>
-                    <li>
+    
+               
                 <span>Giờ</span>
                 <select name="Minute" class="time">
                     @for (int i = 15; i <= 4; i++)
@@ -33,36 +32,34 @@
                     }
 
                 </select>
-                        </li>
-                    <li>
+                      
                 <span>Phút</span>
                 <br />
               <br />
-                        </li>
-              </ul>
+                     
             </div>
             <div class="inputs date-book">
                 @Html.DatePickerDropDowns("Date", "Month", "Year",DateTime.Now.Year,DateTime.Now.Year+1,DateTime.Now.Day,DateTime.Now.Month,DateTime.Now.Year)
             </div>
-
+           
             <div class="lb">Thông tin liên hệ</div>
             <div class="inputs">
-                @Html.LabelFor(model => model.Name)<br /><br />
+              
                 @Html.TextBoxFor(model => model.Name, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.Name.Hint") })
                 @Html.ValidationMessageFor(model => model.Phone)
             </div>
             <div class="inputs">
-                @Html.LabelFor(model => model.Phone)<br />
+            
                 @Html.TextBoxFor(model => model.Phone, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.Phone.Hint") })
                 @Html.ValidationMessageFor(model => model.Phone)
             </div>
             <div class="inputs">
-                @Html.LabelFor(model => model.FriendEmail)<br />
+               
                 @Html.TextBoxFor(model => model.FriendEmail, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.YourEmailAddress.Hint") })
                 @Html.ValidationMessageFor(model => model.FriendEmail)
             </div>
             <div class="inputs">
-                @Html.LabelFor(model => model.PersonalMessage)
+               
                 @Html.TextAreaFor(model => model.PersonalMessage, new { @class = "friend-email-textarea", placeholder = T("Products.EmailAFriend.PersonalMessage.Hint") })
                 @Html.ValidationMessageFor(model => model.PersonalMessage)
             </div>
