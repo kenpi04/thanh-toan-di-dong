@@ -28,7 +28,7 @@
 }
 <script type="text/javascript">
     $(function () {
-        $('#slider').nivoSlider({ effect: 'fade',controlNav:false });
+      //  $('#slider').nivoSlider({ effect: 'fade',controlNav:false });
         $("#frmSearchHOme").submit(function () {
             var data=$(this).serialize();
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {
