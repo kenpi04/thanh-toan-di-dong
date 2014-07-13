@@ -32,7 +32,7 @@
             @foreach(var item in Model.NewsItems)
             { 
             <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@item.Title">
-            <div class="introCol" style="height:321px">
+            <div class="introCol">
                 <div class="info-picture-news" >
                     @*<div class="nhon"></div>*@
                     @if (item.DefaultPictureModel != null)
