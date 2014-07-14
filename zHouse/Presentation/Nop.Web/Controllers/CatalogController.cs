@@ -4313,7 +4313,7 @@ namespace Nop.Web.Controllers
             return View();
         }
         [HttpGet]
-        public ActionResult GetProductImages(int productId)
+        public ActionResult GetProductImages(int productId,bool isGallery=false)
         {
 
             var product = _productService.GetProductById(productId);
@@ -4344,6 +4344,8 @@ namespace Nop.Web.Controllers
 
                 return pictureModels ;
             });
+            if (isGallery)
+                return View("GalleryPictures");
             return View("_ProductDetailsPictures",cachedPictures);
 
            
