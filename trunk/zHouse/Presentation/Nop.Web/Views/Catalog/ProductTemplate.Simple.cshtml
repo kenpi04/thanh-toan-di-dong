@@ -90,13 +90,14 @@
                     @Html.Raw(Model.FullDescription)
                 </div><!---whiteBgLeft-->
                 <div id="tab-pictures" class="whiteBgLeft" style="margin-top:-1px;">
-                    <ul>
-                        @foreach (var o in Model.PictureModels)
-                        { 
-                        <li><img src="@o.FullSizeImageUrl" title="@o.Title" alt="@o.AlternateText" /></li>
-                        }
-                    </ul>
+                    
+                    
                 </div>
+                <script type="text/javascript">
+                    $(function(){
+                        $("#tab-pictures").load("@Url.Action("GetProductImages", new {productId=Model.Id,isGallery=true })");
+                    })
+                </script>
                 <div id="tab-map" class="whiteBgLeft" style="margin-top:-1px;">
                   <div style="width:800px;height:400px">
                           @Html.Partial("_Map", Model)
@@ -104,14 +105,13 @@
                 </div>
                    
                     
-                <script type="text/javascript">
-                    var SHOW_MAP=false;
+                <script type="text/javascript">                  
                     function showMap()
                     {
-                        if(!SHOW_MAP)
+                        if($("#map_canvas").html()=="")
                         {
                             loadScript();
-                            SHOW_MAP=true;
+                           
                         }
                     }
                     $(function () {

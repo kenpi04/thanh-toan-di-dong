@@ -1723,6 +1723,7 @@
     <Content Include="Themes\Zhouse\Content\fonts\flexslider-icon.woff" />
     <Content Include="Views\Catalog\_ProductSpecficationOptionHouse.cshtml" />
     <Content Include="Views\Catalog\_ProductSpecficationOptionProject.cshtml" />
+    <Content Include="Views\Catalog\GalleryPictures.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
