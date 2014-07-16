@@ -1,5 +1,6 @@
 ﻿using Nop.Web.Framework;
 using Nop.Web.Framework.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Nop.Admin.Models.Settings
 {
@@ -51,5 +52,12 @@ namespace Nop.Admin.Models.Settings
         [NopResourceDisplayName("Admin.Configuration.Settings.Media.MaximumImageSize")]
         public int MaximumImageSize { get; set; }
         public bool MaximumImageSize_OverrideForStore { get; set; }
+
+        [NopResourceDisplayName("Admin.Configuration.Settings.Media.WaterMarkPictureId")]
+        [UIHint("Picture")]
+        public int WaterMarkPictureId { get; set; }
+
+        [NopResourceDisplayName("Admin.Configuration.Settings.Media.WaterMarkPostionId")]
+        public int WaterMarkPostionId { get; set; }
     }
 }

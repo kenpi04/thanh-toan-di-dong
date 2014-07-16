@@ -279,7 +279,7 @@
             </td>
         </tr>
     }
-    <tr>
+  @*  <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.ProductTypeId):
         </td>
@@ -287,7 +287,7 @@
             @Html.DropDownListFor(model => model.ProductTypeId, ((ProductType)Model.ProductTypeId).ToSelectList())
             @Html.ValidationMessageFor(model => model.ProductTypeId)
         </td>
-    </tr>
+    </tr>*@
     <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.VisibleIndividually):
@@ -385,7 +385,7 @@
                 </table>
             ))
 <table class="adminContent">
-    <tr>
+   @* <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.AdminComment):
         </td>
@@ -402,7 +402,8 @@
             @Html.DropDownListFor(model => model.VendorId, Model.AvailableVendors)
             @Html.ValidationMessageFor(model => model.VendorId)
         </td>
-    </tr>
+    </tr>*@
+
     <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.ShowOnHomePage):
@@ -430,7 +431,87 @@
             @Html.ValidationMessageFor(model => model.ProductTags)
         </td>
     </tr>
-    <tr>
+  @*  <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Sku):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Sku)
+            @Html.ValidationMessageFor(model => model.Sku)
+        </td>
+    </tr>*@
+    <tr id="pnlWidth">
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Width):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Width) [@Model.BaseDimensionIn]
+            @Html.ValidationMessageFor(model => model.Width)
+        </td>
+    </tr>
+    <tr id="pnlHeight">
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Height):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Height) [@Model.BaseDimensionIn]
+            @Html.ValidationMessageFor(model => model.Height)
+        </td>
+    </tr>
+     <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.AreaUse):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.AreaUse)
+            @Html.ValidationMessageFor(model => model.AreaUse)
+        </td>
+    </tr>
+     <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Area):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Area)
+            @Html.ValidationMessageFor(model => model.Area)
+        </td>
+    </tr>
+     <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.FullAddress):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.FullAddress)
+            @Html.ValidationMessageFor(model => model.FullAddress)
+        </td>
+    </tr>
+     <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.ContactEmail):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.ContactEmail)
+            @Html.ValidationMessageFor(model => model.ContactEmail)
+        </td>
+    </tr>
+     <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.ContactName):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.ContactName)
+            @Html.ValidationMessageFor(model => model.ContactName)
+        </td>
+          <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.ContactPhone):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.ContactPhone)
+            @Html.ValidationMessageFor(model => model.ContactPhone)
+        </td>
+    </tr>
+          <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.Sku):
         </td>
@@ -439,9 +520,10 @@
             @Html.ValidationMessageFor(model => model.Sku)
         </td>
     </tr>
+    </tr>
     <tr>
         <td class="adminTitle">
-            @Html.NopLabelFor(model => model.ManufacturerPartNumber):
+          Nhà đầu tư:
         </td>
         <td class="adminData">
             @Html.EditorFor(model => model.ManufacturerPartNumber)
@@ -450,7 +532,7 @@
     </tr>
     <tr>
         <td class="adminTitle">
-            @Html.NopLabelFor(model => model.Gtin):
+           Đơn vị thi công:
         </td>
         <td class="adminData">
             @Html.EditorFor(model => model.Gtin)
@@ -491,7 +573,7 @@
             @Html.ValidationMessageFor(model => model.Price)
         </td>
     </tr>
-    <tr>
+    @*<tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.OldPrice):
         </td>
@@ -571,7 +653,7 @@
             @Html.EditorFor(model => model.PreOrderAvailabilityStartDateTimeUtc)
             @Html.ValidationMessageFor(model => model.PreOrderAvailabilityStartDateTimeUtc)
         </td>
-    </tr>
+    </tr>*@
     <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.CallForPrice):
@@ -581,7 +663,7 @@
             @Html.ValidationMessageFor(model => model.CallForPrice)
         </td>
     </tr>
-    <tr>
+  @*  <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.CustomerEntersPrice):
         </td>
@@ -607,8 +689,8 @@
             @Html.EditorFor(model => model.MaximumCustomerEnteredPrice) [@Model.PrimaryStoreCurrencyCode]
             @Html.ValidationMessageFor(model => model.MaximumCustomerEnteredPrice)
         </td>
-    </tr>
-</table>
+    </tr>*@
+</table>@*
 <table class="adminContent" id="group-required-other-products">
     <tr class="adminSeparator">
         <td colspan="2">
@@ -859,24 +941,7 @@
             @Html.ValidationMessageFor(model => model.Length)
         </td>
     </tr>
-    <tr id="pnlWidth">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.Width):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.Width) [@Model.BaseDimensionIn]
-            @Html.ValidationMessageFor(model => model.Width)
-        </td>
-    </tr>
-    <tr id="pnlHeight">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.Height):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.Height) [@Model.BaseDimensionIn]
-            @Html.ValidationMessageFor(model => model.Height)
-        </td>
-    </tr>
+    
     <tr id="pnlDeliveryDate">
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.DeliveryDateId):
@@ -1035,7 +1100,7 @@
             @Html.ValidationMessageFor(model => model.AllowedQuantities)
         </td>
     </tr>
-</table>
+</table>*@
 <table class="adminContent">
     <tr class="adminSeparator">
         <td colspan="2">

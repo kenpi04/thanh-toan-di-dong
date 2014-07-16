@@ -836,5 +836,170 @@ namespace Nop.Services.Media
         }
 
         #endregion
+        public virtual string GetPictureUrlWithWarterMark(Picture picture,
+         int targetSize = 0,
+         bool showDefaultPicture = true,
+         string storeLocation = null,
+         PictureType defaultPictureType = PictureType.Entity,
+         bool showWarterMark = false
+         )
+        {
+            string url = string.Empty;
+            byte[] pictureBinary = null;
+            if (picture != null)
+                pictureBinary = LoadPictureBinary(picture);
+            if (picture == null || pictureBinary == null || pictureBinary.Length == 0)
+            {
+                if (showDefaultPicture)
+                {
+                    url = GetDefaultPictureUrl(targetSize, defaultPictureType, storeLocation);
+                }
+                return url;
+            }
+
+            string lastPart = GetFileExtensionFromMimeType(picture.MimeType);
+            string thumbFileName;
+            if (picture.IsNew)
+            {
+                DeletePictureThumbs(picture);
+
+                //we do not validate picture binary here to ensure that no exception ("Parameter is not valid") will be thrown
+                picture = UpdatePicture(picture.Id,
+                    pictureBinary,
+                    picture.MimeType,
+                    picture.SeoFilename,
+                    false,
+                    false);
+            }
+            lock (s_lock)
+            {
+                string seoFileName = picture.SeoFilename; // = GetPictureSeName(picture.SeoFilename); //just for sure
+                if (targetSize == 0)
+                {
+                    thumbFileName = !String.IsNullOrEmpty(seoFileName) ?
+                        string.Format("{0}_{1}.{2}", picture.Id.ToString("0000000"), seoFileName, lastPart) :
+                        string.Format("{0}.{1}", picture.Id.ToString("0000000"), lastPart);
+                    var thumbFilePath = GetThumbLocalPath(thumbFileName);
+                    if (!File.Exists(thumbFilePath))
+                    {
+                        File.WriteAllBytes(thumbFilePath, pictureBinary);
+                    }
+                }
+                else
+                {
+                    thumbFileName = !String.IsNullOrEmpty(seoFileName) ?
+                        string.Format("{0}_{1}_{2}.{3}", picture.Id.ToString("0000000"), seoFileName, targetSize, lastPart) :
+                        string.Format("{0}_{1}.{2}", picture.Id.ToString("0000000"), targetSize, lastPart);
+                    var thumbFilePath = GetThumbLocalPath(thumbFileName);
+                    if (!File.Exists(thumbFilePath))
+                    {
+                        using (var stream = new MemoryStream(pictureBinary))
+                        {
+                            Bitmap b = null;
+                            try
+                            {
+                                //try-catch to ensure that picture binary is really OK. Otherwise, we can get "Parameter is not valid" exception if binary is corrupted for some reasons
+                                b = new Bitmap(stream);
+                            }
+                            catch (ArgumentException exc)
+                            {
+                                _logger.Error(string.Format("Error generating picture thumb. ID={0}", picture.Id), exc);
+                            }
+                            if (b == null)
+                            {
+                                //bitmap could not be loaded for some reasons
+                                return url;
+                            }
+                            var newSize = CalculateDimensions(b.Size, targetSize);
+
+                            if (newSize.Width < 1)
+                                newSize.Width = 1;
+                            if (newSize.Height < 1)
+                                newSize.Height = 1;
+
+                            using (var newBitMap = new Bitmap(newSize.Width, newSize.Height))
+                            {
+                                using (var g = Graphics.FromImage(newBitMap))
+                                {
+                                    g.SmoothingMode = SmoothingMode.HighQuality;
+                                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                    g.CompositingQuality = CompositingQuality.HighQuality;
+                                    g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                                    g.DrawImage(b, 0, 0, newSize.Width, newSize.Height);
+                                    var ep = new EncoderParameters();
+                                    ep.Param[0] = new EncoderParameter(Encoder.Quality, _mediaSettings.DefaultImageQuality);
+                                    ImageCodecInfo ici = GetImageCodecInfoFromExtension(lastPart);
+                                    if (ici == null)
+                                        ici = GetImageCodecInfoFromMimeType("image/jpeg");
+
+                                    #region warterMark
+
+                                    int phWidth = newSize.Width; int phHeight = newSize.Height;
+                                    newBitMap.SetResolution(72, 72);
+                                    var watermarkImg = GetPictureById(_mediaSettings.WaterMarkPictureId);
+                                    if (watermarkImg == null)
+                                        return null;
+                                    MemoryStream Getstream = new MemoryStream();
+                                    Getstream.Write(watermarkImg.PictureBinary, 0, watermarkImg.PictureBinary.Length);
+                                    Image imgWatermark = Bitmap.FromStream(Getstream);
+                                    int wmWidth = imgWatermark.Width;
+                                    int wmHeight = imgWatermark.Height;
+
+
+                                    Bitmap bmWatermark = new Bitmap(imgWatermark);
+                                    bmWatermark.SetResolution(
+                                                    newBitMap.HorizontalResolution,
+                                                        newBitMap.VerticalResolution);
+                                    Graphics grWatermark = Graphics.FromImage(bmWatermark);
+                                    ImageAttributes imageAttributes =
+                                                   new ImageAttributes();
+                                    ColorMap colorMap = new ColorMap();
+
+                                    colorMap.OldColor = Color.FromArgb(255, 0, 255, 0);
+                                    colorMap.NewColor = Color.FromArgb(0, 0, 0, 0);
+                                    ColorMap[] remapTable = { colorMap };
+
+                                    imageAttributes.SetRemapTable(remapTable,
+                                                             ColorAdjustType.Bitmap);
+                                    float[][] colorMatrixElements = { 
+               new float[] {1.0f,  0.0f,  0.0f,  0.0f, 0.0f},
+               new float[] {0.0f,  1.0f,  0.0f,  0.0f, 0.0f},
+               new float[] {0.0f,  0.0f,  1.0f,  0.0f, 0.0f},
+               new float[] {0.0f,  0.0f,  0.0f,  0.3f, 0.0f},
+               new float[] {0.0f,  0.0f,  0.0f,  0.0f, 1.0f}
+            };
+
+                                    ColorMatrix wmColorMatrix = new
+                                                    ColorMatrix(colorMatrixElements);
+
+                                    imageAttributes.SetColorMatrix(wmColorMatrix,
+                                                           ColorMatrixFlag.Default,
+                                                             ColorAdjustType.Bitmap);
+                                    int xPosOfWm = ((phWidth - wmWidth) - 10);
+                                    int yPosOfWm = 10;
+
+                                    grWatermark.DrawImage(imgWatermark,
+                                        new Rectangle(xPosOfWm, yPosOfWm, wmWidth,
+                                                                         wmHeight),
+                                        0,
+                                        0,
+                                        wmWidth,
+                                        wmHeight,
+                                        GraphicsUnit.Pixel,
+                                        imageAttributes);
+                                    #endregion
+                                    bmWatermark.Save(thumbFilePath, ici, ep);
+                                    grWatermark.Dispose();
+                                    imgWatermark.Dispose();
+                                }
+                            }
+                            b.Dispose();
+                        }
+                    }
+                }
+            }
+            url = GetThumbUrl(thumbFileName, storeLocation);
+            return url;
+        }
     }
 }

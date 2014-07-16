@@ -33,5 +33,11 @@ namespace Nop.Core.Domain.Media
         /// Geta or sets a vaue indicating whether single (/content/images/thumbs/) or multiple (/content/images/thumbs/001/ and /content/images/thumbs/002/) directories will used for picture thumbs
         /// </summary>
         public bool MultipleThumbDirectories { get; set; }
+
+        public int WaterMarkPictureId { get; set; }
+        /// <summary>
+        /// 0-top,1-bottom,2-left,3-right,4 center;
+        /// </summary>
+        public int WaterMarkPostionId { get; set; }
     }
 }

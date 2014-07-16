@@ -219,18 +219,20 @@
                 <li>Hình chụp phòng ngủ</li>
                 <li>Hình chụp sân thượng</li>
                 <li>Hình từ ban công, cửa xuống các hướng đường</li>
-            </ul>          
-           
-        </div><!---rightTable---->
-        <div  style="float:right; margin-right: 36px;">
+            </ul>   
+            <div style="float:right;margin-right:54px">       
             <input type="file" id="FileUpload" />
+                </div>
+        </div><!---rightTable---->
+        <div class="floatLeft">
+           
             <div id="pictures">
 
             </div>
             <ul id="lstPic">
                 @foreach (var i in Model.PictureModels)
                 {
-                    <li id="picture_id_@i.PictureId" style="float:left;margin-right:10px">
+                    <li id="picture_id_@i.Id" style="float:left;margin-right:10px">
 
                         <input type="button" class="blueBtn" style="position: absolute;" value="Xóa" onclick="deletePicture(@i.Id)" />
                         <img width="100" height="100" src="@i.ImageUrl" /><br />
@@ -281,6 +283,7 @@
 
 
         })
+    ISFIRSTLOAD=false;
         $("#@Html.FieldIdFor(x=>x.NumberOfHome)").keyup(formatAdd);
         $("#@Html.FieldIdFor(x=>x.StreetId),#@Html.FieldIdFor(x=>x.DistrictId),#@Html.FieldIdFor(x=>x.WardId)").change(formatAdd);
 
@@ -329,8 +332,16 @@
                 $.each(d.Street, function (i, o) {
                     ddlStreet.append($("<option/>").val(o.Id).text(o.Name));
                 })
-                ddlStreet.val(@Model.StreetId);
-                ddlWard.val(@Model.WardId);
+                if(ISFIRSTLOAD)
+                {
+                            
+                    $("#@Html.FieldIdFor(x => x.StreetId)").val(@Model.StreetId);
+                    $("#@Html.FieldIdFor(x => x.StreetId)").click();
+                    $("#@Html.FieldIdFor(x => x.WardId)").val(@Model.WardId); 
+                    $("#@Html.FieldIdFor(x => x.WardId)").click();
+                    ISFIRSTLOAD=false;
+
+                }
             }).error(function () {
 
                 alert("Fail receice from server!");
@@ -356,7 +367,7 @@
                 $("div[id^=SWFUpload]").each(function(){
                     if($(this).find("textarea[name=PictureTitle]").length==0)
                     {
-                        $(this).append('<textarea name="PictureTitle" cols="10" rows="5"></textarea>')
+                        $(this).append('<textarea name="PictureTitle_0" cols="10" rows="5"></textarea>')
                     }
                 })
 
@@ -374,10 +385,17 @@
                 pictureids.push(data);
             },
             'onQueueComplete': function (queueData) {
-               
-                $("textarea[name=PictureTitle]").each(function(i,p){
+               if(pictureids.length>0)
+{
+                $("textarea[name=PictureTitle_0]").each(function(i,p){
                     $(this).attr("name","PictureTitle_"+pictureids[i]);
-                });              
+                });       
+}
+                if ($("div[id^=SWFUpload_]").size()==0||$("textarea[name^=PictureTitle_][name!=PictureTitle_0]").size()==0) {
+                    alert('Vui lòng chọn hình ảnh đăng');
+                    return false;
+
+                }
 
                 if ($("#frmProduct").valid()) {
                     $('#frmProduct').submit();
@@ -420,16 +438,16 @@
 @if (Model.Id > 0)
 {
     <script type="text/javascript">
+    
         $(document).ready(function () {
             var price=@Model.Price.ToString("#");
                   $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
                   $("#@Html.FieldIdFor(x => x.Width)").val(@Math.Floor(Model.Width));
                   $("#@Html.FieldIdFor(x => x.Dept)").val(@Math.Floor(Model.Dept));
                   $("#@Html.FieldIdFor(x => x.Area)").val(@Math.Floor(Model.Area));
-                  $("#@Html.FieldIdFor(x => x.AreaUse)").val(@Math.Floor(Model.AreaUse));
-                  $("#ddlQuan").change();
-                  $("#@Html.FieldIdFor(x => x.StreetId)").val(@Model.StreetId);
-                  $("#@Html.FieldIdFor(x => x.WardId)").val(@Model.WardId);
+            $("#@Html.FieldIdFor(x => x.AreaUse)").val(@Math.Floor(Model.AreaUse));
+            $("#ddlQuan").change();   
+                 
         })
         var CLICK=false;
         function deletePicture(id) {
@@ -447,6 +465,7 @@
                     if (data.error == 0) {
                     
                         alert(data.message);    
+                        picture_id.remove();
                         CLICK=false;
                     }
                     else {
