@@ -1905,40 +1905,40 @@ namespace Nop.Web.Controllers
                 return InvokeHttp404();
 
             //visible individually?
-            if (!product.VisibleIndividually)
-            {
-                //is this one an associated products?
-                var parentGroupedProduct = _productService.GetProductById(product.ParentGroupedProductId);
-                if (parentGroupedProduct != null)
-                {
-                    return RedirectToRoute("Product", new { SeName = parentGroupedProduct.GetSeName() });
-                }
-                else
-                {
-                    return RedirectToRoute("HomePage");
-                }
-            }
+            //if (!product.VisibleIndividually)
+            //{
+            //    //is this one an associated products?
+            //    var parentGroupedProduct = _productService.GetProductById(product.ParentGroupedProductId);
+            //    if (parentGroupedProduct != null)
+            //    {
+            //        return RedirectToRoute("Product", new { SeName = parentGroupedProduct.GetSeName() });
+            //    }
+            //    else
+            //    {
+            //        return RedirectToRoute("HomePage");
+            //    }
+            //}
 
             //update existing shopping cart item?
-            ShoppingCartItem updatecartitem = null;
-            if (_shoppingCartSettings.AllowCartItemEditing && updatecartitemid > 0)
-            {
-                var cart = _workContext.CurrentCustomer.ShoppingCartItems
-                    .Where(x => x.ShoppingCartType == ShoppingCartType.ShoppingCart)
-                    .Where(x => x.StoreId == _storeContext.CurrentStore.Id)
-                    .ToList();
-                updatecartitem = cart.FirstOrDefault(x => x.Id == updatecartitemid);
-                //not found?
-                if (updatecartitem == null)
-                {
-                    return RedirectToRoute("Product", new { SeName = product.GetSeName() });
-                }
-                //is it this product?
-                if (product.Id != updatecartitem.ProductId)
-                {
-                    return RedirectToRoute("Product", new { SeName = product.GetSeName() });
-                }
-            }
+            //ShoppingCartItem updatecartitem = null;
+            //if (_shoppingCartSettings.AllowCartItemEditing && updatecartitemid > 0)
+            //{
+            //    var cart = _workContext.CurrentCustomer.ShoppingCartItems
+            //        .Where(x => x.ShoppingCartType == ShoppingCartType.ShoppingCart)
+            //        .Where(x => x.StoreId == _storeContext.CurrentStore.Id)
+            //        .ToList();
+            //    updatecartitem = cart.FirstOrDefault(x => x.Id == updatecartitemid);
+            //    //not found?
+            //    if (updatecartitem == null)
+            //    {
+            //        return RedirectToRoute("Product", new { SeName = product.GetSeName() });
+            //    }
+            //    //is it this product?
+            //    if (product.Id != updatecartitem.ProductId)
+            //    {
+            //        return RedirectToRoute("Product", new { SeName = product.GetSeName() });
+            //    }
+            //}
 
             //prepare the model
             var model = PrepareProductDetailsPageModel(product, null, false);
