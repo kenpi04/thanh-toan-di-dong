@@ -30,6 +30,21 @@ namespace Nop.Admin.Models.Catalog
             AddSpecificationAttributeModel = new AddProductSpecificationAttributeModel();
         }
 
+        public string HouseNumber { get; set; }
+          [NopResourceDisplayName("Admin.Catalog.Products.Fields.FullAddress")]
+        public string FullAddress { get; set; }
+          [NopResourceDisplayName("Admin.Catalog.Products.Fields.Area")]
+        public decimal Area { get; set; }
+          [NopResourceDisplayName("Admin.Catalog.Products.Fields.AreaUse")]
+        public decimal AreaUse { get; set; }
+          [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactName")]
+        public string ContactName { get; set; }
+          [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactPhone")]
+        public string ContactPhone { get; set; }
+          [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactEmail")]
+        public string ContactEmail { get; set; }
+
+
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.ID")]
         public override int Id { get; set; }
 
@@ -853,5 +868,7 @@ namespace Nop.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.SeName")]
         [AllowHtml]
         public string SeName { get; set; }
+
+        
     }
 }

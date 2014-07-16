@@ -3450,13 +3450,13 @@ namespace Nop.Web.Controllers
                 //delete
 
                 //add new
-                var productPic = product.ProductPictures;
+                var productPic = product.ProductPictures.Select(x=>x.PictureId);
                 foreach (var i in model.PictureIds)
                 {
 
 
 
-                    if (!productPic.All(x => x.PictureId == i.Id))
+                    if (!productPic.Contains(i.Id))
                     {
                         var pictureproduct = new ProductPicture
                         {
@@ -3470,9 +3470,12 @@ namespace Nop.Web.Controllers
                     }
                     else
                     {
-                        var pictureProduct = productPic.FirstOrDefault(x => x.PictureId == i.Id);
-                        pictureProduct.Description = i.Title;
-                        _productService.UpdateProductPicture(pictureProduct);
+                        var pictureProduct = product.ProductPictures.FirstOrDefault(x => x.PictureId == i.Id);
+                        if (pictureProduct != null)
+                        {
+                            pictureProduct.Description = i.Title;
+                            _productService.UpdateProductPicture(pictureProduct);
+                        }
                     }
                 }
                 #endregion
@@ -3607,27 +3610,12 @@ namespace Nop.Web.Controllers
             }
             #endregion
 
-            if (!_workContext.CurrentCustomer.IsRegistered())
-            {
+           
                 p.ContactEmail = inPd.Email;
                 p.ContactName = inPd.ContactName;
                 p.ContactPhone = inPd.ContactPhone;
 
-            }
-            else
-            {
-                p.ContactEmail = _workContext.CurrentCustomer.Email;
-                p.ContactName = _workContext.CurrentCustomer.GetFullName();
-                p.ContactPhone = _workContext.CurrentCustomer.GetAttribute<string>(SystemCustomerAttributeNames.Phone);
-                var add = _workContext.CurrentCustomer.Addresses.FirstOrDefault();
-                if (add != null)
-                {
-                    p.DistrictId = add.DistrictId ?? 0;
-                    p.WardId = add.WardId ?? 0;
-                    p.StreetId = add.StreetId ?? 0;
-
-                }
-            }
+           
             p.HouseNumber = inPd.NumberOfHome;
             p.DistrictId = inPd.DistrictId;
             p.WardId = inPd.WardId;
@@ -4345,7 +4333,7 @@ namespace Nop.Web.Controllers
                 return pictureModels ;
             });
             if (isGallery)
-                return View("GalleryPictures");
+                return View("GalleryPictures",cachedPictures);
             return View("_ProductDetailsPictures",cachedPictures);
 
            

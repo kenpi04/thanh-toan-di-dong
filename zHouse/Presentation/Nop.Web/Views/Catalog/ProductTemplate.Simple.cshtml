@@ -83,7 +83,7 @@
                 <div class="whiteBgTab" id="tabs">
                     <div class="tabBtnActive" tab="#tab-detail"><a >MÔ TẢ CHI TIẾT</a></div>
                     <div class="tabBtn" tab="#tab-pictures"><a >HÌNH ẢNH CLIP</a></div>
-                    <div class="tabBtn" tab="#tab-map"><a onclick="showMap()" >BẢN ĐỒ</a></div>
+                    <div class="tabBtn" tab="#tab-map"><a onclick="showMap()">BẢN ĐỒ</a></div>
                 </div><!---whiteBgTab-->
 
                 <div id="tab-detail" class="whiteBgLeft" style="margin-top:-1px;">
@@ -93,11 +93,7 @@
                     
                     
                 </div>
-                <script type="text/javascript">
-                    $(function(){
-                        $("#tab-pictures").load("@Url.Action("GetProductImages", new {productId=Model.Id,isGallery=true })");
-                    })
-                </script>
+              
                 <div id="tab-map" class="whiteBgLeft" style="margin-top:-1px;">
                   <div style="width:800px;height:400px">
                           @Html.Partial("_Map", Model)
@@ -105,17 +101,23 @@
                 </div>
                    
                     
-                <script type="text/javascript">                  
+                <script type="text/javascript">   
+                    var isSHow=false;
                     function showMap()
                     {
-                        if($("#map_canvas").html()=="")
+                        if(!isSHow)
                         {
                             loadScript();
-                           
+                            isSHow=true;
                         }
                     }
                     $(function () {
                         $.tabs("#tabs div");
+                        window.setTimeout(function(){
+                            $("#tab-pictures").load("@Url.Action("GetProductImages", new {productId=Model.Id})&isGallery=True");
+                           
+                        },5000);
+                      
 
                     })
                     function sendMailFriend()
