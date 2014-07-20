@@ -35,7 +35,7 @@
 
                             <tr>
                                 <td class="greyBgTD">Diện tích</td>
-                                <td>@(!string.IsNullOrWhiteSpace(Model.Area) ? Model.Area +"m2": "-")  (@Model.Width.ToString("#") x @Model.Dept.ToString("#")) </td>
+                                <td>@(!string.IsNullOrWhiteSpace(Model.Area) ? Model.Area +"m2": "-")  (@Model.Width.ToString("#.##") x @Model.Dept.ToString("#.##")) </td>
                             </tr>
                             <tr>
                                 <td class="greyBgTD">Số tầng</td>
@@ -43,7 +43,7 @@
                             </tr>
                             <tr>
                                 <td class="greyBgTD">Diện tích sử dụng</td>
-                                <td>@(Model.AreaUse>0 ? Model.AreaUse.ToString("#") +"m2": "-") </td>
+                                <td>@(Model.AreaUse>0 ? Model.AreaUse.ToString("#.##") +"m2": "-") </td>
                             </tr>
                          
                           
@@ -52,7 +52,7 @@
                                 <td>
                                       @if (Model.ThichHop.Count > 0)
                                     {
-                                          @Model.ThichHop.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
+                                          @Model.ThichHop.Aggregate((a, b) => a + "," + b)
                                     }
                                     else
                                     { <text>-</text>}
