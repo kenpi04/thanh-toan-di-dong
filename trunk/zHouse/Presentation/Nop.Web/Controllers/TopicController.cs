@@ -68,6 +68,7 @@ namespace Nop.Web.Controllers
 
         #region Methods
 
+        [OutputCache(Duration = 500, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult TopicDetails(string systemName)
         {
             var cacheKey = string.Format(ModelCacheEventConsumer.TOPIC_MODEL_KEY, systemName, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
@@ -103,6 +104,7 @@ namespace Nop.Web.Controllers
         }
 
         [ChildActionOnly]
+        [OutputCache(Duration = 500, VaryByParam = "none")]
         public ActionResult TopicHomePage()
         {
 
