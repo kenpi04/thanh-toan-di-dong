@@ -12,7 +12,7 @@
 <div class="page contact-page">
   
 
-      <div class="blackBgTop">
+      <div class="blackBgTop" id="div-gioithieu">
     	<a class="title30">GIỚI THIỆU</a> <a class="title40">zHOUSE.com.vn</a>
         <p>Sàn giao dịch nhà <a class="blueText">zHOUSE</a> chuyên về xây dựng và phân phối nhà dự án, nhà liền kề, nhà đơn lẻ, nhà chung cư…Tất cả các sản phẩm của <a class="blueText">zHOUSE</a> đều được cam kết về chất lượng và pháp lý đầy đủ.</p>
         <p>Mọi thông tin về Bất động sản như tính pháp lý, vị trí, kết cấu, tiện ích … được <a class="blueText">zHOUSE</a> đưa lên website thông qua video, hình ảnh, bài giới thiệu một cách đầy đủ, chính xác nhất, nhằm mang lại cho Quý khách sự tin tưởng và giúp Quý khách tiết kiệm thời gian đi xem nhà.</p>
@@ -27,7 +27,7 @@
         </div>
     </center>
     
-    <div class="whiteBgFull">
+    <div class="whiteBgFull" id="div-service">
         <div class="wrapperLarge">
             <div class="fullContent">
                 <div class="fullContentColFloat"><img src="@Url.Content("~/Themes/Zhouse/Content/images/bannerLeft.png")" /></div>
@@ -81,7 +81,7 @@
     </div><!---wrapperLarge---->
     <div class="lineUp"></div>
     
-    <div class="whiteBgFull">
+    <div class="whiteBgFull" id="div-contact">
     	<div class="wrapperLarge">
         	<a class="title40">LIÊN HỆ</a>
             <br />
@@ -111,6 +111,13 @@
             	<div id="map_canvas" style="width:550px;height:330px;border:solid 2px #fff;box-shadow:1px 1px 1px #808080;margin-bottom:10px"></div>
 
 <script>
+    if (window.location.href.indexOf("#div-")!=-1)
+    {
+        var divTab = window.location.split("#")[1];
+        $('html,body').animate({
+            scrollTop: $("#"+divTab).offset().top
+        });
+    }
     $("#frmContactus").submit(function () {
         var frm = $(this);
         if (frm.valid())
