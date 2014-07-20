@@ -22,7 +22,7 @@
                             </tr>
                                <tr>
                                 <td class="greyBgTD">Diện tích</td>
-                                <td>@(!string.IsNullOrWhiteSpace(Model.Area) ? Model.Area +"m2": "-")  (@Model.Width.ToString("#") x @Model.Dept.ToString("#")) </td>
+                                <td>@(!string.IsNullOrWhiteSpace(Model.Area) ? Model.Area +"m2": "-")  (@Model.Width.ToString("#.##") x @Model.Dept.ToString("#.##")) </td>
                             </tr>
                                <tr>
                                 <td class="greyBgTD">Số tầng</td>
@@ -51,7 +51,7 @@
                                 <td>
                                     @if (Model.TienIch.Count > 0)
                                     {
-                                       @Model.TienIch.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
+                                       @Model.TienIch.Aggregate((a, b) => a + "," + b)
                                     }
                                     else
                                     { <text>-</text>}
