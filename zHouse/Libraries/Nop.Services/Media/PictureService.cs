@@ -874,7 +874,7 @@ namespace Nop.Services.Media
             lock (s_lock)
             {
                 string seoFileName = picture.SeoFilename; // = GetPictureSeName(picture.SeoFilename); //just for sure
-                if (targetSize == 0)
+                if (targetSize == 0&&!showWarterMark)
                 {
                     thumbFileName = !String.IsNullOrEmpty(seoFileName) ?
                         string.Format("{0}_{1}.{2}", picture.Id.ToString("0000000"), seoFileName, lastPart) :
@@ -919,6 +919,7 @@ namespace Nop.Services.Media
 
                             using (var newBitMap = new Bitmap(newSize.Width, newSize.Height))
                             {
+                               
                                 using (var g = Graphics.FromImage(newBitMap))
                                 {
                                     g.SmoothingMode = SmoothingMode.HighQuality;
@@ -938,19 +939,18 @@ namespace Nop.Services.Media
                                     newBitMap.SetResolution(72, 72);
                                     var watermarkImg = GetPictureById(_mediaSettings.WaterMarkPictureId);
                                     if (watermarkImg == null)
-                                        return null;
+                                        return "";
                                     MemoryStream Getstream = new MemoryStream();
                                     Getstream.Write(watermarkImg.PictureBinary, 0, watermarkImg.PictureBinary.Length);
                                     Image imgWatermark = Bitmap.FromStream(Getstream);
                                     int wmWidth = imgWatermark.Width;
                                     int wmHeight = imgWatermark.Height;
 
-
-                                    Bitmap bmWatermark = new Bitmap(imgWatermark);
-                                    bmWatermark.SetResolution(
+                                   
+                                    newBitMap.SetResolution(
                                                     newBitMap.HorizontalResolution,
                                                         newBitMap.VerticalResolution);
-                                    Graphics grWatermark = Graphics.FromImage(bmWatermark);
+                                   
                                     ImageAttributes imageAttributes =
                                                    new ImageAttributes();
                                     ColorMap colorMap = new ColorMap();
@@ -962,12 +962,12 @@ namespace Nop.Services.Media
                                     imageAttributes.SetRemapTable(remapTable,
                                                              ColorAdjustType.Bitmap);
                                     float[][] colorMatrixElements = { 
-               new float[] {1.0f,  0.0f,  0.0f,  0.0f, 0.0f},
-               new float[] {0.0f,  1.0f,  0.0f,  0.0f, 0.0f},
-               new float[] {0.0f,  0.0f,  1.0f,  0.0f, 0.0f},
-               new float[] {0.0f,  0.0f,  0.0f,  0.3f, 0.0f},
-               new float[] {0.0f,  0.0f,  0.0f,  0.0f, 1.0f}
-            };
+                                       new float[] {1.0f,  0.0f,  0.0f,  0.0f, 0.0f},
+                                       new float[] {0.0f,  1.0f,  0.0f,  0.0f, 0.0f},
+                                       new float[] {0.0f,  0.0f,  1.0f,  0.0f, 0.0f},
+                                       new float[] {0.0f,  0.0f,  0.0f,  0.3f, 0.0f},
+                                       new float[] {0.0f,  0.0f,  0.0f,  0.0f, 1.0f}
+                                    };
 
                                     ColorMatrix wmColorMatrix = new
                                                     ColorMatrix(colorMatrixElements);
@@ -976,9 +976,10 @@ namespace Nop.Services.Media
                                                            ColorMatrixFlag.Default,
                                                              ColorAdjustType.Bitmap);
                                     int xPosOfWm = ((phWidth - wmWidth) - 10);
-                                    int yPosOfWm = 10;
+                                    int yPosOfWm = ((phHeight-wmHeight)-10);
+                                   
 
-                                    grWatermark.DrawImage(imgWatermark,
+                                    g.DrawImage(imgWatermark,
                                         new Rectangle(xPosOfWm, yPosOfWm, wmWidth,
                                                                          wmHeight),
                                         0,
@@ -988,8 +989,7 @@ namespace Nop.Services.Media
                                         GraphicsUnit.Pixel,
                                         imageAttributes);
                                     #endregion
-                                    bmWatermark.Save(thumbFilePath, ici, ep);
-                                    grWatermark.Dispose();
+                                    newBitMap.Save(thumbFilePath, ici, ep);                                  
                                     imgWatermark.Dispose();
                                 }
                             }

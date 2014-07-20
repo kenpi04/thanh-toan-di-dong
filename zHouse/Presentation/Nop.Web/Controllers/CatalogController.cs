@@ -3506,7 +3506,7 @@ namespace Nop.Web.Controllers
                 }
                 #endregion
                 _productService.UpdateProduct(product);
-                string seName = product.ValidateSeName(product.Name, product.Name, true);
+                string seName = product.ValidateSeName(product.GetSeName(), product.Name, true);
                 _urlRecordService.SaveSlug(product, seName, 0);
 
                 return RedirectToAction("InsertProductSuccess", new { productId = product.Id });
@@ -3692,20 +3692,17 @@ namespace Nop.Web.Controllers
             model.Directors = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected=model.Id>0&& model.SelectedOptionAttributes.Contains(x.Id)
+                Text = x.Name
             }).ToList();
             model.BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = model.Id > 0 && model.SelectedOptionAttributes.Contains(x.Id)
+                Text = x.Name
             }).ToList();
             model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = model.Id > 0 && model.SelectedOptionAttributes.Contains(x.Id)
+                Text = x.Name
             }).ToList();
             model.Environments = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Enviroment).Select(x => new SelectListItem
             {
@@ -3722,15 +3719,13 @@ namespace Nop.Web.Controllers
             model.NumberFloors = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfFloor).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = model.Id > 0 && model.SelectedOptionAttributes.Contains(x.Id)
+                Text = x.Name
             }).ToList();
 
             model.NumberBlocks = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberBlock).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.Name,
-                Selected = model.SelectedOptionAttributes.Contains(x.Id)
+                Text = x.Name
             }).ToList();
             model.PhapLy = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.PhapLy).Select(x => new SelectListItem
             {
@@ -3750,7 +3745,12 @@ namespace Nop.Web.Controllers
                 Text = x.Name
 
             }).ToList();
+            model.StatusList = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Status).Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
 
+            }).ToList();
 
 
 
