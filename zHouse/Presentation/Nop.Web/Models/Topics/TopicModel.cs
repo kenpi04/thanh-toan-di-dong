@@ -19,5 +19,7 @@ namespace Nop.Web.Models.Topics
         public string MetaDescription { get; set; }
 
         public string MetaTitle { get; set; }
+
+        public int GroupId { get; set; }
     }
 }
