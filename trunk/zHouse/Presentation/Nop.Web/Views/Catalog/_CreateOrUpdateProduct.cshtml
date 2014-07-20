@@ -102,7 +102,7 @@
                         <td>@Html.LabelFor(x => x.AreaUse) </td>
                         <td>
                            
-                            @Html.TextBoxFor(x => x.AreaUse, new { @class = "formBoxInTable",placeholder="Diện tích sử dụng"}) m2
+                            @Html.TextBoxFor(x => x.AreaUse, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" }) m2
                         @Html.RequiredHint()</td>
                       
                     </tr>
@@ -110,7 +110,7 @@
                         <td>@Html.LabelFor(x => x.Area) </td>
                         <td>
                            
-                            @Html.TextBoxFor(x => x.Area, new { @class = "formBoxInTable",placeholder="Diện tích"}) m2
+                            @Html.TextBoxFor(x => x.Area, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích" }) m2
                         @Html.RequiredHint()</td>
                       
                         <td>@Html.LabelFor(x => x.BedRooms) </td>
@@ -128,8 +128,8 @@
                     <tr>
                         <td>@Html.LabelFor(x => x.Width) </td>
                         <td>
-                          
-                            @Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable", placeholder = "Chiều ngang" }) m
+                          @*@Html.TextBoxFor(x => x.Width, "{0:0.00}", )*@
+                            @Html.TextBoxFor(x => x.Width, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều ngang" }) m
                         @Html.RequiredHint()</td>
                       
                         <td>@Html.LabelFor(x => x.BadRooms)</td>
@@ -147,7 +147,7 @@
                         <td>@Html.LabelFor(x => x.Dept)</td>
                         <td>
                             
-                            @Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable", placeholder = "Chiều sâu" }) m
+                            @Html.TextBoxFor(x => x.Dept, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều sâu" }) m
                         @Html.RequiredHint()</td>
                         
                         <td>@Html.LabelFor(x => x.Directors)</td>
