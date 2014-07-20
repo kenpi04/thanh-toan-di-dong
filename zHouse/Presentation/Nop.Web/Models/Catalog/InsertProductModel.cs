@@ -54,13 +54,10 @@ namespace Nop.Web.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.CateId")]
         public int CateId { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Area")]
-        [DisplayFormat(DataFormatString="{0:###,##}")]
         public decimal Area { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Width")]
-        [DisplayFormat(DataFormatString = "{0:0,00}")]
         public decimal Width { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Dept")]
-        [DisplayFormat(DataFormatString = "{0:###,##}")]
         public decimal Dept { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.NumberOfHome")]
         public string NumberOfHome { get; set; }
