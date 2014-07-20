@@ -3692,43 +3692,51 @@ namespace Nop.Web.Controllers
             model.Directors = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.Name
+                Text = x.Name,
+                Selected=model.Id>0&& model.SelectedOptionAttributes.Contains(x.Id)
             }).ToList();
             model.BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.Name
+                Text = x.Name,
+                Selected = model.Id > 0 && model.SelectedOptionAttributes.Contains(x.Id)
             }).ToList();
             model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.Name
+                Text = x.Name,
+                Selected = model.Id > 0 && model.SelectedOptionAttributes.Contains(x.Id)
             }).ToList();
             model.Environments = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Enviroment).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
+              
             }).ToList();
             model.Facilities = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.CoSoVatChat).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
+               
             }).ToList();
             model.NumberFloors = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfFloor).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.Name
+                Text = x.Name,
+                Selected = model.Id > 0 && model.SelectedOptionAttributes.Contains(x.Id)
             }).ToList();
 
             model.NumberBlocks = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberBlock).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = x.Name
+                Text = x.Name,
+                Selected = model.SelectedOptionAttributes.Contains(x.Id)
             }).ToList();
             model.PhapLy = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.PhapLy).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
+              
             }).ToList();
             model.ThichHop = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.ThichHop).Select(x => new SelectListItem
             {
@@ -3740,6 +3748,7 @@ namespace Nop.Web.Controllers
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
+
             }).ToList();
 
 
@@ -4323,7 +4332,7 @@ namespace Nop.Web.Controllers
                     pictureModels.Add(new PictureModel()
                     {
                         ImageUrl = _pictureService.GetPictureUrl(picture, defaultPictureSize),
-                        FullSizeImageUrl = _pictureService.GetPictureUrl(picture, defaultPictureFullSize),
+                        FullSizeImageUrl = _pictureService.GetPictureUrlWithWarterMark(picture, defaultPictureFullSize,showWarterMark:true),
                         Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), product.Name),
                         AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), product.Name),
                         Description = picture.ProductPictures.FirstOrDefault() != null ? picture.ProductPictures.FirstOrDefault().Description : ""
@@ -4338,6 +4347,8 @@ namespace Nop.Web.Controllers
 
            
         }
+
+       
     }
 }
 

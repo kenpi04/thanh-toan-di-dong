@@ -83,34 +83,31 @@
                 <div class="whiteBgTab" id="tabs">
                     <div class="tabBtnActive" tab="#tab-detail"><a >MÔ TẢ CHI TIẾT</a></div>
                     <div class="tabBtn" tab="#tab-pictures"><a >HÌNH ẢNH CLIP</a></div>
-                    <div class="tabBtn" tab="#tab-map"><a onclick="showMap()">BẢN ĐỒ</a></div>
+                   
                 </div><!---whiteBgTab-->
 
                 <div id="tab-detail" class="whiteBgLeft" style="margin-top:-1px;">
                     @Html.Raw(Model.FullDescription)
+
+                       <div style="width:800px;height:400px">
+                          @Html.Partial("_Map", Model)
+                    </div>
                 </div><!---whiteBgLeft-->
                 <div id="tab-pictures" class="whiteBgLeft" style="margin-top:-1px;">
                     
                     
                 </div>
               
-                <div id="tab-map" class="whiteBgLeft" style="margin-top:-1px;">
-                  <div style="width:800px;height:400px">
-                          @Html.Partial("_Map", Model)
-                    </div>
-                </div>
+              
                    
                     
                 <script type="text/javascript">   
-                    var isSHow=false;
-                    function showMap()
-                    {
-                        if(!isSHow)
-                        {
+
+                        
                             loadScript();
-                            isSHow=true;
-                        }
-                    }
+                           
+                        
+                    
                     $(function () {
                         $.tabs("#tabs div");
                         window.setTimeout(function(){

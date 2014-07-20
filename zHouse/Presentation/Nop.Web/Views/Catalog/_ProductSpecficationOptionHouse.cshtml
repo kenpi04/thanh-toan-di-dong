@@ -52,10 +52,7 @@
                                 <td>
                                       @if (Model.ThichHop.Count > 0)
                                     {
-                                        foreach (var s in Model.ThichHop)
-                                        {
-                                            <text>@s</text><br />
-                                        }
+                                          @Model.ThichHop.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
                                     }
                                     else
                                     { <text>-</text>}
@@ -69,10 +66,7 @@
                                 <td>
                                     @if (Model.Facilities.Count > 0)
                                     {
-                                        foreach (var s in Model.Facilities)
-                                        {
-                                            <text>@s.Text</text><br />
-                                        }
+                                        @Model.Facilities.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
                                     }
                                     else
                                     { <text>-</text>}

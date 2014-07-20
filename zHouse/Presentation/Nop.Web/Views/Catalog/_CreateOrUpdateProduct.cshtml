@@ -7,6 +7,7 @@
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/editorsimple.css");
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/jquery-te-1.4.0.css");
     bool isLogin=WorkContext.CurrentCustomer.IsRegistered();
+   
 }
 @Html.HiddenFor(x => x.Id)
 
@@ -92,7 +93,7 @@
                         <td>@Html.LabelFor(x => x.AreaUse) </td>
                         <td>
                            
-                            @Html.TextBoxFor(x => x.AreaUse, new { @class = "formBoxInTable number",placeholder="Diện tích sử dụng"}) m2
+                            @Html.TextBoxFor(x => x.AreaUse, new { @class = "formBoxInTable",placeholder="Diện tích sử dụng"}) m2
                         @Html.RequiredHint()</td>
                       
                     </tr>
@@ -100,7 +101,7 @@
                         <td>@Html.LabelFor(x => x.Area) </td>
                         <td>
                            
-                            @Html.TextBoxFor(x => x.Area, new { @class = "formBoxInTable number",placeholder="Diện tích"}) m2
+                            @Html.TextBoxFor(x => x.Area, new { @class = "formBoxInTable",placeholder="Diện tích"}) m2
                         @Html.RequiredHint()</td>
                       
                         <td>@Html.LabelFor(x => x.BedRooms) </td>
@@ -114,7 +115,7 @@
                         <td>@Html.LabelFor(x => x.Width) </td>
                         <td>
                           
-                            @Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable number",placeholder="Chiều ngang"}) m
+                            @Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable",placeholder="Chiều ngang"}) m
                         @Html.RequiredHint()</td>
                       
                         <td>@Html.LabelFor(x => x.BadRooms)</td>
@@ -128,7 +129,7 @@
                         <td>@Html.LabelFor(x => x.Dept)</td>
                         <td>
                             
-                            @Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable number",placeholder="Chiều sâu"}) m
+                            @Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable",placeholder="Chiều sâu"}) m
                         @Html.RequiredHint()</td>
                         
                         <td>@Html.LabelFor(x => x.Directors)</td>
@@ -442,10 +443,7 @@
         $(document).ready(function () {
             var price=@Model.Price.ToString("#");
                   $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
-                  $("#@Html.FieldIdFor(x => x.Width)").val(@Math.Floor(Model.Width));
-                  $("#@Html.FieldIdFor(x => x.Dept)").val(@Math.Floor(Model.Dept));
-                  $("#@Html.FieldIdFor(x => x.Area)").val(@Math.Floor(Model.Area));
-            $("#@Html.FieldIdFor(x => x.AreaUse)").val(@Math.Floor(Model.AreaUse));
+              
             $("#ddlQuan").change();   
                  
         })

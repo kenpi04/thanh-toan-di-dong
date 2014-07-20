@@ -135,10 +135,10 @@ $(function () {
     $(".datepicker").datepicker();
  
     $("input.number").keypress(function () {
-        if (/\D/g.test($(this).val()))
+        if (/\D|,|./g.test($(this).val()))
         {
             // Filter non-digits from input value.
-                $(this).val($(this).val().replace(/\D/g, ''));
+                $(this).val($(this).val().replace(/\D|,|./g, ''));
         }
     })
     $("select").uniform();
