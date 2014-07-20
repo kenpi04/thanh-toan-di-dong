@@ -1024,7 +1024,11 @@ ul{margin:0}
 .introCol:hover {box-shadow:2px 2px 6px #ccc }
 .product-list .introCol {margin-left:27px !important }
 .introCol .info-picture{min-height:220px}
- .new{position:absolute;top:0;right:-5px;background:url(images/new.png) no-repeat;width:96px;height:54px}
+ .new{position:absolute;top:0;right:-5px;width:96px;height:54px}
+.tag-30 {background:url(images/new.png) no-repeat }
+.tag-10 {background:url(images/new.png) no-repeat }
+.tag-20 {background:url(images/new.png) no-repeat }
+.tag-30 {background:url(images/new.png) no-repeat }
 .nhon{position:absolute;top:241px;left:20px;background:url(images/nhon.png) no-repeat;width:23px;height:13px}
 .pinkTag{background:url(images/pinkTag.png) no-repeat;width:106px;height:36px;padding-top:7px;position:absolute;right:-10px;top:215px;color:#fff;text-align:center;font-weight:bold;font-size:13px}
 .backBtn{background:url(images/back.png) no-repeat;width:32px;height:108px;border:0;cursor:pointer;float:left;margin-top:60px}
@@ -1041,7 +1045,7 @@ ul{margin:0}
 .frame{float:left;margin:20px 0 10px 0}
 .frame table{border-collapse:collapse;width:1080px}
 .frame table td{background:#fff;border:1px solid #c2c2c2;text-align:center;padding:20px 0;color:#1e98d5;font-weight:bold;width:236px}
-.smallPinkText{color:#c06;font-size:13px}
+.smallPinkText{color:#c06;font-size:13px;clear:both}
 .threeCol{width:333px;float:left;margin-right:40px}
 .footerBg{width:100%;background:#fff;padding:20px 0;float:left}
 .footerContent{width:100%;float:left}
@@ -1223,3 +1227,39 @@ textarea.formBoxInText{height:70px}
 .icon-list a.icon-contact {background:url(images/contacticon.jpg) no-repeat; }
 .icon-list a.icon-request {background:url(images/requesticon.png) no-repeat; }
 .info-picture-news img {max-height }
+/*---intro-------------------*/
+.wrapperLarge { width: 1200px; margin: 0 auto; position: relative; }
+.btnRight1 { position: fixed; right: 0; top: 60px; background: url(images/btnRight1.png); width: 50px; height: 50px; border: none; }
+.btnRight2 { position: fixed; right: 0; top: 111px; background: url(images/btnRight2.png); width: 50px; height: 50px; border: none; }
+.footerLineHor { background: url(images/footerLineHor.png) repeat-x; width: 100%; height: 48px; margin-bottom: -20px; float: left; }
+.footerContentLarge { width: 1200px; float: left; }
+.blueTextThin { color: #1e98d5; }
+.greyLink a { color: #333; font-size: 13px; text-decoration: none; line-height: 25px; }
+.greyLink a:hover { text-decoration: underline; }
+.mapBtn { float: right; margin-top: 30px; }
+.title30 { font-size: 30px; font-weight: lighter; }
+.title40 { font-size: 40px; font-weight: lighter; }
+.blackBgTop { background: #000; opacity: 0.7; width: 45%; padding: 30px 50px 35px 120px; color: #fff; position: absolute; left: 0; top: 121px; text-align: justify; }
+.downBtndiv { margin-top: -25px; }
+.downBtn { background: url(images/downBtn.png) no-repeat; width: 21px; height: 14px; border: none; cursor: pointer; }
+.downBtn:hover { background: url(images/downBtnhover.png); }
+.whiteBgFull { background: #fff; float: left; width: 100%; }
+.fullContent { width: 100%; float: left; margin-top: 11px; }
+.fullContentColFloat { float: left; }
+.fullContentCol { float: left; padding: 150px 0 50px 30px; }
+.lineUp { background: url(images/lineUp.png) repeat-x; width: 100%; height: 48px; float: left; }
+.lineDown { background: url(images/lineDown.png) repeat-x; width: 100%; height: 48px; float: left; }
+.talkBlue { background: url(images/talkBlue.png) no-repeat; width: 260px; height: 187px; color: #fff; padding: 30px 40px 30px 100px; float: left; text-align: justify; margin-bottom: 20px; }
+.talkPink { background: url(images/talkPink.png) no-repeat; width: 260px; height: 187px; color: #fff; padding: 30px 40px 30px 100px; float: left; text-align: justify; margin-bottom: 20px; }
+.talkGrey { background: url(images/talkGrey.png) no-repeat; width: 260px; height: 187px; color: #fff; padding: 30px 40px 30px 100px; float: left; text-align: justify; margin-bottom: 20px; }
+.mapCol1 { float: left; width: 330px; margin: 20px 0 0 100px; }
+.mapCol2 { float: left; width: 600px; margin: 20px 0 0 50px; }
+.mapBox { border: 1px solid #c2c2c2; width: 300px; padding: 8px 10px; color: #666; font-size: 11px; margin: 3px 0; }
+.imgBorder { border: 1px solid #d3d3d3; }
+.footerSocialLink { float: left; margin-top: 10px; }
+.footerSocialLinkCol { float: left; margin-right: 8px; }
+
+.btn-bottom { margin: 26px auto; clear: both; width: 462px; }
+.btn-bottom input { border: none; display: block; margin-left: 5px; float: left;cursor:pointer }
+.btn-bottom .btn-rq { background: url(images/request-button.gif) no-repeat; width: 219px; height: 50px; }
+.btn-bottom .btn-search { background: url(images/search-button.gif) no-repeat; width: 233px; height: 50px; }

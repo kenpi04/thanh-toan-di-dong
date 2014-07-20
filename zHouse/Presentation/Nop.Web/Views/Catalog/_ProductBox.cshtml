@@ -10,7 +10,10 @@
 
     <div class="introCol">
         <div class="info-picture">
-            <div class="new"></div>
+            @if(Model.StatusId>0)
+            {
+            <div class="new tag-@Model.StatusId"></div>
+            }
             <div class="nhon"></div>
             <div class="pinkTag">@Model.ProductPrice.Price</div>
             @if (Request.IsAjaxRequest())
@@ -32,7 +35,10 @@ else
 {
     <div class="introCol">
         <div class="info-picture">
-         
+            @if(Model.StatusId>0)
+            {
+            <div class="new tag-@Model.StatusId"></div>
+            }
             <div class="nhon"></div>          
             @if (Request.IsAjaxRequest())
             {

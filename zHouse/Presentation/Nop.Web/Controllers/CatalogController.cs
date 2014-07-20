@@ -367,7 +367,8 @@ namespace Nop.Web.Controllers
                     Area = product.Area,
                     FullAddress = product.FullAddress,
                     DictrictName = product.District == null ? "" : product.District.Name,
-                    ChuDauTu=product.ManufacturerPartNumber
+                    ChuDauTu=product.ManufacturerPartNumber,
+                    StatusId=product.GiftCardTypeId
 
                 };
                 if (product.CallForPrice)
@@ -678,7 +679,8 @@ namespace Nop.Web.Controllers
                 ProductStatusText = _localizationService.GetResource("Product.StatusText." + product.ProductStatusText),
                 AreaUse = product.AreaUse,
                 Width = product.Width,
-                Dept = product.Height
+                Dept = product.Height,
+                StatusId = product.GiftCardTypeId
 
 
 
@@ -3506,8 +3508,8 @@ namespace Nop.Web.Controllers
                 }
                 #endregion
                 _productService.UpdateProduct(product);
-                string seName = product.ValidateSeName(product.GetSeName(), product.Name, true);
-                _urlRecordService.SaveSlug(product, seName, 0);
+                //string seName = product.ValidateSeName(product.GetSeName(), product.Name, true);
+                //_urlRecordService.SaveSlug(product, seName, 0);
 
                 return RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }

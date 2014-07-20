@@ -440,6 +440,21 @@
             @Html.ValidationMessageFor(model => model.Sku)
         </td>
     </tr>
+     <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.GiftCardTypeId):
+        </td>
+        <td class="adminData">
+            @Html.DropDownListFor(model => model.GiftCardTypeId, new List<SelectListItem>() { 
+       new SelectListItem{Text="Đã bán",Value="10"},
+        new SelectListItem{Text="Bán gấp",Value="20"},
+         new SelectListItem{Text="Mới",Value="30"},
+          new SelectListItem{Text="Đang xây",Value="40"},
+       
+       },"Chọn trạng thái")
+            @Html.ValidationMessageFor(model => model.GiftCardTypeId)
+        </td>
+    </tr>
     <tr id="pnlWidth">
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.Width):
