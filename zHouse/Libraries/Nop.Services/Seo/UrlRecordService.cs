@@ -224,76 +224,105 @@ namespace Nop.Services.Seo
         {
             categoryId = streetId = wardId = districtId = stateProvinceId = 0;
             priceString = specAttributeOptionIds = "";
-            if (String.IsNullOrEmpty(slug))
-                return null;
 
-            //prepare parameters
-            var pSlug = _dataProvider.GetParameter();
-            pSlug.ParameterName = "slug";
-            pSlug.Value = slug;
-            pSlug.DbType = DbType.String;
-            //out
-            var pCategoryId = _dataProvider.GetParameter();
-            pCategoryId.ParameterName = "categoryId";
-            pCategoryId.Direction = ParameterDirection.Output;
-            pCategoryId.DbType = DbType.Int32;
-
-            var pStreetId = _dataProvider.GetParameter();
-            pStreetId.ParameterName = "streetId";
-            pStreetId.Direction = ParameterDirection.Output;
-            pStreetId.DbType = DbType.Int32;
-
-            var pWardId = _dataProvider.GetParameter();
-            pWardId.ParameterName = "wardId";
-            pWardId.Direction = ParameterDirection.Output;
-            pWardId.DbType = DbType.Int32;
-
-            var pDistrictId = _dataProvider.GetParameter();
-            pDistrictId.ParameterName = "districtId";
-            pDistrictId.Direction = ParameterDirection.Output;
-            pDistrictId.DbType = DbType.Int32;
-
-            var pStateProvinceId = _dataProvider.GetParameter();
-            pStateProvinceId.ParameterName = "stateProvinceId";
-            pStateProvinceId.Direction = ParameterDirection.Output;
-            pStateProvinceId.DbType = DbType.Int32;
-
-            var pPriceString = _dataProvider.GetParameter();
-            pPriceString.ParameterName = "priceString";
-            pPriceString.Size = 100;
-            pPriceString.Direction = ParameterDirection.Output;
-            pPriceString.DbType = DbType.String;
-
-            var pAttributeOptions = _dataProvider.GetParameter();
-            pAttributeOptions.ParameterName = "attributeOptions";
-            pAttributeOptions.Size = 200;
-            pAttributeOptions.Direction = ParameterDirection.Output;
-            pAttributeOptions.DbType = DbType.String;
-
-            var urlRecords = _dbContext.ExecuteStoredProcedureList<UrlRecord>(
-                    "GetUrlLink",
-                    pSlug,
-                    pCategoryId,
-                    pStreetId,
-                    pWardId,
-                    pDistrictId,
-                    pStateProvinceId,
-                    pPriceString,
-                    pAttributeOptions
-                    );
-
-            var urlRecord = urlRecords.FirstOrDefault();
-            if (urlRecord != null)
+            string key = string.Format("GetBySlug-{0}", slug);
+            var urlRec = _cacheManager.Get(key, 5, () =>
             {
-                categoryId = (pCategoryId.Value != DBNull.Value) ? Convert.ToInt32(pCategoryId.Value) : 0;
-                streetId = (pStreetId.Value != DBNull.Value) ? Convert.ToInt32(pStreetId.Value) : 0;
-                wardId = (pWardId.Value != DBNull.Value) ? Convert.ToInt32(pWardId.Value) : 0;
-                districtId = (pDistrictId.Value != DBNull.Value) ? Convert.ToInt32(pDistrictId.Value) : 0;
-                stateProvinceId = (pStateProvinceId.Value != DBNull.Value) ? Convert.ToInt32(pStateProvinceId.Value) : 0;
-                priceString = pPriceString.Value.ToString();
-                specAttributeOptionIds = pAttributeOptions.Value.ToString();
+                if (String.IsNullOrEmpty(slug))
+                    return null;
+
+                //prepare parameters
+                var pSlug = _dataProvider.GetParameter();
+                pSlug.ParameterName = "slug";
+                pSlug.Value = slug;
+                pSlug.DbType = DbType.String;
+                //out
+                var pCategoryId = _dataProvider.GetParameter();
+                pCategoryId.ParameterName = "categoryId";
+                pCategoryId.Direction = ParameterDirection.Output;
+                pCategoryId.DbType = DbType.Int32;
+
+                var pStreetId = _dataProvider.GetParameter();
+                pStreetId.ParameterName = "streetId";
+                pStreetId.Direction = ParameterDirection.Output;
+                pStreetId.DbType = DbType.Int32;
+
+                var pWardId = _dataProvider.GetParameter();
+                pWardId.ParameterName = "wardId";
+                pWardId.Direction = ParameterDirection.Output;
+                pWardId.DbType = DbType.Int32;
+
+                var pDistrictId = _dataProvider.GetParameter();
+                pDistrictId.ParameterName = "districtId";
+                pDistrictId.Direction = ParameterDirection.Output;
+                pDistrictId.DbType = DbType.Int32;
+
+                var pStateProvinceId = _dataProvider.GetParameter();
+                pStateProvinceId.ParameterName = "stateProvinceId";
+                pStateProvinceId.Direction = ParameterDirection.Output;
+                pStateProvinceId.DbType = DbType.Int32;
+
+                var pPriceString = _dataProvider.GetParameter();
+                pPriceString.ParameterName = "priceString";
+                pPriceString.Size = 100;
+                pPriceString.Direction = ParameterDirection.Output;
+                pPriceString.DbType = DbType.String;
+
+                var pAttributeOptions = _dataProvider.GetParameter();
+                pAttributeOptions.ParameterName = "attributeOptions";
+                pAttributeOptions.Size = 200;
+                pAttributeOptions.Direction = ParameterDirection.Output;
+                pAttributeOptions.DbType = DbType.String;
+
+                var urlRecords = _dbContext.ExecuteStoredProcedureList<UrlRecord>(
+                        "GetUrlLink",
+                        pSlug,
+                        pCategoryId,
+                        pStreetId,
+                        pWardId,
+                        pDistrictId,
+                        pStateProvinceId,
+                        pPriceString,
+                        pAttributeOptions
+                        );
+
+                var urlRecord = urlRecords.FirstOrDefault();
+                if (urlRecord != null)
+                {
+                    return new
+                    {
+                        urlRecord,
+                        categoryId = (pCategoryId.Value != DBNull.Value) ? Convert.ToInt32(pCategoryId.Value) : 0,
+                        streetId = (pStreetId.Value != DBNull.Value) ? Convert.ToInt32(pStreetId.Value) : 0,
+                        wardId = (pWardId.Value != DBNull.Value) ? Convert.ToInt32(pWardId.Value) : 0,
+                        districtId = (pDistrictId.Value != DBNull.Value) ? Convert.ToInt32(pDistrictId.Value) : 0,
+                        stateProvinceId = (pStateProvinceId.Value != DBNull.Value) ? Convert.ToInt32(pStateProvinceId.Value) : 0,
+                        priceString = pPriceString.Value.ToString(),
+                        specAttributeOptionIds = pAttributeOptions.Value.ToString()
+                    };
+                    //categoryId = (pCategoryId.Value != DBNull.Value) ? Convert.ToInt32(pCategoryId.Value) : 0;
+                    //streetId = (pStreetId.Value != DBNull.Value) ? Convert.ToInt32(pStreetId.Value) : 0;
+                    //wardId = (pWardId.Value != DBNull.Value) ? Convert.ToInt32(pWardId.Value) : 0;
+                    //districtId = (pDistrictId.Value != DBNull.Value) ? Convert.ToInt32(pDistrictId.Value) : 0;
+                    //stateProvinceId = (pStateProvinceId.Value != DBNull.Value) ? Convert.ToInt32(pStateProvinceId.Value) : 0;
+                    //priceString = pPriceString.Value.ToString();
+                    //specAttributeOptionIds = pAttributeOptions.Value.ToString();
+                }
+                return null;
+            });
+
+            if (urlRec != null)
+            {
+                categoryId = urlRec.categoryId;
+                streetId = urlRec.streetId;
+                wardId = urlRec.wardId;
+                districtId = urlRec.districtId;
+                stateProvinceId = urlRec.stateProvinceId;
+                priceString = urlRec.priceString;
+                specAttributeOptionIds = urlRec.specAttributeOptionIds;
+                return urlRec.urlRecord;
             }
-            return urlRecord;
+            return null;
         }
 
         /// <summary>
@@ -386,7 +415,7 @@ namespace Nop.Services.Seo
                         where ur.EntityId == entityId &&
                         ur.EntityName == entityName &&
                         ur.LanguageId == languageId
-                        orderby ur.Id descending 
+                        orderby ur.Id descending
                         select ur;
             var allUrlRecords = query.ToList();
             var activeUrlRecord = allUrlRecords.FirstOrDefault(x => x.IsActive);
@@ -456,7 +485,7 @@ namespace Nop.Services.Seo
                         {
                             EntityId = entity.Id,
                             EntityName = entityName,
-                            Slug =NonUnicode(slug),
+                            Slug = NonUnicode(slug),
                             LanguageId = languageId,
                             IsActive = true,
                         };
@@ -483,25 +512,35 @@ namespace Nop.Services.Seo
         /// <param name="priceString">Price string: 1000-1500</param>
         /// <param name="attributeOptionIds">id specification options id:  1-2-3-4-5</param>
         /// <returns>Link request: http://zhouse.com/nha-o-quan-1_pr-1000-15000_sa-1-2-3-4-5</returns>
-        public virtual string GetSlugFromId(string domainName, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string priceString = "", string @attributeOptionIds = "")
+        public virtual string GetSlugFromId(string domainName,
+            int categoryId = 0,
+            int stateProvinceId = 0,
+            int districtId = 0,
+            int wardId = 0,
+            int streetId = 0,
+            string priceString = "",
+            string @attributeOptionIds = "")
         {
-            string slug = "";
-            SqlParameter pSlug = new SqlParameter("slug", SqlDbType.NVarChar, 1000);
-            pSlug.Direction = ParameterDirection.Output;
+            string key = string.Format("GetSlugFromId-{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}", domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds);
+            return _cacheManager.Get(key, 5, () =>
+            {
+                string slug = "";
+                SqlParameter pSlug = new SqlParameter("slug", SqlDbType.NVarChar, 1000);
+                pSlug.Direction = ParameterDirection.Output;
 
-            var excute = _dbContext.ExecuteSqlCommand("execute [GetSlugFromId] @domainName, @categoryId, @stateProvinceId, @districtId, @wardId, @streetId, @priceString, @attibuteOptionIds, @slug output", false, null,
-                new SqlParameter("domainName", domainName),
-                new SqlParameter("categoryId", categoryId),
-                new SqlParameter("stateProvinceId", stateProvinceId),
-                new SqlParameter("districtId", districtId),
-                new SqlParameter("wardId", wardId),
-                new SqlParameter("streetId", streetId),
-                new SqlParameter("priceString", priceString),
-                new SqlParameter("attibuteOptionIds", attributeOptionIds),
-                pSlug
-                );
-
-            return slug = pSlug.Value == DBNull.Value ? "" : pSlug.Value.ToString();
+                var excute = _dbContext.ExecuteSqlCommand("execute [GetSlugFromId] @domainName, @categoryId, @stateProvinceId, @districtId, @wardId, @streetId, @priceString, @attibuteOptionIds, @slug output", false, null,
+                    new SqlParameter("domainName", domainName),
+                    new SqlParameter("categoryId", categoryId),
+                    new SqlParameter("stateProvinceId", stateProvinceId),
+                    new SqlParameter("districtId", districtId),
+                    new SqlParameter("wardId", wardId),
+                    new SqlParameter("streetId", streetId),
+                    new SqlParameter("priceString", priceString),
+                    new SqlParameter("attibuteOptionIds", attributeOptionIds),
+                    pSlug
+                    );
+                return slug = pSlug.Value == DBNull.Value ? "" : pSlug.Value.ToString();
+            });
         }
 
         #endregion
