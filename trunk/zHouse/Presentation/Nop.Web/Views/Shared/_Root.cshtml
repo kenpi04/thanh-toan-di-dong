@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_Root.Head.cshtml";
     bool isHome = Url.RequestContext.RouteData.Values["controller"].ToString().Equals("home", StringComparison.InvariantCultureIgnoreCase);
+       
 }
 @Html.Widget("body_start_html_tag_after")
 @Html.Partial("_Notifications")
@@ -49,7 +50,7 @@
             @RenderBody()
 
             <div class="clearBoth"></div>
-            @if (!isHome)
+            @if (!isHome&&!Url.RequestContext.RouteData.Values["action"].ToString().Equals("contactus",StringComparison.InvariantCultureIgnoreCase))
             {
            
                 <div id="recent-view">

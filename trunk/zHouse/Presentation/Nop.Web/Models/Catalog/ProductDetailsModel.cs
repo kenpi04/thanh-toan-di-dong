@@ -291,5 +291,7 @@ namespace Nop.Web.Models.Catalog
         public decimal Dept { get; set; }
 
         public string PhapLy { get; set; }
+
+        public int StatusId { get; set; }
     }
 }

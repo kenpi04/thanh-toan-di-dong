@@ -70,5 +70,9 @@ namespace Nop.Web.Models.Catalog
 
         public bool IsProject { get; set; }
         public string ChuDauTu { get; set; }
+        /// <summary>
+        /// using column GifcartTypeId
+        /// </summary>
+        public int StatusId { get; set; }
     }
 }

@@ -33,11 +33,7 @@
         </table>
 
         <br><br>
-        <center>
-            <input type="button" class="blueBigBtn" onclick="setLocation('@Url.RouteUrl("ProductSearch")')" value="Tìm kiếm ngôi nhà trong mơ của bạn">
-            <br>
-            <div class="smallPinkText">Hơn <b>200</b>  căn hộ, căn nhà để bạn tìm kiếm và chọn lựa trên zHOUSE.com.vn</div>
-        </center>
+      
 
         <div class="intro">
          
@@ -63,6 +59,13 @@
 
 
         </div><!--intro--->
+
+         <div class="clearBoth"></div>
+            <div class="btn-bottom">
+            <input type="button" onclick="setLocation('@Url.RouteUrl("ProductSearch")')" class="btn-rq" />
+            <input  type="button" onclick="setLocation('@Url.RouteUrl("InsertProduct")')" class="btn-search"/>
+            <div class="smallPinkText">Hơn <b>200</b>  căn hộ, căn nhà để bạn tìm kiếm và chọn lựa trên zHOUSE.com.vn</div>
+        </div>
 
     </div>
 </div>
