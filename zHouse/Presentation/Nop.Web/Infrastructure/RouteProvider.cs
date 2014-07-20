@@ -285,7 +285,7 @@ namespace Nop.Web.Infrastructure
 
             //contact us
             routes.MapLocalizedRoute("ContactUs",
-                            "contactus",
+                            "lien-he",
                             new { controller = "Common", action = "ContactUs" },
                             new[] { "Nop.Web.Controllers" });
 
