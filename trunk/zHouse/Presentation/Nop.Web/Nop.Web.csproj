@@ -1444,6 +1444,7 @@
     <Content Include="Themes\Zhouse\Content\images\arrow-up.png" />
     <Content Include="Themes\Zhouse\Content\images\back.png" />
     <Content Include="Themes\Zhouse\Content\images\backhover.png" />
+    <Content Include="Themes\Zhouse\Content\images\bangap.png" />
     <Content Include="Themes\Zhouse\Content\images\bannerLeft.png" />
     <Content Include="Themes\Zhouse\Content\images\bbeditor-button-bg.gif" />
     <Content Include="Themes\Zhouse\Content\images\btnRight1.png" />
@@ -1456,6 +1457,8 @@
     <Content Include="Themes\Zhouse\Content\images\d1.png" />
     <Content Include="Themes\Zhouse\Content\images\d2.png" />
     <Content Include="Themes\Zhouse\Content\images\d3.png" />
+    <Content Include="Themes\Zhouse\Content\images\da-ban.png" />
+    <Content Include="Themes\Zhouse\Content\images\dang-xay.png" />
     <Content Include="Themes\Zhouse\Content\images\downBtn.png" />
     <Content Include="Themes\Zhouse\Content\images\downBtnhover.png" />
     <Content Include="Themes\Zhouse\Content\images\download-sample-bg.gif" />
