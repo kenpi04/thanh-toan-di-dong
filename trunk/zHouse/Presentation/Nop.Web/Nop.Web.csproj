@@ -1748,6 +1748,8 @@
     <Content Include="Views\Catalog\_ProductSpecficationOptionProject.cshtml" />
     <Content Include="Views\Catalog\GalleryPictures.cshtml" />
     <Content Include="Views\Catalog\GetIMg.cshtml" />
+    <Content Include="Views\Shared\_RootFullWidth.cshtml" />
+    <Content Include="Views\Topic\TopicDetaisFullWidth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

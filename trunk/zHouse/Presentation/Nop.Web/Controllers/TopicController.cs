@@ -60,6 +60,7 @@ namespace Nop.Web.Controllers
                 MetaKeywords = topic.GetLocalized(x => x.MetaKeywords),
                 MetaDescription = topic.GetLocalized(x => x.MetaDescription),
                 MetaTitle = topic.GetLocalized(x => x.MetaTitle),
+                GroupId=topic.GroupId
             };
             return model;
         }
@@ -76,6 +77,9 @@ namespace Nop.Web.Controllers
 
             if (cacheModel == null)
                 return RedirectToRoute("HomePage");
+            if (cacheModel.GroupId == 10)
+                return View("TopicDetaisFullWidth", cacheModel);
+          
             return View("TopicDetails", cacheModel);
         }
 
