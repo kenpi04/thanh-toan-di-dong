@@ -7,6 +7,10 @@
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/editorsimple.css");
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/jquery-te-1.4.0.css");
     bool isLogin=WorkContext.CurrentCustomer.IsRegistered();
+    if(Model.Id>0)
+    {
+        
+    }
    
 }
 @Html.HiddenFor(x => x.Id)
@@ -77,8 +81,13 @@
                      
                         <td>@Html.LabelFor(x => x.NumberFloors) </td>
                         <td>
-                            
-                        @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.NumberFloors,new{@class="formBoxInSelectTable"})
+                            <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
+                                @foreach (var i in Model.NumberFloors)
+                                { 
+                                    <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"selected=selected":"") >@i.Text</option>
+                                }
+                            </select>
+                      
                         @Html.RequiredHint()
                      </td>
                        
@@ -107,7 +116,12 @@
                         <td>@Html.LabelFor(x => x.BedRooms) </td>
                         <td>
                                
-                            @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BedRooms,new{@class="formBoxInSelectTable"})
+                                           <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
+                                @foreach (var i in Model.BedRooms)
+                                { 
+                                    <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "") >@i.Text</option>
+                                }
+                            </select>
                         @Html.RequiredHint()</td>
                         <td></td>
                     </tr>
@@ -115,13 +129,17 @@
                         <td>@Html.LabelFor(x => x.Width) </td>
                         <td>
                           
-                            @Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable",placeholder="Chiều ngang"}) m
+                            @Html.TextBoxFor(x => x.Width, new { @class = "formBoxInTable", placeholder = "Chiều ngang" }) m
                         @Html.RequiredHint()</td>
                       
                         <td>@Html.LabelFor(x => x.BadRooms)</td>
                         <td>
-                           
-                            @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.BadRooms,new{@class="formBoxInSelectTable"})
+                                        <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
+                                @foreach (var i in Model.BadRooms)
+                                { 
+                                    <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "") >@i.Text</option>
+                                }
+                            </select>
                         @Html.RequiredHint()</td>
                        
                     </tr>
@@ -129,15 +147,36 @@
                         <td>@Html.LabelFor(x => x.Dept)</td>
                         <td>
                             
-                            @Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable",placeholder="Chiều sâu"}) m
+                            @Html.TextBoxFor(x => x.Dept, new { @class = "formBoxInTable", placeholder = "Chiều sâu" }) m
                         @Html.RequiredHint()</td>
                         
                         <td>@Html.LabelFor(x => x.Directors)</td>
                         <td>
                            
-                            @Html.DropDownListFor(x=>x.SelectedOptionAttributes,Model.Directors,new{@class="formBoxInSelectTable"})
+                                          <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
+                                @foreach (var i in Model.Directors)
+                                { 
+                                    <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "") >@i.Text</option>
+                                }
+                            </select>
                         @Html.RequiredHint()</td>
                        
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(x=>x.StatusList)</td>
+                        <td>
+                            <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
+                                @foreach (var i in Model.StatusList)
+                                { 
+                                    <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"selected=selected":"") >@i.Text</option>
+                                }
+                            </select>
+                      
+                        @Html.RequiredHint()
+
+                        </td>
+                        <td></td>
+                        <td></td>
                     </tr>
 
                 </tbody>
@@ -150,18 +189,18 @@
         <div class="colB">
             <ul style="list-style: none">
                 @foreach (var i in Model.Facilities)
-            {
+                {
                     <li style="float: left; width: 20%">
                         <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") />
                         @Html.Label(i.Text)
                     </li>
-            }
+                }
             </ul>
         </div>
      
         <div class="clearBoth"></div>
         <div class="boxWrapperSmall">
-            @Html.TextAreaFor(x=>x.NoteFacilities,new{@class="formBoxInText",placeholder="Ghi chú về cơ sở vật chất / nội thất căn nhà ( vd: thiết kế kiểu châu âu, nhà ống hiện đại .... ))"})
+            @Html.TextAreaFor(x => x.NoteFacilities, new { @class = "formBoxInText", placeholder = "Ghi chú về cơ sở vật chất / nội thất căn nhà ( vd: thiết kế kiểu châu âu, nhà ống hiện đại .... ))" })
          
         </div>
     </div><!----floatLeft----->
@@ -171,18 +210,18 @@
         <div class="colB">
             <ul style="list-style: none">
                 @foreach (var i in Model.Environments)
-            {
+                {
                     <li style="float: left; width: 20%">
                         <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") />
                         @Html.Label(i.Text)
                     </li>
-            }
+                }
             </ul>
         </div>
      
         <div class="clearBoth"></div>
         <div class="boxWrapperSmall">
-            @Html.TextAreaFor(x=>x.NoteEnvironments,new{@class="formBoxInText",placeholder="Ghi chú về môi trường xung quanh ( vd: Gần siêu thị nào, cách bao nhiêu mét .... )"})
+            @Html.TextAreaFor(x => x.NoteEnvironments, new { @class = "formBoxInText", placeholder = "Ghi chú về môi trường xung quanh ( vd: Gần siêu thị nào, cách bao nhiêu mét .... )" })
            
         </div>
     </div><!----floatLeft----->
@@ -190,15 +229,15 @@
     <div class="floatLeft">
         <div class="colA"><div class="blueText">Thích hợp</div></div>
         @foreach (var i in Model.ThichHop)
-            {
-            <div class="colB" style="float:left;margin-right:20px"> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"checked=checked":"") /> @Html.Label(i.Text)</div>
-            }
+        {
+            <div class="colB" style="float:left;margin-right:20px"> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") /> @Html.Label(i.Text)</div>
+        }
        
 
         <div class="clearBoth"></div>
         <br />
         <div class="boxWrapperSmall">
-            @Html.TextAreaFor(x=>x.NoteEnvironments,new{@class="formBoxInText",placeholder="vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)"})
+            @Html.TextAreaFor(x => x.NoteEnvironments, new { @class = "formBoxInText", placeholder = "vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)" })
            
         </div>
     </div><!----floatLeft----->
@@ -251,7 +290,7 @@
 <div class="floatLeft">
 <div class="blueText">TIÊU ĐỀ</div>
 <div class="boxWrapperSmall">
-    @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText",style="width:100%" })
+    @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:100%" })
 </div>
     </div><!---floatLeft---->
     <div class="floatLeft">
@@ -284,9 +323,9 @@
 
 
         })
-    ISFIRSTLOAD=false;
-        $("#@Html.FieldIdFor(x=>x.NumberOfHome)").keyup(formatAdd);
-        $("#@Html.FieldIdFor(x=>x.StreetId),#@Html.FieldIdFor(x=>x.DistrictId),#@Html.FieldIdFor(x=>x.WardId)").change(formatAdd);
+    ISFIRSTLOAD=true;
+        $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
+        $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
 
         $("#insertProduct-button").click(function () {
             if(!$("#frmProduct").valid())
@@ -327,30 +366,34 @@
             ddlStreet.html("<option value=0>Chọn đường</option>");
             $.get("@Url.Action("GetWardByDistrictId", "Common")", { id: selectedId }, function (d) {
                 $.each(d.Ward, function (i, o) {
-                    ddlWard.append($("<option/>").val(o.Id).text(o.Name));
+                    var option= $("<option/>").val(o.Id).text(o.Name);
+                    if(ISFIRSTLOAD&&o.Id==@Model.WardId)
+                        option.attr("selected","selected");
+                    ddlWard.append(option);
                 })
-
+             
                 $.each(d.Street, function (i, o) {
-                    ddlStreet.append($("<option/>").val(o.Id).text(o.Name));
-                })
+                    var option= $("<option/>").val(o.Id).text(o.Name);
+                    if(ISFIRSTLOAD&&o.Id==@Model.StreetId)                        
+                          option.attr("selected","selected");
+
+                      ddlStreet.append(option);
+                })  
                 if(ISFIRSTLOAD)
                 {
-                            
-                    $("#@Html.FieldIdFor(x => x.StreetId)").val(@Model.StreetId);
-                    $("#@Html.FieldIdFor(x => x.StreetId)").click();
-                    $("#@Html.FieldIdFor(x => x.WardId)").val(@Model.WardId); 
-                    $("#@Html.FieldIdFor(x => x.WardId)").click();
+                    ddlWard.click();
+                    ddlStreet.click();
                     ISFIRSTLOAD=false;
-
                 }
+               
             }).error(function () {
 
                 alert("Fail receice from server!");
             })
 
         })
+     
         $("#ddlQuan").change();
-       
         $('#FileUpload').uploadify({
             'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
             'uploader': '@Url.Action("UploadPicture", "Catalog")',
@@ -423,9 +466,9 @@
     var add=[3];
     function formatAdd()
     {
-        add[0]=($("#@Html.FieldIdFor(x=>x.NumberOfHome)").val());
-        add[1]=($("#@Html.FieldIdFor(x=>x.StreetId) option[value!=0]:selected").text());
-        add[2]=($("#@Html.FieldIdFor(x=>x.WardId) option[value!=0]:selected").text());
+        add[0]=($("#@Html.FieldIdFor(x => x.NumberOfHome)").val());
+        add[1]=($("#@Html.FieldIdFor(x => x.StreetId) option[value!=0]:selected").text());
+        add[2]=($("#@Html.FieldIdFor(x => x.WardId) option[value!=0]:selected").text());
         add[3]=($("#ddlQuan option[value!=0]:selected").text());
         var result="";
         for(var i in add)
@@ -433,7 +476,7 @@
             if(add[i]!="")
                 result+=add[i]+", ";
         }
-        $("#@Html.FieldIdFor(x=>x.FullAddress)").val(result);
+        $("#@Html.FieldIdFor(x => x.FullAddress)").val(result);
     }
 </script>
 @if (Model.Id > 0)
@@ -444,8 +487,7 @@
             var price=@Model.Price.ToString("#");
                   $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
               
-            $("#ddlQuan").change();   
-                 
+           
         })
         var CLICK=false;
         function deletePicture(id) {
@@ -483,3 +525,4 @@
         }
     </script> 
 }
+

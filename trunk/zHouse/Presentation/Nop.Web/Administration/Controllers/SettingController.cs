@@ -1756,7 +1756,8 @@ namespace Nop.Admin.Controllers
                 _settingService.SaveSetting(mediaSettings, x => x.MaximumImageSize, storeScope, false);
             else if (storeScope > 0)
                 _settingService.DeleteSetting(mediaSettings, x => x.MaximumImageSize, storeScope);
-                
+            _settingService.SaveSetting(mediaSettings, x => x.WaterMarkPictureId, storeScope, false);
+            _settingService.SaveSetting(mediaSettings, x => x.WaterMarkPostionId, storeScope, false);
             //now clear settings cache
             _settingService.ClearCache();
             

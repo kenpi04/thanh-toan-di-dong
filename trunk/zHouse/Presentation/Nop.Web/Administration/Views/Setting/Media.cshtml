@@ -136,5 +136,25 @@
                 @Html.ValidationMessageFor(model => model.MaximumImageSize)
             </td>
         </tr>
+         <tr>
+            <td class="adminTitle">
+              
+                @Html.NopLabelFor(model => model.WaterMarkPictureId):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.WaterMarkPictureId)
+                @Html.ValidationMessageFor(model => model.WaterMarkPictureId)
+            </td>
+        </tr>
+         <tr>
+            <td class="adminTitle">
+             
+                @Html.NopLabelFor(model => model.WaterMarkPostionId):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.WaterMarkPostionId)
+                @Html.ValidationMessageFor(model => model.WaterMarkPostionId)
+            </td>
+        </tr>
     </table>
 }
