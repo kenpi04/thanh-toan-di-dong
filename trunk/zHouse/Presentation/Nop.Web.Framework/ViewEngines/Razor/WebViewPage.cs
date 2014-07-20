@@ -22,7 +22,7 @@ namespace Nop.Web.Framework.ViewEngines.Razor
         private ILocalizationService _localizationService;
         private Localizer _localizer;
         private IWorkContext _workContext;
-        private IWebHelper _webHelper;
+        //private IWebHelper _webHelper;
 
         /// <summary>
         /// Get a localized resources
