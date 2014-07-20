@@ -51,10 +51,7 @@
                                 <td>
                                     @if (Model.TienIch.Count > 0)
                                     {
-                                        foreach (var s in Model.TienIch)
-                                        {
-                                            <text>@s</text><br />
-                                        }
+                                       @Model.TienIch.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
                                     }
                                     else
                                     { <text>-</text>}

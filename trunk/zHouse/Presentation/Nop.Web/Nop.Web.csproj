@@ -1724,6 +1724,7 @@
     <Content Include="Views\Catalog\_ProductSpecficationOptionHouse.cshtml" />
     <Content Include="Views\Catalog\_ProductSpecficationOptionProject.cshtml" />
     <Content Include="Views\Catalog\GalleryPictures.cshtml" />
+    <Content Include="Views\Catalog\GetIMg.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
