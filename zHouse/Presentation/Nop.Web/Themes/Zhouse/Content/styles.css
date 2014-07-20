@@ -1026,9 +1026,9 @@ ul{margin:0}
 .introCol .info-picture{min-height:220px}
  .new{position:absolute;top:0;right:-5px;width:96px;height:54px}
 .tag-30 {background:url(images/new.png) no-repeat }
-.tag-10 {background:url(images/new.png) no-repeat }
-.tag-20 {background:url(images/new.png) no-repeat }
-.tag-30 {background:url(images/new.png) no-repeat }
+.tag-10 {background:url(images/da-ban.png) no-repeat }
+.tag-20 {background:url(images/ban-gap.png) no-repeat }
+.tag-40 {background:url(images/dang-xay.png) no-repeat }
 .nhon{position:absolute;top:241px;left:20px;background:url(images/nhon.png) no-repeat;width:23px;height:13px}
 .pinkTag{background:url(images/pinkTag.png) no-repeat;width:106px;height:36px;padding-top:7px;position:absolute;right:-10px;top:215px;color:#fff;text-align:center;font-weight:bold;font-size:13px}
 .backBtn{background:url(images/back.png) no-repeat;width:32px;height:108px;border:0;cursor:pointer;float:left;margin-top:60px}
