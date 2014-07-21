@@ -9,6 +9,7 @@ using Nop.Core.Domain.Seo;
 using System.Data;
 using Nop.Data;
 using System.Data.SqlClient;
+using System.Transactions;
 
 namespace Nop.Services.Seo
 {
@@ -212,12 +213,18 @@ namespace Nop.Services.Seo
         {
             if (String.IsNullOrEmpty(slug))
                 return null;
-
-            var query = from ur in _urlRecordRepository.Table
-                        where ur.Slug == slug
-                        select ur;
-            var urlRecord = query.FirstOrDefault();
-            return urlRecord;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = from ur in _urlRecordRepository.Table
+                            where ur.Slug == slug
+                            select ur;
+                var urlRecord = query.FirstOrDefault();
+                return urlRecord;
+            }
         }
 
         public virtual UrlRecord GetBySlug(string slug, out int categoryId, out int streetId, out int wardId, out int districtId, out int stateProvinceId, out string priceString, out string specAttributeOptionIds)
@@ -334,13 +341,20 @@ namespace Nop.Services.Seo
         /// <returns>Customer collection</returns>
         public virtual IPagedList<UrlRecord> GetAllUrlRecords(string slug, int pageIndex, int pageSize)
         {
-            var query = _urlRecordRepository.Table;
-            if (!String.IsNullOrWhiteSpace(slug))
-                query = query.Where(ur => ur.Slug.Contains(slug));
-            query = query.OrderBy(ur => ur.Slug);
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = _urlRecordRepository.Table;
+                if (!String.IsNullOrWhiteSpace(slug))
+                    query = query.Where(ur => ur.Slug.Contains(slug));
+                query = query.OrderBy(ur => ur.Slug);
 
-            var urlRecords = new PagedList<UrlRecord>(query, pageIndex, pageSize);
-            return urlRecords;
+                var urlRecords = new PagedList<UrlRecord>(query, pageIndex, pageSize);
+                return urlRecords;
+            }
         }
 
         /// <summary>
@@ -379,19 +393,26 @@ namespace Nop.Services.Seo
                 string key = string.Format(URLRECORD_ACTIVE_BY_ID_NAME_LANGUAGE_KEY, entityId, entityName, languageId);
                 return _cacheManager.Get(key, () =>
                 {
-                    var source = _urlRecordRepository.Table;
-                    var query = from ur in source
-                                where ur.EntityId == entityId &&
-                                ur.EntityName == entityName &&
-                                ur.LanguageId == languageId &&
-                                ur.IsActive
-                                orderby ur.Id descending
-                                select ur.Slug;
-                    var slug = query.FirstOrDefault();
-                    //little hack here. nulls aren't cacheable so set it to ""
-                    if (slug == null)
-                        slug = "";
-                    return slug;
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                    {
+                        var source = _urlRecordRepository.Table;
+                        var query = from ur in source
+                                    where ur.EntityId == entityId &&
+                                    ur.EntityName == entityName &&
+                                    ur.LanguageId == languageId &&
+                                    ur.IsActive
+                                    orderby ur.Id descending
+                                    select ur.Slug;
+                        var slug = query.FirstOrDefault();
+                        //little hack here. nulls aren't cacheable so set it to ""
+                        if (slug == null)
+                            slug = "";
+                        return slug;
+                    }
                 });
             }
         }

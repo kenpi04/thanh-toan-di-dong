@@ -5,6 +5,7 @@ using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Directory;
 using Nop.Services.Events;
+using System.Transactions;
 
 namespace Nop.Services.Directory
 {
@@ -65,13 +66,19 @@ namespace Nop.Services.Directory
         {
             return _cacheManager.Get(string.Format("Nop.district-{0}-{1}", stateId, showHidden), () =>
             {
-            var query = from d in _districtRepository.Table
-                        where (d.StateProvinceId == stateId) &&
-                        (showHidden || d.Published)
-                        select d;
-               
-                return query.ToList();
-            
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from d in _districtRepository.Table
+                                where (d.StateProvinceId == stateId) &&
+                                (showHidden || d.Published)
+                                select d;
+
+                    return query.ToList();
+                }
             });
           
         }     
@@ -113,11 +120,18 @@ namespace Nop.Services.Directory
         /// <returns>State/province</returns>
         public virtual StateProvince GetStateProvinceByAbbreviation(string abbreviation)
         {
-            var query = from sp in _stateProvinceRepository.Table
-                        where sp.Abbreviation == abbreviation
-                        select sp;
-            var stateProvince = query.FirstOrDefault();
-            return stateProvince;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = from sp in _stateProvinceRepository.Table
+                            where sp.Abbreviation == abbreviation
+                            select sp;
+                var stateProvince = query.FirstOrDefault();
+                return stateProvince;
+            }
         }
         
         /// <summary>
@@ -131,13 +145,20 @@ namespace Nop.Services.Directory
             string key = string.Format(STATEPROVINCES_ALL_KEY, countryId);
             return _cacheManager.Get(key, () =>
             {
-                var query = from sp in _stateProvinceRepository.Table
-                            orderby sp.DisplayOrder
-                            where sp.CountryId == countryId &&
-                            (showHidden || sp.Published)
-                            select sp;
-                var stateProvinces = query.ToList();
-                return stateProvinces;
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from sp in _stateProvinceRepository.Table
+                                orderby sp.DisplayOrder
+                                where sp.CountryId == countryId &&
+                                (showHidden || sp.Published)
+                                select sp;
+                    var stateProvinces = query.ToList();
+                    return stateProvinces;
+                }
             });
         }
 

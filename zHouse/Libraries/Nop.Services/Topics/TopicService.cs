@@ -5,6 +5,7 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Stores;
 using Nop.Core.Domain.Topics;
 using Nop.Services.Events;
+using System.Transactions;
 
 namespace Nop.Services.Topics
 {
@@ -74,31 +75,37 @@ namespace Nop.Services.Topics
         {
             if (String.IsNullOrEmpty(systemName))
                 return null;
-
-            var query = _topicRepository.Table;
-            query = query.Where(t => t.SystemName == systemName);
-            query = query.OrderBy(t => t.Id);
-
-            //Store mapping
-            if (storeId > 0)
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
             {
-                query = from t in query
-                        join sm in _storeMappingRepository.Table
-                        on new { c1 = t.Id, c2 = "Topic" } equals new { c1 = sm.EntityId, c2 = sm.EntityName } into t_sm
-                        from sm in t_sm.DefaultIfEmpty()
-                        where !t.LimitedToStores || storeId == sm.StoreId
-                        select t;
-
-                //only distinct items (group by ID)
-                query = from t in query
-                        group t by t.Id
-                        into tGroup
-                        orderby tGroup.Key
-                        select tGroup.FirstOrDefault();
+                var query = _topicRepository.Table;
+                query = query.Where(t => t.SystemName == systemName);
                 query = query.OrderBy(t => t.Id);
-            }
 
-            return query.FirstOrDefault();
+                //Store mapping
+                if (storeId > 0)
+                {
+                    query = from t in query
+                            join sm in _storeMappingRepository.Table
+                            on new { c1 = t.Id, c2 = "Topic" } equals new { c1 = sm.EntityId, c2 = sm.EntityName } into t_sm
+                            from sm in t_sm.DefaultIfEmpty()
+                            where !t.LimitedToStores || storeId == sm.StoreId
+                            select t;
+
+                    //only distinct items (group by ID)
+                    query = from t in query
+                            group t by t.Id
+                                into tGroup
+                                orderby tGroup.Key
+                                select tGroup.FirstOrDefault();
+                    query = query.OrderBy(t => t.Id);
+                }
+
+                return query.FirstOrDefault();
+            }
         }
 
         /// <summary>
@@ -108,31 +115,38 @@ namespace Nop.Services.Topics
         /// <returns>Topics</returns>
         public virtual IList<Topic> GetAllTopics(int storeId,int groupId=0)
         {
-            var query = _topicRepository.Table;
-            query = query.OrderBy(t => t.SystemName);
-            if (groupId > 0)
-                query = query.Where(x => x.GroupId == groupId);
-
-            //Store mapping
-            if (storeId > 0)
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
             {
-                query = from t in query
-                        join sm in _storeMappingRepository.Table
-                        on new { c1 = t.Id, c2 = "Topic" } equals new { c1 = sm.EntityId, c2 = sm.EntityName } into t_sm
-                        from sm in t_sm.DefaultIfEmpty()
-                        where !t.LimitedToStores || storeId == sm.StoreId
-                        select t;
-
-                //only distinct items (group by ID)
-                query = from t in query
-                        group t by t.Id
-                        into tGroup
-                        orderby tGroup.Key
-                        select tGroup.FirstOrDefault();
+                var query = _topicRepository.Table;
                 query = query.OrderBy(t => t.SystemName);
-            }
+                if (groupId > 0)
+                    query = query.Where(x => x.GroupId == groupId);
 
-            return query.ToList();
+                //Store mapping
+                if (storeId > 0)
+                {
+                    query = from t in query
+                            join sm in _storeMappingRepository.Table
+                            on new { c1 = t.Id, c2 = "Topic" } equals new { c1 = sm.EntityId, c2 = sm.EntityName } into t_sm
+                            from sm in t_sm.DefaultIfEmpty()
+                            where !t.LimitedToStores || storeId == sm.StoreId
+                            select t;
+
+                    //only distinct items (group by ID)
+                    query = from t in query
+                            group t by t.Id
+                                into tGroup
+                                orderby tGroup.Key
+                                select tGroup.FirstOrDefault();
+                    query = query.OrderBy(t => t.SystemName);
+                }
+
+                return query.ToList();
+            }
         }
 
         /// <summary>

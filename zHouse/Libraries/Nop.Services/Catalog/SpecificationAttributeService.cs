@@ -6,6 +6,7 @@ using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Services.Events;
+using System.Transactions;
 
 namespace Nop.Services.Catalog
 {
@@ -91,11 +92,18 @@ namespace Nop.Services.Catalog
         /// <returns>Specification attributes</returns>
         public virtual IPagedList<SpecificationAttribute> GetSpecificationAttributes(int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            var query = from sa in _specificationAttributeRepository.Table
-                        orderby sa.DisplayOrder
-                        select sa;
-            var specificationAttributes = new PagedList<SpecificationAttribute>(query, pageIndex, pageSize);
-            return specificationAttributes;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = from sa in _specificationAttributeRepository.Table
+                            orderby sa.DisplayOrder
+                            select sa;
+                var specificationAttributes = new PagedList<SpecificationAttribute>(query, pageIndex, pageSize);
+                return specificationAttributes;
+            }
         }
 
         /// <summary>
@@ -175,12 +183,19 @@ namespace Nop.Services.Catalog
         {
             return _cacheManager.Get("nop.SPA.bySAid." + specificationAttributeId, () =>
             {
-                var query = from sao in _specificationAttributeOptionRepository.Table
-                            orderby sao.DisplayOrder
-                            where sao.SpecificationAttributeId == specificationAttributeId
-                            select sao;
-                var specificationAttributeOptions = query.ToList();
-                return specificationAttributeOptions;
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from sao in _specificationAttributeOptionRepository.Table
+                                orderby sao.DisplayOrder
+                                where sao.SpecificationAttributeId == specificationAttributeId
+                                select sao;
+                    var specificationAttributeOptions = query.ToList();
+                    return specificationAttributeOptions;
+                }
             });
         }
 
@@ -286,16 +301,23 @@ namespace Nop.Services.Catalog
             
             return _cacheManager.Get(key, () =>
             {
-                var query = _productSpecificationAttributeRepository.Table;
-                query = query.Where(psa => psa.ProductId == productId);
-                if (allowFiltering.HasValue)
-                    query = query.Where(psa => psa.AllowFiltering == allowFiltering.Value);
-                if (showOnProductPage.HasValue)
-                    query = query.Where(psa => psa.ShowOnProductPage == showOnProductPage.Value);
-                query = query.OrderBy(psa => psa.DisplayOrder);
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = _productSpecificationAttributeRepository.Table;
+                    query = query.Where(psa => psa.ProductId == productId);
+                    if (allowFiltering.HasValue)
+                        query = query.Where(psa => psa.AllowFiltering == allowFiltering.Value);
+                    if (showOnProductPage.HasValue)
+                        query = query.Where(psa => psa.ShowOnProductPage == showOnProductPage.Value);
+                    query = query.OrderBy(psa => psa.DisplayOrder);
 
-                var productSpecificationAttributes = query.ToList();
-                return productSpecificationAttributes;
+                    var productSpecificationAttributes = query.ToList();
+                    return productSpecificationAttributes;
+                }
             });
         }
 

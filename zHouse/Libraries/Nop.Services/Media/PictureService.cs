@@ -13,6 +13,7 @@ using Nop.Services.Configuration;
 using Nop.Services.Events;
 using Nop.Services.Logging;
 using Nop.Services.Seo;
+using System.Transactions;
 
 namespace Nop.Services.Media
 {
@@ -654,11 +655,18 @@ namespace Nop.Services.Media
         /// <returns>Paged list of pictures</returns>
         public virtual IPagedList<Picture> GetPictures(int pageIndex, int pageSize)
         {
-            var query = from p in _pictureRepository.Table
-                       orderby p.Id descending
-                       select p;
-            var pics = new PagedList<Picture>(query, pageIndex, pageSize);
-            return pics;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = from p in _pictureRepository.Table
+                            orderby p.Id descending
+                            select p;
+                var pics = new PagedList<Picture>(query, pageIndex, pageSize);
+                return pics;
+            }
         }
         
 
@@ -673,18 +681,24 @@ namespace Nop.Services.Media
             if (productId == 0)
                 return new List<Picture>();
 
-            
-            var query = from p in _pictureRepository.Table
-                        join pp in _productPictureRepository.Table on p.Id equals pp.PictureId
-                        orderby pp.DisplayOrder
-                        where pp.ProductId == productId
-                        select p;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = from p in _pictureRepository.Table
+                            join pp in _productPictureRepository.Table on p.Id equals pp.PictureId
+                            orderby pp.DisplayOrder
+                            where pp.ProductId == productId
+                            select p;
 
-            if (recordsToReturn > 0)
-                query = query.Take(recordsToReturn);
+                if (recordsToReturn > 0)
+                    query = query.Take(recordsToReturn);
 
-            var pics = query.ToList();
-            return pics;
+                var pics = query.ToList();
+                return pics;
+            }
         }
 
         /// <summary>
