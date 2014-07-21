@@ -1,4 +1,4 @@
-﻿@model Nop.Web.Models.Catalog.InsertProductModel
+﻿﻿@model Nop.Web.Models.Catalog.InsertProductModel
 @using Nop.Core.Domain.Customers
 <link href="~/Content/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="~/Content/uploadify/jquery.uploadify.min.js"></script>
@@ -75,7 +75,7 @@
                         <td>@Html.LabelFor(x => x.Price) </td>
                         <td>
                           
-                        @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable ",placeholder="Giá"})
+                        @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable",placeholder="Giá"})
                             @Html.RequiredHint()
                      <span id="price-text">vnđ</span>
                      
@@ -296,7 +296,7 @@
     <div class="floatLeft">
         <div class="blueText">MÔ TẢ CHI TIẾT</div>
         <div class="boxWrapperSmall">
-            @Html.TextAreaFor(x => x.Desription, new { @class = "jqte-test formBoxInText" })
+            @Html.TextAreaFor(x => x.Desription, new { @class = " formBoxInText",style="height:400px" })
         </div>
     </div><!---floatLeft---->
 
