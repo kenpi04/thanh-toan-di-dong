@@ -5,6 +5,7 @@ using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Directory;
 using Nop.Services.Events;
+using System.Transactions;
 
 namespace Nop.Services.Directory
 {
@@ -99,12 +100,19 @@ namespace Nop.Services.Directory
             string key = string.Format(COUNTRIES_ALL_KEY, showHidden);
             return _cacheManager.Get(key, () =>
             {
-                var query = from c in _countryRepository.Table
-                            orderby c.DisplayOrder, c.Name
-                            where showHidden || c.Published
-                            select c;
-                var countries = query.ToList();
-                return countries;
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from c in _countryRepository.Table
+                                orderby c.DisplayOrder, c.Name
+                                where showHidden || c.Published
+                                select c;
+                    var countries = query.ToList();
+                    return countries;
+                }
             });
         }
 
@@ -118,12 +126,19 @@ namespace Nop.Services.Directory
             string key = string.Format(COUNTRIES_BILLING_KEY, showHidden);
             return _cacheManager.Get(key, () =>
             {
-                var query = from c in _countryRepository.Table
-                            orderby c.DisplayOrder, c.Name
-                            where (showHidden || c.Published) && c.AllowsBilling
-                            select c;
-                var countries = query.ToList();
-                return countries;
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from c in _countryRepository.Table
+                                orderby c.DisplayOrder, c.Name
+                                where (showHidden || c.Published) && c.AllowsBilling
+                                select c;
+                    var countries = query.ToList();
+                    return countries;
+                }
             });
         }
 
@@ -137,12 +152,19 @@ namespace Nop.Services.Directory
             string key = string.Format(COUNTRIES_SHIPPING_KEY, showHidden);
             return _cacheManager.Get(key, () =>
             {
-                var query = from c in _countryRepository.Table
-                            orderby c.DisplayOrder, c.Name
-                            where (showHidden || c.Published) && c.AllowsShipping
-                            select c;
-                var countries = query.ToList();
-                return countries;
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from c in _countryRepository.Table
+                                orderby c.DisplayOrder, c.Name
+                                where (showHidden || c.Published) && c.AllowsShipping
+                                select c;
+                    var countries = query.ToList();
+                    return countries;
+                }
             });
         }
 
@@ -168,20 +190,26 @@ namespace Nop.Services.Directory
         {
             if (countryIds == null || countryIds.Length == 0)
                 return new List<Country>();
-
-            var query = from c in _countryRepository.Table
-                        where countryIds.Contains(c.Id)
-                        select c;
-            var countries = query.ToList();
-            //sort by passed identifiers
-            var sortedCountries = new List<Country>();
-            foreach (int id in countryIds)
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
             {
-                var country = countries.Find(x => x.Id == id);
-                if (country != null)
-                    sortedCountries.Add(country);
+                var query = from c in _countryRepository.Table
+                            where countryIds.Contains(c.Id)
+                            select c;
+                var countries = query.ToList();
+                //sort by passed identifiers
+                var sortedCountries = new List<Country>();
+                foreach (int id in countryIds)
+                {
+                    var country = countries.Find(x => x.Id == id);
+                    if (country != null)
+                        sortedCountries.Add(country);
+                }
+                return sortedCountries;
             }
-            return sortedCountries;
         }
 
         /// <summary>

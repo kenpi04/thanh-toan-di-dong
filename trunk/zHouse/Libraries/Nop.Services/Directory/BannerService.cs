@@ -6,6 +6,7 @@ using Nop.Services.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 
 namespace Nop.Services.Directory
 {
@@ -126,18 +127,25 @@ namespace Nop.Services.Directory
         /// <returns>Ilist Banner</returns>
         public virtual IList<Banner> GetAllBanners(int position = 0, int storeId = 0, bool showHidden = false)
         {
-            var query = _bannerRepository.Table;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = _bannerRepository.Table;
 
-            if (position > 0)
-                query = query.Where(b => b.Position == position);
+                if (position > 0)
+                    query = query.Where(b => b.Position == position);
 
-            if (!showHidden)
-                query = query.Where(m => m.Published);
+                if (!showHidden)
+                    query = query.Where(m => m.Published);
 
-            query = query.OrderBy(m => m.DisplayOrder);
+                query = query.OrderBy(m => m.DisplayOrder);
 
-            var banners = query.ToList();
-            return banners;
+                var banners = query.ToList();
+                return banners;
+            }
         }
 
         /// <summary>

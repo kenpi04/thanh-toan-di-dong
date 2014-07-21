@@ -15,6 +15,7 @@ using Nop.Data;
 using Nop.Services.Events;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
+using System.Transactions;
 
 namespace Nop.Services.Catalog
 {
@@ -161,14 +162,21 @@ namespace Nop.Services.Catalog
         /// <returns>Product collection</returns>
         public virtual IList<Product> GetAllProductsDisplayedOnHomePage()
         {
-            var query = from p in _productRepository.Table
-                        orderby p.Name
-                        where p.Published &&
-                        !p.Deleted &&
-                        p.ShowOnHomePage
-                        select p;
-            var products = query.ToList();
-            return products;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = from p in _productRepository.Table
+                            orderby p.Name
+                            where p.Published &&
+                            !p.Deleted &&
+                            p.ShowOnHomePage
+                            select p;
+                var products = query.ToList();
+                return products;
+            }
         }
 
         /// <summary>
@@ -192,22 +200,29 @@ namespace Nop.Services.Catalog
         /// <returns>Products</returns>
         public virtual IList<Product> GetProductsByIds(int[] productIds)
         {
-            if (productIds == null || productIds.Length == 0)
-                return new List<Product>();
-
-            var query = from p in _productRepository.Table
-                        where productIds.Contains(p.Id)
-                        select p;
-            var products = query.ToList();
-            //sort by passed identifiers
-            var sortedProducts = new List<Product>();
-            foreach (int id in productIds)
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
             {
-                var product = products.Find(x => x.Id == id);
-                if (product != null)
-                    sortedProducts.Add(product);
+                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
             }
-            return sortedProducts;
+                ))
+            {
+                if (productIds == null || productIds.Length == 0)
+                    return new List<Product>();
+
+                var query = from p in _productRepository.Table
+                            where productIds.Contains(p.Id)
+                            select p;
+                var products = query.ToList();
+                //sort by passed identifiers
+                var sortedProducts = new List<Product>();
+                foreach (int id in productIds)
+                {
+                    var product = products.Find(x => x.Id == id);
+                    if (product != null)
+                        sortedProducts.Add(product);
+                }
+                return sortedProducts;
+            }
         }
 
         /// <summary>
@@ -1056,14 +1071,20 @@ namespace Nop.Services.Catalog
                 return null;
 
             sku = sku.Trim();
-
-            var query = from p in _productRepository.Table
-                        orderby p.Id
-                        where !p.Deleted &&
-                        p.Sku == sku
-                        select p;
-            var product = query.FirstOrDefault();
-            return product;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = from p in _productRepository.Table
+                            orderby p.Id
+                            where !p.Deleted &&
+                            p.Sku == sku
+                            select p;
+                var product = query.FirstOrDefault();
+                return product;
+            }
         }
 
         /// <summary>
@@ -1512,12 +1533,19 @@ namespace Nop.Services.Catalog
         /// <returns>Product pictures</returns>
         public virtual IList<ProductPicture> GetProductPicturesByProductId(int productId)
         {
-            var query = from pp in _productPictureRepository.Table
-                        where pp.ProductId == productId
-                        orderby pp.DisplayOrder
-                        select pp;
-            var productPictures = query.ToList();
-            return productPictures;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = from pp in _productPictureRepository.Table
+                            where pp.ProductId == productId
+                            orderby pp.DisplayOrder
+                            select pp;
+                var productPictures = query.ToList();
+                return productPictures;
+            }
         }
 
         /// <summary>
@@ -1580,21 +1608,28 @@ namespace Nop.Services.Catalog
             DateTime? fromUtc = null, DateTime? toUtc = null,
             string message = null)
         {
-            var query = _productReviewRepository.Table;
-            if (approved.HasValue)
-                query = query.Where(c => c.IsApproved == approved);
-            if (customerId > 0)
-                query = query.Where(c => c.CustomerId == customerId);
-            if (fromUtc.HasValue)
-                query = query.Where(c => fromUtc.Value <= c.CreatedOnUtc);
-            if (toUtc.HasValue)
-                query = query.Where(c => toUtc.Value >= c.CreatedOnUtc);
-            if (!String.IsNullOrEmpty(message))
-                query = query.Where(c => c.Title.Contains(message) || c.ReviewText.Contains(message));
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = _productReviewRepository.Table;
+                if (approved.HasValue)
+                    query = query.Where(c => c.IsApproved == approved);
+                if (customerId > 0)
+                    query = query.Where(c => c.CustomerId == customerId);
+                if (fromUtc.HasValue)
+                    query = query.Where(c => fromUtc.Value <= c.CreatedOnUtc);
+                if (toUtc.HasValue)
+                    query = query.Where(c => toUtc.Value >= c.CreatedOnUtc);
+                if (!String.IsNullOrEmpty(message))
+                    query = query.Where(c => c.Title.Contains(message) || c.ReviewText.Contains(message));
 
-            query = query.OrderBy(c => c.CreatedOnUtc);
-            var content = query.ToList();
-            return content;
+                query = query.OrderBy(c => c.CreatedOnUtc);
+                var content = query.ToList();
+                return content;
+            }
         }
 
         /// <summary>
