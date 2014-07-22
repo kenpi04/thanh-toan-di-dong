@@ -55,8 +55,10 @@
 
                 @Html.Action("SearchBoxLeft", new { isProject =Model.Id==2, categoryId = Model.Id})
                 <script>
+                    $(function () { 
                     $("#frmSearchLeft input[type=checkbox],#frmSearchLeft input[type=radio]").click(function () {
                         $("#frmSearchLeft").submit();
+                    })
                     })
                     function searchSuccess(d)
                     {
