@@ -452,6 +452,7 @@ namespace Nop.Web.Controllers
 
         //contact us page
         [NopHttpsRequirement(SslRequirement.No)]
+        [OutputCache(Duration = 3600, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
         public ActionResult ContactUs()
         {
             var model = new ContactUsModel()
@@ -462,7 +463,7 @@ namespace Nop.Web.Controllers
             };
             return View(model);
         }
-        [HttpPost, ActionName("ContactUs")]
+        [HttpPost]
         [CaptchaValidator]
         public ActionResult ContactUsSend(ContactUsModel model, bool captchaValid)
         {
@@ -516,16 +517,16 @@ namespace Nop.Web.Controllers
                 });
                 
                 model.SuccessfullySent = true;
-                model.Result = _localizationService.GetResource("ContactUs.YourEnquiryHasBeenSent");
+             
 
                 //activity log
                 _customerActivityService.InsertActivity("PublicStore.ContactUs", _localizationService.GetResource("ActivityLog.PublicStore.ContactUs"));
 
-                return View(model);
+                return Json(_localizationService.GetResource("ContactUs.YourEnquiryHasBeenSent"));
             }
 
-            model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnContactUsPage;
-            return View(model);
+          //  model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnContactUsPage;
+            return Json("Error");
         }
 
         //sitemap page
@@ -646,6 +647,7 @@ namespace Nop.Web.Controllers
 
         //favicon
         [ChildActionOnly]
+        [OutputCache(Duration = 3600, VaryByParam = "none")]
         public ActionResult Favicon()
         {
             //try loading a store specific favicon

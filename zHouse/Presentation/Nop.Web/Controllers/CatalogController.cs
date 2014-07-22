@@ -367,8 +367,8 @@ namespace Nop.Web.Controllers
                     Area = product.Area,
                     FullAddress = product.FullAddress,
                     DictrictName = product.District == null ? "" : product.District.Name,
-                    ChuDauTu=product.ManufacturerPartNumber,
-                    StatusId=product.GiftCardTypeId
+                    ChuDauTu = product.ManufacturerPartNumber,
+                    StatusId = product.GiftCardTypeId
 
                 };
                 if (product.CallForPrice)
@@ -605,7 +605,7 @@ namespace Nop.Web.Controllers
                 }
                 if (product.ProductCategories.Count > 0)
                 {
-                    var defaultCata=product.ProductCategories.FirstOrDefault().Category;
+                    var defaultCata = product.ProductCategories.FirstOrDefault().Category;
                     model.CateName = defaultCata.Name;
                     model.IsProject = defaultCata.Id == 2 || defaultCata.ParentCategoryId == 2;
                 }
@@ -688,9 +688,9 @@ namespace Nop.Web.Controllers
             bool isProject = false;
             if (product.ProductCategories.Count > 0)
             {
-                var defaultCata=product.ProductCategories.FirstOrDefault().Category;
+                var defaultCata = product.ProductCategories.FirstOrDefault().Category;
                 model.CateName = defaultCata.Name;
-                isProject = defaultCata.Id == 2||defaultCata.ParentCategoryId==2;
+                isProject = defaultCata.Id == 2 || defaultCata.ParentCategoryId == 2;
 
             }
             model.IsProject = isProject;
@@ -709,7 +709,7 @@ namespace Nop.Web.Controllers
                     model.VendorModel.SeName = SeoExtensions.GetSeName(vendor.Name);
                 }
             }
-            #region SPA       
+            #region SPA
             model.Environments = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.Enviroment)
                .Select(x => x.SpecificationAttributeOption)
                .ToSelectList(x => x.Name, x => x.Id.ToString());
@@ -720,19 +720,19 @@ namespace Nop.Web.Controllers
             model.Status = GetOptionName(product, ProductAttributeEnum.Status);
             if (isProject)
             {
-             
-                model.StartConstructionDate=product.StartConstructionDate.HasValue?product.StartConstructionDate.Value.ToString("dd-MM-yyyy"):"-";
+
+                model.StartConstructionDate = product.StartConstructionDate.HasValue ? product.StartConstructionDate.Value.ToString("dd-MM-yyyy") : "-";
                 model.FinishConstructionDate = product.FinishConstructionDate.HasValue ? product.FinishConstructionDate.Value.ToString("dd-MM-yyyy") : "-";
                 model.ChuDauTu = product.ManufacturerPartNumber;
                 model.TienIch = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.TienIch)
              .Select(x => x.SpecificationAttributeOption.Name).ToList();
-            
-                model.Contructors = product.Gtin;            
+
+                model.Contructors = product.Gtin;
             }
             else
             {
                 model.BedRooms = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom);
-                 model.BadRooms = GetOptionName(product, ProductAttributeEnum.NumberOfBadRoom);            
+                model.BadRooms = GetOptionName(product, ProductAttributeEnum.NumberOfBadRoom);
                 model.Directors = GetOptionName(product, ProductAttributeEnum.Director);
                 model.PhapLy = GetOptionName(product, ProductAttributeEnum.PhapLy);
                 model.ThichHop = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.ThichHop)
@@ -934,7 +934,7 @@ namespace Nop.Web.Controllers
         #region Categories
 
         [NopHttpsRequirement(SslRequirement.No)]
-        [OutputCache(Duration=300, VaryByParam="*", Location=System.Web.UI.OutputCacheLocation.Server)]
+        [OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
         public ActionResult Category(int categoryId, SearchModel searchModel, CatalogPagingFilteringModel command, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0)
         {
             var category = _categoryService.GetCategoryById(categoryId);
@@ -1294,7 +1294,7 @@ namespace Nop.Web.Controllers
         }
 
         [ChildActionOnly]
-        [OutputCache(Duration=3600, VaryByParam ="stateId")]
+        [OutputCache(Duration = 3600, VaryByParam = "stateId")]
         public ActionResult TopMenu(int stateId = 23)
         {
             var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
@@ -1887,6 +1887,7 @@ namespace Nop.Web.Controllers
 
         //product details page
         [NopHttpsRequirement(SslRequirement.No)]
+        [OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult Product(int productId, int updatecartitemid = 0)
         {
             var product = _productService.GetProductById(productId);
@@ -2178,7 +2179,7 @@ namespace Nop.Web.Controllers
             return View(model);
         }
 
-      //  [ChildActionOnly]
+        //  [ChildActionOnly]
         public ActionResult RecentlyViewedProductsBlock(int? productThumbPictureSize, bool? preparePriceModel)
         {
             var model = new List<ProductOverviewModel>();
@@ -3350,7 +3351,7 @@ namespace Nop.Web.Controllers
 
                 };
                 _categoryService.InsertProductCategory(productCate);
-                
+
                 #endregion
 
                 #region InsertPictures
@@ -3453,7 +3454,7 @@ namespace Nop.Web.Controllers
                 //delete
 
                 //add new
-                var productPic = product.ProductPictures.Select(x=>x.PictureId);
+                var productPic = product.ProductPictures.Select(x => x.PictureId);
                 foreach (var i in model.PictureIds)
                 {
 
@@ -3613,12 +3614,12 @@ namespace Nop.Web.Controllers
             }
             #endregion
 
-           
-                p.ContactEmail = inPd.Email;
-                p.ContactName = inPd.ContactName;
-                p.ContactPhone = inPd.ContactPhone;
 
-           
+            p.ContactEmail = inPd.Email;
+            p.ContactName = inPd.ContactName;
+            p.ContactPhone = inPd.ContactPhone;
+
+
             p.HouseNumber = inPd.NumberOfHome;
             p.DistrictId = inPd.DistrictId;
             p.WardId = inPd.WardId;
@@ -3711,13 +3712,13 @@ namespace Nop.Web.Controllers
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
-              
+
             }).ToList();
             model.Facilities = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.CoSoVatChat).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
-               
+
             }).ToList();
             model.NumberFloors = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfFloor).Select(x => new SelectListItem
             {
@@ -3734,7 +3735,7 @@ namespace Nop.Web.Controllers
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
-              
+
             }).ToList();
             model.ThichHop = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.ThichHop).Select(x => new SelectListItem
             {
@@ -3984,25 +3985,53 @@ namespace Nop.Web.Controllers
         }
         private void PreparingSearchModel(SearchModel model, bool isproject = false, int categoryId = 0)
         {
-            IList<Category> cate = null;
-            //if (!isproject)
-            cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).OrderBy(x => x.DisplayOrder).ToList();
-            //else
-            //cate = _categoryService.GetAllCategoriesByParentCategoryId(2);
-
-            model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-            model.AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
-            model.Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-            model.Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectDistrict"), Selected = true, Value = "0" });
-            model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResource("Product.Status.Enum." + x.ToString()), x => ((int)x).ToString());
-            model.Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
-
-            model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
-            model.BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
-            model.Directories = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).ToSelectList(x => x.Name, x => x.Id.ToString());
-            model.Directories.Insert(0, new SelectListItem { Text = _localizationService.GetResource(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
+            //var key = string.Format("PreparingSearchModel-{0}-{1}", isproject, categoryId);
+            //model = _cacheManager.Get(key, () =>
+            //{
+            //    IList<Category> cate = null;
+            //    cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).OrderBy(x => x.DisplayOrder).ToList();
 
 
+            //    var AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+            //    AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
+            //    var Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+            //    Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectDistrict"), Selected = true, Value = "0" });
+            //    var Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResource("Product.Status.Enum." + x.ToString()), x => ((int)x).ToString());
+            //    Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
+            //    var BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
+            //    var BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
+            //    var Directories = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).ToSelectList(x => x.Name, x => x.Id.ToString());
+            //    Directories.Insert(0, new SelectListItem { Text = _localizationService.GetResource(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
+            //    return new SearchModel()
+            //    {
+            //        AvailableCategories = AvailableCategories,
+            //        Districts = Districts,
+            //        Status = Status,
+            //        BedRooms = BedRooms,
+            //        BadRooms = BadRooms,
+            //        Directories = Directories
+            //    };
+                IList<Category> cate = null;
+                cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).OrderBy(x => x.DisplayOrder).ToList();
+                model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                model.AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
+                model.Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                model.Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectDistrict"), Selected = true, Value = "0" });
+                model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResource("Product.Status.Enum." + x.ToString()), x => ((int)x).ToString());
+                model.Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
+
+                model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
+                model.BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
+                model.Directories = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).ToSelectList(x => x.Name, x => x.Id.ToString());
+                model.Directories.Insert(0, new SelectListItem { Text = _localizationService.GetResource(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
+            
+            //});
+            //model.AvailableCategories = cache.AvailableCategories;
+            //model.Districts = cache.Districts;
+            //model.Status = cache.Status;
+            //model.BedRooms = cache.BedRooms;
+            //model.BadRooms = cache.BadRooms;
+            //model.Directories = cache.Directories;
         }
 
         private string ReturnPriceString(decimal price, string symbol)
@@ -4073,7 +4102,7 @@ namespace Nop.Web.Controllers
             var model = PrepareProductOverviewModels(products, preparePictureModel: true, productThumbPictureSize: 220);
             return View(model);
         }
-                
+
         [HttpPost]
         public ActionResult ProductPictureDelete(int id)
         {
@@ -4124,7 +4153,7 @@ namespace Nop.Web.Controllers
             return View();
         }
         [HttpGet]
-        public ActionResult GetProductImages(int productId,bool isGallery=false)
+        public ActionResult GetProductImages(int productId, bool isGallery = false)
         {
 
             var product = _productService.GetProductById(productId);
@@ -4133,12 +4162,12 @@ namespace Nop.Web.Controllers
                 _mediaSettings.ProductThumbPictureSizeOnProductDetailsPage;
             var defaultPictureFullSize = _mediaSettings.ProductDetailsPictureSize;
             //prepare picture models
-            var productPicturesCacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_DETAILS_PICTURES_MODEL_KEY,productId, defaultPictureSize, defaultPictureFullSize, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id);
+            var productPicturesCacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_DETAILS_PICTURES_MODEL_KEY, productId, defaultPictureSize, defaultPictureFullSize, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id);
             var cachedPictures = _cacheManager.Get(productPicturesCacheKey, () =>
             {
                 var pictures = _pictureService.GetPicturesByProductId(productId);
 
-               
+
                 //all pictures
                 var pictureModels = new List<PictureModel>();
                 foreach (var picture in pictures)
@@ -4146,23 +4175,23 @@ namespace Nop.Web.Controllers
                     pictureModels.Add(new PictureModel()
                     {
                         ImageUrl = _pictureService.GetPictureUrl(picture, defaultPictureSize),
-                        FullSizeImageUrl = _pictureService.GetPictureUrlWithWarterMark(picture, defaultPictureFullSize,showWarterMark:true),
+                        FullSizeImageUrl = _pictureService.GetPictureUrlWithWarterMark(picture, defaultPictureFullSize, showWarterMark: true),
                         Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), product.Name),
                         AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), product.Name),
                         Description = picture.ProductPictures.FirstOrDefault() != null ? picture.ProductPictures.FirstOrDefault().Description : ""
                     });
                 }
 
-                return pictureModels ;
+                return pictureModels;
             });
             if (isGallery)
-                return View("GalleryPictures",cachedPictures);
-            return View("_ProductDetailsPictures",cachedPictures);
+                return View("GalleryPictures", cachedPictures);
+            return View("_ProductDetailsPictures", cachedPictures);
 
-           
+
         }
 
-       
+
     }
 }
 
