@@ -20,7 +20,7 @@ h2,h3{font-size:16px}
 textarea{width:100%;font-family:Verdana,Arial,sans-serif;font-size:11px;border:1px solid #eee}
 fieldset{margin:0 0 15px;border:1px solid #c9c9c9;padding:15px}
 legend{font-weight:bold;line-height:20px;font-size:16px}
-input[type="text"],input[type="password"]{background:#fff;border:1px solid #c2c2c2;padding:5px;color:#333;margin-bottom:3px}
+input[type="text"],input[type="password"]{background:#fff;border:1px solid #ddd;padding:6px;color:#333;margin-bottom:6px}
 input[type="text"]:disabled{background:none repeat scroll 0 0 #FFF}
 .clearfix{clear:both}
 select{border:1px solid #c2c2c2;color:#666;font-size:11px;padding:5px 5px 5px 10px;width:150px}
@@ -139,9 +139,9 @@ td.fieldname{font-size:12px}
 .topic-html-content-header{font-size:1.2em;font-weight:700}
 .topic-html-content-body a{text-decoration:underline;color:#b80709}
 .topic-page .page-body a{text-decoration:underline;color:#b80709}
-.message-error{font-family:Verdana,Arial,sans-serif;font-size:10px;font-weight:700;color:red}
+.message-error{font-size:12px;font-weight:700;color:red}
 .message-error ul{padding:0}
-.message-error ul li{list-style:none}
+.message-error ul li{list-style:none;padding:5px 0}
 .validation-summary-errors{font-weight:bold;color:red;padding:10px;text-align:left;background:#ddd}
 .field-validation-error{font-weight:700;color:red}
 .required{color:red}
@@ -625,7 +625,7 @@ a.eu-cookie-privacyinfo-tag{color:#b80709 !important;text-decoration:underline}
 .email-a-friend-page .buttons{text-align:left}
 .email-a-friend-page .field-validation-error{display:block}
 .search-page .page-title{margin-top:6px}
-.search-input{border:1px solid #d7d7d7;padding:10px;float:left;width:230px}
+.search-input{border:0px solid #d7d7d7;padding:0px;float:left;width:230px}
 .search-page .search-input .buttons{text-align:right}
 .search-results{padding-top:10px;float:left;width:640px;margin-left:10px}
 .search-page .search-results .result{font-weight:700;color:#555}
@@ -1160,7 +1160,7 @@ ul{margin:0}
 .friend-email{width:100%}
 .simplemodal-close{background:url(images/x.png) no-repeat;width:22px;height:22px;position:absolute;right:-5px;top:-5px}
 #popup h1{padding:5px 0;background:#c06;color:#fff;font-weight:bold;font-size:14px;text-align:center;text-transform:uppercase}
-.whiteBgCata{padding:7px 5px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:245px;margin-top:10px;height:55px}
+.whiteBgCata{padding:7px 5px;font-size:13px; line-height: 16px;color:#666;border-top:1px #ddd dashed;float:left;width:245px;margin-top:10px;height:55px}
 .whiteBgCata-small{padding:7px 5px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:100%;margin-top:10px;height:55px}
 .pinkNarrowTitle30{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06}
 .whiteLeftCol{float:left;width:220px;margin:0 15px 10px 0;background:#fff}
@@ -1169,7 +1169,7 @@ ul{margin:0}
 .greyBgTitle{float:left;background:url(images/greyBgTitle.png) no-repeat;width:220px;height:41px;text-align:center;padding-top:9px}
 .greyBgTitle a{color:#000;font-size:14px;text-transform:uppercase;text-decoration:none}
 .greyBgTitle a:hover{color:#555}
-.whiteLeftColContent{width:180px;padding:10px 20px 25px 20px;float:left;color:#555}
+.whiteLeftColContent{width:180px;padding:10px 20px 25px 20px;float:left;color:#555; line-height: 25px;}
 .introColRight .shortdes{height:72px}
 .product-list .introColRight{height:377px}
 .select-datetime .lb{color:gray}
@@ -1191,7 +1191,7 @@ ul{margin:0}
 .ulStyle li{list-style-image:url(images/listIcon.png);padding-top:5px}
 .ulStyle li a{text-decoration:none;color:#555}
 .ulStyle li a:hover{color:#000}
-.news{float:left;width:850px;margin:10px 0 0 20px;font-size:13px;text-align:justify}
+.news{float:left;width:830px;margin:10px 0 0 20px;font-size:13px;text-align:justify; line-height: 20px;}
 .newsImgBorder{border:3px solid #d3d3d3}
 .menu-col{width:200px;float:left;padding:0 10px;border-right:dashed 1px #ddd}
 .menu-col:last-child{border:0}
@@ -1258,8 +1258,9 @@ textarea.formBoxInText{height:70px}
 .imgBorder { border: 1px solid #d3d3d3; }
 .footerSocialLink { float: left; margin-top: 10px; }
 .footerSocialLinkCol { float: left; margin-right: 8px; }
-
+.input-validation-error {border:solid 1px #d41212 }
 .btn-bottom { margin: 26px auto; clear: both; width: 462px; }
 .btn-bottom input { border: none; display: block; margin-left: 5px; float: left;cursor:pointer }
 .btn-bottom .btn-rq { background: url(images/request-button.gif) no-repeat; width: 219px; height: 50px; }
 .btn-bottom .btn-search { background: url(images/search-button.gif) no-repeat; width: 233px; height: 50px; }
+.full-width {font-size:14px }

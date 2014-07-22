@@ -2893,7 +2893,7 @@ namespace Nop.Web.Controllers
 
                     };
                     _messagesService.InsertMessage(mes);
-                    return Json("Gửi thành công");
+                    return Json(_localizationService.GetResource("Products.Booking.SuccessfullySent"));
 
                 }
 
@@ -2908,8 +2908,7 @@ namespace Nop.Web.Controllers
                 model.ProductSeName = product.GetSeName();
 
                 model.SuccessfullySent = true;
-                model.Result = _localizationService.GetResource("Products.EmailAFriend.SuccessfullySent");
-                return Json("Gửi thành công!");
+                return Json(_localizationService.GetResource("Products.EmailAFriend.SuccessfullySent"));
                 // return View(model);
             }
 

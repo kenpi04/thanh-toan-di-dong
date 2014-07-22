@@ -34,7 +34,7 @@
             @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại", })
             @Html.RequiredHint()
             @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })
-            @Html.RequiredHint()
+          
           <br />
             <br>
             @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
@@ -243,7 +243,7 @@
     </div><!----floatLeft----->
 
     <div class="floatLeft">
-        <div class="blueText">HÌNH ẢNH NHÀ</div>
+        <div class="blueText">HÌNH ẢNH NHÀ <small> (Hình càng rõ ràng, đầy đủ, ngôi nhà của bạn bán càng nhanh)</small></div>
         <div class="rightTable">
 
             <ul>
@@ -254,8 +254,7 @@
                 <li> Hình chụp phòng khách</li>
                 <li>Hình chụp cầu thang</li>
                 <li>Hình chụp nhà bếp + kệ bếp </li>
-                <li>Hình chụp nhà vệ sinh</li>
-                <li>Hình chụp sân thượng</li>
+                <li>Hình chụp nhà vệ sinh</li>           
                 <li>Hình chụp phòng ngủ</li>
                 <li>Hình chụp sân thượng</li>
                 <li>Hình từ ban công, cửa xuống các hướng đường</li>
@@ -346,6 +345,7 @@
                 alert("File không hợp lệ");
             }
             else {
+                showAjaxLoading(true);
                 if($("div[id^=SWFUpload_]").size()==0)
                 {
                     $("#frmProduct").submit();
@@ -423,6 +423,7 @@
                     $('#FileUpload').uploadify('stop');
                     return;
                 }
+            
 
             },
             'onUploadSuccess': function (file, data, response) {
