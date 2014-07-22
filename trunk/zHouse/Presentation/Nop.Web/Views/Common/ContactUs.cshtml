@@ -1,15 +1,11 @@
 ﻿@model ContactUsModel
 @using Nop.Web.Models.Common;
 @{
-    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Layout = "~/Views/Shared/_RootFullWidth.cshtml";
 
     //title
     Html.AddTitleParts(T("PageTitle.ContactUs").Text);
 }
-<style>
-    .master-wrapper-main {width:100% }
-</style>
-<div class="page contact-page">
   
 
       <div class="blackBgTop" id="div-gioithieu">
@@ -55,27 +51,27 @@
     <div class="wrapperLarge">
         <div class="fullContent">
         	<div class="talkBlue">
-            	<a class="title30">DV</a> <a class="title40">GIẤY TỜ</a>
-                <p>Sàn giao dịch nhà <b>zHOUSE </b>chuyên về xây dựng và phân phối nhà dự án, nhà liền kề, nhà đơn lẻ, nhà chung cư…Tất cả các sản phẩm của <b>zHOUSE</b> đều được cam kết về chất lượng và pháp lý đầy đủ.</p>
+                <a class="title30" style="font-size:18px">DV</a> <a class="title40">GIẤY TỜ</a>
+                <p>Hợp thức hóa giấy tờ nhà đất, giấy phép xây dựng, sang nhượng, thừa kế … Thủ tục nhanh chóng, hợp lý hợp lệ.</p>
             </div>
             
             <div class="talkPink">
-            	<a class="title30">DV</a> <a class="title40">MUA BÁN</a>
-                <p>Sàn giao dịch nhà <b>zHOUSE </b>chuyên về xây dựng và phân phối nhà dự án, nhà liền kề, nhà đơn lẻ, nhà chung cư…Tất cả các sản phẩm của <b>zHOUSE</b> đều được cam kết về chất lượng và pháp lý đầy đủ.</p>
+                <a class="title30" style="font-size:18px">DV</a> <a class="title40">MUA BÁN</a>
+                <p>Nhận ký gởi, mua bán nhà đất. zHouse sẽ lo mọi khâu chụp hình, viết bài, PR và mua bán nhà cho quý khách với phí mối giới < 2%.</p>
             </div>
             
             <div class="talkGrey">
-            	<a class="title30">DV</a> <a class="title40">TƯ VẤN</a>
-                <p>Sàn giao dịch nhà <b>zHOUSE </b>chuyên về xây dựng và phân phối nhà dự án, nhà liền kề, nhà đơn lẻ, nhà chung cư…Tất cả các sản phẩm của <b>zHOUSE</b> đều được cam kết về chất lượng và pháp lý đầy đủ.</p>
+                <a class="title30" style="font-size:18px">DV</a> <a class="title40">TƯ VẤN</a>
+                <p>Tư vấn mua bán, định giá, đầu tư nhà đất bởi những chuyên gia kinh nghiệm.</p>
             </div>
             <div class="clearBoth"></div>
             <div class="talkGrey" style="margin-left:200px">
-            	<a class="title30">DV</a> <a class="title40">TƯ VẤN</a>
-                <p>Sàn giao dịch nhà <b>zHOUSE </b>chuyên về xây dựng và phân phối nhà dự án, nhà liền kề, nhà đơn lẻ, nhà chung cư…Tất cả các sản phẩm của <b>zHOUSE</b> đều được cam kết về chất lượng và pháp lý đầy đủ.</p>
+            	<a class="title30" style="font-size:18px">DV</a> <a class="title40">VAY VỐN</a>
+                <p>Vay vốn mua nhà thủ tục nhanh chóng, giải ngân nhanh với lãi suất thấp nhất.</p>
             </div>
             <div class="talkBlue">
-            	<a class="title30">DV</a> <a class="title40">GIẤY TỜ</a>
-                <p>Sàn giao dịch nhà <b>zHOUSE </b>chuyên về xây dựng và phân phối nhà dự án, nhà liền kề, nhà đơn lẻ, nhà chung cư…Tất cả các sản phẩm của <b>zHOUSE</b> đều được cam kết về chất lượng và pháp lý đầy đủ.</p>
+                <a class="title30" style="font-size:18px">DV</a> <a class="title40">QUẢNG CÁO</a>
+                <p>Các bạn muốn tự mình bán nhà? Zhouse luôn có những gói quảng cáo giúp bạn tự mua bán nhà mình một cách nhanh nhất‏.</p>
             </div>
         </div><!----fullContent---->
     </div><!---wrapperLarge---->
@@ -110,14 +106,7 @@
             <div class="mapCol2">
             	<div id="map_canvas" style="width:550px;height:330px;border:solid 2px #fff;box-shadow:1px 1px 1px #808080;margin-bottom:10px"></div>
 
-<script>
-    if (window.location.href.indexOf("#div-")!=-1)
-    {
-        var divTab = window.location.split("#")[1];
-        $('html,body').animate({
-            scrollTop: $("#"+divTab).offset().top
-        });
-    }
+<script>    
     $("#frmContactus").submit(function () {
         var frm = $(this);
         if (frm.valid())
@@ -126,7 +115,7 @@
             $("#btn-send-contact").attr("disabled", "disabled");
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("ContactUs","Common")",
+                url: "@Url.Action("ContactUsSend", "Common")",
                 data: frm.serialize(),
                 success: function (d) {
                     
@@ -188,5 +177,5 @@
             </div><!--mapCol2---->
         </div><!---wrapperLarge---->
     </div><!---whiteBgFull---->
-</div>
+
 
