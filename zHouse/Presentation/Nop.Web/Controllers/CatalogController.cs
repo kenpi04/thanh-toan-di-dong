@@ -947,18 +947,18 @@ namespace Nop.Web.Controllers
                 return InvokeHttp404();
 
             //ACL (access control list)
-            if (!_aclService.Authorize(category))
-                return InvokeHttp404();
+            //if (!_aclService.Authorize(category))
+            //    return InvokeHttp404();
 
             //Store mapping
-            if (!_storeMappingService.Authorize(category))
-                return InvokeHttp404();
+            //if (!_storeMappingService.Authorize(category))
+            //    return InvokeHttp404();
 
             //'Continue shopping' URL
-            _genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
-                SystemCustomerAttributeNames.LastContinueShoppingPage,
-                _webHelper.GetThisPageUrl(false),
-                _storeContext.CurrentStore.Id);
+            //_genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
+            //    SystemCustomerAttributeNames.LastContinueShoppingPage,
+            //    _webHelper.GetThisPageUrl(false),
+            //    _storeContext.CurrentStore.Id);
 
             if (command.PageNumber <= 0) command.PageNumber = 1;
 
@@ -1080,18 +1080,18 @@ namespace Nop.Web.Controllers
 
 
             //price ranges
-            model.PagingFilteringContext.PriceRangeFilter.LoadPriceRangeFilters(category.PriceRanges, _webHelper, _priceFormatter);
-            var selectedPriceRange = model.PagingFilteringContext.PriceRangeFilter.GetSelectedPriceRange(_webHelper, category.PriceRanges);
-            decimal? minPriceConverted = null;
-            decimal? maxPriceConverted = null;
-            if (selectedPriceRange != null)
-            {
-                if (selectedPriceRange.From.HasValue)
-                    minPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(selectedPriceRange.From.Value, _workContext.WorkingCurrency);
+            //model.PagingFilteringContext.PriceRangeFilter.LoadPriceRangeFilters(category.PriceRanges, _webHelper, _priceFormatter);
+            //var selectedPriceRange = model.PagingFilteringContext.PriceRangeFilter.GetSelectedPriceRange(_webHelper, category.PriceRanges);
+            decimal? minPriceConverted = 0;
+            decimal? maxPriceConverted = 0;
+            //if (selectedPriceRange != null)
+            //{
+            //    if (selectedPriceRange.From.HasValue)
+            //        minPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(selectedPriceRange.From.Value, _workContext.WorkingCurrency);
 
-                if (selectedPriceRange.To.HasValue)
-                    maxPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(selectedPriceRange.To.Value, _workContext.WorkingCurrency);
-            }
+            //    if (selectedPriceRange.To.HasValue)
+            //        maxPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(selectedPriceRange.To.Value, _workContext.WorkingCurrency);
+            //}
 
 
 
@@ -1118,7 +1118,7 @@ namespace Nop.Web.Controllers
                 .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
 
 
-
+            /*
             //subcategories
             //We cache whether we have subcategories
             IList<Category> subcategories = null;
@@ -1166,12 +1166,12 @@ namespace Nop.Web.Controllers
                     return subCatModel;
                 })
                 .ToList();
-            }
+            }*/
 
 
 
             //featured products
-
+            /*
             if (!_catalogSettings.IgnoreFeaturedProducts)
             {
                 //We cache whether we have featured products
@@ -1201,7 +1201,7 @@ namespace Nop.Web.Controllers
                 {
                     model.FeaturedProducts = PrepareProductOverviewModels(featuredProducts).ToList();
                 }
-            }
+            }*/
 
 
             var categoryIds = new List<int>();
@@ -1901,12 +1901,12 @@ namespace Nop.Web.Controllers
                 return InvokeHttp404();
 
             //ACL (access control list)
-            if (!_aclService.Authorize(product))
-                return InvokeHttp404();
+            //if (!_aclService.Authorize(product))
+            //    return InvokeHttp404();
 
             //Store mapping
-            if (!_storeMappingService.Authorize(product))
-                return InvokeHttp404();
+            //if (!_storeMappingService.Authorize(product))
+            //    return InvokeHttp404();
 
             //visible individually?
             //if (!product.VisibleIndividually)
