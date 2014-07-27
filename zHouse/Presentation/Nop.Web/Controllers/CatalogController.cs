@@ -2857,7 +2857,12 @@ namespace Nop.Web.Controllers
         [CaptchaValidator]
         public ActionResult ProductEmailAFriendSend(ProductEmailAFriendModel model, bool captchaValid)
         {
-            DateTime d = new DateTime(model.Year, model.Month, model.Date, model.Hour, model.Minute, 0);
+            DateTime d;
+            try
+            {
+                d = new DateTime(model.Year, model.Month, model.Date, model.Hour, model.Minute, 0);
+            }
+            catch { return Json("Lỗi. Vui lòng kiểm tra lại ngày giờ."); }
 
             var product = _productService.GetProductById(model.ProductId);
             if (product == null || product.Deleted || !product.Published || !_catalogSettings.EmailAFriendEnabled)
