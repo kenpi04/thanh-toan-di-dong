@@ -3,7 +3,7 @@
 @using Nop.Core;
 @using Nop.Core.Infrastructure;
 @{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
     //title
     Html.AddTitleParts(T("PageTitle.Login").Text);
@@ -16,7 +16,7 @@
         registerUrl = webHelper.ModifyQueryString(registerUrl, "returnurl=" + HttpUtility.UrlEncode(this.Context.Request.QueryString["returnUrl"]), null);
     }
 }
-<div class="page login-page">
+<div class="page login-page" style="background: #fff; padding:20px">
     <div class="page-title">
         <h1>@T("Account.Login.Welcome")</h1>
     </div>
@@ -49,7 +49,7 @@
                         @T("Account.Login.NewCustomerText")
                     </div>
                     <div class="buttons">
-                        <input type="button" class="button-1 register-button" onclick="location.href='@registerUrl'" value="@T("Account.Register")" />
+                        <input type="button" class="blueBigBtn" onclick="location.href='@registerUrl'" value="@T("Account.Register")" />
                     </div>
                 </div>
             }
@@ -98,7 +98,7 @@
                         </div>
                         }
                         <div class="buttons">
-                            <input class="button-1 login-button" type="submit" value="@T("Account.Login.LoginButton")" />
+                            <input class="blueBigBtn" type="submit" value="@T("Account.Login.LoginButton")" />
                         </div>
                        
                     }
