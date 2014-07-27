@@ -65,6 +65,11 @@ namespace Nop.Admin.Infrastructure
             Mapper.CreateMap<CategoryNews, CategoryNewsModel>()
                 .ForMember(dest => dest.Locales, mo => mo.Ignore());
             #endregion
+
+            #region Message
+            Mapper.CreateMap<Message, MessageModel>();
+            Mapper.CreateMap<MessageModel, Message>();
+            #endregion
             //address
             Mapper.CreateMap<Address, AddressModel>()
                 .ForMember(dest => dest.AddressHtml, mo => mo.Ignore())
