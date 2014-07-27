@@ -17,5 +17,6 @@ namespace Nop.Web.Validators.Catalog
             RuleFor(x => x.Date).NotEqual(0).WithMessage(localizationService.GetResource("Products.EmailAFriend.Date.Required")).When(x => x.Hour > 0);
             RuleFor(x => x.Year).NotEqual(0).WithMessage(localizationService.GetResource("Products.EmailAFriend.Year.Required")).When(x => x.Hour > 0);
             RuleFor(x => x.Hour).NotEqual(0).WithMessage(localizationService.GetResource("Products.EmailAFriend.Hour.Required")).When(x => x.Hour > 0);
+            RuleFor(x => x.Phone).NotEmpty().WithMessage(localizationService.GetResource("Products.EmailAFriend.Phone.Required"));            
         }}
 }
