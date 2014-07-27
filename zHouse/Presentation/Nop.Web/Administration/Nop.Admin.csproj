@@ -143,6 +143,7 @@
     <Compile Include="Controllers\AffiliateController.cs" />
     <Compile Include="Controllers\CampaignController.cs" />
     <Compile Include="Controllers\BlogController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
@@ -216,6 +217,8 @@
     <Compile Include="Models\Directory\DistrictListModel.cs" />
     <Compile Include="Models\Directory\DistrictModel.cs" />
     <Compile Include="Models\Home\DashboardModel.cs" />
+    <Compile Include="Models\Messages\MessageListModel.cs" />
+    <Compile Include="Models\Messages\MessageModel.cs" />
     <Compile Include="Models\News\CategoryNewsListModel.cs" />
     <Compile Include="Models\News\CategoryNewsModel.cs" />
     <Compile Include="Models\Payments\PaymentMethodRestrictionModel.cs" />
@@ -1254,6 +1257,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Country\DistrictEdit.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Message\List.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

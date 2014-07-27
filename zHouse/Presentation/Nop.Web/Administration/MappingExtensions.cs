@@ -52,6 +52,25 @@ namespace Nop.Admin
 {
     public static class MappingExtensions
     {
+        #region Message
+
+        public static MessageModel ToModel(this Message entity)
+        {
+            return Mapper.Map<Message, MessageModel>(entity);
+        }
+
+        public static Message ToEntity(this MessageModel model)
+        {
+            return Mapper.Map<MessageModel, Message>(model);
+        }
+
+        public static Message ToEntity(this MessageModel model, Message destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+
+        #endregion
+
         #region Category
 
         public static CategoryModel ToModel(this Category entity)
