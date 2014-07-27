@@ -45,23 +45,24 @@
             <div class="lb">Thông tin liên hệ</div>
             <div class="inputs">
               
+                @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @style = "color:#fff" })
                 @Html.TextBoxFor(model => model.Name, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.Name.Hint") })
-                @Html.ValidationMessageFor(model => model.Phone)
+                
             </div>
             <div class="inputs">
-            
+            @Html.ValidationMessageFor(model => model.Phone, string.Empty, new { @style = "color:#fff" })
                 @Html.TextBoxFor(model => model.Phone, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.Phone.Hint") })
-                @Html.ValidationMessageFor(model => model.Phone)
+                
             </div>
             <div class="inputs">
-               
+               @Html.ValidationMessageFor(model => model.FriendEmail, string.Empty, new { @style = "color:#fff" })
                 @Html.TextBoxFor(model => model.FriendEmail, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.YourEmailAddress.Hint") })
-                @Html.ValidationMessageFor(model => model.FriendEmail)
+                
             </div>
             <div class="inputs">
-               
+               @Html.ValidationMessageFor(model => model.PersonalMessage, string.Empty, new { @style = "color:#fff" })
                 @Html.TextAreaFor(model => model.PersonalMessage, new { @class = "friend-email-textarea", placeholder = T("Products.EmailAFriend.PersonalMessage.Hint") })
-                @Html.ValidationMessageFor(model => model.PersonalMessage)
+                
             </div>
 
             @if (Model.DisplayCaptcha)
