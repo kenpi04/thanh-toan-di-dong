@@ -1,7 +1,7 @@
 ﻿@model RegisterModel
 @using Nop.Web.Models.Customer;
 @{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
     //title
     Html.AddTitleParts(T("PageTitle.Register").Text);
@@ -36,10 +36,11 @@
      });
     </script>
 }
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    <div class="page registration-page">
+<div class="page registration-page" style="background:#fff; padding:20px; width:1080px; margin-bottom:20px">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
         <div class="page-title">
             <h1>@T("Account.Register")</h1>
         </div>
@@ -114,7 +115,7 @@
                                 @Html.Partial("_CheckUsernameAvailability")
                             }
                         </div>
-                        
+
                     }
                 </div>
             </div>
@@ -160,7 +161,7 @@
                         {
                             <div class="inputs">
                                 @Html.LabelFor(model => model.StreetAddress, new { }, ":")
-                            @Html.EditorFor(model => model.StreetAddress)
+                                @Html.EditorFor(model => model.StreetAddress)
                                 @if (Model.StreetAddressRequired)
                                 {
                                     @Html.RequiredHint()
@@ -172,7 +173,7 @@
                         {
                             <div class="inputs">
                                 @Html.LabelFor(model => model.StreetAddress2, new { }, ":")
-                            @Html.EditorFor(model => model.StreetAddress2)
+                                @Html.EditorFor(model => model.StreetAddress2)
                                 @if (Model.StreetAddress2Required)
                                 {
                                     @Html.RequiredHint()
@@ -184,7 +185,7 @@
                         {
                             <div class="inputs">
                                 @Html.LabelFor(model => model.ZipPostalCode, new { }, ":")
-                            @Html.EditorFor(model => model.ZipPostalCode)
+                                @Html.EditorFor(model => model.ZipPostalCode)
                                 @if (Model.ZipPostalCodeRequired)
                                 {
                                     @Html.RequiredHint()
@@ -196,7 +197,7 @@
                         {
                             <div class="inputs">
                                 @Html.LabelFor(model => model.City, new { }, ":")
-                            @Html.EditorFor(model => model.City)
+                                @Html.EditorFor(model => model.City)
                                 @if (Model.CityRequired)
                                 {
                                     @Html.RequiredHint()
@@ -208,14 +209,14 @@
                         {
                             <div class="inputs">
                                 @Html.LabelFor(model => model.CountryId, new { }, ":")
-                            @Html.DropDownList("CountryId", Model.AvailableCountries)
+                                @Html.DropDownList("CountryId", Model.AvailableCountries)
                             </div>
                         }
                         @if (Model.CountryEnabled && Model.StateProvinceEnabled)
                         {
                             <div class="inputs">
                                 @Html.LabelFor(model => model.StateProvinceId, new { }, ":")
-                            @Html.DropDownList("StateProvinceId", Model.AvailableStates)
+                                @Html.DropDownList("StateProvinceId", Model.AvailableStates)
                                 <span id="states-loading-progress" style="display: none;" class="please-wait">@T("Common.Wait...")</span>
                             </div>
                         }
@@ -338,8 +339,9 @@
                 </div>
             }
             <div class="buttons">
-                <input type="submit" id="register-button" class="button-1 register-next-step-button" value="@T("Account.Register.Button")" name="register-button" />
+                <input type="submit" id="register-button" class="blueBtn" value="@T("Account.Register.Button")" name="register-button" />
             </div>
         </div>
-    </div>
-}
+
+    }
+</div>
