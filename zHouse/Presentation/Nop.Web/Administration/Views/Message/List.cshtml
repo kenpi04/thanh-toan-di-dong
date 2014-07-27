@@ -57,8 +57,8 @@
                         columns.Bound(x => x.Email).Width(100);
                         columns.Bound(x => x.Title).Width(100);
                         columns.Bound(x => x.Body);
-                        columns.Bound(x => x.CreatedOnUtc).Width(80);
-                        columns.Bound(x => x.BookDate).Width(130);
+                        columns.Bound(x => x.CreatedOnUtc).Width(80).Format("{0:dd/MM/yyyy HH:mm tt}");
+                        columns.Bound(x => x.BookDate).Width(130).Format("{0:dd/MM/yyyy HH:mm tt}");
                         //columns.Bound(x => x.Type).Width(10);
                         columns.Bound(x => x.ProductId).Width(50);
                         //columns.Bound(x => x.CustomerId);
