@@ -27,7 +27,7 @@ select{border:1px solid #c2c2c2;color:#666;font-size:11px;padding:5px 5px 5px 10
 .master-wrapper-page{background:none repeat scroll 0 0 #f1f1f1}
 .master-wrapper-content{margin:0 auto}
 .master-wrapper-main{color:#373737;width:1080px;margin:0 auto}
-.master-wrapper-main .center-1{min-height:400px;display:inline;float:left}
+.master-wrapper-main .center-1{min-height:400px;display:inline;float:left;}
 .master-wrapper-main .side-2{float:left;width:190px;margin:10px 0;display:inline}
 .master-wrapper-main .center-2{float:left;width:710px;min-height:400px;padding:10px;margin:10px 0 10px 10px;background:#FFF;display:inline;border-radius:5px}
 .master-wrapper-main .leftside-3{float:left;width:190px;margin:10px 0;display:inline}
@@ -145,7 +145,7 @@ td.fieldname{font-size:12px}
 .validation-summary-errors{font-weight:bold;color:red;padding:10px;text-align:left;background:#ddd}
 .field-validation-error{font-weight:700;color:red}
 .required{color:red}
-.not-found-page ul li{list-style:none;margin-top:10px}
+
 .sitemap-page{margin-left:auto;margin-right:auto;width:100%}
 .sitemap-page a{text-decoration:none}
 .sitemap-page .entity{margin:5px 0 30px}
@@ -1264,3 +1264,11 @@ textarea.formBoxInText{height:70px}
 .btn-bottom .btn-rq { background: url(images/request-button.gif) no-repeat; width: 219px; height: 50px; }
 .btn-bottom .btn-search { background: url(images/search-button.gif) no-repeat; width: 233px; height: 50px; }
 .full-width {font-size:14px }
+.not-found-page {background:#f0f0f0;width:1080px;margin:0 auto}
+.not-found-page .block-text{width:300px;float:left;font-size:14px }
+.not-found-page .block-text h1 {color:#c06;font-size:30px }
+.not-found-page .block-img {width:352px;height:329px;background:url(images/img-404.png) no-repeat;float:left}
+.not-found-page p {line-height:25px }
+.not-found-page .page-center {width:700px;margin:50px auto }
+.btnHome {background:#1e98d5;border:none;color:#fff;font-size:16px;text-transform:uppercase;font-weight:bold;text-shadow:1px  #5c5b5b;padding:4px;border-radius:2px;cursor:pointer }
+.btnHome:hover { color:#c06}
