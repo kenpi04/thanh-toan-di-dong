@@ -46,7 +46,7 @@
                     <ul>
                         @foreach(var i in Model)
                         {
-                            <li><a title="@i.Title" href="@Url.RouteUrl("Topic", new {SystemName=i.SystemName })"><h4>@i.Title</h4></a></li> 
+                            <li><a title="@i.Title" href="@Url.RouteUrl("Topic", new {SystemName=i.SystemName })">@i.Title</a></li> 
                         
                         }
                         
