@@ -756,46 +756,27 @@ namespace Nop.Web.Controllers
 
             #endregion
 
-            //#region Pictures
 
-            //model.DefaultPictureZoomEnabled = _mediaSettings.DefaultPictureZoomEnabled;
-            ////default picture
-            //var defaultPictureSize =
-            //    _mediaSettings.ProductThumbPictureSizeOnProductDetailsPage;
-            //var defaultPictureFullSize = _mediaSettings.ProductDetailsPictureSize;
-            ////prepare picture models
-            //var productPicturesCacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_DETAILS_PICTURES_MODEL_KEY, product.Id, defaultPictureSize, defaultPictureFullSize, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id);
-            //var cachedPictures = _cacheManager.Get(productPicturesCacheKey, () =>
-            //{
-            //    var pictures = _pictureService.GetPicturesByProductId(product.Id);
 
-            //    var defaultPictureModel = new PictureModel()
-            //    {
-            //        ImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(), defaultPictureSize, !isAssociatedProduct),
-            //        FullSizeImageUrl = _pictureService.GetPictureUrl(pictures.FirstOrDefault(), defaultPictureFullSize, !isAssociatedProduct),
-            //        Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
-            //        AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
-            //    };
-            //    //all pictures
-            //    var pictureModels = new List<PictureModel>();
-            //    foreach (var picture in pictures)
-            //    {
-            //        pictureModels.Add(new PictureModel()
-            //        {
-            //            ImageUrl = _pictureService.GetPictureUrl(picture, defaultPictureSize),
-            //            FullSizeImageUrl = _pictureService.GetPictureUrl(picture, defaultPictureFullSize),
-            //            Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
-            //            AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
-            //            Description = picture.ProductPictures.FirstOrDefault() != null ? picture.ProductPictures.FirstOrDefault().Description : ""
-            //        });
-            //    }
+            #region Pictures
 
-            //    return new { DefaultPictureModel = defaultPictureModel, PictureModels = pictureModels };
-            //});
-            //model.DefaultPictureModel = cachedPictures.DefaultPictureModel;
-            //model.PictureModels = cachedPictures.PictureModels;
+            var defaultpic = product.ProductPictures.FirstOrDefault();
+            if (defaultpic != null)
+            {
+                var defaultPictureSize =
+                  _mediaSettings.ProductThumbPictureSizeOnProductDetailsPage;
+                model.DefaultPictureModel =  _cacheManager.Get("DEFAULT_PICTURE_"+defaultPictureSize, () =>
+                {
+                    return new PictureModel
+                    {
+                        ImageUrl = _pictureService.GetPictureUrl(defaultpic.PictureId, defaultPictureSize, true)
+                    };
+                });
 
-            //#endregion
+
+            }
+
+            #endregion
 
             #region Product price
 
@@ -2939,6 +2920,7 @@ namespace Nop.Web.Controllers
         //compare products
         public ActionResult AddProductToCompareList(string productId)
         {
+            productId = HttpUtility.UrlDecode(productId);
             foreach (var id in productId.Split(','))
             {
                 int i = 0;

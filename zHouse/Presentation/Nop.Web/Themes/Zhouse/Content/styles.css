@@ -15,7 +15,7 @@ input,select{vertical-align:middle}
 body{background:#f1f1f1;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif;margin:0;font-size:13px}
 a{color:#373737;text-decoration:none;font-weight:normal}
 a:hover{color:#b80709;text-decoration:underline}
-h1,h2,h3,h4,h5,h6{font-family:arial,helvetica,sans-serif}
+h1,h2,h3,h4,h5,h6{font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif}
 h2,h3{font-size:16px}
 textarea{width:100%;font-family:Verdana,Arial,sans-serif;font-size:11px;border:1px solid #eee}
 fieldset{margin:0 0 15px;border:1px solid #c9c9c9;padding:15px}
@@ -27,7 +27,7 @@ select{border:1px solid #c2c2c2;color:#666;font-size:11px;padding:5px 5px 5px 10
 .master-wrapper-page{background:none repeat scroll 0 0 #f1f1f1}
 .master-wrapper-content{margin:0 auto}
 .master-wrapper-main{color:#373737;width:1080px;margin:0 auto}
-.master-wrapper-main .center-1{min-height:400px;display:inline;float:left;}
+.master-wrapper-main .center-1{min-height:400px;display:inline;float:left}
 .master-wrapper-main .side-2{float:left;width:190px;margin:10px 0;display:inline}
 .master-wrapper-main .center-2{float:left;width:710px;min-height:400px;padding:10px;margin:10px 0 10px 10px;background:#FFF;display:inline;border-radius:5px}
 .master-wrapper-main .leftside-3{float:left;width:190px;margin:10px 0;display:inline}
@@ -145,7 +145,7 @@ td.fieldname{font-size:12px}
 .validation-summary-errors{font-weight:bold;color:red;padding:10px;text-align:left;background:#ddd}
 .field-validation-error{font-weight:700;color:red}
 .required{color:red}
-
+.not-found-page ul li{list-style:none;margin-top:10px}
 .sitemap-page{margin-left:auto;margin-right:auto;width:100%}
 .sitemap-page a{text-decoration:none}
 .sitemap-page .entity{margin:5px 0 30px}
@@ -1167,8 +1167,7 @@ ul{margin:0}
 .rightContentTwist{width:850px;float:right}
 .leftContentTwist{width:220px;float:left;margin-right:10px}
 .greyBgTitle{float:left;background:url(images/greyBgTitle.png) no-repeat;width:220px;height:41px;text-align:center;padding-top:9px}
-.greyBgTitle a{color:#000;font-size:14px;text-transform:uppercase;text-decoration:none}
-.greyBgTitle a:hover{color:#555}
+.greyBgTitle h2{color:#666;font-size:14px;text-transform:uppercase;text-decoration:none}
 .whiteLeftColContent{width:180px;padding:10px 20px 25px 20px;float:left;color:#555; line-height: 25px;}
 .introColRight .shortdes{height:72px}
 .product-list .introColRight{height:377px}
@@ -1185,7 +1184,8 @@ ul{margin:0}
 .createproduct-page .text-i{line-height:30px}
 .detailTable .greyBgTD{font-weight:normal}
 .zhouse{font-size:50px;color:#fff;text-align:center;text-shadow:0 0 10px rgba(0,0,0,1);font-family:"Myriad Pro",Arial,Helvetica,sans-serif;padding-bottom:10px}
-.slogan{font-size:25px;color:#fff;text-align:center;margin-bottom:20px;text-shadow:0 0 10px rgba(0,0,0,1);font-family:"Myriad Pro",Arial,Helvetica,sans-serif}
+.slogan { color: #fff; float: left; font-family: "Myriad Pro",Arial,Helvetica,sans-serif; font-size: 25px; height: 43px; line-height: 68px; margin-bottom: 20px; margin-left: 6px; padding: 0; text-align: center; text-shadow: 0 0 10px rgba(0, 0, 0, 1); }
+.link-z {float:left }
 .gioithieu{color:#fff;font-size:14px;padding-top:10px;text-align:center}
 .back-top{top:25px;position:fixed;_position:absolute}
 .ulStyle li{list-style-image:url(images/listIcon.png);padding-top:5px}
@@ -1272,3 +1272,4 @@ textarea.formBoxInText{height:70px}
 .not-found-page .page-center {width:700px;margin:50px auto }
 .btnHome {background:#1e98d5;border:none;color:#fff;font-size:16px;text-transform:uppercase;font-weight:bold;text-shadow:1px  #5c5b5b;padding:4px;border-radius:2px;cursor:pointer }
 .btnHome:hover { color:#c06}
+.cate-title { font-size: 21px; padding-bottom: 10px; padding-left: 25px; text-align: left; }

@@ -4,7 +4,7 @@
         <table>
             <tbody>
                 <tr>
-                    <td colspan="4"><div class="pinkNarrowTitle">Tại sao bạn chọn mua và bán Nhà trên zHouse.com.vn?</div></td>
+                    <td colspan="4"><h3 class="pinkNarrowTitle">Tại sao bạn chọn mua và bán Nhà trên zHouse.com.vn?</h3></td>
                 </tr>
                 <tr>
                     <td> 
@@ -46,7 +46,7 @@
                     <ul>
                         @foreach(var i in Model)
                         {
-                            <li><a title="@i.Title" href="@Url.RouteUrl("Topic", new {SystemName=i.SystemName })">@i.Title</a></li> 
+                            <li><a title="@i.Title" href="@Url.RouteUrl("Topic", new {SystemName=i.SystemName })"><h4>@i.Title</h4></a></li> 
                         
                         }
                         
@@ -54,7 +54,7 @@
                     </ul>
                     <div class="nhonDown"></div>
                 </div><!---whiteBgBig---->
-                <div class="pinkNarrowTitle">Dịch vụ</div>
+                <div class="pinkNarrowTitle"><h4>Dịch vụ</h4> </div>
             </div><!--threeCol--->
 
 
