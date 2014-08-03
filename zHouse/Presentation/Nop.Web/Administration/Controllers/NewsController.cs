@@ -191,6 +191,13 @@ namespace Nop.Admin.Controllers
                 newsItem.StartDateUtc = model.StartDate;
                 newsItem.EndDateUtc = model.EndDate;
                 newsItem.CreatedOnUtc = DateTime.UtcNow;
+                newsItem.MetaDescription = model.MetaDescription;
+                newsItem.MetaKeywords = model.MetaKeywords;
+                newsItem.MetaTitle = model.MetaTitle;
+                if (string.IsNullOrEmpty(model.MetaDescription))
+                    newsItem.MetaDescription = model.Title;
+                if (string.IsNullOrEmpty(newsItem.MetaTitle))
+                    newsItem.MetaTitle = model.Title;
                 _newsService.InsertNews(newsItem);
                 
                 //search engine name
@@ -226,6 +233,13 @@ namespace Nop.Admin.Controllers
             var model = newsItem.ToModel();
             model.StartDate = newsItem.StartDateUtc;
             model.EndDate = newsItem.EndDateUtc;
+            model.MetaDescription = newsItem.MetaDescription;
+            model.MetaKeywords = newsItem.MetaKeywords;
+            model.MetaTitle = model.MetaTitle;
+            if (string.IsNullOrEmpty(model.MetaDescription))
+                newsItem.MetaDescription = model.Title;
+            if (string.IsNullOrEmpty(newsItem.MetaTitle))
+                newsItem.MetaTitle = model.Title;
             //Store
             PrepareStoresMappingModel(model, newsItem, false);
             return View(model);
@@ -247,6 +261,9 @@ namespace Nop.Admin.Controllers
                 newsItem = model.ToEntity(newsItem);
                 newsItem.StartDateUtc = model.StartDate;
                 newsItem.EndDateUtc = model.EndDate;
+                newsItem.MetaDescription = model.MetaDescription;
+                newsItem.MetaKeywords = model.MetaKeywords;
+                newsItem.MetaTitle = model.MetaTitle;
                 _newsService.UpdateNews(newsItem);
 
                 //search engine name
