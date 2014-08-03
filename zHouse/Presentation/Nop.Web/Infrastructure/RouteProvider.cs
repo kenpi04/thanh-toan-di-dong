@@ -604,7 +604,7 @@ namespace Nop.Web.Infrastructure
                             new { controller = "Common", action = "Sitemap" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("SitemapSEO",
-                            "sitemapseo",
+                            "sitemap.xml",
                             new { controller = "Common", action = "SitemapSeo" },
                             new[] { "Nop.Web.Controllers" });
 

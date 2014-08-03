@@ -34,13 +34,14 @@ namespace Nop.Services.Seo
         /// <param name="url">Url of indexed location (don't put root url information in).</param>
         /// <param name="updateFrequency">Update frequency - always, hourly, daily, weekly, yearly, never.</param>
         /// <param name="lastUpdated">Date last updated.</param>
-        protected virtual void WriteUrlLocation(string url, UpdateFrequency updateFrequency, DateTime lastUpdated)
+        protected virtual void WriteUrlLocation(string url, UpdateFrequency updateFrequency, DateTime lastUpdated, string priority)
         {
             _writer.WriteStartElement("url");
             string loc = XmlHelper.XmlEncode(url);
             _writer.WriteElementString("loc", loc);
             _writer.WriteElementString("changefreq", updateFrequency.ToString().ToLowerInvariant());
             _writer.WriteElementString("lastmod", lastUpdated.ToString(DateFormat));
+            _writer.WriteElementString("priority", priority);
             _writer.WriteEndElement();
         }
 
