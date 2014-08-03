@@ -11,26 +11,19 @@
         var diachi = "144/12/18a Street 6, Binh Hung Hoa Ward, Binh Tan Dist Ho Chi Minh City";
         var content = ' Address: 144/12/18a Street 6, Binh Hung Hoa Ward, Binh Tan Dist Ho Chi Minh City - Tel: 0939.448.124<br>        Email: info@zHouse.com.vn | Website: <a href="http://zHouse.com.vn">http://zHouse.com.vn</a><br>        Design and SEO by <a href="http://ecomsolute.com">eCOMsolute.com</a> <br>';
      geocoder = new google.maps.Geocoder();
-     var myOptions = {
-         center: new google.maps.LatLng(-34.397, 150.644),
+    var myOptions = {
+         center: new google.maps.LatLng(10.794345, 106.589554),
          zoom: 17,
          mapTypeId: google.maps.MapTypeId.ROADMAP
      };
      var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
      var info = new google.maps.InfoWindow({ content: content });
-     geocoder.geocode({ 'address': diachi }, function (results, status) {
-         if (status == google.maps.GeocoderStatus.OK) {
-             //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
-             map.setCenter(results[0].geometry.location);
-             var marker = new google.maps.Marker({
+  var marker = new google.maps.Marker({
                  map: map,
-                 position: results[0].geometry.location
+                 position:new google.maps.LatLng(10.794345, 106.589554)
              });
-             google.maps.event.addListener(marker, "click", function ()
+    google.maps.event.addListener(marker, "click", function ()
              { info.open(map, marker); });
-         } else {
-         }
-     });
 
  }
 

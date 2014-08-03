@@ -1,14 +1,40 @@
 ﻿@{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
     //title
     Html.AddTitleParts(T("PageTitle.PageNotFound").Text);
 }
 <div class="page not-found-page">
-    <div class="page-title">
-        <h1>@T("PageTitle.PageNotFound")</h1>
+    <div class="page-center">
+     
+    <div class="block-text">
+        <h1>XIN LỖI BẠN!</h1>
+        <p>
+            Hệ thống không tìm thấy thông tin bạn cần!<br />
+            Bạn có thể tra cứu lại thông tin trên website <br />
+            hoặc <input class="btnHome" type="button" onclick="setLocation('@Url.RouteUrl("HomePage")')" value="Quay lại trang chủ" />
+        </p>
+           <div class="noti">Hệ thống sẽ tự động trở về trang chủ sau <span id="second">10</span> giây</div>
     </div>
-    <div class="page-body">
-        @Html.Action("TopicBlock", "Topic", new { systemName = "PageNotFound" })
+    <div class="block-img">
+        
     </div>
+    <div class="clearBoth"></div>
+       </div>
 </div>
+<script type="text/javascript">
+    var i=10;
+    down();
+    function down(){
+        if(i==0)
+            setLocation("@Url.RouteUrl("HomePage")");
+        else
+        {
+            i--;
+            $("#second").html(i);
+            window.setTimeout(down,1000);
+        }
+       
+   
+    }
+</script>

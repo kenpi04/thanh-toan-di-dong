@@ -1491,6 +1491,7 @@
     <Content Include="Themes\Zhouse\Content\images\ico-pm.png" />
     <Content Include="Themes\Zhouse\Content\images\ico-rss.gif" />
     <Content Include="Themes\Zhouse\Content\images\iconmap.png" />
+    <Content Include="Themes\Zhouse\Content\images\img-404.png" />
     <Content Include="Themes\Zhouse\Content\images\lineDown.png" />
     <Content Include="Themes\Zhouse\Content\images\lineUp.png" />
     <Content Include="Themes\Zhouse\Content\images\list.png" />
