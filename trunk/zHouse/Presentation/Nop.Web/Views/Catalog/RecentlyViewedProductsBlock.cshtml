@@ -11,8 +11,8 @@
     }
 
                 <div class="pinkBgRightBottom">
-                    <a style="font-size:32px;color:#fff" href="@Url.RouteUrl("AddProductToCompare", new {productIds=Model.Select(x=>x.Id.ToString()).Aggregate((a,b)=>string.Format("{0},{1}",a,b)) })" >SO SÁNH</a><br>
+                    <a style="font-size:32px;color:#fff" href="@Url.Action("AddProductToCompareList","Catalog", new {productId=Model.Select(x=>x.Id.ToString()).Aggregate((a,b)=>string.Format("{0},{1}",a,b)) })" >SO SÁNH</a><br>
                     CÁC BĐS VỪA XEM
                 </div>
-
+    
 }
