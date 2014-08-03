@@ -3033,10 +3033,10 @@ namespace Nop.Web.Controllers
                 model = new SearchModel();
 
             //'Continue shopping' URL
-            _genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
-                SystemCustomerAttributeNames.LastContinueShoppingPage,
-                _webHelper.GetThisPageUrl(false),
-                _storeContext.CurrentStore.Id);
+            //_genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
+            //    SystemCustomerAttributeNames.LastContinueShoppingPage,
+            //    _webHelper.GetThisPageUrl(false),
+            //    _storeContext.CurrentStore.Id);
 
             if (command.PageSize <= 0) command.PageSize = _catalogSettings.SearchPageProductsPerPage;
             if (command.PageNumber <= 0) command.PageNumber = 1;
@@ -3047,66 +3047,67 @@ namespace Nop.Web.Controllers
             var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
                 .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
 
-            string cacheKey = string.Format(ModelCacheEventConsumer.SEARCH_CATEGORIES_MODEL_KEY, _workContext.WorkingLanguage.Id, string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
-            var categories = _cacheManager.Get(cacheKey, () =>
-            {
-                var categoriesModel = new List<SearchPagingFilteringModel.CategoryModel>();
-                //all categories
-                foreach (var c in _categoryService.GetAllCategories())
-                {
-                    //generate full category name (breadcrumb)
-                    string categoryBreadcrumb = "";
-                    var breadcrumb = c.GetCategoryBreadCrumb(_categoryService, _aclService, _storeMappingService);
-                    for (int i = 0; i <= breadcrumb.Count - 1; i++)
-                    {
-                        categoryBreadcrumb += breadcrumb[i].GetLocalized(x => x.Name);
-                        if (i != breadcrumb.Count - 1)
-                            categoryBreadcrumb += " >> ";
-                    }
-                    categoriesModel.Add(new SearchPagingFilteringModel.CategoryModel()
-                    {
-                        Id = c.Id,
-                        Breadcrumb = categoryBreadcrumb
-                    });
-                }
-                return categoriesModel;
-            });
-            if (categories.Count > 0)
-            {
-                //first empty entry
-                model.AvailableCategories.Add(new SelectListItem()
-                {
-                    Value = "0",
-                    Text = _localizationService.GetResource("Common.All")
-                });
-                //all other categories
-                foreach (var c in categories)
-                {
-                    model.AvailableCategories.Add(new SelectListItem()
-                    {
-                        Value = c.Id.ToString(),
-                        Text = c.Breadcrumb,
-                        Selected = model.Cid == c.Id
-                    });
-                }
-            }
+            //string cacheKey = string.Format(ModelCacheEventConsumer.SEARCH_CATEGORIES_MODEL_KEY, _workContext.WorkingLanguage.Id, string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
+            //var categories = _cacheManager.Get(cacheKey, () =>
+            //{
+            //    var categoriesModel = new List<SearchPagingFilteringModel.CategoryModel>();
+            //    //all categories
+            //    foreach (var c in _categoryService.GetAllCategories())
+            //    {
+            //        //generate full category name (breadcrumb)
+            //        string categoryBreadcrumb = "";
+            //        var breadcrumb = c.GetCategoryBreadCrumb(_categoryService, _aclService, _storeMappingService);
+            //        for (int i = 0; i <= breadcrumb.Count - 1; i++)
+            //        {
+            //            categoryBreadcrumb += breadcrumb[i].GetLocalized(x => x.Name);
+            //            if (i != breadcrumb.Count - 1)
+            //                categoryBreadcrumb += " >> ";
+            //        }
+            //        categoriesModel.Add(new SearchPagingFilteringModel.CategoryModel()
+            //        {
+            //            Id = c.Id,
+            //            Breadcrumb = categoryBreadcrumb
+            //        });
+            //    }
+            //    return categoriesModel;
+            //});
 
-            var manufacturers = _manufacturerService.GetAllManufacturers();
-            if (manufacturers.Count > 0)
-            {
-                model.AvailableManufacturers.Add(new SelectListItem()
-                {
-                    Value = "0",
-                    Text = _localizationService.GetResource("Common.All")
-                });
-                foreach (var m in manufacturers)
-                    model.AvailableManufacturers.Add(new SelectListItem()
-                    {
-                        Value = m.Id.ToString(),
-                        Text = m.GetLocalized(x => x.Name),
-                        Selected = model.Mid == m.Id
-                    });
-            }
+            //if (categories.Count > 0)
+            //{
+            //    //first empty entry
+            //    model.AvailableCategories.Add(new SelectListItem()
+            //    {
+            //        Value = "0",
+            //        Text = _localizationService.GetResource("Common.All")
+            //    });
+            //    //all other categories
+            //    foreach (var c in categories)
+            //    {
+            //        model.AvailableCategories.Add(new SelectListItem()
+            //        {
+            //            Value = c.Id.ToString(),
+            //            Text = c.Breadcrumb,
+            //            Selected = model.Cid == c.Id
+            //        });
+            //    }
+            //}
+
+            //var manufacturers = _manufacturerService.GetAllManufacturers();
+            //if (manufacturers.Count > 0)
+            //{
+            //    model.AvailableManufacturers.Add(new SelectListItem()
+            //    {
+            //        Value = "0",
+            //        Text = _localizationService.GetResource("Common.All")
+            //    });
+            //    foreach (var m in manufacturers)
+            //        model.AvailableManufacturers.Add(new SelectListItem()
+            //        {
+            //            Value = m.Id.ToString(),
+            //            Text = m.GetLocalized(x => x.Name),
+            //            Selected = model.Mid == m.Id
+            //        });
+            //}
 
 
             IPagedList<Product> products = new PagedList<Product>(new List<Product>(), 0, 1);            // only search if query string search keyword is set (used to avoid searching or displaying search term min length error message on /search page load)
@@ -3238,15 +3239,27 @@ namespace Nop.Web.Controllers
 
 
             model.PagingFilteringContext.LoadPagedList(products);
-            string districtName, cateName, priceName, huong;
-            districtName = cateName = priceName = huong = "";
-            if (model.DistrictId > 0)
-                districtName = _stateProvinceService.GetDistHCM().Where(x => x.Id == model.DistrictId).FirstOrDefault().Name;// model.Districts.FirstOrDefault(x => x.Value == model.DistrictId.ToString()).Text;
-            if (model.Cid > 0)
-                cateName = model.AvailableCategories.FirstOrDefault(x => x.Value == model.Cid.ToString()).Text;
-            //if (model.PriceString!="0-0")
-            //    priceName = model.PriceRange.FirstOrDefault(x => x.Value == model.PriceRange.ToString()).Text;
-            ViewBag.ResultString = string.Format("{0} {1} {2}", cateName, districtName, priceName);
+
+            string districtName, cateName;
+            districtName = cateName = "";
+            if (districtId > 0)
+            {
+                try
+                {
+                    districtName = _stateProvinceService.GetDistHCM().Where(x => x.Id == model.DistrictId).FirstOrDefault().Name;
+                }
+                catch { }
+            }
+            if (categoryId > 0)
+            {
+                try
+                {
+                    cateName = _categoryService.GetCategoryById(categoryId).Name;//model.AvailableCategories.FirstOrDefault(x => x.Value == model.Cid.ToString()).Text;
+                }
+                catch { }
+            }
+            
+            ViewBag.ResultString = string.Format("{0} {1}", cateName, districtName);
 
             if (Request.IsAjaxRequest())
                 return PartialView("_ProductListPartial", model);

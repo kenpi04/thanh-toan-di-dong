@@ -2,8 +2,8 @@
 @{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
-    //title
-    Html.AddTitleParts(T("PageTitle.Search").Text);
+    //title    
+    Html.AddTitleParts("Tìm kiếm nhà bán " + (string)ViewBag.ResultString);
 }
 @using Nop.Web.Models.Catalog;
 @using Nop.Web.Extensions;
