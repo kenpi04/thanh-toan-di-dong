@@ -1253,7 +1253,14 @@ namespace Nop.Web.Controllers
             });
 
             //activity log
-            _customerActivityService.InsertActivity("PublicStore.ViewCategory", _localizationService.GetResource("ActivityLog.PublicStore.ViewCategory"), category.Name);
+            //_customerActivityService.InsertActivity("PublicStore.ViewCategory", _localizationService.GetResource("ActivityLog.PublicStore.ViewCategory"), category.Name);
+
+            //Title add District
+            if(districtId >0)
+            {
+                var district = _stateProvinceService.GetDistrictById(districtId);
+                model.MetaTitle += district != null ? " "+district.Name : "";
+            }
 
             return View(templateViewPath, model);
         }
