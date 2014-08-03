@@ -49,7 +49,7 @@
 
     <div class="page-body">
         <div class="mainContent"></div>
-        <div class="leftContentTwist">
+        <div class="search-left leftContentTwist">
             @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct", LoadingElementId = "ajax-loading", OnSuccess = "searchSuccess" }, new { id = "frmSearchLeft" }))
             {
 

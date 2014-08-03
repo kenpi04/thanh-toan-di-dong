@@ -789,6 +789,7 @@ namespace Nop.Web.Controllers
             else
             {
                 model.ProductPrice.Price = ReturnPriceString(product.Price, "vnđ");
+                model.ProductPrice.PriceValue = product.Price;
             }
             //model.ProductPrice.DynamicPriceUpdate = _catalogSettings.EnableDynamicPriceUpdate;
             //if (_permissionService.Authorize(StandardPermissionProvider.DisplayPrices))
