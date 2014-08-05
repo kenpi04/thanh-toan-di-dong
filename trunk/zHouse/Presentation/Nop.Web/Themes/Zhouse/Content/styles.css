@@ -1163,9 +1163,9 @@ ul{margin:0}
 .whiteBgCata{padding:7px 5px;font-size:13px; line-height: 16px;color:#666;border-top:1px #ddd dashed;float:left;width:245px;margin-top:10px;height:55px}
 .whiteBgCata-small{padding:7px 5px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:100%;margin-top:10px;height:55px}
 .pinkNarrowTitle30{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06}
-.whiteLeftCol{float:left;width:220px;margin:0 15px 10px 0;background:#fff}
+.whiteLeftCol{float:left;width:220px;margin: 0 0px 10px 0;background:#fff}
 .rightContentTwist{width:850px;float:right}
-.leftContentTwist{width:220px;float:left;margin-right:10px}
+.leftContentTwist{width:220px;float:left;margin-right: 0px;}
 .greyBgTitle{float:left;background:url(images/greyBgTitle.png) no-repeat;width:220px;height:41px;text-align:center;padding-top:9px}
 .greyBgTitle h2{color:#666;font-size:14px;text-transform:uppercase;text-decoration:none}
 .whiteLeftColContent{width:180px;padding:10px 20px 25px 20px;float:left;color:#555; line-height: 25px;}
@@ -1273,7 +1273,34 @@ textarea.formBoxInText{height:70px}
 .btnHome {background:#1e98d5;border:none;color:#fff;font-size:16px;text-transform:uppercase;font-weight:bold;text-shadow:1px  #5c5b5b;padding:4px;border-radius:2px;cursor:pointer }
 .btnHome:hover { color:#c06}
 .cate-title { font-size: 21px; padding-bottom: 10px; padding-left: 25px; text-align: left; }
-.search-left {width:238px;}
+.search-left {width: 230px;}
 .search-left .greyBgTitle {width:238px;background-color:#e1e1e1 }
 .search-left .whiteLeftCol {width:238px }
 .free-text {float:right;color:#c06;font-size:24px;font-weight:bold }
+
+/*Why page*/
+.div1 {background:url(images/house.png) no-repeat right 0 #fff;width:100%;height:620px }
+.div1 .text { left: 70px; position: absolute; top: 91px; }
+.text-36 { font-size: 36pt; color: #c06; }
+.div1 strong.text-72 { font-size: 72px; color: #1e98d5; font-weight: normal; }
+.div1 span.dauhoi { font-size: 119pt; margin-left: 40px; margin-top: -78px; position: absolute;color:#1e98d5 }
+.info .text-1 {color:#1e98d5;font-size:24pt }
+.info .text-2 {color:#c06;font-size:57pt }
+.info .text-info { color: #000;
+    float: right;
+    width: 297px;}
+.text-24 {font-size:24pt }
+.info {margin-top:100px }
+.div2 {background:url(images/street.png) no-repeat;height:544px;width:100%;box-shadow: 4px 1px 2px 1px #333; }
+.div2-i {width:707px;position:absolute;margin-top:30px;margin-left:40px }
+.div2-i .text-info {margin-top:27px }
+.div3 {background:url(images/group.png) no-repeat #fff;height:540px;width:100%;box-shadow: 4px 1px 2px 1px #333;  }
+.div4 {background:url(images/bg2.png) no-repeat right 0 #fff;height:680px;width:100%;box-shadow: 4px 1px 2px 1px #333;  }
+.div4-i { width: 413px; position: absolute; margin-top: 390px; margin-left: 426px; }
+.div4-i .text-info {margin-top:25px }
+.div3-i {background:url(images/bg4.png) no-repeat;width:601px;height:222px;position:absolute;padding-left: 154px;
+padding-top: 15px;right: 10px;
+margin-top: 225px; }
+.div3-i .text-info {float: left !important;
+color: #fff;
+margin-top: 7px; }
