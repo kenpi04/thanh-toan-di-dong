@@ -6,7 +6,7 @@
     	<div class="wrapper">
 			<div class="logo"><a href="@Url.RouteUrl("HomePage")"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder"></a></div>
               @Html.Action("TopMenu", "Catalog")
-		</div><!---wrapper---->
+		</div>@*wrapper*@
     </div>   
        @Html.Action("SearchBoxHead", "Catalog", new {isHome=false })
     @RenderBody()
