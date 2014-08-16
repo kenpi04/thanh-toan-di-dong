@@ -3,7 +3,7 @@
 
 @using (Ajax.BeginForm("ProductEmailAFriendSend", new AjaxOptions { HttpMethod = "POST", OnComplete = "sendComplete",OnBegin="onBeginSend" }))
 {
-    <h1>Đặt lịch xem nhà</h1>
+    <h3 class="datlichxemnha">Đặt lịch xem nhà</h3>
     
    <hr />
     @Html.HiddenFor(x=>x.ProductId)
