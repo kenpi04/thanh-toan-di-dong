@@ -81,9 +81,7 @@
         }
     }
     else
-    {
-        //no categories to display?
-        //in this cae let's diplay some default menu items
+    {       
         <li><a href="@Url.RouteUrl("HomePage")">@T("HomePage")</a></li>
         if (Model.RecentlyAddedProductsEnabled)
         {
@@ -105,7 +103,7 @@
 
     <li><a href="#">Dịch vụ</a>
          <div class="top-menu-triangle"></div>
-        <div class="sublist service" not-resize="" style="width:200px;left:236px">
+        <div class="sublist service" style="width:200px; margin-left:-18px;">
             <ul>
                 @foreach(var i in Model.Topics)
                 {
@@ -118,9 +116,9 @@
         </div>
     </li>
 
-    <li><a>Kiến thức</a>
+    <li><a href="#">Kiến thức</a>
           <div class="top-menu-triangle"></div>
-        <div class="sublist kienthuc" not-resize="" style="width:200px">
+        <div class="sublist kienthuc" style="width:200px; margin-left:-18px;">
             <ul>
                 @foreach (var c in Model.CategoriesNews)
                 {
@@ -132,22 +130,11 @@
     </li>
 
 <li>
-    <a href="http://hoidap.zhouse.com.vn" target="_blank" >Hỏi đáp</a>
+    <a href="http://hoidap.zhouse.com.vn" target="_blank">Hỏi đáp</a>
 </li>
-
-
-@*<li>
-    <a style="color:#fff;margin-top:-1px" class="blueBtn" target="_blank" href="@Url.RouteUrl("InsertProduct")">Gửi yêu cầu</a>
-</li>*@
     <li>
-       
-        <img style="margin-top:-15px" src="~/Themes/Zhouse/Content/images/hotline.gif" />
+        <img style="margin-top:-15px" src="~/Themes/Zhouse/Content/images/hotline.gif" alt="Hotline" />
     </li>
- @*<li class="verLine"></li>
-    <li><input type="button" class="lockBtn"></li>
-    <li class="verLine"></li>
-    <li><input type="button" class="searchBtn"></li>
-    <li class="verLine"></li>*@
     @Html.Widget("header_menu_after")
 </ul>
 </div>
@@ -156,7 +143,7 @@
         $('a', $(this)).first().addClass('hover');
         if (!$('.sublist', $(this)).first().attr("not-resize") && !$(this).parent().hasClass('top-menu')) {
             var width = $(this).innerWidth();
-            $('.sublist', $(this)).first().css('@(isRtl ? "right" : "left")', width -45);
+            @*$('.sublist', $(this)).first().css('@(isRtl ? "right" : "left")', width -45);*@
         }
         $('.sublist', $(this)).first().addClass('active');
         $('.top-menu-triangle', $(this)).addClass('active');
