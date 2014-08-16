@@ -29,7 +29,7 @@ select{border:1px solid #c2c2c2;color:#666;font-size:11px;padding:5px 5px 5px 10
 .master-wrapper-main{color:#373737;width:1080px;margin:0 auto}
 .master-wrapper-main .center-1{min-height:400px;display:inline;float:left}
 .master-wrapper-main .side-2{float:left;width:190px;margin:10px 0;display:inline}
-.master-wrapper-main .center-2{float:left;width:710px;min-height:400px;padding:10px;margin:10px 0 10px 10px;background:#FFF;display:inline;border-radius:5px}
+.master-wrapper-main .center-2{float:left;width:860px;min-height:400px;padding:10px;margin:10px 0 10px 10px;background:#FFF;display:inline;border-radius:5px}
 .master-wrapper-main .leftside-3{float:left;width:190px;margin:10px 0;display:inline}
 .master-wrapper-main .center-3{float:left;width:510px;min-height:400px;padding:10px;margin:10px;background:#FFF;display:inline;overflow:hidden;border-radius:5px}
 .master-wrapper-main .rightside-3{float:right;width:190px;margin:10px 0;display:inline}
@@ -72,7 +72,7 @@ ul.language-list li:hover{cursor:pointer}
 .header-menu .top-menu li:last-child{background:0}
 .header-menu .top-menu li a{min-height:20px;display:block;line-height:20px;text-transform:uppercase;margin-bottom:9px;white-space:nowrap;padding:0 5px}
 .header-menu .top-menu li a.hover{background:#696969}
-.menu li .sublist{position:absolute;background-color:#fff;border:1px solid #c2c2c2;padding:10px;margin-left:-36px;margin-top:10px;z-index:1000;display:none;white-space:nowrap;width:600px;border-top:0}
+.menu li .sublist{position:absolute;background-color:#fff;border:1px solid #c2c2c2;padding:10px;margin-left:-36px;margin-top:14px;z-index:1000;display:none;white-space:nowrap;width:600px;border-top:0}
 .menu li .sublist li.title{font-size:14px;font-weight:bold}
 .menu li .sublist.active{display:block}
 .menu li .sublist .sublist.active{left:100px;margin-top:-30px;top:auto}
@@ -1196,8 +1196,8 @@ ul{margin:0}
 .menu-col{width:200px;float:left;padding:0 10px;border-right:dashed 1px #ddd}
 .menu-col:last-child{border:0}
 .menu-col .title{font-weight:bold}
-.service{left:236px !important}
-.kienthuc{left:327px !important}
+/*.service{left:0px !important; margin-left:-18px;}*/
+/*.kienthuc{left:327px !important}*/
 .p-name:hover{color:#d82d7f}
 textarea.formBoxInText{height:70px}
 .menu-footer{height:38x;line-height:38px;text-align:center}
