@@ -45,8 +45,8 @@
                         <b>Kết nối với chúng tôi</b><br><br>
                        
                         @Html.Action("NewsletterBox", "NewsLetter")<br />
-                        <a href="http://facebook.com/zhouseonline" target="_blank"><img src="@Url.Content("~/Themes/Zhouse/Content/images/footerLink.png")" class="noborder"></a>
-                        <input type="button" onclick="setLocation('http://hoidap.zhouse.com.vn')" class="btn-QA" />
+                        <a href="http://facebook.com/zhouseonline" target="_blank"><img src="@Url.Content("~/Themes/Zhouse/Content/images/footerLink.png")" class="noborder" alt="facebook zHouseOnline"></a>
+                        <input type="button" onclick="setLocation('http://hoidap.zhouse.com.vn')" class="btn-QA" value=""/>
                     </div>
                   
                 
@@ -55,12 +55,12 @@
     <div class="clearBoth"></div>
     <div class="menu-footer">
         <ul>
-            <li><a href="@Url.RouteUrl("ContactUs")#div-gioithieu">Giới thiệu</a></li>
-            <li><a href="@Url.RouteUrl("Topic", new {SystemName="hop-tac" })">Hợp tác</a></li>
-            <li><a href="@Url.RouteUrl("Topic", new {SystemName="tuyen-dung" })">Tuyển dụng</a></li>
-            <li><a href="@Url.RouteUrl("Topic", new {SystemName="dieu-khoan-su-dung" })">Điều khoản sử dụng</a></li>
-            <li><a href="#">Blogs</a></li>
-            <li><a href="@Url.RouteUrl("ContactUs")#div-contact">Liên hệ</a></li>
+            <li><h4><a href="@Url.RouteUrl("ContactUs")#div-gioithieu">Giới thiệu</a></h4></li>
+            <li><h4><a href="@Url.RouteUrl("Topic", new {SystemName="hop-tac" })">Hợp tác</a></h4></li>
+            <li><h4><a href="@Url.RouteUrl("Topic", new {SystemName="tuyen-dung" })">Tuyển dụng</a></h4></li>
+            <li><h4><a href="@Url.RouteUrl("Topic", new {SystemName="dieu-khoan-su-dung" })">Điều khoản sử dụng</a></h4></li>
+            <li><h4><a href="#">Blogs</a></h4></li>
+            <li><h4><a href="@Url.RouteUrl("ContactUs")#div-contact">Liên hệ</a></h4></li>
         </ul>
     </div>
     <div class="wrapper">
