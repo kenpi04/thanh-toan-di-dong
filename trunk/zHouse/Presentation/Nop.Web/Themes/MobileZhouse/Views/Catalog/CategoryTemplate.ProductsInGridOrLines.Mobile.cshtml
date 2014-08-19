@@ -1,0 +1,31 @@
+﻿@model CategoryModel
+@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+}
+@using Nop.Web.Models.Catalog;
+@using Nop.Web.Extensions;
+<div class="page category-page">
+    <div class="page-title">
+        <h1>@Model.Name</h1>
+    </div>
+    <div class="page-body">       
+        @Html.Widget("mobile_categorydetails_before_product_list")
+        @*product list*@
+        @if (Model.Products.Count > 0)
+        {
+            <div class="product-list">              
+                    @foreach (var product in Model.Products)
+                    {
+                        
+                            @Html.Partial("_ProductBox", product)
+                       
+                    }                
+            </div>
+        }
+        <div class="pager">
+            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+        </div>
+        @Html.Widget("mobile_categorydetails_bottom")
+    </div>
+</div>

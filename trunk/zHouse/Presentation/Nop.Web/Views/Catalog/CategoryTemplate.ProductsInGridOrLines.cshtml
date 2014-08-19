@@ -53,7 +53,7 @@
             @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct", LoadingElementId = "ajax-loading", OnSuccess = "searchSuccess" }, new { id = "frmSearchLeft" }))
             {
 
-                @Html.Action("SearchBoxLeft", new { isProject =Model.Id==2, categoryId = Model.Id})
+                @Html.Action("SearchBoxLeft", new { isProject = Model.Id == 2, categoryId = Model.Id })
                 <script>
                     $(function () { 
                     $("#frmSearchLeft input[type=checkbox],#frmSearchLeft input[type=radio]").click(function () {
@@ -73,19 +73,37 @@
             @if (Model.Products.Count > 0)
             {
                 <h1 class="cate-title pinkNarrowTitle">@Model.Name</h1>
-              
-                    foreach (var product in Model.Products)
-                    {
+              <div class="product-selectors">
+            @*view mode*@
+            @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
+            {
+                <div class="product-viewmode">
+                    
+                    @Html.DropDownList("products-viewmode", Model.PagingFilteringContext.AvailableViewModes, new { onchange = "setLocation(this.value);" })
+                </div>
+            }
+            @*sorting*@
+            @if (Model.PagingFilteringContext.AllowProductSorting && Model.Products.Count > 0)
+            {
+                <div class="product-sorting">
+                  
+                    @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
+                </div>
+            }
+           
+        </div>
+            foreach (var product in Model.Products)
+            {
                         @Html.Partial("_ProductBox", product)
-                    }
+            }
                     <div class="clearBoth"></div>
                     <div class="pager">
                         @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
                     </div>
            
             }
-else
-{
+            else
+            {
 	<div class=info-nopro>
 <b style="color:#0094ff; margin-left:30px;">Sản phẩm đang được cập nhật</b>
 <div class='button-content btn-bottom'>
@@ -103,7 +121,7 @@ float: left;'>Bạn đang tìm kiếm ngôi nhà của mình. Hãy để zHouse 
 </div>
 
 </div>
-}
+            }
      </div>
         
         </div>

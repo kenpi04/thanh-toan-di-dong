@@ -1,0 +1,25 @@
+﻿@model IList<Nop.Web.Models.Media.PictureModel>
+
+@if (Model.Count() > 0)
+                {
+                    <div class="flexslider" id="slider-banner-detail">
+                        <ul class="slides">
+                            @foreach (var x in Model)
+                            {
+                                var i = 1;
+                                var str = "image" + i++;
+                                <li>
+
+                                    <img imgsrc="@x.FullSizeImageUrl" style="width:auto" src="~/Themes/Mobile/Content/images/ajax-loader.gif" alt="@str"/>
+
+                                </li>                                       
+                            }
+                        </ul>
+                    </div>
+                    <small><i id="numpic">1</i><i>/@Model.Count hình</i></small>
+                    
+                }
+                else
+                {
+                    <img style="max-width:100%" src="@Model.FirstOrDefault().ImageUrl" />
+                }

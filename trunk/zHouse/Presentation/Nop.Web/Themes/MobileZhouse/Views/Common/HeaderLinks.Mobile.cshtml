@@ -1,0 +1,46 @@
+﻿@model HeaderLinksModel
+@using Nop.Web.Models.Common;
+@Html.Widget("mobile_header_links_before")
+
+ <div data-role="panel" id="left-panel" data-theme="none" data-display="overlay"  class="menuBg" data-position="left">
+       @Html.Widget("header_menu_before")
+     <div class="greenTitleBg">Menu</div>
+     <ul class="listStyle2">
+     
+        <li><a href="@Url.RouteUrl("HomePage")">Trang chủ</a></li>
+          <li><a href="/nha-ban">Nhà bán</a></li>
+          <li><a href="/nha-du-an">Nhà dự án</a></li>
+        
+       
+    </ul>
+    
+     <div class="greenTitleBg">Quản lý tài khoản</div>
+     <ul class="listStyle2">
+         @if (!Model.IsAuthenticated)
+         { 
+            <li><a href="@Url.RouteUrl("Login")">Đăng nhập</a></li>
+             <li><a href="@Url.RouteUrl("Register")">Đăng ký</a></li>
+         }
+         else
+         {
+            <li><a href="@Url.RouteUrl("CustomerInfo")">Tài khoản</a></li>            
+             <li><a href="@Url.RouteUrl("CustomerChangePassword")">Đổi mật khẩu</a></li>
+             <li><a href="@Url.RouteUrl("Logout")">Thoát</a></li>
+             
+         }
+     </ul>
+     @if (Model.IsAuthenticated)
+     { <div class="greenTitleBg">Quản lý đăng tin</div>
+        <ul class="listStyle3">
+          
+            <li><a href="@Url.RouteUrl("Wishlist")">Tin đã lưu</a></li>
+        </ul>
+     }
+       @Html.Widget("header_menu_after")
+    </div>
+@Html.Widget("mobile_header_links_after")
+<script type="text/javascript">
+    $("#left-panel li").click(function () {
+       window.location.href= $(this).find('a').attr("href");
+    })
+</script>
