@@ -1,0 +1,52 @@
+﻿@model FooterModel
+@using Nop.Web.Models.Common;
+@*display some info link at the footer*@
+<div class="footer-block">
+
+    <div class="footerSpace"></div>
+
+
+    <div class="footerCol" style="margin-top: 5px">
+
+        <div class="footerLink">
+            <h4><a href="@Url.RouteUrl("ContactUs")#div-gioithieu">Giới thiệu</a></h4>
+        </div>
+        <div class="footerLink">
+            <h4><a href="@Url.RouteUrl("Topic", new { SystemName = "hop-tac" })">Hợp tác</a></h4>
+        </div>
+        <div class="footerLink">
+            <h4><a href="@Url.RouteUrl("Topic", new { SystemName = "tuyen-dung" })">Tuyển dụng</a></h4>
+        </div>
+
+
+    </div>
+    <div class="footerCol">
+        <div class="footerLink">
+            <h4><a href="@Url.RouteUrl("Topic", new { SystemName = "dieu-khoan-su-dung" })">Điều khoản sử dụng</a></h4>
+        </div>
+        <div class="footerLink">
+            <h4><a href="#">Blogs</a></h4>
+        </div>
+        <div class="footerLink">
+            <h4><a href="@Url.RouteUrl("ContactUs")#div-contact">Liên hệ</a></h4>
+        </div>
+    </div>
+    <div class="clearboth"></div>
+
+    <div style="margin-top: 5px">
+        Copyright 2014 © zHouse.com.vn Vận hành bởi Hạnh Phúc Corporation
+        <br />
+        Address: 144/12/18a Street 6, Binh Hung Hoa Ward, Binh Tan Dist Ho Chi Minh City - Tel:+84 8 6681 3308<br>
+        Email: contact@zHouse.com.vn | Website: <a href="http://zHouse.com.vn">http://zHouse.com.vn</a><br>
+        Design and SEO by <a href="http://ecomsolute.com">eCOMsolute.com</a>
+        <br>
+        Website đang trong thời gian thử nghiệm chờ đăng ký
+    </div>
+</div>
+
+<div class="clearboth"></div>
+<div style="text-align: center; margin-top: 10px">
+    Powered by zhouse.com.vn Team
+    <br />
+    @T("Content.CopyrightNotice", DateTime.Now.Year.ToString(), "zhouse.com.vn")
+</div>

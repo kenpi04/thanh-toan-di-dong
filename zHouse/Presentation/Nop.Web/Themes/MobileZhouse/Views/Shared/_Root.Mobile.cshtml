@@ -1,0 +1,82 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.Head.cshtml";
+}
+@Html.Widget("mobile_body_start_html_tag_after")
+
+<div data-role="page" data-theme="none" id="mainpage">
+     
+    <div data-role="header" data-theme="none" data-inset="none" id="header">
+        @*do not use @Html.Partial("Header")
+            use sections right here so they can be overriden in the views*@
+        @if (IsSectionDefined("topleftbutton"))
+        {
+            @RenderSection("topleftbutton")
+        }
+        else
+        {
+            @*<a href="@Url.RouteUrl("HomePage")" data-icon="home">@T("Common.Home")</a>*@
+            <a class="menuBtn" data-role="none" href="#left-panel"></a>
+           <div class="logo">
+              
+                    <a href="@Url.RouteUrl("HomePage")">
+                        <img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" height="55" width="145" alt="zhouse.com.vn" />
+
+                    </a>
+               
+                            </div>
+        }
+        @*title*@
+       @* <h1>@Html.NopTitle(false)</h1>*@
+        @if (IsSectionDefined("toprightbutton"))
+        {
+            @RenderSection("toprightbutton")
+        }
+        else
+        {
+            <div class="right-search">
+                
+               
+                  <a class="searchBtn" data-role="none" href="#right-panel"></a>
+               
+            </div>
+          
+        }
+
+    </div>
+    @if (IsSectionDefined("headerlinks"))
+    {
+        @RenderSection("headerlinks")
+    }
+    else
+    {
+       
+    }
+@*    @Html.Widget("mobile_content_before")*@
+     @Html.Action("HeaderLinks", "Common")
+  
+       @Html.Action("SearchBoxLeft","Catalog")
+    
+    <div data-role="content">
+           
+        @Html.Partial("_Notifications")
+        @RenderBody()        
+    </div>
+
+
+    
+@*    @Html.Widget("mobile_content_after")*@
+    @if (IsSectionDefined("footer"))
+    {
+        @RenderSection("footer")
+      
+    }
+    else
+    {
+        <div data-role="footer" data-theme="none" data-inset="none">
+            @Html.Action("Footer", "Common")
+        </div>
+      
+    }
+</div>
+@Html.Action("EuCookieLaw", "Common")
+@*@Html.Widget("mobile_body_end_html_tag_before")*@

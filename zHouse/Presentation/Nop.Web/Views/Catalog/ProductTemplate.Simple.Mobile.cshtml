@@ -6,6 +6,10 @@
     //title
     Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
 }
+<meta property="og:url" content="@Url.RouteUrl("Product", new {SeName=Model.SeName })"/>
+<meta property="og:image" content="@Model.DefaultPictureModel.ImageUrl"/>
+<meta property="og:type" content="product"/>
+<meta property="og:site_name" content="zhouse.com.vn"/>
 <div class="page product-details-page">
     <div class="page-body">
         @Html.Widget("mobile_productdetails_top")
