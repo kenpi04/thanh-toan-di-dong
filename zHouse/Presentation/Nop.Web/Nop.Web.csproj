@@ -1843,6 +1843,7 @@
     <Content Include="Themes\MobileZhouse\Views\Catalog\SearchBoxLeft.Mobile.cshtml" />
     <Content Include="Themes\MobileZhouse\Views\Catalog\Search.Mobile.cshtml" />
     <Content Include="Themes\MobileZhouse\Views\Catalog\CategoryTemplate.ProductsInGridOrLines.Mobile.cshtml" />
+    <Content Include="Views\Catalog\PrintProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

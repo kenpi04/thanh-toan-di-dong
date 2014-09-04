@@ -1878,7 +1878,7 @@ namespace Nop.Web.Controllers
         //product details page
         [NopHttpsRequirement(SslRequirement.No)]
         //[OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.Server)]
-        public ActionResult Product(int productId, int updatecartitemid = 0)
+        public ActionResult Product(int productId, int updatecartitemid = 0,bool isPrint=false)
         {
             var product = _productService.GetProductById(productId);
             if (product == null || product.Deleted)
@@ -1942,7 +1942,8 @@ namespace Nop.Web.Controllers
 
             //activity log
             _customerActivityService.InsertActivity("PublicStore.ViewProduct", _localizationService.GetResource("ActivityLog.PublicStore.ViewProduct"), product.Name);
-
+            if (isPrint)
+                return View("PrintProduct", model);
             return View(model.ProductTemplateViewPath, model);
         }
 
