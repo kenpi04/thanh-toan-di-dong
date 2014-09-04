@@ -87,7 +87,7 @@
                     <center>
                         <input type="button" onclick="setLocation('@Url.RouteUrl("AddProductToCompare", new { productId = Model.Id })')" class="blueBtn" value="so sánh">
                         <input type="button" class="blueBtn" onclick="sendMailFriend()" value="gửi email">
-                        <input type="button" class="blueBtn" value="in ra" onclick="window.print()">
+                        <input type="button" class="blueBtn" value="in ra" onclick="setLocation('@Url.Action("Product",new{productId=Model.Id,isprint=true})'"/>
                         <input type="button" class="blueBtn" value="download pdf">
                     </center>
                 </div><!---floatLeft-------------->
