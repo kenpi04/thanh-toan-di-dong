@@ -1,0 +1,130 @@
+﻿@model Nop.Web.Models.Catalog.ProductDetailsModel
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+            Html.AddScriptParts("~/Scripts/jquery.flexslider.js");
+    Html.AddCssFileParts("~/Themes/Zhouse/Content/flexslider.css"); 
+}
+
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    window.print();
+    //});
+  
+    </script>
+ <div class="mainContent">
+            <div class="leftContent">
+                <div class="whiteBgLeft">
+                    <div class="blueTitle"><h1 itemprop="name">@Model.Name</h1></div>
+                    @if(!Model.IsProject)
+                    {
+                        <text>
+                    ID:<span itemprop="identifier">@Model.Id</span> 
+
+                    <div class="pinkPrice" itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">     
+                         <meta itemprop="price" content="@Model.ProductPrice.PriceValue" />
+                      <meta itemprop="currency" content="VND" />   
+                        <span> @Model.ProductPrice.Price</span>
+                    </div>
+                    Tình trạng: <a class="blueText"> <b>@Model.ProductStatusText</b></a>
+                    </text>
+                    }
+                   
+                    </div>
+                <div class="detailTable">
+                   
+                     <div class="detailTable">
+                    <div class="detail-info">
+                        @if(Model.IsProject)
+                        {
+                         @Html.Partial("_ProductSpecficationOptionProject",Model)
+                        }
+                        else
+                        {
+                          @Html.Partial("_ProductSpecficationOptionHouse", Model)
+                        }
+                    </div>
+                    <div class="detail-picture" id="detail-picture">
+                   
+                    </div>
+                       <script>
+                           $(function () {
+                               $("#detail-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new { productId = Model.Id })", function (d) {
+
+                                   $('#carousel').flexslider({
+                                       animation: "slide",
+                                       controlNav: false,
+                                       animationLoop: false,
+                                       slideshow: false,
+                                       itemWidth: 80,
+                                       itemMargin: 5,
+                                       asNavFor: '#slider-detail'
+                                   });
+                                   $('#slider-detail').flexslider({
+                                       animation: "slide",
+                                       controlNav: false,
+                                       animationLoop: false,
+                                       slideshow: false,
+                                       sync: "#carousel"
+                                   });
+                               })
+                           })
+                      </script>
+                 <div class="clearfix"></div>
+                </div>
+                       <script>
+                           $(function(){
+                               $("#detail-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new { productId = Model.Id })",function(d){
+                               
+                                   $('#carousel').flexslider({
+                                       animation: "slide",
+                                       controlNav: false,
+                                       animationLoop: false,
+                                       slideshow: false,
+                                       itemWidth: 80,
+                                       itemMargin: 5,
+                                       asNavFor: '#slider-detail'
+                                   });
+                                   $('#slider-detail').flexslider({
+                                       animation: "slide",
+                                       controlNav: false,
+                                       animationLoop: false,
+                                       slideshow: false,
+                                       sync: "#carousel"
+                                   });
+                               })
+                           })
+                      </script>
+                 <div class="clearfix"></div>
+                   
+                </div><!----detailTable---->
+
+              
+
+               
+
+                <div id="tab-detail" class="whiteBgLeft" style="margin-top:-1px;" itemprop="description">
+                
+                   
+
+
+                       <div style="width:800px;height:400px">
+                          @Html.Partial("_Map", Model)
+                    </div>
+                </div><!---whiteBgLeft-->
+                <div id="tab-pictures" class="whiteBgLeft" style="margin-top:-1px;">
+                    
+                    
+                </div>
+            </div>
+     </div>
+
+<style>
+ .wholeSearch, .footer, .rightContent,#recent-view {display:none }
+    .mainContent, .leftContent,.detailTable { width: 100%; }
+    .whiteBgLeft,#tab-detail {width: 96.5%; }
+    .leftContent {margin:0 }
+
+</style>
+<script>
+    loadScript();
+</script>

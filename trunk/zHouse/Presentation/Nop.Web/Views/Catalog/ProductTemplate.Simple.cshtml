@@ -8,7 +8,10 @@
     Html.AppendScriptParts("~/Scripts/jquery.simplemodal.js");
     Html.AddScriptParts("~/Scripts/jquery.flexslider.js");
     Html.AddCssFileParts("~/Themes/Zhouse/Content/flexslider.css");  
+   
+
 }
+<link rel="stylesheet" media="print" href="@Url.Content("~/Themes/print.css")" />
 <meta property="og:url" content="@Url.RouteUrl("Product", new {SeName=Model.SeName })"/>
 <meta property="og:image" content="@Model.DefaultPictureModel.ImageUrl"/>
 <meta property="og:type" content="product"/>
