@@ -1205,7 +1205,7 @@ namespace Nop.Web.Controllers
                 priceMin: minPriceConverted, priceMax: maxPriceConverted,
                 filteredSpecs: alreadyFilteredSpecOptionIds,
                 dictrictIds: new List<int> { districtId },
-                wardId: wardId,
+                wardId: new List<int>{wardId},
                 stateProvinceId: stateProvinceId,
                 streetId: streetId,
                 orderBy: (ProductSortingEnum)command.OrderBy,
@@ -1284,7 +1284,7 @@ namespace Nop.Web.Controllers
 
         [ChildActionOnly]
         //[OutputCache(Duration = 3600, VaryByParam = "stateId")]
-        public ActionResult TopMenu(int stateId = 23)
+        public ActionResult TopMenu(int stateId = 611)
         {
             var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
                 .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
@@ -1301,8 +1301,9 @@ namespace Nop.Web.Controllers
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
                 BlogEnabled = _blogSettings.Enabled,
                 ForumEnabled = _forumSettings.ForumsEnabled,
-                Districts = _stateProvinceService.GetDistHCM(stateId, true).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName()),
-                Districts2 = _stateProvinceService.GetDistHCM(stateId, false).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
+                //Districts = _stateProvinceService.GetDistHCM(stateId, true).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName()),
+                Districts2 = _stateProvinceService.GetWardByDistrictId(stateId).OrderBy(x => x.Name).ToSelectList(x => x.Name, x => x.GetSeName())
+                //Districts2 = _stateProvinceService.GetDistHCM(stateId, false).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
             };
             model.CategoriesNews = _catenewsService.GetAllCategories().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName());
             model.Topics = _topicService.GetAllTopics(0, 1).Select(x => new SelectListItem { Text = x.Title, Value = x.SystemName }).ToList();
@@ -3182,7 +3183,7 @@ namespace Nop.Web.Controllers
                 filteredSpecs: selectedOptionIds,
                 stateProvinceId: stateProvinceId,
                 dictrictIds: new List<int> { districtId },
-                wardId: wardId,
+                wardId: new List<int>{wardId},
                 streetId: streetId);
             model.Products = PrepareProductOverviewModels(products).ToList();
 
@@ -3978,7 +3979,8 @@ namespace Nop.Web.Controllers
                             searchProductTags: false,
                             languageId: 0,
                             filteredSpecs: model.SelectedOptionIds,
-                            dictrictIds: districtIds,
+                            dictrictIds: new List<int> { 611 },
+                            wardId: districtIds,
                             status: status,
                             startDateTimeUtc: startDate,
                             endDateTimeUtc: endDate,
@@ -4022,8 +4024,9 @@ namespace Nop.Web.Controllers
                 cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).OrderBy(x => x.DisplayOrder).ToList();
                 model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
                 model.AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
-                model.Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                model.Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectDistrict"), Selected = true, Value = "0" });
+                //model.Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                model.Districts = _stateProvinceService.GetWardByDistrictId(611).OrderBy(x => x.Name).ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                model.Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectWard"), Selected = true, Value = "0" });
                 model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResource("Product.Status.Enum." + x.ToString()), x => ((int)x).ToString());
                 model.Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
 
