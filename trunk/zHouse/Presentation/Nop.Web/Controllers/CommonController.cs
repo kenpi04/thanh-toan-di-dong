@@ -422,7 +422,7 @@ namespace Nop.Web.Controllers
         //footer
         [ChildActionOnly]
         //[OutputCache(Duration=3600, VaryByParam="stateId")]
-        public ActionResult Footer(int stateId = 23)
+        public ActionResult Footer(int stateId = 611)
         {
             var model = new FooterModel()
             {
@@ -442,7 +442,8 @@ namespace Nop.Web.Controllers
                 NewsEnabled = _newsSettings.Enabled,
                 RecentlyViewedProductsEnabled = _catalogSettings.RecentlyViewedProductsEnabled,
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
-                Districts=_stateProvinceService.GetDistHCM(stateId).ToSelectList(x=>x.Name,x=>x.GetSeName()),
+                //Districts=_stateProvinceService.GetDistHCM(stateId).ToSelectList(x=>x.Name,x=>x.GetSeName()),
+                Districts = _stateProvinceService.GetWardByDistrictId(stateId).ToSelectList(x => x.Name, x => x.GetSeName()),
                 Topics=_topicService.GetAllTopics(0,2).ToSelectList(x=>x.Title,x=>x.SystemName)
             };
 
@@ -829,16 +830,15 @@ namespace Nop.Web.Controllers
         [HttpGet]
         public ActionResult GetWardByDistrictId(int id)
         {
-            var model = _stateProvinceService.GetDistHCM().First(x => x.Id == id);
+            //var model = _stateProvinceService.GetDistHCM().First(x => x.Id == id);
+            var wards = _stateProvinceService.GetWardByDistrictId(id);
+            var streets = _stateProvinceService.GetStreetByDistrictId(id);
             return Json(new
             {
-                Ward = model.Wards.Select(x => new { x.Id, x.Name }),
-                Street = model.Streets.Select(x => new {x.Id,x.Name })
+                Ward = wards.Select(x => new { x.Id, x.Name }),
+                Street = streets.Select(x => new {x.Id,x.Name })
 
             }, JsonRequestBehavior.AllowGet);
-
-            
-            
         }
         public ActionResult GenericUrl()
         {
