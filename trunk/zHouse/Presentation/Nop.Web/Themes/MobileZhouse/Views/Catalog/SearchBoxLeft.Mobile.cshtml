@@ -31,6 +31,7 @@
         <div class="ui-grid-solo">
             <div class="ui-block-a">
                 <select name="categoryId" id="ddlCate">
+                    <option value="0">Chọn loại</option>
                @foreach (var i in Model.AvailableCategories)
                {
                     <option value="@i.Value">@i.Text</option>
