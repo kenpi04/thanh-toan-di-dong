@@ -3182,8 +3182,8 @@ namespace Nop.Web.Controllers
                 pageSize: command.PageSize,
                 filteredSpecs: selectedOptionIds,
                 stateProvinceId: stateProvinceId,
-                dictrictIds: new List<int> { districtId },
-                wardId: new List<int>{wardId},
+                dictrictIds: new List<int> { 611 },
+                wardId: new List<int>{districtId},
                 streetId: streetId);
             model.Products = PrepareProductOverviewModels(products).ToList();
 
