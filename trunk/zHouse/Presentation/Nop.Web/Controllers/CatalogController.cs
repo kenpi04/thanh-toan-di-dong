@@ -916,7 +916,7 @@ namespace Nop.Web.Controllers
         #region Categories
 
         [NopHttpsRequirement(SslRequirement.No)]
-        [OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
+        //[OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
         public ActionResult Category(int categoryId, SearchModel searchModel, CatalogPagingFilteringModel command, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0)
         {
             var category = _categoryService.GetCategoryById(categoryId);
@@ -1283,7 +1283,7 @@ namespace Nop.Web.Controllers
         }
 
         [ChildActionOnly]
-        [OutputCache(Duration = 3600, VaryByParam = "stateId")]
+        //[OutputCache(Duration = 3600, VaryByParam = "stateId")]
         public ActionResult TopMenu(int stateId = 23)
         {
             var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
@@ -1876,7 +1876,7 @@ namespace Nop.Web.Controllers
 
         //product details page
         [NopHttpsRequirement(SslRequirement.No)]
-        [OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.Server)]
+        //[OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult Product(int productId, int updatecartitemid = 0)
         {
             var product = _productService.GetProductById(productId);
@@ -4154,7 +4154,7 @@ namespace Nop.Web.Controllers
 
         #endregion
 
-        [OutputCache(Duration = 3600, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.Server)]
+        //[OutputCache(Duration = 3600, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult Map()
         {
             return View();

@@ -421,7 +421,7 @@ namespace Nop.Web.Controllers
 
         //footer
         [ChildActionOnly]
-        [OutputCache(Duration=3600, VaryByParam="stateId")]
+        //[OutputCache(Duration=3600, VaryByParam="stateId")]
         public ActionResult Footer(int stateId = 23)
         {
             var model = new FooterModel()
@@ -452,7 +452,7 @@ namespace Nop.Web.Controllers
 
         //contact us page
         [NopHttpsRequirement(SslRequirement.No)]
-        [OutputCache(Duration = 3600, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
+        //[OutputCache(Duration = 3600, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
         public ActionResult ContactUs()
         {
             var model = new ContactUsModel()
@@ -647,7 +647,7 @@ namespace Nop.Web.Controllers
 
         //favicon
         [ChildActionOnly]
-        [OutputCache(Duration = 3600, VaryByParam = "none")]
+        //[OutputCache(Duration = 3600, VaryByParam = "none")]
         public ActionResult Favicon()
         {
             //try loading a store specific favicon
