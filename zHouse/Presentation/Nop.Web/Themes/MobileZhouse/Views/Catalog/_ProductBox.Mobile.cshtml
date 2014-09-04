@@ -7,12 +7,10 @@
              <img width="74" height="74" alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" /></div>
         <div class="col2">
         	<p>@Model.Name</p>
-            <p class="add">@Model.FullAddress
-                <span class="price" style="display:none;padding:0">
-              
+            <p class="add">@Model.DictrictName - @Model.CateName - @String.Format("{0}m2", @Model.Area.ToString("#.##")) - @Model.NumBedRoom - @Model.NumBadRoom - Hướng @Model.Directors
+                <span class="price" style="display:none;padding:0">              
                   <b>Giá:</b><span class="orangeText15">@Model.ProductPrice.Price</span>
                 </span>
-
             </p>
           
         </div><!--col2--->
