@@ -235,7 +235,7 @@ namespace Nop.Web.Controllers
            
         }
 
-        [OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.Server)]
+        //[OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List(NewsPagingFilteringModel command)
         {
             if (!_newsSettings.Enabled)
@@ -287,7 +287,7 @@ namespace Nop.Web.Controllers
             return new RssActionResult() { Feed = feed };
         }
 
-        [OutputCache(Duration = 300, VaryByParam = "newsItemId", Location = System.Web.UI.OutputCacheLocation.Server)]
+        //[OutputCache(Duration = 300, VaryByParam = "newsItemId", Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult NewsItem(int newsItemId)
         {
             if (!_newsSettings.Enabled)
