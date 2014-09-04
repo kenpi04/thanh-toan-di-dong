@@ -786,8 +786,8 @@ div[class^=ui-grid] label, fieldset[class^=ui-grid] label { color: #555; font-we
 .select-bg select { width: 100%; opacity: 0; position: absolute; left: 0; top: 0; }
 .right-search { float: right; width: 40%; }
 .iconLeft { float: left; width: 25%; height: 60px; }
-.infoRight { float: left; width: 70%; padding-left: 3%; }
-.greyBg { background: #E9E9E9; padding: 10px 2%; width: 96%; float: left; border-top: 1px solid #CCC; border-bottom: 1px solid #CCC; }
+.infoRight { float: left; width: 100%; padding-left: 3%; }
+.greyBg { background: #E9E9E9; padding: 0px 2%; width: 96%; float: left; border-top: 1px solid #CCC; border-bottom: 1px solid #CCC; }
 .contact-detail { list-style: none; }
 .contact-detail span { font-weight: bold; }
 .blackBar { background: url(images/blackBar.png) repeat-x; width: 100%; height: 33px; margin-top: 6px; }

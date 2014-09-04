@@ -312,9 +312,9 @@ namespace Nop.Services.Catalog
             int customerId = 0,
             IList<int> filteredSpecs = null,
             ProductStatusEnum? status = null,
-            IList<int> dictrictIds = null,
+            IList<int> districtIds = null,
             int streetId = 0,
-            int wardId = 0,
+            IList<int> wardId = null,
             int stateProvinceId = 0,
             DateTime? startDateTimeUtc = null,
             DateTime? endDateTimeUtc = null,
@@ -327,7 +327,7 @@ namespace Nop.Services.Catalog
                 storeId, vendorId, warehouseId,
                 parentGroupedProductId, productType, visibleIndividuallyOnly, featuredProducts,
                 priceMin, priceMax, productTagId, keywords, searchDescriptions, searchSku,
-                searchProductTags, languageId, customerId, filteredSpecs, status, dictrictIds, streetId, wardId, stateProvinceId, startDateTimeUtc, endDateTimeUtc, orderBy, showHidden);
+                searchProductTags, languageId, customerId, filteredSpecs, status, districtIds, streetId, wardId, stateProvinceId, startDateTimeUtc, endDateTimeUtc, orderBy, showHidden);
         }
 
         /// <summary>
@@ -383,9 +383,9 @@ namespace Nop.Services.Catalog
             int customerId = 0,
             IList<int> filteredSpecs = null,
             ProductStatusEnum? status = null,
-            IList<int> dictrictIds = null,
+            IList<int> districtIds = null,
             int streetId = 0,
-            int wardId = 0,
+            IList<int> wardId = null,
             int stateProvinceId = 0,
             DateTime? startDateTimeUtc = null,
             DateTime? endDateTimeUtc = null,
@@ -468,18 +468,33 @@ namespace Nop.Services.Catalog
                 }
                 //pass specification identifiers as comma-delimited string
                 string commaSeparatedDistrictIds = "";
-                if (dictrictIds != null)
+                if (districtIds != null)
                 {
-                    ((List<int>)dictrictIds).Sort();
-                    for (int i = 0; i < dictrictIds.Count; i++)
+                    ((List<int>)districtIds).Sort();
+                    for (int i = 0; i < districtIds.Count; i++)
                     {
-                        commaSeparatedDistrictIds += dictrictIds[i].ToString();
-                        if (i != dictrictIds.Count - 1)
+                        commaSeparatedDistrictIds += districtIds[i].ToString();
+                        if (i != districtIds.Count - 1)
                         {
                             commaSeparatedDistrictIds += ",";
                         }
                     }
                 }
+
+                string commaSeparatedWardIds = "";
+                if (wardId != null)
+                {
+                    ((List<int>)wardId).Sort();
+                    for (int i = 0; i < wardId.Count; i++)
+                    {
+                        commaSeparatedWardIds += wardId[i].ToString();
+                        if (i != wardId.Count - 1)
+                        {
+                            commaSeparatedWardIds += ",";
+                        }
+                    }
+                }
+
                 //some databases don't support int.MaxValue
                 if (pageSize == int.MaxValue)
                     pageSize = int.MaxValue - 1;
@@ -602,8 +617,8 @@ namespace Nop.Services.Catalog
 
                 var pWardId = _dataProvider.GetParameter();
                 pWardId.ParameterName = "WardId";
-                pWardId.Value = wardId;
-                pWardId.DbType = DbType.Int32;
+                pWardId.Value = commaSeparatedWardIds != null ? (object)commaSeparatedWardIds : DBNull.Value;
+                pWardId.DbType = DbType.String;
 
                 var pStateProvinceId = _dataProvider.GetParameter();
                 pStateProvinceId.ParameterName = "StateProvinceId";

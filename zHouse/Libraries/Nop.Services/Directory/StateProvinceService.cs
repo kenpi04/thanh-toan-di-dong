@@ -36,6 +36,8 @@ namespace Nop.Services.Directory
         private readonly IRepository<District> _districtRepository;
         private readonly IEventPublisher _eventPublisher;
         private readonly ICacheManager _cacheManager;
+        private readonly IRepository<Ward> _wardRepository;
+        private readonly IRepository<Street> _streetRepository;
 
         #endregion
 
@@ -50,12 +52,16 @@ namespace Nop.Services.Directory
         public StateProvinceService(ICacheManager cacheManager,
             IRepository<StateProvince> stateProvinceRepository,
             IEventPublisher eventPublisher,
-            IRepository<District> districtRepository)
+            IRepository<District> districtRepository,
+            IRepository<Ward> wardRepository,
+            IRepository<Street> streetRepository)
         {
             _cacheManager = cacheManager;
             _stateProvinceRepository = stateProvinceRepository;
             _eventPublisher = eventPublisher;
             _districtRepository = districtRepository;
+            _wardRepository = wardRepository;
+            _streetRepository = streetRepository;
         }
 
         #endregion
@@ -83,7 +89,7 @@ namespace Nop.Services.Directory
           
         }     
             
-            /// <summary>
+        /// <summary>
         /// Deletes a state/province
         /// </summary>
         /// <param name="stateProvince">The state/province</param>
@@ -246,5 +252,51 @@ namespace Nop.Services.Directory
         }
 
         #endregion
+
+        public virtual IList<Ward> GetWardByDistrictId(int districtId)
+        {
+            if (districtId < 0)
+                return null;
+
+            return _cacheManager.Get(string.Format("Nop.wardbydistrictId-{0}", districtId), () =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                {
+                    var query = from w in _wardRepository.Table
+                                where w.DistrictId == districtId
+                                select w;
+                    if (query != null)
+                        return query.ToList();
+                    return null;
+                }
+            });
+        }
+
+        public virtual IList<Street> GetStreetByDistrictId(int districtId)
+        {
+            if (districtId < 0)
+                return null;
+
+            return _cacheManager.Get(string.Format("Nop.streetbydistrictid-{0}", districtId), () =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from s in _streetRepository.Table
+                                where s.DistrictId == districtId
+                                select s;
+                    if (query != null)
+                        return query.ToList();
+                    return null;
+                }
+            });
+        }
     }
 }

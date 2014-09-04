@@ -57,5 +57,9 @@ namespace Nop.Services.Directory
         void UpdateDistrict(District district);
 
         void DeleteDistrict(District district);
+
+        IList<Ward> GetWardByDistrictId(int districtId);
+
+        IList<Street> GetStreetByDistrictId(int districtId);
     }
 }
