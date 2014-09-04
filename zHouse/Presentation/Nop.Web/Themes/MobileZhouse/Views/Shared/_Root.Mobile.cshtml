@@ -54,7 +54,7 @@
 @*    @Html.Widget("mobile_content_before")*@
      @Html.Action("HeaderLinks", "Common")
   
-       @Html.Action("SearchBoxLeft","Catalog")
+       @Html.Action("SearchBoxLeft", "Catalog", new { categoryId = 1 })
     
     <div data-role="content">
            
@@ -78,5 +78,5 @@
       
     }
 </div>
-@Html.Action("EuCookieLaw", "Common")
+@*@Html.Action("EuCookieLaw", "Common")*@
 @*@Html.Widget("mobile_body_end_html_tag_before")*@
