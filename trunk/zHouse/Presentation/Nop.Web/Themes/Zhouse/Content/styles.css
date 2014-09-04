@@ -76,9 +76,9 @@ ul.language-list li:hover{cursor:pointer}
 .menu li .sublist li.title{font-size:14px;font-weight:bold}
 .menu li .sublist.active{display:block}
 .menu li .sublist .sublist.active{left:100px;margin-top:-30px;top:auto}
-.menu .sublist li a{text-transform:none;min-height:22px;margin:0 8px 0 28px;color:#373737;font-weight:normal;font-size:12px;border:0 !important}
+.menu .sublist li a{text-transform:none;min-height:22px;margin:0 8px 0 5px;color:#373737;font-weight:normal;font-size:12px;border:0 !important}
 .menu .sublist ul{width:100%;float:left}
-.menu .sublist li{height:22px;margin:6px 5px;text-align:left;float:none;padding:0;width:80px;float:left}
+.menu .sublist li{height:22px;margin:6px 5px;text-align:left;float:none;padding:0;float:left;width:100%}
 .header-menu .top-menu-triangle.active{display:none}
 .header-menu .top-menu-triangle{background:url(images/top-menu-triangle.png) no-repeat;margin-top:-9px;margin-left:10px;width:10px;height:5px;position:absolute;z-index:10;display:none}
 .header-menu .top-menu-triangle.active{display:block}
@@ -1228,7 +1228,7 @@ textarea.formBoxInText{height:70px}
 .icon-list a {display:block;width:50px;height:50px;margin-bottom:5px }
 .icon-list a.icon-contact {background:url(images/contacticon.jpg) no-repeat; }
 .icon-list a.icon-request {background:url(images/requesticon.png) no-repeat; }
-.info-picture-news img {max-height }
+/*.info-picture-news img {max-height }*/
 /*---intro-------------------*/
 .wrapperLarge { width: 1200px; margin: 0 auto; position: relative; }
 .btnRight1 { position: fixed; right: 0; top: 60px; background: url(images/btnRight1.png); width: 50px; height: 50px; border: none; }
