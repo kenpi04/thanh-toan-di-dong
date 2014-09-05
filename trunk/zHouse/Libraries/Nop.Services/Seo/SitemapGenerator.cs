@@ -7,6 +7,8 @@ using Nop.Core.Domain.Common;
 using Nop.Services.Catalog;
 using Nop.Services.Topics;
 using Nop.Services.News;
+using Nop.Services.Directory;
+using System.Collections.Generic;
 
 namespace Nop.Services.Seo
 {
@@ -23,13 +25,15 @@ namespace Nop.Services.Seo
         private readonly CommonSettings _commonSettings;
         private readonly INewsService _newsService;
         private readonly ICategoryNewsService _categoryNewsService;
+        private readonly IStateProvinceService _stateProvinceService;
 
         public SitemapGenerator(IStoreContext storeContext,
-            ICategoryService categoryService, IProductService productService, 
-            IManufacturerService manufacturerService, ITopicService topicService, 
+            ICategoryService categoryService, IProductService productService,
+            IManufacturerService manufacturerService, ITopicService topicService,
             CommonSettings commonSettings,
             INewsService newsService,
-            ICategoryNewsService categoryNewsService)
+            ICategoryNewsService categoryNewsService,
+            IStateProvinceService stateProvinceService)
         {
             this._storeContext = storeContext;
             this._categoryService = categoryService;
@@ -39,6 +43,7 @@ namespace Nop.Services.Seo
             this._commonSettings = commonSettings;
             this._newsService = newsService;
             this._categoryNewsService = categoryNewsService;
+            this._stateProvinceService = stateProvinceService;
         }
 
         /// <summary>
@@ -48,9 +53,26 @@ namespace Nop.Services.Seo
         /// <param name="urlHelper">URL helper</param>
         protected override void GenerateUrlNodes(UrlHelper urlHelper)
         {
+            var categoryUrl = new List<string>();
+
             if (_commonSettings.SitemapIncludeCategories)
             {
-                WriteCategories(urlHelper, 0);
+                WriteCategories(urlHelper, 0, _commonSettings.SitemapIncludeDistricts, categoryUrl);
+            }
+
+            if (_commonSettings.SitemapIncludeDistricts)
+            {
+                WriteDistricts(urlHelper, categoryUrl);
+            }
+
+            if (_commonSettings.SitemapIncludeWards)
+            {
+                WriteWards(urlHelper, categoryUrl);
+            }
+
+            if (_commonSettings.SitemapIncludeStreets)
+            {
+                WriteStreets(urlHelper, categoryUrl);
             }
 
             if (_commonSettings.SitemapIncludeManufacturers)
@@ -76,12 +98,17 @@ namespace Nop.Services.Seo
             if (_commonSettings.SitemapIncludeNews)
             {
                 WriteNews(urlHelper);
-            }            
+            }
         }
 
-        private void WriteCategories(UrlHelper urlHelper, int parentCategoryId)
+        private void WriteCategories(UrlHelper urlHelper, int parentCategoryId, bool isCategoriesOut = false, List<string> categoryUrlOut = null)
         {
             var categories = _categoryService.GetAllCategoriesByParentCategoryId(parentCategoryId);
+            if (isCategoriesOut && categories != null)
+            {
+                if (categoryUrlOut == null) categoryUrlOut = new List<string>();
+            }
+
             foreach (var category in categories)
             {
                 var url = urlHelper.RouteUrl("Category", new { SeName = category.GetSeName() }, "http");
@@ -89,7 +116,66 @@ namespace Nop.Services.Seo
                 var updateTime = category.UpdatedOnUtc;
                 WriteUrlLocation(url, updateFrequency, updateTime, _commonSettings.SitemapCategoriesPriority ?? "0.5");
 
-                WriteCategories(urlHelper, category.Id);
+                if (isCategoriesOut) categoryUrlOut.Add(url);
+
+                WriteCategories(urlHelper, category.Id, isCategoriesOut, categoryUrlOut);
+            }
+        }
+
+        private void WriteDistricts(UrlHelper urlHelper, List<string> categoryUrl)
+        {
+            var districts = _stateProvinceService.GetDistHCM();
+            foreach (var district in districts)
+            {
+                foreach (var category in categoryUrl)
+                {
+                    var url = string.Format("{0}-{1}", category, district.GetSeName());
+                    var updateFrequency = (UpdateFrequency)Enum.Parse(typeof(UpdateFrequency), _commonSettings.SitemapDistrictsChangefreq ?? "Daily");
+                    var updateTime = DateTime.Now;
+                    WriteUrlLocation(url, updateFrequency, updateTime, _commonSettings.SitemapDistrictsPriority ?? "0.5");
+                }
+            }
+        }
+
+        private void WriteWards(UrlHelper urlHelper, List<string> categoryUrl)
+        {
+            var districts = _stateProvinceService.GetDistHCM();
+            var wards = new System.Collections.Generic.List<Nop.Core.Domain.Directory.Ward>();
+            foreach (var district in districts)
+            {
+                wards.AddRange(_stateProvinceService.GetWardByDistrictId(district.Id));
+            }
+
+            foreach (var ward in wards)
+            {
+                foreach (var category in categoryUrl)
+                {
+                    var url = string.Format("{0}-{1}", category, ward.GetSeName());
+                    var updateFrequency = (UpdateFrequency)Enum.Parse(typeof(UpdateFrequency), _commonSettings.SitemapWardsChangefreq ?? "Daily");
+                    var updateTime = DateTime.Now;
+                    WriteUrlLocation(url, updateFrequency, updateTime, _commonSettings.SitemapWardsPriority ?? "0.5");
+                }
+            }
+        }
+
+        private void WriteStreets(UrlHelper urlHelper, List<string> categoryUrl)
+        {
+            var districts = _stateProvinceService.GetDistHCM();
+            var streets = new System.Collections.Generic.List<Nop.Core.Domain.Directory.Street>();
+            foreach (var district in districts)
+            {
+                streets.AddRange(_stateProvinceService.GetStreetByDistrictId(district.Id));
+            }
+
+            foreach (var street in streets)
+            {
+                foreach (var category in categoryUrl)
+                {
+                    var url = string.Format("{0}-{1}", category, street.GetSeName());
+                    var updateFrequency = (UpdateFrequency)Enum.Parse(typeof(UpdateFrequency), _commonSettings.SitemapStreetsChangefreq ?? "Daily");
+                    var updateTime = DateTime.Now;
+                    WriteUrlLocation(url, updateFrequency, updateTime, _commonSettings.SitemapStreetsPriority ?? "0.5");
+                }
             }
         }
 
@@ -146,7 +232,7 @@ namespace Nop.Services.Seo
 
         private void WriteNews(UrlHelper urlHelper)
         {
-            var news = _newsService.GetAllNews(0, _storeContext.CurrentStore.Id,0 , 0, int.MaxValue).ToList();            
+            var news = _newsService.GetAllNews(0, _storeContext.CurrentStore.Id, 0, 0, int.MaxValue).ToList();
             foreach (var item in news)
             {
                 var url = urlHelper.RouteUrl("NewsItem", new { SeName = item.GetSeName() }, "http");
