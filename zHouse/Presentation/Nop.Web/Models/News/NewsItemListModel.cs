@@ -16,5 +16,11 @@ namespace Nop.Web.Models.News
         public NewsPagingFilteringModel PagingFilteringContext { get; set; }
         public IList<NewsItemModel> NewsItems { get; set; }
         public string CateName { get; set; }
+
+        public string MetaTitle { get; set; }
+
+        public string MetaKeywords { get; set; }
+
+        public string MetaDescription { get; set; }
     }
 }

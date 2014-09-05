@@ -135,7 +135,7 @@ namespace Nop.Admin.Controllers
                 Data = categories.Select(x =>
                 {
                     var categoryModel = x.ToModel();
-                  //  categoryModel.Breadcrumb = x.GetCategoryBreadCrumb(_categoryService);
+                    categoryModel.Breadcrumb = x.GetCategoryBreadCrumb(_categoryService);
                     return categoryModel;
                 }),
                 Total = categories.TotalCount
@@ -160,7 +160,6 @@ namespace Nop.Admin.Controllers
                     Selected = c.Id == selectedId
                 });
 
-            //var selectList = new SelectList(categories, "Id", "Name", selectedId);
             return new JsonResult { Data = selectList, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
@@ -231,9 +230,6 @@ namespace Nop.Admin.Controllers
 
             //parent categories
             model.ParentCategories = new List<DropDownItem> { new DropDownItem { Text = "[None]", Value = "0" } };
-            //locales
-            AddLocales(_languageService, model.Locales);
-            //templates
 
             model.PageSize = 4;
             model.Published = true;
@@ -252,7 +248,6 @@ namespace Nop.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                //2012-09-13 HUNGLAI ADD STT Set User Create this category
                 if (_workContext.CurrentCustomer.Username == "" || _workContext.CurrentCustomer.Username == null)
                 {
                     model.CreatedBy = _workContext.CurrentCustomer.Email;
@@ -262,17 +257,12 @@ namespace Nop.Admin.Controllers
                     model.CreatedBy = _workContext.CurrentCustomer.Username;
                 }
                 model.UpdatedBy = "NON_UPDATE";
-                //2012-09-13 HUNGLAI ADD END
-
                 var category = model.ToEntity();
                 category.CreatedOnUtc = DateTime.UtcNow;
                 category.UpdatedOnUtc = DateTime.UtcNow;
                 string SeName = category.ValidateSeName("", category.Name.RemoveSign4VietnameseString(), true);
                 _urlRecordService.SaveSlug(category,SeName,0);
                 _categoryService.InsertCategory(category);
-
-                //locales
-                UpdateLocales(category, model);
 
                 _categoryService.UpdateCategory(category);
 
@@ -326,12 +316,6 @@ namespace Nop.Admin.Controllers
                 else
                     model.ParentCategoryNewsId = 0;
             }
-            //locales
-            AddLocales(_languageService, model.Locales, (locale, languageId) =>
-            {
-               // locale.Name = category.GetLocalized(x => x.Name, languageId, false, false);
-                //locale.MetaTitle = category.GetLocalized(x => x.MetaTitle, languageId, false, false);
-            });
             return View(model);
         }
 
@@ -348,21 +332,15 @@ namespace Nop.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                //2012-09-13 HUNGLAI ADD STT Update last User Update this category
-              //  model.CreatedBy = category.CreatedOnUtc;
-                // 03.12.2012 Chuyển sang dùng email thay vì user cập nhật cuối cùng trong hàm Edit()
                 var email = _workContext.CurrentCustomer.Email;
                 if (email == null)
                     email = "";
                 model.UpdatedBy = email;
-                ///2012-09-13 HUNGLAI ADD END
                 category = model.ToEntity(category);
                 category.UpdatedOnUtc = DateTime.UtcNow;
                 string SeName = category.ValidateSeName(category.GetSeName(), Nop.Web.Framework.Extensions.RemoveSign4VietnameseString(category.Name), true);
                 _urlRecordService.SaveSlug(category, SeName, 0);
                 _categoryService.UpdateCategory(category);
-                //locales
-                UpdateLocales(category, model);
 
                 //activity log
                 _customerActivityService.InsertActivity("EditCategory", _localizationService.GetResource("ActivityLog.EditCategory1"), category.Name);
@@ -386,11 +364,7 @@ namespace Nop.Admin.Controllers
             if (category == null)
                 //No manufacturer found with the specified id
                 return RedirectToAction("List");
-            //2012-09-12 HUNGLAI ADD STT - Update User Delete
-            //category.UpdatedBy = _workContext.CurrentCustomer.Email;
-            //2012-09-12 HUNGLAI ADD END
             _categoryService.DeleteCategory(category);
-
 
             //activity log
             _customerActivityService.InsertActivity("DeleteCategory", _localizationService.GetResource("ActivityLog.DeleteCategory"), category.Name);
@@ -399,154 +373,6 @@ namespace Nop.Admin.Controllers
             return RedirectToAction("List");
         }
 
-        #endregion
-
-        #region News
-        /*
-        [HttpPost, GridAction(EnableCustomBinding = true)]
-        public ActionResult NewsList(GridCommand command, int category1Id)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCatalog))
-                return AccessDeniedView();
-
-            var newscategory = _categoryService.GetNewsCategoriesByCategoryId(category1Id,
-                command.Page - 1, command.PageSize, true);
-
-            var model = new GridModel<CategoryNewsModel.CategoryNewsModel>
-            {
-                Data = newscategory
-                .Select(x =>
-                {
-                    return new CategoryNewsModel.CategoryNewsModel()
-                    {
-                        Id = x.Id,
-                        CategoryNewsId = x.CategoryNewsId,
-                        NewsId = x.NewsId,
-                        NewsTitle = _newsService.GetNewsById(x.NewsId).Title,                       
-                    };
-                }),
-                Total = newscategory.TotalCount
-            };
-
-            return new JsonResult
-            {
-                Data = model
-            };
-        }
-
-        [GridAction(EnableCustomBinding = true)]
-        public ActionResult NewsUpdate(GridCommand command, CategoryNewsModel.CategoryNewsModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCatalog))
-                return AccessDeniedView();
-
-            var newscategory = _categoryService.GetNewsCategoryById(model.Id);
-            if (newscategory == null)
-                throw new ArgumentException("No news category mapping found with the specified id");
-            
-            _categoryService.UpdateNewsCategory(newscategory);
-
-            return NewsList(command, newscategory.CategoryNewsId);
-        }
-
-        [GridAction(EnableCustomBinding = true)]
-        public ActionResult NewsDelete(int id, GridCommand command)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCatalog))
-                return AccessDeniedView();
-
-            var newscategory = _categoryService.GetNewsCategoryById(id);
-            if (newscategory == null)
-                throw new ArgumentException("No news category mapping found with the specified id");
-
-            var category1Id = newscategory.CategoryNewsId;
-            _categoryService.DeleteNewsCategory(newscategory);
-
-            return NewsList(command, category1Id);
-        }
-        /*
-        public ActionResult NewsAddPopup(int category1Id)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCatalog))
-                return AccessDeniedView();
-
-            var model = new Category1Model.AddCategoryNewsModel();
-            model.NewsItem = new GridModel<NewsItemModel>
-            {
-                Data = products.Select(x => x.ToModel()),
-                Total = products.TotalCount
-            };
-            //categories
-            model.AvailableCategories.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
-            foreach (var c in _categoryService.GetAllCategories(true))
-                model.AvailableCategories.Add(new SelectListItem() { Text = c.GetCategoryNameWithPrefix(_categoryService), Value = c.Id.ToString() });
-
-            //manufacturers
-            model.AvailableManufacturers.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
-            foreach (var m in _manufacturerService.GetAllManufacturers(true))
-                model.AvailableManufacturers.Add(new SelectListItem() { Text = m.Name, Value = m.Id.ToString() });
-
-            return View(model);
-        }
-
-        [HttpPost, GridAction(EnableCustomBinding = true)]
-        public ActionResult ProductAddPopupList(GridCommand command, ManufacturerModel.AddManufacturerProductModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCatalog))
-                return AccessDeniedView();
-
-            var gridModel = new GridModel();
-            IList<int> filterableSpecificationAttributeOptionIds = null;
-            var products = _productService.SearchProducts(model.SearchCategoryId,
-                model.SearchManufacturerId, null, null, null, 0, model.SearchProductName, false, false,
-                _workContext.WorkingLanguage.Id, new List<int>(),
-                ProductSortingEnum.Position, command.Page - 1, command.PageSize,
-                false, out filterableSpecificationAttributeOptionIds, true);
-            gridModel.Data = products.Select(x => x.ToModel());
-            gridModel.Total = products.TotalCount;
-            return new JsonResult
-            {
-                Data = gridModel
-            };
-        }
-
-        [HttpPost]
-        [FormValueRequired("save")]
-        public ActionResult ProductAddPopup(string btnId, string formId, ManufacturerModel.AddManufacturerProductModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCatalog))
-                return AccessDeniedView();
-
-            if (model.SelectedProductIds != null)
-            {
-                foreach (int id in model.SelectedProductIds)
-                {
-                    var product = _productService.GetProductById(id);
-                    if (product != null)
-                    {
-                        var existingProductmanufacturers = _manufacturerService.GetProductManufacturersByManufacturerId(model.ManufacturerId, 0, int.MaxValue, true);
-                        if (existingProductmanufacturers.FindProductManufacturer(id, model.ManufacturerId) == null)
-                        {
-                            _manufacturerService.InsertProductManufacturer(
-                                new ProductManufacturer()
-                                {
-                                    ManufacturerId = model.ManufacturerId,
-                                    ProductId = id,
-                                    IsFeaturedProduct = false,
-                                    DisplayOrder = 1
-                                });
-                        }
-                    }
-                }
-            }
-
-            ViewBag.RefreshPage = true;
-            ViewBag.btnId = btnId;
-            ViewBag.formId = formId;
-            model.Products = new GridModel<ProductModel>();
-            return View(model);
-        }
-        */
         #endregion
 
         #region Permission

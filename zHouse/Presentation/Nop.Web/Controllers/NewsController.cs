@@ -260,7 +260,14 @@ namespace Nop.Web.Controllers
                 })
                 .ToList();
             var cate = _cateNewsService.GetCategoryById(command.CateId);
+            if(cate == null)
+                return RedirectToRoute("HomePage");
+
             model.CateName = cate.Name;
+            model.MetaTitle = cate.MetaTitle;
+            model.MetaKeywords = cate.MetaKeywords;
+            model.MetaDescription = cate.MetaDescription;
+
             return View(model);
         }
 

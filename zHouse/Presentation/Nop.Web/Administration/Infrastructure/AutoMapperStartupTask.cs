@@ -62,8 +62,7 @@ namespace Nop.Admin.Infrastructure
                .ForMember(dest => dest.CreatedOnUtc, mo => mo.Ignore())
                .ForMember(dest => dest.UpdatedOnUtc, mo => mo.Ignore());
 
-            Mapper.CreateMap<CategoryNews, CategoryNewsModel>()
-                .ForMember(dest => dest.Locales, mo => mo.Ignore());
+            Mapper.CreateMap<CategoryNews, CategoryNewsModel>();
             #endregion
 
             #region Message
