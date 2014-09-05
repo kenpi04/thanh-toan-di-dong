@@ -13,7 +13,7 @@ using Telerik.Web.Mvc.UI;
 namespace Nop.Admin.Models.News
 {
     [Validator(typeof(CategoryNewsValidator))]
-    public partial class CategoryNewsModel : BaseNopEntityModel, ILocalizedModel<CategoryNewsLocalizedModel>
+    public partial class CategoryNewsModel : BaseNopEntityModel
     {
         public CategoryNewsModel()
         {
@@ -21,11 +21,9 @@ namespace Nop.Admin.Models.News
             {
                 PageSize = 5;
             }
-            Locales = new List<CategoryNewsLocalizedModel>();
         }
 
         [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.Name")]
-        [AllowHtml]
         public string Name { get; set; }
 
         [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.CreatedBy")]
@@ -34,8 +32,13 @@ namespace Nop.Admin.Models.News
         public string UpdatedBy { get; set; }
 
         [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.MetaTitle")]
-        [AllowHtml]
         public string MetaTitle { get; set; }
+
+        [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.MetaKeywords")]
+        public string MetaKeywords { get; set; }
+
+        [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.MetaDescription")]
+        public string MetaDescription { get; set; }
 
         [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.Parent")]
         public int ParentCategoryNewsId { get; set; }
@@ -57,8 +60,6 @@ namespace Nop.Admin.Models.News
 
         [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.DisplayOrder")]
         public int DisplayOrder { get; set; }
-
-        public IList<CategoryNewsLocalizedModel> Locales { get; set; }
 
         public string Breadcrumb { get; set; }
 
@@ -101,34 +102,4 @@ namespace Nop.Admin.Models.News
         #endregion
 
     }
-
-    public partial class CategoryNewsLocalizedModel : ILocalizedModelLocal
-    {
-        public int LanguageId { get; set; }
-
-        [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.Name")]
-        [AllowHtml]
-        public string Name { get; set; }
-
-        [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.Description")]
-        [AllowHtml]
-        public string Description { get; set; }
-
-        [AllowHtml]
-        public string MetaKeywords { get; set; }
-
-        [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.MetaDescription")]
-        [AllowHtml]
-        public string MetaDescription { get; set; }
-
-        [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.MetaTitle")]
-        [AllowHtml]
-        public string MetaTitle { get; set; }
-
-        [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.SeName")]
-        [AllowHtml]
-        public string SeName { get; set; }
-    }
-
-
 }

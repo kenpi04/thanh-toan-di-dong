@@ -579,10 +579,10 @@ namespace Nop.Web.Infrastructure
                             new[] { "Nop.Web.Controllers" });
 
             //news
-            routes.MapLocalizedRoute("NewsArchive",
-                            "news",
-                            new { controller = "News", action = "List" },
-                            new[] { "Nop.Web.Controllers" });
+            //routes.MapLocalizedRoute("NewsArchive",
+            //                "news",
+            //                new { controller = "News", action = "List" },
+            //                new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("NewsRSS",
                             "news/rss/{languageId}",
                             new { controller = "News", action = "ListRss" },
