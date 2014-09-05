@@ -18,6 +18,10 @@ namespace Nop.Core.Domain.Common
         public bool SitemapIncludeTopics { get; set; }
         public bool SitemapIncludeNews { get; set; }
         public bool SitemapIncludeNewsCategories { get; set; }
+        public bool SitemapIncludeStreets { get; set; }
+        public bool SitemapIncludeWards { get; set; }
+        public bool SitemapIncludeDistricts { get; set; }
+
 
         public string SitemapCategoriesChangefreq { get; set; }
         public string SitemapManufacturersChangefreq { get; set; }
@@ -25,6 +29,9 @@ namespace Nop.Core.Domain.Common
         public string SitemapTopicsChangefreq { get; set; }
         public string SitemapNewsChangefreq { get; set; }
         public string SitemapNewsCategoriesChangefreq { get; set; }
+        public string SitemapStreetsChangefreq { get; set; }
+        public string SitemapWardsChangefreq { get; set; }
+        public string SitemapDistrictsChangefreq { get; set; }
 
         public string SitemapCategoriesPriority { get; set; }
         public string SitemapManufacturersPriority { get; set; }
@@ -32,6 +39,9 @@ namespace Nop.Core.Domain.Common
         public string SitemapTopicsPriority { get; set; }
         public string SitemapNewsPriority { get; set; }
         public string SitemapNewsCategoriesPriority { get; set; }
+        public string SitemapStreetsPriority { get; set; }
+        public string SitemapWardsPriority { get; set; }
+        public string SitemapDistrictsPriority { get; set; }
 
 
         /// <summary>
