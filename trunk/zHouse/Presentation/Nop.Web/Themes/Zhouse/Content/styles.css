@@ -27,7 +27,7 @@ select{border:1px solid #c2c2c2;color:#666;font-size:11px;padding:5px 5px 5px 10
 .master-wrapper-page{background:none repeat scroll 0 0 #f1f1f1}
 .master-wrapper-content{margin:0 auto}
 .master-wrapper-main{color:#373737;width:1080px;margin:0 auto}
-.master-wrapper-main .center-1{min-height:400px;display:inline;float:left}
+.master-wrapper-main .center-1{min-height:400px;display:inline;float:left;width:100%}
 .master-wrapper-main .side-2{float:left;width:190px;margin:10px 0;display:inline}
 .master-wrapper-main .center-2{float:left;width:860px;min-height:400px;padding:10px;margin:10px 0 10px 10px;background:#FFF;display:inline;border-radius:5px}
 .master-wrapper-main .leftside-3{float:left;width:190px;margin:10px 0;display:inline}
@@ -478,6 +478,8 @@ height: 28px;
 .product-spec-filter .remove-filter{padding-top:5px}
 .product-spec-filter .remove-filter a{font-weight:700;color:#b80709}
 .compare-products-page .page-body{margin:0;padding:0;background-color:inherit}
+.compare-products-page .clear-list { background: none repeat scroll 0 0 #c06; color: #fff; display: block; font-weight: bold; margin-top: 12px; padding: 8px 3px; text-align: center; text-transform: uppercase; }
+.compare-products-page .remove-button {background:#c06;color:#fff;width:30px;height:30px;position:absolute;z-index:10 }
 .compare-products-table{margin-top:10px;width:100%;border:0;border-collapse:collapse;border-spacing:0;empty-cells:show;background:#fafafa}
 .compare-products-table tr.product-name{background-color:#CCC;font-weight:700}
 .compare-products-table tr.product-price .a-center {font-size:18px;font-weight:bold;color:#c06 }
