@@ -54,7 +54,7 @@
                             </td>
                         }
                     </tr>
-                    <tr class="product-name">
+                  @*  <tr class="product-name">
                         <td>
                             &nbsp;
                         </td>
@@ -64,7 +64,7 @@
                                 <a href="@Url.RouteUrl("Product", new { SeName = product.SeName })">@product.Name</a>
                             </td>
                         }
-                    </tr>
+                    </tr>*@
                     <tr class="product-price">
                         <td>
                             @T("Products.Compare.Price")
@@ -73,6 +73,72 @@
                         {
                             <td style="width: @columnWidth;" class="a-center">
                                 @product.ProductPrice.Price
+                            </td>
+                        }
+                    </tr>
+                     <tr class="product-sku">
+                        <td>
+                            @T("Products.Compare.SKU")
+                        </td>
+                        @foreach (var product in Model.Products)
+                        {
+                            <td style="width: @columnWidth;" class="a-center">
+                                @product.Id
+                            </td>
+                        }
+                    </tr>
+                     <tr class="product-location">
+                        <td>
+                            @T("Products.Compare.Location")
+                        </td>
+                        @foreach (var product in Model.Products)
+                        {
+                            <td style="width: @columnWidth;" class="a-center">
+                                @product.DictrictName
+                            </td>
+                        }
+                    </tr>
+                      <tr class="product-cate">
+                        <td>
+                            @T("Products.Compare.Category")
+                        </td>
+                        @foreach (var product in Model.Products)
+                        {
+                            <td style="width: @columnWidth;" class="a-center">
+                                @product.CateName
+                            </td>
+                        }
+                    </tr>
+                      <tr class="product-cosovc">
+                        <td>
+                           Cơ sở vật chất
+                        </td>
+                        @foreach (var product in Model.Products)
+                        {
+                            <td style="width: @columnWidth;" class="a-center">
+                                @Html.Raw(product.CoSoVatChat)
+                            </td>
+                        }
+                    </tr>
+                      <tr class="product-cosovc">
+                        <td>
+                          Mô trường xung quanh
+                        </td>
+                        @foreach (var product in Model.Products)
+                        {
+                            <td style="width: @columnWidth;" class="a-center">
+                                @Html.Raw(product.Moitruong)
+                            </td>
+                        }
+                    </tr>
+                          <tr class="product-cosovc">
+                        <td>
+                          Tiện nghi
+                        </td>
+                        @foreach (var product in Model.Products)
+                        {
+                            <td style="width: @columnWidth;" class="a-center">
+                                @Html.Raw(product.TienNghi)
                             </td>
                         }
                     </tr>
@@ -120,17 +186,7 @@
                             </td>
                         }
                     </tr>
-                      <tr class="product-location">
-                        <td>
-                            @T("Products.Compare.Location")
-                        </td>
-                        @foreach (var product in Model.Products)
-                        {
-                            <td style="width: @columnWidth;" class="a-center">
-                                @product.FullAddress
-                            </td>
-                        }
-                    </tr>
+                     
                     
                     @if (Model.IncludeShortDescriptionInCompareProducts)
                     {

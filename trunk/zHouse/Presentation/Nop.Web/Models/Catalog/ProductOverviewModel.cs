@@ -29,7 +29,10 @@ namespace Nop.Web.Models.Catalog
         public string NumberOfHome { get; set; }
         public string NumBedRoom { get; set; }
         public string NumBadRoom { get; set; }
+        public string CoSoVatChat { get; set; }
+        public string Moitruong { get; set; }
         public string Status { get; set; }
+        public string TienNghi { get; set; }
 
         public string NumberBlock { get; set; }
         public string DictrictName { get; set; }
