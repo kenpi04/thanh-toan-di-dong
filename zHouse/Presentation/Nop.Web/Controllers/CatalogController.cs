@@ -2794,7 +2794,7 @@ namespace Nop.Web.Controllers
             // products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
 
             //prepare model
-            PrepareProductOverviewModels(products, prepareSpecificationAttributes: true)
+            PrepareProductOverviewModels(products, prepareSpecificationAttributes: true,)
                 .ToList()
                 .ForEach(model.Products.Add);
             return View(model);
