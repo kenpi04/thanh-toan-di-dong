@@ -1,16 +1,11 @@
 ﻿@model Nop.Web.Models.Catalog.ProductDetailsModel
 @{
-    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Layout = "~/Views/Shared/_RootNoHeadFoot.cshtml";
             Html.AddScriptParts("~/Scripts/jquery.flexslider.js");
     Html.AddCssFileParts("~/Themes/Zhouse/Content/flexslider.css"); 
 }
 
-<script type="text/javascript">
-    $(document).ready(function () {
-       window.print();
-    });
-  
-    </script>
+
  <div class="mainContent">
             <div class="leftContent">
                 <div class="whiteBgLeft">
@@ -66,35 +61,13 @@
                                        slideshow: false,
                                        sync: "#carousel"
                                    });
+                                   window.print();
                                })
                            })
                       </script>
                  <div class="clearfix"></div>
                 </div>
-                       <script>
-                           $(function(){
-                               $("#detail-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new { productId = Model.Id })",function(d){
-                               
-                                   $('#carousel').flexslider({
-                                       animation: "slide",
-                                       controlNav: false,
-                                       animationLoop: false,
-                                       slideshow: false,
-                                       itemWidth: 80,
-                                       itemMargin: 5,
-                                       asNavFor: '#slider-detail'
-                                   });
-                                   $('#slider-detail').flexslider({
-                                       animation: "slide",
-                                       controlNav: false,
-                                       animationLoop: false,
-                                       slideshow: false,
-                                       sync: "#carousel"
-                                   });
-                               })
-                           })
-                      </script>
-                 <div class="clearfix"></div>
+                     
                    
                 </div><!----detailTable---->
 
@@ -107,21 +80,19 @@
                    
 
 
-                       <div style="width:800px;height:400px">
+                       <div style="width:1040px;height:400px">
                           @Html.Partial("_Map", Model)
                     </div>
                 </div><!---whiteBgLeft-->
-                <div id="tab-pictures" class="whiteBgLeft" style="margin-top:-1px;">
-                    
-                    
-                </div>
+               
             </div>
      </div>
 
 <style>
- .wholeSearch, .footer, .rightContent,#recent-view {display:none }
-    .mainContent, .leftContent,.detailTable { width: 100%; }
-    .whiteBgLeft,#tab-detail {width: 96.5%; }
+ .wholeSearch, .footer, .rightContent,#recent-view,#lstChk {display:none }
+    .mainContent, .leftContent { width: 100%; }
+    .detailTable {width: 99.8%; }
+    .whiteBgLeft,#tab-detail {width: 96.2%; }
     .leftContent {margin:0 }
 
 </style>
