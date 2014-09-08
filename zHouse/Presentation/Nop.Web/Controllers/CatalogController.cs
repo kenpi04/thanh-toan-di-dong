@@ -350,14 +350,15 @@ namespace Nop.Web.Controllers
             {
                 var model = new ProductOverviewModel()
                 {
-                    Id = product.Id,
-                    Name = product.GetLocalized(x => x.Name),
-                    ShortDescription = product.GetLocalized(x => x.ShortDescription),
+                    Id = product.Id,                    
+                    Name = product.Name,
+                    Sku = product.Sku,
+                    ShortDescription = product.ShortDescription,
                     // FullDescription = product.GetLocalized(x => x.FullDescription),
                     SeName = product.GetSeName(),
-                    ContactName = product.ContactName,
-                    ContactPhone = product.ContactPhone,
-                    Email = product.ContactEmail,
+                    //ContactName = product.ContactName,
+                    //ContactPhone = product.ContactPhone,
+                    //Email = product.ContactEmail,
 
                     NumBedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
                     NumBadRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBadRoom),
@@ -365,6 +366,7 @@ namespace Nop.Web.Controllers
                     NumberBlock = GetOptionName(product, ProductAttributeEnum.NumberBlock),
                     Directors = GetOptionName(product, ProductAttributeEnum.Director),
                     Area = product.Area,
+                    AreaUse = product.AreaUse,
                     FullAddress = product.FullAddress,
                     DictrictName = product.District == null ? "" : product.District.Name,
                     ChuDauTu = product.ManufacturerPartNumber,
@@ -409,6 +411,7 @@ namespace Nop.Web.Controllers
                 //specs
                 if (prepareSpecificationAttributes)
                 {
+                    model.PhapLy = GetOptionName(product, ProductAttributeEnum.PhapLy);
                     model.SpecificationAttributeModels = PrepareProductSpecificationModel(product);
                     var cosoVC=model.SpecificationAttributeModels.Where(x=>x.SpecificationAttributeId==(int)ProductAttributeEnum.CoSoVatChat).Select(x=>x.SpecificationAttributeOption);
                     if(cosoVC.Count()>0)
@@ -452,7 +455,7 @@ namespace Nop.Web.Controllers
                        {
                            SpecificationAttributeId = psa.SpecificationAttributeOption.SpecificationAttributeId,
                            SpecificationAttributeName = psa.SpecificationAttributeOption.SpecificationAttribute.GetLocalized(x => x.Name),
-                           SpecificationAttributeOption = !String.IsNullOrEmpty(psa.CustomValue) ? psa.CustomValue : psa.SpecificationAttributeOption.GetLocalized(x => x.Name),
+                           SpecificationAttributeOption = !String.IsNullOrEmpty(psa.CustomValue) ? psa.CustomValue : psa.SpecificationAttributeOption.Name,
                        };
                    }).ToList();
                 return model;
@@ -2794,7 +2797,7 @@ namespace Nop.Web.Controllers
             // products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
 
             //prepare model
-            PrepareProductOverviewModels(products, prepareSpecificationAttributes: true,)
+            PrepareProductOverviewModels(products, prepareSpecificationAttributes: true, productThumbPictureSize: 200)
                 .ToList()
                 .ForEach(model.Products.Add);
             return View(model);

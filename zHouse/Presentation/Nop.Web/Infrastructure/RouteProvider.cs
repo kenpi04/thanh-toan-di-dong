@@ -73,7 +73,7 @@ namespace Nop.Web.Infrastructure
                             new { productId = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("CompareProducts",
-                            "compareproducts/",
+                            "so-sanh/",
                             new { controller = "Catalog", action = "CompareProducts" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("RemoveProductFromCompareList",
@@ -146,28 +146,30 @@ namespace Nop.Web.Infrastructure
                             new { subscriptionId = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
 
-            //login, register
+            //login, register            
             routes.MapLocalizedRoute("Login",
-                            "login/",
+                            "dang-nhap/",
                             new { controller = "Customer", action = "Login" },
                             new[] { "Nop.Web.Controllers" });
+
             routes.MapLocalizedRoute("LoginCheckoutAsGuest",
                             "login/checkoutasguest",
                             new { controller = "Customer", action = "Login", checkoutAsGuest = true },
                             new[] { "Nop.Web.Controllers" });
+           
             routes.MapLocalizedRoute("Register",
-                            "register/",
+                            "dang-ky/",
                             new { controller = "Customer", action = "Register" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("Logout",
-                            "logout/",
+                            "dang-xuat/",
                             new { controller = "Customer", action = "Logout" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("RegisterResult",
-                            "registerresult/{resultId}",
+                            "ket-qua-dang-ky/{resultId}",
                             new { controller = "Customer", action = "RegisterResult" },
                             new { resultId = @"\d+" },
-                            new[] { "Nop.Web.Controllers" });
+                            new[] { "Nop.Web.Controllers" });            
             routes.MapLocalizedRoute("CheckUsernameAvailability",
                             "customer/checkusernameavailability",
                             new { controller = "Customer", action = "CheckUsernameAvailability" },
@@ -292,17 +294,17 @@ namespace Nop.Web.Infrastructure
 
             //store closed
             routes.MapLocalizedRoute("StoreClosed",
-                            "storeclosed",
+                            "website-dang-bao-tri",
                             new { controller = "Common", action = "StoreClosed" },
                             new[] { "Nop.Web.Controllers" });
 
             //passwordrecovery
             routes.MapLocalizedRoute("PasswordRecovery",
-                            "passwordrecovery",
+                            "khoi-phuc-mat-khau",
                             new { controller = "Customer", action = "PasswordRecovery" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("PasswordRecoveryConfirm",
-                            "passwordrecovery/confirm",
+                            "khoi-phuc-mat-khau/xac-nhan",
                             new { controller = "Customer", action = "PasswordRecoveryConfirm" },                            
                             new[] { "Nop.Web.Controllers" });
 
