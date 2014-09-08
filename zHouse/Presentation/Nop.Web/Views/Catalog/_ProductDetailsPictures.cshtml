@@ -13,8 +13,8 @@
   <ul class="slides">
       @foreach(var i in Model)
       {
-    <li>
-      <img alt="@i.AlternateText" title="@i.Title" src="@i.FullSizeImageUrl" />
+    <li style="text-align:-webkit-center">
+        <img style="width:auto" alt="@i.AlternateText" title="@i.Title" src="@i.FullSizeImageUrl" />
     </li>
       }
    
@@ -25,7 +25,7 @@
        @foreach(var i in Model)
       {
         <li>
-          <img src="@i.ImageUrl" />
+          <img style="width:auto" src="@i.ImageUrl" alt="@i.AlternateText" title="@i.Title"/>
         </li>
        }
     
