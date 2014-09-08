@@ -51,7 +51,7 @@
                             </td>
                         }
                     </tr>
-                  @*  <tr class="product-name">
+                    <tr class="product-name">
                         <td>
                             &nbsp;
                         </td>
@@ -61,7 +61,7 @@
                                 <a href="@Url.RouteUrl("Product", new { SeName = product.SeName })">@product.Name</a>
                             </td>
                         }
-                    </tr>*@
+                    </tr>
                     <tr class="product-price">
                         <td>
                             @T("Products.Compare.Price")
@@ -80,7 +80,7 @@
                         @foreach (var product in Model.Products)
                         {
                             <td style="width: @columnWidth;" class="a-center">
-                                @product.Id
+                                @product.Sku
                             </td>
                         }
                     </tr>
@@ -146,7 +146,18 @@
                         @foreach (var product in Model.Products)
                         {
                             <td style="width: @columnWidth;" class="a-center">
-                                @product.Area (@product.Width X @product.Dept)
+                                @string.Format("{0}m2",product.Area.ToString("##.##").Replace(".",",")) (@product.Width x @product.Dept)
+                            </td>
+                        }
+                    </tr>
+                    <tr class="product-area">
+                        <td>
+                            @T("Products.Compare.AreaUse")
+                        </td>
+                        @foreach (var product in Model.Products)
+                        {
+                            <td style="width: @columnWidth;" class="a-center">
+                                @string.Format("{0}m2",product.AreaUse.ToString("##.##").Replace(".",","))
                             </td>
                         }
                     </tr>
@@ -183,7 +194,28 @@
                             </td>
                         }
                     </tr>
-                     
+                    <tr class="product-status">
+                        <td>
+                           Hướng
+                        </td>
+                        @foreach (var product in Model.Products)
+                        {
+                            <td style="width: @columnWidth;" class="a-center">
+                                @product.Directors
+                            </td>
+                        }
+                    </tr>                    
+                    <tr class="product-status">
+                        <td>
+                            Pháp lý
+                        </td>
+                        @foreach (var product in Model.Products)
+                        {
+                            <td style="width: @columnWidth;" class="a-center">
+                                Sổ hồng
+                            </td>
+                        }
+                    </tr> 
                     
                     @if (Model.IncludeShortDescriptionInCompareProducts)
                     {
@@ -221,21 +253,7 @@
                                 </td>
                             }
                         </tr>                    
-                    }
-                    @if (Model.IncludeFullDescriptionInCompareProducts)
-                    {
-                        <tr class="full-description">
-                            <td>
-                                @T("Products.Compare.FullDescription")
-                            </td>
-                            @foreach (var product in Model.Products)
-                            {
-                                <td style="width: @columnWidth;" class="a-left">
-                                    @Html.Raw(product.FullDescription)
-                                </td>
-                            }
-                        </tr>
-                    }
+                    }                   
                     @Html.Widget("compareproducts_row")
                 </tbody>
             </table>

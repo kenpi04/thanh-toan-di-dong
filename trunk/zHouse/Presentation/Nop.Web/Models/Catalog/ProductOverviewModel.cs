@@ -16,6 +16,7 @@ namespace Nop.Web.Models.Catalog
         }
 
         public string Name { get; set; }
+        public string Sku { get; set; }
         public string ShortDescription { get; set; }
         public string FullDescription { get; set; }
         public string SeName { get; set; }
@@ -24,6 +25,7 @@ namespace Nop.Web.Models.Catalog
         public string Email { get; set; }
         public int CateId { get; set; }
         public decimal Area { get; set; }
+        public decimal AreaUse { get; set; }
         public decimal Width { get; set; }
         public decimal Dept { get; set; }
         public string NumberOfHome { get; set; }
@@ -33,11 +35,10 @@ namespace Nop.Web.Models.Catalog
         public string Moitruong { get; set; }
         public string Status { get; set; }
         public string TienNghi { get; set; }
-
         public string NumberBlock { get; set; }
         public string DictrictName { get; set; }
-
         public string Directors { get; set; }
+        public string PhapLy { get; set; }
         //price
         public ProductPriceModel ProductPrice { get; set; }
         //picture
