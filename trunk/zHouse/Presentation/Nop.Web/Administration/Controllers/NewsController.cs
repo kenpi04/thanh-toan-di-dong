@@ -203,7 +203,7 @@ namespace Nop.Admin.Controllers
                 //search engine name
                 //search engine name
                 var seName = newsItem.ValidateSeName(model.SeName,model.Title.RemoveSign4VietnameseString(), true);
-                _urlRecordService.SaveSlug(newsItem, seName, newsItem.LanguageId);
+                _urlRecordService.SaveSlug(newsItem, seName, 0);
 
                 //Stores
                 SaveStoreMappings(newsItem, model);
@@ -268,7 +268,7 @@ namespace Nop.Admin.Controllers
 
                 //search engine name
                 var seName = newsItem.ValidateSeName(model.SeName, model.Title.RemoveSign4VietnameseString(), true);
-                _urlRecordService.SaveSlug(newsItem, seName, newsItem.LanguageId);
+                _urlRecordService.SaveSlug(newsItem, seName, 0);
 
                 //Stores
                 SaveStoreMappings(newsItem, model);
