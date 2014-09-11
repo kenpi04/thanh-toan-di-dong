@@ -8,6 +8,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sankyo.Admin", "Sankyo\Administration\Sankyo.Admin\Sankyo.Admin.csproj", "{0EDB6D0E-7CA0-4C08-978B-956B6D41F1DC}"
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
