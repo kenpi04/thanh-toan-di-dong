@@ -15,9 +15,9 @@
         </div>
         <div class="options">
             <a href="@Url.Action("Create")" class="t-button">@T("Admin.Common.AddNew")</a>
-            <a href="@Url.Action("DownloadCatalogAsPdf")" class="t-button">@T("Admin.Catalog.Products.List.DownloadPDF")</a>
-            <a href="@Url.Action("ExportXmlAll")" class="t-button">@T("Admin.Common.ExportToXml.All")</a>
-            <input type="button" id="exportxml-selected" class="t-button" value="@T("Admin.Common.ExportToXml.Selected")" />
+            @*<a href="@Url.Action("DownloadCatalogAsPdf")" class="t-button">@T("Admin.Catalog.Products.List.DownloadPDF")</a>*@
+            @*<a href="@Url.Action("ExportXmlAll")" class="t-button">@T("Admin.Common.ExportToXml.All")</a>*@
+            @*<input type="button" id="exportxml-selected" class="t-button" value="@T("Admin.Common.ExportToXml.Selected")" />*@
             <a href="@Url.Action("ExportExcelAll")" class="t-button">@T("Admin.Common.ExportToExcel.All")</a>
             <input type="button" id="exportexcel-selected" class="t-button" value="@T("Admin.Common.ExportToExcel.Selected")" />
             @if (!Model.IsLoggedInAsVendor)
@@ -28,7 +28,7 @@
             <input type="button" id="delete-selected" class="t-button" value="@T("Admin.Common.Delete.Selected")" />
         </div>
     </div>
-    <table width="100%">
+    <table style="width:100%">
         <tr>
             <td class="adminTitle">
                 @Html.NopLabelFor(model => model.SearchProductName):
@@ -69,28 +69,28 @@
                 @Html.DropDownList("SearchStoreId", Model.AvailableStores)
             </td>
         </tr>
-        <tr @(Model.IsLoggedInAsVendor ? Html.Raw("style='display: none;'") : null)>
+        @*<tr @(Model.IsLoggedInAsVendor ? Html.Raw("style='display: none;'") : null)>
             <td class="adminTitle">
                 @Html.NopLabelFor(model => model.SearchVendorId):
             </td>
             <td class="adminData">
                 @Html.DropDownList("SearchVendorId", Model.AvailableVendors)
             </td>
-        </tr>
-        <tr>
+        </tr>*@
+        @*<tr>
             <td class="adminTitle">
                 @Html.NopLabelFor(model => model.SearchWarehouseId):
             </td>
             <td class="adminData">
                 @Html.DropDownList("SearchWarehouseId", Model.AvailableWarehouses)
             </td>
-        </tr>
+        </tr>*@
         <tr>
             <td class="adminTitle">
-                @Html.NopLabelFor(model => model.SearchProductTypeId):
+                @Html.NopLabelFor(model => model.SearchStatus):
             </td>
             <td class="adminData">
-                @Html.DropDownList("SearchProductTypeId", Model.AvailableProductTypes)
+                @Html.DropDownList("SearchStatus", Model.AvailableStatus)
             </td>
         </tr>
         <tr>
@@ -132,8 +132,8 @@
                         columns.Bound(x => x.Name);
                         columns.Bound(x => x.Sku);
                         columns.Bound(x => x.Price);
-                        columns.Bound(x => x.StockQuantity);
-                        columns.Bound(x => x.ProductTypeName);
+                        columns.Bound(x => x.StatusName);
+                        //columns.Bound(x => x.ProductTypeName);
                         columns.Bound(x => x.Published)
                             .ClientTemplate("<img alt='' src='" + Url.Content("~/Administration/Content/images/") + "active-<#= Published #>.gif' />")
                             .Centered()
@@ -242,9 +242,9 @@
                 SearchIncludeSubCategories: $('#@Html.FieldIdFor(model => model.SearchIncludeSubCategories)').is(':checked'),
                 SearchManufacturerId: $('#SearchManufacturerId').val(),
                 SearchStoreId: $('#SearchStoreId').val(),
-                SearchWarehouseId: $('#SearchWarehouseId').val(),
-                SearchVendorId: $('#SearchVendorId').val(),
-                SearchProductTypeId: $('#SearchProductTypeId').val()
+                //SearchWarehouseId: $('#SearchWarehouseId').val(),
+                //SearchVendorId: $('#SearchVendorId').val(),
+                SearchStatus: $('#SearchStatus').val()
             };
             e.data = searchModel;
         }

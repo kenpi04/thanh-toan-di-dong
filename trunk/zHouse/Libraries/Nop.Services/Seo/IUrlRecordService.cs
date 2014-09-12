@@ -50,7 +50,7 @@ namespace Nop.Services.Seo
         /// <param name="districtId">District out put</param>
         /// <param name="stateProvinceId">Stateprovince out put</param>
         /// <returns></returns>
-        UrlRecord GetBySlug(string slug, out int categoryId, out int streetId, out int wardId, out int districtId, out int stateProvinceId, out string priceString, out string specAttributeOptionIds);
+        UrlRecord GetBySlug(string slug, out int categoryId, out int streetId, out int wardId, out int districtId, out int stateProvinceId, out string priceString, out string specAttributeOptionIds, out string keywords);
 
         /// <summary>
         /// Gets all URL records
@@ -91,6 +91,6 @@ namespace Nop.Services.Seo
         /// <param name="priceString">Price string: 1000-1500</param>
         /// <param name="attributeOptionIds">id specification options id:  1-2-3-4-5</param>
         /// <returns>Link request: http://zhouse.com/nha-o-quan-1_pr-1000-15000_sa-1-2-3-4-5</returns>
-        string GetSlugFromId(string domainName, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string priceString = "", string @attributeOptionIds = "");
+        string GetSlugFromId(string domainName, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string priceString = "", string attributeOptionIds = "", string sku = "");
     }
 }

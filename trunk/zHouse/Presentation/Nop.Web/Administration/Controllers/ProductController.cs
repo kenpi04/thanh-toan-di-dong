@@ -461,6 +461,10 @@ namespace Nop.Admin.Controllers
                     model.AssociatedToProductId = product.ParentGroupedProductId;
                     model.AssociatedToProductName = parentGroupedProduct.Name;
                 }
+
+                //status
+                model.StatusEnum = CommonHelper.ToSelectListItem<ProductStatusEnum>().Select(x => new SelectListItem { Text = _localizationService.GetResource(x.Text), Value = x.Value }).ToList();
+                model.Status = product.Status;
             }
 
             model.PrimaryStoreCurrencyCode = _currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId).CurrencyCode;
@@ -668,19 +672,19 @@ namespace Nop.Admin.Controllers
                 model.AvailableStores.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString() });
 
             //stores
-            model.AvailableWarehouses.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
-            foreach (var wh in _shippingService.GetAllWarehouses())
-                model.AvailableWarehouses.Add(new SelectListItem() { Text = wh.Name, Value = wh.Id.ToString() });
+            //model.AvailableWarehouses.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            //foreach (var wh in _shippingService.GetAllWarehouses())
+            //    model.AvailableWarehouses.Add(new SelectListItem() { Text = wh.Name, Value = wh.Id.ToString() });
 
             //vendors
-            model.AvailableVendors.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
-            foreach (var v in _vendorService.GetAllVendors(0, int.MaxValue, true))
-                model.AvailableVendors.Add(new SelectListItem() { Text = v.Name, Value = v.Id.ToString() });
+            //model.AvailableVendors.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            //foreach (var v in _vendorService.GetAllVendors(0, int.MaxValue, true))
+            //    model.AvailableVendors.Add(new SelectListItem() { Text = v.Name, Value = v.Id.ToString() });
 
-            //product types
-            model.AvailableProductTypes = ProductType.SimpleProduct.ToSelectList(false).ToList();
-            model.AvailableProductTypes.Insert(0, new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0"});
-
+            //product status
+            model.AvailableStatus = CommonHelper.ToSelectListItem<ProductStatusEnum>().Select(x => new SelectListItem(){Text = _localizationService.GetResource(x.Text),Value=x.Value}).ToList();
+            model.AvailableStatus.Insert(0, new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            
             return View(model);
         }
 
@@ -707,22 +711,24 @@ namespace Nop.Admin.Controllers
                 storeId: model.SearchStoreId,
                 vendorId: model.SearchVendorId,
                 warehouseId: model.SearchWarehouseId,
-                productType: model.SearchProductTypeId > 0 ? (ProductType?)model.SearchProductTypeId: null,
+                status: (ProductStatusEnum)Enum.Parse(typeof(ProductStatusEnum), model.SearchStatus.ToString(),false),
                 keywords: model.SearchProductName,
                 pageIndex: command.Page - 1,
                 pageSize: command.PageSize,
-                showHidden: true
+                showHidden: true,
+                orderBy: ProductSortingEnum.Position
             );
             var gridModel = new GridModel();
             gridModel.Data = products.Select(x =>
             {
-                var productModel = x.ToModel();
+                var productModel = x.ToModel();               
+
                 if (_adminAreaSettings.DisplayProductPictures)
                 {
                     var defaultProductPicture = _pictureService.GetPicturesByProductId(x.Id, 1).FirstOrDefault();
                     productModel.PictureThumbnailUrl = _pictureService.GetPictureUrl(defaultProductPicture, 75, true);
                 }
-                productModel.ProductTypeName = x.ProductType.GetLocalizedEnum(_localizationService, _workContext);
+                productModel.StatusName = _localizationService.GetResource(Enum.GetName(typeof(ProductStatusEnum), x.Status));
                 return productModel;
             });
             gridModel.Total = products.TotalCount;
@@ -753,8 +759,8 @@ namespace Nop.Admin.Controllers
 
             var model = new ProductModel();
             PrepareProductModel(model, null, true, true);
-            AddLocales(_languageService, model.Locales);
-            PrepareAclModel(model, null, false);
+            //AddLocales(_languageService, model.Locales);
+            //PrepareAclModel(model, null, false);
             PrepareStoresMappingModel(model, null, false);
             return View(model);
         }
@@ -782,27 +788,28 @@ namespace Nop.Admin.Controllers
                 var product = model.ToEntity();
                 product.CreatedOnUtc = DateTime.UtcNow;
                 product.UpdatedOnUtc = DateTime.UtcNow;
+                product.Status = (short)ProductStatusEnum.PendingAproved;
                 _productService.InsertProduct(product);
                 //search engine name
                 model.SeName = product.ValidateSeName(model.SeName, product.Name, true);
                 _urlRecordService.SaveSlug(product, model.SeName, 0);
                 //locales
-                UpdateLocales(product, model);
+                //UpdateLocales(product, model);
                 //ACL (customer roles)
-                SaveProductAcl(product, model);
+                //SaveProductAcl(product, model);
                 //Stores
                 SaveStoreMappings(product, model);
                 //tags
                 SaveProductTags(product, ParseProductTags(model.ProductTags));
                 //discounts
-                var allDiscounts = _discountService.GetAllDiscounts(DiscountType.AssignedToSkus, null, true);
-                foreach (var discount in allDiscounts)
-                {
-                    if (model.SelectedDiscountIds != null && model.SelectedDiscountIds.Contains(discount.Id))
-                        product.AppliedDiscounts.Add(discount);
-                }
-                _productService.UpdateProduct(product);
-                _productService.UpdateHasDiscountsApplied(product);
+                //var allDiscounts = _discountService.GetAllDiscounts(DiscountType.AssignedToSkus, null, true);
+                //foreach (var discount in allDiscounts)
+                //{
+                //    if (model.SelectedDiscountIds != null && model.SelectedDiscountIds.Contains(discount.Id))
+                //        product.AppliedDiscounts.Add(discount);
+                //}
+                //_productService.UpdateProduct(product);
+                //_productService.UpdateHasDiscountsApplied(product);
 
                 //activity log
                 _customerActivityService.InsertActivity("AddNewProduct", _localizationService.GetResource("ActivityLog.AddNewProduct"), product.Name);
@@ -835,18 +842,18 @@ namespace Nop.Admin.Controllers
 
             var model = product.ToModel();
             PrepareProductModel(model, product, false, false);
-            AddLocales(_languageService, model.Locales, (locale, languageId) =>
-                {
-                    locale.Name = product.GetLocalized(x => x.Name, languageId, false, false);
-                    locale.ShortDescription = product.GetLocalized(x => x.ShortDescription, languageId, false, false);
-                    locale.FullDescription = product.GetLocalized(x => x.FullDescription, languageId, false, false);
-                    locale.MetaKeywords = product.GetLocalized(x => x.MetaKeywords, languageId, false, false);
-                    locale.MetaDescription = product.GetLocalized(x => x.MetaDescription, languageId, false, false);
-                    locale.MetaTitle = product.GetLocalized(x => x.MetaTitle, languageId, false, false);
-                    locale.SeName = product.GetSeName(languageId, false, false);
-                });
+            //AddLocales(_languageService, model.Locales, (locale, languageId) =>
+            //    {
+            //        locale.Name = product.GetLocalized(x => x.Name, languageId, false, false);
+            //        locale.ShortDescription = product.GetLocalized(x => x.ShortDescription, languageId, false, false);
+            //        locale.FullDescription = product.GetLocalized(x => x.FullDescription, languageId, false, false);
+            //        locale.MetaKeywords = product.GetLocalized(x => x.MetaKeywords, languageId, false, false);
+            //        locale.MetaDescription = product.GetLocalized(x => x.MetaDescription, languageId, false, false);
+            //        locale.MetaTitle = product.GetLocalized(x => x.MetaTitle, languageId, false, false);
+            //        locale.SeName = product.GetSeName(languageId, false, false);
+            //    });
 
-            PrepareAclModel(model, product, false);
+            //PrepareAclModel(model, product, false);
             PrepareStoresMappingModel(model, product, false);
             return View(model);
         }
@@ -888,34 +895,34 @@ namespace Nop.Admin.Controllers
                 model.SeName = product.ValidateSeName(model.SeName, product.Name, true);
                 _urlRecordService.SaveSlug(product, model.SeName, 0);
                 //locales
-                UpdateLocales(product, model);
+                //UpdateLocales(product, model);
                 //tags
                 SaveProductTags(product, ParseProductTags(model.ProductTags));
                 //ACL (customer roles)
-                SaveProductAcl(product, model);
+                //SaveProductAcl(product, model);
                 //Stores
                 SaveStoreMappings(product, model);
                 //picture seo names
                 UpdatePictureSeoNames(product);
                 //discounts
-                var allDiscounts = _discountService.GetAllDiscounts(DiscountType.AssignedToSkus, null, true);
-                foreach (var discount in allDiscounts)
-                {
-                    if (model.SelectedDiscountIds != null && model.SelectedDiscountIds.Contains(discount.Id))
-                    {
-                        //new role
-                        if (product.AppliedDiscounts.Count(d => d.Id == discount.Id) == 0)
-                            product.AppliedDiscounts.Add(discount);
-                    }
-                    else
-                    {
-                        //removed role
-                        if (product.AppliedDiscounts.Count(d => d.Id == discount.Id) > 0)
-                            product.AppliedDiscounts.Remove(discount);
-                    }
-                }
+                //var allDiscounts = _discountService.GetAllDiscounts(DiscountType.AssignedToSkus, null, true);
+                //foreach (var discount in allDiscounts)
+                //{
+                //    if (model.SelectedDiscountIds != null && model.SelectedDiscountIds.Contains(discount.Id))
+                //    {
+                //        //new role
+                //        if (product.AppliedDiscounts.Count(d => d.Id == discount.Id) == 0)
+                //            product.AppliedDiscounts.Add(discount);
+                //    }
+                //    else
+                //    {
+                //        //removed role
+                //        if (product.AppliedDiscounts.Count(d => d.Id == discount.Id) > 0)
+                //            product.AppliedDiscounts.Remove(discount);
+                //    }
+                //}
                 _productService.UpdateProduct(product);
-                _productService.UpdateHasDiscountsApplied(product);
+                //_productService.UpdateHasDiscountsApplied(product);
                 //back in stock notifications
                 if (product.ManageInventoryMethod == ManageInventoryMethod.ManageStock &&
                     product.BackorderMode == BackorderMode.NoBackorders &&
@@ -948,7 +955,7 @@ namespace Nop.Admin.Controllers
 
             //If we got this far, something failed, redisplay form
             PrepareProductModel(model, product, false, true);
-            PrepareAclModel(model, product, true);
+            //PrepareAclModel(model, product, true);
             PrepareStoresMappingModel(model, product, true);
             return View(model);
         }

@@ -7,21 +7,21 @@ namespace Nop.Core.Domain.Catalog
         /// <summary>
         /// Luu tam
         /// </summary>
-        Saved = 0,
+        Saved = 1,
 
         /// <summary>
         /// Cho duyet
         /// </summary>
-        PendingAproved = 1,
+        PendingAproved = 10,
 
         /// <summary>
         /// Da duyet
         /// </summary>
-        Approved = 2,
+        Approved = 20,
 
         /// <summary>
         /// khong duyet
         /// </summary>
-        NotApproved = 3
+        NotApproved = 30
     }
 }

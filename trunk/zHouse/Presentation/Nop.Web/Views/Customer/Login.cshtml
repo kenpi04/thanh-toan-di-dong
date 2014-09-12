@@ -41,7 +41,7 @@
             }
             else
             {
-                <div class="new-wrapper register-block">
+                <div class="new-wrapper register-block" style="height:264px;">
                     <div class="title">
                         <strong>@T("Account.Login.NewCustomer")</strong>
                     </div>
@@ -108,6 +108,6 @@
         <div class="external-authentication">
             @Html.Action("ExternalMethods", "ExternalAuthentication")
         </div>
-        @Html.Action("TopicBlock", "Topic", new { systemName = "LoginRegistrationInfo" })
+        @*@Html.Action("TopicBlock", "Topic", new { systemName = "LoginRegistrationInfo" })*@
     </div>
 </div>

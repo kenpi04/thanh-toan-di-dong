@@ -28,20 +28,28 @@ namespace Nop.Admin.Models.Catalog
             AvailableWarehouses = new List<SelectListItem>();
             AddPictureModel = new ProductPictureModel();
             AddSpecificationAttributeModel = new AddProductSpecificationAttributeModel();
+            StatusEnum = new List<SelectListItem>();
         }
 
+        public List<SelectListItem> StatusEnum { get; set; }
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Status")]
+        public short Status { get; set; }
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.StatusName")]
+        public string StatusName { get; set; }
+
+
         public string HouseNumber { get; set; }
-          [NopResourceDisplayName("Admin.Catalog.Products.Fields.FullAddress")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.FullAddress")]
         public string FullAddress { get; set; }
-          [NopResourceDisplayName("Admin.Catalog.Products.Fields.Area")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Area")]
         public decimal Area { get; set; }
-          [NopResourceDisplayName("Admin.Catalog.Products.Fields.AreaUse")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.AreaUse")]
         public decimal AreaUse { get; set; }
-          [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactName")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactName")]
         public string ContactName { get; set; }
-          [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactPhone")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactPhone")]
         public string ContactPhone { get; set; }
-          [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactEmail")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactEmail")]
         public string ContactEmail { get; set; }
 
 
@@ -54,9 +62,7 @@ namespace Nop.Admin.Models.Catalog
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.ProductType")]
         public int ProductTypeId { get; set; }
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.ProductType")]
-        public string ProductTypeName { get; set; }
-
+        
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.AssociatedToProductName")]
         public int AssociatedToProductId { get; set; }
@@ -307,7 +313,7 @@ namespace Nop.Admin.Models.Catalog
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Height")]
         public decimal Height { get; set; }
-       
+
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.StartConstructionDate")]
         [UIHint("DateTimeNullable")]
         public DateTime? StartConstructionDate { get; set; }
@@ -368,7 +374,7 @@ namespace Nop.Admin.Models.Catalog
 
         //product attributes
         public int NumberOfAvailableProductAttributes { get; set; }
-        
+
 
 
         //pictures
@@ -389,9 +395,9 @@ namespace Nop.Admin.Models.Catalog
 
         //copy product
         public CopyProductModel CopyProductModel { get; set; }
-        
+
         #region Nested classes
-        
+
         public partial class AddProductSpecificationAttributeModel : BaseNopModel
         {
             public AddProductSpecificationAttributeModel()
@@ -399,7 +405,7 @@ namespace Nop.Admin.Models.Catalog
                 AvailableAttributes = new List<SelectListItem>();
                 AvailableOptions = new List<SelectListItem>();
             }
-            
+
             [NopResourceDisplayName("Admin.Catalog.Products.SpecificationAttributes.Fields.SpecificationAttribute")]
             public int SpecificationAttributeId { get; set; }
 
@@ -421,7 +427,7 @@ namespace Nop.Admin.Models.Catalog
             public IList<SelectListItem> AvailableAttributes { get; set; }
             public IList<SelectListItem> AvailableOptions { get; set; }
         }
-        
+
         public partial class ProductPictureModel : BaseNopEntityModel
         {
             public int ProductId { get; set; }
@@ -436,7 +442,7 @@ namespace Nop.Admin.Models.Catalog
             [NopResourceDisplayName("Admin.Catalog.Products.Pictures.Fields.DisplayOrder")]
             public int DisplayOrder { get; set; }
         }
-        
+
         public partial class ProductCategoryModel : BaseNopEntityModel
         {
             [NopResourceDisplayName("Admin.Catalog.Products.Categories.Fields.Category")]
@@ -477,7 +483,7 @@ namespace Nop.Admin.Models.Catalog
 
             [NopResourceDisplayName("Admin.Catalog.Products.RelatedProducts.Fields.Product")]
             public string Product2Name { get; set; }
-            
+
             [NopResourceDisplayName("Admin.Catalog.Products.RelatedProducts.Fields.DisplayOrder")]
             public int DisplayOrder { get; set; }
         }
@@ -701,7 +707,7 @@ namespace Nop.Admin.Models.Catalog
             [NopResourceDisplayName("Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.Name")]
             [AllowHtml]
             public string Name { get; set; }
-            
+
             [NopResourceDisplayName("Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values.Fields.ColorSquaresRgb")]
             [AllowHtml]
             public string ColorSquaresRgb { get; set; }
@@ -771,7 +777,7 @@ namespace Nop.Admin.Models.Catalog
                 public IList<SelectListItem> AvailableStores { get; set; }
                 public IList<SelectListItem> AvailableVendors { get; set; }
                 public IList<SelectListItem> AvailableProductTypes { get; set; }
-                
+
                 //vendor
                 public bool IsLoggedInAsVendor { get; set; }
 
@@ -869,6 +875,6 @@ namespace Nop.Admin.Models.Catalog
         [AllowHtml]
         public string SeName { get; set; }
 
-        
+
     }
 }

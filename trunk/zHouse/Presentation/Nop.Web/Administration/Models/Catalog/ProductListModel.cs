@@ -14,7 +14,7 @@ namespace Nop.Admin.Models.Catalog
             AvailableStores = new List<SelectListItem>();
             AvailableWarehouses = new List<SelectListItem>();
             AvailableVendors = new List<SelectListItem>();
-            AvailableProductTypes = new List<SelectListItem>();
+            AvailableStatus = new List<SelectListItem>();
         }
 
         [NopResourceDisplayName("Admin.Catalog.Products.List.SearchProductName")]
@@ -32,8 +32,8 @@ namespace Nop.Admin.Models.Catalog
         public int SearchVendorId { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.List.SearchWarehouse")]
         public int SearchWarehouseId { get; set; }
-        [NopResourceDisplayName("Admin.Catalog.Products.List.SearchProductType")]
-        public int SearchProductTypeId { get; set; }
+        [NopResourceDisplayName("Admin.Catalog.Products.List.SearchStatus")]
+        public int SearchStatus { get; set; }
 
         [NopResourceDisplayName("Admin.Catalog.Products.List.GoDirectlyToSku")]
         [AllowHtml]
@@ -48,6 +48,6 @@ namespace Nop.Admin.Models.Catalog
         public IList<SelectListItem> AvailableStores { get; set; }
         public IList<SelectListItem> AvailableWarehouses { get; set; }
         public IList<SelectListItem> AvailableVendors { get; set; }
-        public IList<SelectListItem> AvailableProductTypes { get; set; }
+        public IList<SelectListItem> AvailableStatus { get; set; }
     }
 }

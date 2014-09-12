@@ -278,7 +278,16 @@
                 @Html.ValidationMessageFor(model => model.Id)
             </td>
         </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Status):
+        </td>
+        <td class="adminData">            
+            @Html.DropDownListFor(model => model.Status, Model.StatusEnum)
+        </td>
+    </tr>
     }
+
   @*  <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.ProductTypeId):
@@ -296,8 +305,8 @@
             @Html.EditorFor(model => model.VisibleIndividually)
             @Html.ValidationMessageFor(model => model.VisibleIndividually)
         </td>
-    </tr>
-    @if (Model.Id > 0 && Model.AssociatedToProductId > 0)
+    </tr>    
+    @*@if (Model.Id > 0 && Model.AssociatedToProductId > 0)
     {
         <tr>
             <td class="adminTitle">
@@ -307,7 +316,7 @@
                 @Html.ActionLink(Model.AssociatedToProductName, "Edit", "Product", new { id = Model.AssociatedToProductId }, new { })
             </td>
         </tr>
-    }
+    }*@
     <tr>
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.ProductTemplateId):
@@ -318,43 +327,7 @@
         </td>
     </tr>
 </table>
-@(Html.LocalizedEditor<ProductModel, ProductLocalizedModel>("product-info-localized",
-                @<table class="adminContent">
-                    <tr>
-                        <td class="adminTitle">
-                            @Html.NopLabelFor(model => model.Locales[item].Name):
-                        </td>
-                        <td class="adminData">
-                            @Html.EditorFor(model => Model.Locales[item].Name)
-                            @Html.ValidationMessageFor(model => model.Locales[item].Name)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="adminTitle">
-                            @Html.NopLabelFor(model => model.Locales[item].ShortDescription):
-                        </td>
-                        <td class="adminData">
-                            @Html.TextAreaFor(model => model.Locales[item].ShortDescription, new { style = "Width: 250px; Height: 150px;" })
-                            @Html.ValidationMessageFor(model => model.Locales[item].ShortDescription)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="adminTitle">
-                            @Html.NopLabelFor(model => model.Locales[item].FullDescription):
-                        </td>
-                        <td class="adminData">
-                            @Html.EditorFor(model => model.Locales[item].FullDescription, "RichEditor")
-                            @Html.ValidationMessageFor(model => model.Locales[item].FullDescription)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            @Html.HiddenFor(model => model.Locales[item].LanguageId)
-                        </td>
-                    </tr>
-                </table>
-                ,
-                @<table class="adminContent">
+<table class="adminContent">
                     <tr>
                         <td class="adminTitle">
                             @Html.NopLabelFor(model => model.Name):
@@ -383,7 +356,7 @@
                         </td>
                     </tr>
                 </table>
-            ))
+            
 <table class="adminContent">
    @* <tr>
         <td class="adminTitle">
@@ -476,20 +449,20 @@
     </tr>
      <tr>
         <td class="adminTitle">
-            @Html.NopLabelFor(model => model.AreaUse):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.AreaUse)
-            @Html.ValidationMessageFor(model => model.AreaUse)
-        </td>
-    </tr>
-     <tr>
-        <td class="adminTitle">
             @Html.NopLabelFor(model => model.Area):
         </td>
         <td class="adminData">
             @Html.EditorFor(model => model.Area)
             @Html.ValidationMessageFor(model => model.Area)
+        </td>
+    </tr>
+     <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.AreaUse):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.AreaUse)
+            @Html.ValidationMessageFor(model => model.AreaUse)
         </td>
     </tr>
      <tr>
@@ -527,53 +500,50 @@
             @Html.ValidationMessageFor(model => model.ContactPhone)
         </td>
     </tr>
-          <tr>
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.Sku):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.Sku)
-            @Html.ValidationMessageFor(model => model.Sku)
-        </td>
-    </tr>
-    </tr>
-    <tr>
-        <td class="adminTitle">
-          Nhà đầu tư:
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.ManufacturerPartNumber)
-            @Html.ValidationMessageFor(model => model.ManufacturerPartNumber)
-        </td>
-    </tr>
-    <tr>
-        <td class="adminTitle">
-           Đơn vị thi công:
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.Gtin)
-            @Html.ValidationMessageFor(model => model.Gtin)
-        </td>
-    </tr>
-      <tr>
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.StartConstructionDate):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.StartConstructionDate)
-            @Html.ValidationMessageFor(model => model.StartConstructionDate)
-        </td>
-    </tr>
-      <tr>
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.FinishConstructionDate):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.FinishConstructionDate)
-            @Html.ValidationMessageFor(model => model.FinishConstructionDate)
-        </td>
-    </tr>
-</table>
+    </table>
+    <table class="adminContent">
+        <tr class="adminSeparator">
+            <td colspan="2">
+                <hr />
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.ManufacturerPartNumber):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.ManufacturerPartNumber)
+                @Html.ValidationMessageFor(model => model.ManufacturerPartNumber)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Gtin):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Gtin)
+                @Html.ValidationMessageFor(model => model.Gtin)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.StartConstructionDate):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.StartConstructionDate)
+                @Html.ValidationMessageFor(model => model.StartConstructionDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.FinishConstructionDate):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.FinishConstructionDate)
+                @Html.ValidationMessageFor(model => model.FinishConstructionDate)
+            </td>
+        </tr>
+    </table>
 <table class="adminContent" id="group-prices">
     <tr class="adminSeparator">
         <td colspan="2">

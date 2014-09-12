@@ -2850,8 +2850,8 @@ namespace Nop.Web.Controllers
                 model.Q = "";
             model.Q = model.Q.Trim();
 
-            var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
-                .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
+            //var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
+            //    .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
 
             //string cacheKey = string.Format(ModelCacheEventConsumer.SEARCH_CATEGORIES_MODEL_KEY, _workContext.WorkingLanguage.Id, string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
             //var categories = _cacheManager.Get(cacheKey, () =>
@@ -2995,9 +2995,9 @@ namespace Nop.Web.Controllers
                 visibleIndividuallyOnly: true,
                 priceMin: minPriceConverted,
                 priceMax: maxPriceConverted,
-                keywords: null,
+                keywords: model.Q,
                 searchDescriptions: searchInDescriptions,
-                searchSku: searchInDescriptions,
+                searchSku: true,
                 searchProductTags: searchInProductTags,
                 languageId: _workContext.WorkingLanguage.Id,
                 pageIndex: command.PageNumber - 1,
@@ -3012,35 +3012,35 @@ namespace Nop.Web.Controllers
             model.NoResults = !model.Products.Any();
 
             //search term statistics
-            if (!String.IsNullOrEmpty(model.Q))
-            {
-                var searchTerm = _searchTermService.GetSearchTermByKeyword(model.Q, _storeContext.CurrentStore.Id);
-                if (searchTerm != null)
-                {
-                    searchTerm.Count++;
-                    _searchTermService.UpdateSearchTerm(searchTerm);
-                }
-                else
-                {
-                    searchTerm = new SearchTerm()
-                    {
-                        Keyword = model.Q,
-                        StoreId = _storeContext.CurrentStore.Id,
-                        Count = 1
-                    };
-                    _searchTermService.InsertSearchTerm(searchTerm);
-                }
-            }
+            //if (!String.IsNullOrEmpty(model.Q))
+            //{
+            //    var searchTerm = _searchTermService.GetSearchTermByKeyword(model.Q, _storeContext.CurrentStore.Id);
+            //    if (searchTerm != null)
+            //    {
+            //        searchTerm.Count++;
+            //        _searchTermService.UpdateSearchTerm(searchTerm);
+            //    }
+            //    else
+            //    {
+            //        searchTerm = new SearchTerm()
+            //        {
+            //            Keyword = model.Q,
+            //            StoreId = _storeContext.CurrentStore.Id,
+            //            Count = 1
+            //        };
+            //        _searchTermService.InsertSearchTerm(searchTerm);
+            //    }
+            //}
 
-            //event
-            _eventPublisher.Publish(new ProductSearchEvent()
-            {
-                SearchTerm = model.Q,
-                SearchInDescriptions = searchInDescriptions,
-                CategoryIds = categoryIds,
-                ManufacturerId = manufacturerId,
-                WorkingLanguageId = _workContext.WorkingLanguage.Id
-            });
+            ////event
+            //_eventPublisher.Publish(new ProductSearchEvent()
+            //{
+            //    SearchTerm = model.Q,
+            //    SearchInDescriptions = searchInDescriptions,
+            //    CategoryIds = categoryIds,
+            //    ManufacturerId = manufacturerId,
+            //    WorkingLanguageId = _workContext.WorkingLanguage.Id
+            //});
 
 
 
@@ -3114,11 +3114,11 @@ namespace Nop.Web.Controllers
         }
 
         [HttpGet]
-        public string GetSlugFromId(string domainName, string priceString, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0)
+        public string GetSlugFromId(string domainName, string priceString, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string Q = null)
         {
             if (String.IsNullOrEmpty(domainName)) domainName = Request.Url.Host;
             if (categoryId == 0) categoryId = 1;
-            var slug = _urlRecordService.GetSlugFromId(domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds);
+            var slug = _urlRecordService.GetSlugFromId(domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds, Q);
             return slug;
         }
         #endregion

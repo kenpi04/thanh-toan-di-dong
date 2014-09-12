@@ -8,8 +8,8 @@
     x.Add().Text(T("Admin.Catalog.Categories.Info").Text).Content(TabInfo().ToHtmlString());
     x.Add().Text(T("Admin.Common.SEO").Text).Content(TabSeo().ToHtmlString());
     x.Add().Text(T("Admin.Catalog.Categories.Products").Text).Content(TabProducts().ToHtmlString());
-    x.Add().Text(T("Admin.Catalog.Categories.Discounts").Text).Content(TabDiscounts().ToHtmlString());
-    x.Add().Text(T("Admin.Catalog.Categories.Acl").Text).Content(TabAcl().ToHtmlString());
+    //x.Add().Text(T("Admin.Catalog.Categories.Discounts").Text).Content(TabDiscounts().ToHtmlString());
+    //x.Add().Text(T("Admin.Catalog.Categories.Acl").Text).Content(TabAcl().ToHtmlString());
     x.Add().Text(T("Admin.Catalog.Categories.Stores").Text).Content(TabStores().ToHtmlString());
 
     //generate an event
@@ -21,34 +21,9 @@
 
 @helper TabInfo()
     { 
-    @(Html.LocalizedEditor<CategoryModel, CategoryLocalizedModel>("category-info-localized",
-                @<table class="adminContent">
-                    <tr>
-                        <td class="adminTitle">
-                            @Html.NopLabelFor(model => model.Locales[item].Name):
-                        </td>
-                        <td class="adminData">
-                            @Html.EditorFor(model => Model.Locales[item].Name)
-                            @Html.ValidationMessageFor(model => model.Locales[item].Name)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="adminTitle">
-                            @Html.NopLabelFor(model => model.Locales[item].Description):
-                        </td>
-                        <td class="adminData">
-                            @Html.EditorFor(model => model.Locales[item].Description, "RichEditor")
-                            @Html.ValidationMessageFor(model => model.Locales[item].Description)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            @Html.HiddenFor(model => model.Locales[item].LanguageId)
-                        </td>
-                    </tr>
-                </table>
-                ,
-                @<table class="adminContent">
+    
+    
+                <table class="adminContent">
                     <tr>
                         <td class="adminTitle">
                             @Html.NopLabelFor(model => model.Name):
@@ -68,7 +43,7 @@
                         </td>
                     </tr>
                 </table>
-            ))
+            
     <table class="adminContent">
         <tr>
             <td class="adminTitle">
@@ -147,52 +122,8 @@
 }
 @helper TabSeo()
     {
-    @(Html.LocalizedEditor<CategoryModel, CategoryLocalizedModel>("category-seo-localized",
-               @<table class="adminContent">
-                   <tr>
-                       <td class="adminTitle">
-                           @Html.NopLabelFor(model => model.Locales[item].MetaKeywords):
-                       </td>
-                       <td class="adminData">
-                           @Html.EditorFor(model => model.Locales[item].MetaKeywords)
-                           @Html.ValidationMessageFor(model => model.Locales[item].MetaKeywords)
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="adminTitle">
-                           @Html.NopLabelFor(model => model.Locales[item].MetaDescription):
-                       </td>
-                       <td class="adminData">
-                           @Html.TextAreaFor(model => model.Locales[item].MetaDescription)
-                           @Html.ValidationMessageFor(model => model.Locales[item].MetaDescription)
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="adminTitle">
-                           @Html.NopLabelFor(model => model.Locales[item].MetaTitle):
-                       </td>
-                       <td class="adminData">
-                           @Html.EditorFor(model => model.Locales[item].MetaTitle)
-                           @Html.ValidationMessageFor(model => model.Locales[item].MetaTitle)
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="adminTitle">
-                           @Html.NopLabelFor(model => model.Locales[item].SeName):
-                       </td>
-                       <td class="adminData">
-                           @Html.EditorFor(model => model.Locales[item].SeName)
-                           @Html.ValidationMessageFor(model => model.Locales[item].SeName)
-                       </td>
-                   </tr>
-                   <tr>
-                       <td colspan="2">
-                           @Html.HiddenFor(model => model.Locales[item].LanguageId)
-                       </td>
-                   </tr>
-               </table>
-               ,
-               @<table class="adminContent">
+    
+               <table class="adminContent">
                    <tr>
                        <td class="adminTitle">
                            @Html.NopLabelFor(model => model.MetaKeywords):
@@ -229,7 +160,7 @@
                            @Html.ValidationMessageFor(model => model.SeName)
                        </td>
                    </tr>
-               </table>)) 
+               </table>
         
         
 <script type="text/javascript">
