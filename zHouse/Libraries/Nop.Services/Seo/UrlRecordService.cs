@@ -227,10 +227,10 @@ namespace Nop.Services.Seo
             }
         }
 
-        public virtual UrlRecord GetBySlug(string slug, out int categoryId, out int streetId, out int wardId, out int districtId, out int stateProvinceId, out string priceString, out string specAttributeOptionIds)
+        public virtual UrlRecord GetBySlug(string slug, out int categoryId, out int streetId, out int wardId, out int districtId, out int stateProvinceId, out string priceString, out string specAttributeOptionIds, out string keywords)
         {
             categoryId = streetId = wardId = districtId = stateProvinceId = 0;
-            priceString = specAttributeOptionIds = "";
+            priceString = specAttributeOptionIds = keywords = "";
 
             string key = string.Format("GetBySlug-{0}", slug);
             var urlRec = _cacheManager.Get(key, 5, () =>
@@ -281,6 +281,12 @@ namespace Nop.Services.Seo
                 pAttributeOptions.Direction = ParameterDirection.Output;
                 pAttributeOptions.DbType = DbType.String;
 
+                var pKeywords = _dataProvider.GetParameter();
+                pKeywords.ParameterName = "keywords";
+                pKeywords.Size = 200;
+                pKeywords.Direction = ParameterDirection.Output;
+                pKeywords.DbType = DbType.String;
+
                 var urlRecords = _dbContext.ExecuteStoredProcedureList<UrlRecord>(
                         "GetUrlLink",
                         pSlug,
@@ -290,7 +296,8 @@ namespace Nop.Services.Seo
                         pDistrictId,
                         pStateProvinceId,
                         pPriceString,
-                        pAttributeOptions
+                        pAttributeOptions,
+                        pKeywords
                         );
 
                 var urlRecord = urlRecords.FirstOrDefault();
@@ -305,7 +312,8 @@ namespace Nop.Services.Seo
                         districtId = (pDistrictId.Value != DBNull.Value) ? Convert.ToInt32(pDistrictId.Value) : 0,
                         stateProvinceId = (pStateProvinceId.Value != DBNull.Value) ? Convert.ToInt32(pStateProvinceId.Value) : 0,
                         priceString = pPriceString.Value.ToString(),
-                        specAttributeOptionIds = pAttributeOptions.Value.ToString()
+                        specAttributeOptionIds = pAttributeOptions.Value.ToString(),
+                        keywords = pKeywords.Value.ToString()
                     };
                     //categoryId = (pCategoryId.Value != DBNull.Value) ? Convert.ToInt32(pCategoryId.Value) : 0;
                     //streetId = (pStreetId.Value != DBNull.Value) ? Convert.ToInt32(pStreetId.Value) : 0;
@@ -327,6 +335,7 @@ namespace Nop.Services.Seo
                 stateProvinceId = urlRec.stateProvinceId;
                 priceString = urlRec.priceString;
                 specAttributeOptionIds = urlRec.specAttributeOptionIds;
+                keywords = urlRec.keywords;
                 return urlRec.urlRecord;
             }
             return null;
@@ -540,16 +549,20 @@ namespace Nop.Services.Seo
             int wardId = 0,
             int streetId = 0,
             string priceString = "",
-            string @attributeOptionIds = "")
+            string attributeOptionIds = "",
+            string sku="")
         {
-            string key = string.Format("GetSlugFromId-{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}", domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds);
+            string key = string.Empty;
+            if(!String.IsNullOrWhiteSpace(sku))
+                key = string.Format("GetSlugFromId-{0}", sku);               
+            else key = string.Format("GetSlugFromId-{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}", domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds);
             return _cacheManager.Get(key, 5, () =>
             {
                 string slug = "";
                 SqlParameter pSlug = new SqlParameter("slug", SqlDbType.NVarChar, 1000);
                 pSlug.Direction = ParameterDirection.Output;
 
-                var excute = _dbContext.ExecuteSqlCommand("execute [GetSlugFromId] @domainName, @categoryId, @stateProvinceId, @districtId, @wardId, @streetId, @priceString, @attibuteOptionIds, @slug output", false, null,
+                var excute = _dbContext.ExecuteSqlCommand("execute [GetSlugFromId] @domainName, @categoryId, @stateProvinceId, @districtId, @wardId, @streetId, @priceString, @attibuteOptionIds, @sku, @slug output", false, null,
                     new SqlParameter("domainName", domainName),
                     new SqlParameter("categoryId", categoryId),
                     new SqlParameter("stateProvinceId", stateProvinceId),
@@ -558,6 +571,7 @@ namespace Nop.Services.Seo
                     new SqlParameter("streetId", streetId),
                     new SqlParameter("priceString", priceString),
                     new SqlParameter("attibuteOptionIds", attributeOptionIds),
+                    new SqlParameter("sku", sku),
                     pSlug
                     );
                 return slug = pSlug.Value == DBNull.Value ? "" : pSlug.Value.ToString();

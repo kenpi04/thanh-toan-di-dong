@@ -26,10 +26,6 @@ namespace Nop.Web.Models.Catalog
                 new SelectListItem { Value = "3500-4000", Text = "3.5 tỷ ~ 4 tỷ" },
                 new SelectListItem { Value = "4000-0", Text = "> 4 tỷ" }
             };
-            //PriceRange.Add(new SelectListItem { Value = "0-0", Text = "Chọn mức giá" });
-            //PriceRange.Add(new SelectListItem { Value = "1000-1500", Text = "1 tỷ ~ 1.5 tỷ" });
-            //PriceRange.Add(new SelectListItem { Value = "1500-3000", Text = "1.5 tỷ ~ 3 tỷ" });
-            //PriceRange.Add(new SelectListItem { Value = "3000-0", Text = "Trên 3 tỷ" });
             SelectedOptionIds = new List<int>();
             DistrictIds = new List<int>();
             Districts = new List<SelectListItem>();
@@ -84,7 +80,6 @@ namespace Nop.Web.Models.Catalog
         public bool As { get; set; }
         public IList<SelectListItem> AvailableCategories { get; set; }
         public IList<SelectListItem> AvailableManufacturers { get; set; }
-
 
         public SearchPagingFilteringModel PagingFilteringContext { get; set; }
         public IList<ProductOverviewModel> Products { get; set; }

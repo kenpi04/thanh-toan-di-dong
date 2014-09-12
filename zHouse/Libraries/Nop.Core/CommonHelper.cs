@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Nop.Core.ComponentModel;
 using Nop.Core.Domain.Shipping;
+using System.Web.WebPages.Html;
 
 namespace Nop.Core
 {
@@ -304,6 +305,20 @@ namespace Nop.Core
                    Convert.ToBoolean(ConfigurationManager.AppSettings["OneToManyCollectionWrapperEnabled"]);
                 return enabled;
             }
+        }
+
+        public static List<System.Web.Mvc.SelectListItem> ToSelectListItem<TEnum>() where TEnum : struct
+        {
+            var items = new List<System.Web.Mvc.SelectListItem>();
+            foreach (int value in Enum.GetValues(typeof(TEnum)))
+            {
+                items.Add(new System.Web.Mvc.SelectListItem
+                {
+                    Text = Enum.GetName(typeof(TEnum), value),
+                    Value = value.ToString()
+                });
+            }
+            return items;
         }
     }
 }

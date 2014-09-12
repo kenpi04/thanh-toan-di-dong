@@ -218,7 +218,7 @@ namespace Nop.Admin.Infrastructure
                 .ForMember(dest => dest.Deleted, mo => mo.Ignore());
             //products
             Mapper.CreateMap<Product, ProductModel>()
-                .ForMember(dest => dest.ProductTypeName, mo => mo.Ignore())
+                .ForMember(dest => dest.StatusName, mo => mo.Ignore())
                 .ForMember(dest => dest.AssociatedToProductId, mo => mo.Ignore())
                 .ForMember(dest => dest.AssociatedToProductName, mo => mo.Ignore())
                 .ForMember(dest => dest.CreatedOn, mo => mo.Ignore())
@@ -250,7 +250,9 @@ namespace Nop.Admin.Infrastructure
                 .ForMember(dest => dest.SelectedDiscountIds, mo => mo.Ignore())
                 .ForMember(dest => dest.AvailableDeliveryDates, mo => mo.Ignore())
                 .ForMember(dest => dest.AvailableWarehouses, mo => mo.Ignore())
-                .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
+                .ForMember(dest => dest.CustomProperties, mo => mo.Ignore())
+                .ForMember(dest => dest.StatusEnum, mo => mo.Ignore());
+
             Mapper.CreateMap<ProductModel, Product>()
                 .ForMember(dest => dest.DisplayOrder, mo => mo.Ignore())
                 .ForMember(dest => dest.ProductTags, mo => mo.Ignore())
