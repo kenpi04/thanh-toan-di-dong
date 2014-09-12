@@ -571,7 +571,7 @@ namespace Nop.Services.Seo
                     new SqlParameter("streetId", streetId),
                     new SqlParameter("priceString", priceString),
                     new SqlParameter("attibuteOptionIds", attributeOptionIds),
-                    new SqlParameter("sku", sku),
+                    new SqlParameter("sku", sku ?? ""),
                     pSlug
                     );
                 return slug = pSlug.Value == DBNull.Value ? "" : pSlug.Value.ToString();
