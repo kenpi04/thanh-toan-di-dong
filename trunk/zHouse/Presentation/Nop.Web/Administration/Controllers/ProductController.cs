@@ -682,7 +682,14 @@ namespace Nop.Admin.Controllers
             //    model.AvailableVendors.Add(new SelectListItem() { Text = v.Name, Value = v.Id.ToString() });
 
             //product status
-            model.AvailableStatus = CommonHelper.ToSelectListItem<ProductStatusEnum>().Select(x => new SelectListItem(){Text = _localizationService.GetResource(x.Text),Value=x.Value}).ToList();
+            //model.AvailableStatus = CommonHelper.ToSelectListItem<ProductStatusEnum>().Select(x => new SelectListItem(){Text = _localizationService.GetResource(x.Text),Value=x.Value}).ToList();
+            
+            var listStatus = CommonHelper.ToSelectListItem<ProductStatusEnum>();
+            foreach(var sta in listStatus)
+            {
+                model.AvailableStatus.Add(new SelectListItem() { Text = _localizationService.GetResource(sta.Text), Value = sta.Value });
+            }
+
             model.AvailableStatus.Insert(0, new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
             
             return View(model);
