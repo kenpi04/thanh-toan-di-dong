@@ -37,7 +37,7 @@
     </script>
 }
 <div class="page registration-page" style="background:#fff; padding:20px; width:1080px; margin-bottom:20px">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Register", "Customer", FormMethod.Post, new { @class = "register-form" }))
     {
         @Html.AntiForgeryToken()
 
@@ -67,19 +67,20 @@
                                 <label class="forcheckbox" for="gender-female">@T("Account.Fields.Gender.Female")</label>
                             </div>
                         </div>
-                    }
-                    <div class="inputs">
-                        @Html.LabelFor(model => model.FirstName, new { }, ":")
-                        @Html.EditorFor(model => model.FirstName)
-                        @Html.RequiredHint()
-                        @Html.ValidationMessageFor(model => model.FirstName)
-                    </div>
-                    <div class="inputs">
+                    }                    
+                    <div class="inputs" style="margin-bottom:0;">
                         @Html.LabelFor(model => model.LastName, new { }, ":")
                         @Html.EditorFor(model => model.LastName)
                         @Html.RequiredHint()
-                        @Html.ValidationMessageFor(model => model.LastName)
+                        
                     </div>
+                    <div class="error">@Html.ValidationMessageFor(model => model.LastName)</div>
+                    <div class="inputs" style="margin-bottom:0;">
+                        @Html.LabelFor(model => model.FirstName, new { }, ":")
+                        @Html.EditorFor(model => model.FirstName)
+                        @Html.RequiredHint()                        
+                    </div>
+                    <div class="error">@Html.ValidationMessageFor(model => model.FirstName)</div>
                     @if (Model.DateOfBirthEnabled)
                     {
                         <div class="inputs">
@@ -96,13 +97,26 @@
                             @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
                             @Html.ValidationMessageFor(model => model.DateOfBirthYear)
                         </div>
-                    }
-                    <div class="inputs">
+                    }                
+                @if (Model.PhoneEnabled)
+                {
+                    <div class="inputs" style="margin-bottom:0">
+                        @Html.LabelFor(model => model.Phone, new { }, ":")
+                        @Html.EditorFor(model => model.Phone)
+                        @if (Model.PhoneRequired)
+                        {
+                            @Html.RequiredHint()
+                        }                        
+                    </div>
+                    <div class="error">@Html.ValidationMessageFor(model => model.Phone)</div>
+                }                           
+    
+                    @*<div class="inputs">
                         @Html.LabelFor(model => model.Email, new { }, ":")
                         @Html.EditorFor(model => model.Email)
                         @Html.RequiredHint()
                         @Html.ValidationMessageFor(model => model.Email)
-                    </div>
+                    </div>*@
                     @if (Model.UsernamesEnabled)
                     {
                         <div class="inputs">
@@ -223,7 +237,7 @@
                     </div>
                 </div>
             }
-            @if (Model.PhoneEnabled || Model.FaxEnabled)
+            @*@if (Model.PhoneEnabled || Model.FaxEnabled)
             {
                 <div class="fieldset">
                     <div class="title">
@@ -256,7 +270,7 @@
                         }
                     </div>
                 </div>
-            }
+            }*@
             @if (Model.NewsletterEnabled)
             {
                 <div class="fieldset">
@@ -295,18 +309,25 @@
                     <strong>@T("Account.YourPassword")</strong>
                 </div>
                 <div class="form-fields">
-                    <div class="inputs">
+                    <div class="inputs" style="margin-bottom:0">
+                        @Html.LabelFor(model => model.Email, new { }, ":")
+                        @Html.EditorFor(model => model.Email)
+                        @Html.RequiredHint()
+                        
+                    </div>
+                    <div class="error">@Html.ValidationMessageFor(model => model.Email)</div>
+                    <div class="inputs" style="margin-bottom:0">
                         @Html.LabelFor(model => model.Password, new { }, ":")
                         @Html.EditorFor(model => model.Password)
-                        @Html.RequiredHint()
-                        @Html.ValidationMessageFor(model => model.Password)
+                        @Html.RequiredHint()                        
                     </div>
-                    <div class="inputs">
+                    <div class="error">@Html.ValidationMessageFor(model => model.Password)</div>
+                    <div class="inputs" style="margin-bottom:0">
                         @Html.LabelFor(model => model.ConfirmPassword, new { }, ":")
                         @Html.EditorFor(model => model.ConfirmPassword)
-                        @Html.RequiredHint()
-                        @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                        @Html.RequiredHint()                        
                     </div>
+                    <div class="error">@Html.ValidationMessageFor(model => model.ConfirmPassword)</div>
                     @if (Model.DisplayCaptcha)
                     {
                         <div class="captcha-box">

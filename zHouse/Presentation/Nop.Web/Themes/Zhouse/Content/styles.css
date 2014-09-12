@@ -119,11 +119,11 @@ td.fieldname{font-size:12px}
 .noscript{border:1px solid #ddd;border-width:0 0 1px;background:#ffff90;font-size:12px;line-height:1.25;text-align:center;color:#2f2f2f}
 .fieldset{padding:10px;margin-bottom:15px;border:1px solid #eee;border-radius:5px}
 .fieldset .title{margin:-17px 0 14px}
-.fieldset .title strong{background:#fff}
+.fieldset .title strong{background:#fff;padding: 0px 5px 0px 5px;}
 .fieldset .inputs{margin-bottom:5px}
 .fieldset .inputs label{display:inline-block;width:130px;margin-left:10px}
 .fieldset .inputs label.forcheckbox{margin:0 0 0 .4em;display:inline}
-.inputs label{font-weight:bold}
+/*.inputs label{font-weight:bold}*/
 .clearer{zoom:1}
 .clearer:after{content:".";display:block;clear:both;height:0;font-size:0;line-height:0;visibility:hidden}
 .ajax-loading-block-window{position:fixed;top:50%;left:50%;width:128px;height:128px;overflow:hidden;z-index:1104}
@@ -1311,3 +1311,5 @@ margin-top: 225px; }
 color: #fff;
 margin-top: 7px; }
 .datlichxemnha{font-size:100%;}
+.register-form{width:44%;margin:0 auto}
+.form-fields .error {margin-left: 148px;font-size: 10px;margin-bottom: 10px;}
