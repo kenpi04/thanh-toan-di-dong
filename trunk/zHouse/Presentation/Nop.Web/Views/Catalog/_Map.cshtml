@@ -12,13 +12,13 @@
         <input name="radius" checked="checked" type="radio" value="5000"> 5km
         <br>
 
-        <input type="checkbox"  value="trường" id="ckTruong"> Trường học
-         <input type="checkbox"    value="bệnh+viện" id="ckbenhvien"> Bệnh viện
-          <input type="checkbox"   value="chợ" id="chCho"> Chợ
-           <input type="checkbox"  value="siêu+thị" id="chSieuThi"> Siêu thị
-            <input type="checkbox"  value="giải+trí" id="ckGiaiTri"> Giải trí
-             <input type="checkbox"  value="cơ+quan+hành+chính" id="ckCQuan"> Cơ quan hành chính
-              <input type="checkbox"  value="tôn+giáo" id="ckTonGiao"> Tôn giáo
+        <input type="checkbox"  value="trường" id="truong"><img src="/Themes/Zhouse/Content/images/truong.png" /> Trường học
+         <input type="checkbox"    value="bệnh+viện" id="bv"><img src="/Themes/Zhouse/Content/images/bv.png" /> Bệnh viện
+          <input type="checkbox"   value="chợ" id="cho"><img src="/Themes/Zhouse/Content/images/cho.png" /> Chợ
+           <input type="checkbox"  value="siêu+thị" id="sieuthi"><img src="/Themes/Zhouse/Content/images/sieuthi.png" /> Siêu thị
+            <input type="checkbox"  value="giải+trí" id="cong_vien"><img src="/Themes/Zhouse/Content/images/cong_vien.png" /> Giải trí
+             <input type="checkbox"  value="cơ+quan+hành+chính" id="cqhc"><img src="/Themes/Zhouse/Content/images/cqhc.png" /> Cơ quan hành chính
+              <input type="checkbox"  value="tôn+giáo" id="nha_tho"><img src="/Themes/Zhouse/Content/images/nha_tho.png" /> Tôn giáo
     </div>
     <div id="map_canvas">
     </div>
@@ -142,11 +142,11 @@
 
                 map.setZoom(14);
 
-                var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + color[icolor],
-                    new google.maps.Size(21, 34),
+                var pinImage = new google.maps.MarkerImage("/Themes/Zhouse/Content/images/" +currentId+".png",
+                    new google.maps.Size(12, 20),
                     new google.maps.Point(0, 0),
                     new google.maps.Point(10, 34));
-                icolor++;
+               
 
 
                 for (var i = 0; i < results.length; i++) {
