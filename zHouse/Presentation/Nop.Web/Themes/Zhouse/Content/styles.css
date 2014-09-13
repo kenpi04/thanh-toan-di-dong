@@ -1016,7 +1016,7 @@ ul{margin:0}
 .verLine{background:url(images/verLine.png) no-repeat scroll 0 0;width:1px !important;height:100px;margin:-12px 2px 0 6px}
 .searchBtn{background:url(images/searchBtn.png) no-repeat;width:27px;height:27px;border:0;cursor:pointer}
 .searchBtn:hover{background:url(images/searchBtnhover.png)}
-.topInfo{position:absolute;top:200px;margin-left:14%;z-index:100}
+.topInfo{position:absolute;top:200px;margin-left:9%;z-index:100}
 .pinkBg{background:rgba(30,30,30,0.8);border-radius:4px;padding:25px}
 .pinkNarrowTitle{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06;text-align:center}
 .box{background:#fff;width:130px;padding:5px 5px 5px 10px;border:0;margin:5px 5px 5px 0;color:#333;font-size:12px}
