@@ -1,0 +1,47 @@
+﻿@model Sankyo.Models.UserModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using(Html.BeginForm())
+{
+@Html.AntiForgeryToken()
+
+<div class="error">
+   
+    
+    @if(ViewBag.Error!=null)
+{
+    @ViewBag.Error
+    }
+    @Html.ValidationSummary()
+</div>
+
+<table class="table-form">
+    <tr>
+        <td class="title" colspan="2">
+            Đăng nhập
+        </td>
+
+    </tr>
+    <tr>
+        <td>Tên đăng nhập:</td>
+        <td>
+            @Html.TextBoxFor(x=>x.UserName)
+           
+        </td>
+    </tr>
+     <tr>
+        <td>Mật khẩu:</td>
+        <td>
+            @Html.PasswordFor(x=>x.Password)
+        </td>
+    </tr>
+     <tr>
+        <td></td>
+        <td>
+            <input type="submit" class="btn" value="Đăng nhập" />
+        </td>
+    </tr>
+</table>
+}

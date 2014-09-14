@@ -1,0 +1,51 @@
+﻿@model Sankyo.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using(Html.BeginForm())
+{
+@Html.AntiForgeryToken()
+
+<div class="error">
+@if(ViewBag.Error!=null)
+{
+    @ViewBag.Error
+}
+    @Html.ValidationSummary()
+</div>
+
+<table class="table-form">
+    <tr>
+        <td class="title" colspan="2">
+            Đăng ký
+        </td>
+
+    </tr>
+    <tr>
+        <td>Tên đăng nhập:</td>
+        <td>
+            @Html.EditorFor(x=>x.UserName)
+        </td>
+    </tr>
+     <tr>
+        <td>Mật khẩu:</td>
+        <td>
+            @Html.PasswordFor(x=>x.Password)
+        </td>
+    </tr>
+     <tr>
+        <td>Nhập lại mật khẩu:</td>
+        <td>
+            @Html.PasswordFor(x=>x.RePassword)
+        </td>
+    </tr>
+     <tr>
+        
+        <td colspan="2">
+            <input type="submit" class="btn" value="Đăng ký" />
+        </td>
+    </tr>
+</table>
+}

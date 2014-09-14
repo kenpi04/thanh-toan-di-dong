@@ -12,7 +12,32 @@ namespace Sankyo
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            routes.MapRoute(
+               name: "Login",
+               url: "login",
+               defaults: new { controller = "Home", action = "Login", id = UrlParameter.Optional }
+           );
+            routes.MapRoute(
+               name: "Register",
+               url: "register",
+               defaults: new { controller = "Home", action = "Register", id = UrlParameter.Optional }
+           );
+            routes.MapRoute(
+               name: "ListTopic",
+               url: "list-topic",
+               defaults: new { controller = "Home", action = "ListTopic", id = UrlParameter.Optional }
+           );
+            routes.MapRoute(
+               name: "AddTopic",
+               url: "add-topic",
+               defaults: new { controller = "Home", action = "AddTopic", id = UrlParameter.Optional }
+           );
+            routes.MapRoute(
+               name: "TopicDetail",
+               url: "{sename}-{id}",
+               defaults: new { controller = "Home", action = "Index", sename = UrlParameter.Optional, id = UrlParameter.Optional }
+               
+           );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
@@ -20,4 +45,6 @@ namespace Sankyo
             );
         }
     }
+
+   
 }

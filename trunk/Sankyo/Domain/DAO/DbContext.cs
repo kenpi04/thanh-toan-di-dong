@@ -19,7 +19,8 @@ namespace Domain.DAO
     
     public partial class Entities : DbContext
     {
-        //public DbSet<CardMobile> CardMobile { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Topic> Topics { get; set; }
         //public DbSet<CategoryCardMobile> CategoryCardMobile { get; set; }
         //public DbSet<Order> Order { get; set; }
         //public DbSet<OrderNote> OrderNote { get; set; }
@@ -27,7 +28,7 @@ namespace Domain.DAO
         //public DbSet<Provider> Provider { get; set; }
         //public DbSet<Service> Service { get; set; }
         public Entities()
-            : base("ThanhToanDiDongContext")
+            : base("SankyoContext")
         {
 
         }
