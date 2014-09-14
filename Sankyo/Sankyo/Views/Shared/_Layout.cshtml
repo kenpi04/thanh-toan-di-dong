@@ -1,48 +1,65 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+﻿@{
+    Layout = "~/Views/Shared/_Header.cshtml";
+} 
+<div id="wrapper">
+    <div id="header">
+        <div class="banner"></div>
+      @Html.Action("Menu","Home")
+    </div>
+    <div id="page">
+        @if(IsSectionDefined("onecol"))
+        {
+            <div class="content-center">
+            @RenderSection("onecol")
                 </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
-        </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
-                </div>
-            </div>
-        </footer>
+        }
+        else{
+      <div id="content-left">
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
-</html>
+ <div class="row-left">
+    <a class="btnPorfilo">
+       
+    </a>
+ </div>
+     <div class="row-left">
+    <a class="btnenviroment"></a>
+ </div>
+    <div class="row-left">
+        <div class="intro">
+           
+        </div>
+    </div>
+    <div class="row-left">
+        <embed style="width:150px; height:150px;" wmode="transparent" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" quality="high" src="http://panel.makewebeasy.com/template/_clock/swf/29.swf">
+    </div>
+       <div class="row-left">
+    <div id="datepicker">
+       
+    </div>
+            <script>
+
+                $(function () {
+                    $("#datepicker").datepicker();
+                });
+
+        </script>
+    </div>
+</div>
+        
+        <div id="content-right">
+            @RenderBody()
+
+        </div>
+    <div class="clearBoth"></div>
+        }
+        
+    </div>
+
+    <div class="banner-footer"></div>
+    <div class="copyright">  			Copyright by sankyo-asia.com		</div>
+    <div id="footer">
+        <div style="text-align:center"></div>
+    </div>
+
+</div>
+    

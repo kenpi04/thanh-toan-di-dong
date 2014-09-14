@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sankyo", "Sankyo\Sankyo.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{6F1F6E5D-95FD-4DDB-A24F-EC758DD96D66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sankyo.Admin", "Sankyo\Administration\Sankyo.Admin\Sankyo.Admin.csproj", "{0EDB6D0E-7CA0-4C08-978B-956B6D41F1DC}"
-EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -25,10 +23,6 @@ Global
 		{6F1F6E5D-95FD-4DDB-A24F-EC758DD96D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F1F6E5D-95FD-4DDB-A24F-EC758DD96D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F1F6E5D-95FD-4DDB-A24F-EC758DD96D66}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0EDB6D0E-7CA0-4C08-978B-956B6D41F1DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EDB6D0E-7CA0-4C08-978B-956B6D41F1DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EDB6D0E-7CA0-4C08-978B-956B6D41F1DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EDB6D0E-7CA0-4C08-978B-956B6D41F1DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

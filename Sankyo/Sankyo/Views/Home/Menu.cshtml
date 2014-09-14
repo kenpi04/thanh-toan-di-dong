@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Sankyo.Models.TopicModel>
+
+
+ <div class="menu">
+           <ul>
+              @foreach (var row in Model)
+              { 
+                <li><a href="@Url.RouteUrl("TopicDetail", new {sename=row.Name,id=row.Id })">@row.Title</a></li>
+              }
+           </ul>
+       </div>
+<div class="clearBoth"></div>

@@ -1,0 +1,44 @@
+BODY { font-family: Tahoma, Tahoma; font-size:16px;margin:0px;color:#003300; background-color:#FFFFFF;}
+a {color:#003300 }
+a:hover {text-decoration:none }
+ul {list-style:none;padding:0}
+p {padding:0;line-height:1.5em }
+#wrapper {background:url("images/bg_20131021222352.jpg") repeat-x scroll center top transparent }
+.banner{ height: 506px;}
+#header {width:1000px;margin:0 auto;height:541px;    }
+.menu {width:100%;height:50px;border-radius: 20px;  position: relative; background: #1adb1a; box-shadow: 3px 10px 22px #000; /* Old browsers */
+background: -moz-linear-gradient(top, #1adb1a 0%, #1a561a 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1adb1a), color-stop(100%,#1a561a)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #1adb1a 0%,#1a561a 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #1adb1a 0%,#1a561a 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #1adb1a 0%,#1a561a 100%); /* IE10+ */
+background: linear-gradient(to bottom, #1adb1a 0%,#1a561a 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1adb1a', endColorstr='#1a561a',GradientType=0 ); /* IE6-9 */ }
+.menu ul li { 
+    float: left;
+    padding: 11px 18px;}
+.menu ul li a {font-size:16px;text-transform:uppercase;color:#fff;text-decoration:none }
+.menu ul li a:hover {color:black }
+#page {  background: none repeat scroll 0 0 #fff;
+    margin: 0 auto;
+    min-height: 300px;
+    width: 1000px;padding-top:50px }
+#content-left {width:270px;float:left}
+#content-right {float: right;
+    width: 630px; }
+.clearBoth {clear:both }
+.btnPorfilo {background:url(images/sideMenuImage-20131021-224207.png) no-repeat;width:268px;height:125px;display:block }
+.btnPorfilo:hover {background:url(images/sideMenuImageHover-20131021-224207.png) }
+.btnenviroment {background:url(images/sideMenuImage-20131021-224146.png) no-repeat;width:268px;height:93px;display:block }
+.btnenviroment:hover {background:url(images/sideMenuImageHover-20131021-224146.png) }
+.intro {background:url(images/sideMenuImage-20140404-174325.gif);width:268px;height:251px }
+#footer {height:340px;background:url(images/bg_20140904181952.jpg) no-repeat }
+.copyright {text-align:center;font-size:11px;color:#259100 }
+.error { color:#d41212;font-size:11px}
+.table-form .title,.table-data .title {background:#1A7F1A !important;color:#fff;text-transform:uppercase;text-align:center;font-weight:bold;padding:10px 0 }
+.table-form,.table-data {border:solid 1px #ddd }
+.table-form tr,.table-data tr {border:solid 1px #ddd}
+.table-form td,.table-data td {padding:5px }
+.table-form tr td:first-child {background:#ddd;font-size:12px }
+
+.btn {background:#259100;color:#fff;text-transform:uppercase;font-size:13px;padding:10px;display:block;border:none;margin:0 auto }
