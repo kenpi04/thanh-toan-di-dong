@@ -20,12 +20,12 @@ namespace Domain.Services
         {
             return _TopicRepository.Table.FirstOrDefault(x => x.Name.Equals(name));
         }
-        public IPagedList<Topic> GetPage(int pageIndex = 1, int pageSize = 15)
+        public IEnumerable<Topic> GetPage()
         {
             var q = _TopicRepository.Table;
 
             q=q.OrderBy(x => x.Id);
-            return q.ToPagedList(pageIndex, pageSize);
+            return q;
         }
         public void InsertOrUpdate(Topic entity)
         {

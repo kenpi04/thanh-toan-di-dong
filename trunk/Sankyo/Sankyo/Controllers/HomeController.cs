@@ -18,20 +18,33 @@ namespace Sankyo.Controllers
         {
             _topicService = new TopicServices();
             _userService = new UserServices();
+           
+            var cookies = Request.Cookies["language-id"];
+            if (cookies != null)
+            {
+                int.TryParse(cookies.Value, out Common.CurrentLanguageId);
+
+            }
+            else
+                Common.CurrentLanguageId = 1;
         }
 
         public ActionResult Index(string sename)
         {
             var model = new TopicModel();
-            if (!string.IsNullOrWhiteSpace(sename))
+            if (string.IsNullOrWhiteSpace(sename))
             {
+                var topicHome = _topicService.GetPage().FirstOrDefault(x => x.IsHomePage);
+                if (topicHome != null)
+                    sename = topicHome.Name;
+            }
+          
                 var topic = _topicService.GetByName(sename);
                 if (topic == null)
                     return HttpNotFound("topic không tồn tại");
                 model.Id = topic.Id;
                 model.Title = topic.Title;
-                model.Content = topic.Content;
-            }
+                model.Content = topic.Content;           
             return View(model);
         }
 
@@ -189,7 +202,7 @@ namespace Sankyo.Controllers
 
         public ActionResult Menu()
         {
-            var menuList = _topicService.GetPage().Where(p => p.AddToMenu).OrderBy(p => p.DisplayOrder).Select(x => new TopicModel { Id = x.Id, Name = x.Name, Title = x.Title });
+            var menuList = _topicService.GetPage().Where(p => p.AddToMenu&&p.LanguageId.Equals(Common.CurrentLanguageId)).OrderBy(p => p.DisplayOrder).Select(x => new TopicModel { Id = x.Id, Name = x.Name, Title = x.Title });
             return View(menuList);
         }
         private static readonly string[] VietnameseSigns = new string[]{
@@ -226,6 +239,14 @@ namespace Sankyo.Controllers
                     str = str.Remove(index,1);
             }
             return str;
+        }
+        public ActionResult ChangeLanguage(int id)
+        {
+            HttpCookie c = new HttpCookie("language-id");
+            c.Expires = DateTime.Now.AddDays(1);
+            c.Value = id.ToString();
+            Response.Cookies.Add(c);
+            return Json("OK");
         }
     }
 }

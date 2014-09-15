@@ -3,6 +3,19 @@
 } 
 <div id="wrapper">
     <div id="header">
+        <div class="language-select">
+            <a class="thai @(Sankyo.Filters.Common.CurrentLanguageId!=1?" dis":"")"  onclick="ChangeLanguage(1)"></a>
+            <a class="en" @(Sankyo.Filters.Common.CurrentLanguageId!=2?" dis":"")" onclick="ChangeLanguage(2)"></a>
+            <script type="text/javascript">
+                function ChangeLanguage(id)
+                {
+                    $.get("@Url.Action("ChangeLanguage","Home")", { id: id }, function (d) {
+                        window.location.href = "/";
+                    });
+                    return false;
+                }
+            </script>
+        </div>
         <div class="banner"></div>
       @Html.Action("Menu","Home")
     </div>
