@@ -86,9 +86,24 @@
         </td>
     </tr>
     <tr>
+        <td>Là trang chủ:</td>
+        <td>
+            @Html.EditorFor(x => x.IsHomePage)
+        </td>
+    </tr>
+    <tr>
         <td>Thứ tự thể hiện:</td>
         <td>
             @Html.EditorFor(x => x.DisplayOrder)
+        </td>
+    </tr>
+    <tr>
+        <td>Ngôn ngữ:</td>
+        <td>
+            @Html.DropDownListFor(x => x.LanguageId, new List<SelectListItem> { 
+        new SelectListItem{Text="Thailand",Value="1",Selected=(1==Sankyo.Filters.Common.CurrentLanguageId)},
+        new SelectListItem{Text="English",Value="2",Selected=(2==Sankyo.Filters.Common.CurrentLanguageId)}
+       })
         </td>
     </tr>
      <tr>       

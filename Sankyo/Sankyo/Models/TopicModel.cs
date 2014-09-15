@@ -16,5 +16,7 @@ namespace Sankyo.Models
         public string Content { get; set; }
         public bool AddToMenu { get; set; }
         public int DisplayOrder { get; set; }
+        public int IsHomePage { get; set; }
+        public int LanguageId { get; set; }
     }
 }
