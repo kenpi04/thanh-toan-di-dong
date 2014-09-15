@@ -11,5 +11,7 @@ namespace Domain.Entity
         public string Name { get; set; }
         public string Title { get; set; } 
         public string Content { get; set; }
+        public bool AddToMenu { get; set; }
+        public int DisplayOrder { get; set; }
     }
 }

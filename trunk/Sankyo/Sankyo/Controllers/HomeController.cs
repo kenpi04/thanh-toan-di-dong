@@ -19,7 +19,7 @@ namespace Sankyo.Controllers
             _topicService = new TopicServices();
             _userService = new UserServices();
         }
-      
+
         public ActionResult Index(string sename)
         {
             var model = new TopicModel();
@@ -37,7 +37,7 @@ namespace Sankyo.Controllers
 
         public ActionResult About()
         {
-           
+
 
             return View();
         }
@@ -46,7 +46,7 @@ namespace Sankyo.Controllers
         {
             return View();
         }
-      
+
         public ActionResult Login()
         {
             var model = new UserModel();
@@ -74,7 +74,7 @@ namespace Sankyo.Controllers
                 return View(new UserModel());
             }
         }
-       
+
         [Auth]
         public ActionResult Register()
         {
@@ -96,8 +96,6 @@ namespace Sankyo.Controllers
             if (user != null)
             {
                 ViewBag.Error = "Tên đăng nhập đã tồn tại!";
-              
-             
             }
             try
             {
@@ -114,13 +112,14 @@ namespace Sankyo.Controllers
             {
                 ViewBag.Error = ex.Message;
             }
-         
+
             return View(model);
         }
         [Auth]
-        public ActionResult AddTopic(int id=0)
+        public ActionResult AddTopic(int id = 0)
         {
             var model = new TopicModel();
+            ViewBag.Action = "Thêm trang mới";
             if (id > 0)
             {
                 var entity = _topicService.GetById(id);
@@ -128,11 +127,14 @@ namespace Sankyo.Controllers
                     throw new Exception("Topic null");
                 model = new TopicModel
                 {
-                    Id=entity.Id,
-                    Name=entity.Name,
-                    Content=entity.Content,
-                    Title=entity.Title
+                    Id = entity.Id,
+                    Name = entity.Name,
+                    Content = entity.Content,
+                    Title = entity.Title,
+                    AddToMenu = entity.AddToMenu,
+                    DisplayOrder = entity.DisplayOrder
                 };
+                ViewBag.Action = "Sửa trang";
             }
             return View(model);
         }
@@ -146,6 +148,7 @@ namespace Sankyo.Controllers
             _topicService.Delete(entity);
             return RedirectToAction("ListTopic");
         }
+
         [Auth]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -155,16 +158,25 @@ namespace Sankyo.Controllers
             {
                 try
                 {
-                    var entity = new Topic
+                    var entity = new Topic();                    
+                    if (model.Id > 0)
                     {
-                        Title = model.Title,
-                        Name = RemoveSign4VietnameseString(model.Title),
-                        Content = model.Content,
-                        Id=model.Id
-
-                    };
-                   _topicService.InsertOrUpdate(entity);
-                    ViewBag.Error = "Thêm thành công";
+                        entity = _topicService.GetById(model.Id);
+                        if (entity == null)
+                        {
+                            ViewBag.Error = "Page không tồn tại.";
+                            return View(model);
+                        }                       
+                    }
+                    entity.Title = model.Title;
+                    entity.Name = RemoveSign4VietnameseString(model.Title);
+                    entity.Content = model.Content;
+                    //entity.Id=model.Id;
+                    entity.AddToMenu = model.AddToMenu;
+                    entity.DisplayOrder = model.DisplayOrder;
+                    _topicService.InsertOrUpdate(entity);
+                    ViewBag.Error = "Cập nhật thành công.";
+                    return RedirectToRoute("EditTopic", new { id = entity.Id });
                 }
                 catch (Exception ex)
                 {
@@ -177,7 +189,7 @@ namespace Sankyo.Controllers
 
         public ActionResult Menu()
         {
-            var menuList = _topicService.GetPage().Select(x => new TopicModel{Id=x.Id,Name=x.Name,Title=x.Title });
+            var menuList = _topicService.GetPage().Where(p => p.AddToMenu).OrderBy(p => p.DisplayOrder).Select(x => new TopicModel { Id = x.Id, Name = x.Name, Title = x.Title });
             return View(menuList);
         }
         private static readonly string[] VietnameseSigns = new string[]{
@@ -197,16 +209,22 @@ namespace Sankyo.Controllers
         "ýỳỵỷỹ",
         "ÝỲỴỶỸ"
         };
-        public string RemoveSign4VietnameseString( string str)
+        public string RemoveSign4VietnameseString(string str)
         {
             //Tiến hành thay thế , lọc bỏ dấu cho chuỗi
             for (int i = 1; i < VietnameseSigns.Length; i++)
             {
                 for (int j = 0; j < VietnameseSigns[i].Length; j++)
                     str = str.Replace(VietnameseSigns[i][j], VietnameseSigns[0][i - 1]);
-               
             }
-             str = str.Replace(' ','-');
+            str = str.Replace(' ', '-');
+            char[] myChar = new char[]{'/','\\', '.', '*', ',', '?', '!', '@', '#', '$', '%', '^', '&', '(', ')', '<', '>'};
+            foreach(var c in myChar)
+            {
+                int index = str.IndexOf(c);
+                if(index >-1)
+                    str = str.Remove(index,1);
+            }
             return str;
         }
     }
