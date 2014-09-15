@@ -14,5 +14,7 @@ namespace Sankyo.Models
         public string Title { get; set; }
         [AllowHtml]
         public string Content { get; set; }
+        public bool AddToMenu { get; set; }
+        public int DisplayOrder { get; set; }
     }
 }

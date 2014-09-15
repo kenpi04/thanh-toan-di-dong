@@ -33,6 +33,11 @@ namespace Sankyo
                defaults: new { controller = "Home", action = "AddTopic", id = UrlParameter.Optional }
            );
             routes.MapRoute(
+               name: "EditTopic",
+               url: "edit-topic/{id}",
+               defaults: new { controller = "Home", action = "AddTopic", id = @"\d+" }
+           );
+            routes.MapRoute(
                name: "TopicDetail",
                url: "{sename}-{id}",
                defaults: new { controller = "Home", action = "Index", sename = UrlParameter.Optional, id = UrlParameter.Optional }

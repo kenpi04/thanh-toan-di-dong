@@ -63,7 +63,7 @@
 <table class="table-form">
     <tr>
         <td class="title" colspan="2">
-            Thêm trang
+            @ViewBag.Action
         </td>
 
     </tr>
@@ -79,11 +79,21 @@
             @Html.TextAreaFor(x=>x.Content)
         </td>
     </tr>
-     <tr>
-       
+    <tr>
+        <td>Thêm vào menu:</td>
+        <td>
+            @Html.EditorFor(x => x.AddToMenu)
+        </td>
+    </tr>
+    <tr>
+        <td>Thứ tự thể hiện:</td>
+        <td>
+            @Html.EditorFor(x => x.DisplayOrder)
+        </td>
+    </tr>
+     <tr>       
         <td colspan="2">
             <input type="submit" class="btn" value="Lưu" />
-
         </td>
     </tr>
 </table>

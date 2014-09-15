@@ -2,24 +2,31 @@
 @{
     ViewBag.Title = "Danh sách trang";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
     }
 
-<input type="button" onclick="window.location.href='@Url.RouteUrl("AddTopic")'" class="btn" value="Thêm trang" />
-<table class="table-data" style="width:100%">
-    <tr>
-        <td class="title" colspan="4">
+<input type="button" style="margin:0" onclick="window.location.href='@Url.RouteUrl("AddTopic")'" class="btn" value="Thêm trang" />
+<table class="table-data" style="width:700px">
+    <tr class="title" style="text-transform:none">
+        @*<th>Id</th>*@
+        @*<th>Tên</th>*@
+        <th>Tiêu đề</th>
+        <th>Thêm vào menu</th>
+        <th>Thứ tự thể hiện</th>
+        <th style="width:77px"></th>
+        @*<td class="title" colspan="7">
             Danh sách  trang
-        </td>
+        </td>*@
     </tr>
     @foreach (var row in Model)
     { 
         <tr>
-            <td>@row.Id</td>
-            <td>@row.Name</td>
-            <td>@row.Title</td>
+            @*<td>@row.Id</td>*@
+            <td><a href="@Url.RouteUrl("TopicDetail", new {sename=row.Name,id=row.Id })">@row.Title</a></td>
+            @*<td>@row.Title</td>*@
+            <td style="text-align:center">@(row.AddToMenu ? @Html.Raw("<img src=\"/Themes/images/active-true.gif\">") : @Html.Raw("<img src=\"/Themes/images/active-true.gif\">")) </td>            
+            <td style="text-align:center">@row.DisplayOrder</td>
             <td>
-              <a href="@Url.Action("AddTopic", new {id=row.Id })">Sửa</a> |
+              <a href="@Url.RouteUrl("EditTopic", new { id = row.Id })">Sửa</a> |
             <a href="@Url.Action("DeleteTopic", new {id=row.Id })">Xóa</a>
             </td>
         </tr>
