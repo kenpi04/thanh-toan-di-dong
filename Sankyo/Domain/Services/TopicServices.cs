@@ -9,22 +9,27 @@ using System.Threading.Tasks;
 
 namespace Domain.Services
 {
-  public  class TopicServices
+    public class TopicServices
     {
         IRepository<Topic> _TopicRepository = new EfRepository<Topic>();
         public Topic GetById(int id)
         {
             return _TopicRepository.GetById(id);
         }
-        public Topic GetByName(string name)
+        public Topic GetByName(string name, int languageId = 0)
         {
-            return _TopicRepository.Table.FirstOrDefault(x => x.Name.Equals(name));
+            var topic = new Topic();
+            if (languageId > 0)
+                topic = _TopicRepository.Table.FirstOrDefault(x => x.Name.Equals(name) & x.LanguageId == languageId);
+            if (topic == null)
+                topic = _TopicRepository.Table.FirstOrDefault(x => x.Name.Equals(name));
+            return topic;
         }
         public IEnumerable<Topic> GetPage()
         {
             var q = _TopicRepository.Table;
 
-            q=q.OrderBy(x => x.Id);
+            q = q.OrderBy(x => x.Id);
             return q;
         }
         public void InsertOrUpdate(Topic entity)

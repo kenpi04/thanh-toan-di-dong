@@ -1,5 +1,5 @@
 BODY { font-family: Tahoma, Tahoma; font-size:16px;margin:0px;color:#003300; background-color:#FFFFFF;}
-a {color:#003300 }
+a {color:#003300;text-decoration:none }
 a:hover {text-decoration:none }
 ul {list-style:none;padding:0}
 p {padding:0;line-height:1.5em }
@@ -25,7 +25,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1adb1a', end
     width: 1000px;padding-top:50px }
 #content-left {width:270px;float:left}
 #content-right {float: right;
-    max-width: 700px;min-width:630px; }
+    max-width: 730px;min-width:630px; }
 .clearBoth {clear:both }
 .btnPorfilo {background:url(images/sideMenuImage-20131021-224207.png) no-repeat;width:268px;height:125px;display:block }
 .btnPorfilo:hover {background:url(images/sideMenuImageHover-20131021-224207.png) }
@@ -41,9 +41,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1adb1a', end
 .table-form td,.table-data td {padding:5px }
 .table-form tr td:first-child {background:#ddd;font-size:12px }
 .language-select {position:absolute;top:0;right:10%;z-index:10 }
-.language-select a {display:block;width:28px;height:28px;margin-left:5px;cursor:pointer }
-.language-select a.thai {background:url(images/TH.png) }
-.language-select a.thai.dis {background:url(images/TH2.png) }
+.language-select a {display:block;width:28px;height:28px;margin-left:5px;cursor:pointer;float:left }
+.language-select a.vi {background:url(images/VN.png) }
+.language-select a.vi.dis {background:url(images/VN2.png) }
 .language-select a.en {background:url(images/EN.png) }
 .language-select a.en.dis {background:url(images/EN2.png) }
 .btn {background:#259100;color:#fff;text-transform:uppercase;font-size:13px;padding:10px;display:block;border:none;margin:0 auto }
+.title-page{font-size:16px;color:#009933;font-weight:bold}
+.topicColor{font-size:14px}
