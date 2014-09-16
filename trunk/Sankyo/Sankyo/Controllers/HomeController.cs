@@ -7,6 +7,7 @@ using Domain.Entity;
 using Domain.Services;
 using Sankyo.Models;
 using Sankyo.Filters;
+using System.Text.RegularExpressions;
 
 namespace Sankyo.Controllers
 {
@@ -25,8 +26,7 @@ namespace Sankyo.Controllers
                 {
                     int.TryParse(Request.Cookies["language-id"].Value, out Common.CurrentLanguageId);
 
-                }
-                Common.CurrentLanguageId = 1;
+                }else Common.CurrentLanguageId = 1;
             }
             else
                 Common.CurrentLanguageId = 1;
@@ -38,11 +38,17 @@ namespace Sankyo.Controllers
             var topic = new Topic();
             if (string.IsNullOrWhiteSpace(sename))
             {
-                topic = _topicService.GetPage().FirstOrDefault(x => x.IsHomePage);
-                if (topic == null)
+                var homePages = _topicService.GetPage().Where(x => x.IsHomePage).ToList();
+                if (homePages.Count > 0)
+                {
+                    topic = homePages.Where(x => x.LanguageId == Common.CurrentLanguageId).FirstOrDefault();
+                    if (topic == null)
+                        topic = homePages.FirstOrDefault();
+                }
+                if(topic == null)
                     topic = _topicService.GetPage().FirstOrDefault();
             }
-            else topic = _topicService.GetByName(sename);
+            else topic = _topicService.GetByName(sename, Common.CurrentLanguageId);
 
             if (topic == null)
                 return HttpNotFound("topic không tồn tại");
@@ -54,8 +60,6 @@ namespace Sankyo.Controllers
 
         public ActionResult About()
         {
-
-
             return View();
         }
 
@@ -186,9 +190,11 @@ namespace Sankyo.Controllers
                             ViewBag.Error = "Page không tồn tại.";
                             return View(model);
                         }
+                        entity.Name = model.Name;
                     }
-                    entity.Title = model.Title;
-                    entity.Name = RemoveSign4VietnameseString(model.Title);
+                    if(String.IsNullOrWhiteSpace(model.Name))
+                        entity.Name = RemoveSign4VietnameseString(model.Title);
+                    entity.Title = model.Title;                    
                     entity.Content = model.Content;
                     //entity.Id=model.Id;
                     entity.AddToMenu = model.AddToMenu;
@@ -248,21 +254,24 @@ namespace Sankyo.Controllers
             }
             str = str.Replace(' ', '-');
             char[] myChar = new char[] { '/', '\\', '.', '*', ',', '?', '!', '@', '#', '$', '%', '^', '&', '(', ')', '<', '>' };
-            foreach (var c in myChar)
-            {
-                int index = str.IndexOf(c);
-                if (index > -1)
-                    str = str.Remove(index, 1);
-            }
+            str = Regex.Replace(str, @"[^0-9a-zA-Z]+", "-");
             return str;
         }
-        public ActionResult ChangeLanguage(int id)
+        public ActionResult ChangeLanguage(int id, string url = "")
         {
             HttpCookie c = new HttpCookie("language-id");
             c.Expires = DateTime.Now.AddDays(1);
             c.Value = id.ToString();
-            Response.Cookies.Add(c);
-            return Json("OK");
+            Response.SetCookie(c);
+            Common.CurrentLanguageId = id;
+            if (!String.IsNullOrEmpty(url) & Url.IsLocalUrl(url))
+                return Redirect(url);
+            return RedirectToRoute("HomePage");
+        }
+
+        private void GetCookieLanguage(HttpRequestBase request)
+        {
+            //
         }
     }
 }

@@ -73,6 +73,15 @@
             @Html.TextBoxFor(x => x.Title, new {style="width:100%"})
         </td>
     </tr>
+    @if(@Model.Id > 0)
+    {
+        <tr>
+            <td>Url:</td>
+            <td>
+                @Html.TextBoxFor(x => x.Name, new {style="width:100%"})
+            </td>
+        </tr>
+    }
      <tr>
         <td>Nội dung:</td>
         <td>
@@ -101,7 +110,7 @@
         <td>Ngôn ngữ:</td>
         <td>
             @Html.DropDownListFor(x => x.LanguageId, new List<SelectListItem> { 
-        new SelectListItem{Text="Thailand",Value="1",Selected=(1==Sankyo.Filters.Common.CurrentLanguageId)},
+        new SelectListItem{Text="VietNam",Value="1",Selected=(1==Sankyo.Filters.Common.CurrentLanguageId)},
         new SelectListItem{Text="English",Value="2",Selected=(2==Sankyo.Filters.Common.CurrentLanguageId)}
        })
         </td>

@@ -4,18 +4,17 @@
 <div id="wrapper">
     <div id="header">
         <div class="language-select">
-            <a class="thai @(Sankyo.Filters.Common.CurrentLanguageId!=1?" dis":"")"  onclick="ChangeLanguage(1)"></a>
-            <a class="en" @(Sankyo.Filters.Common.CurrentLanguageId!=2?" dis":"")" onclick="ChangeLanguage(2)"></a>
-            <script type="text/javascript">
-                function ChangeLanguage(id)
-                {
-                    $.get("@Url.Action("ChangeLanguage","Home")", { id: id }, function (d) {
-                        window.location.href = "/";
-                    });
-                    return false;
-                }
-            </script>
+            <a class="vi @(Sankyo.Filters.Common.CurrentLanguageId!=1?"dis":"")" href="@Url.Action("ChangeLanguage", new { id = 1, url = Request.Url.AbsolutePath })"></a>
+            <a class="en @(Sankyo.Filters.Common.CurrentLanguageId!=2?"dis":"")" href="@Url.Action("ChangeLanguage", new { id = 2, url = Request.Url.AbsolutePath })"></a>
         </div>
+        @*<script type="text/javascript">
+    function ChangeLanguage(id) {
+        $.get("@Url.Action("ChangeLanguage","Home")", { id: id }, function (d) {            
+        });
+        return false;
+    }*@
+        </script>
+
         <div class="banner"></div>
       @Html.Action("Menu","Home")
     </div>
@@ -30,12 +29,12 @@
       <div id="content-left">
 
  <div class="row-left">
-    <a class="btnPorfilo">
-       
-    </a>
+     <a class="btnPorfilo" href="/EXPERIENCE-RECORED-5">
+
+     </a>
  </div>
      <div class="row-left">
-    <a class="btnenviroment"></a>
+         <a class="btnenviroment" href="/Environment-news-and-articles-21"></a>
  </div>
     <div class="row-left">
         <div class="intro">

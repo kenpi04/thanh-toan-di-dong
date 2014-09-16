@@ -40,8 +40,12 @@ namespace Sankyo
             routes.MapRoute(
                name: "TopicDetail",
                url: "{sename}-{id}",
-               defaults: new { controller = "Home", action = "Index", sename = UrlParameter.Optional, id = UrlParameter.Optional }
-               
+               defaults: new { controller = "Home", action = "Index", sename = UrlParameter.Optional, id = UrlParameter.Optional }               
+           );
+            routes.MapRoute(
+               name: "HomePage",
+               url: "{sename}/",
+               defaults: new { controller = "Home", action = "Index", sename = UrlParameter.Optional }
            );
             routes.MapRoute(
                 name: "Default",
