@@ -40,7 +40,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1adb1a', end
 .table-form tr,.table-data tr {border:solid 1px #ddd}
 .table-form td,.table-data td {padding:5px }
 .table-form tr td:first-child {background:#ddd;font-size:12px }
-.language-select {position:relative;top:0;right:-20px;z-index:10 }
+.language-select {position:absolute;top:0;right:10%;z-index:10 }
 .language-select a {display:block;width:28px;height:28px;margin-left:5px;cursor:pointer }
 .language-select a.thai {background:url(images/TH.png) }
 .language-select a.thai.dis {background:url(images/TH2.png) }
