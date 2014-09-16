@@ -18,12 +18,15 @@ namespace Sankyo.Controllers
         {
             _topicService = new TopicServices();
             _userService = new UserServices();
-           
-            var cookies = Request.Cookies["language-id"];
-            if (cookies != null)
+            if (Request != null)
             {
-                int.TryParse(cookies.Value, out Common.CurrentLanguageId);
+                bool cookies = Request.Cookies.AllKeys.Contains("language-id");
+                if (cookies)
+                {
+                    int.TryParse(Request.Cookies["language-id"].Value, out Common.CurrentLanguageId);
 
+                }
+                Common.CurrentLanguageId = 1;
             }
             else
                 Common.CurrentLanguageId = 1;
@@ -32,19 +35,20 @@ namespace Sankyo.Controllers
         public ActionResult Index(string sename)
         {
             var model = new TopicModel();
+            var topic = new Topic();
             if (string.IsNullOrWhiteSpace(sename))
             {
-                var topicHome = _topicService.GetPage().FirstOrDefault(x => x.IsHomePage);
-                if (topicHome != null)
-                    sename = topicHome.Name;
-            }
-          
-                var topic = _topicService.GetByName(sename);
+                topic = _topicService.GetPage().FirstOrDefault(x => x.IsHomePage);
                 if (topic == null)
-                    return HttpNotFound("topic không tồn tại");
-                model.Id = topic.Id;
-                model.Title = topic.Title;
-                model.Content = topic.Content;           
+                    topic = _topicService.GetPage().FirstOrDefault();
+            }
+            else topic = _topicService.GetByName(sename);
+
+            if (topic == null)
+                return HttpNotFound("topic không tồn tại");
+            model.Id = topic.Id;
+            model.Title = topic.Title;
+            model.Content = topic.Content;
             return View(model);
         }
 
@@ -128,6 +132,7 @@ namespace Sankyo.Controllers
 
             return View(model);
         }
+
         [Auth]
         public ActionResult AddTopic(int id = 0)
         {
@@ -145,7 +150,8 @@ namespace Sankyo.Controllers
                     Content = entity.Content,
                     Title = entity.Title,
                     AddToMenu = entity.AddToMenu,
-                    DisplayOrder = entity.DisplayOrder
+                    DisplayOrder = entity.DisplayOrder,
+                    IsHomePage = entity.IsHomePage
                 };
                 ViewBag.Action = "Sửa trang";
             }
@@ -171,7 +177,7 @@ namespace Sankyo.Controllers
             {
                 try
                 {
-                    var entity = new Topic();                    
+                    var entity = new Topic();
                     if (model.Id > 0)
                     {
                         entity = _topicService.GetById(model.Id);
@@ -179,7 +185,7 @@ namespace Sankyo.Controllers
                         {
                             ViewBag.Error = "Page không tồn tại.";
                             return View(model);
-                        }                       
+                        }
                     }
                     entity.Title = model.Title;
                     entity.Name = RemoveSign4VietnameseString(model.Title);
@@ -187,7 +193,17 @@ namespace Sankyo.Controllers
                     //entity.Id=model.Id;
                     entity.AddToMenu = model.AddToMenu;
                     entity.DisplayOrder = model.DisplayOrder;
+                    entity.IsHomePage = model.IsHomePage;
                     _topicService.InsertOrUpdate(entity);
+                    if(entity.IsHomePage)
+                    {
+                        var updateTopics = _topicService.GetPage().Where(p => p.IsHomePage && p.Id != entity.Id).ToList();
+                        foreach(var topic in updateTopics)
+                        {
+                            topic.IsHomePage = false;
+                            _topicService.InsertOrUpdate(topic);
+                        }
+                    }
                     ViewBag.Error = "Cập nhật thành công.";
                     return RedirectToRoute("EditTopic", new { id = entity.Id });
                 }
@@ -202,7 +218,7 @@ namespace Sankyo.Controllers
 
         public ActionResult Menu()
         {
-            var menuList = _topicService.GetPage().Where(p => p.AddToMenu&&p.LanguageId.Equals(Common.CurrentLanguageId)).OrderBy(p => p.DisplayOrder).Select(x => new TopicModel { Id = x.Id, Name = x.Name, Title = x.Title });
+            var menuList = _topicService.GetPage().Where(p => p.AddToMenu && p.LanguageId.Equals(Common.CurrentLanguageId)).OrderBy(p => p.DisplayOrder).Select(x => new TopicModel { Id = x.Id, Name = x.Name, Title = x.Title });
             return View(menuList);
         }
         private static readonly string[] VietnameseSigns = new string[]{
@@ -231,12 +247,12 @@ namespace Sankyo.Controllers
                     str = str.Replace(VietnameseSigns[i][j], VietnameseSigns[0][i - 1]);
             }
             str = str.Replace(' ', '-');
-            char[] myChar = new char[]{'/','\\', '.', '*', ',', '?', '!', '@', '#', '$', '%', '^', '&', '(', ')', '<', '>'};
-            foreach(var c in myChar)
+            char[] myChar = new char[] { '/', '\\', '.', '*', ',', '?', '!', '@', '#', '$', '%', '^', '&', '(', ')', '<', '>' };
+            foreach (var c in myChar)
             {
                 int index = str.IndexOf(c);
-                if(index >-1)
-                    str = str.Remove(index,1);
+                if (index > -1)
+                    str = str.Remove(index, 1);
             }
             return str;
         }
