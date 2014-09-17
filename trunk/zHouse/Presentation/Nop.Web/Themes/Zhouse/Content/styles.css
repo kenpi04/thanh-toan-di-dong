@@ -33,6 +33,7 @@ select{border:1px solid #c2c2c2;color:#666;font-size:11px;padding:5px 5px 5px 10
 .master-wrapper-main .leftside-3{float:left;width:190px;margin:10px 0;display:inline}
 .master-wrapper-main .center-3{float:left;width:510px;min-height:400px;padding:10px;margin:10px;background:#FFF;display:inline;overflow:hidden;border-radius:5px}
 .master-wrapper-main .rightside-3{float:right;width:190px;margin:10px 0;display:inline}
+.master-wrapper-main .side-3{float:right;width:19%;margin:0;display:inline}
 .header{padding:0 2px;height:110px;background:#fff}
 .header .icon{vertical-align:bottom}
 .header .ico-register{padding-left:10px;padding-bottom:5px}
@@ -688,6 +689,8 @@ height: 28px;
 .account-signature-text{height:100px;width:500px;border:solid 1px #e3e3e3;vertical-align:top}
 .order-list-page .recurring-payments .recurring-payments-box{text-align:left;padding:10px;height:auto}
 .order-list-page .order-list .order-item .title{font-size:13px}
+.order-list-page .order-list .order-item .title-1{font-size:12px;margin:0;padding:3px 7px;letter-spacing:1px;text-align:left;color:#333;text-transform:uppercase;border-radius:5px 5px 0 0;background:none repeat scroll 0 0 #f6f6f4;}
+.order-list-page .order-list .order-item .title-1 img{margin-right:10px;width:15px}
 .order-list-page .order-list .order-item .info{float:left}
 .order-list-page .order-list .order-item .buttons{float:right}
 .return-request-list-page .request-item a{color:#b80709}
@@ -1313,3 +1316,10 @@ margin-top: 7px; }
 .datlichxemnha{font-size:100%;}
 .register-form{width:44%;margin:0 auto}
 .form-fields .error {margin-left: 148px;font-size: 10px;margin-bottom: 10px;}
+.product-hinh{height:auto;width:18%; float:left;border:1px solid;border-radius:5px 5px 0 0;border-color:#f6f6f4;text-align:center}
+.product-hinh img{max-height:34%;max-width:100%; margin:0 auto;}
+.product-content{float:left;padding:5px 5px 0 10px;width:60%}
+.product-col1{float:left;width:50%;}
+.list .small{background:url(/Themes/Zhouse/Content//images/plus-icon-10.png) no-repeat left 8px}
+.list .small a{cursor:pointer}
+

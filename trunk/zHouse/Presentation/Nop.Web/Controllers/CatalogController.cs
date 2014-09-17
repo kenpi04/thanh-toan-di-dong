@@ -1765,6 +1765,8 @@ namespace Nop.Web.Controllers
             _customerActivityService.InsertActivity("PublicStore.ViewProduct", _localizationService.GetResource("ActivityLog.PublicStore.ViewProduct"), product.Name);
             if (isPrint)
                 return View("PrintProduct", model);
+
+            System.Threading.Tasks.Task.Run(() => { product.ViewNumber = product.ViewNumber + 1; _productService.UpdateProduct(product); });
             return View(model.ProductTemplateViewPath, model);
         }
 
@@ -4021,9 +4023,7 @@ namespace Nop.Web.Controllers
             return View("_ProductDetailsPictures", cachedPictures);
 
 
-        }
-
-
+        }                
     }
 }
 
