@@ -33,6 +33,8 @@ using Nop.Web.Framework.UI.Captcha;
 using Nop.Web.Models.Common;
 using Nop.Web.Models.Customer;
 using Nop.Web.Models.Catalog;
+using Nop.Core.Domain.Catalog;
+using Nop.Core.Caching;
 namespace Nop.Web.Controllers
 {
     public partial class CustomerController : BaseNopController
@@ -78,6 +80,8 @@ namespace Nop.Web.Controllers
         private readonly CaptchaSettings _captchaSettings;
         private readonly ExternalAuthenticationSettings _externalAuthenticationSettings;
 
+        private readonly IProductService _productService;
+        private readonly ICacheManager _cacheManager;
         #endregion
 
         #region Ctor
@@ -106,7 +110,10 @@ namespace Nop.Web.Controllers
             IDownloadService downloadService, IWebHelper webHelper,
             ICustomerActivityService customerActivityService, MediaSettings mediaSettings,
             IWorkflowMessageService workflowMessageService, LocalizationSettings localizationSettings,
-            CaptchaSettings captchaSettings, ExternalAuthenticationSettings externalAuthenticationSettings)
+            CaptchaSettings captchaSettings, ExternalAuthenticationSettings externalAuthenticationSettings,
+            IProductService productService,
+            ICacheManager cacheManager
+            )
         {
             this._authenticationService = authenticationService;
             this._dateTimeHelper = dateTimeHelper;
@@ -147,6 +154,8 @@ namespace Nop.Web.Controllers
             this._localizationSettings = localizationSettings;
             this._captchaSettings = captchaSettings;
             this._externalAuthenticationSettings = externalAuthenticationSettings;
+            this._productService = productService;
+            this._cacheManager = cacheManager;
         }
 
         #endregion
@@ -329,16 +338,53 @@ namespace Nop.Web.Controllers
         }
         
         [NonAction]
-        protected CustomerOrderListModel PrepareCustomerOrderListModel(Customer customer)
+        protected CustomerOrderListModel PrepareCustomerOrderListModel(Customer customer, int pageIndex = 0, int pageSize = 20)
         {
             if (customer == null)
                 throw new ArgumentNullException("customer");
 
             var model = new CustomerOrderListModel();
             model.NavigationModel = GetCustomerNavigationModel(customer);
-            model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;
-            var orders = _orderService.SearchOrders(storeId: _storeContext.CurrentStore.Id,
+            model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;            
+            var orders = _orderService.SearchOrders(storeId: 0,
                 customerId: customer.Id);
+            var products = _productService.SearchProducts(pageIndex:0, pageSize: 20, 
+                visibleIndividuallyOnly: true,
+                languageId:0,
+                customerId: customer.Id);
+            foreach(var product in products)
+            {
+                var productProfileModel = new CustomerOrderListModel.ProductProfileModel()
+                {
+                    Id = product.Id,
+                    Sku = product.Sku,
+                    Name = product.Name,
+                    Sename = product.GetSeName(),
+                    CreatedOn = product.CreatedOnUtc,
+                    UpdatedOn = product.UpdatedOnUtc,
+                    Area = product.Area.ToString("{0:0.00}"),
+                    Price = product.CallForPrice ? "Thỏa thuận" : ReturnPriceString(product.Price, "đ"),
+                    BathRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
+                    BedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
+                    TinhTrang = GetOptionName(product, ProductAttributeEnum.Status),
+                    ViewNumber = product.ViewNumber.ToString(),
+                    TrangThaiDuyet = _localizationService.GetResource(Enum.GetName(typeof(ProductStatusEnum),product.Status)),
+                    DefaultPictureModel = _cacheManager.Get(string.Format(Nop.Web.Infrastructure.Cache.ModelCacheEventConsumer.PRODUCT_DEFAULTPICTURE_MODEL_KEY, product.Id, 80, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id), () =>
+                    {
+                        var picture = _pictureService.GetPicturesByProductId(product.Id, 1).FirstOrDefault();
+                        var pictureModel = new Nop.Web.Models.Media.PictureModel()
+                        {
+                            ImageUrl = _pictureService.GetPictureUrl(picture, 143),
+                            FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
+                            Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat"), product.Name),
+                            AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), product.Name)
+                        };
+                        return pictureModel;
+                    })
+                };
+                model.Products.Add(productProfileModel);
+            }
+
             foreach (var order in orders)
             {
                 var orderModel = new CustomerOrderListModel.OrderDetailsModel()
@@ -374,6 +420,37 @@ namespace Nop.Web.Controllers
             }
 
             return model;
+        }
+
+        private string GetOptionName(Product p, ProductAttributeEnum att)
+        {
+            if (p.ProductSpecificationAttributes.Count == 0)
+                return "";
+            var deffaulAttr = p.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)att)
+               .Select(x => x.SpecificationAttributeOption)
+               .FirstOrDefault();
+            if (deffaulAttr == null)
+                return "";
+            return deffaulAttr.Name;
+        }
+        private string ReturnPriceString(decimal price, string symbol)
+        {
+            price = price / 1000000;
+            if (Math.Floor(price / 1000) > 0)
+            {
+                if (price % 1000 != 0)
+                {
+                    return ((int)Math.Floor(price / 1000)).ToString() + " tỉ " + ((int)(price % 1000)).ToString() + " triệu " + symbol;
+                }
+                else
+                {
+                    return ((int)Math.Floor(price / 1000)).ToString() + " tỉ " + symbol;
+                }
+            }
+            else
+            {
+                return ((int)price).ToString() + " triệu " + symbol;
+            }
         }
 
         #endregion
@@ -1880,6 +1957,20 @@ namespace Nop.Web.Controllers
 
         #endregion
 
-       
+        #region Products
+
+        [NopHttpsRequirement(SslRequirement.Yes)]
+        public ActionResult Products()
+        {
+            if (!IsCurrentUserRegistered())
+                return new HttpUnauthorizedResult();
+
+            var customer = _workContext.CurrentCustomer;
+            var model = PrepareCustomerOrderListModel(customer);
+            return View(model);
+        }
+
+        #endregion
+
     }
 }
