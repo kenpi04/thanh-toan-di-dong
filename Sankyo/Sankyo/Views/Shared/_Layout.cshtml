@@ -1,19 +1,39 @@
 ﻿@{
     Layout = "~/Views/Shared/_Header.cshtml";
+    if (String.IsNullOrWhiteSpace(Request.Path) || Request.Url.AbsolutePath == "/" || Request.Url.AbsolutePath == "/HOME-1")
+    {
+        <script src="@Url.Content("~/Scripts/jquery.flexslider-min.js")"></script>
+        <link rel="stylesheet" href="@Url.Content("~/Themes/flexslider.css")" />
+        //@Html.Partial("_BannerSlider")
+        <script>
+            $(window).load(function () {
+                $('#thumble').flexslider({
+                    animation: "slide",
+                    controlNav: false,
+                    animationLoop: false,
+                    slideshow: false,
+                    asNavFor: '#main-pic',
+                    itemWidth: 80,
+                });
+                $('#main-pic').flexslider({
+                    animation: "slide",
+                    controlNav: false,
+                    animationLoop: false,
+                    slideshow: false,
+                    itemWidth: 707,
+                    itemMargin: 0,
+                    sync: "#thumble",
+                });
+            })
+        </script>
+    }
 } 
 <div id="wrapper">
     <div id="header">
         <div class="language-select">
             <a class="vi @(Sankyo.Filters.Common.CurrentLanguageId!=1?"dis":"")" href="@Url.Action("ChangeLanguage", new { id = 1, url = Request.Url.AbsolutePath })"></a>
             <a class="en @(Sankyo.Filters.Common.CurrentLanguageId!=2?"dis":"")" href="@Url.Action("ChangeLanguage", new { id = 2, url = Request.Url.AbsolutePath })"></a>
-        </div>
-        @*<script type="text/javascript">
-    function ChangeLanguage(id) {
-        $.get("@Url.Action("ChangeLanguage","Home")", { id: id }, function (d) {            
-        });
-        return false;
-    }*@
-        </script>
+        </div>      
 
         <div class="banner"></div>
       @Html.Action("Menu","Home")
@@ -45,33 +65,26 @@
         <embed style="width:150px; height:150px;" wmode="transparent" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" quality="high" src="http://panel.makewebeasy.com/template/_clock/swf/29.swf">
     </div>
        <div class="row-left">
-    <div id="datepicker">
-       
+    <div id="datepicker">       
     </div>
             <script>
-
                 $(function () {
                     $("#datepicker").datepicker();
                 });
 
         </script>
     </div>
-</div>
-        
+</div>        
         <div id="content-right">
             @RenderBody()
-
         </div>
     <div class="clearBoth"></div>
-        }
-        
+        }        
     </div>
-
     <div class="banner-footer"></div>
-    <div class="copyright">  			Copyright by sankyo-asia.com		</div>
+    <div class="copyright">Copyright by sankyo-asia.com</div>
     <div id="footer">
         <div style="text-align:center"></div>
     </div>
-
 </div>
     
