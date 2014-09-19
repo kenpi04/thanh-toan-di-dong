@@ -1,0 +1,53 @@
+﻿@model ProductEmailAFriendModel
+@using Nop.Web.Models.Catalog;
+
+            @using (Ajax.BeginForm("ProductEmailAFriendSend",new AjaxOptions{HttpMethod="POST",OnComplete="sendComplete"}))
+            {         
+            <h1>Gửi mail</h1>
+            <div class="message-error">
+                @Html.ValidationSummary(true)
+            </div>
+            <div class="form-fields email-friend">
+                <div class="inputs-left">
+                    <div class="inputs">
+                        @Html.LabelFor(model => model.Name)<br />
+                        @Html.TextBoxFor(model => model.Name, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.Name.Hint") })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                     <div class="inputs">
+                        @Html.LabelFor(model => model.Phone)<br />
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.Phone.Hint") })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                    <div class="inputs">
+                        @Html.LabelFor(model => model.YourEmailAddress)<br />
+                        @Html.TextBoxFor(model => model.YourEmailAddress, new { @class = "your-email", placeholder = T("Products.EmailAFriend.YourEmailAddress.Hint") })
+                        @Html.ValidationMessageFor(model => model.YourEmailAddress)
+                    </div>
+                    <div class="inputs">
+                        @Html.LabelFor(model => model.PersonalMessage)
+                        @Html.TextAreaFor(model => model.PersonalMessage, new { @class = "your-email", placeholder = T("Products.EmailAFriend.PersonalMessage.Hint") })
+                        @Html.ValidationMessageFor(model => model.PersonalMessage)
+                    </div>
+
+                    @if (Model.DisplayCaptcha)
+                    {
+                        <div class="captcha-box">
+                            @Html.Raw(Html.GenerateCaptcha())
+                        </div>
+                    }
+                </div>
+              
+            </div>
+            <div class="buttons">
+                <input type="submit" name="send-email" class="blueBtn send-email-a-friend-button" value="@T("Products.EmailAFriend.Button")" />
+            </div>
+                <script type="text/javascript">
+                    function sendComplete(d)
+                    {
+                        alert(d);
+                    }
+                </script>
+            }
+        
+

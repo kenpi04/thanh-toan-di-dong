@@ -1,0 +1,48 @@
+﻿@model SearchModel
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title    
+    Html.AddTitleParts("Tìm kiếm nhà bán " + (string)ViewBag.ResultString);
+}
+@using Nop.Web.Models.Catalog;
+@using Nop.Web.Extensions;
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#@Html.FieldIdFor(model => model.As)").click(toggleAdvancedSearch);
+
+        toggleAdvancedSearch();
+    });
+
+    function toggleAdvancedSearch() {
+
+        if ($('#@Html.FieldIdFor(model => model.As)').is(':checked')) {
+            $('#advanced-search-block').show();
+        }
+        else {
+            $('#advanced-search-block').hide();
+        }
+    }
+</script>
+<div class="page search-page">
+    <div class="page-title">
+        <h1> Tìm thấy @Model.PagingFilteringContext.TotalItems kết quả  "@ViewBag.ResultString"</h1>
+    </div>
+    <div class="page-body">
+      
+        <div id="list-product">
+            @foreach (var product in Model.Products)
+            {
+                @Html.Partial("_ProductBox", product)
+            }
+        </div>
+        <div class="clearfix"></div>
+        <div class="pager">
+            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+        </div>
+        @Html.Widget("categorydetails_bottom")
+    </div>
+  
+</div>
