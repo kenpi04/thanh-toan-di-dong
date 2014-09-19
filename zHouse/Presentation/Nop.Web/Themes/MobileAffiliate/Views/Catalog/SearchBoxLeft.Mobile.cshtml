@@ -1,0 +1,76 @@
+﻿@model Nop.Web.Models.Catalog.SearchModel
+
+@{
+    Model.PriceRange.RemoveAt(0);
+}
+<form id="frmSearchLeft" method="get">
+ <div style="background:#fff" data-role="panel" id="right-panel" data-theme="none" data-display="overlay" data-position="right">
+     <div class="orangeTitleBg">Tìm kiếm</div>
+      <div class="ui-grid-solo">
+            <div class="ui-block-a">
+                <select name="districtId" id="ddlDistrict">
+                    <option value="0">Chọn phường</option>
+               @foreach (var i in Model.Districts)
+               {                   
+                    <option value="@i.Value">@i.Text</option>
+               }                    
+             </select>
+            </div>
+        </div>
+        <div class="ui-grid-solo">
+            <div class="ui-block-a">
+                <select name="priceString" id="ddlPrice">
+                    <option value="0-0">Chọn khoảng giá</option>
+                @foreach (var i in Model.PriceRange)
+                {
+                    <option value="@i.Value">@i.Text</option>
+                }
+                    </select>
+            </div>
+        </div>
+        <div class="ui-grid-solo">
+            <div class="ui-block-a">
+                <select name="categoryId" id="ddlCate">
+                    <option value="0">Chọn loại</option>
+               @foreach (var i in Model.AvailableCategories)
+               {
+                    <option value="@i.Value">@i.Text</option>
+               }
+                    </select>
+            </div>
+        </div>
+      <div class="ui-grid-solo">
+            <div class="ui-block-a">
+                <select name="attributeOptionIds">
+               @foreach (var i in Model.Directories)
+               {
+                    <option value="@i.Value">@i.Text</option>
+               }
+                    </select>
+            </div>
+           
+
+        </div>
+    
+        <div class="ui-grid-solo">
+            <div class="ui-block-a">
+                <input type="submit" value="Tìm" data-icon="search" />
+            </div>
+
+        </div>
+
+      </div>
+    </form>
+<script type="text/javascript">
+    $(function () {
+      //  $('#slider').nivoSlider({ effect: 'fade',controlNav:false });
+        $("#frmSearchLeft").submit(function () {
+            var data=$(this).serialize();
+            $.get("@Url.Action("GetSlugFromId")", data, function (d) {
+                window.location.href = d;
+            })
+            return false;
+        })
+
+    })
+</script>
