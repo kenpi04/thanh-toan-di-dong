@@ -1,0 +1,164 @@
+﻿@model CustomerOrderListModel
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+}
+@using Nop.Web.Models.Customer;
+@section left
+{
+    @Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
+}
+<div class="page account-page order-list-page">
+    <div class="page-title">
+        <h1>@T("Account.MyAccount") - @T("Account.CustomerOrders")</h1>
+    </div>
+    <div class="page-body">
+        @*@if (Model.RecurringOrders.Count > 0)
+        {
+
+            using (Html.BeginForm())
+            {
+            <div class="section recurring-payments">
+                <div class="title">
+                    <strong>@T("Account.CustomerOrders.RecurringOrders")</strong>
+                </div>
+                <div class="recurring-payments-box">
+                    <table class="data-table">
+                        <colgroup>
+                            <col />
+                            <col />
+                            <col />
+                            <col />
+                            <col />
+                            <col />
+                            <col />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th class="a-center start-date">
+                                    @T("Account.CustomerOrders.RecurringOrders.StartDate")
+                                </th>
+                                <th class="a-center cycle-info">
+                                    @T("Account.CustomerOrders.RecurringOrders.CycleInfo")
+                                </th>
+                                <th class="a-center next-payment">
+                                    @T("Account.CustomerOrders.RecurringOrders.NextPayment")
+                                </th>
+                                <th class="a-center total-cycles">
+                                    @T("Account.CustomerOrders.RecurringOrders.TotalCycles")
+                                </th>
+                                <th class="a-center cycles-remaining">
+                                    @T("Account.CustomerOrders.RecurringOrders.CyclesRemaining")
+                                </th>
+                                <th class="a-center initial-order">
+                                    @T("Account.CustomerOrders.RecurringOrders.InitialOrder")
+                                </th>
+                                <th class="a-center cancel">
+                                    @T("Account.CustomerOrders.RecurringOrders.Cancel")
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.RecurringOrders)
+                            {
+                                <tr>
+                                    <td class="a-center start-date">
+                                        @item.StartDate
+                                    </td>
+                                    <td class="a-center cycle-info">
+                                        @item.CycleInfo
+                                    </td>
+                                    <td class="a-center next-payment">
+                                        @item.NextPayment
+                                    </td>
+                                    <td class="a-center total-cycles">
+                                        @item.TotalCycles
+                                    </td>
+                                    <td class="a-center cycles-remaining">
+                                        @item.CyclesRemaining
+                                    </td>
+                                    <td class="a-center initial-order">
+                                        <a href="@Url.RouteUrl("OrderDetails", new { orderId = item.InitialOrderId })">@string.Format(T("Account.CustomerOrders.RecurringOrders.ViewInitialOrder").Text, item.InitialOrderId)</a>
+                                    </td>
+                                    <td class="a-center cancel">
+                                        @if (item.CanCancel)
+                                        {
+                                            <input type="submit" name="cancelRecurringPayment@(item.Id)" value="@T("Account.CustomerOrders.RecurringOrders.Cancel")" class="button-2 cancel-recurring-order-button" />
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            }
+            if (Model.CancelRecurringPaymentErrors.Count > 0)
+            {
+            <div class="message-error">
+                <ul>
+                    @for (int i = 0; i < Model.CancelRecurringPaymentErrors.Count; i++)
+                    {
+                        <li>@Model.CancelRecurringPaymentErrors[i]</li>
+                    }
+                </ul>
+            </div>
+            }
+        }*@
+        <div class="order-list">
+            @if (Model.Products.Count > 0)
+            {
+                foreach (var product in Model.Products)
+                {
+                <div class="section order-item">
+                    @*<div class="title">
+                        <strong>@T("Account.CustomerOrders.OrderNumber"): @product.Id (@product.Sku)</strong>
+                    </div>*@
+                    <div class="product-hinh"><img src="@product.DefaultPictureModel.ImageUrl" alt="@product.DefaultPictureModel.AlternateText" title="Hình của @product.DefaultPictureModel.Title"/></div>
+                    <div class="product-content">
+                        <p style="margin:0;line-height:normal"><a href="@Url.RouteUrl("Product", new { sename = product.Sename })" target="_blank" title="@product.Name" style="font-weight:700">@product.Name</a></p>
+                        <div class="product-col1">
+                            <p><span>ID: </span><span>@product.Id</span></p>
+                            <p><span>Diện tích: </span><span>@product.Area</span></p>
+                            <p><span>Giá: </span><span>@product.Price</span></p>
+                        </div>
+                        <div class="product-col1">
+                            <p><span>Tình trạng: </span><span>@product.TinhTrang</span></p>
+                            <p><span>@product.BathRoom</span></p>
+                            <p><span>@product.BedRoom</span></p>
+                        </div>
+                        <p><strong>Đăng: </strong><span>@product.CreatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Cập nhật: </strong><span>@product.UpdatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Hết hạn: </strong><span>@(product.ExpiredOn.HasValue ?  product.ExpiredOn.Value.ToString("dd/MM/YY hh:mm:ss"): "_")</span></p>
+                    </div>            
+                    <div class="side-3" style="width:19%;margin:0">
+                        <div class="block block-account-navigation" style="margin-bottom:0">
+                            <div class="title-1" ><img src="~/Themes/Zhouse/Content/images/info-icon-19.png" title="Trạng thái duyệt" alt="info icon"/>@product.TrangThaiDuyet</div>
+                            <div class="title-1" ><img src="~/Themes/Zhouse/Content/images/view-icon-17.png" title="Lượt xem" alt="view icon"/>@product.ViewNumber</div>
+                            <div class="listbox" style="padding-bottom:0;">
+                                <ul class="list">
+                                    <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')">Sửa tin</a></li>
+                                    <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')">Ngừng đăng tin</a></li>
+                                    <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')">Xóa tin</a></li>
+                                    <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')">Làm mới tin</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>        
+                    @*<div class="buttons" style="float:left;max-width:200px">
+                        <label>@product.TrangThaiDuyet | Lượt Xem: @product.ViewNumber</label>
+                        <a onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')">Sửa tin</a>
+                        <input type="button" value="Ngừng Đăng Tin" class="blueBtn" onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')" />
+                        <input type="button" value="Xóa Tin" class="blueBtn" onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')" />
+                        <input type="button" value="Làm Mới Tin" class="blueBtn" onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')" />
+                    </div>*@                    
+                </div>
+                }
+            }
+            else
+            {
+                @T("Account.CustomerOrders.NoOrders")
+            }
+        </div>
+    </div>
+</div>
