@@ -1,0 +1,58 @@
+﻿@model SearchModel
+@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+  
+    //title
+    Html.AddTitleParts(T("PageTitle.Search").Text);
+}
+@using Nop.Web.Models.Catalog;
+@using Nop.Web.Extensions;
+
+<div class="page search-page">
+    <div class="page-title">
+        <h1> Tìm thấy @Model.PagingFilteringContext.TotalItems kết quả  "@ViewBag.ResultString"</h1>
+    </div>
+    <div class="page-body">
+         @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frm-search" }))
+         {
+            
+           @*===Hien thi ket qua search===*@
+         
+                    <div class="search-results">
+                        @if (!String.IsNullOrEmpty(Model.Warning))
+                        {
+                            <span class="warning">
+                                @Model.Warning
+                            </span>
+                        }
+                        @if (Model.NoResults)
+                        {
+                            <span class="result">
+                                @T("Search.NoResultsText")
+                            </span>
+                        }
+                        <span id="div-result" class="info">Tìm thấy @Model.PagingFilteringContext.TotalItems tin</span>
+                      
+                            
+                            <div class="product-list" id="ListProduct">
+                              
+                                    @foreach (var product in Model.Products)
+                                    {
+                                        
+                                            @Html.Partial("_ProductBox", product)
+                                       
+                                    }
+                               
+                            </div>
+                        
+                        <div class="pager" id="page-list">
+                          @Html.Pager(Model.PagingFilteringContext)
+                        </div>
+                    </div>
+           
+             
+            
+
+         }
+    </div>
+</div>
