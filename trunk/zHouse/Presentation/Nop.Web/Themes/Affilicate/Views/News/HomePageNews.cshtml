@@ -1,0 +1,61 @@
+﻿@model HomePageNewsItemsModel
+@using Nop.Web.Models.News;
+@if (Model.NewsItems.Count > 0)
+{
+    var defaultItem = Model.NewsItems.FirstOrDefault();
+    <div class="news-list-homepage">
+        <div class="title-block">
+            Cập nhật những tin tức, kiến thức mới nhất trong lĩnh vực BĐS
+        </div>
+        <div class="news-large">
+            <img src="@defaultItem.DefaultPictureModel.FullSizeImageUrl" alt="@defaultItem.DefaultPictureModel.AlternateText" title="@defaultItem.DefaultPictureModel.Title" width="400" height="266" id="news-picture" />
+            <div class="news-date-lage" id="news-date">
+                @Html.Raw(defaultItem.CreatedOn.ToString("dd/MM<br>yyyy"))
+            </div>
+            <h1 id="news-title">   <a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = defaultItem.SeName })">
+                            @defaultItem.Title</a> </h1>
+            <p id="news-content">@defaultItem.Short</p>            
+        </div>
+        <div class="news-items">
+            @foreach (var item in Model.NewsItems)
+            {
+                <div class="item">
+                    <div class="news-pic">
+                        <img fullpic="@item.DefaultPictureModel.FullSizeImageUrl" src="@item.DefaultPictureModel.ImageUrl" alt="@item.DefaultPictureModel.AlternateText" title="@item.DefaultPictureModel.Title" />
+                      <span class="news-date">
+                                            @Html.Raw(item.CreatedOn.ToString("dd/mm</br>yyyy"))
+                            </span>
+                         </div>
+                 
+                    <div class="news-text">
+                    <div class="news-head">
+                        <a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">
+                            @item.Title</a> 
+                    </div>
+                    <div class="news-details">
+                        @Html.Raw(item.Short)
+                    </div>
+                        </div>
+                   <div class="clearfix"></div>
+                </div>
+                
+            }
+            <div class="view-all">
+                <a href="@Url.RouteUrl("NewsArchive")">
+                    @T("News.ViewAll")</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(".item").click(function () {
+            $(".item.active").removeClass("active");
+            var el = $(this);
+            $("#news-picture").attr("src", el.find('img').attr("fullpic"));
+            $("#news-title").html(el.find('.news-head').html());
+            $("#news-date").html(el.find('.news-date').html());
+            $("#news-content").html(el.find(".news-details").html());
+            el.addClass("active")
+
+        })
+    </script>
+}
