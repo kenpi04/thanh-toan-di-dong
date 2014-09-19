@@ -1,0 +1,46 @@
+﻿@model Nop.Web.Models.Catalog.SearchModel
+
+@{
+    Model.PriceRange.RemoveAt(0);
+}
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#"><h2> lọc theo vị trí</h2></a></div>
+    <div class="whiteLeftColContent">
+        @foreach (var i in Model.Districts)
+        {
+            <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+        }
+
+    </div>
+</div>
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#"><h2> Lọc theo giá</h2></a></div>
+    <div class="whiteLeftColContent">
+    
+        @foreach (var i in Model.PriceRange)
+        {
+            <input type="radio" id="ckDist_@i.Value" name="PriceString" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+        }
+              
+    </div>
+</div>
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#"><h2> Lọc theo loại</h2></a></div>
+    <div class="whiteLeftColContent">
+        @foreach (var i in Model.AvailableCategories)
+        {
+            <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+        }
+
+    </div>
+</div>
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#"><h2> Lọc theo dự án</h2></a></div>
+    <div class="whiteLeftColContent">
+        @foreach (var i in Model.AvailableManufacturers)
+        {
+            <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+        }
+
+    </div>
+</div>

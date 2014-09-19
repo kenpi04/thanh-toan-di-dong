@@ -1,0 +1,40 @@
+﻿@model Nop.Web.Models.Catalog.SearchModel
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frmSearchHOme" }))
+{
+<div class="wrapper" style="padding-top:63px">
+<div class="topInfo">
+        	<div class="pinkBg">            	
+                <div class="zhouse">
+                    @*<span class="link-z">
+                    zHouse.com.vn 
+                        </span>*@
+                     <h1 class="slogan">Tìm kếm bất động sản</h1>
+                     <div class="clearBoth"></div>
+                </div>
+                @Html.DropDownList("wardId", Model.Districts, new { @class = "box" })
+               @Html.DropDownList("priceString", Model.PriceRange, new { @class = "box" })
+                @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "box" })         
+                @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "box" })                     
+                @Html.TextBoxFor(model => model.Q, new { @class = "box", placeholder = "mã tin" })
+                <input type="submit" style="margin-right:4px" class="blueBtn" value="tìm kiếm">
+                <div class="clearBoth"></div>
+                <div class="gioithieu"> Hơn 200 Bất động sản uy tín trên zHouse.com.vn - Tìm ngay ngôi nhà mơ ước của bạn</div>
+            </div>
+        </div>
+</div>    
+    @*@Html.FptBanner(Position: 3, stateId: 0, viewName: "BannerSlideShow")*@ 
+    @*<div class="adv-yourhouse" onclick="setLocation('@Url.RouteUrl("InsertProduct")')"></div>*@  
+}
+<script type="text/javascript">
+    $(function () {
+      //  $('#slider').nivoSlider({ effect: 'fade',controlNav:false });
+        $("#frmSearchHOme").submit(function () {
+            var data=$(this).serialize();
+            $.get("@Url.Action("GetSlugFromId")", data, function (d) {
+                window.location.href = d;
+            })
+            return false;
+        })
+    })
+</script>
+    

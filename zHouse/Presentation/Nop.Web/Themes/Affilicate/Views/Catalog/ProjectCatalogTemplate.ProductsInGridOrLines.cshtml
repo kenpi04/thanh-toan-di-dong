@@ -1,0 +1,91 @@
+﻿@model CategoryModel
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var categoryUrl = Url.RouteUrl("Category", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(categoryUrl);
+    }
+
+    var breadcrumbDelimiter = EngineContext.Current.Resolve<CommonSettings>().BreadcrumbDelimiter;
+}
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+@using Nop.Web.Extensions;
+@*category breadcrumb*@
+@if (Model.DisplayCategoryBreadcrumb)
+{
+    <div class="breadcrumb">
+        <ul>
+            <li><a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a>
+                <span class="delimiter">@breadcrumbDelimiter</span> </li>
+            @foreach (var cat in Model.CategoryBreadcrumb)
+            {
+                var isLastCategory = cat.Id == Model.Id;
+                <li>
+                    @if (isLastCategory)
+                    {
+                        <strong class="current-item">@cat.Name</strong>
+                    }
+                    else
+                    {
+                        <a href="@Url.RouteUrl("Category", new { SeName = cat.SeName })" title="@cat.Name">@cat.Name</a>
+                        <span class="delimiter">@breadcrumbDelimiter</span>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+    @Html.Widget("categorydetails_after_breadcrumb")
+}
+<div class="page category-page">    
+    <div class="page-body">
+         <div class="search-input">
+            @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct",LoadingElementId="ajax-loading",OnSuccess="searchSuccess" }, new {id="frmSearchLeft" }))
+            {
+                  
+                @Html.Action("SearchBoxLeft", new {isProject=true})
+                
+                <script>
+                    $("#frmSearchLeft input[type=checkbox]").click(function () {
+                        $("#frmSearchLeft").submit();
+                    })
+                    function searchSuccess()
+                    {
+                            
+                    }
+
+                </script>
+            }
+        </div>
+        <div class="search-results">
+           
+            @if (Model.Products.Count > 0)
+            {
+                <div class="product-list" id="ProductList">
+                    @foreach (var product in Model.Products)
+                    { 
+                         <div class="item-box">
+        @Html.Partial("_ProductBox",product)
+       </div>
+                    }
+                </div>
+            }
+            <div class="pager">
+                @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="pager">
+            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+        </div>
+        @Html.Widget("categorydetails_bottom")
+    </div>
+</div>

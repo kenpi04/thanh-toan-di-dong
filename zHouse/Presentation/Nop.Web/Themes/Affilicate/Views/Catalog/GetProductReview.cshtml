@@ -1,0 +1,116 @@
+﻿@model PagedList<Nop.Web.Models.Catalog.ProductReviewModel>
+@using Nop.Core
+@using Nop.Web.Extensions;
+
+@if (Model.TotalCount > 0)
+{
+    foreach (var i in Model)
+    {
+  <div class="col2Whole">
+                            <div class="col2a"><img src="../Themes/Zhouse/Content/images/d2.png" class="circleImg"></div>
+                            <div class="col2b">
+                                <b>@i.CustomerName</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
+                                <br>
+                                <p> 
+                                     @if (i.ReviewText.Length > 100)
+                                     {
+                                @Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(i.ReviewText.Substring(0, 100) + "...", false, true, true, false, false, false))
+                             <strong style='display: none; font-weight: normal' id="more-text-@i.Id">@i.ReviewText.Substring(100, i.ReviewText.Length - 100)</strong>
+                                     }
+                                     else
+                                     { 
+                                @Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(i.ReviewText, false, true, true, false, false, false))
+                           
+                                     }
+
+                                </p>
+                                <div class="actionBottom" id="replay-@i.Id">
+                                    @if (i.ReviewText.Length > 100)
+                                    {
+                                    <div class="blueLinkSmall"><a href="javascript:viewMore(@i.Id,$(this))">...xem thêm</a></div>
+                                    }
+                                    <div style="float:right">
+                                        <div class="blueLinkSmall"><a href="javascript:replay(@i.Id)">Trả lời</a></div>
+                                        <a class="blueDot">•</a>
+                                        <div class="blueLinkSmall">
+                                            @Html.Partial("_ProductReviewHelpfulness", i.Helpfulness)
+                                        </div>
+                                        <a class="blueDot">•</a>
+                                        <a class="greyText">@i.WrittenOnStr</a>
+                                    </div>
+                                </div>
+                            </div>
+      @if (i.Childrens.Count > 0)
+      {
+         <div class="floatLeft">
+             @foreach (var ch in i.Childrens)
+             {
+                                    <div class="replyBg">
+                                        <div class="nhonReply"></div>
+                                        <div class="col2WholeInside">
+                                            <div class="col2aInside"><img src="../Themes/Zhouse/Content/images/d1.png" class="circleImg"></div>
+                                            <div class="col2bInside">
+                                                <b>@ch.CustomerName</b>&nbsp;<a style="color:#1e98d5">•</a>&nbsp;<a style="color:#999;font-size:11px">TP. Hồ Chí Minh</a>
+                                                <br>
+                                              <p> 
+                                     @if (i.ReviewText.Length > 100)
+                                     {
+                                @Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(i.ReviewText.Substring(0, 100) + "...", false, true, true, false, false, false))
+                             <strong style='display: none; font-weight: normal' id="more-text-@i.Id">@i.ReviewText.Substring(100, i.ReviewText.Length - 100)</strong>
+                                     }
+                                     else
+                                     { 
+                                @Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(i.ReviewText, false, true, true, false, false, false))
+                           
+                                     }
+
+                                </p>
+                                                <div class="actionBottom">
+                                                    @if (i.ReviewText.Length > 100)
+                                              {
+                                                    <div class="blueLinkSmall"><a href="javascript:viewMore(@ch.Id,$(this))">...xem thêm</a></div>
+                                                    }
+                                                    <div style="float:right">
+                                                        <div class="blueLinkSmall"><a href="javascript:replay(@i.Id)">Trả lời</a></div>
+                                                        <a class="blueDot">•</a>
+                                                        <div class="blueLinkSmall">  @Html.Partial("_ProductReviewHelpfulness", ch.Helpfulness)</div>
+                                                        <a class="blueDot">•</a>
+                                                        <a class="greyText">@ch.WrittenOnStr</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+             }
+             </div>
+      }
+                        </div>
+    }
+    <div class="pager">
+        @Html.Pager(new Nop.Web.Models.Common.PagerModel { PageIndex = Model.PageIndex, PageSize = Model.PageSize, TotalRecords = Model.TotalCount })
+    </div>
+    <script type="text/javascript">
+        function viewMore(id,a)
+        {
+            $("#more-text-" + id).show();
+            a.hide();
+        }
+        function replay(id)
+        {
+            $("form[replay]").remove();
+            var frmcoment = $("#form-coment-0").clone();
+            var form = frmcoment.find(".frmAddComment");
+            frmcoment.attr("replay", true);
+            form.attr("id", "frmAddComment-" + id);
+            form.append("<input type=hidden value='" + id + "' name=AddProductReview.ParentId /> ");
+            $("#replay-" + id).append(frmcoment);
+        }
+        $(function () {
+            $(".pager a").click(function () {
+                var href = $(this).attr("href");
+                $("#list-comment").hide().load(href);
+            })
+        })
+    </script>
+
+}
