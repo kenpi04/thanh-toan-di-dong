@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.Head.cshtml";
+    bool isHome = Url.RequestContext.RouteData.Values["controller"].ToString().Equals("home", StringComparison.InvariantCultureIgnoreCase);
+       
+
+}
+@*@Html.Widget("body_start_html_tag_after")*@
+@*@Html.Partial("_Notifications")*@
+@*@if (!isHome)
+{
+    <div class="back-top" style="left: 50%; margin-left: 502px; top: 150px" id="divAdLeft">
+        @Html.FptBanner(Position: 1)
+
+    </div>
+    <div class="back-top" style="right: 50%; margin-right: 502px; top: 150px" id="divAdRight">
+        @Html.FptBanner(Position: 2)
+
+    </div>
+}*@
+<div class="master-wrapper-page">
+    @Html.Action("JavaScriptDisabledWarning", "Common")
+    <div class="master-wrapper-content">
+        <div class="top">
+            <div class="wrapper">
+                <div class="logo"><a href="http://zhousetest.xxx/"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder" alt="Logo Zhouse.com.vn"></a></div>
+                <div class="logo-marketplace"><a href="@Url.RouteUrl("HomePage")">MarketPlace</a></div>
+                @Html.Action("TopMenu", "Catalog")
+            </div>
+        </div>
+        @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome })
+        @*@Html.Widget("content_before")*@
+        @*<div class="ajax-loading-block-window" id="ajax-loading" style="display: none">
+            <div class="loading-image">
+            </div>
+        </div>*@
+        <div class="master-wrapper-main">
+            <div class="icon-list">
+                <a class="icon-contact" href="@Url.RouteUrl("ContactUs")" title="Liên hệ"></a>
+                <a class="icon-request" href="@Url.RouteUrl("InsertProduct")" title="Đăng tin miễn phí"></a>
+            </div>
+            @RenderBody()
+            <div class="clearBoth"></div>
+            @if (!isHome && !Url.RequestContext.RouteData.Values["action"].ToString().Equals("contactus", StringComparison.InvariantCultureIgnoreCase)&&!Url.RequestContext.RouteData.Values["action"].ToString().Equals("compareproducts", StringComparison.InvariantCultureIgnoreCase))
+            {
+                <div id="recent-view">
+                </div>
+                <script type="text/javascript">
+                    $("#recent-view").html("<div class='please-wait'></div>").load("@Url.Action("RecentlyViewedProductsBlock", "Catalog", new { productThumbPictureSize = 254})")
+                </script>
+            }
+        </div>
+        @*@Html.Widget("content_after")
+            @Html.Action("EuCookieLaw", "Common")*@
+    </div>
+    @Html.Action("Footer", "Common")
+</div>
+@*@Html.Widget("body_end_html_tag_before")*@
+<div style="display:none" id="popup"></div>
