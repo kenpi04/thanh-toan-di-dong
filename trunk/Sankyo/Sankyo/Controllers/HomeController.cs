@@ -18,22 +18,19 @@ namespace Sankyo.Controllers
         public HomeController()
         {
             _topicService = new TopicServices();
-            _userService = new UserServices();
-            if (Request != null)
-            {
-                bool cookies = Request.Cookies.AllKeys.Contains("language-id");
-                if (cookies)
-                {
-                    int.TryParse(Request.Cookies["language-id"].Value, out Common.CurrentLanguageId);
-
-                }else Common.CurrentLanguageId = 1;
-            }
-            else
-                Common.CurrentLanguageId = 1;
+            _userService = new UserServices();            
         }
 
         public ActionResult Index(string sename)
         {
+            var cookie = GetLanguageCookie(this.HttpContext);
+            if (cookie != null)
+            {
+                if (!int.TryParse(cookie.Value, out Common.CurrentLanguageId))
+                    Common.CurrentLanguageId = 1;
+            }
+            else Common.CurrentLanguageId = 1;
+
             var model = new TopicModel();
             var topic = new Topic();
             if (string.IsNullOrWhiteSpace(sename))
@@ -269,9 +266,12 @@ namespace Sankyo.Controllers
             return RedirectToRoute("HomePage");
         }
 
-        private void GetCookieLanguage(HttpRequestBase request)
+        protected virtual HttpCookie GetLanguageCookie(HttpContextBase _httpContext)
         {
-            //
+            if (_httpContext == null || _httpContext.Request == null)
+                return null;
+
+            return _httpContext.Request.Cookies["language-id"];
         }
     }
 }
