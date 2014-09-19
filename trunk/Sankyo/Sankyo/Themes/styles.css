@@ -49,3 +49,5 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1adb1a', end
 .btn {background:#259100;color:#fff;text-transform:uppercase;font-size:13px;padding:10px;display:block;border:none;margin:0 auto }
 .title-page{font-size:16px;color:#009933;font-weight:bold}
 .topicColor{font-size:14px}
+.flexslider {height: 42px; margin: 0;width: 320px;float: right;margin-top: -71px;margin-right: 31px;background-color: rgba(7, 7, 7, 0.7);border: none;padding: 6px;}
+#thumble img {width: 70px;height: 42px;}
