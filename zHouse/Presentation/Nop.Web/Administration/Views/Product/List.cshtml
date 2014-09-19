@@ -39,6 +39,30 @@
         </tr>
         <tr>
             <td class="adminTitle">
+                @Html.NopLabelFor(model => model.SearchStateProviceId):
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("SearchStateProviceId", Model.AvailableStateProvinces)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.SearchDistrictId):
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("SearchDistrictId", Model.AvailableDistricts)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.SearchCustomerId):
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("SearchCustomerId", Model.AvaiableCustomers)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
                 @Html.NopLabelFor(model => model.SearchCategoryId):
             </td>
             <td class="adminData">
@@ -242,8 +266,9 @@
                 SearchIncludeSubCategories: $('#@Html.FieldIdFor(model => model.SearchIncludeSubCategories)').is(':checked'),
                 SearchManufacturerId: $('#SearchManufacturerId').val(),
                 SearchStoreId: $('#SearchStoreId').val(),
-                //SearchWarehouseId: $('#SearchWarehouseId').val(),
-                //SearchVendorId: $('#SearchVendorId').val(),
+                SearchDistrictId: $('#SearchDistrictId').val(),
+                SearchStateProviceId: $('#SearchStateProviceId').val(),
+                SearchCustomerId: $('#SearchCustomerId').val(),
                 SearchStatus: $('#SearchStatus').val()
             };
             e.data = searchModel;

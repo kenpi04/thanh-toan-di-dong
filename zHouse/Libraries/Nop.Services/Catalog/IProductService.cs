@@ -100,7 +100,7 @@ namespace Nop.Services.Catalog
             int customerId=0,
             IList<int> filteredSpecs = null,
             ProductStatusEnum? status=null,
-            IList<int> dictrictIds = null,
+            IList<int> districtIds = null,
             int streetId = 0,
             IList<int> wardId = null,
             int stateProvinceId = 0,

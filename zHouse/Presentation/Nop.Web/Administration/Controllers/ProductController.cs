@@ -82,7 +82,7 @@ namespace Nop.Admin.Controllers
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly CatalogSettings _catalogSettings;
         private readonly IDownloadService _downloadService;
-
+        private readonly IStateProvinceService _stateProvinceService;
         #endregion
 
 		#region Constructors
@@ -126,7 +126,8 @@ namespace Nop.Admin.Controllers
             IProductAttributeFormatter productAttributeFormatter,
             IProductAttributeParser productAttributeParser,
             CatalogSettings catalogSettings,
-            IDownloadService downloadService)
+            IDownloadService downloadService,
+            IStateProvinceService stateProvinceService)
         {
             this._productService = productService;
             this._productTemplateService = productTemplateService;
@@ -168,6 +169,7 @@ namespace Nop.Admin.Controllers
             this._productAttributeParser = productAttributeParser;
             this._catalogSettings = catalogSettings;
             this._downloadService = downloadService;
+            this._stateProvinceService = stateProvinceService;
         }
 
         #endregion 
@@ -666,16 +668,25 @@ namespace Nop.Admin.Controllers
             foreach (var m in _manufacturerService.GetAllManufacturers(showHidden: true))
                 model.AvailableManufacturers.Add(new SelectListItem() { Text = m.Name, Value = m.Id.ToString() });
 
-            //stores
+            //stores           
             model.AvailableStores.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
             foreach (var s in _storeService.GetAllStores())
-                model.AvailableStores.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString() });
-
-            //stores
-            //model.AvailableWarehouses.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
-            //foreach (var wh in _shippingService.GetAllWarehouses())
-            //    model.AvailableWarehouses.Add(new SelectListItem() { Text = wh.Name, Value = wh.Id.ToString() });
-
+                model.AvailableStores.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString(), Selected = (s.Id == 1) });
+            
+            //districts
+            model.AvailableDistricts.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            foreach (var dis in _stateProvinceService.GetDistHCM())
+                model.AvailableDistricts.Add(new SelectListItem() { Text = dis.Name, Value = dis.Id.ToString() });
+            //stateprovices
+            model.AvailableStateProvinces.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            foreach (var st in _stateProvinceService.GetStateProvincesByCountryId(230))                            
+                model.AvailableStateProvinces.Add(new SelectListItem() { Text = st.Name, Value = st.Id.ToString()});
+            model.AvailableStateProvinces.Where(x =>x.Value != "0").FirstOrDefault().Selected = true;
+            //wards            
+            //customers
+            model.AvaiableCustomers.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+            foreach (var cus in _customerService.GetAllCustomers(customerRoleIds: new int[]{_customerService.GetCustomerRoleBySystemName(Nop.Core.Domain.Customers.SystemCustomerRoleNames.Administrators).Id}))
+                model.AvaiableCustomers.Add(new SelectListItem() { Text = cus.GetFullName(), Value = cus.Id.ToString() });
             //vendors
             //model.AvailableVendors.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
             //foreach (var v in _vendorService.GetAllVendors(0, int.MaxValue, true))
@@ -702,10 +713,10 @@ namespace Nop.Admin.Controllers
                 return AccessDeniedView();
 
             //a vendor should have access only to his products
-            if (_workContext.CurrentVendor != null)
-            {
-                model.SearchVendorId = _workContext.CurrentVendor.Id;
-            }
+            //if (_workContext.CurrentVendor != null)
+            //{
+            //    model.SearchVendorId = _workContext.CurrentVendor.Id;
+            //}
 
             var categoryIds = new List<int>() { model.SearchCategoryId };
             //include subcategories
@@ -716,8 +727,10 @@ namespace Nop.Admin.Controllers
                 categoryIds: categoryIds,
                 manufacturerId: model.SearchManufacturerId,
                 storeId: model.SearchStoreId,
-                vendorId: model.SearchVendorId,
-                warehouseId: model.SearchWarehouseId,
+                customerId: model.SearchCustomerId,
+                districtIds: new List<int>{ model.SearchDistrictId},
+                wardId: new List<int>{model.SearchWardId},
+                stateProvinceId:model.SearchStateProviceId,
                 status: (ProductStatusEnum)Enum.Parse(typeof(ProductStatusEnum), model.SearchStatus.ToString(),false),
                 keywords: model.SearchProductName,
                 pageIndex: command.Page - 1,
