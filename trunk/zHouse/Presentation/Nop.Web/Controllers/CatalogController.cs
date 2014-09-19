@@ -3006,7 +3006,7 @@ namespace Nop.Web.Controllers
                 pageSize: command.PageSize,
                 filteredSpecs: selectedOptionIds,
                 stateProvinceId: stateProvinceId,
-                dictrictIds: new List<int> { 611 },
+                districtIds: new List<int> { 611 },
                 wardId: new List<int>{districtId},
                 streetId: streetId);
             model.Products = PrepareProductOverviewModels(products).ToList();
@@ -3803,7 +3803,7 @@ namespace Nop.Web.Controllers
                             searchProductTags: false,
                             languageId: 0,
                             filteredSpecs: model.SelectedOptionIds,
-                            dictrictIds: new List<int> { 611 },
+                            districtIds: new List<int> { 611 },
                             wardId: districtIds,
                             status: status,
                             startDateTimeUtc: startDate,
