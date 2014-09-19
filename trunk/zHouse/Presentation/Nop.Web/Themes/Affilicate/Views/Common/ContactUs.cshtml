@@ -1,0 +1,175 @@
+﻿﻿@model ContactUsModel
+@using Nop.Web.Models.Common;
+@{
+    Layout = "~/Views/Shared/_RootFullWidth.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.ContactUs").Text);
+}
+  
+
+      <div class="blackBgTop" id="div-gioithieu">
+    	<a class="title30">GIỚI THIỆU</a> <a class="title40">zHOUSE.com.vn</a>
+        <p>Sàn giao dịch nhà <a class="blueText">zHOUSE</a> chuyên về xây dựng và phân phối nhà dự án, nhà liền kề, nhà đơn lẻ, nhà chung cư…Tất cả các sản phẩm của <a class="blueText">zHOUSE</a> đều được cam kết về chất lượng và pháp lý đầy đủ.</p>
+        <p>Mọi thông tin về Bất động sản như tính pháp lý, vị trí, kết cấu, tiện ích … được <a class="blueText">zHOUSE</a> đưa lên website thông qua video, hình ảnh, bài giới thiệu một cách đầy đủ, chính xác nhất, nhằm mang lại cho Quý khách sự tin tưởng và giúp Quý khách tiết kiệm thời gian đi xem nhà.</p>
+        <p>Bên cạnh đó, <a class="blueText">zHOUSE</a> còn nhận bán nhà giúp các cá nhân hoặc công ty theo hình thức ký gởi trên trang <a class="blueText">zHOUSE.com.vn.</a></p>
+        <p>Trong thời gian sắp tới, <a class="blueText">zHOUSE </a>sẽ tiếp tục mở thị trường, giúp các nhà môi giới uy tín khác có thể đăng sản phẩm lên <a class="blueText">zHOUSE.com.vn</a> theo đúng các tiêu chuẩn của <a class="blueText">zHOUSE</a> như: sản phẩm phải chất lượng, có pháp lý rõ ràng, không nằm trong Vùng bị quy hoạch, không bị tranh chấp, giá cả hợp lý, sổ hồng công chứng có thể sang tên người mua ngay…</p>
+        <p>Đến với <a class="blueText">zHOUSE</a>, Quý khách sẽ được tư vấn nhanh chóng, tận tình, và trách nhiệm. Hãy để chúng tôi giúp bạn sở hữu ngôi nhà mơ ước.</p>
+    </div><!-----blackBgTop------>
+    <img src="@Url.Content("~/Themes/Zhouse/Content/images/stretchImg1.png")" class="stretchImg" />
+    <center>
+        <div class="downBtndiv">
+        	<input type="button" class="downBtn" />
+        </div>
+    </center>
+    
+    <div class="whiteBgFull" id="div-service">
+        <div class="wrapperLarge">
+            <div class="fullContent">
+                <div class="fullContentColFloat"><img src="@Url.Content("~/Themes/Zhouse/Content/images/bannerLeft.png")" /></div>
+                <div class="fullContentCol">
+                	<a class="pinkText" style="font-size:15px">Chúng tôi hiểu rõ, bạn luôn mong muốn được giao dịch nhà đất:</a>
+                    <p>An toàn – Hợp pháp<br />
+                        Chế độ hậu mãi hấp dẫn, dài lâu<br />
+                        Thủ tục pháp lý hoàn chỉnh
+                    </p>
+                    <br />
+                    <a class="blueTextThin" style="font-size:15px">06 tiêu chí vàng của zHOUSE.com.vn là chỉ bán những căn nhà:</a>
+                    <p>Đảm bảo chất lượng công trình<br />
+                        Có Pháp lý rõ ràng<br />
+                        Không nằm trong vùng quy hoạch, không bị tranh chấp<br />
+                        Sổ Hồng công chứng sang tên người mua ngay<br />
+                        Giá cả hợp lý<br />
+                        Mọi giao dịch mua bán được đảm bảo an toàn tuyệt đối
+                    </p>
+                </div>
+            </div><!---fullContent----->
+        </div><!---wrapperLarge----->
+    </div><!----whiteBgFull------>
+    
+    <div class="lineDown"></div>
+    <div class="wrapperLarge">
+        <div class="fullContent">
+        	<div class="talkBlue">
+                <a class="title30" style="font-size:18px">DV</a> <a class="title40">GIẤY TỜ</a>
+                <p>Hợp thức hóa giấy tờ nhà đất, giấy phép xây dựng, sang nhượng, thừa kế … Thủ tục nhanh chóng, hợp lý hợp lệ.</p>
+            </div>
+            
+            <div class="talkPink">
+                <a class="title30" style="font-size:18px">DV</a> <a class="title40">MUA BÁN</a>
+                <p>Nhận ký gởi, mua bán nhà đất. zHouse sẽ lo mọi khâu chụp hình, viết bài, PR và mua bán nhà cho quý khách với phí mối giới <= 2%.</p>
+            </div>
+            
+            <div class="talkGrey">
+                <a class="title30" style="font-size:18px">DV</a> <a class="title40">TƯ VẤN</a>
+                <p>Tư vấn mua bán, định giá, đầu tư nhà đất bởi những chuyên gia kinh nghiệm.</p>
+            </div>
+            <div class="clearBoth"></div>
+            <div class="talkGrey" style="margin-left:200px">
+            	<a class="title30" style="font-size:18px">DV</a> <a class="title40">VAY VỐN</a>
+                <p>Vay vốn mua nhà thủ tục nhanh chóng, giải ngân nhanh với lãi suất thấp nhất.</p>
+            </div>
+            <div class="talkBlue">
+                <a class="title30" style="font-size:18px">DV</a> <a class="title40">QUẢNG CÁO</a>
+                <p>Các bạn muốn tự mình bán nhà? Zhouse luôn có những gói quảng cáo giúp bạn tự mua bán nhà mình một cách nhanh nhất‏.</p>
+            </div>
+        </div><!----fullContent---->
+    </div><!---wrapperLarge---->
+    <div class="lineUp"></div>
+    
+    <div class="whiteBgFull" id="div-contact">
+    	<div class="wrapperLarge">
+        	<a class="title40">LIÊN HỆ</a>
+            <br />
+            <div class="mapCol1">
+                <a class="blueText" style="font-size:16px">zHOUSE.com.vn</a><br />
+                <a class="blueText" style="font-size:13px">Online House Exchange</a><br />
+                <p>144/12/18a Number 6 Street, Binh Hung Hoa B Ward,<br /> Binh Tan Dist, HCMC <br />Tel: +84 (8) 668 133 08. <br /><br />Đừng ngần ngại, hãy liên hệ ngay với chúng tôi!</p>
+                <form id="frmContactus" method="post">
+                 
+                  <div class="panel-error">
+                      @Html.ValidationSummary(false)
+                  </div>
+                       @Html.TextBoxFor(model => model.FullName, new { @class = "mapBox", placeholder = T("ContactUs.FullName.Hint") })
+                     @Html.TextBoxFor(model => model.Phone, new { @class = "mapBox", placeholder = T("ContactUs.Phone.Hint") })
+                        @Html.TextBoxFor(model => model.Email, new { @class = "mapBox", placeholder = T("ContactUs.Email.Hint") })
+                      @Html.TextAreaFor(model => model.Enquiry, new { @class = "mapBox", placeholder = T("ContactUs.Enquiry.Hint"),style="width:290px;height:51px" })
+                      @if (Model.DisplayCaptcha)
+                    {
+                        <div class="captcha-box">
+                            @Html.Raw(Html.GenerateCaptcha())
+                        </div>
+                    }
+                    <input type="submit" id="btn-send-contact" name="send-mail" class="blueBtn" value="CHUYỂN"  style="float:right;margin-right:8px" />
+                 </form>
+            </div><!--mapCol1---->
+            <div class="mapCol2">
+            	<div id="map_canvas" style="width:550px;height:330px;border:solid 2px #fff;box-shadow:1px 1px 1px #808080;margin-bottom:10px"></div>
+
+<script>    
+    $("#frmContactus").submit(function () {
+        var frm = $(this);
+        if (frm.valid())
+        {
+            $("#btn-send-contact").val("Đang gửi...");
+            $("#btn-send-contact").attr("disabled", "disabled");
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ContactUsSend", "Common")",
+                data: frm.serialize(),
+                success: function (d) {
+                    
+                    alert(d);
+                    $("#btn-send-contact").val("CHUYỂN");
+                    $("#btn-send-contact").removeAttr("disabled");
+                    
+                },
+                error: function () {
+                    alert("Error!");
+                    $("#btn-send-contact").val("CHUYỂN");
+                    $("#btn-send-contact").removeAttr("disabled");
+                }
+
+            })
+        }
+        return false;
+            
+    })
+    function showAddress() {
+        var diachi = "44/12/18a,Đường Số 6,Bình Hưng Hòa b,Bình Tân,Hồ Chí Minh";
+        var content = ' Address: 144/12/18a Street 6, Binh Hung Hoa Ward, Binh Tan Dist Ho Chi Minh City - Tel: 0939.448.124<br>        Email: info@zHouse.com.vn | Website: <a href="http://zHouse.com.vn">http://zHouse.com.vn</a><br>        Design and SEO by <a href="http://ecomsolute.com">eCOMsolute.com</a> <br>';
+     geocoder = new google.maps.Geocoder();
+     var myOptions = {
+         center: new google.maps.LatLng(10.794345, 106.589554),
+         zoom: 17,
+         mapTypeId: google.maps.MapTypeId.ROADMAP
+     };
+     var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+     var info = new google.maps.InfoWindow({ content: content });
+  var marker = new google.maps.Marker({
+                 map: map,
+                 position:new google.maps.LatLng(10.794345, 106.589554)
+             });
+    google.maps.event.addListener(marker, "click", function ()
+             { info.open(map, marker); });
+   
+
+ }
+
+ //   setTimeout(function(){showAddress();},2000);
+ function loadScript() {
+     var script = document.createElement('script');
+     script.type = 'text/javascript';
+     script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&' +
+         'callback=showAddress';
+     document.body.appendChild(script);
+ }
+ window.setTimeout(loadScript,5000);
+
+</script>
+
+            </div><!--mapCol2---->
+        </div><!---wrapperLarge---->
+    </div><!---whiteBgFull---->
+
+
