@@ -61,7 +61,8 @@ div.selector {
   position: relative;
   border:solid 1px #ddd;
   overflow: hidden; 
-  background:#fff
+  background:#fff;
+  margin:0 0 3px 0;
 }
   div.selector span {
     text-overflow: ellipsis;
