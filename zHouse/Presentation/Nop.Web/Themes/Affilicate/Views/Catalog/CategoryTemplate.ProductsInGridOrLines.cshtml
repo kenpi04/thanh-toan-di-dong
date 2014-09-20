@@ -50,23 +50,8 @@
     <div class="page-body">
         <div class="mainContent"></div>
         <div class="search-left leftContentTwist">
-            @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct", LoadingElementId = "ajax-loading", OnSuccess = "searchSuccess" }, new { id = "frmSearchLeft" }))
-            {
+            @Html.Action("SearchBoxHead", "Catalog", new { isHome = true })
 
-                @Html.Action("SearchBoxLeft", new { isProject = Model.Id == 2, categoryId = Model.Id })
-                <script>
-                    $(function () { 
-                    $("#frmSearchLeft input[type=checkbox],#frmSearchLeft input[type=radio]").click(function () {
-                        $("#frmSearchLeft").submit();
-                    })
-                    })
-                    function searchSuccess(d)
-                    {
-                       
-                    }
-
-                </script>
-            }
         </div>
         <div class="rightContentTwist">
              <div class="product-list" id="ListProduct">
