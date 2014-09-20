@@ -25,7 +25,7 @@
                 priceString:$("#priceString").val(),
                 categoryId:$("#categoryId").val(),
                 attributeOptionIds: $("#ddlDir").val() + "-" + $("#ddlBath").val() + "-" + $("#ddlBed").val()
-            };         
+            };     
          
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {
                 window.location.href = d;
