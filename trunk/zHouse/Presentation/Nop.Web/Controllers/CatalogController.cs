@@ -3790,9 +3790,7 @@ namespace Nop.Web.Controllers
                 endDate = Convert.ToDateTime(model.EndDate);
 
             var products = _productService.SearchProducts(
-                            categoryIds: categories,
-                            manufacturerId: 0,
-                            storeId: 0,
+                            categoryIds: categories,                           
                             customerId: model.OnlyCustomer ? _workContext.CurrentCustomer.Id : 0,
                             visibleIndividuallyOnly: true,
                             priceMin: minPriceConverted,
@@ -3813,6 +3811,8 @@ namespace Nop.Web.Controllers
             model.Products = PrepareProductOverviewModels(products).ToList();
             if (products.Count > 0)
                 model.PagingFilteringContext.LoadPagedList(products);
+            if (model.IsOrderPage)
+                return PartialView("_PartialProductCustomer", model.Products);
             return PartialView("_ProductListPartial", model);
 
         }

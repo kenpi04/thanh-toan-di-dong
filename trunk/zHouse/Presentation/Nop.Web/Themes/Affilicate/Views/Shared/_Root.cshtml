@@ -27,7 +27,20 @@
                 @Html.Action("TopMenu", "Catalog")
             </div>
         </div>
-        @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome })
+        @if(isHome)
+        { 
+        <div class="wrapper" style="padding-top:63px">
+            @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome })
+            <div class="banner-home">
+                @Html.FptBanner(Position: 103, stateId: 0, viewName: "BannerSlideShow")
+
+            </div>
+            <div class="new-column">
+                @Html.Action("HomePageNews", "News")
+            </div>
+        </div>   
+        }
+
         @*@Html.Widget("content_before")*@
         @*<div class="ajax-loading-block-window" id="ajax-loading" style="display: none">
             <div class="loading-image">

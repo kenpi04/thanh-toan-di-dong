@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using Nop.Core;
@@ -338,20 +339,59 @@ namespace Nop.Web.Controllers
         }
         
         [NonAction]
-        protected CustomerOrderListModel PrepareCustomerOrderListModel(Customer customer, int pageIndex = 0, int pageSize = 20)
+        protected CustomerOrderListModel PrepareCustomerOrderListModel(Customer customer,
+            string priceString="", string attributeOptionIds="",int wardId = 0, int categoryId = 0,
+            int pageIndex = 0, int pageSize = 20)
         {
             if (customer == null)
                 throw new ArgumentNullException("customer");
+            List<int>attr=new List<int>();
+            int pf = 0, pt = 0;
+            
+           
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(priceString))
+                {
+                    string[] prices = priceString.Split('-');
+                    int.TryParse(prices[0], out pf);
+                    int.TryParse(prices[1], out pt);
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(attributeOptionIds))
+                {
+                    string[] splitString = attributeOptionIds.Split('-');
+                    attr = splitString.Select(x => Convert.ToInt32(x)).ToList();
+                    attr.Remove(0);
+                }
+            }
+            catch
+            {}
 
             var model = new CustomerOrderListModel();
             model.NavigationModel = GetCustomerNavigationModel(customer);
             model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;            
             var orders = _orderService.SearchOrders(storeId: 0,
                 customerId: customer.Id);
-            var products = _productService.SearchProducts(pageIndex:0, pageSize: 20, 
-                visibleIndividuallyOnly: true,
-                languageId:0,
-                customerId: customer.Id);
+            var products = _productService.SearchProducts(
+                categoryIds: new List<int> {categoryId },
+                            manufacturerId: 0,
+                            storeId: 0,
+                            customerId: customer.Id,
+                            visibleIndividuallyOnly: true,                          
+                            priceMin:pf,
+                            priceMax:pt,
+                            languageId: 0,
+                            filteredSpecs: attr,
+                            districtIds: new List<int> { 611 },
+                            wardId:new List<int>{ wardId},                          
+                            pageIndex: pageIndex,
+                            pageSize: pageSize
+                );
             foreach(var product in products)
             {
                 var productProfileModel = new CustomerOrderListModel.ProductProfileModel()
@@ -384,40 +424,40 @@ namespace Nop.Web.Controllers
                 };
                 model.Products.Add(productProfileModel);
             }
+           
+            //foreach (var order in orders)
+            //{
+            //    var orderModel = new CustomerOrderListModel.OrderDetailsModel()
+            //    {
+            //        Id = order.Id,
+            //        CreatedOn = _dateTimeHelper.ConvertToUserTime(order.CreatedOnUtc, DateTimeKind.Utc),
+            //        OrderStatus = order.OrderStatus.GetLocalizedEnum(_localizationService, _workContext),
+            //        IsReturnRequestAllowed = _orderProcessingService.IsReturnRequestAllowed(order)
+            //    };
+            //    var orderTotalInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderTotal, order.CurrencyRate);
+            //    orderModel.OrderTotal = _priceFormatter.FormatPrice(orderTotalInCustomerCurrency, true, order.CustomerCurrencyCode, false, _workContext.WorkingLanguage);
 
-            foreach (var order in orders)
-            {
-                var orderModel = new CustomerOrderListModel.OrderDetailsModel()
-                {
-                    Id = order.Id,
-                    CreatedOn = _dateTimeHelper.ConvertToUserTime(order.CreatedOnUtc, DateTimeKind.Utc),
-                    OrderStatus = order.OrderStatus.GetLocalizedEnum(_localizationService, _workContext),
-                    IsReturnRequestAllowed = _orderProcessingService.IsReturnRequestAllowed(order)
-                };
-                var orderTotalInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderTotal, order.CurrencyRate);
-                orderModel.OrderTotal = _priceFormatter.FormatPrice(orderTotalInCustomerCurrency, true, order.CustomerCurrencyCode, false, _workContext.WorkingLanguage);
+            //    model.Orders.Add(orderModel);
+            //}
 
-                model.Orders.Add(orderModel);
-            }
+            //var recurringPayments = _orderService.SearchRecurringPayments(_storeContext.CurrentStore.Id,
+            //    customer.Id, 0, null, 0, int.MaxValue);
+            //foreach (var recurringPayment in recurringPayments)
+            //{
+            //    var recurringPaymentModel = new CustomerOrderListModel.RecurringOrderModel()
+            //    {
+            //        Id = recurringPayment.Id,
+            //        StartDate = _dateTimeHelper.ConvertToUserTime(recurringPayment.StartDateUtc, DateTimeKind.Utc).ToString(),
+            //        CycleInfo = string.Format("{0} {1}", recurringPayment.CycleLength, recurringPayment.CyclePeriod.GetLocalizedEnum(_localizationService, _workContext)),
+            //        NextPayment = recurringPayment.NextPaymentDate.HasValue ? _dateTimeHelper.ConvertToUserTime(recurringPayment.NextPaymentDate.Value, DateTimeKind.Utc).ToString() : "",
+            //        TotalCycles = recurringPayment.TotalCycles,
+            //        CyclesRemaining = recurringPayment.CyclesRemaining,
+            //        InitialOrderId = recurringPayment.InitialOrder.Id,
+            //        CanCancel = _orderProcessingService.CanCancelRecurringPayment(customer, recurringPayment),
+            //    };
 
-            var recurringPayments = _orderService.SearchRecurringPayments(_storeContext.CurrentStore.Id,
-                customer.Id, 0, null, 0, int.MaxValue);
-            foreach (var recurringPayment in recurringPayments)
-            {
-                var recurringPaymentModel = new CustomerOrderListModel.RecurringOrderModel()
-                {
-                    Id = recurringPayment.Id,
-                    StartDate = _dateTimeHelper.ConvertToUserTime(recurringPayment.StartDateUtc, DateTimeKind.Utc).ToString(),
-                    CycleInfo = string.Format("{0} {1}", recurringPayment.CycleLength, recurringPayment.CyclePeriod.GetLocalizedEnum(_localizationService, _workContext)),
-                    NextPayment = recurringPayment.NextPaymentDate.HasValue ? _dateTimeHelper.ConvertToUserTime(recurringPayment.NextPaymentDate.Value, DateTimeKind.Utc).ToString() : "",
-                    TotalCycles = recurringPayment.TotalCycles,
-                    CyclesRemaining = recurringPayment.CyclesRemaining,
-                    InitialOrderId = recurringPayment.InitialOrder.Id,
-                    CanCancel = _orderProcessingService.CanCancelRecurringPayment(customer, recurringPayment),
-                };
-
-                model.RecurringOrders.Add(recurringPaymentModel);
-            }
+            //    model.RecurringOrders.Add(recurringPaymentModel);
+            //}
 
             return model;
         }
@@ -1298,13 +1338,15 @@ namespace Nop.Web.Controllers
         #region Orders
 
         [NopHttpsRequirement(SslRequirement.Yes)]
-        public ActionResult Orders()
+        public ActionResult Orders( string priceString, string attributeOptionIds,int wardId = 0, int categoryId = 0)
         {
             if (!IsCurrentUserRegistered())
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
-            var model = PrepareCustomerOrderListModel(customer);
+            var model = PrepareCustomerOrderListModel(customer,priceString,attributeOptionIds,wardId,categoryId);
+              if (Request.IsAjaxRequest())
+                return View("_PartialProductCustomer", model.Products);
             return View(model);
         }
 

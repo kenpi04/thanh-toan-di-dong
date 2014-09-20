@@ -1,0 +1,57 @@
+﻿@model ProductOverviewModel
+@using Nop.Core.Domain.Orders
+@using Nop.Web.Models.Catalog;
+@{
+   
+}
+<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+@if(!Model.IsProject)
+{
+
+    <div class="introCol">
+        <div class="info-picture">
+            @if(Model.StatusId>0)
+            {
+            <div class="new tag-@Model.StatusId"></div>
+            }
+            <div class="nhon"></div>
+            <div class="pinkTag">@Model.ProductPrice.Price</div>
+            @if (Request.IsAjaxRequest())
+            {
+            <img  alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+            }
+            else
+            {
+            <img class="lazy" data-original="@Model.DefaultPictureModel.ImageUrl" alt="@Model.DefaultPictureModel.AlternateText" width="254" height="254" title="@Model.DefaultPictureModel.Title" />
+            }
+        </div>
+        <div class="whiteBg p-name">@Model.Name</div>
+        <div class="whiteBgCata">@Model.DictrictName - @Model.CateName - @Model.Area.ToString("#.##") m2 - @Model.NumBedRoom - @Model.NumBadRoom - Hướng @Model.Directors</div>
+
+    </div>
+
+}
+else
+{
+    <div class="introCol">
+        <div class="info-picture">
+            @if(Model.StatusId>0)
+            {
+            <div class="new tag-@Model.StatusId"></div>
+            }
+            <div class="nhon"></div>          
+            @if (Request.IsAjaxRequest())
+            {
+            <img  alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+            }
+            else
+            {
+            <img class="lazy" data-original="@Model.DefaultPictureModel.ImageUrl" alt="@Model.DefaultPictureModel.AlternateText" width="254" height="254" title="@Model.DefaultPictureModel.Title" />
+            }
+        </div>
+        <div class="whiteBg p-name">@Model.Name</div>
+        <div class="whiteBgCata">@Model.DictrictName - @Model.CateName - @Model.Area.ToString("#.##") m2 - @Model.ChuDauTu</div>
+
+    </div>
+}
+    </a>

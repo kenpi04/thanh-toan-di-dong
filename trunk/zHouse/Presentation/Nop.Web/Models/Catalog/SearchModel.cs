@@ -100,6 +100,7 @@ namespace Nop.Web.Models.Catalog
         public IList<SelectListItem> BadRooms { get; set; }
         public IList<SelectListItem> BedRooms { get; set; }
         public IList<SelectListItem> Directories { get; set; }
+        public bool IsOrderPage { get; set; }
         public bool IsProject { get; set; }
 
         public string MetaTitle { get; set; }
