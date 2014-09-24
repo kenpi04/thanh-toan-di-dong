@@ -20,7 +20,7 @@ namespace Nop.Services.Catalog
         void DeleteProduct(Product product);
 
         /// <summary>
-        /// Gets all products displayed on the home page
+        /// Gets all products displayed on the home page: Published,Deleted,ShowHomePage, Status
         /// </summary>
         /// <returns>Product collection</returns>
         IList<Product> GetAllProductsDisplayedOnHomePage();

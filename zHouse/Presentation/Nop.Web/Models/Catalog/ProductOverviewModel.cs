@@ -15,29 +15,102 @@ namespace Nop.Web.Models.Catalog
             ReviewOverviewModel = new ProductReviewOverviewModel();
         }
 
+        /// <summary>
+        /// ten
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// ma tin
+        /// </summary>
         public string Sku { get; set; }
+        /// <summary>
+        /// mo ta ngan
+        /// </summary>
         public string ShortDescription { get; set; }
+        /// <summary>
+        /// mo ta day du
+        /// </summary>
         public string FullDescription { get; set; }
+        /// <summary>
+        /// sename
+        /// </summary>
         public string SeName { get; set; }
+        /// <summary>
+        /// ten lien he
+        /// </summary>
         public string ContactName { get; set; }
+        /// <summary>
+        /// dien thoai lien he
+        /// </summary>
         public string ContactPhone { get; set; }
+        /// <summary>
+        /// email lien he
+        /// </summary>
         public string Email { get; set; }
+        /// <summary>
+        /// id category
+        /// </summary>
         public int CateId { get; set; }
+        /// <summary>
+        /// dien tich
+        /// </summary>
         public decimal Area { get; set; }
+        /// <summary>
+        /// dien tich su dung
+        /// </summary>
         public decimal AreaUse { get; set; }
+        /// <summary>
+        /// chieu rong
+        /// </summary>
         public decimal Width { get; set; }
+        /// <summary>
+        /// chieu dai
+        /// </summary>
         public decimal Dept { get; set; }
+        /// <summary>
+        /// so nha
+        /// </summary>
         public string NumberOfHome { get; set; }
+        /// <summary>
+        /// so phong ngu
+        /// </summary>
         public string NumBedRoom { get; set; }
+        /// <summary>
+        /// so phong tam(bathroom thi dung hon?)
+        /// </summary>
         public string NumBadRoom { get; set; }
+        /// <summary>
+        /// co so vat chat
+        /// </summary>
         public string CoSoVatChat { get; set; }
+        /// <summary>
+        /// moi truong xung quanh
+        /// </summary>
         public string Moitruong { get; set; }
+        /// <summary>
+        /// trang thai duyet tin
+        /// </summary>
         public string Status { get; set; }
+        /// <summary>
+        /// tien nghi
+        /// </summary>
         public string TienNghi { get; set; }
+        /// <summary>
+        /// so tang
+        /// </summary>
         public string NumberBlock { get; set; }
+        /// <summary>
+        /// ten Quan/huyen
+        /// </summary>
         public string DictrictName { get; set; }
+        /// <summary>
+        /// huong: dong, tay, nam, bac
+        /// </summary>
         public string Directors { get; set; }
+        /// <summary>
+        /// phap ly: so do, so hong,...
+        /// </summary>
         public string PhapLy { get; set; }
         //price
         public ProductPriceModel ProductPrice { get; set; }
@@ -70,8 +143,14 @@ namespace Nop.Web.Models.Catalog
 
         public string CateName { get; set; }
 
+        /// <summary>
+        /// trang thai tin: dang ban(sale) - da dat coc (ordered) - da ban(sole)
+        /// </summary>
         public string ProductStatusText { get; set; }
 
+        /// <summary>
+        /// La du an
+        /// </summary>
         public bool IsProject { get; set; }
         public string ChuDauTu { get; set; }
         /// <summary>

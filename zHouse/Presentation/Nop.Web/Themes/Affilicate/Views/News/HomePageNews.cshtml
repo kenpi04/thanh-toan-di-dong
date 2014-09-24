@@ -1,21 +1,17 @@
 ﻿@model HomePageNewsItemsModel
 @using Nop.Web.Models.News;
 @if (Model.NewsItems.Count > 0)
-{
-  
-    <div class="news-list-homepage">
- 
+{  
+    <div class="news-list-homepage"> 
         <div class="news-items">
             @foreach (var item in Model.NewsItems)
             {
                 <div class="item">
                     <div class="news-pic">
-                        <img fullpic="@item.DefaultPictureModel.FullSizeImageUrl" src="@item.DefaultPictureModel.ImageUrl" alt="@item.DefaultPictureModel.AlternateText" title="@item.DefaultPictureModel.Title" />
-                      <span class="news-date">
-                                            @Html.Raw(item.CreatedOn.ToString("dd/mm</br>yyyy"))
-                            </span>
-                         </div>
-                 
+                        <a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">
+                            <img fullpic="@item.DefaultPictureModel.FullSizeImageUrl" src="@item.DefaultPictureModel.ImageUrl" alt="@item.DefaultPictureModel.AlternateText" title="@item.DefaultPictureModel.Title" /></a>
+                            @*<span class="news-date">@Html.Raw(item.CreatedOn.ToString("dd/mm</br>yyyy"))</span>*@
+                    </div>                 
                     <div class="news-text">
                     <div class="news-head">
                         <a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">
@@ -26,11 +22,8 @@
                     </div>
                         </div>
                    <div class="clearfix"></div>
-                </div>
-                
-            }
-            
+                </div>                
+            }            
         </div>
-    </div>
-    
+    </div>    
 }

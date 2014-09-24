@@ -6,16 +6,9 @@
     Html.AppendScriptParts("~/Scripts/jquery-te-1.4.0.min.js");
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/editorsimple.css");
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/jquery-te-1.4.0.css");
-    bool isLogin=WorkContext.CurrentCustomer.IsRegistered();
-    if(Model.Id>0)
-    {
-        
-    }
-   
+    bool isLogin=WorkContext.CurrentCustomer.IsRegistered();    
 }
-@Html.HiddenFor(x => x.Id)
-
-   
+@Html.HiddenFor(x => x.Id)   
     <div class="request-title blueTitle" >QUẢNG CÁO NGÔI NHÀ CỦA BẠN</div>
     <p>
         Quảng cáo về căn nhà của bạn càng chi tiết, người mua sẽ càng dễ tìm kiếm thấy bạn hơn.<br /><br />
@@ -25,10 +18,11 @@
     <div class="free-text">
         HOÀN TOÀN MIỄN PHÍ
     </div>
+@Html.AntiForgeryToken()
  <div id="panel-error" class="message-error">
         @Html.ValidationSummary()
     </div>
-<i class="note">(*) Không được để trống</i>
+<i class="note">Các trường có dấu (*) là bắt buộc.</i>
     <div class="floatLeft">
         <div class="blueText">THÔNG TIN LIÊN HỆ</div>
         <div class="boxWrapper form-request-contact">
@@ -36,12 +30,9 @@
         @Html.RequiredHint()
             @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại", })
             @Html.RequiredHint()
-            @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })
-          
-          <br />
-            <br>
+            @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })          
+          <br /><br />
             @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
-      
             @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect",id="ddlQuan" })
             @Html.RequiredHint()
             @Html.DropDownListFor(x => x.WardId,new List<SelectListItem>(),"Chọn phường", new { @class = "formBoxInSelect" })
@@ -52,23 +43,17 @@
             @Html.TextBoxFor(x => x.FullAddress, new {@class="formBoxIn",style="width:68%",placeholder="Địa chỉ đầy đủ" })
         </div><!----boxWrapper------->
     </div><!---floatLeft---->
-
     <div class="floatLeft">
         <div class="blueText">THÔNG TIN PHÁP LÝ</div>
         <div class="boxWrapperSmall">
         @foreach(var i in Model.PhapLy)
         {
-           
                 <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"checked=checked":"") /> @Html.Raw("&nbsp;"+i.Text+"&nbsp;&nbsp;&nbsp;") 
-                
         }
-            
             <br> <br />
         @Html.TextAreaFor(x => x.NotePhapLy, new { @class = "formBoxInText", placeholder = "Ghi chú về pháp lý (nếu có)" })
-           
         </div><!---boxWrapperSmall---->
     </div><!---floatLeft----->
-
     <div class="floatLeft">
         <div class="blueText">THÔNG TIN CĂN NHÀ</div>
         <div class="boxWrapperSmall form-request-contact">
@@ -77,11 +62,9 @@
                     <tr>
                         <td>@Html.LabelFor(x => x.Price) </td>
                         <td>
-                          
                         @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable",placeholder="Giá"})
                             @Html.RequiredHint()
                      <span id="price-text">vnđ</span>
-                     
                         <td>@Html.LabelFor(x => x.NumberFloors) </td>
                         <td>
                             <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
@@ -90,35 +73,27 @@
                                     <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"selected=selected":"") >@i.Text</option>
                                 }
                             </select>
-                      
                         @Html.RequiredHint()
                      </td>
-                       
                     </tr>
                     <tr>
                         <td>@Html.LabelFor(x => x.CateId) </td>
                         <td>  
-                              
                              @Html.DropDownListFor(x=>x.CateId,Model.Categories,new{@class="formBoxInSelectTable"})
                         @Html.RequiredHint()</td>
                         
                         <td>Diện tích sử dụng: </td>
                         <td>
-                           
                             @Html.TextBoxFor(x => x.AreaUse, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" }) m2
                         @Html.RequiredHint()</td>
-                      
                     </tr>
                     <tr>
                         <td>@Html.LabelFor(x => x.Area) </td>
                         <td>
-                           
                             @Html.TextBoxFor(x => x.Area, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích" }) m2
                         @Html.RequiredHint()</td>
-                      
                         <td>@Html.LabelFor(x => x.BedRooms) </td>
                         <td>
-                               
                                            <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                                 @foreach (var i in Model.BedRooms)
                                 { 
@@ -144,18 +119,14 @@
                                 }
                             </select>
                         @Html.RequiredHint()</td>
-                       
                     </tr>
                     <tr>
                         <td>@Html.LabelFor(x => x.Dept)</td>
                         <td>
-                            
                             @Html.TextBoxFor(x => x.Dept, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều sâu" }) m
                         @Html.RequiredHint()</td>
-                        
                         <td>@Html.LabelFor(x => x.Directors)</td>
                         <td>
-                           
                                           <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                                 @foreach (var i in Model.Directors)
                                 { 
@@ -163,7 +134,6 @@
                                 }
                             </select>
                         @Html.RequiredHint()</td>
-                       
                     </tr>
                     <tr>
                         <td>@Html.LabelFor(x=>x.StatusList)</td>
@@ -174,19 +144,15 @@
                                     <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value))?"selected=selected":"") >@i.Text</option>
                                 }
                             </select>
-                      
                         @Html.RequiredHint()
-
                         </td>
                         <td></td>
                         <td></td>
                     </tr>
-
                 </tbody>
             </table>
         </div><!---boxWrapperSmall---->
     </div><!---floatLeft----->
-
     <div class="floatLeft">
         <div class="colA"><div class="blueText">Cơ sở vật chất</div></div>
         <div class="colB">
@@ -200,14 +166,11 @@
                 }
             </ul>
         </div>
-     
         <div class="clearBoth"></div>
         <div class="boxWrapperSmall">
             @Html.TextAreaFor(x => x.NoteFacilities, new { @class = "formBoxInText", placeholder = "Ghi chú về cơ sở vật chất / nội thất căn nhà ( vd: thiết kế kiểu châu âu, nhà ống hiện đại .... ))" })
-         
         </div>
     </div><!----floatLeft----->
-
     <div class="floatLeft">
         <div class="colA"><div class="blueText">Môi trường xung quanh</div></div>
         <div class="colB">
@@ -221,11 +184,9 @@
                 }
             </ul>
         </div>
-     
         <div class="clearBoth"></div>
         <div class="boxWrapperSmall">
             @Html.TextAreaFor(x => x.NoteEnvironments, new { @class = "formBoxInText", placeholder = "Ghi chú về môi trường xung quanh ( vd: Gần siêu thị nào, cách bao nhiêu mét .... )" })
-           
         </div>
     </div><!----floatLeft----->
 
@@ -235,20 +196,15 @@
         {
             <div class="colB" style="float:left;margin-right:20px"> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") /> @Html.Label(i.Text)</div>
         }
-       
-
         <div class="clearBoth"></div>
         <br />
         <div class="boxWrapperSmall">
-            @Html.TextAreaFor(x => x.NoteEnvironments, new { @class = "formBoxInText", placeholder = "vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)" })
-           
+            @Html.TextAreaFor(x => x.NoteEnvironments, new { @class = "formBoxInText", placeholder = "vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)" })           
         </div>
     </div><!----floatLeft----->
-
     <div class="floatLeft">
         <div class="blueText">HÌNH ẢNH NHÀ <small> (Hình càng rõ ràng, đầy đủ, ngôi nhà của bạn bán càng nhanh)</small></div>
         <div class="rightTable">
-
             <ul>
                <li>Hình đường, không gian xung quanh</li>
                 <li> Hình cửa chính chụp từ ngoài vào</li>
@@ -266,10 +222,8 @@
             <input type="file" id="FileUpload" />
                 </div>
         </div><!---rightTable---->
-        <div class="floatLeft">
-           
+        <div class="floatLeft">           
             <div id="pictures">
-
             </div>
             <ul id="lstPic">
                 @foreach (var i in Model.PictureModels)
@@ -286,13 +240,12 @@
         </div>
         <div class="clearBoth">
              <i class="note">(*)Hình ảnh đầy đủ giúp quảng cáo ngôi nhà của bạn tốt hơn (Kích thước đề nghị 700x700 px hình vuông,dung lượng nhỏ hơn 2Mb)</i>
-        </div>
-      
+        </div>      
     </div><!---floatLeft----->
 <div class="floatLeft">
-<div class="blueText">TIÊU ĐỀ</div>
+<div class="blueText">TIÊU ĐỀ TIN ĐĂNG</div>
 <div class="boxWrapperSmall">
-    @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:100%" })
+    @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:99%", placeholder ="Không quá 200 ký tự. Ví dụ: Nhà bán quận Bình Tân, diện tích 5x20m, giá 1.5 tỷ" })
 </div>
     </div><!---floatLeft---->
     <div class="floatLeft">
@@ -313,22 +266,16 @@
 
   
 <script type="text/javascript">
-
-
-
     $(function () {
         $(".jqte-test").jqte();
         var pictureids = [];
         $("#Price").keyup(function () {
             var price = $(this).val();
             $("#price-text").html(StringPrice(price, "vnđ"));
-
-
         })
     ISFIRSTLOAD=true;
         $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
         $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
-
         $("#insertProduct-button").click(function () {
             if(!$("#frmProduct").valid())
             {
@@ -340,9 +287,7 @@
 
             if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
                 alert('Vui lòng chọn hình ảnh đăng');
-
             }
-
             else if (Checkfiles($("#FileUpload")))
             {
                 alert("File không hợp lệ");
@@ -355,9 +300,7 @@
                 }
                 else
                     $('#FileUpload').uploadify('upload', '*')
-
             }
-
             return false;
         })
 
@@ -379,7 +322,6 @@
                     var option= $("<option/>").val(o.Id).text(o.Name);
                     if(ISFIRSTLOAD&&o.Id==@Model.StreetId)                        
                           option.attr("selected","selected");
-
                       ddlStreet.append(option);
                 })  
                 if(ISFIRSTLOAD)
@@ -417,7 +359,6 @@
                         $(this).append('<textarea name="PictureTitle_0" cols="10" rows="5"></textarea>')
                     }
                 })
-
             },
             'onUploadStart': function (file) {
 
@@ -426,8 +367,6 @@
                     $('#FileUpload').uploadify('stop');
                     return;
                 }
-            
-
             },
             'onUploadSuccess': function (file, data, response) {
                 pictureids.push(data);
@@ -442,9 +381,7 @@
                 if ($("div[id^=SWFUpload_]").size()==0||$("textarea[name^=PictureTitle_][name!=PictureTitle_0]").size()==0) {
                     alert('Vui lòng chọn hình ảnh đăng');
                     return false;
-
                 }
-
                 if ($("#frmProduct").valid()) {
                     $('#frmProduct').submit();
                 }
@@ -490,8 +427,6 @@
         $(document).ready(function () {
             var price=@Model.Price.ToString("#");
                   $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
-              
-           
         })
         var CLICK=false;
         function deletePicture(id) {
@@ -519,7 +454,6 @@
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                   
                     alert('Failed to retrieve data.');
                     //statesProgressd.hide();
                 }

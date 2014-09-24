@@ -157,7 +157,7 @@ namespace Nop.Services.Catalog
         }
 
         /// <summary>
-        /// Gets all products displayed on the home page
+        /// Gets all products displayed on the home page: Published,Deleted,ShowHomePage, Status
         /// </summary>
         /// <returns>Product collection</returns>
         public virtual IList<Product> GetAllProductsDisplayedOnHomePage()
@@ -172,7 +172,8 @@ namespace Nop.Services.Catalog
                             orderby p.Name
                             where p.Published &&
                             !p.Deleted &&
-                            p.ShowOnHomePage
+                            p.ShowOnHomePage &&
+                            p.Status.Equals((short)ProductStatusEnum.Approved)//only approved
                             select p;
                 var products = query.ToList();
                 return products;

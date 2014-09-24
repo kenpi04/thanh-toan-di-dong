@@ -1,13 +1,9 @@
 ﻿@model Nop.Web.Models.Catalog.SearchModel
-@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frmSearchHOme" }))
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frmSearchHOme", style="float:left;display:inline-block;"}))
 {
-
 <div class="topInfo">
         	<div class="pinkBg">            	
-                <div class="zhouse">
-                    @*<span class="link-z">
-                    zHouse.com.vn 
-                        </span>*@
+                <div class="zhouse">                    
                      <h1 class="slogan">Tìm kiếm bất động sản</h1>
                      <div class="clearBoth"></div>
                 </div>

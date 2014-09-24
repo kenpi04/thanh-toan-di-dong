@@ -7,30 +7,32 @@
 @if(!Model.IsProject)
 {
     <div class="introCol">
-    <div class="info-picture">        
-        @if (Request.IsAjaxRequest())
-        {
-            <a style="display:block" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-                <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
-            </a>
-        }
-        else
-        {
-            <a style="display:block" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-                <img class="lazy" data-original="@Model.DefaultPictureModel.ImageUrl" alt="@Model.DefaultPictureModel.AlternateText" title="@Model.DefaultPictureModel.Title" />
-            </a>
-        }
-</div>
-        <div style="width:70%;float:left">
-            <h2 style="line-height:15px;padding-left:10px"><a style="font-size:12px;text-decoration:none;font-family: Roboto, Helvetica, Arial, sans-serif; font-weight:700;" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">@Model.Name</a></h2>
-            <div class="whiteBgCata">
-                <span style="color:#c06"><i class="icon-price"></i>@Model.ProductPrice.Price</span>
-                <span><i class="icon-category"></i>@Model.CateName</span>
-                <span><i class="icon-area"></i>@Model.Area.ToString("#.##") m2</span>
-                <span><i class="icon-bedroom"></i>@Model.NumBedRoom</span>
-                <span><i class="icon-director"></i>@Model.Directors</span>
-                <span><i class="icon-bathRoom"></i>@Model.NumBadRoom</span>                                
-                <span style="width:100%"><i class="icon-location"></i>@Model.DictrictName - Tp.Hồ Chí Minh</span>                
+        <div class="product-title"><h2 style="line-height:15px;"><a style="font-size:12px;text-decoration:none;font-family: Roboto, Helvetica, Arial, sans-serif; font-weight:700;" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">@Model.Name</a></h2></div>
+        <div>
+            <div class="info-picture">
+                @if (Request.IsAjaxRequest())
+                {
+                    <a style="display:block;text-align:center;vertical-align:middle;" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+                        <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+                    </a>
+                }
+                else
+                {
+                    <a style="display:block;text-align:center;vertical-align:middle;" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+                        <img class="lazy" data-original="@Model.DefaultPictureModel.ImageUrl" alt="@Model.DefaultPictureModel.AlternateText" title="@Model.DefaultPictureModel.Title" />
+                    </a>
+                }
+            </div>
+            <div style="width:70%;float:left">
+                <div class="whiteBgCata">
+                    <span style="color:#c06"><i class="icon-price"></i>@Model.ProductPrice.Price</span>
+                    <span><i class="icon-category"></i>@Model.CateName</span>
+                    <span><i class="icon-area"></i>@Model.Area.ToString("#.##") m2</span>
+                    <span><i class="icon-bedroom"></i>@Model.NumBedRoom</span>
+                    <span><i class="icon-director"></i>@Model.Directors</span>
+                    <span><i class="icon-bathRoom"></i>@Model.NumBadRoom</span>
+                    <span style="width:100%"><i class="icon-location"></i>@Model.DictrictName - Tp.Hồ Chí Minh</span>
+                </div>
             </div>
         </div>
     </div>

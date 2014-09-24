@@ -5,12 +5,11 @@
 
     //title
     Html.AddTitleParts(T("PageTitle.ContactUs").Text);
-}
-  
-
+} 
       <div class="blackBgTop" id="div-gioithieu">
     	<a class="title30">GIỚI THIỆU</a> <a class="title40">zHOUSE.com.vn</a>
-        <p>Sàn giao dịch nhà <a class="blueText">zHOUSE</a> chuyên về xây dựng và phân phối nhà dự án, nhà liền kề, nhà đơn lẻ, nhà chung cư…Tất cả các sản phẩm của <a class="blueText">zHOUSE</a> đều được cam kết về chất lượng và pháp lý đầy đủ.</p>
+    
+        <p>Sàn giao dịch nhà <a class="blueText">zHOUSE</a> được đầu tư và vận hành bởi công ty Cổ phần đầu tư và xây dựng Hạnh Phúc, chuyên về xây dựng và phân phối nhà dự án, nhà liền kề, nhà đơn lẻ, nhà chung cư…Tất cả các sản phẩm của <a class="blueText">zHOUSE</a> đều được cam kết về chất lượng và pháp lý đầy đủ.</p>
         <p>Mọi thông tin về Bất động sản như tính pháp lý, vị trí, kết cấu, tiện ích … được <a class="blueText">zHOUSE</a> đưa lên website thông qua video, hình ảnh, bài giới thiệu một cách đầy đủ, chính xác nhất, nhằm mang lại cho Quý khách sự tin tưởng và giúp Quý khách tiết kiệm thời gian đi xem nhà.</p>
         <p>Bên cạnh đó, <a class="blueText">zHOUSE</a> còn nhận bán nhà giúp các cá nhân hoặc công ty theo hình thức ký gởi trên trang <a class="blueText">zHOUSE.com.vn.</a></p>
         <p>Trong thời gian sắp tới, <a class="blueText">zHOUSE </a>sẽ tiếp tục mở thị trường, giúp các nhà môi giới uy tín khác có thể đăng sản phẩm lên <a class="blueText">zHOUSE.com.vn</a> theo đúng các tiêu chuẩn của <a class="blueText">zHOUSE</a> như: sản phẩm phải chất lượng, có pháp lý rõ ràng, không nằm trong Vùng bị quy hoạch, không bị tranh chấp, giá cả hợp lý, sổ hồng công chứng có thể sang tên người mua ngay…</p>
@@ -21,8 +20,7 @@
         <div class="downBtndiv">
         	<input type="button" class="downBtn" />
         </div>
-    </center>
-    
+    </center>    
     <div class="whiteBgFull" id="div-service">
         <div class="wrapperLarge">
             <div class="fullContent">
@@ -46,7 +44,6 @@
             </div><!---fullContent----->
         </div><!---wrapperLarge----->
     </div><!----whiteBgFull------>
-    
     <div class="lineDown"></div>
     <div class="wrapperLarge">
         <div class="fullContent">
@@ -54,12 +51,10 @@
                 <a class="title30" style="font-size:18px">DV</a> <a class="title40">GIẤY TỜ</a>
                 <p>Hợp thức hóa giấy tờ nhà đất, giấy phép xây dựng, sang nhượng, thừa kế … Thủ tục nhanh chóng, hợp lý hợp lệ.</p>
             </div>
-            
             <div class="talkPink">
                 <a class="title30" style="font-size:18px">DV</a> <a class="title40">MUA BÁN</a>
-                <p>Nhận ký gởi, mua bán nhà đất. zHouse sẽ lo mọi khâu chụp hình, viết bài, PR và mua bán nhà cho quý khách với phí mối giới <= 2%.</p>
+                <p>Nhận ký gởi, mua bán nhà đất. zHouse sẽ lo mọi khâu chụp hình, viết bài, PR và mua bán nhà cho quý khách với phí mối giới thấp.</p>
             </div>
-            
             <div class="talkGrey">
                 <a class="title30" style="font-size:18px">DV</a> <a class="title40">TƯ VẤN</a>
                 <p>Tư vấn mua bán, định giá, đầu tư nhà đất bởi những chuyên gia kinh nghiệm.</p>
@@ -76,7 +71,6 @@
         </div><!----fullContent---->
     </div><!---wrapperLarge---->
     <div class="lineUp"></div>
-    
     <div class="whiteBgFull" id="div-contact">
     	<div class="wrapperLarge">
         	<a class="title40">LIÊN HỆ</a>
@@ -86,7 +80,6 @@
                 <a class="blueText" style="font-size:13px">Online House Exchange</a><br />
                 <p>144/12/18a Number 6 Street, Binh Hung Hoa B Ward,<br /> Binh Tan Dist, HCMC <br />Tel: +84 (8) 668 133 08. <br /><br />Đừng ngần ngại, hãy liên hệ ngay với chúng tôi!</p>
                 <form id="frmContactus" method="post">
-                 
                   <div class="panel-error">
                       @Html.ValidationSummary(false)
                   </div>
@@ -94,18 +87,15 @@
                      @Html.TextBoxFor(model => model.Phone, new { @class = "mapBox", placeholder = T("ContactUs.Phone.Hint") })
                         @Html.TextBoxFor(model => model.Email, new { @class = "mapBox", placeholder = T("ContactUs.Email.Hint") })
                       @Html.TextAreaFor(model => model.Enquiry, new { @class = "mapBox", placeholder = T("ContactUs.Enquiry.Hint"),style="width:290px;height:51px" })
-                      @if (Model.DisplayCaptcha)
-                    {
+                      @if (Model.DisplayCaptcha){
                         <div class="captcha-box">
                             @Html.Raw(Html.GenerateCaptcha())
-                        </div>
-                    }
+                        </div>}
                     <input type="submit" id="btn-send-contact" name="send-mail" class="blueBtn" value="CHUYỂN"  style="float:right;margin-right:8px" />
                  </form>
             </div><!--mapCol1---->
             <div class="mapCol2">
             	<div id="map_canvas" style="width:550px;height:330px;border:solid 2px #fff;box-shadow:1px 1px 1px #808080;margin-bottom:10px"></div>
-
 <script>    
     $("#frmContactus").submit(function () {
         var frm = $(this);
@@ -129,11 +119,9 @@
                     $("#btn-send-contact").val("CHUYỂN");
                     $("#btn-send-contact").removeAttr("disabled");
                 }
-
             })
         }
-        return false;
-            
+        return false;            
     })
     function showAddress() {
         var diachi = "44/12/18a,Đường Số 6,Bình Hưng Hòa b,Bình Tân,Hồ Chí Minh";
@@ -152,10 +140,7 @@
              });
     google.maps.event.addListener(marker, "click", function ()
              { info.open(map, marker); });
-   
-
  }
-
  //   setTimeout(function(){showAddress();},2000);
  function loadScript() {
      var script = document.createElement('script');
@@ -165,9 +150,7 @@
      document.body.appendChild(script);
  }
  window.setTimeout(loadScript,5000);
-
 </script>
-
             </div><!--mapCol2---->
         </div><!---wrapperLarge---->
     </div><!---whiteBgFull---->

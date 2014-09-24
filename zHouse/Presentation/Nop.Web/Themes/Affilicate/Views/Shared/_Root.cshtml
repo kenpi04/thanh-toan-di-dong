@@ -20,47 +20,56 @@
 <div class="master-wrapper-page">
     @Html.Action("JavaScriptDisabledWarning", "Common")
     <div class="master-wrapper-content">
-        <div class="top">
+        <div class="top-header">
             <div class="wrapper">
-                <div class="logo"><a href="http://zhousetest.xxx/"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder" alt="Logo Zhouse.com.vn"></a></div>
-                <div class="logo-marketplace"><a href="@Url.RouteUrl("HomePage")">MarketPlace</a></div>
-                @Html.Action("TopMenu", "Catalog")
+                <a href="http://zhousetest.xxx/" title="Đi đến trang chính zHouse.com.vn">zHouse</a>
+                <a href="@Url.RouteUrl("HomePage")" class="isactive">MarketPlace</a>
+                <a href="http://hoidap.zhouse.com.vn/" class="submenu">Hỏi đáp</a>
+                <a href="@Url.RouteUrl("InsertProduct")" class="submenu" title="Đăng tin miễn phí">Đăng tin</a>
+                <a href="@Url.RouteUrl("Login")" class="submenu">Đăng nhập</a>
             </div>
         </div>
-        @if(isHome)
-        { 
-        <div class="wrapper" style="padding-top:63px">
-            @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome })
-            <div class="banner-home">
-                @Html.FptBanner(Position: 103, stateId: 0, viewName: "BannerSlideShow")
-
+        <div class="top">            
+                <div class="wrapper">
+                    <div class="logo"><a href="http://zhousetest.xxx/"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder" alt="Logo Zhouse.com.vn"></a></div>
+                    @*<div class="logo-marketplace"><a href="@Url.RouteUrl("HomePage")">MarketPlace</a></div>*@
+                    @Html.Action("TopMenu", "Catalog")
+                </div>
             </div>
-            <div class="new-column">
-                @Html.Action("HomePageNews", "News")
-            </div>
-        </div>   
-        }
-
         @*@Html.Widget("content_before")*@
         @*<div class="ajax-loading-block-window" id="ajax-loading" style="display: none">
             <div class="loading-image">
             </div>
         </div>*@
         <div class="master-wrapper-main">
+            @if (isHome)
+            {
+                <div class="wrapper" style="padding-top:10px">
+                    <div style="display:inline-block;margin-bottom:10px">
+                        @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome })
+                        <div class="banner-home">
+                            @Html.FptBanner(Position: 103, stateId: 0, viewName: "BannerSlideShow")
+                        </div>
+                        <div class="new-column">
+                            @Html.Action("HomePageNews", "News", new { pageSize = 4 })
+                        </div>
+                    </div>
+                </div>
+            }
             <div class="icon-list">
                 <a class="icon-contact" href="@Url.RouteUrl("ContactUs")" title="Liên hệ"></a>
                 <a class="icon-request" href="@Url.RouteUrl("InsertProduct")" title="Đăng tin miễn phí"></a>
             </div>
             @RenderBody()
             <div class="clearBoth"></div>
-            @if (!isHome && !Url.RequestContext.RouteData.Values["action"].ToString().Equals("contactus", StringComparison.InvariantCultureIgnoreCase)&&!Url.RequestContext.RouteData.Values["action"].ToString().Equals("compareproducts", StringComparison.InvariantCultureIgnoreCase))
+            @*@if (!isHome && !Url.RequestContext.RouteData.Values["action"].ToString().Equals("contactus", StringComparison.InvariantCultureIgnoreCase)&&!Url.RequestContext.RouteData.Values["action"].ToString().Equals("compareproducts", StringComparison.InvariantCultureIgnoreCase))
             {
                 <div id="recent-view">
                 </div>
                 <script type="text/javascript">
                     $("#recent-view").html("<div class='please-wait'></div>").load("@Url.Action("RecentlyViewedProductsBlock", "Catalog", new { productThumbPictureSize = 254})")
                 </script>
-            }
+            }*@
         </div>
         @*@Html.Widget("content_after")
             @Html.Action("EuCookieLaw", "Common")*@

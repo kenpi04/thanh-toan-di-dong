@@ -5,8 +5,7 @@
     Model.PriceRange.RemoveAt(0);
 }
 @helper RenderCategoryLine(CategorySimpleModel category, int level)
-{
-   
+{   
     <li>
         <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name
         @if (category.NumberOfProducts.HasValue)
@@ -40,7 +39,6 @@
                          }
                      </ul>
                  </div>
-
                 @if (category.SubCategories.Count > 0)
                 { <div class="menu-col" style="width:176px">
                     <span class="title">Theo loại</span>
@@ -50,7 +48,6 @@
                         {
                             <li><a href="@Url.RouteUrl("Category", new {SeName=subCategory.SeName })">@subCategory.Name</a></li>
                         }
-
                     </ul>
                 </div>
                 }
@@ -65,7 +62,6 @@
                      </ul>
                  </div>
             </div>
-            
         }
     </li>
 }
@@ -100,7 +96,6 @@
         }
         <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
     }
-
     <li><a href="#">Dịch vụ</a>
          <div class="top-menu-triangle"></div>
         <div class="sublist service" style="width:200px; margin-left:-18px;">
@@ -109,13 +104,9 @@
                 {
                      <li><a title="@i.Value" href="~/t/@i.Value">@i.Text</a></li>
                 }
-               
-                
-
             </ul>
         </div>
     </li>
-
     <li><a href="#">Kiến thức</a>
           <div class="top-menu-triangle"></div>
         <div class="sublist kienthuc" style="width:200px; margin-left:-18px;">
@@ -126,15 +117,8 @@
                 }
             </ul>
         </div>
-
     </li>
-
-<li>
-    <a href="http://hoidap.zhouse.com.vn" target="_blank">Hỏi đáp</a>
-</li>
-    <li>
-        <img style="margin-top:-15px" src="~/Themes/Zhouse/Content/images/hotline.gif" alt="Hotline" />
-    </li>
+    
     @Html.Widget("header_menu_after")
 </ul>
 </div>
