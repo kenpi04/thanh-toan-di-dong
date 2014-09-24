@@ -2,14 +2,14 @@
 @{
     Layout = null;
 }
-@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frmSearch-Customer" }))
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id = "frmSearch-Customer"}))
 {
-              @Html.DropDownList("districtId",Model.Districts,new{@class="formBoxSelect"})
-              @Html.DropDownList("priceString",Model.PriceRange,new{@class="formBoxSelect"})
+              @Html.DropDownList("districtId", Model.Districts, new { @class = "formBoxSelect" })
+              @Html.DropDownList("priceString", Model.PriceRange, new { @class = "formBoxSelect" })
               @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "formBoxSelect" })
-              @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "formBoxSelect",id="ddlDir" })
-              @Html.DropDownList("attributeOptionIds", Model.BedRooms, "Số phòng ngủ", new { @class = "formBoxSelect",id="ddlBed" })
-              @Html.DropDownList("attributeOptionIds", Model.BadRooms, "Số phòng tắm", new { @class = "formBoxSelect",id="ddlBath" })
+              @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "formBoxSelect", id = "ddlDir" })
+              @Html.DropDownList("attributeOptionIds", Model.BedRooms, "Số phòng ngủ", new { @class = "formBoxSelect", id = "ddlBed" })
+              @Html.DropDownList("attributeOptionIds", Model.BadRooms, "Số phòng tắm", new { @class = "formBoxSelect", id = "ddlBath" })
     <br />            
     <input type="submit" class="blueBtn" value="tìm kiếm" style="float:right; margin-right: 20px;">
     <div class="clearBoth"></div>

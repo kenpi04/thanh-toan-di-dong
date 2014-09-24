@@ -178,7 +178,7 @@ namespace Nop.Web.Controllers
             model.CategoryNews = _cateNewsService.GetAllCategoriesByParentCategoryId(0).ToList();
             return View(model);
         }
-        public ActionResult HomePageNews()
+        public ActionResult HomePageNews(int? pageSize)
         {
             if (!_newsSettings.Enabled || !_newsSettings.ShowNewsOnMainPage)
                 return Content("");
@@ -186,7 +186,7 @@ namespace Nop.Web.Controllers
             var cacheKey = string.Format(ModelCacheEventConsumer.HOMEPAGE_NEWSMODEL_KEY, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
             var cachedModel = _cacheManager.Get(cacheKey, () =>
             {
-                var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id,0,0, 0, _newsSettings.MainPageNewsCount);
+                var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id,0,0, 0, pageSize.HasValue ? pageSize.Value : _newsSettings.MainPageNewsCount);
                 return new HomePageNewsItemsModel()
                 {
                     WorkingLanguageId = _workContext.WorkingLanguage.Id,

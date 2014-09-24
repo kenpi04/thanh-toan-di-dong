@@ -51,31 +51,27 @@
         <div class="mainContent"></div>
         <div class="search-left leftContentTwist">
             @Html.Action("SearchBoxHead", "Catalog", new { isHome = true })
-
         </div>
         <div class="rightContentTwist">
              <div class="product-list" id="ListProduct">
             @if (Model.Products.Count > 0)
             {
-                <h1 class="cate-title pinkNarrowTitle">@Model.Name</h1>
+                @*<h1 class="cate-title pinkNarrowTitle">@Model.Name</h1>*@
               <div class="product-selectors">
             @*view mode*@
             @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
             {
-                <div class="product-viewmode">
-                    
+                <div class="product-viewmode">                    
                     @Html.DropDownList("products-viewmode", Model.PagingFilteringContext.AvailableViewModes, new { onchange = "setLocation(this.value);" })
                 </div>
             }
             @*sorting*@
             @if (Model.PagingFilteringContext.AllowProductSorting && Model.Products.Count > 0)
             {
-                <div class="product-sorting">
-                  
+                <div class="product-sorting">                  
                     @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
                 </div>
-            }
-           
+            }           
         </div>
             foreach (var product in Model.Products)
             {

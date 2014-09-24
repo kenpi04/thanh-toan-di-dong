@@ -476,38 +476,109 @@ namespace Nop.Core.Domain.Catalog
         /// </summary>
         public DateTime UpdatedOnUtc { get; set; }
 
+        /// <summary>
+        /// Gets or sets the StateProvince Id - Tinh/Thanh Pho
+        /// </summary>
         public int StateProvinceId { get; set; }
+        /// <summary>
+        /// Gets or sets the District Id - Quan/Huyen
+        /// </summary>
         public int DistrictId { get; set; }
+        /// <summary>
+        /// Gets or sets the Ward id - Phuong/xa/thi tran
+        /// </summary>
         public int WardId { get; set; }
+        /// <summary>
+        /// Gets or sets the street id - duong/pho
+        /// </summary>
         public int StreetId { get; set; }
+        /// <summary>
+        /// Gets or sets the House number - so nha
+        /// </summary>
         public string HouseNumber { get; set; }
+        /// <summary>
+        /// Gets or sets the full address of house - dia chi day du
+        /// </summary>
         public string FullAddress { get; set; }
+        /// <summary>
+        /// Gets or sets the area - dien tich = dai x rong
+        /// </summary>
         public decimal Area { get; set; }
+        /// <summary>
+        /// Gets or sets the area use - dien tich su dung = dien tich x so tang
+        /// </summary>
         public decimal AreaUse { get; set; }
+        /// <summary>
+        /// Gets or sets the LatTiTude Google Map - kinh do
+        /// </summary>
         public string LatTiTudeGoogleMap { get; set; }
+        /// <summary>
+        /// Gets or sets the Longtitude google map - vi do
+        /// </summary>
         public string LongTiTudeGoogleMap { get; set; }
+        /// <summary>
+        /// Gets or sets the currency id - tien te
+        /// </summary>
         public int CurrencyId { get; set; }
+        /// <summary>
+        /// Gets or sets the customer id - customer tao
+        /// </summary>
         public int CustomerId { get; set; }
+        /// <summary>
+        /// Gets or sets the contact name - ten lien he
+        /// </summary>
         public string ContactName { get; set; }
+        /// <summary>
+        /// Gets or sets the contact phone - so dien thoai lien he
+        /// </summary>
         public string ContactPhone { get; set; }
+        /// <summary>
+        /// Gets or sets the contact email - email lien he
+        /// </summary>
         public string ContactEmail{ get; set; }
+        /// <summary>
+        /// Gets or sets the view number - luot xem
+        /// </summary>
         public int ViewNumber { get; set; }
+        /// <summary>
+        /// Gets or sets the status - trang thai duyet tin
+        /// </summary>
         public Int16 Status { get; set; }
+        /// <summary>
+        /// Gets or sets the constrction date - thoi gian bat dau du an
+        /// </summary>
         public DateTime? ConstructionDate { get; set; }
+        /// <summary>
+        /// Gets or sets the start construction date - ngay khoi cong
+        /// </summary>
         public DateTime? StartConstructionDate { get; set; }
+        /// <summary>
+        /// Gets or sets the finish construction date - ngay hoan cong
+        /// </summary>
         public DateTime? FinishConstructionDate { get; set; }
-
+        /// <summary>
+        /// Gets or sets product status enum - trang thai duyet tin
+        /// </summary>
         public ProductStatusEnum ProductStatus
         {
             get { return (ProductStatusEnum)this.Status; }
             set { this.Status = (Int16)value; }
 
         }
+        /// <summary>
+        /// Gets or sets the products status text - trang thai cua tin: dang ban, da dat coc, da ban
+        /// </summary>
         public ProductStatusText ProductStatusText {
             get { return (ProductStatusText)this.MinStockQuantity; }
             set { this.MinStockQuantity = (Int16)value; }
         }
+        /// <summary>
+        /// Gets or sets the district collection district
+        /// </summary>
         public virtual District District { get; set; }
+        /// <summary>
+        /// Gets or sets LatTiTude Google Map - kinh do
+        /// </summary>
         public virtual Customer Customer { get; set; }
 
         /// <summary>
