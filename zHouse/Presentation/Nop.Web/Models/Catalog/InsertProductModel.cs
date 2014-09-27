@@ -21,7 +21,7 @@ namespace Nop.Web.Models.Catalog
             Categories = new List<SelectListItem>();
             NumberFloors = new List<SelectListItem>();
             BedRooms = new List<SelectListItem>();
-            BadRooms = new List<SelectListItem>();
+            BathRooms = new List<SelectListItem>();
             Directors = new List<SelectListItem>();
             Facilities = new List<SelectListItem>();
             Environments = new List<SelectListItem>();
@@ -70,8 +70,10 @@ namespace Nop.Web.Models.Catalog
         public string Desription { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.FullAddress")]
         public string FullAddress { get; set; }
-
-
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.UserAgreementText")]
+        public string DacDiemNoiBat { get; set; }
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Promotion")]
+        public string Promotion { get; set; }
         public List<int> SelectedOptionAttributes { get; set; }
         public List<PictureUploadModel> PictureIds { get; set; }
 
@@ -80,7 +82,7 @@ namespace Nop.Web.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.NumberFloors")]
         public IList<SelectListItem> NumberFloors { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.BadRooms")]
-        public IList<SelectListItem> BadRooms { get; set; }
+        public IList<SelectListItem> BathRooms { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.BedRooms")]
         public IList<SelectListItem> BedRooms { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Directors")]

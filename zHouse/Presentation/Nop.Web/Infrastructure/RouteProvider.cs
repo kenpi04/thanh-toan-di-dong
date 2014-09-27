@@ -335,7 +335,7 @@ namespace Nop.Web.Infrastructure
                             new { controller = "Customer", action = "Addresses" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("CustomerOrders",
-                            "customer/orders",
+                            "customer/products",
                             new { controller = "Customer", action = "Orders" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("CustomerReturnRequests",

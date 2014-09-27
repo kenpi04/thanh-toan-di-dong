@@ -64,6 +64,9 @@ namespace Nop.Web.Models.Catalog
         public bool IsFreeShipping { get; set; }
         public bool FreeShippingNitificationEnabled { get; set; }
         public string DeliveryDate { get; set; }
+        /// <summary>
+        /// la du an
+        /// </summary>
         public bool IsProject { get; set; }
 
         public string StockAvailability { get; set; }
@@ -80,24 +83,49 @@ namespace Nop.Web.Models.Catalog
     
         //a list of associated products. For example, "Grouped" products could have several child "simple" products
         public IList<ProductDetailsModel> AssociatedProducts { get; set; }
+        
+        /// <summary>
+        /// trang thai duyet
+        /// </summary>
         public string Status { get; set; }
 
         public string DistrictName { get; set; }
 
         public string HinhThuc { get; set; }
 
+        /// <summary>
+        /// dien tich
+        /// </summary>
         public string Area { get; set; }
 
+        /// <summary>
+        /// so tang
+        /// </summary>
         public string NumberFloors { get; set; }
-        public string BadRooms { get; set; }
+        /// <summary>
+        /// so phong tam
+        /// </summary>
+        public string BathRooms { get; set; }
+        /// <summary>
+        /// so phong tam
+        /// </summary>
         public string BedRooms { get; set; }
         public List<string> TienIch { get; set; }
         public List<string> ThichHop { get; set; }
+        /// <summary>
+        /// Huong: dong,tay,nam,bac
+        /// </summary>
         public string Directors { get; set; }
         public string ContactName { get; set; }
         public string ContactEmail { get; set; }
-        public string ContactPhone { get; set; }   
+        public string ContactPhone { get; set; }
+        /// <summary>
+        /// ngay thi cong
+        /// </summary>
         public string StartConstructionDate { get; set; }
+        /// <summary>
+        /// Ngay hoan cong
+        /// </summary>
         public string FinishConstructionDate { get; set; }
 
         /// <summary>
@@ -108,7 +136,13 @@ namespace Nop.Web.Models.Catalog
         /// Gtin
         /// </summary>
         public string Contructors { get; set; }
+        /// <summary>
+        /// co so vat chat
+        /// </summary>
         public IList<SelectListItem> Facilities { get; set; }
+        /// <summary>
+        /// moi truong xung quanh
+        /// </summary>
         public IList<SelectListItem> Environments { get; set; }
         public int CustomerId { get; set; }
 
@@ -279,19 +313,33 @@ namespace Nop.Web.Models.Catalog
 		#endregion
 
 
-
-
-
+        /// <summary>
+        /// trang thai tin: dang ban, da ban, dang xay
+        /// </summary>
         public string ProductStatusText { get; set; }
-
+        /// <summary>
+        /// dien tich su dung
+        /// </summary>
         public decimal AreaUse { get; set; }
-
+        /// <summary>
+        /// chieu rong
+        /// </summary>
         public decimal Width { get; set; }
-
+        /// <summary>
+        /// chieu dai
+        /// </summary>
         public decimal Dept { get; set; }
 
         public string PhapLy { get; set; }
 
         public int StatusId { get; set; }
+        /// <summary>
+        /// UserAgreementText
+        /// </summary>
+        public string DacDiemNoiBat { get; set; }
+        /// <summary>
+        /// Khuyen mai
+        /// </summary>
+        public string Promotion { get; set; }
     }
 }

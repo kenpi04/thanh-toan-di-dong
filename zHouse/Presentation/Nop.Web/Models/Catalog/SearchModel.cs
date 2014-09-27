@@ -32,7 +32,7 @@ namespace Nop.Web.Models.Catalog
             Cids = new List<int>();
             Mids = new List<int>();
             BedRooms = new List<SelectListItem>();
-            BadRooms = new List<SelectListItem>();
+            BathRooms = new List<SelectListItem>();
             Directories = new List<SelectListItem>();
         }
 
@@ -97,7 +97,7 @@ namespace Nop.Web.Models.Catalog
         public IList<int> DistrictIds { get; set; }
         public IList<int> Mids { get; set; }
         public IList<int> SelectedOptionIds { get; set; }
-        public IList<SelectListItem> BadRooms { get; set; }
+        public IList<SelectListItem> BathRooms { get; set; }
         public IList<SelectListItem> BedRooms { get; set; }
         public IList<SelectListItem> Directories { get; set; }
         public bool IsOrderPage { get; set; }

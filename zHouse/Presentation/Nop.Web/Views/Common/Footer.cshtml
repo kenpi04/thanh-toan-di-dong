@@ -4,52 +4,40 @@
 <div class="footer">
     <div class="footerBg">
         <div class="wrapper">
-           
-                <div class="footerCol">
-                    <b>Nhà ở</b><br><br>
-                    <ul>
-                        @foreach (var i in Model.Districts)
-                        {
-                            <li><a href="@GetSeName(Request.Url.Host,"nha-ban",i.Value)">Nhà ở @i.Text</a></li>
-                        }
-                    </ul>
-
+            <div class="footerCol">
+                <b>Nhà ở</b><br><br>
+                <ul>
+                    @foreach (var i in Model.Districts)
+                    {
+                        <li><a href="@GetSeName(Request.Url.Host,"nha-ban",i.Value)">Nhà ở @i.Text</a></li>
+                    }
+                </ul>
             </div>
+            <div class="footerCol">
+                <b>Chung cư</b><br><br>
+                <ul>
+                    @foreach (var i in Model.Districts)
+                    {
+                        <li><a href="@GetSeName(Request.Url.Host,"nha-du-an",i.Value)">Chung cư @i.Text</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="footerCol">
+                <b>Hướng dẫn- thủ tục mua nhà</b><br><br>
+                <ul>
+                    @foreach (var i in Model.Topics)
+                    {
+                        <li><a href="@Url.RouteUrl("Topic", new {SystemName=i.Value })">@i.Text</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="footerCol">
+                <b>Kết nối với chúng tôi</b><br><br>
 
-            
-                <div class="footerCol">
-                    <b>Chung cư</b><br><br>
-                    <ul>
-                        @foreach (var i in Model.Districts)
-                        {
-                            <li><a href="@GetSeName(Request.Url.Host,"nha-du-an",i.Value)">Chung cư @i.Text</a></li>
-                        }
-                    </ul>
-
-                </div>
-
-
-         
-                <div class="footerCol">
-                    <b>Hướng dẫn- thủ tục mua nhà</b><br><br>
-                    <ul>
-                        @foreach (var i in Model.Topics)
-                        {
-                            <li><a href="@Url.RouteUrl("Topic", new {SystemName=i.Value })">@i.Text</a></li>
-                        }
-                    </ul>
-
-                </div>
-      
-                    <div class="footerCol">
-                        <b>Kết nối với chúng tôi</b><br><br>
-                       
-                        @Html.Action("NewsletterBox", "NewsLetter")<br />
-                        <a href="http://facebook.com/zhouseonline" target="_blank"><img src="@Url.Content("~/Themes/Zhouse/Content/images/footerLink.png")" class="noborder" alt="facebook zHouseOnline"></a>
-                        <input type="button" onclick="setLocation('http://hoidap.zhouse.com.vn')" class="btn-QA" value=""/>
-                    </div>
-                  
-                
+                @Html.Action("NewsletterBox", "NewsLetter")<br />
+                <a href="http://facebook.com/zhouseonline" target="_blank"><img src="@Url.Content("~/Themes/Zhouse/Content/images/footerLink.png")" class="noborder" alt="facebook zHouseOnline"></a>
+                <input type="button" onclick="setLocation('http://hoidap.zhouse.com.vn')" class="btn-QA" value="" />
+            </div>
         </div>
     </div>
     <div class="clearBoth"></div>
@@ -65,14 +53,12 @@
     </div>
     <div class="wrapper">
         <div class="footerEnd">
-            Copyright 2014 © zHouse.com.vn<br>
-            Vận hành bởi Hạnh Phúc Corporation <br />
-            Address: 144/12/18a Street 6, Binh Hung Hoa Ward, Binh Tan Dist Ho Chi Minh City - Tel:+84 8 6681 3308<br>
-            Email: contact@zHouse.com.vn | Website: <a href="http://zHouse.com.vn">http://zHouse.com.vn</a><br>
-            Design and SEO by <a href="http://ecomsolute.com">eCOMsolute.com</a> <br>
-            Website đang trong thời gian thử nghiệm chờ đăng ký
-          
-
+            <p>Copyright 2014 © zHouse.com.vn - Bản quyền thuộc về zHouse.com.vn</p>
+            <p>Vận hành bởi Công ty Cổ phẩn đầu tư và xây dựng Hạnh Phúc</p>
+            <p>Địa chỉ: 144/12/18a Đường Số 6, P. Bình Hưng Hòa B, Q. Bình Tân, Tp. Hồ Chí Minh - Điện thoại:(+84)8 6681 3308</p>
+            <p>Email: contact@zHouse.com.vn | Website: <a href="http://zHouse.com.vn">http://zHouse.com.vn</a></p>
+            <p>Thiết kế bởi <a href="http://ecomsolute.com">eCOMsolute.com</a></p>
+            <p>Website đang trong thời gian thử nghiệm chờ đăng ký</p>
         </div>
         <div class="map-link">
             <a class="btn-map" href="@Url.Action("map","catalog")"></a>

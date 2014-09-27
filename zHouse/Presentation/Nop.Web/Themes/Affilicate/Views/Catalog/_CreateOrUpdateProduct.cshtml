@@ -110,10 +110,10 @@
                             @Html.TextBoxFor(x => x.Width, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều ngang" }) m
                         @Html.RequiredHint()</td>
                       
-                        <td>@Html.LabelFor(x => x.BadRooms)</td>
+                        <td>@Html.LabelFor(x => x.BathRooms)</td>
                         <td>
                                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
-                                @foreach (var i in Model.BadRooms)
+                                @foreach (var i in Model.BathRooms)
                                 { 
                                     <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "") >@i.Text</option>
                                 }
