@@ -4,6 +4,7 @@ using System.Linq;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Services.Events;
+using System.Transactions;
 
 namespace Nop.Services.Catalog
 {
@@ -58,12 +59,19 @@ namespace Nop.Services.Catalog
         /// <returns>Category templates</returns>
         public virtual IList<CategoryTemplate> GetAllCategoryTemplates()
         {
-            var query = from pt in _categoryTemplateRepository.Table
-                        orderby pt.DisplayOrder
-                        select pt;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = from pt in _categoryTemplateRepository.Table
+                            orderby pt.DisplayOrder
+                            select pt;
 
-            var templates = query.ToList();
-            return templates;
+                var templates = query.ToList();
+                return templates;
+            }
         }
  
         /// <summary>
