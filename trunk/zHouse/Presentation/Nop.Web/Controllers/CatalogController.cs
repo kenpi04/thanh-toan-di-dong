@@ -230,9 +230,9 @@ namespace Nop.Web.Controllers
         [NonAction]
         protected List<int> GetChildCategoryIds(int parentCategoryId)
         {
-            var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
-                .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
-            string cacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_CHILD_IDENTIFIERS_MODEL_KEY, parentCategoryId, string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
+            //var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
+            //    .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
+            string cacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_CHILD_IDENTIFIERS_MODEL_KEY, parentCategoryId, "", _storeContext.CurrentStore.Id);
             return _cacheManager.Get(cacheKey, () =>
             {
                 var categoriesIds = new List<int>();
@@ -295,7 +295,7 @@ namespace Nop.Web.Controllers
                 var categoryModel = new CategorySimpleModel()
                 {
                     Id = category.Id,
-                    Name = category.GetLocalized(x => x.Name),
+                    Name = category.Name,
                     SeName = category.GetSeName()
                 };
 
@@ -477,22 +477,22 @@ namespace Nop.Web.Controllers
             var model = new ProductDetailsModel()
             {
                 Id = product.Id,
-                Name = product.GetLocalized(x => x.Name),
-                ShortDescription = product.GetLocalized(x => x.ShortDescription),
-                FullDescription = product.GetLocalized(x => x.FullDescription),
-                MetaKeywords = product.GetLocalized(x => x.MetaKeywords),
-                MetaDescription = product.GetLocalized(x => x.MetaDescription),
-                MetaTitle = product.GetLocalized(x => x.MetaTitle),
+                Name = product.Name,
+                ShortDescription = product.ShortDescription,
+                FullDescription = product.FullDescription,
+                MetaKeywords = product.MetaKeywords,
+                MetaDescription = product.MetaDescription,
+                MetaTitle = product.MetaTitle,
                 SeName = product.GetSeName(),
-                ShowSku = _catalogSettings.ShowProductSku,
-                Sku = product.Sku,
+                ShowSku = false,//_catalogSettings.ShowProductSku,
+                Sku = product.Sku ?? product.Id.ToString(),
                 ShowManufacturerPartNumber = _catalogSettings.ShowManufacturerPartNumber,
-                FreeShippingNitificationEnabled = _catalogSettings.ShowFreeShippingNotification,
+                FreeShippingNitificationEnabled = false,//_catalogSettings.ShowFreeShippingNotification,
                 ManufacturerPartNumber = product.ManufacturerPartNumber,
-                ShowGtin = _catalogSettings.ShowGtin,
+                ShowGtin = false,//_catalogSettings.ShowGtin,
                 Gtin = product.Gtin,
-                StockAvailability = product.FormatStockMessage(_localizationService),
-                HasSampleDownload = product.IsDownload && product.HasSampleDownload,
+                StockAvailability = "",//product.FormatStockMessage(_localizationService),
+                HasSampleDownload = false,//product.IsDownload && product.HasSampleDownload,
                 IsCurrentCustomerRegistered = _workContext.CurrentCustomer.IsRegistered(),
                 Area = product.Area.ToString("#"),
                 ContactEmail = product.ContactEmail,
@@ -504,10 +504,9 @@ namespace Nop.Web.Controllers
                 AreaUse = product.AreaUse,
                 Width = product.Width,
                 Dept = product.Height,
-                StatusId = product.GiftCardTypeId
-
-
-
+                StatusId = product.GiftCardTypeId,
+                Promotion = product.Promotion,
+                DacDiemNoiBat = product.UserAgreementText
             };
             bool isProject = false;
             if (product.ProductCategories.Count > 0)
@@ -522,17 +521,18 @@ namespace Nop.Web.Controllers
                 model.DistrictName = product.District.Name;
             #endregion
             //vendor
-            if (_vendorSettings.ShowVendorOnProductDetailsPage)
-            {
-                var vendor = _vendorService.GetVendorById(product.VendorId);
-                if (vendor != null && vendor.Active)
-                {
-                    model.ShowVendor = true;
-                    model.VendorModel.Id = vendor.Id;
-                    model.VendorModel.Name = vendor.Name;
-                    model.VendorModel.SeName = SeoExtensions.GetSeName(vendor.Name);
-                }
-            }
+            //if (_vendorSettings.ShowVendorOnProductDetailsPage)
+            //{
+            //    var vendor = _vendorService.GetVendorById(product.VendorId);
+            //    if (vendor != null && vendor.Active)
+            //    {
+            //        model.ShowVendor = true;
+            //        model.VendorModel.Id = vendor.Id;
+            //        model.VendorModel.Name = vendor.Name;
+            //        model.VendorModel.SeName = SeoExtensions.GetSeName(vendor.Name);
+            //    }
+            //}
+
             #region SPA
             model.Environments = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.Enviroment)
                .Select(x => x.SpecificationAttributeOption)
@@ -544,19 +544,17 @@ namespace Nop.Web.Controllers
             model.Status = GetOptionName(product, ProductAttributeEnum.Status);
             if (isProject)
             {
-
                 model.StartConstructionDate = product.StartConstructionDate.HasValue ? product.StartConstructionDate.Value.ToString("dd-MM-yyyy") : "-";
                 model.FinishConstructionDate = product.FinishConstructionDate.HasValue ? product.FinishConstructionDate.Value.ToString("dd-MM-yyyy") : "-";
                 model.ChuDauTu = product.ManufacturerPartNumber;
                 model.TienIch = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.TienIch)
              .Select(x => x.SpecificationAttributeOption.Name).ToList();
-
                 model.Contructors = product.Gtin;
             }
             else
             {
                 model.BedRooms = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom);
-                model.BadRooms = GetOptionName(product, ProductAttributeEnum.NumberOfBadRoom);
+                model.BathRooms = GetOptionName(product, ProductAttributeEnum.NumberOfBadRoom);
                 model.Directors = GetOptionName(product, ProductAttributeEnum.Director);
                 model.PhapLy = GetOptionName(product, ProductAttributeEnum.PhapLy);
                 model.ThichHop = product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)ProductAttributeEnum.ThichHop)
@@ -579,9 +577,7 @@ namespace Nop.Web.Controllers
             });
 
             #endregion
-
-
-
+            
             #region Pictures
 
             var defaultpic = product.ProductPictures.FirstOrDefault();
@@ -664,20 +660,21 @@ namespace Nop.Web.Controllers
             //}
             #endregion
 
-
-
             return model;
         }
         private string GetOptionName(Product p, ProductAttributeEnum att)
         {
-            if (p.ProductSpecificationAttributes.Count == 0)
-                return "";
-            var deffaulAttr = p.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)att)
-               .Select(x => x.SpecificationAttributeOption)
-               .FirstOrDefault();
-            if (deffaulAttr == null)
-                return "";
-            return deffaulAttr.Name;
+            return _cacheManager.Get(string.Format("GetOptionName-{0}-{1}", p.Id, att.ToString()),30, () =>
+            {
+                if (p.ProductSpecificationAttributes.Count == 0)
+                    return "";
+                var deffaulAttr = p.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOption.SpecificationAttributeId == (int)att)
+                   .Select(x => x.SpecificationAttributeOption)
+                   .FirstOrDefault();
+                if (deffaulAttr == null)
+                    return "";
+                return deffaulAttr.Name;
+            });
         }
         [NonAction]
         protected ProductReviewOverviewModel PrepareProductReviewOverviewModel(Product product)
@@ -734,30 +731,6 @@ namespace Nop.Web.Controllers
             model.AddProductReview.CanCurrentCustomerLeaveReview = _catalogSettings.AllowAnonymousUsersToReviewProduct || !_workContext.CurrentCustomer.IsGuest();
             model.AddProductReview.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnProductReviewPage;
         }
-
-        //[NonAction]
-        //protected void SaveStoreMappings(int productId)
-        //{
-        //var existingStoreMappings = _storeMappingService.GetStoreMappings(product);
-        //var allStores = _storeService.GetAllStores();
-        //foreach (var store in allStores)
-        //{
-        //    if (model.SelectedStoreIds != null && model.SelectedStoreIds.Contains(store.Id))
-        //    {
-        //        //new role
-        //        if (existingStoreMappings.Count(sm => sm.StoreId == store.Id) == 0)
-        //            _storeMappingService.InsertStoreMapping(product, store.Id);
-        //    }
-        //    else
-        //    {
-        //        //removed role
-        //        var storeMappingToDelete = existingStoreMappings.FirstOrDefault(sm => sm.StoreId == store.Id);
-        //        if (storeMappingToDelete != null)
-        //            _storeMappingService.DeleteStoreMapping(storeMappingToDelete);
-        //    }
-        //}
-        //}
-
         #endregion
 
         #region Categories
@@ -780,8 +753,8 @@ namespace Nop.Web.Controllers
             //    return InvokeHttp404();
 
             //Store mapping
-            //if (!_storeMappingService.Authorize(category))
-            //    return InvokeHttp404();
+            if (!_storeMappingService.Authorize(category))
+                return InvokeHttp404();
 
             //'Continue shopping' URL
             //_genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
@@ -792,10 +765,7 @@ namespace Nop.Web.Controllers
             if (command.PageNumber <= 0) command.PageNumber = 1;
 
             var model = category.ToModel();
-
-
-
-
+            
             //sorting
             model.PagingFilteringContext.AllowProductSorting = _catalogSettings.AllowProductSorting;
             if (model.PagingFilteringContext.AllowProductSorting)
@@ -935,7 +905,7 @@ namespace Nop.Web.Controllers
                     model.CategoryBreadcrumb.Add(new CategoryModel()
                     {
                         Id = catBr.Id,
-                        Name = catBr.GetLocalized(x => x.Name),
+                        Name = catBr.Name,
                         SeName = catBr.GetSeName()
                     });
                 }
@@ -1129,15 +1099,13 @@ namespace Nop.Web.Controllers
             return PartialView(model);
         }
 
-        [ChildActionOnly]
-        //[OutputCache(Duration = 3600, VaryByParam = "stateId")]
+        [ChildActionOnly]        
         public ActionResult TopMenu(int stateId = 611)
         {
-            var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
-                .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
+            
             string cacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_MENU_MODEL_KEY, _workContext.WorkingLanguage.Id,
-                string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
-            var cachedModel = _cacheManager.Get(cacheKey, () =>
+                "",_storeContext.CurrentStore.Id);
+            var cachedModel = _cacheManager.Get(cacheKey, 30, () =>
             {
                 return PrepareCategorySimpleModels(0, null, 0, _catalogSettings.TopCategoryMenuSubcategoryLevelsToDisplay, true).ToList();
             });
@@ -1146,10 +1114,10 @@ namespace Nop.Web.Controllers
             {
                 Categories = cachedModel,
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
-                BlogEnabled = _blogSettings.Enabled,
-                ForumEnabled = _forumSettings.ForumsEnabled,
+                BlogEnabled = false,//_blogSettings.Enabled,
+                ForumEnabled = false,//_forumSettings.ForumsEnabled,
                 //Districts = _stateProvinceService.GetDistHCM(stateId, true).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName()),
-                Districts2 = _stateProvinceService.GetWardByDistrictId(stateId).OrderBy(x => x.Name).ToSelectList(x => x.Name, x => x.GetSeName())
+                Districts2 = stateId == 0 ? _stateProvinceService.GetDistHCM(stateId, true).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName()) : _stateProvinceService.GetWardByDistrictId(stateId).OrderBy(x => x.Name).ToSelectList(x => x.Name, x => x.GetSeName())
                 //Districts2 = _stateProvinceService.GetDistHCM(stateId, false).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
             };
             model.CategoriesNews = _catenewsService.GetAllCategories().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName());
@@ -1744,42 +1712,6 @@ namespace Nop.Web.Controllers
             //Store mapping
             if (!_storeMappingService.Authorize(product))
                 return InvokeHttp404();
-
-            //visible individually?
-            //if (!product.VisibleIndividually)
-            //{
-            //    //is this one an associated products?
-            //    var parentGroupedProduct = _productService.GetProductById(product.ParentGroupedProductId);
-            //    if (parentGroupedProduct != null)
-            //    {
-            //        return RedirectToRoute("Product", new { SeName = parentGroupedProduct.GetSeName() });
-            //    }
-            //    else
-            //    {
-            //        return RedirectToRoute("HomePage");
-            //    }
-            //}
-
-            //update existing shopping cart item?
-            //ShoppingCartItem updatecartitem = null;
-            //if (_shoppingCartSettings.AllowCartItemEditing && updatecartitemid > 0)
-            //{
-            //    var cart = _workContext.CurrentCustomer.ShoppingCartItems
-            //        .Where(x => x.ShoppingCartType == ShoppingCartType.ShoppingCart)
-            //        .Where(x => x.StoreId == _storeContext.CurrentStore.Id)
-            //        .ToList();
-            //    updatecartitem = cart.FirstOrDefault(x => x.Id == updatecartitemid);
-            //    //not found?
-            //    if (updatecartitem == null)
-            //    {
-            //        return RedirectToRoute("Product", new { SeName = product.GetSeName() });
-            //    }
-            //    //is it this product?
-            //    if (product.Id != updatecartitem.ProductId)
-            //    {
-            //        return RedirectToRoute("Product", new { SeName = product.GetSeName() });
-            //    }
-            //}
 
             //prepare the model
             var model = PrepareProductDetailsPageModel(product, null, false);
@@ -3224,15 +3156,26 @@ namespace Nop.Web.Controllers
                 PreapringProductToEntity(model, product);
                 product.Price = model.Price * 1000000;
                 string seName = product.ValidateSeName(product.Name, product.Name, true);
+                if (_storeContext.CurrentStore.Id != 1)
+                {
+                    product.LimitedToStores = true;
+                }
                 _productService.InsertProduct(product);
                 _urlRecordService.SaveSlug(product, seName, 0);
 
                 #region Store
-                //Stores: currentStoreId = 1(lay het) con ko (!= 1 thi khong lay Id != 1)
-                var allStores = _storeService.GetAllStores().Where(s => (_storeContext.CurrentStore.Id == 1) || (_storeContext.CurrentStore.Id != 1 && s.Id != 1));
-                foreach (var store in allStores)
+                //Stores: (!= 1 thi khong lay Id != 1)
+                if (_storeContext.CurrentStore.Id != 1)
                 {
-                    _storeMappingService.InsertStoreMapping(product, store.Id);
+                    var allStores = _storeService.GetAllStores().Where(s => s.Id != 1);
+                    if (allStores.Count() > 1)
+                    {
+                        product.LimitedToStores = true;
+                        foreach (var store in allStores)
+                        {
+                            _storeMappingService.InsertStoreMapping(product, store.Id);
+                        }
+                    }
                 }
                 #endregion
 
@@ -3285,14 +3228,32 @@ namespace Nop.Web.Controllers
         }
         public ActionResult EditProduct(int id)
         {
-            if (!_workContext.CurrentCustomer.IsAdmin())
-                return RedirectToRoute("HomePage");
+            if (!_workContext.CurrentCustomer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
+                return RedirectToRoute("PageNotfound");
             var product = _productService.GetProductById(id);
             if (product == null)
-                return RedirectToRoute("HomePage");
+                return RedirectToRoute("PageNotfound");
+            if(!_workContext.CurrentCustomer.IsAdmin() && product.CustomerId != _workContext.CurrentCustomer.Id)
+                return RedirectToRoute("PageNotfound");
+
             var model = ProductToInsertModel(product);
             PreparingInsertProductModel(model);
             PreapringProductToEntity(model, product);
+            if (_workContext.CurrentCustomer.IsRegistered())
+            {
+                ViewBag.IsRegistered = true;
+                model.NavigationModel = new Nop.Web.Models.Customer.CustomerNavigationModel()
+                {
+                    HideAvatar = !_customerSettings.AllowCustomersToUploadAvatars,
+                    HideRewardPoints = true,
+                    HideForumSubscriptions = !_forumSettings.ForumsEnabled || !_forumSettings.AllowCustomersToManageSubscriptions,
+                    HideReturnRequests = true,
+                    HideDownloadableProducts = true,
+                    HideBackInStockSubscriptions = true
+                };
+                model.NavigationModel.SelectedTab = Nop.Web.Models.Customer.CustomerNavigationEnum.PostNews;
+            }
+            else ViewBag.IsRegistered = false;
             return View(model);
         }
         [HttpPost]
@@ -3300,8 +3261,8 @@ namespace Nop.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProduct(InsertProductModel model, FormCollection form)
         {
-            if (!_workContext.CurrentCustomer.IsAdmin())
-                return RedirectToRoute("HomePage");
+            if (!_workContext.CurrentCustomer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
+                return RedirectToRoute("PageNotfound");            
 
             if (model == null)
                 throw new Exception("Product is null");
@@ -3309,9 +3270,9 @@ namespace Nop.Web.Controllers
             var product = _productService.GetProductById(model.Id);
             if (product == null)
                 return RedirectToRoute("HomePage");
+            if (!_workContext.CurrentCustomer.IsAdmin() && product.CustomerId != _workContext.CurrentCustomer.Id)
+                return RedirectToRoute("PageNotfound");
 
-            if (product.CustomerId != _workContext.CurrentCustomer.Id)
-                return RedirectToRoute("HomePage");
             if (ModelState.IsValid)
             {
                 PreapringProductToEntity(model, product);
@@ -3409,6 +3370,58 @@ namespace Nop.Web.Controllers
             return View(model);
 
         }
+        [HttpPost]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateProduct(int productId, int action, bool? value)
+        {
+            if (!_workContext.CurrentCustomer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
+                return RedirectToRoute("PageNotfound");
+
+            if (productId == 0)
+                return RedirectToRoute("PageNotfound");
+
+            var product = _productService.GetProductById(productId);
+            if (product == null)
+                return RedirectToRoute("PageNotfound");
+
+            if (!_workContext.CurrentCustomer.IsAdmin() && product.CustomerId != _workContext.CurrentCustomer.Id)
+                return RedirectToRoute("PageNotfound");
+
+            if(action == 1)//published
+            {
+                product.Published = value.Value;
+                _productService.UpdateProduct(product);
+                return Json("1");
+            }
+            if (action == 2)//deleted
+            {
+                _productService.DeleteProduct(product);
+                return Json("1");
+            }
+            if (action == 3)//up count
+            {
+                if (product.AvailableStartDateTimeUtc.HasValue && product.AvailableStartDateTimeUtc.Value.ToShortDateString() == DateTime.Now.ToShortDateString())
+                {
+                    if (product.MaxNumberOfDownloads < 6)
+                    {
+                        product.UpdatedOnUtc = DateTime.Now;
+                        product.MaxNumberOfDownloads = product.MaxNumberOfDownloads + 1;
+                        _productService.UpdateProduct(product);
+                        return Json("1");
+                    }
+                    else return Json("0");
+                }
+                else if (product.AvailableStartDateTimeUtc.HasValue && product.AvailableStartDateTimeUtc.Value < DateTime.Now)
+                {
+                    product.UpdatedOnUtc = DateTime.Now;
+                    product.MaxNumberOfDownloads = product.MaxNumberOfDownloads + 1;
+                    product.AvailableStartDateTimeUtc = DateTime.Now;
+                    return Json("1");
+                }
+            }
+            return Json("0");
+        }
 
         private void PreapringProductToEntity(InsertProductModel inPd, Product p)
         {
@@ -3421,14 +3434,12 @@ namespace Nop.Web.Controllers
                 p.UpdatedOnUtc = DateTime.Now;
                 //p.OriginId = inPd.pOriginId;
                 p.AvailableEndDateTimeUtc = null;
-                p.AvailableStartDateTimeUtc = null;
+                p.AvailableStartDateTimeUtc = DateTime.Now;
                 p.SpecialPriceEndDateTimeUtc = null;
                 p.SpecialPriceStartDateTimeUtc = null;
-                p.UpdatedOnUtc = DateTime.Now;
                 p.StartConstructionDate = null;
                 p.FinishConstructionDate = null;
                 p.ConstructionDate = null;
-
                 //p.ProductStatus = inPd.pPStatus;
                 p.ProductTypeId = 5;
                 p.ParentGroupedProductId = 0;
@@ -3522,10 +3533,11 @@ namespace Nop.Web.Controllers
             p.CustomerId = _workContext.CurrentCustomer.Id;
             p.Name = inPd.Name;
             p.FullAddress = inPd.FullAddress;
-
             p.FullDescription += "<br><br>" + inPd.NoteFacilities;
             p.FullDescription += "<br><br>" + inPd.NoteEnvironments;
             p.FullDescription += "<br><br>" + inPd.NoteThichHop;
+            p.UserAgreementText = inPd.DacDiemNoiBat;
+            p.Promotion = inPd.Promotion;
         }
 
         private InsertProductModel ProductToInsertModel(Product p)
@@ -3549,7 +3561,9 @@ namespace Nop.Web.Controllers
                 SelectedOptionAttributes = p.ProductSpecificationAttributes.Select(x => x.SpecificationAttributeOptionId).ToList(),
                 Name = p.Name,
                 PictureIds = p.ProductPictures.Select(x => new InsertProductModel.PictureUploadModel { Id = x.PictureId, Title = x.Description }).ToList(),
-                FullAddress = p.FullAddress
+                FullAddress = p.FullAddress,
+                DacDiemNoiBat = p.UserAgreementText,
+                Promotion = p.Promotion
             };
             var cate = p.ProductCategories.FirstOrDefault();
             if (cate != null)
@@ -3578,7 +3592,7 @@ namespace Nop.Web.Controllers
                 Value = x.Id.ToString(),
                 Text = x.Name
             }).ToList();
-            model.BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).Select(x => new SelectListItem
+            model.BathRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
@@ -3773,7 +3787,6 @@ namespace Nop.Web.Controllers
         [NonAction]
         public Bitmap ResizeImage(Bitmap image, int width, int height)
         {
-
             Bitmap resizedImage = new Bitmap(width, height);
             using (Graphics gfx = Graphics.FromImage(resizedImage))
             {
@@ -3865,33 +3878,7 @@ namespace Nop.Web.Controllers
 
         }
         private void PreparingSearchModel(SearchModel model, bool isproject = false, int categoryId = 0)
-        {
-            //var key = string.Format("PreparingSearchModel-{0}-{1}", isproject, categoryId);
-            //model = _cacheManager.Get(key, () =>
-            //{
-            //    IList<Category> cate = null;
-            //    cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).OrderBy(x => x.DisplayOrder).ToList();
-
-
-            //    var AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-            //    AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
-            //    var Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-            //    Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectDistrict"), Selected = true, Value = "0" });
-            //    var Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResource("Product.Status.Enum." + x.ToString()), x => ((int)x).ToString());
-            //    Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
-            //    var BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
-            //    var BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
-            //    var Directories = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).ToSelectList(x => x.Name, x => x.Id.ToString());
-            //    Directories.Insert(0, new SelectListItem { Text = _localizationService.GetResource(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
-            //    return new SearchModel()
-            //    {
-            //        AvailableCategories = AvailableCategories,
-            //        Districts = Districts,
-            //        Status = Status,
-            //        BedRooms = BedRooms,
-            //        BadRooms = BadRooms,
-            //        Directories = Directories
-            //    };
+        {           
             IList<Category> cate = null;
             cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).OrderBy(x => x.DisplayOrder).ToList();
             model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
@@ -3903,17 +3890,10 @@ namespace Nop.Web.Controllers
             model.Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
 
             model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
-            model.BadRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
+            model.BathRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
             model.Directories = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).ToSelectList(x => x.Name, x => x.Id.ToString());
             model.Directories.Insert(0, new SelectListItem { Text = _localizationService.GetResource(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
 
-            //});
-            //model.AvailableCategories = cache.AvailableCategories;
-            //model.Districts = cache.Districts;
-            //model.Status = cache.Status;
-            //model.BedRooms = cache.BedRooms;
-            //model.BadRooms = cache.BadRooms;
-            //model.Directories = cache.Directories;
         }
 
         private string ReturnPriceString(decimal price, string symbol)

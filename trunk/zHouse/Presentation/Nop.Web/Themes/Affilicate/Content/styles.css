@@ -1339,7 +1339,7 @@ margin-top: 7px; }
 .pinkBg div.selector {margin-bottom:15px !important}
 #frmSearch-Customer .formBoxSelect {width:200px!important}
 #frmSearch-Customer div.selector {margin-right:20px}
-#frmSearch-Customer {margin: 10px auto;width: 84%;float:left;display:inline-block;}
+#frmSearch-Customer {margin: 10px auto;display:inline-block;}
 .search-left .topInfo{height:auto;width:275px;}
 .search-left .topInfo .pinkBg{padding:15px;}
 .introCol .product-title{margin-bottom:5px;height:34px;overflow:hidden;}

@@ -11,11 +11,9 @@
     {
         
     }
-   
 }
+@Html.AntiForgeryToken()
 @Html.HiddenFor(x => x.Id)
-
-   
     <div class="request-title blueTitle" >QUẢNG CÁO NGÔI NHÀ CỦA BẠN</div>
     <p>
         Quảng cáo về căn nhà của bạn càng chi tiết, người mua sẽ càng dễ tìm kiếm thấy bạn hơn.<br /><br />
@@ -37,7 +35,6 @@
             @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại", })
             @Html.RequiredHint()
             @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })
-          
           <br />
             <br>
             @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
@@ -135,10 +132,10 @@
                             @Html.TextBoxFor(x => x.Width, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều ngang" }) m
                         @Html.RequiredHint()</td>
                       
-                        <td>@Html.LabelFor(x => x.BadRooms)</td>
+                        <td>@Html.LabelFor(x => x.BathRooms)</td>
                         <td>
                                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
-                                @foreach (var i in Model.BadRooms)
+                                @foreach (var i in Model.BathRooms)
                                 { 
                                     <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "") >@i.Text</option>
                                 }
@@ -267,15 +264,12 @@
                 </div>
         </div><!---rightTable---->
         <div class="floatLeft">
-           
             <div id="pictures">
-
             </div>
             <ul id="lstPic">
                 @foreach (var i in Model.PictureModels)
                 {
                     <li id="picture_id_@i.Id" style="float:left;margin-right:10px">
-
                         <input type="button" class="blueBtn" style="position: absolute;" value="Xóa" onclick="deletePicture(@i.Id)" />
                         <img width="100" height="100" src="@i.ImageUrl" /><br />
                         <textarea maxlength="500" name="PictureTitle_@i.PictureId" cols="10" rows="5">@i.Description</textarea>
@@ -287,7 +281,6 @@
         <div class="clearBoth">
              <i class="note">(*)Hình ảnh đầy đủ giúp quảng cáo ngôi nhà của bạn tốt hơn (Kích thước đề nghị 700x700 px hình vuông,dung lượng nhỏ hơn 2Mb)</i>
         </div>
-      
     </div><!---floatLeft----->
 <div class="floatLeft">
 <div class="blueText">TIÊU ĐỀ</div>
@@ -301,7 +294,18 @@
             @Html.EditorFor(x => x.Desription,"RichEditor")
         </div>
     </div><!---floatLeft---->
-
+    <div class="floatLeft">
+        <div class="blueText">Đặc điểm nổi bật</div>
+        <div class="boxWrapperSmall">            
+            @Html.TextAreaFor(x => x.DacDiemNoiBat, new { @class = "formBoxInText", placeholder = "(Hãy nêu ít nhất 4 đặt điểm nổi bật để tạo điểm nhấn cho bất động sản của bạn.)", TextMode = "MultiLine" })
+        </div>
+    </div>
+<div class="floatLeft">
+    <div class="blueText">Khyến mãi</div>
+    <div class="boxWrapperSmall">
+        @Html.TextAreaFor(x => x.Promotion, new { @class = "formBoxInText", placeholder = "(Khuyến mãi khi mua bất động sản.)" })
+    </div>
+</div>
     <div class="floatLeft">
         <div class="blueText">CHÚ Ý CỦA NGƯỜI BÁN</div>
         <div class="boxWrapperSmall">
@@ -309,26 +313,19 @@
             <br>
             <input style="float:right" type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
         </div>
-    </div><!---floatLeft---->
+    </div><!---floatLeft----> 
 
-  
 <script type="text/javascript">
-
-
-
     $(function () {
         $(".jqte-test").jqte();
         var pictureids = [];
         $("#Price").keyup(function () {
             var price = $(this).val();
             $("#price-text").html(StringPrice(price, "vnđ"));
-
-
         })
     ISFIRSTLOAD=true;
         $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
         $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
-
         $("#insertProduct-button").click(function () {
             if(!$("#frmProduct").valid())
             {
@@ -337,12 +334,9 @@
                 });
                 return false;
             }
-
             if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
                 alert('Vui lòng chọn hình ảnh đăng');
-
             }
-
             else if (Checkfiles($("#FileUpload")))
             {
                 alert("File không hợp lệ");
@@ -355,9 +349,7 @@
                 }
                 else
                     $('#FileUpload').uploadify('upload', '*')
-
             }
-
             return false;
         })
 
@@ -379,7 +371,6 @@
                     var option= $("<option/>").val(o.Id).text(o.Name);
                     if(ISFIRSTLOAD&&o.Id==@Model.StreetId)                        
                           option.attr("selected","selected");
-
                       ddlStreet.append(option);
                 })  
                 if(ISFIRSTLOAD)
@@ -388,14 +379,11 @@
                     ddlStreet.click();
                     ISFIRSTLOAD=false;
                 }
-               
             }).error(function () {
 
                 alert("Fail receice from server!");
             })
-
         })
-     
         $("#ddlQuan").change();
         $('#FileUpload').uploadify({
             'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
@@ -417,17 +405,13 @@
                         $(this).append('<textarea name="PictureTitle_0" cols="10" rows="5"></textarea>')
                     }
                 })
-
             },
             'onUploadStart': function (file) {
-
                 if (file == null || file.name == '') {
                     alert('Vui lòng chọn hình ảnh đăng');
                     $('#FileUpload').uploadify('stop');
                     return;
                 }
-            
-
             },
             'onUploadSuccess': function (file, data, response) {
                 pictureids.push(data);
@@ -442,9 +426,7 @@
                 if ($("div[id^=SWFUpload_]").size()==0||$("textarea[name^=PictureTitle_][name!=PictureTitle_0]").size()==0) {
                     alert('Vui lòng chọn hình ảnh đăng');
                     return false;
-
                 }
-
                 if ($("#frmProduct").valid()) {
                     $('#frmProduct').submit();
                 }
@@ -485,13 +467,10 @@
 </script>
 @if (Model.Id > 0)
 {
-    <script type="text/javascript">
-    
+    <script type="text/javascript">    
         $(document).ready(function () {
-            var price=@Model.Price.ToString("#");
+            var price=@Model.Price;
                   $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
-              
-           
         })
         var CLICK=false;
         function deletePicture(id) {
@@ -506,20 +485,17 @@
                 url: "@Url.Action("ProductPictureDelete")",
                 dataType: 'json',
                 success: function (data, textStatus, jqXHR) {
-                    if (data.error == 0) {
-                    
+                    if (data.error == 0) {                    
                         alert(data.message);    
                         picture_id.remove();
                         CLICK=false;
                     }
                     else {
                         CLICK=false;
-                      alert(data.message);
-                       
+                      alert(data.message);                       
                     }
                 },
-                error: function (xhr, ajaxOptions, thrownError) {
-                   
+                error: function (xhr, ajaxOptions, thrownError) {                   
                     alert('Failed to retrieve data.');
                     //statesProgressd.hide();
                 }
@@ -529,4 +505,3 @@
         }
     </script> 
 }
-

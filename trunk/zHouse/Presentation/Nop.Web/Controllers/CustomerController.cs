@@ -1037,6 +1037,8 @@ namespace Nop.Web.Controllers
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
+            
+            
 
             var model = new CustomerInfoModel();
             PrepareCustomerInfoModel(model, customer, false);

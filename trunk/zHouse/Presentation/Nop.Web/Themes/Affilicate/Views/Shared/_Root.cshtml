@@ -31,8 +31,7 @@
         </div>
         <div class="top">            
                 <div class="wrapper">
-                    <div class="logo"><a href="http://zhousetest.xxx/"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder" alt="Logo Zhouse.com.vn"></a></div>
-                    @*<div class="logo-marketplace"><a href="@Url.RouteUrl("HomePage")">MarketPlace</a></div>*@
+                    <div class="logo"><a href="@Url.RouteUrl("HomePage")"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder" alt="Logo Zhouse.com.vn"></a></div>
                     @Html.Action("TopMenu", "Catalog")
                 </div>
             </div>
@@ -78,3 +77,17 @@
 </div>
 @*@Html.Widget("body_end_html_tag_before")*@
 <div style="display:none" id="popup"></div>
+<script type="text/javascript">
+  $(document).ready(function () {
+        var headerTop = $('.top-header').offset().top;
+        var headerBottom = headerTop + 29; // Sub-menu should appear after this distance from top.
+        $(window).scroll(function () {
+            var scrollTop = $(window).scrollTop(); // Current vertical scroll position from the top
+            if (scrollTop > headerBottom) { // Check to see if we have scrolled more than headerBottom
+                $('.top-header').hide();
+            } else {
+                $('.top-header').show();
+            }
+        }
+        );
+  });</script>
