@@ -21,6 +21,9 @@ namespace Nop.Core.Domain.Catalog
       ThichHop=12,
       TienIch=15
     }
+    /// <summary>
+    /// Trang thai tin:con trong, da dat coc, da ban
+    /// </summary>
     public enum ProductStatusText
     {
        CONTRONG=0,

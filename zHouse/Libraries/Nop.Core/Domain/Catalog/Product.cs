@@ -215,7 +215,7 @@ namespace Nop.Core.Domain.Catalog
         public bool HasUserAgreement { get; set; }
 
         /// <summary>
-        /// Gets or sets the text of license agreement
+        /// Gets or sets the text of license agreement: dac diem noi bat
         /// </summary>
         public string UserAgreementText { get; set; }
 
@@ -556,6 +556,10 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets the finish construction date - ngay hoan cong
         /// </summary>
         public DateTime? FinishConstructionDate { get; set; }
+        /// <summary>
+        /// Khuyen mai
+        /// </summary>
+        public string Promotion { get; set; }
         /// <summary>
         /// Gets or sets product status enum - trang thai duyet tin
         /// </summary>

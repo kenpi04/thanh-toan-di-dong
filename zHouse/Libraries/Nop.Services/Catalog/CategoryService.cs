@@ -169,8 +169,6 @@ namespace Nop.Services.Catalog
             }
             ))
             {
-
-
                 var query = _categoryRepository.Table;
                 if (!showHidden)
                     query = query.Where(c => c.Published);
@@ -182,14 +180,14 @@ namespace Nop.Services.Catalog
                 if (!showHidden)
                 {
                     //ACL (access control list)
-                    var allowedCustomerRolesIds = _workContext.CurrentCustomer.CustomerRoles
-                        .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
-                    query = from c in query
-                            join acl in _aclRepository.Table
-                            on new { c1 = c.Id, c2 = "Category" } equals new { c1 = acl.EntityId, c2 = acl.EntityName } into c_acl
-                            from acl in c_acl.DefaultIfEmpty()
-                            where !c.SubjectToAcl || allowedCustomerRolesIds.Contains(acl.CustomerRoleId)
-                            select c;
+                    //var allowedCustomerRolesIds = _workContext.CurrentCustomer.CustomerRoles
+                    //    .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
+                    //query = from c in query
+                    //        join acl in _aclRepository.Table
+                    //        on new { c1 = c.Id, c2 = "Category" } equals new { c1 = acl.EntityId, c2 = acl.EntityName } into c_acl
+                    //        from acl in c_acl.DefaultIfEmpty()
+                    //        where !c.SubjectToAcl || allowedCustomerRolesIds.Contains(acl.CustomerRoleId)
+                    //        select c;
 
                     //Store mapping
                     var currentStoreId = _storeContext.CurrentStore.Id;
@@ -247,14 +245,14 @@ namespace Nop.Services.Catalog
                     if (!showHidden)
                     {
                         //ACL (access control list)
-                        var allowedCustomerRolesIds = _workContext.CurrentCustomer.CustomerRoles
-                            .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
-                        query = from c in query
-                                join acl in _aclRepository.Table
-                                on new { c1 = c.Id, c2 = "Category" } equals new { c1 = acl.EntityId, c2 = acl.EntityName } into c_acl
-                                from acl in c_acl.DefaultIfEmpty()
-                                where !c.SubjectToAcl || allowedCustomerRolesIds.Contains(acl.CustomerRoleId)
-                                select c;
+                        //var allowedCustomerRolesIds = _workContext.CurrentCustomer.CustomerRoles
+                        //    .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
+                        //query = from c in query
+                        //        join acl in _aclRepository.Table
+                        //        on new { c1 = c.Id, c2 = "Category" } equals new { c1 = acl.EntityId, c2 = acl.EntityName } into c_acl
+                        //        from acl in c_acl.DefaultIfEmpty()
+                        //        where !c.SubjectToAcl || allowedCustomerRolesIds.Contains(acl.CustomerRoleId)
+                        //        select c;
 
                         //Store mapping
                         var currentStoreId = _storeContext.CurrentStore.Id;
@@ -434,15 +432,15 @@ namespace Nop.Services.Catalog
                     if (!showHidden)
                     {
                         //ACL (access control list)
-                        var allowedCustomerRolesIds = _workContext.CurrentCustomer.CustomerRoles
-                            .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
-                        query = from pc in query
-                                join c in _categoryRepository.Table on pc.CategoryId equals c.Id
-                                join acl in _aclRepository.Table
-                                on new { c1 = c.Id, c2 = "Category" } equals new { c1 = acl.EntityId, c2 = acl.EntityName } into c_acl
-                                from acl in c_acl.DefaultIfEmpty()
-                                where !c.SubjectToAcl || allowedCustomerRolesIds.Contains(acl.CustomerRoleId)
-                                select pc;
+                        //var allowedCustomerRolesIds = _workContext.CurrentCustomer.CustomerRoles
+                        //    .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
+                        //query = from pc in query
+                        //        join c in _categoryRepository.Table on pc.CategoryId equals c.Id
+                        //        join acl in _aclRepository.Table
+                        //        on new { c1 = c.Id, c2 = "Category" } equals new { c1 = acl.EntityId, c2 = acl.EntityName } into c_acl
+                        //        from acl in c_acl.DefaultIfEmpty()
+                        //        where !c.SubjectToAcl || allowedCustomerRolesIds.Contains(acl.CustomerRoleId)
+                        //        select pc;
 
                         //Store mapping
                         var currentStoreId = _storeContext.CurrentStore.Id;
