@@ -31,7 +31,7 @@ namespace Nop.Web.Models.News
         public int NumberOfComments { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CateName { get; set; }
-
+        public string CategorySename { get; set; }
         public IList<NewsCommentModel> Comments { get; set; }
         public AddNewsCommentModel AddNewComment { get; set; }
         public List<CategoryNews> parentCategoryNews { get; set; }

@@ -8,7 +8,7 @@
     	
             <div class="wholeSearch">
                <div class="wrapper">
-              @Html.DropDownList("districtId",Model.Districts,new{@class="formBoxSelect"})
+              @Html.DropDownList("wardId",Model.Wards,new{@class="formBoxSelect"})
               @Html.DropDownList("priceString",Model.PriceRange,new{@class="formBoxSelect"})
               @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "formBoxSelect" })
               @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "formBoxSelect",id="ddlDir" })
@@ -25,13 +25,11 @@
     $(function () {
         $("#frmSearchHead").submit(function () {
             var data = {
-                wardId: $("#districtId").val(),
+                wardId: $("#wardId").val(),
                 priceString:$("#priceString").val(),
                 categoryId:$("#categoryId").val(),
                 attributeOptionIds: $("#ddlDir").val() + "-" + $("#ddlBath").val() + "-" + $("#ddlBed").val()
             };
-          
-         
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {
                 window.location.href = d;
             })

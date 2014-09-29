@@ -75,13 +75,13 @@ ul.language-list li:hover{cursor:pointer}
 .header-menu .top-menu li:last-child{background:0}
 .header-menu .top-menu li a{min-height:20px;display:block;line-height:20px;text-transform:uppercase;margin-bottom:9px;white-space:nowrap;padding:0 5px}
 .header-menu .top-menu li a.hover{background:#696969}
-.menu li .sublist{position:absolute;background-color:#fff;border:1px solid #c2c2c2;padding:10px;margin-left:-36px;margin-top:14px;z-index:1000;display:none;white-space:nowrap;width:600px;border-top:0}
+.menu li .sublist{position:absolute;background-color:#fff;border:1px solid #c2c2c2;margin-top:14px;margin-left:-28px;z-index:1000;display:none;white-space:nowrap;width:600px;border-top:0;padding-top:10px;}
 .menu li .sublist li.title{font-size:14px;font-weight:bold}
-.menu li .sublist.active{display:block}
+.menu li .sublist.active{display:block;left:13px;}
 .menu li .sublist .sublist.active{left:100px;margin-top:-30px;top:auto}
-.menu .sublist li a{text-transform:none;min-height:22px;margin:0 8px 0 5px;color:#373737;font-weight:normal;font-size:12px;border:0 !important}
+.menu .sublist li a{text-transform:none;padding:0;min-height:22px;color:#373737;font-weight:normal;font-size:12px;border:0 !important}
 .menu .sublist ul{width:100%;float:left}
-.menu .sublist li{height:22px;margin:6px 5px;text-align:left;float:none;padding:0;float:left;width:100%}
+.menu .sublist li{height:33px;text-align:left;float:none;padding:0px 0px 0px 15px;float:left;width:100%}
 .header-menu .top-menu-triangle.active{display:none}
 .header-menu .top-menu-triangle{background:url(images/top-menu-triangle.png) no-repeat;margin-top:-9px;margin-left:10px;width:10px;height:5px;position:absolute;z-index:10;display:none}
 .header-menu .top-menu-triangle.active{display:block}
@@ -989,12 +989,14 @@ pre{white-space:pre-wrap;white-space:normal;word-wrap:break-word}
 .detail-head .price-box{background:#ddd;padding:17px;line-height:20px}
 .detail-head ul li{padding:10px 0}
 .detail-head .picture{float:left}
-.search-home{background:url(images/search-bg.png) no-repeat;width:931px;color:#FFF;height:500px}
-.search-home .search-center{width:633px;margin:auto;position:relative;top:27%;background-color:rgba(0,0,0,0.5);padding:57px 23px;border-radius:14px}
+.search-home{display:inline-block;margin-bottom:10px}
+.search-home #Q {width:40%;}
+.search-home .pinkBg div.selector{margin-bottom:12px}
+/*.search-home .search-center{width:633px;margin:auto;position:relative;top:27%;background-color:rgba(0,0,0,0.5);padding:57px 23px;border-radius:14px}
 .search-home .search-center .control{float:left;margin-right:10px}
 .search-home .search-center .control select{padding:5px 2px}
 .search-home .search-center h1{font-size:28px}
-.search-home .search-center h3{font-size:16px}
+.search-home .search-center h3{font-size:16px}*/
 .btn-pink{background:#c06;border:0;padding:5px;cursor:pointer;color:#fff;border-radius:2px}
 .topic-info{margin:0 auto}
 .topic-info .t-block{width:200px;float:left;margin-right:25px;text-align:center}
@@ -1010,7 +1012,7 @@ ul{margin:0}
 .stretchImg{width:100%}
 .logo{top:0;left:0;float:left;}
 .menu{position:absolute;top:0;right:0}
-.menu ul{margin:12px -15px 0 0}
+.menu ul{margin:12px 0 0 0}
 .menu li{display:inline;float:left;padding:6px 13px;height:27px}
 .sublist li{border:0}
 .menu li a{text-decoration:none;color:#666;font-size:14px;font-weight:normal;text-transform:uppercase;display:block;border-right:solid 1px #ddd;padding:2px 4px;width:100%}
@@ -1019,9 +1021,9 @@ ul{margin:0}
 .searchBtn{background:url(images/searchBtn.png) no-repeat;width:27px;height:27px;border:0;cursor:pointer}
 .searchBtn:hover{background:url(images/searchBtnhover.png)}
 .topInfo{width:290px;float:left;height:352px;background:#fff;margin-right:10px}
-.pinkBg{border-radius:4px;padding:25px}
+.pinkBg{border-radius:4px;padding:15px}
 .pinkNarrowTitle{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06;text-align:center}
-.box{background:#fff;width:220px;padding:5px 5px 5px 10px;border:0;margin:5px 5px 5px 0;color:#333;font-size:12px}
+.box{background:#fff;width:220px;padding:5px 5px 5px 10px;border:0;margin:5px 5px 5px 0;color:#333;font-size:12px;}
 .blueBtn{background:#1e98d5;color:#fff;font-weight:bold;text-align:center;padding:5px 15px;border:0;cursor:pointer;text-transform:uppercase;margin:0;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif}
 .blueBtn:hover{color:#d3eefb}
 .blueBigBtn{background:#1e98d5;color:#fff;font-weight:bold;font-size:15px;text-align:center;padding:10px 30px;border:0;cursor:pointer;text-transform:uppercase;margin:5px 0;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif}
@@ -1056,14 +1058,14 @@ ul{margin:0}
 .threeCol{width:333px;float:left;margin-right:40px}
 .footerBg{width:100%;background:#fff;padding:20px 0;float:left}
 .footerContent{width:100%;float:left}
-.footerCol{float:left;width:25%}
+.footerCol{float:left;width:25%;max-height:235px;overflow:hidden;}
 .footerCol ul{margin-left:10px}
 .footerCol li{padding:5px 0}
 .footerCol li a:hover{color:#1e98d5}
 .menu-footer li{float:left;margin:0 20px}
 .menu-footer li a:hover {color:#1e98d5 }
 .map-link{float:right;margin-right:20px}
-.menu-col .title {color:#c06 }
+.menu-col .title {color:#c06;padding:0px 10px 5px 10px}
 .footerLine{background:url(images/footerLine.png) no-repeat;width:71px;height:142px;float:left}
 .blueLink a{color:#1e98d5;text-decoration:none;font-size:13px}
 .blueLink a:hover{text-decoration:underline}
@@ -1173,6 +1175,12 @@ ul{margin:0}
 .pinkNarrowTitle30{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06}
 .whiteLeftCol{float:left;width:220px;margin: 0 0px 10px 0;background:#fff}
 .rightContentTwist{width:795px;float:right}
+.rightContentTwist-News{width:78%;float:right}
+.rightContentTwist-News .introCol{width:30%;margin-right:5px;height:300px;overflow:hidden;}
+.rightContentTwist-News .introCol .info-picture-news{height:63%}
+.rightContentTwist-News .introCol .info-picture-news img{width:100%;height:100%;}
+.rightContentTwist-News .introCol .whiteBg{padding:5px 5px 5px 5px;}
+.rightContentTwist-News .introCol .news-short{padding:3px 5px;width:100%;}
 .leftContentTwist{width:220px;float:left;margin-right: 0px;}
 .greyBgTitle{float:left;background:url(images/greyBgTitle.png) no-repeat;width:220px;height:41px;text-align:center;padding-top:9px}
 .greyBgTitle h2{color:#666;font-size:14px;text-transform:uppercase;text-decoration:none}
@@ -1199,9 +1207,9 @@ ul{margin:0}
 .ulStyle li{list-style-image:url(images/listIcon.png);padding-top:5px}
 .ulStyle li a{text-decoration:none;color:#555}
 .ulStyle li a:hover{color:#000}
-.news{float:left;width:830px;margin:10px 0 0 20px;font-size:13px;text-align:justify; line-height: 20px;}
+.news{float:left;width:830px;margin:10px 0 0 0px;font-size:13px;text-align:justify; line-height: 20px;}
 .newsImgBorder{border:3px solid #d3d3d3}
-.menu-col{width:200px;float:left;padding:0 10px;border-right:dashed 1px #ddd}
+.menu-col{float:left;border-right:dashed 1px #ddd}
 .menu-col:last-child{border:0}
 .menu-col .title{font-weight:bold}
 /*.service{left:0px !important; margin-left:-18px;}*/
@@ -1336,14 +1344,27 @@ margin-top: 7px; }
 /*market*/
 .banner-home {width:510px;height:352px;overflow:hidden;cursor:pointer;float:left}
 .new-column {box-sizing:border-box;width:270px;float:left;}
-.pinkBg div.selector {margin-bottom:15px !important}
+.search-left .pinkBg div.selector {margin-bottom:12px !important;width:95% !important}
+.search-left .pinkBg div.selector span{width:87% !important}
 #frmSearch-Customer .formBoxSelect {width:200px!important}
 #frmSearch-Customer div.selector {margin-right:20px}
 #frmSearch-Customer {margin: 10px auto;display:inline-block;}
 .search-left .topInfo{height:auto;width:275px;}
 .search-left .topInfo .pinkBg{padding:15px;}
+.search-left #Q{width:39%;}
 .introCol .product-title{margin-bottom:5px;height:34px;overflow:hidden;}
 .top-header{background:#272727;width:100%;height:29px;}
 .top-header .wrapper a{color:#fff;font-size:12px;text-transform:uppercase;line-height:29px;cursor:pointer;text-decoration:none;padding:7px 15px 5px 15px}
 .top-header .wrapper .isactive{color:#000;background:#fff;}
 .top-header .wrapper .submenu{float:right;padding:0 15px 0px 15px;}
+.top-header .wrapper #menuLogin{text-transform:none}
+.tabs {width: 100%;display: inline-block;}
+.tab-links {margin-left: 10px;margin-bottom: -1px;}
+.tab-links:after {display: block;clear: both;content: '';}
+.tab-links li {float: left;list-style: none;margin-right: 2px;}
+.tab-links a {padding: 9px 15px;display: inline-block;border-radius: 3px 3px 0px 0px;background: #dedede;font-size: 13px;font-weight: 600;color: #4c4c4c;transition: all linear 0.15s;}
+.tab-links a:hover {background: #dedede;text-decoration: none;}
+li.active a, li.active a:hover {background: #fff;color: #4c4c4c;border: 1px solid #dedede;border-bottom: 0;}
+.tab-content {padding: 9px 9px 0px 9px;border-radius: 3px;border: 1px solid #dedede;background: #fff;}
+.tab {display: none;}
+.tab.active {display: block;}

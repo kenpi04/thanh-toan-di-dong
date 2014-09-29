@@ -24,7 +24,7 @@
      @Html.Action("NewsCateNavigation")
             <div class="ad"><a href="#"><img src="@Url.Content("~/Themes/Zhouse/Content/images/ad.png")" class="adBorder"></a></div>
         </div>  
-        <div class="rightContentTwist">            
+        <div class="rightContentTwist-News">            
             @foreach(var item in Model.NewsItems)
             { 
             <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@item.Title">
@@ -37,7 +37,7 @@
                     }
                 </div>
                 <div class="whiteBg">@item.Title</div>
-                <div class="whiteBgCata news-short">@item.Short.TrimString(160)</div>
+                <div class="news-short">@item.Short.TrimString(160)</div>
             </div>
         </a>
             }        

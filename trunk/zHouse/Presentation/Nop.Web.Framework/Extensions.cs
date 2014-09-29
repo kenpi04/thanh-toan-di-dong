@@ -115,7 +115,7 @@ namespace Nop.Web.Framework
             typeof(Convert)
         };
 
-        public static GridBoundColumnBuilder<T> Centered<T>(this GridBoundColumnBuilder<T> columnBuilder) where T:class
+        public static GridBoundColumnBuilder<T> Centered<T>(this GridBoundColumnBuilder<T> columnBuilder) where T : class
         {
             return columnBuilder.HtmlAttributes(new { align = "center" })
                             .HeaderHtmlAttributes(new { style = "text-align:center;" });
@@ -335,6 +335,76 @@ namespace Nop.Web.Framework
             }
             //  str = str.Replace(".", "");
             return str;
+        }
+
+        /// <summary>
+        /// Get danh sach gia ban hoac cho thue
+        /// </summary>
+        /// <param name="isForRent">la cho thue</param>
+        /// <returns>Prices collections</returns>
+        public static List<SelectListItem> GetPrice(bool isForRent = false)
+        {
+            List<SelectListItem> listItems = null;
+            if (!isForRent)//ban nha
+            {
+                listItems = new List<SelectListItem>(){
+                    new SelectListItem{Value = "0-0", Text ="Chọn mức giá"},
+                    new SelectListItem{Value = "0-1000", Text ="Dưới 1 tỷ"},
+                    new SelectListItem{Value = "1000-1500", Text ="1 tỷ ~ 1.5 tỷ"},
+                    new SelectListItem{Value = "1500-2000", Text ="1.5 tỷ ~ 2 tỷ"},
+                    new SelectListItem{Value = "2000-2500", Text ="2 tỷ ~ 2.5 tỷ"},
+                    new SelectListItem{Value = "2500-3000", Text ="2.5 tỷ ~ 3 tỷ"},
+                    new SelectListItem{Value = "3000-0", Text ="Trên 3 tỷ"},
+                };
+            }
+            else //cho thue
+            {
+                listItems = new List<SelectListItem>(){
+                    new SelectListItem{Value = "0-0", Text ="Chọn mức giá"},
+                    new SelectListItem{Value = "0-1", Text ="Dưới 1 triệu"},
+                    new SelectListItem{Value = "1-2", Text ="1 triệu ~ 2 triệu"},
+                    new SelectListItem{Value = "2-3", Text ="2 triệu ~ 3 triệu"},
+                    new SelectListItem{Value = "3-5", Text ="3 triệu ~ 5 triệu"},
+                    new SelectListItem{Value = "5-10", Text ="5 triệu ~ 10 triệu"},
+                    new SelectListItem{Value = "10-20", Text ="10 triệu ~ 20 triệu"},
+                    new SelectListItem{Value = "20-30", Text ="20 triệu ~ 30 triệu"},
+                    new SelectListItem{Value = "30-0", Text ="Trên 30 triệu"},
+                };
+            }
+            return listItems;
+        }
+        public static List<SelectListItem> GetArea()
+        {
+            return new List<SelectListItem>(){
+                    new SelectListItem{Value = "0-0", Text ="Chọn diện tích"},
+                    new SelectListItem{Value = "0-40", Text ="Dưới 40 m2"},
+                    new SelectListItem{Value = "40-70", Text ="40 m2 ~ 70 m2"},
+                    new SelectListItem{Value = "70-100", Text ="70 m2 ~ 100 m2"},
+                    new SelectListItem{Value = "100-150", Text ="100 m2 ~ 150 m2"},
+                    new SelectListItem{Value = "150-250", Text ="150 m2 ~ 250 m2"},
+                    new SelectListItem{Value = "250-500", Text ="250 m2 ~ 500 m2"},
+                    new SelectListItem{Value = "500-1000", Text ="500 m2 ~ 1000 m2"},
+                    new SelectListItem{Value = "1000-0", Text ="Trên 1000 m2"},
+                };
+        }
+        public static string ReturnPriceString(decimal price, string symbol)
+        {
+            price = price / 1000000;
+            if (Math.Floor(price / 1000) > 0)
+            {
+                if (price % 1000 != 0)
+                {
+                    return ((int)Math.Floor(price / 1000)).ToString() + " tỉ " + ((int)(price % 1000)).ToString() + " triệu " + symbol;
+                }
+                else
+                {
+                    return ((int)Math.Floor(price / 1000)).ToString() + " tỉ " + symbol;
+                }
+            }
+            else
+            {
+                return ((int)price).ToString() + " triệu " + symbol;
+            }
         }
     }
 }
