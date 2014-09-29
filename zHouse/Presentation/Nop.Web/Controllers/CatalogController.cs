@@ -382,7 +382,7 @@ namespace Nop.Web.Controllers
                 }
                 else
                 {
-                    model.ProductPrice.Price = ReturnPriceString(product.Price, "đ");
+                    model.ProductPrice.Price = Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ");
                 }
 
 
@@ -577,7 +577,7 @@ namespace Nop.Web.Controllers
             });
 
             #endregion
-            
+
             #region Pictures
 
             var defaultpic = product.ProductPictures.FirstOrDefault();
@@ -608,7 +608,7 @@ namespace Nop.Web.Controllers
             }
             else
             {
-                model.ProductPrice.Price = ReturnPriceString(product.Price, "vnđ");
+                model.ProductPrice.Price = Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "vnđ");
                 model.ProductPrice.PriceValue = product.Price;
             }
             //model.ProductPrice.DynamicPriceUpdate = _catalogSettings.EnableDynamicPriceUpdate;
@@ -664,7 +664,7 @@ namespace Nop.Web.Controllers
         }
         private string GetOptionName(Product p, ProductAttributeEnum att)
         {
-            return _cacheManager.Get(string.Format("GetOptionName-{0}-{1}", p.Id, att.ToString()),30, () =>
+            return _cacheManager.Get(string.Format("GetOptionName-{0}-{1}", p.Id, att.ToString()), 30, () =>
             {
                 if (p.ProductSpecificationAttributes.Count == 0)
                     return "";
@@ -702,10 +702,11 @@ namespace Nop.Web.Controllers
                 throw new ArgumentNullException("model");
 
             model.ProductId = product.Id;
-            model.ProductName = product.GetLocalized(x => x.Name);
+            model.ProductName = product.Name;
             model.ProductSeName = product.GetSeName();
 
-            var productReviews = product.ProductReviews.Where(pr => pr.IsApproved).OrderBy(pr => pr.CreatedOnUtc);
+            var productReviews = _productService.GetAllProductReviews(customerId: 0, approved:true, productId: product.Id);//product.ProductReviews.Where(pr => pr.IsApproved).OrderBy(pr => pr.CreatedOnUtc);
+            
             foreach (var pr in productReviews)
             {
                 var customer = pr.Customer;
@@ -765,7 +766,7 @@ namespace Nop.Web.Controllers
             if (command.PageNumber <= 0) command.PageNumber = 1;
 
             var model = category.ToModel();
-            
+
             //sorting
             model.PagingFilteringContext.AllowProductSorting = _catalogSettings.AllowProductSorting;
             if (model.PagingFilteringContext.AllowProductSorting)
@@ -913,8 +914,8 @@ namespace Nop.Web.Controllers
 
 
 
-            var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
-                .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
+            //var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
+            //    .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
 
 
             /*
@@ -1099,30 +1100,28 @@ namespace Nop.Web.Controllers
             return PartialView(model);
         }
 
-        [ChildActionOnly]        
+        [ChildActionOnly]
         public ActionResult TopMenu(int stateId = 611)
         {
-            
-            string cacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_MENU_MODEL_KEY, _workContext.WorkingLanguage.Id,
-                "",_storeContext.CurrentStore.Id);
-            var cachedModel = _cacheManager.Get(cacheKey, 30, () =>
+            string cacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_MENU_MODEL_KEY, _workContext.WorkingLanguage.Id, "", _storeContext.CurrentStore.Id);
+            var cachedModel = _cacheManager.Get(cacheKey, 60, () =>
             {
-                return PrepareCategorySimpleModels(0, null, 0, _catalogSettings.TopCategoryMenuSubcategoryLevelsToDisplay, true).ToList();
+                var categoryModel = PrepareCategorySimpleModels(0, null, 0, _catalogSettings.TopCategoryMenuSubcategoryLevelsToDisplay, true).ToList();
+                var model = new TopMenuModel()
+                {
+                    Categories = categoryModel,
+                    RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
+                    BlogEnabled = false,//_blogSettings.Enabled,
+                    ForumEnabled = false,//_forumSettings.ForumsEnabled,
+                    //Districts = _stateProvinceService.GetDistHCM(stateId, true).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName()),
+                    Districts2 = stateId == 0 ? _stateProvinceService.GetDistHCM(showHidden: true).ToSelectList(x => x.Name, x => x.GetSeName()) : _stateProvinceService.GetWardByDistrictId(stateId).OrderBy(x => x.Name).ToSelectList(x => x.Name, x => x.GetSeName())
+                    //Districts2 = _stateProvinceService.GetDistHCM(stateId, false).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
+                };
+                model.CategoriesNews = _catenewsService.GetAllCategories().ToSelectList(x => x.Name, x => x.GetSeName());
+                model.Topics = _topicService.GetAllTopics(0, 1).Select(x => new SelectListItem { Text = x.Title, Value = x.SystemName }).ToList();
+                return model;
             });
-
-            var model = new TopMenuModel()
-            {
-                Categories = cachedModel,
-                RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
-                BlogEnabled = false,//_blogSettings.Enabled,
-                ForumEnabled = false,//_forumSettings.ForumsEnabled,
-                //Districts = _stateProvinceService.GetDistHCM(stateId, true).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName()),
-                Districts2 = stateId == 0 ? _stateProvinceService.GetDistHCM(stateId, true).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName()) : _stateProvinceService.GetWardByDistrictId(stateId).OrderBy(x => x.Name).ToSelectList(x => x.Name, x => x.GetSeName())
-                //Districts2 = _stateProvinceService.GetDistHCM(stateId, false).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
-            };
-            model.CategoriesNews = _catenewsService.GetAllCategories().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName());
-            model.Topics = _topicService.GetAllTopics(0, 1).Select(x => new SelectListItem { Text = x.Title, Value = x.SystemName }).ToList();
-            return PartialView(model);
+            return PartialView(cachedModel);
         }
 
         [ChildActionOnly]
@@ -1741,15 +1740,15 @@ namespace Nop.Web.Controllers
             if (!_catalogSettings.CategoryBreadcrumbEnabled)
                 return Content("");
 
-            var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
-                .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
-            var cacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_BREADCRUMB_MODEL_KEY, product.Id, _workContext.WorkingLanguage.Id, string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
+            //var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
+            //    .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
+            var cacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_BREADCRUMB_MODEL_KEY, product.Id, _workContext.WorkingLanguage.Id, "", _storeContext.CurrentStore.Id);
             var cacheModel = _cacheManager.Get(cacheKey, () =>
             {
                 var model = new ProductDetailsModel.ProductBreadcrumbModel()
                 {
                     ProductId = product.Id,
-                    ProductName = product.GetLocalized(x => x.Name),
+                    ProductName = product.Name,
                     ProductSeName = product.GetSeName()
                 };
                 var productCategories = _categoryService.GetProductCategoriesByProductId(product.Id);
@@ -1763,7 +1762,7 @@ namespace Nop.Web.Controllers
                             model.CategoryBreadcrumb.Add(new CategoryModel()
                             {
                                 Id = catBr.Id,
-                                Name = catBr.GetLocalized(x => x.Name),
+                                Name = catBr.Name,
                                 SeName = catBr.GetSeName()
                             });
                         }
@@ -1778,9 +1777,9 @@ namespace Nop.Web.Controllers
         [ChildActionOnly]
         public ActionResult ProductManufacturers(int productId)
         {
-            var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
-                .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
-            string cacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_MANUFACTURERS_MODEL_KEY, productId, _workContext.WorkingLanguage.Id, string.Join(",", customerRolesIds), _storeContext.CurrentStore.Id);
+            //var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
+            //    .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
+            string cacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_MANUFACTURERS_MODEL_KEY, productId, _workContext.WorkingLanguage.Id,"", _storeContext.CurrentStore.Id);
             var cacheModel = _cacheManager.Get(cacheKey, () =>
             {
                 var model = _manufacturerService.GetProductManufacturersByProductId(productId)
@@ -3233,7 +3232,7 @@ namespace Nop.Web.Controllers
             var product = _productService.GetProductById(id);
             if (product == null)
                 return RedirectToRoute("PageNotfound");
-            if(!_workContext.CurrentCustomer.IsAdmin() && product.CustomerId != _workContext.CurrentCustomer.Id)
+            if (!_workContext.CurrentCustomer.IsAdmin() && product.CustomerId != _workContext.CurrentCustomer.Id)
                 return RedirectToRoute("PageNotfound");
 
             var model = ProductToInsertModel(product);
@@ -3262,7 +3261,7 @@ namespace Nop.Web.Controllers
         public ActionResult EditProduct(InsertProductModel model, FormCollection form)
         {
             if (!_workContext.CurrentCustomer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
-                return RedirectToRoute("PageNotfound");            
+                return RedirectToRoute("PageNotfound");
 
             if (model == null)
                 throw new Exception("Product is null");
@@ -3388,7 +3387,7 @@ namespace Nop.Web.Controllers
             if (!_workContext.CurrentCustomer.IsAdmin() && product.CustomerId != _workContext.CurrentCustomer.Id)
                 return RedirectToRoute("PageNotfound");
 
-            if(action == 1)//published
+            if (action == 1)//published
             {
                 product.Published = value.Value;
                 _productService.UpdateProduct(product);
@@ -3802,11 +3801,10 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult ProductList()
         {
-
             if (!_workContext.CurrentCustomer.IsRegistered())
                 return new HttpUnauthorizedResult();
             var model = new SearchModel();
-            PreparingSearchModel(model);
+            model = PreparingSearchModel();
             model.OnlyCustomer = true;
             return View(model);
         }
@@ -3831,17 +3829,17 @@ namespace Nop.Web.Controllers
             }
 
             ProductStatusEnum? status = null;
-            IList<int> categories = null;
+            IList<int> categories = new List<int>();
             IList<int> districtIds = new List<int>();
+            IList<int> wardIds = new List<int>();
             if (model.Cid > 0)
                 categories.Add(model.Cid);
+            model.Cids.Select(x => { categories.Add(x); return x; }).ToList();
             if (model.DistrictId > 0)
                 districtIds.Add(model.DistrictId);
-            model.DistrictIds.Select(x =>
-            {
-                districtIds.Add(x);
-                return x;
-            }).ToList();
+            model.DistrictIds.Select(x =>{districtIds.Add(x);return x;}).ToList();
+
+
             if (model.StatusId != 0)
                 status = (ProductStatusEnum)model.StatusId;
             DateTime? startDate = null, endDate = null;
@@ -3877,62 +3875,59 @@ namespace Nop.Web.Controllers
             return PartialView("_ProductListPartial", model);
 
         }
-        private void PreparingSearchModel(SearchModel model, bool isproject = false, int categoryId = 0)
-        {           
-            IList<Category> cate = null;
-            cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).OrderBy(x => x.DisplayOrder).ToList();
-            model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-            model.AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
-            //model.Districts = _stateProvinceService.GetDistHCM().OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-            model.Districts = _stateProvinceService.GetWardByDistrictId(611).OrderBy(x => x.Name).ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-            model.Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectWard"), Selected = true, Value = "0" });
-            model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResource("Product.Status.Enum." + x.ToString()), x => ((int)x).ToString());
-            model.Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
-
-            model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
-            model.BathRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
-            model.Directories = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).ToSelectList(x => x.Name, x => x.Id.ToString());
-            model.Directories.Insert(0, new SelectListItem { Text = _localizationService.GetResource(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
-
-        }
-
-        private string ReturnPriceString(decimal price, string symbol)
+        private SearchModel PreparingSearchModel(bool isproject = false, int categoryId = 0, int categoryRentId = 0, bool isMarketPlace = false)
         {
-            price = price / 1000000;
-            if (Math.Floor(price / 1000) > 0)
+            string keyCache = string.Format("modelSearch-{0}-{1}-{2}-{3}", isproject, categoryId, categoryRentId, isMarketPlace);
+            return _cacheManager.Get(keyCache, () =>
             {
-                if (price % 1000 != 0)
+                var model = new SearchModel();
+                var cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).ToList();
+                model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                model.AvailableCategories.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
+                model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResource("Product.Status.Enum." + x.ToString()), x => ((int)x).ToString());
+                model.Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
+                model.Directories = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).ToSelectList(x => x.Name, x => x.Id.ToString());
+                model.Directories.Insert(0, new SelectListItem { Text = _localizationService.GetResource(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
+                if (!isMarketPlace)
                 {
-                    return ((int)Math.Floor(price / 1000)).ToString() + " tỉ " + ((int)(price % 1000)).ToString() + " triệu " + symbol;
+                    var w = _stateProvinceService.GetWardByDistrictId(611);
+                    model.Wards = w.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                    model.Wards.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectWard"), Selected = true, Value = "0" });
+                    //model.BathRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
                 }
-                else
+                if (isMarketPlace)
                 {
-                    return ((int)Math.Floor(price / 1000)).ToString() + " tỉ " + symbol;
+                    model.Districts = _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                    model.Districts.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectDistrict"), Selected = true, Value = "0" });
+                    var caterent = _categoryService.GetAllCategoriesByParentCategoryId(categoryRentId).ToList();
+                    model.AvailableCategoriesRent = caterent.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                    model.AvailableCategoriesRent.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
+                    model.Wards.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectWard"), Selected = true, Value = "0" });
+                    model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
+                    model.BedRooms.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectBedRoom"), Selected = true, Value = "0" });
                 }
-            }
-            else
-            {
-                return ((int)price).ToString() + " triệu " + symbol;
-            }
+                return model;
+            });
         }
 
         [ChildActionOnly]
         public ActionResult SearchBoxLeft(bool isProject = false, int categoryId = 0)
         {
             var model = new SearchModel();
-            PreparingSearchModel(model, isProject, categoryId);
-            model.Districts.RemoveAt(0);
-            model.AvailableCategories.RemoveAt(0);
+            model = PreparingSearchModel(isProject, categoryId);
+            //if (model.DistrictIds.Count > 0)
+            //    model.Districts.RemoveAt(0);
+            //model.AvailableCategories.RemoveAt(0);
             if (isProject)
                 return PartialView("ProjectSearchBoxLeft", model);
             return PartialView("SearchBoxLeft", model);
         }
         [ChildActionOnly]
-        public ActionResult SearchBoxHead(bool isHome)
+        public ActionResult SearchBoxHead(bool isHome, bool isMarketPlace = false, int categoryId = 1, int categoryRentId = 16)
         {
-
             var model = new SearchModel();
-            PreparingSearchModel(model, categoryId: 1);
+            if (!isMarketPlace) model = PreparingSearchModel(categoryId: categoryId);
+            else model = PreparingSearchModel(categoryId: categoryId, categoryRentId: categoryRentId, isMarketPlace: isMarketPlace);
             if (isHome)
                 return View("SearchHome", model);
             return View(model);

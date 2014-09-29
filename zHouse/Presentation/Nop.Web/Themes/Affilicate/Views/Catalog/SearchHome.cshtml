@@ -1,30 +1,61 @@
 ﻿@model Nop.Web.Models.Catalog.SearchModel
-@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frmSearchHOme", style="float:left;display:inline-block;"}))
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id = "frmSearchHOme", style = "float:left;display:inline-block;" }))
 {
-<div class="topInfo">
-        	<div class="pinkBg">            	
-                <div class="zhouse">                    
+    <div class="topInfo">
+        <div class="pinkBg">
+            @*<div class="zhouse">
                      <h1 class="slogan">Tìm kiếm bất động sản</h1>
                      <div class="clearBoth"></div>
+                </div>*@
+            <div class="tabs">
+                <ul class="tab-links">
+                    <li class="active"><a href="#tab1">Bán nhà</a></li>
+                    <li><a href="#tab2">Thuê nhà</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab1" class="tab active">
+                        @Html.DropDownList("districtId", Model.Districts, new { @class = "box" })
+                        @*@Html.DropDownList("wardId", Model.Wards, new { @class = "box" })*@
+                        @Html.DropDownList("priceString", Model.PriceRange, new { @class = "box" })
+                        @Html.DropDownList("areaString", Model.Areas, new { @class = "box" })
+                        @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "box" })
+                        @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "box" })
+                        @Html.DropDownList("attributeOptionIds", Model.BedRooms, new { @class = "box" })
+                        @Html.TextBoxFor(model => model.Q, new { @class = "box", placeholder = "Mã tin" })
+                        <input type="submit" style="width:50%" class="blueBtn" value="tìm kiếm">
+                    </div>
+                    <div id="tab2" class="tab">
+                        @Html.DropDownList("districtId", Model.Districts, new { @class = "box" })
+                        @Html.DropDownList("wardId", Model.Wards, new { @class = "box" })
+                        @Html.DropDownList("priceString", Model.PriceRangeRent, new { @class = "box" })
+                        @Html.DropDownList("areaString", Model.Areas, new { @class = "box" })
+                        @Html.DropDownList("categoryId", Model.AvailableCategoriesRent, new { @class = "box" })
+                        @Html.DropDownList("attributeOptionIds", Model.BedRooms, new { @class = "box" })
+                        @Html.TextBoxFor(model => model.Q, new { @class = "box", placeholder = "Mã tin" })
+                        <input type="submit" style="width:50%" class="blueBtn" value="tìm kiếm">
+                    </div>
                 </div>
-                @Html.DropDownList("wardId", Model.Districts, new { @class = "box" })
-               @Html.DropDownList("priceString", Model.PriceRange, new { @class = "box" })
-                @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "box" })        
-                @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "box" })                     
-                @Html.TextBoxFor(model => model.Q, new { @class="box",style="width:228px", placeholder = "Mã tin" })
-                <input type="submit" style="width:152px" class="blueBtn" value="tìm kiếm">
-                <div class="clearBoth"></div>                
             </div>
+            <div class="clearBoth"></div>
         </div>
-     
-    
- 
+    </div>
 }
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('.tabs .tab-links a').on('click', function (e) {
+            var currentAttrValue = $(this).attr('href');
+            // Show/Hide Tabs
+            $('.tabs ' + currentAttrValue).show().siblings().hide();
+            // Change/remove current tab to active
+            $(this).parent('li').addClass('active').siblings().removeClass('active');
+
+            e.preventDefault();
+        });
+    });
     $(function () {
-      //  $('#slider').nivoSlider({ effect: 'fade',controlNav:false });
+        //  $('#slider').nivoSlider({ effect: 'fade',controlNav:false });
         $("#frmSearchHOme").submit(function () {
-            var data=$(this).serialize();
+            var data = $(this).serialize();
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {
                 window.location.href = d;
             })
@@ -33,4 +64,3 @@
     })
 </script>
 
-    

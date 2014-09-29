@@ -32,7 +32,7 @@ namespace Nop.Web.Controllers
     [NopHttpsRequirement(SslRequirement.No)]
     public partial class NewsController : BaseNopController
     {
-		#region Fields
+        #region Fields
 
         private readonly INewsService _newsService;
         private readonly IWorkContext _workContext;
@@ -52,13 +52,13 @@ namespace Nop.Web.Controllers
         private readonly LocalizationSettings _localizationSettings;
         private readonly CustomerSettings _customerSettings;
         private readonly CaptchaSettings _captchaSettings;
-        
+
         #endregion
 
-		#region Constructors
+        #region Constructors
 
-        public NewsController(INewsService newsService, 
-            IWorkContext workContext, IStoreContext storeContext, 
+        public NewsController(INewsService newsService,
+            IWorkContext workContext, IStoreContext storeContext,
             IPictureService pictureService, ILocalizationService localizationService,
             IDateTimeHelper dateTimeHelper,
             IWorkflowMessageService workflowMessageService, IWebHelper webHelper,
@@ -66,7 +66,7 @@ namespace Nop.Web.Controllers
             IStoreMappingService storeMappingService,
             MediaSettings mediaSettings, NewsSettings newsSettings,
             LocalizationSettings localizationSettings, CustomerSettings customerSettings,
-            CaptchaSettings captchaSettings,ICategoryNewsService cateNewsService)
+            CaptchaSettings captchaSettings, ICategoryNewsService cateNewsService)
         {
             this._cateNewsService = cateNewsService;
             this._newsService = newsService;
@@ -93,81 +93,89 @@ namespace Nop.Web.Controllers
         #region Utilities
 
         [NonAction]
-        protected void PrepareNewsItemModel(NewsItemModel model, NewsItem newsItem, bool prepareComments,bool preparePicture=false)
+        protected NewsItemModel PrepareNewsItemModel(NewsItem newsItem, bool prepareComments, bool preparePicture = false)
         {
             if (newsItem == null)
                 throw new ArgumentNullException("newsItem");
 
-            if (model == null)
-                throw new ArgumentNullException("model");
-
-            model.Id = newsItem.Id;
-            model.MetaTitle = newsItem.MetaTitle;
-            model.MetaDescription = newsItem.MetaDescription;
-            model.MetaKeywords = newsItem.MetaKeywords;
-            model.SeName = newsItem.GetSeName(newsItem.LanguageId, ensureTwoPublishedLanguages: false);
-            model.Title = newsItem.Title;
-            model.Short = newsItem.Short;
-            model.Full = newsItem.Full;
-            model.AllowComments = newsItem.AllowComments;
-            model.CreatedOn = _dateTimeHelper.ConvertToUserTime(newsItem.CreatedOnUtc, DateTimeKind.Utc);
-            model.NumberOfComments = newsItem.CommentCount;
-            var cateNews = newsItem.NewsCategoriesMap.FirstOrDefault();
-            if (cateNews != null)
-                model.CateName = cateNews.CategoryNews.Name;
-
-         //  model.AddNewComment.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage;
-            if (preparePicture&&newsItem.PictureId.HasValue)
+            //if (model == null)
+            //    throw new ArgumentNullException("model");
+            string keyCache = string.Format("PrepareNewsItemModel-{0}-{1}-{2}", newsItem.Id, prepareComments, preparePicture);
+            return _cacheManager.Get(keyCache, 10, () =>
+            {
+                var modelNews = new NewsItemModel();
+                modelNews.Id = newsItem.Id;
+                modelNews.MetaTitle = newsItem.MetaTitle;
+                modelNews.MetaDescription = newsItem.MetaDescription;
+                modelNews.MetaKeywords = newsItem.MetaKeywords;
+                modelNews.SeName = newsItem.GetSeName(newsItem.LanguageId, ensureTwoPublishedLanguages: false);
+                modelNews.Title = newsItem.Title;
+                modelNews.Short = newsItem.Short;
+                modelNews.Full = newsItem.Full;
+                modelNews.AllowComments = newsItem.AllowComments;
+                modelNews.CreatedOn = _dateTimeHelper.ConvertToUserTime(newsItem.CreatedOnUtc, DateTimeKind.Utc);
+                modelNews.NumberOfComments = newsItem.CommentCount;
+                var cateNews = newsItem.NewsCategoriesMap.FirstOrDefault();
+                if (cateNews != null)
+                {
+                    var categoryNews = cateNews.CategoryNews;
+                    modelNews.CateName = categoryNews.Name;
+                    modelNews.CategorySename = categoryNews.GetSeName();
+                }
+            //  model.AddNewComment.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage;
+            if (preparePicture && newsItem.PictureId.HasValue)
             {
                 #region Prepare product picture
 
                 //If a size has been set in the view, we use it in priority
-              
+
                 //prepare picture model
                 var defaultProductPictureCacheKey = string.Format(ModelCacheEventConsumer.NEWS_PICTURE_KEY, newsItem.Id);
-                model.DefaultPictureModel = _cacheManager.Get(defaultProductPictureCacheKey, () =>
+                modelNews.DefaultPictureModel = _cacheManager.Get(defaultProductPictureCacheKey, () =>
                 {
                     var picture = _pictureService.GetPictureById((int)newsItem.PictureId);
                     var pictureModel = new PictureModel()
                     {
-                        ImageUrl = _pictureService.GetPictureUrl(picture, 254,true),
+                        ImageUrl = _pictureService.GetPictureUrl(picture, 254, true),
                         FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
                         Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat"), newsItem.Title),
-                        AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), model.Title)
+                        AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), modelNews.Title)
                     };
                     return pictureModel;
                 });
 
                 #endregion
             }
-            if (prepareComments)
-            {
-                var newsComments = newsItem.NewsComments.OrderBy(pr => pr.CreatedOnUtc);
-                foreach (var nc in newsComments)
-                {
-                    var commentModel = new NewsCommentModel()
-                    {
-                        Id = nc.Id,
-                        CustomerId = nc.CustomerId,
-                       // CustomerName = nc.Customer.FormatUserName(),
-                        CommentTitle = nc.CommentTitle,
-                        CommentText = nc.CommentText,
-                        CreatedOn = _dateTimeHelper.ConvertToUserTime(nc.CreatedOnUtc, DateTimeKind.Utc),
-                       // AllowViewingProfiles = _customerSettings.AllowViewingProfiles && nc.Customer != null && !nc.Customer.IsGuest(),
-                    };
-                    if (_customerSettings.AllowCustomersToUploadAvatars)
-                    {
-                        //commentModel.CustomerAvatarUrl = _pictureService.GetPictureUrl(
-                        //    nc.Customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 
-                        //    _mediaSettings.AvatarPictureSize, 
-                        //    _customerSettings.DefaultAvatarEnabled,
-                        //    defaultPictureType:PictureType.Avatar);
-                    }
-                   // model.Comments.Add(commentModel);
-                }
-            }
+            //if (prepareComments)
+            //{
+            //    var newsComments = newsItem.NewsComments.OrderBy(pr => pr.CreatedOnUtc);
+            //    foreach (var nc in newsComments)
+            //    {
+            //        var commentModel = new NewsCommentModel()
+            //        {
+            //            Id = nc.Id,
+            //            CustomerId = nc.CustomerId,
+            //           // CustomerName = nc.Customer.FormatUserName(),
+            //            CommentTitle = nc.CommentTitle,
+            //            CommentText = nc.CommentText,
+            //            CreatedOn = _dateTimeHelper.ConvertToUserTime(nc.CreatedOnUtc, DateTimeKind.Utc),
+            //           // AllowViewingProfiles = _customerSettings.AllowViewingProfiles && nc.Customer != null && !nc.Customer.IsGuest(),
+            //        };
+            //        if (_customerSettings.AllowCustomersToUploadAvatars)
+            //        {
+            //            //commentModel.CustomerAvatarUrl = _pictureService.GetPictureUrl(
+            //            //    nc.Customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 
+            //            //    _mediaSettings.AvatarPictureSize, 
+            //            //    _customerSettings.DefaultAvatarEnabled,
+            //            //    defaultPictureType:PictureType.Avatar);
+            //        }
+            //        //model.Comments.Add(commentModel);
+            //    }
+            //}
+            return modelNews;
+            });
         }
-        
+
         #endregion
 
         #region Methods
@@ -186,7 +194,7 @@ namespace Nop.Web.Controllers
             var cacheKey = string.Format(ModelCacheEventConsumer.HOMEPAGE_NEWSMODEL_KEY, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
             var cachedModel = _cacheManager.Get(cacheKey, () =>
             {
-                var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id,0,0, 0, pageSize.HasValue ? pageSize.Value : _newsSettings.MainPageNewsCount);
+                var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id, 0, 0, 0, pageSize.HasValue ? pageSize.Value : _newsSettings.MainPageNewsCount);
                 return new HomePageNewsItemsModel()
                 {
                     WorkingLanguageId = _workContext.WorkingLanguage.Id,
@@ -194,7 +202,7 @@ namespace Nop.Web.Controllers
                         .Select(x =>
                                     {
                                         var newsModel = new NewsItemModel();
-                                        PrepareNewsItemModel(newsModel, x, false,true);
+                                        newsModel = PrepareNewsItemModel(x, false, true);
                                         return newsModel;
                                     })
                         .ToList()
@@ -214,53 +222,54 @@ namespace Nop.Web.Controllers
         {
             var model = new List<FNewsItemListModel>();
             var newsCate = _cateNewsService.GetAllCategoriesByParentCategoryId(0).Take(2);
-            foreach(var cn in newsCate)
+            foreach (var cn in newsCate)
             {
                 var row = new FNewsItemListModel
                 {
                     CateName = cn.Name,
                     CateId = cn.Id,
-                    NewsItems = _newsService.GetAllNews(0, 0, cn.Id, 0, 4).Select(x => {
+                    NewsItems = _newsService.GetAllNews(0, 0, cn.Id, 0, 4).Select(x =>
+                    {
                         var item = new NewsItemModel();
-                        PrepareNewsItemModel(item, x, false);
+                        item = PrepareNewsItemModel(x, false);
                         return item;
-                    
                     }).ToList()
 
                 };
                 model.Add(row);
-               
             }
             return View(model);
-           
+
         }
 
-        //[OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List(NewsPagingFilteringModel command)
         {
             if (!_newsSettings.Enabled)
                 return RedirectToRoute("HomePage");
 
             var model = new NewsItemListModel();
-           // model.WorkingLanguageId = _workContext.WorkingLanguage.Id;
+            // model.WorkingLanguageId = _workContext.WorkingLanguage.Id;
 
             if (command.PageSize <= 0) command.PageSize = _newsSettings.NewsArchivePageSize;
             if (command.PageNumber <= 0) command.PageNumber = 1;
-
-            var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id,command.CateId,
+            string keyCache = string.Format("GetAllNews-{0}-{1}-{2}-{3}-{4}", _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id, command.CateId, command.PageNumber, command.PageSize);
+            var newsItems = _cacheManager.Get(keyCache, 30, () =>
+            {
+                return _newsService.GetAllNews(_workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id, command.CateId,
                 command.PageNumber - 1, command.PageSize);
+            });
             model.PagingFilteringContext.LoadPagedList(newsItems);
 
             model.NewsItems = newsItems
                 .Select(x =>
                 {
                     var newsModel = new NewsItemModel();
-                    PrepareNewsItemModel(newsModel, x, false, true);
+                    newsModel = PrepareNewsItemModel(x, false, true);
                     return newsModel;
                 })
                 .ToList();
             var cate = _cateNewsService.GetCategoryById(command.CateId);
-            if(cate == null)
+            if (cate == null)
                 return RedirectToRoute("HomePage");
 
             model.CateName = cate.Name;
@@ -284,7 +293,7 @@ namespace Nop.Web.Controllers
                 return new RssActionResult() { Feed = feed };
 
             var items = new List<SyndicationItem>();
-            var newsItems = _newsService.GetAllNews(languageId, _storeContext.CurrentStore.Id,0, 0, int.MaxValue);
+            var newsItems = _newsService.GetAllNews(languageId, _storeContext.CurrentStore.Id, 0, 0, int.MaxValue);
             foreach (var n in newsItems)
             {
                 string newsUrl = Url.RouteUrl("NewsItem", new { SeName = n.GetSeName(n.LanguageId, ensureTwoPublishedLanguages: false) }, "http");
@@ -294,14 +303,13 @@ namespace Nop.Web.Controllers
             return new RssActionResult() { Feed = feed };
         }
 
-        //[OutputCache(Duration = 300, VaryByParam = "newsItemId", Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult NewsItem(int newsItemId)
         {
             if (!_newsSettings.Enabled)
                 return RedirectToRoute("HomePage");
 
             var newsItem = _newsService.GetNewsById(newsItemId);
-            if (newsItem == null || 
+            if (newsItem == null ||
                 !newsItem.Published ||
                 (newsItem.StartDateUtc.HasValue && newsItem.StartDateUtc.Value >= DateTime.UtcNow) ||
                 (newsItem.EndDateUtc.HasValue && newsItem.EndDateUtc.Value <= DateTime.UtcNow) ||
@@ -310,7 +318,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("HomePage");
 
             var model = new NewsItemModel();
-            PrepareNewsItemModel(model, newsItem, true);
+            model = PrepareNewsItemModel(newsItem, true);
 
             return View(model);
         }
@@ -345,7 +353,7 @@ namespace Nop.Web.Controllers
                     NewsItemId = newsItem.Id,
                     CustomerId = _workContext.CurrentCustomer.Id,
                     //CommentTitle = model.AddNewComment.CommentTitle,
-                   // CommentText = model.AddNewComment.CommentText,
+                    // CommentText = model.AddNewComment.CommentText,
                     CreatedOnUtc = DateTime.UtcNow,
                 };
                 newsItem.NewsComments.Add(comment);
@@ -364,12 +372,12 @@ namespace Nop.Web.Controllers
                 //The text boxes should be cleared after a comment has been posted
                 //That' why we reload the page
                 TempData["nop.news.addcomment.result"] = _localizationService.GetResource("News.Comments.SuccessfullyAdded");
-                return RedirectToRoute("NewsItem", new {SeName = newsItem.GetSeName(newsItem.LanguageId, ensureTwoPublishedLanguages: false) });
+                return RedirectToRoute("NewsItem", new { SeName = newsItem.GetSeName(newsItem.LanguageId, ensureTwoPublishedLanguages: false) });
             }
 
 
             //If we got this far, something failed, redisplay form
-            PrepareNewsItemModel(model, newsItem, true);
+            model = PrepareNewsItemModel(newsItem, true);
             return View(model);
         }
 

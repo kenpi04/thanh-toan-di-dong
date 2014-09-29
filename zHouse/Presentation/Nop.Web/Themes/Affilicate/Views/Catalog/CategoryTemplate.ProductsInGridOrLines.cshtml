@@ -50,7 +50,7 @@
     <div class="page-body">
         <div class="mainContent"></div>
         <div class="search-left leftContentTwist">
-            @Html.Action("SearchBoxHead", "Catalog", new { isHome = true })
+            @Html.Action("SearchBoxHead", "Catalog", new { isHome = true, isMarketPlace = true })
         </div>
         <div class="rightContentTwist">
              <div class="product-list" id="ListProduct">
@@ -100,13 +100,10 @@ float: left;'>Bạn đang tìm kiếm ngôi nhà của mình. Hãy để zHouse 
 <br>
 <input type="button" onclick="setLocation('/tim-kiem')" class="btn-search" value=""/>
 </div>
-
 </div>
             }
-     </div>
-        
+     </div>        
         </div>
-        <div class="clearfix"></div>
-       
+        <div class="clearfix"></div>       
     </div>
 </div>

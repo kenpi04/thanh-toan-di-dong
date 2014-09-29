@@ -2,7 +2,6 @@
 @using Nop.Web.Models.Catalog;
 @{
     var isRtl = this.ShouldUseRtlTheme();
-    Model.PriceRange.RemoveAt(0);
 }
 @helper RenderCategoryLine(CategorySimpleModel category, int level)
 {
@@ -21,20 +20,16 @@
             levelClass = "firstLevel";
         }
         <div class="sublist">
-            <div class="menu-col">
-                <span class="title">Theo địa điểm</span>
-                <ul>
-                    @if (category.Id == 1){
-                        foreach (var d in Model.Districts2){
-                            <li><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>}}
-                    else{
-                        foreach (var d in Model.Districts){
-                            <li><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>}}
+            <div class="menu-col" style="min-width:20%;max-width:40%">
+                <p class="title">Theo địa điểm</p>
+                <ul>                    
+                        @foreach (var d in Model.Districts2){
+                            <li style="width:40%"><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>}                    
                 </ul>
             </div>
             @if (category.SubCategories.Count > 0){ 
-                <div class="menu-col" style="width:176px">
-                <span class="title">Theo loại</span>
+                <div class="menu-col" style="max-width:30%;min-width:20%">
+                <p class="title">Theo loại</p>
                 <ul>
                     @foreach (var subCategory in category.SubCategories)
                     {
@@ -43,10 +38,10 @@
                 </ul>
             </div>
             }
-            <div class="menu-col" style="width:100px">
-                <span class="title">Theo giá</span>
+            <div class="menu-col" style="max-width:29%;min-width:20%">
+                <p class="title">Theo giá</p>
                 <ul>
-                    @foreach (var d in Model.PriceRange)
+                    @foreach (var d in (category.Id == 16 ? Model.PriceRangeRent.Where(x => x.Value != "0-0").ToList() : Model.PriceRange.Where(x => x.Value != "0-0").ToList()))
                     {
                         <li><a href="@GetSeName(Request.Url.Host, category.SeName, null, null, d.Value, null)">@d.Text</a></li>
                     }
@@ -67,30 +62,10 @@
                 @RenderCategoryLine(category, 0)
             }
         }
-        @*else
-            {
-                <li><a href="@Url.RouteUrl("HomePage")">@T("HomePage")</a></li>
-                if (Model.RecentlyAddedProductsEnabled)
-                {
-                    <li><a href="@Url.RouteUrl("RecentlyAddedProducts")">@T("Products.NewProducts")</a>
-                    </li>
-                }
-                <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a> </li>
-                <li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>
-                if (Model.BlogEnabled)
-                {
-                    <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
-                }
-                if (Model.ForumEnabled)
-                {
-                    <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
-                }
-                <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
-            }*@
         <li>
             <a href="#">Dịch vụ</a>
             <div class="top-menu-triangle"></div>
-            <div class="sublist service" style="width:200px; margin-left:-18px;">
+            <div class="sublist service" style="width:200px; margin-left:291px;">
                 <ul>
                     @foreach (var i in Model.Topics)
                     {
@@ -102,7 +77,7 @@
         <li>
             <a href="#">Kiến thức</a>
             <div class="top-menu-triangle"></div>
-            <div class="sublist kienthuc" style="width:200px; margin-left:-18px;">
+            <div class="sublist kienthuc" style="width:200px; margin-left:382px;">
                 <ul>
                     @foreach (var c in Model.CategoriesNews)
                     {
@@ -120,7 +95,7 @@
         $('a', $(this)).first().addClass('hover');
         if (!$('.sublist', $(this)).first().attr("not-resize") && !$(this).parent().hasClass('top-menu')) {
             var width = $(this).innerWidth();
-            @*$('.sublist', $(this)).first().css('@(isRtl ? "right" : "left")', width -45);*@
+            @*$('.sublist', $(this)).first().css('@(isRtl ? "right" : "left")', width -13);*@
         }
         $('.sublist', $(this)).first().addClass('active');
         $('.top-menu-triangle', $(this)).addClass('active');

@@ -9,59 +9,46 @@
     Html.AddMetaKeywordParts(Model.MetaKeywords);
 }
 <div class="page news-item-page">
-      <div class="breadcrumb">
+    <div class="breadcrumb">
         <ul>
-            <li><a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a>
-                <span class="delimiter">/</span> </li>
-          <li>
-              @Model.CateName
-          </li>
+            <li>
+                <a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a>
+                <span class="delimiter">/</span>
+            </li>
+            <li>
+                <a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategorySename })" title="@Model.CateName" >
+                    @Model.CateName
+                </a>
+            </li>
             <li> <span class="delimiter">/</span> </li>
             <li>
                 @Model.Title
             </li>
-              
         </ul>
     </div>
     <div class="mainContent">
         <div class="leftContentTwist">
-@Html.Action("NewsCatenavigation")
-
-
-
+            @Html.Action("NewsCatenavigation")
             <div class="ad"><a href="#"><img src="@Url.Content("~/Themes/Zhouse/Content/images/ad.png")" class="adBorder"></a></div>
-
         </div><!---leftContentTwist----->
-
         <div class="rightContentTwist">
-                
             <div class="news">
                 <div class="blueTitle" style="font-size:20px"><h1>@Model.Title</h1></div>
                 <div class="news-share" style="margin-top:10px">
-             <div style="float:left">
-                    @Html.Action("ShareButton", "Catalog")
-                 
-                </div>
-                <div style="float:right">
-                   @Model.CreatedOn.ToString("dd-MM-yyyy")
-                </div>
-                <div class="clearBoth"></div>
+                    <div style="float:left">
+                        @Html.Action("ShareButton", "Catalog")
                     </div>
+                    <div style="float:right">
+                        @Model.CreatedOn.ToString("dd-MM-yyyy")
+                    </div>
+                    <div class="clearBoth"></div>
+                </div>
                 <div>
                     <p>@Html.Raw(Model.Full)</p>
                 </div>
             </div><!--news--->
-
-
             <div class="floatLeft">
-                
-
             </div><!--floatLeft----->
-
-
         </div><!----rightContentTwist------->
-
-
-
     </div>
 </div>

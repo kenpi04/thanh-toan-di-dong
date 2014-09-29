@@ -1,37 +1,33 @@
 ﻿@model Nop.Web.Models.Catalog.SearchModel
 
 @{
-    Model.PriceRange.RemoveAt(0);
+    //Model.PriceRange.RemoveAt(0);
 }
 <div class="whiteLeftCol">
     <div class="greyBgTitle"><a href="#"><h2> lọc theo vị trí</h2></a></div>
     <div class="whiteLeftColContent">
-        @foreach (var i in Model.Districts)
+        @foreach (var i in Model.Wards.Where(x => x.Value != "0").ToList())
         {
             <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
         }
-
     </div>
 </div>
 <div class="whiteLeftCol">
     <div class="greyBgTitle"><a href="#"><h2> Lọc theo giá</h2></a></div>
-    <div class="whiteLeftColContent">
-    
-        @foreach (var i in Model.PriceRange)
+    <div class="whiteLeftColContent">    
+        @foreach (var i in Model.PriceRange.Where(x => x.Value!="0-0").ToList())
         {
             <input type="radio" id="ckDist_@i.Value" name="PriceString" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
-        }
-              
+        }              
     </div>
 </div>
 <div class="whiteLeftCol">
     <div class="greyBgTitle"><a href="#"><h2> Lọc theo loại</h2></a></div>
     <div class="whiteLeftColContent">
-        @foreach (var i in Model.AvailableCategories)
+        @foreach (var i in Model.AvailableCategories.Where(x => x.Value!="0").ToList())
         {
-            <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+            <input type="checkbox" id="ckDist_@i.Value" name="Cids" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
         }
-
     </div>
 </div>
 <div class="whiteLeftCol">
@@ -39,8 +35,7 @@
     <div class="whiteLeftColContent">
         @foreach (var i in Model.AvailableManufacturers)
         {
-            <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+            <input type="checkbox" id="ckDist_@i.Value" name="ManufactureIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
         }
-
     </div>
 </div>

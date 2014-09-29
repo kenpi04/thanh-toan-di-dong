@@ -81,6 +81,7 @@ namespace Nop.Services.Directory
                     var query = from d in _districtRepository.Table
                                 where (d.StateProvinceId == stateId) &&
                                 (showHidden || d.Published)
+                                orderby d.DisplayOrder
                                 select d;
 
                     return query.ToList();

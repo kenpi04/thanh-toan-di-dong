@@ -426,24 +426,24 @@ namespace Nop.Web.Controllers
         {
             var model = new FooterModel()
             {
-                StoreName = _storeContext.CurrentStore.GetLocalized(x => x.Name),
-                WishlistEnabled = _permissionService.Authorize(StandardPermissionProvider.EnableWishlist),
-                ShoppingCartEnabled = _permissionService.Authorize(StandardPermissionProvider.EnableShoppingCart),
+                StoreName = _storeContext.CurrentStore.Name,
+                WishlistEnabled = false,//_permissionService.Authorize(StandardPermissionProvider.EnableWishlist),
+                ShoppingCartEnabled = false,//_permissionService.Authorize(StandardPermissionProvider.EnableShoppingCart),
                 SitemapEnabled = _commonSettings.SitemapEnabled,
                 WorkingLanguageId = _workContext.WorkingLanguage.Id,
                 FacebookLink = _storeInformationSettings.FacebookLink,
                 TwitterLink = _storeInformationSettings.TwitterLink,
                 YoutubeLink = _storeInformationSettings.YoutubeLink,
                 GooglePlusLink = _storeInformationSettings.GooglePlusLink,
-                BlogEnabled = _blogSettings.Enabled,
+                BlogEnabled = false,//_blogSettings.Enabled,
                 CompareProductsEnabled = _catalogSettings.CompareProductsEnabled,
-                ForumEnabled = _forumSettings.ForumsEnabled,
+                ForumEnabled = false,//_forumSettings.ForumsEnabled,
                 AllowPrivateMessages = _workContext.CurrentCustomer.IsRegistered() && _forumSettings.AllowPrivateMessages,
                 NewsEnabled = _newsSettings.Enabled,
                 RecentlyViewedProductsEnabled = _catalogSettings.RecentlyViewedProductsEnabled,
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
                 //Districts=_stateProvinceService.GetDistHCM(stateId).ToSelectList(x=>x.Name,x=>x.GetSeName()),
-                Districts = _stateProvinceService.GetWardByDistrictId(stateId).ToSelectList(x => x.Name, x => x.GetSeName()),
+                Districts = stateId == 0 ? _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.GetSeName()).ToList() : _stateProvinceService.GetWardByDistrictId(stateId).ToSelectList(x => x.Name, x => x.GetSeName()),
                 Topics=_topicService.GetAllTopics(0,2).ToSelectList(x=>x.Title,x=>x.SystemName)
             };
 

@@ -376,7 +376,7 @@ namespace Nop.Services.Catalog
         /// <returns>Reviews</returns>
         IList<ProductReview> GetAllProductReviews(int customerId, bool? approved,
             DateTime? fromUtc = null, DateTime? toUtc = null,
-            string message = null);
+            string message = null, int productId = 0);
 
         /// <summary>
         /// Gets product review

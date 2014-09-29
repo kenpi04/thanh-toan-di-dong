@@ -1622,7 +1622,7 @@ namespace Nop.Services.Catalog
         /// <returns>Reviews</returns>
         public virtual IList<ProductReview> GetAllProductReviews(int customerId, bool? approved,
             DateTime? fromUtc = null, DateTime? toUtc = null,
-            string message = null)
+            string message = null, int productId = 0)
         {
             using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
                 {
@@ -1641,6 +1641,8 @@ namespace Nop.Services.Catalog
                     query = query.Where(c => toUtc.Value >= c.CreatedOnUtc);
                 if (!String.IsNullOrEmpty(message))
                     query = query.Where(c => c.Title.Contains(message) || c.ReviewText.Contains(message));
+                if (productId > 0)
+                    query = query.Where(c => c.ProductId == productId);
 
                 query = query.OrderBy(c => c.CreatedOnUtc);
                 var content = query.ToList();

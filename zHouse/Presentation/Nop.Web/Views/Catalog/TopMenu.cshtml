@@ -2,7 +2,7 @@
 @using Nop.Web.Models.Catalog;
 @{
     var isRtl = this.ShouldUseRtlTheme();
-    Model.PriceRange.RemoveAt(0);
+    //Model.PriceRange.RemoveAt(0);
 }
 @helper RenderCategoryLine(CategorySimpleModel category, int level)
 {
@@ -57,8 +57,7 @@
                  <div class="menu-col" style="width:100px">
                      <span class="title">Theo giá</span>
                      <ul>
-
-                         @foreach (var d in Model.PriceRange)
+                         @foreach (var d in Model.PriceRange.Where(x => x.Value!="0-0").ToList())
                          {
                              <li><a href="@GetSeName(Request.Url.Host, category.SeName, null, null, d.Value, null)">@d.Text</a></li>
                          }

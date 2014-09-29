@@ -1,8 +1,8 @@
-﻿@{
+﻿@using Nop.Core.Domain.Customers
+@{
     Layout = "~/Views/Shared/_Root.Head.cshtml";
     bool isHome = Url.RequestContext.RouteData.Values["controller"].ToString().Equals("home", StringComparison.InvariantCultureIgnoreCase);
-       
-
+    var customer = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Core.IWorkContext>().CurrentCustomer;
 }
 @*@Html.Widget("body_start_html_tag_after")*@
 @*@Html.Partial("_Notifications")*@
@@ -26,13 +26,18 @@
                 <a href="@Url.RouteUrl("HomePage")" class="isactive">MarketPlace</a>
                 <a href="http://hoidap.zhouse.com.vn/" class="submenu">Hỏi đáp</a>
                 <a href="@Url.RouteUrl("InsertProduct")" class="submenu" title="Đăng tin miễn phí">Đăng tin</a>
-                <a href="@Url.RouteUrl("Login")" class="submenu">Đăng nhập</a>
+                @if (!customer.IsRegistered())
+                {<a href="@Url.RouteUrl("Register")" class="submenu" id="menuLogin">Đăng ký</a>
+                <a href="@Url.RouteUrl("Login")" class="submenu" id="menuLogin">Đăng nhập</a>}
+                else
+                {<a href="@Url.RouteUrl("LogOut")" class="submenu" id="menuLogin">Thoát</a>
+                 <a href="@Url.RouteUrl("CustomerInfo")" class="submenu" id="menuLogin">@(customer.Username ?? customer.Email)</a>}
             </div>
         </div>
         <div class="top">            
                 <div class="wrapper">
                     <div class="logo"><a href="@Url.RouteUrl("HomePage")"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder" alt="Logo Zhouse.com.vn"></a></div>
-                    @Html.Action("TopMenu", "Catalog")
+                    @Html.Action("TopMenu", "Catalog", new { stateId = 0 })
                 </div>
             </div>
         @*@Html.Widget("content_before")*@
@@ -44,8 +49,8 @@
             @if (isHome)
             {
                 <div class="wrapper" style="padding-top:10px">
-                    <div style="display:inline-block;margin-bottom:10px">
-                        @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome })
+                    <div class="search-home">
+                        @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome, isMarketPlace = true, categoryId = 1, categoryRentId = 16  })
                         <div class="banner-home">
                             @Html.FptBanner(Position: 103, stateId: 0, viewName: "BannerSlideShow")
                         </div>
@@ -73,7 +78,7 @@
         @*@Html.Widget("content_after")
             @Html.Action("EuCookieLaw", "Common")*@
     </div>
-    @Html.Action("Footer", "Common")
+    @Html.Action("Footer", "Common", new { stateId = 0 })
 </div>
 @*@Html.Widget("body_end_html_tag_before")*@
 <div style="display:none" id="popup"></div>
