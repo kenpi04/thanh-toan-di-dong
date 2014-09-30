@@ -1723,11 +1723,9 @@ namespace Nop.Web.Controllers
             if (isPrint)
                 return View("PrintProduct", model);
 
-            System.Threading.Tasks.Task.Run(() => { product.ViewNumber = product.ViewNumber + 1; _productService.UpdateProduct(product); });
+            product.ViewNumber = product.ViewNumber + 1; _productService.UpdateProduct(product);
             return View(model.ProductTemplateViewPath, model);
         }
-
-
 
 
         [ChildActionOnly]
