@@ -481,6 +481,8 @@ namespace Nop.Services.Catalog
             string key = string.Format(PRODUCTCATEGORIES_ALLBYPRODUCTID_KEY, showHidden, productId, _workContext.CurrentCustomer.Id, _storeContext.CurrentStore.Id);
             return _cacheManager.Get(key, () =>
             {
+                var allProductCategories = System.Threading.Tasks.Task.Run(() =>
+                {
                 using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
                 {
                     IsolationLevel = IsolationLevel.ReadUncommitted
@@ -495,7 +497,10 @@ namespace Nop.Services.Catalog
                                 orderby pc.DisplayOrder
                                 select pc;
 
-                    var allProductCategories = query.ToList();
+                    var productCategories = query.ToList();
+                    return productCategories;
+                }}).Result;
+
                     var result = new List<ProductCategory>();
                     if (!showHidden)
                     {
@@ -513,7 +518,7 @@ namespace Nop.Services.Catalog
                         result.AddRange(allProductCategories);
                     }
                     return result;
-                }
+                
             });
         }
 
