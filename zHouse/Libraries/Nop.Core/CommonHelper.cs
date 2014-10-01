@@ -10,7 +10,6 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Nop.Core.ComponentModel;
 using Nop.Core.Domain.Shipping;
-using System.Web.WebPages.Html;
 
 namespace Nop.Core
 {
