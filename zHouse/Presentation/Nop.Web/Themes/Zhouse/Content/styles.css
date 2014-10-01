@@ -1334,3 +1334,51 @@ margin-top: 7px; }
 .div-map .map-title{background:#fafafa;padding:7px;border-bottom:1px solid #dedede;}
 .div-map .map-title p{color:#c06;font-size:15px;font-weight:700;padding:0;margin:0;}
 .footerEnd p{padding:1px;margin:0}
+/*popup banner*/
+/*	--------------------------------------------------
+	Reveal Modals
+	-------------------------------------------------- */
+		
+	.reveal-modal-bg { 
+		position: fixed; 
+		height: 100%;
+		width: 100%;
+		background: #000;
+		background: rgba(0,0,0,.8);
+		z-index: 100;
+		display: none;
+		top: 0;
+		left: 0; 
+		}
+	
+	.reveal-modal {
+		visibility: hidden;
+		text-align:center;
+        width:auto;		
+		/*background: #eee url(modal-gloss.png) no-repeat -200px -80px;*/
+		position: absolute;
+		z-index: 101;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		/*-moz-box-shadow: 0 0 10px rgba(0,0,0,.4);*/
+		/*-webkit-box-shadow: 0 0 10px rgba(0,0,0,.4);*/
+		/*-box-shadow: 0 0 10px rgba(0,0,0,.4);*/
+		}
+		
+	.reveal-modal.small 		{ width: 200px; margin-left: -140px;}
+	.reveal-modal.medium 		{ width: 400px; margin-left: -240px;}
+	.reveal-modal.large 		{ width: 600px; margin-left: -340px;}
+	.reveal-modal.xlarge 		{ width: 800px; margin-left: -440px;}
+	
+	.reveal-modal .close-reveal-modal {
+		font-size: 22px;
+		line-height: .5;
+		position: absolute;
+		top: 8px;
+		right: 11px;
+		color: #aaa;
+		text-shadow: 0 -1px 1px rbga(0,0,0,.6);
+		font-weight: bold;
+		cursor: pointer;
+		} 
