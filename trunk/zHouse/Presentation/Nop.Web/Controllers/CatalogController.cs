@@ -97,7 +97,7 @@ namespace Nop.Web.Controllers
         private readonly ITopicService _topicService;
         private readonly MediaSettings _mediaSettings;
         private readonly CatalogSettings _catalogSettings;
-        private readonly VendorSettings _vendorSettings;
+        //private readonly VendorSettings _vendorSettings;
         private readonly ShoppingCartSettings _shoppingCartSettings;
         private readonly BlogSettings _blogSettings;
         private readonly ForumSettings _forumSettings;
@@ -117,7 +117,7 @@ namespace Nop.Web.Controllers
         public CatalogController(ICategoryService categoryService,
             IManufacturerService manufacturerService,
             IProductService productService,
-            IVendorService vendorService,
+            //IVendorService vendorService,
             IProductTemplateService productTemplateService,
             ICategoryTemplateService categoryTemplateService,
             IManufacturerTemplateService manufacturerTemplateService,
@@ -175,7 +175,7 @@ namespace Nop.Web.Controllers
             this._categoryService = categoryService;
             this._manufacturerService = manufacturerService;
             this._productService = productService;
-            this._vendorService = vendorService;
+            //this._vendorService = vendorService;
             this._productTemplateService = productTemplateService;
             this._categoryTemplateService = categoryTemplateService;
             this._manufacturerTemplateService = manufacturerTemplateService;
@@ -210,7 +210,7 @@ namespace Nop.Web.Controllers
 
             this._mediaSettings = mediaSettings;
             this._catalogSettings = catalogSettings;
-            this._vendorSettings = vendorSettings;
+            //this._vendorSettings = vendorSettings;
             this._shoppingCartSettings = shoppingCartSettings;
             this._blogSettings = blogSettings;
             this._forumSettings = forumSettings;
@@ -1466,7 +1466,7 @@ namespace Nop.Web.Controllers
         #endregion
 
         #region Vendors
-
+        /*
         [NopHttpsRequirement(SslRequirement.No)]
         public ActionResult Vendor(int vendorId, CatalogPagingFilteringModel command)
         {
@@ -1684,7 +1684,7 @@ namespace Nop.Web.Controllers
 
             return PartialView(cacheModel);
         }
-
+        */
         #endregion
 
         #region Products

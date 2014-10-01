@@ -1032,7 +1032,7 @@ ul{margin:0}
 .intro-product{float:left;width:76.6%}
 .introCol{float:left;width:46%;position:relative;margin-bottom:10px;margin-right:10px;background:#fff;padding:10px;font-size:12px;}
 .introCol:hover {box-shadow:2px 2px 6px #ccc }
-.introCol .info-picture{float:left;width:27%;margin-right:2%;height:104px;border:1px solid #dedede;}
+.introCol .info-picture{float:left;width:27%;margin-right:2%;height:104px;border:1px solid #dedede;overflow:hidden;}
  .new{position:absolute;top:0;right:-5px;width:96px;height:54px}
 .tag-30 {background:url(images/new.png) no-repeat }
 .tag-10 {background:url(images/da-ban.png) no-repeat }
@@ -1221,7 +1221,8 @@ textarea.formBoxInText{height:70px}
 .menu-footer ul a{font-weight:bold}
 .picture-title{background:#000;opacity:.8;width:100%;padding:10px;text-align:center;height:40px;position:absolute;margin-top:-10px}
 #carousel li {margin-right:6px }
-.block-title {font-size:17px;font-family:"Myriad Pro",Arial,Helvetica,sans-serif‏;padding:5px 0;color:#c06}
+.block-title {font-size:17px;font-family:"Myriad Pro",Arial,Helvetica,sans-serif‏;padding:5px 0;color:#c06;width:90%;float:left}
+.block-title-xemthem{text-transform:capitalize;line-height:27px;}
 .adv-yourhouse {background:url(images/button-request.png) no-repeat;width:344px;height:86px;position:absolute;z-index:100; left: 199px;margin-top: -130px;cursor:pointer }
 .btn-map {background:url(images/maps-button.gif) no-repeat;width:193px;height:50px;display:block;    margin-top: 20px; }
 .btn-QA {background:url(images/faq-button.gif) no-repeat;width:171px;height:50px;display:block;border:none;}
@@ -1340,7 +1341,15 @@ margin-top: 7px; }
 .icon-director{background:url(/Themes/Affilicate/Content/images/icon-direction.png) no-repeat}
 .icon-bathRoom{background:url(/Themes/Affilicate/Content/images/icon-bath.png) no-repeat}
 .icon-location{background:url(/Themes/Affilicate/Content/images/icon-location.png) no-repeat}
-
+.div-table{display:table;border:1px solid #dedede;float:left;width:835px;min-width:50%;margin:10px 0;}
+.div-table .header-row{display:table-row;background:#fafafa;text-align:center;text-transform:uppercase;font-weight:700;color:#c06;}
+.div-table .item-cell{display:table-cell;width:50%;border-right:1px solid #dedede;border-bottom:1px solid #dedede;}
+.div-table .item-row{display:table-row;background:#fff;}
+.div-table .item-row .item-cell{padding:10px}
+#lstChk{padding:10px}
+.div-map{width:835px;height:100%;border:1px solid #dedede;border-radius:4px;display:inline-block;margin-bottom:5px;}
+.div-map .map-title{background:#fafafa;padding:7px;border-bottom:1px solid #dedede;}
+.div-map .map-title p{color:#c06;font-size:15px;font-weight:700;padding:0;margin:0;}
 /*market*/
 .banner-home {width:510px;height:352px;overflow:hidden;cursor:pointer;float:left}
 .new-column {box-sizing:border-box;width:270px;float:left;}

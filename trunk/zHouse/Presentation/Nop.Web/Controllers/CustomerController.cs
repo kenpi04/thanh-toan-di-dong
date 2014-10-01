@@ -33,7 +33,6 @@ using Nop.Web.Framework.Security;
 using Nop.Web.Framework.UI.Captcha;
 using Nop.Web.Models.Common;
 using Nop.Web.Models.Customer;
-using Nop.Web.Models.Catalog;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Caching;
 namespace Nop.Web.Controllers
@@ -403,7 +402,7 @@ namespace Nop.Web.Controllers
                     CreatedOn = product.CreatedOnUtc,
                     UpdatedOn = product.UpdatedOnUtc,
                     Area = product.Area.ToString("{0:0.00}"),
-                    Price = product.CallForPrice ? "Thỏa thuận" : ReturnPriceString(product.Price, "đ"),
+                    Price = product.CallForPrice ? "Thỏa thuận" : Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ"),
                     BathRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
                     BedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
                     TinhTrang = GetOptionName(product, ProductAttributeEnum.Status),
@@ -473,26 +472,7 @@ namespace Nop.Web.Controllers
                 return "";
             return deffaulAttr.Name;
         }
-        private string ReturnPriceString(decimal price, string symbol)
-        {
-            price = price / 1000000;
-            if (Math.Floor(price / 1000) > 0)
-            {
-                if (price % 1000 != 0)
-                {
-                    return ((int)Math.Floor(price / 1000)).ToString() + " tỉ " + ((int)(price % 1000)).ToString() + " triệu " + symbol;
-                }
-                else
-                {
-                    return ((int)Math.Floor(price / 1000)).ToString() + " tỉ " + symbol;
-                }
-            }
-            else
-            {
-                return ((int)price).ToString() + " triệu " + symbol;
-            }
-        }
-
+        
         #endregion
 
         #region Login / logout / register
@@ -1036,9 +1016,7 @@ namespace Nop.Web.Controllers
             if (!IsCurrentUserRegistered())
                 return new HttpUnauthorizedResult();
 
-            var customer = _workContext.CurrentCustomer;
-            
-            
+            var customer = _workContext.CurrentCustomer;        
 
             var model = new CustomerInfoModel();
             PrepareCustomerInfoModel(model, customer, false);
