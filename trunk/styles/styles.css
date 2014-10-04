@@ -1,0 +1,42 @@
+﻿BODY{font-family:Segoe UI,Tahoma,Arial;font-size:16px;margin:0;color:#fff;background-color:#000}
+a{color:#030;text-decoration:none}
+h1,h2,h3,h4{margin:0}
+a:hover{text-decoration:none}
+ul{list-style:none;padding:0}
+p{padding:0;line-height:1.5em}
+#wrapper{width:100%;background:#000}
+#wrapper .wrapper-content{width:90%;margin:0 auto;padding-top:5px}
+#header{background:url(header-background.png) no-repeat #001c38 center;width:100%;height:640px}
+.menu-top{float:right}
+.logo{float:left}
+.menu-top li{padding:0 24px;float:left;background:url(menu-icon.png) no-repeat right 64%}
+.text{width:40%;float:left}
+.text .text-content{margin-top:74%;font-size:12px}
+.text .text-content .text1{color:#273c94;font-size:30px}
+.text .text-content .text2{font-size:30px}
+.picture{width:60%;float:left}
+.menu-top li:last-child{background:0}
+.menu-top li a{color:#fff}
+#content{background:#fff}
+.clearboth{clear:both}
+.col50{width:46%;float:left}
+.content-box{padding-left:20px;padding-bottom:10px;padding-top:10px}
+.col50 .content-box:first-child{border-bottom:solid 1px #888}
+.box{background:#fff;color:gray;padding:20px;min-height:300px}
+.box .icon-box{float:left;width:78px}
+.box .text-box{float:left;width:60%;margin-left:14px;font-size:12px}
+.box .col50:first-child{border-right:solid 1px #888}
+.projects{background:url(background-project.png)}
+.projects li{float:left;margin-top:10px}
+.projects li img{height:200px}
+.projects h1{color:#00b4ff;font-size:20px;text-align:center}
+.per{margin-right:10px;margin-top:10px}
+.per .info{float:left;width:100px}
+.per .info .name{color:#333;font-size:13px}
+.per .avatar{width:70px;float:left}
+.per .avatar img{border-radius:100px}
+#footer{background:url(header-background.png);width:100%;height:300px}
+#footer h2{text-align:center;font-weight:normal;color:#00b4ff;font-size:20px;padding-top:15px}
+#footer h2 span{color:#fff}
+#footer h3{text-align:center;font-size:14px;color:#00b4ff;font-weight:normal;margin-top:8%}
+#footer h3 span{color:#fff;font-size:18px}
