@@ -999,7 +999,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult MyAccount()
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1013,7 +1013,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult Info()
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;        
@@ -1028,7 +1028,7 @@ namespace Nop.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Info(CustomerInfoModel model)
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1173,7 +1173,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult Addresses()
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1194,7 +1194,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult AddressDelete(int addressId)
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1215,7 +1215,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult AddressAdd()
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1232,7 +1232,7 @@ namespace Nop.Web.Controllers
         [HttpPost]
         public ActionResult AddressAdd(CustomerAddressEditModel model)
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1265,7 +1265,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult AddressEdit(int addressId)
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1287,7 +1287,7 @@ namespace Nop.Web.Controllers
         [HttpPost]
         public ActionResult AddressEdit(CustomerAddressEditModel model, int addressId)
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1320,7 +1320,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult Orders( string priceString, string attributeOptionIds,int wardId = 0, int categoryId = 0)
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1517,7 +1517,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult ChangePassword()
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1532,7 +1532,7 @@ namespace Nop.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;
@@ -1569,7 +1569,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult Avatar()
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             if (!_customerSettings.AllowCustomersToUploadAvatars)
@@ -1591,7 +1591,7 @@ namespace Nop.Web.Controllers
         [FormValueRequired("upload-avatar")]
         public ActionResult UploadAvatar(CustomerAvatarModel model, HttpPostedFileBase uploadedFile)
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             if (!_customerSettings.AllowCustomersToUploadAvatars)
@@ -1652,7 +1652,7 @@ namespace Nop.Web.Controllers
         [FormValueRequired("remove-avatar")]
         public ActionResult RemoveAvatar(CustomerAvatarModel model, HttpPostedFileBase uploadedFile)
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             if (!_customerSettings.AllowCustomersToUploadAvatars)
@@ -1984,7 +1984,7 @@ namespace Nop.Web.Controllers
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult Products()
         {
-            if (!IsCurrentUserRegistered())
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
             var customer = _workContext.CurrentCustomer;

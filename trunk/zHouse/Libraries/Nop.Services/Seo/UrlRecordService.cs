@@ -10,6 +10,7 @@ using System.Data;
 using Nop.Data;
 using System.Data.SqlClient;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Seo
 {
@@ -173,6 +174,18 @@ namespace Nop.Services.Seo
 
             return _urlRecordRepository.GetById(urlRecordId);
         }
+        /// <summary>
+        /// Gets an URL record
+        /// </summary>
+        /// <param name="urlRecordId">URL record identifier</param>
+        /// <returns>URL record</returns>
+        public virtual async Task<UrlRecord> GetUrlRecordByIdAsync(int urlRecordId)
+        {
+            if (urlRecordId == 0)
+                return null;
+
+            return await Task.Factory.StartNew<UrlRecord>(()=> _urlRecordRepository.GetById(urlRecordId));
+        }
 
         /// <summary>
         /// Inserts an URL record
@@ -225,6 +238,32 @@ namespace Nop.Services.Seo
                 var urlRecord = query.FirstOrDefault();
                 return urlRecord;
             }
+        }
+        /// <summary>
+        /// Find URL record
+        /// </summary>
+        /// <param name="slug">Slug</param>
+        /// <returns>Found URL record</returns>
+        public virtual async Task<UrlRecord> GetBySlugAsync(string slug)
+        {
+            if (String.IsNullOrEmpty(slug))
+                return null;
+
+            return await Task.Factory.StartNew<UrlRecord>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from ur in _urlRecordRepository.Table
+                                where ur.Slug == slug
+                                select ur;
+                    var urlRecord = query.FirstOrDefault();
+                    return urlRecord;
+                }
+            });
         }
 
         public virtual UrlRecord GetBySlug(string slug, out int categoryId, out int streetId, out int wardId, out int districtId, out int stateProvinceId, out string priceString, out string specAttributeOptionIds, out string keywords)
@@ -314,14 +353,7 @@ namespace Nop.Services.Seo
                         priceString = pPriceString.Value.ToString(),
                         specAttributeOptionIds = pAttributeOptions.Value.ToString(),
                         keywords = pKeywords.Value.ToString()
-                    };
-                    //categoryId = (pCategoryId.Value != DBNull.Value) ? Convert.ToInt32(pCategoryId.Value) : 0;
-                    //streetId = (pStreetId.Value != DBNull.Value) ? Convert.ToInt32(pStreetId.Value) : 0;
-                    //wardId = (pWardId.Value != DBNull.Value) ? Convert.ToInt32(pWardId.Value) : 0;
-                    //districtId = (pDistrictId.Value != DBNull.Value) ? Convert.ToInt32(pDistrictId.Value) : 0;
-                    //stateProvinceId = (pStateProvinceId.Value != DBNull.Value) ? Convert.ToInt32(pStateProvinceId.Value) : 0;
-                    //priceString = pPriceString.Value.ToString();
-                    //specAttributeOptionIds = pAttributeOptions.Value.ToString();
+                    };                   
                 }
                 return null;
             });
@@ -365,7 +397,33 @@ namespace Nop.Services.Seo
                 return urlRecords;
             }
         }
+        /// <summary>
+        /// Gets all URL records
+        /// </summary>
+        /// <param name="slug">Slug</param>
+        /// <param name="pageIndex">Page index</param>
+        /// <param name="pageSize">Page size</param>
+        /// <returns>Customer collection</returns>
+        public virtual async Task<IPagedList<UrlRecord>> GetAllUrlRecordsAsync(string slug, int pageIndex, int pageSize)
+        {
+            return await Task.Factory.StartNew<IPagedList<UrlRecord>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = _urlRecordRepository.Table;
+                    if (!String.IsNullOrWhiteSpace(slug))
+                        query = query.Where(ur => ur.Slug.Contains(slug));
+                    query = query.OrderBy(ur => ur.Slug);
 
+                    var urlRecords = new PagedList<UrlRecord>(query, pageIndex, pageSize);
+                    return urlRecords;
+                }
+            });
+        }
         /// <summary>
         /// Find slug
         /// </summary>
@@ -422,6 +480,71 @@ namespace Nop.Services.Seo
                             slug = "";
                         return slug;
                     }
+                });
+            }
+        }
+        /// <summary>
+        /// Find slug
+        /// </summary>
+        /// <param name="entityId">Entity identifier</param>
+        /// <param name="entityName">Entity name</param>
+        /// <param name="languageId">Language identifier</param>
+        /// <returns>Found slug</returns>
+        public virtual async Task<string> GetActiveSlugAsync(int entityId, string entityName, int languageId)
+        {
+            if (_localizationSettings.LoadAllUrlRecordsOnStartup)
+            {
+                return await Task.Factory.StartNew<string>(() =>
+                {
+                    string key = string.Format(URLRECORD_ACTIVE_BY_ID_NAME_LANGUAGE_KEY, entityId, entityName, languageId);
+                    return _cacheManager.Get(key, () =>
+                    {
+                        //load all records (we know they are cached)
+                        var source = GetAllUrlRecordsCached();
+                        var query = from ur in source
+                                    where ur.EntityId == entityId &&
+                                    ur.EntityName == entityName &&
+                                    ur.LanguageId == languageId &&
+                                    ur.IsActive
+                                    orderby ur.Id descending
+                                    select ur.Slug;
+                        var slug = query.FirstOrDefault();
+                        //little hack here. nulls aren't cacheable so set it to ""
+                        if (slug == null)
+                            slug = "";
+                        return slug;
+                    });
+                });
+            }
+            else
+            {
+                return await Task.Factory.StartNew<string>(() =>
+                {
+                    //gradual loading
+                    string key = string.Format(URLRECORD_ACTIVE_BY_ID_NAME_LANGUAGE_KEY, entityId, entityName, languageId);
+                    return _cacheManager.Get(key, () =>
+                    {
+                        using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                        {
+                            IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                        }
+                    ))
+                        {
+                            var source = _urlRecordRepository.Table;
+                            var query = from ur in source
+                                        where ur.EntityId == entityId &&
+                                        ur.EntityName == entityName &&
+                                        ur.LanguageId == languageId &&
+                                        ur.IsActive
+                                        orderby ur.Id descending
+                                        select ur.Slug;
+                            var slug = query.FirstOrDefault();
+                            //little hack here. nulls aren't cacheable so set it to ""
+                            if (slug == null)
+                                slug = "";
+                            return slug;
+                        }
+                    });
                 });
             }
         }
@@ -577,7 +700,56 @@ namespace Nop.Services.Seo
                 return slug = pSlug.Value == DBNull.Value ? "" : pSlug.Value.ToString();
             });
         }
+        /// <summary>
+        /// Get Slug from id elements
+        /// </summary>
+        /// <param name="domainName">Domain name: zhouse.com</param>
+        /// <param name="categoryId">Category Id</param>
+        /// <param name="stateProvinceId">Stateprovince id</param>
+        /// <param name="districtId">District id</param>
+        /// <param name="wardId">Ward id</param>
+        /// <param name="streetId">Street id</param>
+        /// <param name="priceString">Price string: 1000-1500</param>
+        /// <param name="attributeOptionIds">id specification options id:  1-2-3-4-5</param>
+        /// <returns>Link request: http://zhouse.com/nha-o-quan-1_pr-1000-15000_sa-1-2-3-4-5</returns>
+        public virtual async Task<string> GetSlugFromIdAsync(string domainName,
+            int categoryId = 0,
+            int stateProvinceId = 0,
+            int districtId = 0,
+            int wardId = 0,
+            int streetId = 0,
+            string priceString = "",
+            string attributeOptionIds = "",
+            string sku = "")
+        {
+            return await Task.Factory.StartNew<string>(() =>
+            {
+                string key = string.Empty;
+                if (!String.IsNullOrWhiteSpace(sku))
+                    key = string.Format("GetSlugFromId-{0}", sku);
+                else key = string.Format("GetSlugFromId-{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}", domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds);
+                return _cacheManager.Get(key, 5, () =>
+                {
+                    string slug = "";
+                    SqlParameter pSlug = new SqlParameter("slug", SqlDbType.NVarChar, 1000);
+                    pSlug.Direction = ParameterDirection.Output;
 
+                    var excute = _dbContext.ExecuteSqlCommand("execute [GetSlugFromId] @domainName, @categoryId, @stateProvinceId, @districtId, @wardId, @streetId, @priceString, @attibuteOptionIds, @sku, @slug output", false, null,
+                        new SqlParameter("domainName", domainName),
+                        new SqlParameter("categoryId", categoryId),
+                        new SqlParameter("stateProvinceId", stateProvinceId),
+                        new SqlParameter("districtId", districtId),
+                        new SqlParameter("wardId", wardId),
+                        new SqlParameter("streetId", streetId),
+                        new SqlParameter("priceString", priceString),
+                        new SqlParameter("attibuteOptionIds", attributeOptionIds),
+                        new SqlParameter("sku", sku ?? ""),
+                        pSlug
+                        );
+                    return slug = pSlug.Value == DBNull.Value ? "" : pSlug.Value.ToString();
+                });
+            });
+        }
         #endregion
     }
 }

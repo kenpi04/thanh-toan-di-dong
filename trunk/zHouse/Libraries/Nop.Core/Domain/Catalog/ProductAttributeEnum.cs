@@ -8,18 +8,18 @@ namespace Nop.Core.Domain.Catalog
 {
   public  enum ProductAttributeEnum
     {
-      NumberOfFloor=1,
-      NumberOfBedRoom=2,
-      NumberOfBadRoom=3,
-      CoSoVatChat=4,
-      Enviroment=5,
-      ChuDauTu=6,
-      Director=7,
-      Status=8,
-      NumberBlock=11,
-      PhapLy=9,
-      ThichHop=12,
-      TienIch=15
+      NumberOfFloor=1,//so tang
+      NumberOfBedRoom=2,//so phong ngu
+      NumberOfBadRoom=3,//sp phong tam
+      CoSoVatChat=4,//co so vat chat
+      Enviroment=5,//moi truong xung quanh
+      ChuDauTu=6,//chu dau tu
+      Director=7,//huong:dong,tay,nam,bac
+      Status=8,//tinh trang bat dong san: cu, moi, dang xay,...
+      NumberBlock=11,//so block - ap dung cho chung cu
+      PhapLy=9,//phap ly
+      ThichHop=12,//thich hop: lam van phong, cho thue, nha o,...
+      TienIch=15//tien ich xung quanh: gan cho, truong hoc,...
     }
     /// <summary>
     /// Trang thai tin:con trong, da dat coc, da ban

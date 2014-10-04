@@ -1,16 +1,13 @@
 ﻿@using Nop.Web.Models.Common
 @model FptBannerShowModel
-<input type="hidden" value="Banner_Pos_@Model.Position" />
 @if (Model.Banners.Count > 0)
-{
-    
+{    
     foreach (var i in Model.Banners)
     {
-        <div class="banner_@Model.Position item_@i.Id">
+        <div class="banner item_@i.Id">
         @if (i.BannerType == 1)
         { <a href="@i.Url" target="@i.Target" title="@i.Name">
             <img src="@i.PictureUrl" title="@i.Name" class="imgFull"/>
-
           </a>
         }
         else

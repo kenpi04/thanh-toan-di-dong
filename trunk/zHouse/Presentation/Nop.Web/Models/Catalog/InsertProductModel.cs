@@ -100,6 +100,7 @@ namespace Nop.Web.Models.Catalog
         #endregion
 
         [DisplayFormat(DataFormatString = "{0:###,##}")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.AreaUse")]
         public decimal AreaUse { get; set; }
         public class PictureUploadModel
         {

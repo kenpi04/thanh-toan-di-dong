@@ -6,6 +6,7 @@ using Nop.Services.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Transactions;
 
 namespace Nop.Services.Directory
@@ -117,7 +118,14 @@ namespace Nop.Services.Directory
         {
             return GetAllBanners(0, 0, showHidden);
         }
-
+        /// <summary>
+        /// Gets all Banners
+        /// </summary>
+        /// <returns>Banner collection</returns>
+        public virtual async Task<IList<Banner>> GetAllFBannersAsync(bool showHidden = false)
+        {
+            return await GetAllBannersAsync(0, 0, showHidden);
+        }
         /// <summary>
         /// Get all banner allow position, store
         /// </summary>
@@ -147,7 +155,38 @@ namespace Nop.Services.Directory
                 return banners;
             }
         }
+        /// <summary>
+        /// Get all banner allow position, store
+        /// </summary>
+        /// <param name="position">Position</param>
+        /// <param name="storeId">Store Id</param>
+        /// <param name="showHidden">Show Hidden</param>
+        /// <returns>Ilist Banner</returns>
+        public virtual async Task<IList<Banner>> GetAllBannersAsync(int position = 0, int storeId = 0, bool showHidden = false)
+        {
+            return await Task.Factory.StartNew<IList<Banner>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = _bannerRepository.Table;
 
+                    if (position > 0)
+                        query = query.Where(b => b.Position == position);
+
+                    if (!showHidden)
+                        query = query.Where(m => m.Published);
+
+                    query = query.OrderBy(m => m.DisplayOrder);
+
+                    var banners = query.ToList();
+                    return banners;
+                }
+            });
+        }
         /// <summary>
         /// Gets a Banner
         /// </summary>
@@ -164,7 +203,24 @@ namespace Nop.Services.Directory
                 return _bannerRepository.GetById(bannerId);
             });
         }
-
+        /// <summary>
+        /// Gets a Banner
+        /// </summary>
+        /// <param name="BannerId">Banner identifier</param>
+        /// <returns>FrtBanner</returns>
+        public virtual async Task<Banner> GetBannerByIdAsync(int bannerId)
+        {
+            if (bannerId == 0)
+                return null;
+            return await Task.Factory.StartNew<Banner>(() =>
+            {
+                string key = string.Format(BANNERS_BY_ID_KEY, bannerId);
+                return _cacheManager.Get(key, () =>
+                {
+                    return _bannerRepository.GetById(bannerId);
+                });
+            });
+        }
         #endregion
     }
 }

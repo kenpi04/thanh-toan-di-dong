@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.News;
+using System.Threading.Tasks;
 
 namespace Nop.Services.News
 {
@@ -21,7 +22,12 @@ namespace Nop.Services.News
         /// <param name="newsId">The news identifier</param>
         /// <returns>News</returns>
         NewsItem GetNewsById(int newsId);
-
+        /// <summary>
+        /// Gets a news
+        /// </summary>
+        /// <param name="newsId">The news identifier</param>
+        /// <returns>News</returns>
+        Task<NewsItem> GetNewsByIdAsync(int newsId);
         /// <summary>
         /// Gets all news
         /// </summary>
@@ -33,7 +39,17 @@ namespace Nop.Services.News
         /// <returns>News items</returns>
         IPagedList<NewsItem> GetAllNews(int languageId, int storeId,int cateid,
             int pageIndex, int pageSize, bool showHidden = false);
-
+        /// <summary>
+        /// Gets all news
+        /// </summary>
+        /// <param name="languageId">Language identifier; 0 if you want to get all records</param>
+        /// <param name="storeId">Store identifier; 0 if you want to get all records</param>
+        /// <param name="pageIndex">Page index</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>News items</returns>
+        Task<IPagedList<NewsItem>> GetAllNewsAsync(int languageId, int storeId, int cateid,
+            int pageIndex, int pageSize, bool showHidden = false);
         /// <summary>
         /// Inserts a news item
         /// </summary>
@@ -52,14 +68,24 @@ namespace Nop.Services.News
         /// <param name="customerId">Customer identifier; 0 to load all records</param>
         /// <returns>Comments</returns>
         IList<NewsComment> GetAllComments(int customerId);
-
+        /// <summary>
+        /// Gets all comments
+        /// </summary>
+        /// <param name="customerId">Customer identifier; 0 to load all records</param>
+        /// <returns>Comments</returns>
+        Task<IList<NewsComment>> GetAllCommentsAsync(int customerId);
         /// <summary>
         /// Gets a news comment
         /// </summary>
         /// <param name="newsCommentId">News comment identifier</param>
         /// <returns>News comment</returns>
         NewsComment GetNewsCommentById(int newsCommentId);
-
+        /// <summary>
+        /// Gets a news comment
+        /// </summary>
+        /// <param name="newsCommentId">News comment identifier</param>
+        /// <returns>News comment</returns>
+        Task<NewsComment> GetNewsCommentByIdAsync(int newsCommentId);
         /// <summary>
         /// Deletes a news comment
         /// </summary>

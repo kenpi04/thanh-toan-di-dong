@@ -7,6 +7,7 @@ using Nop.Core.Domain.News;
 using Nop.Core.Domain.Stores;
 using Nop.Services.Events;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.News
 {
@@ -71,7 +72,18 @@ namespace Nop.Services.News
 
             return _newsItemRepository.GetById(newsId);
         }
+        /// <summary>
+        /// Gets a news
+        /// </summary>
+        /// <param name="newsId">The news identifier</param>
+        /// <returns>News</returns>
+        public virtual async Task<NewsItem> GetNewsByIdAsync(int newsId)
+        {
+            if (newsId == 0)
+                return null;
 
+            return await System.Threading.Tasks.Task.Factory.StartNew<NewsItem>(() => { return _newsItemRepository.GetById(newsId); });
+        }
         /// <summary>
         /// Gets all news
         /// </summary>
@@ -134,6 +146,68 @@ namespace Nop.Services.News
                 return news;
             }
         }
+        /// <summary>
+        /// Gets all news
+        /// </summary>
+        /// <param name="languageId">Language identifier; 0 if you want to get all records</param>
+        /// <param name="storeId">Store identifier; 0 if you want to get all records</param>
+        /// <param name="pageIndex">Page index</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>News items</returns>
+        public virtual async Task<IPagedList<NewsItem>> GetAllNewsAsync(int languageId, int storeId, int cateid,
+            int pageIndex, int pageSize, bool showHidden = false)
+        {
+            return await System.Threading.Tasks.Task.Factory.StartNew<IPagedList<NewsItem>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }))
+                {
+                    var query = _newsItemRepository.Table;
+                    if (languageId > 0)
+                        query = query.Where(n => languageId == n.LanguageId);
+                    if (!showHidden)
+                    {
+                        var utcNow = DateTime.UtcNow;
+                        query = query.Where(n => n.Published);
+                        query = query.Where(n => !n.StartDateUtc.HasValue || n.StartDateUtc <= utcNow);
+                        query = query.Where(n => !n.EndDateUtc.HasValue || n.EndDateUtc >= utcNow);
+                    }
+                    if (cateid > 0)
+                    {
+                        query = from a in query
+                                join cn in _newsCategoryNews.Table on a.Id equals cn.NewsId
+                                where cn.CategoryNewsId == cateid
+                                select a;
+                    }
+                    query = query.OrderByDescending(n => n.CreatedOnUtc);
+
+                    //Store mapping
+                    if (storeId > 0)
+                    {
+                        query = from n in query
+                                join sm in _storeMappingRepository.Table
+                                on new { c1 = n.Id, c2 = "NewsItem" } equals new { c1 = sm.EntityId, c2 = sm.EntityName } into n_sm
+                                from sm in n_sm.DefaultIfEmpty()
+                                where !n.LimitedToStores || storeId == sm.StoreId
+                                select n;
+
+                        //only distinct items (group by ID)
+                        query = from n in query
+                                group n by n.Id
+                                    into nGroup
+                                    orderby nGroup.Key
+                                    select nGroup.FirstOrDefault();
+                        query = query.OrderByDescending(n => n.CreatedOnUtc);
+                    }
+
+                    var news = new PagedList<NewsItem>(query, pageIndex, pageSize);
+                    return news;
+                }
+            });
+        }
 
         /// <summary>
         /// Inserts a news item
@@ -186,6 +260,30 @@ namespace Nop.Services.News
                 return content;
             }
         }
+        /// <summary>
+        /// Gets all comments
+        /// </summary>
+        /// <param name="customerId">Customer identifier; 0 to load all records</param>
+        /// <returns>Comments</returns>
+        public virtual async Task<IList<NewsComment>> GetAllCommentsAsync(int customerId)
+        {
+            return await System.Threading.Tasks.Task.Factory.StartNew<IList<NewsComment>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from c in _newsCommentRepository.Table
+                                orderby c.CreatedOnUtc
+                                where (customerId == 0 || c.CustomerId == customerId)
+                                select c;
+                    var content = query.ToList();
+                    return content;
+                }
+            });
+        }
 
         /// <summary>
         /// Gets a news comment
@@ -198,6 +296,18 @@ namespace Nop.Services.News
                 return null;
 
             return _newsCommentRepository.GetById(newsCommentId);
+        }
+        /// <summary>
+        /// Gets a news comment
+        /// </summary>
+        /// <param name="newsCommentId">News comment identifier</param>
+        /// <returns>News comment</returns>
+        public virtual async Task<NewsComment> GetNewsCommentByIdAsync(int newsCommentId)
+        {
+            if (newsCommentId == 0)
+                return null;
+
+            return await System.Threading.Tasks.Task.Factory.StartNew<NewsComment>(() => { return _newsCommentRepository.GetById(newsCommentId); });
         }
 
         /// <summary>

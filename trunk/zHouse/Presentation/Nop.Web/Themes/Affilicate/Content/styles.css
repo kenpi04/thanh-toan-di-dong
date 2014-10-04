@@ -1169,7 +1169,7 @@ ul{margin:0}
 .friend-email{width:100%}
 .simplemodal-close{background:url(images/x.png) no-repeat;width:22px;height:22px;position:absolute;right:-5px;top:-5px}
 #popup h1{padding:5px 0;background:#c06;color:#fff;font-weight:bold;font-size:14px;text-align:center;text-transform:uppercase}
-.whiteBgCata{border:1px solid #dedede;padding:4px 0 4px 0px;border-radius:3px;overflow:hidden;background-color:#f5f5f5}
+.whiteBgCata{padding:4px 0 4px 0px;border-radius:3px;overflow:hidden;background-color:#f5f5f5}
 .whiteBgCata > span {min-width:92px;width:45%; padding:0 0 0 10px;display:inline-block;line-height:24px}
 .whiteBgCata-small{padding:7px 5px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:100%;margin-top:10px;height:55px}
 .pinkNarrowTitle30{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06}
@@ -1231,8 +1231,9 @@ textarea.formBoxInText{height:70px}
 .request-title {margin:10px 0;font-size:20px }
 .form-request-contact input { width: 158px; }
 .colB li {margin:10px 0 }
+.rightTable{display:block;}
 .rightTable li {margin:5px 0;list-style:circle;width:300px;float:left}
-.rightTable ul {margin-left:30px }
+.rightTable ul {margin-left:30px;display:inline-block; }
 .createproduct-page .page-body {padding:20px }
 .note {color:#d41212 }
 .date-book select {width:50px; }
@@ -1377,3 +1378,5 @@ li.active a, li.active a:hover {background: #fff;color: #4c4c4c;border: 1px soli
 .tab-content {padding: 9px 9px 0px 9px;border-radius: 3px;border: 1px solid #dedede;background: #fff;}
 .tab {display: none;}
 .tab.active {display: block;}
+.request-label{text-align:right;}
+.request-label label{padding-right:10px;}

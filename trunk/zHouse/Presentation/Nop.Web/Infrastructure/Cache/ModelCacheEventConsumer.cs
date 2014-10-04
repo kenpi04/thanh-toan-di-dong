@@ -107,7 +107,11 @@ namespace Nop.Web.Infrastructure.Cache
         IConsumer<EntityDeleted<ManufacturerTemplate>>,
         IConsumer<EntityInserted<ProductTemplate>>,
         IConsumer<EntityUpdated<ProductTemplate>>,
-        IConsumer<EntityDeleted<ProductTemplate>>
+        IConsumer<EntityDeleted<ProductTemplate>>,
+        //banner
+        IConsumer<EntityInserted<Banner>>,
+        IConsumer<EntityUpdated<Banner>>,
+        IConsumer<EntityDeleted<Banner>>
     {
         /// <summary>
         /// Key for categories on the search page
@@ -478,6 +482,18 @@ namespace Nop.Web.Infrastructure.Cache
         /// </remarks>
         public const string AVAILABLE_CURRENCIES_MODEL_KEY = "Nop.pres.currencies.all-{0}-{1}";
         public const string AVAILABLE_CURRENCIES_PATTERN_KEY = "Nop.pres.currencies.";
+
+        /// <summary>
+        /// Key for banner
+        /// </summary>
+        /// <remarks>
+        /// {0} : position ID
+        /// {1} : stateprovince ID
+        /// {2} : store id
+        /// {3} : view name
+        /// </remarks>
+        public const string BANNER_MODEL_KEY = "Nop.pres.banner.all-{0}-{1}-{2}-{3}";
+        public const string BANNER_PATTERN_KEY = "Nop.pres.banner.";
 
         private readonly ICacheManager _cacheManager;
         
@@ -901,6 +917,18 @@ namespace Nop.Web.Infrastructure.Cache
         public void HandleEvent(EntityDeleted<ProductTemplate> eventMessage)
         {
             _cacheManager.RemoveByPattern(PRODUCT_TEMPLATE_PATTERN_KEY);
+        }
+        public void HandleEvent(EntityInserted<Banner> eventMessage)
+        {
+            _cacheManager.RemoveByPattern(BANNER_PATTERN_KEY);
+        }
+        public void HandleEvent(EntityUpdated<Banner> eventMessage)
+        {
+            _cacheManager.RemoveByPattern(BANNER_PATTERN_KEY);
+        }
+        public void HandleEvent(EntityDeleted<Banner> eventMessage)
+        {
+            _cacheManager.RemoveByPattern(BANNER_PATTERN_KEY);
         }
     }
 }

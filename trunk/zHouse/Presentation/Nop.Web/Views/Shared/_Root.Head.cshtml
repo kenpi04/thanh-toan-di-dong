@@ -4,12 +4,11 @@
 @{
     var displayMiniProfiler = CommonHelper.GetTrustLevel() >= AspNetHostingPermissionLevel.High &&
         EngineContext.Current.Resolve<Nop.Core.Domain.StoreInformationSettings>().DisplayMiniProfilerInPublicStore;
-
     //resources
     Html.AppendCssFileParts("~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.0.custom.min.css");
     Html.AppendCssFileParts("~/Themes/Zhouse/Content/uniform/css/uniform.default.css");
     Html.AppendScriptParts("~/Scripts/lazyload.jquery.js");
-   // Html.AppendScriptParts("~/Scripts/public.ajaxcart.js");
+    Html.AppendScriptParts("~/Scripts/jquery.simplemodal.js");
     Html.AppendScriptParts("~/Scripts/public.common.js");
     Html.AppendScriptParts("~/Scripts/jquery-ui-1.10.0.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.validate.unobtrusive.min.js");
@@ -17,7 +16,6 @@
     Html.AppendScriptParts("~/Scripts/jquery.unobtrusive-ajax.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.uniform.min.js");
     Html.AppendScriptParts("~/Scripts/jquery-1.7.1.min.js");
-
     //X-UA-Compatible tag
     var commonSettings = EngineContext.Current.Resolve<CommonSettings>();
     if (commonSettings.RenderXuaCompatible)
@@ -50,5 +48,27 @@
     @RenderBody()
     @Html.NopCssFiles(this.Url, ResourceLocation.Foot)
     @Html.NopScripts(this.Url, ResourceLocation.Foot)
+    <div id="banner-bottom" >
+        <div class="banner-bottom-content">
+            @Html.FptBanner(6)
+        </div>
+    </div>
+    <div style="display:none" id='banner-popup-home'>
+        @Html.FptBanner(5)
+    </div>
+    <script type="text/javascript">       
+    if (readCookie('ISSHOW') == null && $("#banner-popup-home").html()!="") {
+        $("#banner-popup-home").modal({
+            onClose: function () {
+                $("#banner-popup-home").hide();
+                $.modal.close();
+                $("#banner-popup-home").remove();
+                createCookie("ISSHOW", "TRUE", parseFloat(1/48))
+            }
+        });
+    }
+    else
+        $("#banner-popup-home").remove();
+    </script>
 </body>
 </html>

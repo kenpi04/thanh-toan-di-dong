@@ -6,7 +6,6 @@
 }
 @helper RenderCategoryLine(CategorySimpleModel category, int level)
 {
-   
     <li>
         <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name
         @if (category.NumberOfProducts.HasValue)
@@ -19,7 +18,6 @@
             if (level == 0)
             {
                 levelClass = "firstLevel";
-            
             }
              <div class="sublist">
                  <div class="menu-col">
@@ -40,17 +38,14 @@
                          }
                      </ul>
                  </div>
-
                 @if (category.SubCategories.Count > 0)
                 { <div class="menu-col" style="width:176px">
                     <span class="title">Theo loại</span>
                     <ul>
-
                         @foreach (var subCategory in category.SubCategories)
                         {
                             <li><a href="@Url.RouteUrl("Category", new {SeName=subCategory.SeName })">@subCategory.Name</a></li>
                         }
-
                     </ul>
                 </div>
                 }
@@ -63,12 +58,8 @@
                          }
                      </ul>
                  </div>
-            </div>
-            
-        }
-    </li>
-}
-
+            </div>}
+    </li>}
 <div id="top-menu" class="menu">
 <ul>
     @Html.Widget("header_menu_before")
@@ -99,25 +90,20 @@
         }
         <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
     }
-
-    <li><a href="#">Dịch vụ</a>
+    <li><a href="~/t/@Model.Topics.FirstOrDefault().Value">Dịch vụ</a>
          <div class="top-menu-triangle"></div>
-        <div class="sublist service" style="width:200px; margin-left:-18px;">
+        <div class="sublist service" style="width: 200px; margin-left: -18px;">
             <ul>
-                @foreach(var i in Model.Topics)
+                @foreach (var i in Model.Topics)
                 {
-                     <li><a title="@i.Value" href="~/t/@i.Value">@i.Text</a></li>
+                    <li><a title="@i.Value" href="~/t/@i.Value">@i.Text</a></li>
                 }
-               
-                
-
             </ul>
         </div>
     </li>
-
-    <li><a href="#">Kiến thức</a>
+    <li><a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategoriesNews.FirstOrDefault().Value })">Kiến thức</a>
           <div class="top-menu-triangle"></div>
-        <div class="sublist kienthuc" style="width:200px; margin-left:-18px;">
+        <div class="sublist kienthuc" style="width: 200px; margin-left: -18px;">
             <ul>
                 @foreach (var c in Model.CategoriesNews)
                 {
@@ -125,14 +111,15 @@
                 }
             </ul>
         </div>
-
     </li>
-
-<li>
+@*<li>
     <a href="http://hoidap.zhouse.com.vn" target="_blank">Hỏi đáp</a>
-</li>
+</li>*@
     <li>
-        <img style="margin-top:-15px" src="~/Themes/Zhouse/Content/images/hotline.gif" alt="Hotline" />
+        <div class="hotlineMenu">
+            <p class="hotlineName">HOTLINE</p>
+            <p class="hotlineNumber">0932 036 456</p>
+        </div>  @*<img style="margin-top:-15px" src="~/Themes/Zhouse/Content/images/hotline.gif" alt="Hotline" />*@
     </li>
     @Html.Widget("header_menu_after")
 </ul>
@@ -142,7 +129,6 @@
         $('a', $(this)).first().addClass('hover');
         if (!$('.sublist', $(this)).first().attr("not-resize") && !$(this).parent().hasClass('top-menu')) {
             var width = $(this).innerWidth();
-            @*$('.sublist', $(this)).first().css('@(isRtl ? "right" : "left")', width -45);*@
         }
         $('.sublist', $(this)).first().addClass('active');
         $('.top-menu-triangle', $(this)).addClass('active');
