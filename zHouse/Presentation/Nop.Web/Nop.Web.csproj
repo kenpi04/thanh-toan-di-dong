@@ -2231,6 +2231,10 @@
     <Content Include="Themes\MobileAffiliate\Views\Web.config" />
     <Content Include="Themes\Affilicate\Views\Catalog\_ProductBoxRecentView.cshtml" />
     <Content Include="Themes\Affilicate\Views\Customer\_PartialProductCustomer.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Catalog\_CreateOrUpdateProductRent.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Catalog\_CreateOrUpdateProductProject.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Catalog\InsertProductRent.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Catalog\InsertProductProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

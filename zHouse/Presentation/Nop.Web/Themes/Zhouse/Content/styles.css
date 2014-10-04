@@ -1162,8 +1162,7 @@ ul{margin:0}
 .col2bInside{float:left;width:410px;font-size:13px}
 .nhonReply{background:url(images/nhonReply.png) no-repeat;width:13px;height:8px;position:absolute;top:-8px;right:130px}
 .pinkBgRightBottom{background:#c06;width:220px;padding:70px 0;float:right;color:#fff;font-size:15px;margin:5px 10px 5px 0;text-align:center}
-#simplemodal-overlay{background-color:#000}
-#simplemodal-container .simplemodal-data{padding:6px 12px}
+#simplemodal-overlay{background-color:#000;opacity:0.7 !important}
 #popup{background:none repeat scroll 0 0 #fff;padding:4px}
 .friend-email{width:100%}
 .simplemodal-close{background:url(images/x.png) no-repeat;width:22px;height:22px;position:absolute;right:-5px;top:-5px}
@@ -1204,8 +1203,6 @@ ul{margin:0}
 .menu-col{width:200px;float:left;padding:0 10px;border-right:dashed 1px #ddd}
 .menu-col:last-child{border:0}
 .menu-col .title{font-weight:bold}
-/*.service{left:0px !important; margin-left:-18px;}*/
-/*.kienthuc{left:327px !important}*/
 .p-name:hover{color:#d82d7f}
 textarea.formBoxInText{height:70px}
 .menu-footer{height:38x;line-height:38px;text-align:center}
@@ -1234,7 +1231,6 @@ textarea.formBoxInText{height:70px}
 .icon-list a {display:block;width:50px;height:50px;margin-bottom:5px }
 .icon-list a.icon-contact {background:url(images/contacticon.jpg) no-repeat; }
 .icon-list a.icon-request {background:url(images/requesticon.png) no-repeat; }
-/*.info-picture-news img {max-height }*/
 /*---intro-------------------*/
 .wrapperLarge { width: 1200px; margin: 0 auto; position: relative; }
 .btnRight1 { position: fixed; right: 0; top: 60px; background: url(images/btnRight1.png); width: 50px; height: 50px; border: none; }
@@ -1285,7 +1281,6 @@ textarea.formBoxInText{height:70px}
 .search-left .greyBgTitle {width:100%;background-color:#e1e1e1 }
 .search-left .whiteLeftCol {width:100%}
 .free-text {float:right;color:#c06;font-size:24px;font-weight:bold }
-
 /*Why page*/
 .div1 {background:url(images/house.png) no-repeat right 0 #fff;width:100%;height:620px }
 .div1 .text { left: 70px; position: absolute; top: 91px; }
@@ -1294,9 +1289,7 @@ textarea.formBoxInText{height:70px}
 .div1 span.dauhoi { font-size: 119pt; margin-left: 40px; margin-top: -78px; position: absolute;color:#1e98d5 }
 .info .text-1 {color:#1e98d5;font-size:24pt }
 .info .text-2 {color:#c06;font-size:57pt }
-.info .text-info { color: #000;
-    float: right;
-    width: 297px;}
+.info .text-info { color: #000;float: right;width: 297px;}
 .text-24 {font-size:24pt }
 .info {margin-top:100px }
 .div2 {background:url(images/street.png) no-repeat;height:544px;width:100%;box-shadow: 4px 1px 2px 1px #333; }
@@ -1335,50 +1328,15 @@ margin-top: 7px; }
 .div-map .map-title p{color:#c06;font-size:15px;font-weight:700;padding:0;margin:0;}
 .footerEnd p{padding:1px;margin:0}
 /*popup banner*/
-/*	--------------------------------------------------
-	Reveal Modals
-	-------------------------------------------------- */
-		
-	.reveal-modal-bg { 
-		position: fixed; 
-		height: 100%;
-		width: 100%;
-		background: #000;
-		background: rgba(0,0,0,.8);
-		z-index: 100;
-		display: none;
-		top: 0;
-		left: 0; 
-		}
-	
-	.reveal-modal {
-		visibility: hidden;
-		text-align:center;
-        width:auto;		
-		/*background: #eee url(modal-gloss.png) no-repeat -200px -80px;*/
-		position: absolute;
-		z-index: 101;
-		-moz-border-radius: 5px;
-		-webkit-border-radius: 5px;
-		border-radius: 5px;
-		/*-moz-box-shadow: 0 0 10px rgba(0,0,0,.4);*/
-		/*-webkit-box-shadow: 0 0 10px rgba(0,0,0,.4);*/
-		/*-box-shadow: 0 0 10px rgba(0,0,0,.4);*/
-		}
-		
-	.reveal-modal.small 		{ width: 200px; margin-left: -140px;}
-	.reveal-modal.medium 		{ width: 400px; margin-left: -240px;}
-	.reveal-modal.large 		{ width: 600px; margin-left: -340px;}
-	.reveal-modal.xlarge 		{ width: 800px; margin-left: -440px;}
-	
-	.reveal-modal .close-reveal-modal {
-		font-size: 22px;
-		line-height: .5;
-		position: absolute;
-		top: 8px;
-		right: 11px;
-		color: #aaa;
-		text-shadow: 0 -1px 1px rbga(0,0,0,.6);
-		font-weight: bold;
-		cursor: pointer;
-		} 
+.reveal-modal-bg{position: fixed;height: 100%;width: 100%;background: #000;background: rgba(0,0,0,.8);z-index: 100;display: none;top: 0;left: 0;}
+.reveal-modal {visibility: hidden;text-align:center;width:auto;position: absolute;z-index: 101;-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;}
+.reveal-modal.small { width: 200px; margin-left: -140px;}
+.reveal-modal.medium{ width: 400px; margin-left: -240px;}
+.reveal-modal.large { width: 600px; margin-left: -340px;}
+.reveal-modal.xlarge{ width: 800px; margin-left: -440px;}
+.reveal-modal .close-reveal-modal {font-size: 22px;line-height: .5;position: absolute;top: 8px;right: 11px;color: #aaa;text-shadow: 0 -1px 1px rbga(0,0,0,.6);font-weight: bold;cursor: pointer;} 
+#banner-bottom{position:fixed;right:0px;bottom:0;z-index:1000}
+.simplemodal-wrap{overflow:visible !important;box-shadow:1px 1px 1px 1px #fff;}
+.hotlineMenu{display:inline-block;height:100%;margin-top:-16px;}
+.hotlineMenu .hotlineName{padding:0;margin:0;font-size:19px;color:#1e98d5;font-family:Impact, fantasy;}
+.hotlineMenu .hotlineNumber{padding:0;margin:0;font-size:28px;color:#c06;font-weight:700;font-family:Impact,fantasy}

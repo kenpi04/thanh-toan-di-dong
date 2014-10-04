@@ -852,6 +852,12 @@ namespace Nop.Web.Controllers
             return View();
         }
 
+        public ActionResult SetVariable(string key, string value)
+        {
+            Session[key] = value;
+            Session.Timeout = 1;
+            return this.Json(new { success = true });
+        }
         #endregion
     }
 }

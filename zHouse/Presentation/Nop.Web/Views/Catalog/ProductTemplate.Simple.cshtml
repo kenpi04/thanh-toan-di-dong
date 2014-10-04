@@ -120,14 +120,6 @@
                     <div class="tabBtn" tab="#tab-pictures"><h2><a>HÌNH ẢNH CLIP</a></h2></div>
                 </div><!---whiteBgTab-->
                 <div id="tab-detail" class="whiteBgLeft" style="margin-top:-1px;" itemprop="description">
-                    @*<div class="div-map">
-                        <div class="map-title">
-                            <p>Các tiện ích xung quanh</p>
-                        </div>
-                        <div style="width:100%;height:400px; display:inline-block">
-                            @Html.Partial("_Map", Model)
-                        </div>
-                    </div>*@
                     @Html.Raw(Model.FullDescription)                    
                 </div><!---whiteBgLeft-->
                 <div id="tab-pictures" class="whiteBgLeft" style="margin-top:-1px;">
@@ -164,7 +156,7 @@
                     <div class="twoColRight">
                         <div class="twoColRightPic"><a href="#"><img src="../Themes/Zhouse/Content/images/i1.png" class="circleImg"></a></div>
                         <div class="twoColRightText" style="font-size:15px;color:#fff">
-                            <b>0936734949 <br>0968309789</b>
+                            <b>0932 036 456</b><br /><b>0968 309 789</b>
                         </div>
                     </div><!---twoColRight---->
                     @Html.Action("ProductEmailAFriend", new { isBook = true })

@@ -268,5 +268,10 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets the value indicating how many manufacturers to display in manufacturers block
         /// </summary>
         public int ManufacturersBlockItemsToDisplay { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value: so ngay mac dinh mien phi voi 1 tin dang
+        /// </summary>
+        public int DaysAvailablePublished { get; set; }
     }
 }

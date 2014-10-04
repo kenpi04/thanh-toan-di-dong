@@ -12,14 +12,14 @@ namespace Nop.Web.Infrastructure
             //yeu cau tin request
             routes.MapLocalizedRoute("InsertProduct",
                          "request",
-                         new { controller = "Catalog", action = "InsertProduct" },
+                         new { controller = "Catalog", action = "InsertProduct"},
                          new[] { "Nop.Web.Controllers" });
 
             //yeu cau tin request
             routes.MapLocalizedRoute("EditProduct",
                          "request/{id}",
                          new { controller = "Catalog", action = "EditProduct" },
-                          new { id = @"\d+" },
+                         new { id = @"\d+" },
                          new[] { "Nop.Web.Controllers" });
             //yeu cau tin request
             routes.MapLocalizedRoute("PostNews",
@@ -31,9 +31,20 @@ namespace Nop.Web.Infrastructure
             routes.MapLocalizedRoute("EditPostNews",
                          "customer/sua-tin/{id}",
                          new { controller = "Catalog", action = "EditProduct" },
-                          new { id = @"\d+" },
+                         new { id = @"\d+" },
                          new[] { "Nop.Web.Controllers" });
 
+            //yeu cau tin request thue
+            routes.MapLocalizedRoute("PostNewsRent",
+                         "customer/dang-tin-cho-thue",
+                         new { controller = "Catalog", action = "InsertProductRent" },
+                         new[] { "Nop.Web.Controllers" });
+
+            //yeu cau tin request du an
+            routes.MapLocalizedRoute("PostNewsProject",
+                         "customer/dang-tin-du-an",
+                         new { controller = "Catalog", action = "InsertProductProject" },
+                         new[] { "Nop.Web.Controllers" });
             //router search
             //routes.MapLocalizedRoute("Search",
             //             "{senameCategory}-{senameStreet}-{senameWard}-{senameDistrict}-{senameStateProvince}",

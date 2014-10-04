@@ -1,5 +1,6 @@
 using Nop.Core;
 using Nop.Core.Domain.Seo;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Seo
 {
@@ -20,7 +21,7 @@ namespace Nop.Services.Seo
         /// <param name="urlRecordId">URL record identifier</param>
         /// <returns>URL record</returns>
         UrlRecord GetUrlRecordById(int urlRecordId);
-
+        Task<UrlRecord> GetUrlRecordByIdAsync(int urlRecordId);
         /// <summary>
         /// Inserts an URL record
         /// </summary>
@@ -39,7 +40,7 @@ namespace Nop.Services.Seo
         /// <param name="slug">Slug</param>
         /// <returns>Found URL record</returns>
         UrlRecord GetBySlug(string slug);
-
+        Task<UrlRecord> GetBySlugAsync(string slug);
         /// <summary>
         /// Find URL record
         /// </summary>
@@ -60,7 +61,7 @@ namespace Nop.Services.Seo
         /// <param name="pageSize">Page size</param>
         /// <returns>Customer collection</returns>
         IPagedList<UrlRecord> GetAllUrlRecords(string slug, int pageIndex, int pageSize);
-
+        Task<IPagedList<UrlRecord>> GetAllUrlRecordsAsync(string slug, int pageIndex, int pageSize);
         /// <summary>
         /// Find slug
         /// </summary>
@@ -69,7 +70,7 @@ namespace Nop.Services.Seo
         /// <param name="languageId">Language identifier</param>
         /// <returns>Found slug</returns>
         string GetActiveSlug(int entityId, string entityName, int languageId);
-
+        Task<string> GetActiveSlugAsync(int entityId, string entityName, int languageId);
         /// <summary>
         /// Save slug
         /// </summary>
@@ -92,5 +93,6 @@ namespace Nop.Services.Seo
         /// <param name="attributeOptionIds">id specification options id:  1-2-3-4-5</param>
         /// <returns>Link request: http://zhouse.com/nha-o-quan-1_pr-1000-15000_sa-1-2-3-4-5</returns>
         string GetSlugFromId(string domainName, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string priceString = "", string attributeOptionIds = "", string sku = "");
+        Task<string> GetSlugFromIdAsync(string domainName, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string priceString = "", string attributeOptionIds = "", string sku = "");
     }
 }

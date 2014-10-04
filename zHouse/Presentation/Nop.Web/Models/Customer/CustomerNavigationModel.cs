@@ -31,5 +31,7 @@ namespace Nop.Web.Models.Customer
         Avatar,
         ForumSubscriptions,
         PostNews,
+        PostNewsRent,
+        PostNewsProject,
     }
 }

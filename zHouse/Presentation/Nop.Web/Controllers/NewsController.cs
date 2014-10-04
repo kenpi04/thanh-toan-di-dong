@@ -26,6 +26,7 @@ using Nop.Web.Framework.UI.Captcha;
 using Nop.Web.Infrastructure.Cache;
 using Nop.Web.Models.Media;
 using Nop.Web.Models.News;
+using System.Threading.Tasks;
 
 namespace Nop.Web.Controllers
 {
@@ -182,8 +183,8 @@ namespace Nop.Web.Controllers
         public ActionResult NewsCateNavigation()
         {
             var model = new CategoryNewsListModel();
-
-            model.CategoryNews = _cateNewsService.GetAllCategoriesByParentCategoryId(0).ToList();
+            var catenews = Task.Run(async()=> await _cateNewsService.GetAllCategoriesByParentCategoryIdAsync(0)).Result;
+            model.CategoryNews = catenews.ToList();
             return View(model);
         }
         public ActionResult HomePageNews(int? pageSize)
@@ -194,18 +195,16 @@ namespace Nop.Web.Controllers
             var cacheKey = string.Format(ModelCacheEventConsumer.HOMEPAGE_NEWSMODEL_KEY, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
             var cachedModel = _cacheManager.Get(cacheKey, () =>
             {
-                var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id, 0, 0, 0, pageSize.HasValue ? pageSize.Value : _newsSettings.MainPageNewsCount);
+                var newsItems = Task.Run(async () => await _newsService.GetAllNewsAsync(_workContext.WorkingLanguage.Id, 0, 0, 0, pageSize.HasValue ? pageSize.Value : _newsSettings.MainPageNewsCount)).Result;
                 return new HomePageNewsItemsModel()
                 {
                     WorkingLanguageId = _workContext.WorkingLanguage.Id,
-                    NewsItems = newsItems
-                        .Select(x =>
-                                    {
-                                        var newsModel = new NewsItemModel();
-                                        newsModel = PrepareNewsItemModel(x, false, true);
-                                        return newsModel;
-                                    })
-                        .ToList()
+                    NewsItems = newsItems.Select(x =>
+                                                    {
+                                                        var newsModel = new NewsItemModel();
+                                                        newsModel = PrepareNewsItemModel(x, false, true);
+                                                        return newsModel;
+                                                    }).ToList()
                 };
             });
 
@@ -221,14 +220,14 @@ namespace Nop.Web.Controllers
         public ActionResult HomePageNewsCate()
         {
             var model = new List<FNewsItemListModel>();
-            var newsCate = _cateNewsService.GetAllCategoriesByParentCategoryId(0).Take(2);
+            var newsCate = Task.Run(async()=> await _cateNewsService.GetAllCategoriesByParentCategoryIdAsync(0)).Result.Take(2);
             foreach (var cn in newsCate)
             {
                 var row = new FNewsItemListModel
                 {
                     CateName = cn.Name,
                     CateId = cn.Id,
-                    NewsItems = _newsService.GetAllNews(0, 0, cn.Id, 0, 4).Select(x =>
+                    NewsItems = Task.Run(async()=> await _newsService.GetAllNewsAsync(0, 0, cn.Id, 0, 4)).Result.Select(x =>
                     {
                         var item = new NewsItemModel();
                         item = PrepareNewsItemModel(x, false);

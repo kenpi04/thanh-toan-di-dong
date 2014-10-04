@@ -7,6 +7,7 @@ using Nop.Core.Data;
 using Nop.Core.Domain.News;
 using Nop.Services.Events;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.News
 {
@@ -132,7 +133,32 @@ namespace Nop.Services.News
                 }
             });
         }
-
+        /// <summary>
+        /// Gets a category
+        /// </summary>
+        /// <param name="categoryId">Category identifier</param>
+        /// <returns>A category news</returns>
+        public virtual async Task<CategoryNews> GetCategoryByIdAsync(int categoryId)
+        {
+            if (categoryId == 0)
+                return null;
+            return await System.Threading.Tasks.Task.Factory.StartNew<CategoryNews>(() =>
+            {
+                string key = string.Format(CATEGORIES_BY_ID_KEY, categoryId);
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var category = _categoryRepository.GetById(categoryId);
+                        return category;
+                    }
+                });
+            });
+        }
         /// <summary>
         /// Gets all categories news
         /// </summary>
@@ -143,6 +169,18 @@ namespace Nop.Services.News
             return _cacheManager.Get(string.Format(CATEGORIES_ALL, showHidden), 30, () =>
             {
                 return GetAllCategories(null, showHidden);
+            });
+        }
+        /// <summary>
+        /// Gets all categories news
+        /// </summary>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>List categories news</returns>
+        public virtual async Task<IList<CategoryNews>> GetAllCategoriesAsync(bool showHidden = false)
+        {
+            return await _cacheManager.Get(string.Format(CATEGORIES_ALL, showHidden), 30, async() =>
+            {
+                return await GetAllCategoriesAsync(null, showHidden);
             });
         }
 
@@ -183,6 +221,41 @@ namespace Nop.Services.News
         /// Gets all categories
         /// </summary>
         /// <param name="categoryName">Category name</param>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>Categories</returns>
+        public virtual async Task<IList<CategoryNews>> GetAllCategoriesAsync(string categoryName, bool showHidden = false)
+        {
+            return await System.Threading.Tasks.Task.Factory.StartNew<IList<CategoryNews>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = _categoryRepository.Table;
+                    if (!showHidden)
+                        query = query.Where(c => c.Published);
+
+                    if (!String.IsNullOrWhiteSpace(categoryName))
+                        query = query.Where(c => c.Name.Contains(categoryName));
+
+                    query = query.Where(c => !c.Deleted);
+
+                    query = query.OrderBy(c => c.ParentCategoryNewsId).ThenBy(c => c.DisplayOrder);
+
+                    var unsortedCategories = query.ToList();
+
+                    //sort categories
+                    var sortedCategories = unsortedCategories;//.SortCategoriesForTree();
+                    return sortedCategories;
+                }
+            });
+        }
+        /// <summary>
+        /// Gets all categories
+        /// </summary>
+        /// <param name="categoryName">Category name</param>
         /// <param name="pageIndex">Page index</param>
         /// <param name="pageSize">Page size</param>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
@@ -194,7 +267,21 @@ namespace Nop.Services.News
             //filter
             return new PagedList<CategoryNews>(categories, pageIndex, pageSize);
         }
-
+        /// <summary>
+        /// Gets all categories
+        /// </summary>
+        /// <param name="categoryName">Category name</param>
+        /// <param name="pageIndex">Page index</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>Categories</returns>
+        public virtual async Task<IPagedList<CategoryNews>> GetAllCategoriesAsync(string categoryName,
+            int pageIndex, int pageSize, bool showHidden = false)
+        {
+            var categories = await GetAllCategoriesAsync(categoryName, showHidden);
+            //filter
+            return new PagedList<CategoryNews>(categories, pageIndex, pageSize);
+        }
         /// <summary>
         /// Gets all categories filtered by parent category identifier
         /// </summary>
@@ -223,7 +310,37 @@ namespace Nop.Services.News
                 }
             });
         }
+        /// <summary>
+        /// Gets all categories filtered by parent category identifier
+        /// </summary>
+        /// <param name="parentCategoryId">Parent category identifier</param>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>Category collection</returns>
+        public async Task<IList<CategoryNews>> GetAllCategoriesByParentCategoryIdAsync(int parentCategoryId, bool showHidden = false)
+        {
+            return await Task.Factory.StartNew<IList<CategoryNews>>(() =>
+            {
+                string key = string.Format(CATEGORIES_BY_PARENT_CATEGORY_ID_KEY, parentCategoryId, showHidden);
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = _categoryRepository.Table;
+                        if (!showHidden)
+                            query = query.Where(c => c.Published);
+                        query = query.Where(c => c.ParentCategoryNewsId == parentCategoryId && !c.Deleted).OrderBy(x => x.DisplayOrder);
 
+                        if (query == null)
+                            return null;
+                        return query.ToList();
+                    }
+                });
+            }).ConfigureAwait(false);
+        }
         /// <summary>
         /// Inserts category
         /// </summary>
@@ -295,6 +412,40 @@ namespace Nop.Services.News
                 }
             });
         }
+        /// <summary>
+        /// Gets news category mapping collection
+        /// </summary>
+        /// <param name="newsId">News identifier</param>
+        /// <param name="pageIndex">Page index</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>News a category mapping collection</returns>
+        public virtual async Task<IPagedList<NewsCategoryNews>> GetNewsCategoriesByCategoryIdAsync(int categoryId, int pageIndex, int pageSize, bool showHidden = false)
+        {
+            if (categoryId == 0)
+                return new PagedList<NewsCategoryNews>(new List<NewsCategoryNews>(), pageIndex, pageSize);
+            return await Task.Factory.StartNew<IPagedList<NewsCategoryNews>>(() =>
+            {
+                string key = string.Format(NEWSCATEGORIES_ALLBYCATEGORYID_KEY, showHidden, categoryId, pageIndex, pageSize);
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = from pc in _newsCategoryRepository.Table
+                                    join p in _newsRepository.Table on pc.NewsId equals p.Id
+                                    where pc.CategoryNewsId == categoryId &&
+                                          (showHidden || p.Published)
+                                    select pc;
+                        var newsCategories = new PagedList<NewsCategoryNews>(query, pageIndex, pageSize);
+                        return newsCategories;
+                    }
+                });
+            });
+        }
 
         /// <summary>
         /// Gets a news category mapping collection
@@ -319,6 +470,33 @@ namespace Nop.Services.News
                 if (query == null)
                     return null;
                 return query.ToList();
+            });
+        }
+        /// <summary>
+        /// Gets a news category mapping collection
+        /// </summary>
+        /// <param name="NewsId">News identifier</param>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>News category mapping collection</returns>
+        public virtual async Task<IList<NewsCategoryNews>> GetNewsCategoriesByNewsIdAsync(int newsId, bool showHidden = false)
+        {
+            if (newsId == 0)
+                return new List<NewsCategoryNews>();
+            return await Task.Factory.StartNew<IList<NewsCategoryNews>>(() =>
+            {
+                string key = string.Format(NEWSCATEGORIES_ALLBYNEWSID_KEY, showHidden, newsId);
+                return _cacheManager.Get(key, () =>
+                {
+                    var query = from pc in _newsCategoryRepository.Table
+                                join c in _newsRepository.Table on pc.NewsId equals c.Id
+                                where pc.NewsId == newsId &&
+                                      (showHidden || c.Published)
+                                select pc;
+
+                    if (query == null)
+                        return null;
+                    return query.ToList();
+                });
             });
         }
 
@@ -346,6 +524,31 @@ namespace Nop.Services.News
             });
         }
 
+        /// <summary>
+        /// Gets a News category mapping 
+        /// </summary>
+        /// <param name="newsCategoryId">news category mapping identifier</param>
+        /// <returns>news category mapping</returns>
+        public virtual async Task<NewsCategoryNews> GetNewsCategoryByIdAsync(int newsCategoryId)
+        {
+            if (newsCategoryId == 0)
+                return null;
+            return await Task.Factory.StartNew<NewsCategoryNews>(() =>
+            {
+                string key = string.Format(NEWSCATEGORIES_BY_ID_KEY, newsCategoryId);
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        return _newsCategoryRepository.GetById(newsCategoryId);
+                    }
+                });
+            });
+        }
         /// <summary>
         /// Inserts a News category mapping
         /// </summary>
