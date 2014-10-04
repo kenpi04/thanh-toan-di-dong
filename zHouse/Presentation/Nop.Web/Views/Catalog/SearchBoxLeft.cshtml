@@ -1,10 +1,7 @@
 ﻿@model Nop.Web.Models.Catalog.SearchModel
 
-@{
-    //Model.PriceRange.RemoveAt(0);
-}
 <div class="whiteLeftCol">
-    <div class="greyBgTitle"><a href="#"><h2> lọc theo vị trí</h2></a></div>
+    <div class="greyBgTitle"><h2> lọc theo vị trí</h2></div>
     <div class="whiteLeftColContent">
         @foreach (var i in Model.Wards.Where(x => x.Value != "0").ToList())
         {
@@ -13,7 +10,7 @@
     </div>
 </div>
 <div class="whiteLeftCol">
-    <div class="greyBgTitle"><a href="#"><h2> Lọc theo giá</h2></a></div>
+    <div class="greyBgTitle"><h2> Lọc theo giá</h2></div>
     <div class="whiteLeftColContent">    
         @foreach (var i in Model.PriceRange.Where(x => x.Value!="0-0").ToList())
         {
@@ -22,7 +19,7 @@
     </div>
 </div>
 <div class="whiteLeftCol">
-    <div class="greyBgTitle"><a href="#"><h2> Lọc theo loại</h2></a></div>
+    <div class="greyBgTitle"><h2> Lọc theo loại</h2></div>
     <div class="whiteLeftColContent">
         @foreach (var i in Model.AvailableCategories.Where(x => x.Value!="0").ToList())
         {
@@ -31,7 +28,7 @@
     </div>
 </div>
 <div class="whiteLeftCol">
-    <div class="greyBgTitle"><a href="#"><h2> Lọc theo dự án</h2></a></div>
+    <div class="greyBgTitle"><h2> Lọc theo dự án</h2></div>
     <div class="whiteLeftColContent">
         @foreach (var i in Model.AvailableManufacturers)
         {

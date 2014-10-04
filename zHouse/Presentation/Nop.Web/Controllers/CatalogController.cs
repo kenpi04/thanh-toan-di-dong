@@ -4058,12 +4058,13 @@ namespace Nop.Web.Controllers
                 model.Status.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectStatus"), Selected = true, Value = "0" });
                 model.Directories = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.Director).ToSelectList(x => x.Name, x => x.Id.ToString());
                 model.Directories.Insert(0, new SelectListItem { Text = _localizationService.GetResource(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
+                model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
                 if (!isMarketPlace)
                 {
                     var w = _stateProvinceService.GetWardByDistrictId(611);
                     model.Wards = w.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
                     model.Wards.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectWard"), Selected = true, Value = "0" });
-                    //model.BathRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
+                    model.BathRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBadRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
                 }
                 if (isMarketPlace)
                 {
@@ -4073,8 +4074,6 @@ namespace Nop.Web.Controllers
                     model.AvailableCategoriesRent = caterent.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
                     model.AvailableCategoriesRent.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectCate"), Selected = true, Value = "0" });
                     model.Wards.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectWard"), Selected = true, Value = "0" });
-                    model.BedRooms = _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttribute((int)ProductAttributeEnum.NumberOfBedRoom).ToSelectList(x => x.Name, x => x.Id.ToString());
-                    model.BedRooms.Insert(0, new SelectListItem { Text = _localizationService.GetResource("Product.Search.SelectBedRoom"), Selected = true, Value = "0" });
                 }
                 return model;
             });
