@@ -50,247 +50,359 @@ img {
     padding-top: 10px;
 }
 
-    .headerTop {
-        display: inline-block;
-        width: 100%;
-    }
+.headerTop {
+    display: inline-block;
+    width: 100%;
+}
 
-    .menu-top {
-        float: left;
-        width: 50%;
-        text-align: right;
-    }
+.menu-top {
+    float: left;
+    width: 50%;
+    text-align: right;
+}
 
-    .logo {
-        float: left;
-        width: 50%;
-    }
+.logo {
+    float: left;
+    width: 50%;
+}
 
-    .menu-top li {
-        padding: 0 24px;
-        float: left;
-        background: url(menu-icon.png) no-repeat right 64%;
-    }
+.menu-top li {
+    padding: 0 24px;
+    float: left;
+    background: url(menu-icon.png) no-repeat right 64%;
+}
 
-    .menu-top ul {
-        display: inline-block;
-    }
+.menu-top ul {
+    display: inline-block;
+}
 
-    .banner {
-        padding-top: 20px;
-        height: 587px;
-    }
+.banner {
+    padding-top: 20px;
+    height: 587px;
+}
 
-        .banner .text {
-            width: 40%;
-            float: left;
-            height: 587px;
-        }
-
-            .banner .text .text-content {
-                margin-top: 57%;
-                font-size: 14px;
-            }
-
-                .banner .text .text-content .text1 {
-                    color: #273c94;
-                    font-size: 50px;
-                }
-
-                .banner .text .text-content .text2 {
-                    font-size: 50px;
-                }
-
-    .picture {
-        width: 60%;
+    .banner .text {
+        width: 30%;
         float: left;
         height: 587px;
     }
 
-        .picture .item {
-            margin-top: 50px;
-        }
-
-    .menu-top li:last-child {
-        background: 0;
-    }
-
-    .menu-top li a {
-        color: #fff;
-    }
-
-    .blue {
-        color: #273CF6;
-    }
-
-    #content {
-        background: #fff;
-    }
-
-    .clearboth {
-        clear: both;
-    }
-
-    .col50 {
-        width: 50%;
-        float: left;
-    }
-
-    .content-box {
-        padding-left: 20px;
-        padding-bottom: 10px;
-        padding-top: 10px;
-    }
-
-    .col50 .content-box:first-child {
-        border-bottom: solid 1px #888;
-    }
-
-    .box {
-        background: #fff;
-        color: gray;
-        padding: 20px;
-        min-height: 300px;
-    }
-
-        .box b {
-            font-size: 24px;
-        }
-
-        .box .icon-box {
-            float: left;
-            width: 78px;
-        }
-
-        .box .text-box {
-            float: left;
-            width: 60%;
-            margin-left: 14px;
+        .banner .text .text-content {
+            margin-top: 57%;
             font-size: 14px;
         }
 
-        .box .col50:first-child {
-            border-right: solid 1px #888;
-            margin-left: -1px;
-        }
-
-    .projects {
-        background: url(background-project.png);
-    }
-
-        .projects h2 {
-            text-align: center;
-            font-size: 40px;
-        }
-
-        .projects li {
-            float: left;
-            margin-top: 10px;
-            height: 200px;
-        }
-
-            .projects li img {
-                max-height: 100%;
+            .banner .text .text-content .text1 {
+                color: #273c94;
+                font-size: 50px;
             }
 
-        .projects h1 {
-            color: #00b4ff;
-            font-size: 20px;
-            text-align: center;
-        }
+            .banner .text .text-content .text2 {
+                font-size: 50px;
+            }
 
-    .per {
+.picture {
+    width: 60%;
+    float: left;
+    height: 587px;
+}
+
+    .picture .item {
+        margin-top: 50px;
+    }
+
+#slideshowWindow {
+    overflow: hidden;
+    height: 587px;
+}
+
+.menu-top li:last-child {
+    background: 0;
+}
+
+.menu-top li a {
+    color: #fff;
+}
+
+.blue {
+    color: #273CF6;
+}
+
+#content {
+    background: #fff;
+}
+
+.clearboth {
+    clear: both;
+}
+
+.col50 {
+    width: 50%;
+    float: left;
+}
+
+.content-box {
+    padding-left: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.col50 .content-box:first-child {
+    border-bottom: solid 1px #888;
+}
+
+.box {
+    background: #fff;
+    color: gray;
+    padding: 20px;
+    min-height: 300px;
+}
+
+    .box b {
+        font-size: 24px;
+    }
+
+    .box .icon-box {
+        float: left;
+        width: 78px;
+    }
+
+    .box .text-box {
+        float: left;
+        width: 60%;
+        margin-left: 14px;
+        font-size: 14px;
+    }
+
+    .box .col50:first-child {
+        border-right: solid 1px #888;
+        margin-left: -1px;
+    }
+
+.projects {
+    background: url(background-project.png);
+}
+
+    .projects h2 {
+        text-align: center;
+        font-size: 40px;
+    }
+
+    .projects li {
+        float: left;
         margin-top: 10px;
-        font-size: 12px;
-        color: #ccc;
+        height: 200px;
     }
 
-        .per .infoLeft {
-            float: left;
-            width: 50%;
-            text-align: right;
-            margin-right: 10px;
+        .projects li img {
+            max-height: 100%;
         }
 
-        .per .infoRight {
-            float: left;
-            width: 50%;
-            margin-left: 10px;
-        }
-
-        .per .name {
-            font-size: 20px;
-            color: #000;
-        }
-
-        .per .avatar {
-            max-width: 100px;
-            float: left;
-        }
-
-            .per .avatar img {
-                border-radius: 100px;
-            }
-            .team-left{float:right;}
-    #footer {
-        background: url(header-background.png);
-        width: 100%;
-        height: 300px;
+    .projects h1 {
+        color: #00b4ff;
+        font-size: 20px;
+        text-align: center;
     }
 
-        #footer h2 {
-            text-align: center;
-            font-weight: normal;
-            color: #00b4ff;
-            font-size: 24px;
-            padding-top: 15px;
-        }
+.per {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #ccc;
+}
 
-            #footer h2 span {
-                color: #fff;
-            }
-
-        #footer h3 {
-            text-align: center;
-            font-size: 16px;
-            color: #00b4ff;
-            font-weight: normal;
-            margin-top: 8%;
-        }
-
-            #footer h3 span {
-                color: #fff;
-                font-size: 18px;
-            }
-    .div-table{display:table;float:left}
-    .col-row{
-        display:table-row;
+    .per .infoLeft {
+        float: left;
+        width: 50%;
+        text-align: right;
+        margin-right: 10px;
     }
-    .col-cell{display:table-cell;}
+
+    .per .infoRight {
+        float: left;
+        width: 50%;
+        margin-left: 10px;
+    }
+
+    .per .name {
+        font-size: 20px;
+        color: #000;
+    }
+
+    .per .avatar {
+        max-width: 100px;
+        float: left;
+    }
+
+        .per .avatar img {
+            border-radius: 100px;
+        }
+
+.team-left {
+    float: right;
+}
+
+#footer {
+    background: url(header-background.png);
+    width: 100%;
+    height: 300px;
+}
+
+    #footer h2 {
+        text-align: center;
+        font-weight: normal;
+        color: #00b4ff;
+        font-size: 24px;
+        padding-top: 15px;
+    }
+
+        #footer h2 span {
+            color: #fff;
+        }
+
+    #footer h3 {
+        text-align: center;
+        font-size: 16px;
+        color: #00b4ff;
+        font-weight: normal;
+        margin-top: 8%;
+    }
+
+        #footer h3 span {
+            color: #fff;
+            font-size: 18px;
+        }
+
+.div-table {
+    display: table;
+    float: left;
+}
+
+.col-row {
+    display: table-row;
+}
+
+.col-cell {
+    display: table-cell;
+}
+
+    .col-cell .content-web {
+        border-bottom: 1px solid #888;
+        border-right: 1px solid #888;
+        padding: 10px 0px 10px 20px;
+    }
+
+    .col-cell .content-graphic {
+        border-bottom: 1px solid #888;
+        padding: 10px 0px 10px 20px;
+    }
+
+    .col-cell .content-marketing {
+        border-right: 1px solid #888;
+        padding: 10px 0px 10px 20px;
+    }
+
+    .col-cell .content-domain {
+        padding: 10px 0px 10px 20px;
+    }
+
 /*tablet*/
 @media only screen and (max-width: 768px) {
-    .menu-top{width:100%;text-align:left;}
-    .banner{height:auto;padding-bottom:40px}
-    .banner .text{float:none;height:auto;width:100%;}
-    .banner .text .text-content{margin-top:0;}
-    .picture{float:none;height:auto;width:100%}
-    .picture .item{text-align:center;}
+    .menu-top {
+        width: 100%;
+        text-align: left;
+    }
+
+    .banner {
+        height: auto;
+        padding-bottom: 40px;
+    }
+
+        .banner .text {
+            float: none;
+            height: auto;
+            width: 100%;
+        }
+
+            .banner .text .text-content {
+                margin-top: 0;
+            }
+
+    .picture {
+        float: none;
+        height: auto;
+        width: 100%;
+    }
+
+    .col-cell {
+        display: block;
+    }
+
+        .col-cell .content-web {
+            display: inline-block;
+            border: 0;
+        }
+
+        .col-cell .content-graphic {
+            border: 0;
+        }
+
+        .col-cell .content-marketing {
+            border: 0;
+        }
 }
 /*iphone*/
 @media (max-width: 480px) {
-    .box{padding:20px 0 20px 0;}
-    .col50{width:100%;}
-    .content-box{padding-left:0;}
-    .box .col50:first-child{border:0;margin-left:0;}
-    .col50 .content-box:first-child{border:0;}
-    ul{text-align:center;}
-    .projects li{float:none;height:auto;}
-    .team-left{float:none;}
-    .per .infoLeft{float:none;text-align:center;margin:0;width:100%}
-    .per .avatar{float:none;margin:0 auto;text-align:center;}
-    .per .infoRight{float:none;width:100%;margin:0;text-align:center;}
-}
-/*min*/
-@media (max-width: 320px) {
+    .box {
+        padding: 20px 0 20px 0;
+    }
 
+    .col50 {
+        width: 100%;
+    }
+
+    .content-box {
+        padding-left: 0;
+    }
+
+    .box .col50:first-child {
+        border: 0;
+        margin-left: 0;
+    }
+
+    .col50 .content-box:first-child {
+        border: 0;
+    }
+
+    ul {
+        text-align: center;
+    }
+
+    .projects li {
+        float: none;
+        height: auto;
+    }
+
+    .team-left {
+        float: none;
+    }
+
+    .per .infoLeft {
+        float: none;
+        text-align: center;
+        margin: 0;
+        width: 100%;
+    }
+
+    .per .avatar {
+        float: none;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .per .infoRight {
+        float: none;
+        width: 100%;
+        margin: 0;
+        text-align: center;
+    }
 }
