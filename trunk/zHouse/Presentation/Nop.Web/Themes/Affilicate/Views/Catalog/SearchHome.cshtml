@@ -1,6 +1,5 @@
 ﻿@model Nop.Web.Models.Catalog.SearchModel
-@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id = "frmSearchHOme", style = "float:left;display:inline-block;" }))
-{
+
     <div class="topInfo">
         <div class="pinkBg">
             @*<div class="zhouse">
@@ -13,9 +12,11 @@
                     <li><a href="#tab2">Thuê nhà</a></li>
                 </ul>
                 <div class="tab-content">
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id = "frmSearchHOme-ban", style = "float:left;display:inline-block;" }))
+{
                     <div id="tab1" class="tab active">
-                        @Html.DropDownList("districtId", Model.Districts, new { @class = "box" })
-                        @*@Html.DropDownList("wardId", Model.Wards, new { @class = "box" })*@
+                        @Html.DropDownList("districtId", Model.Districts, new { @class = "box districtSelect" })
+                        @Html.DropDownList("wardId", Model.Wards, new { @class = "box" })
                         @Html.DropDownList("priceString", Model.PriceRange, new { @class = "box" })
                         @Html.DropDownList("areaString", Model.Areas, new { @class = "box" })
                         @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "box" })
@@ -24,8 +25,11 @@
                         @Html.TextBoxFor(model => model.Q, new { @class = "box", placeholder = "Mã tin" })
                         <input type="submit" style="width:50%" class="blueBtn" value="tìm kiếm">
                     </div>
+    }
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id = "frmSearchHOme-chothue", style = "float:left;display:inline-block;" }))
+{
                     <div id="tab2" class="tab">
-                        @Html.DropDownList("districtId", Model.Districts, new { @class = "box" })
+                        @Html.DropDownList("districtId", Model.Districts, new { @class = "box districtSelect" })
                         @Html.DropDownList("wardId", Model.Wards, new { @class = "box" })
                         @Html.DropDownList("priceString", Model.PriceRangeRent, new { @class = "box" })
                         @Html.DropDownList("areaString", Model.Areas, new { @class = "box" })
@@ -34,32 +38,49 @@
                         @Html.TextBoxFor(model => model.Q, new { @class = "box", placeholder = "Mã tin" })
                         <input type="submit" style="width:50%" class="blueBtn" value="tìm kiếm">
                     </div>
+}    
                 </div>
+
             </div>
             <div class="clearBoth"></div>
         </div>
     </div>
-}
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('.tabs .tab-links a').on('click', function (e) {
             var currentAttrValue = $(this).attr('href');
             // Show/Hide Tabs
             $('.tabs ' + currentAttrValue).show().siblings().hide();
+            $('.tabs ' + currentAttrValue).find("select")
             // Change/remove current tab to active
             $(this).parent('li').addClass('active').siblings().removeClass('active');
-
+            
             e.preventDefault();
         });
     });
     $(function () {
         //  $('#slider').nivoSlider({ effect: 'fade',controlNav:false });
-        $("#frmSearchHOme").submit(function () {
+        $("#frmSearchHOme-mua,#frmSearchHOme-thue").submit(function () {
             var data = $(this).serialize();
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {
                 window.location.href = d;
             })
             return false;
+        })
+        $(".districtSelect").change(function () {
+            var selectedId = $(this).val();
+            var ddlWard = $(this).parents("form").find("#wardId");          
+            ddlWard.html("<option value=0>Chọn phường</option>");           
+            $.get("@Url.Action("GetWardByDistrictId", "Common")", { id: selectedId }, function (d) {
+                $.each(d.Ward, function (i, o) {
+                    var option= $("<option/>").val(o.Id).text(o.Name);                   
+                    ddlWard.append(option);
+                })              
+            }).error(function () {
+
+                alert("Fail receice from server!");
+            })
         })
     })
 </script>
