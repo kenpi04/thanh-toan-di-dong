@@ -130,7 +130,7 @@ namespace Nop.Admin.Controllers
             model.AvailableStores.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
             foreach (var s in _storeService.GetAllStores())
                 model.AvailableStores.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString() });
-            var cates = _cateNewsService.GetAllCategories().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+            var cates = _cateNewsService.GetAllCategories(false).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
             ViewBag.ListCates = cates;
             return View(model);
         }
@@ -313,7 +313,7 @@ namespace Nop.Admin.Controllers
         }
 
         #endregion
-        #region News CategoryPr
+        #region News Category
 
         [HttpPost, GridAction(EnableCustomBinding = true)]
         public ActionResult NewsCateList(GridCommand command, int newsId)
@@ -321,7 +321,7 @@ namespace Nop.Admin.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
                 return AccessDeniedView();
 
-            var newsCategories = _cateNewsService.GetNewsCategoriesByNewsId(newsId, true);
+            var newsCategories = _cateNewsService.GetNewsCategoriesByNewsId(newsId, false);
             var newsCategoriesModel = newsCategories
                 .Select(x =>
                 {
