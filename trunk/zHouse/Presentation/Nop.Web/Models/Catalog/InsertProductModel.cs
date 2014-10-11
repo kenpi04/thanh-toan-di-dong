@@ -70,8 +70,14 @@ namespace Nop.Web.Models.Catalog
         public string Desription { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.FullAddress")]
         public string FullAddress { get; set; }
+        /// <summary>
+        /// dac diem noi bat / du an: Ten goi khac
+        /// </summary>
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.UserAgreementText")]
         public string DacDiemNoiBat { get; set; }
+        /// <summary>
+        /// Khuyen mai / du an:ten du an
+        /// </summary>
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Promotion")]
         public string Promotion { get; set; }
         public List<int> SelectedOptionAttributes { get; set; }
@@ -119,6 +125,22 @@ namespace Nop.Web.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.StatusList")]
         public List<SelectListItem> StatusList { get; set; }
 
+        /// <summary>
+        /// thoi gian khoi cong
+        /// </summary>
+        public string StartConstructionDate { get; set; }
+        /// <summary>
+        /// Thoi gian hoan thanh
+        /// </summary>
+        public string FinishConstructionDate { get; set; }
+        /// <summary>
+        /// chu dau tu: ManufacturerPartNumber
+        /// </summary>
+        public string ChuDauTu { get; set; }
+        /// <summary>
+        /// Don vi thi cong: Gtin
+        /// </summary>
+        public string DonViThiCong { get; set; }
         public Nop.Web.Models.Customer.CustomerNavigationModel NavigationModel { get; set; }
     }
 }
