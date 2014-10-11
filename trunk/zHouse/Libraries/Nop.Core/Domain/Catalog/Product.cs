@@ -135,12 +135,12 @@ namespace Nop.Core.Domain.Catalog
         public string Sku { get; set; }
 
         /// <summary>
-        /// Gets or sets the manufacturer part number
+        /// Chu dau tu
         /// </summary>
         public string ManufacturerPartNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets the Global Trade Item Number (GTIN). These identifiers include UPC (in North America), EAN (in Europe), JAN (in Japan), and ISBN (for books).
+        /// Don vi thi cong
         /// </summary>
         public string Gtin { get; set; }
 
@@ -432,12 +432,12 @@ namespace Nop.Core.Domain.Catalog
         public decimal Length { get; set; }
 
         /// <summary>
-        /// Gets or sets the width
+        /// Gets or sets the width / du an: so tang
         /// </summary>
         public decimal Width { get; set; }
 
         /// <summary>
-        /// Gets or sets the height
+        /// Gets or sets the height / du an: so block
         /// </summary>
         public decimal Height { get; set; }
 
@@ -553,11 +553,11 @@ namespace Nop.Core.Domain.Catalog
         /// <summary>
         /// Gets or sets the start construction date - ngay khoi cong
         /// </summary>
-        public DateTime? StartConstructionDate { get; set; }
+        public string StartConstructionDate { get; set; }
         /// <summary>
         /// Gets or sets the finish construction date - ngay hoan cong
         /// </summary>
-        public DateTime? FinishConstructionDate { get; set; }
+        public string FinishConstructionDate { get; set; }
         /// <summary>
         /// Khuyen mai
         /// </summary>
