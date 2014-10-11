@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Orders;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -24,20 +25,22 @@ namespace Nop.Services.Catalog
         /// </summary>
         /// <returns>Product collection</returns>
         IList<Product> GetAllProductsDisplayedOnHomePage();
-        
+        Task<IList<Product>> GetAllProductsDisplayedOnHomePageAsync();
+
         /// <summary>
         /// Gets product
         /// </summary>
         /// <param name="productId">Product identifier</param>
         /// <returns>Product</returns>
         Product GetProductById(int productId);
-        
+        Task<Product> GetProductByIdAsync(int productId);
         /// <summary>
         /// Gets products by identifier
         /// </summary>
         /// <param name="productIds">Product identifiers</param>
         /// <returns>Products</returns>
         IList<Product> GetProductsByIds(int[] productIds);
+        Task<IList<Product>> GetProductsByIdsAsync(int[] productIds);
 
         /// <summary>
         /// Inserts a product
@@ -190,7 +193,7 @@ namespace Nop.Services.Catalog
         /// <param name="sku">SKU</param>
         /// <returns>Product</returns>
         Product GetProductBySku(string sku);
-        
+        Task<Product> GetProductBySkuAsync(string sku);
         /// <summary>
         /// Adjusts inventory
         /// </summary>
@@ -341,6 +344,7 @@ namespace Nop.Services.Catalog
         /// <param name="productId">The product identifier</param>
         /// <returns>Product pictures</returns>
         IList<ProductPicture> GetProductPicturesByProductId(int productId);
+        Task<IList<ProductPicture>> GetProductPicturesByProductIdAsync(int productId);
 
         /// <summary>
         /// Gets a product picture
@@ -348,6 +352,7 @@ namespace Nop.Services.Catalog
         /// <param name="productPictureId">Product picture identifier</param>
         /// <returns>Product picture</returns>
         ProductPicture GetProductPictureById(int productPictureId);
+        Task<ProductPicture> GetProductPictureByIdAsync(int productPictureId);
 
         /// <summary>
         /// Inserts a product picture
@@ -378,12 +383,17 @@ namespace Nop.Services.Catalog
             DateTime? fromUtc = null, DateTime? toUtc = null,
             string message = null, int productId = 0);
 
+        Task<IList<ProductReview>> GetAllProductReviewsAsync(int customerId, bool? approved,
+            DateTime? fromUtc = null, DateTime? toUtc = null,
+            string message = null, int productId = 0);
+
         /// <summary>
         /// Gets product review
         /// </summary>
         /// <param name="productReviewId">Product review identifier</param>
         /// <returns>Product review</returns>
         ProductReview GetProductReviewById(int productReviewId);
+        Task<ProductReview> GetProductReviewByIdAsync(int productReviewId);
 
         /// <summary>
         /// Deletes a product review

@@ -22,9 +22,7 @@
         <div class="message-error">
             @Html.ValidationSummary(true)
         </div>
-        if (ViewBag.TemplateId == 1){@Html.Partial("_CreateOrUpdateProduct", Model)}
-        if (ViewBag.TemplateId == 2){@Html.Partial("_CreateOrUpdateProductRent", Model)}
-        if (ViewBag.TemplateId == 3){@Html.Partial("_CreateOrUpdateProductProject", Model)}
+        @Html.Partial("_CreateOrUpdateProduct", Model)
     }
 </div>
 <div class="clearBoth"></div>

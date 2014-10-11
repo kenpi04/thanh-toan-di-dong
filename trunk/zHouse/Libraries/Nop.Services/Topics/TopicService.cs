@@ -6,6 +6,7 @@ using Nop.Core.Domain.Stores;
 using Nop.Core.Domain.Topics;
 using Nop.Services.Events;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Topics
 {
@@ -64,6 +65,15 @@ namespace Nop.Services.Topics
 
             return _topicRepository.GetById(topicId);
         }
+        public virtual async Task<Topic> GetTopicByIdAsync(int topicId)
+        {
+            if (topicId == 0)
+                return null;
+            return await Task.Factory.StartNew<Topic>(() =>
+            {
+                return _topicRepository.GetById(topicId);
+            });
+        }
 
         /// <summary>
         /// Gets a topic
@@ -107,7 +117,45 @@ namespace Nop.Services.Topics
                 return query.FirstOrDefault();
             }
         }
+        public virtual async Task<Topic> GetTopicBySystemNameAsync(string systemName, int storeId)
+        {
+            if (String.IsNullOrEmpty(systemName))
+                return null;
+            return await Task.Factory.StartNew<Topic>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = _topicRepository.Table;
+                    query = query.Where(t => t.SystemName == systemName);
+                    query = query.OrderBy(t => t.Id);
 
+                    //Store mapping
+                    if (storeId > 0)
+                    {
+                        query = from t in query
+                                join sm in _storeMappingRepository.Table
+                                on new { c1 = t.Id, c2 = "Topic" } equals new { c1 = sm.EntityId, c2 = sm.EntityName } into t_sm
+                                from sm in t_sm.DefaultIfEmpty()
+                                where !t.LimitedToStores || storeId == sm.StoreId
+                                select t;
+
+                        //only distinct items (group by ID)
+                        query = from t in query
+                                group t by t.Id
+                                    into tGroup
+                                    orderby tGroup.Key
+                                    select tGroup.FirstOrDefault();
+                        query = query.OrderBy(t => t.Id);
+                    }
+
+                    return query.FirstOrDefault();
+                }
+            });
+        }
         /// <summary>
         /// Gets all topics
         /// </summary>
@@ -148,7 +196,44 @@ namespace Nop.Services.Topics
                 return query.ToList();
             }
         }
+        public virtual async Task<IList<Topic>> GetAllTopicsAsync(int storeId, int groupId = 0)
+        {
+            return await Task.Factory.StartNew<IList<Topic>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = _topicRepository.Table;
+                    query = query.OrderBy(t => t.SystemName);
+                    if (groupId > 0)
+                        query = query.Where(x => x.GroupId == groupId);
 
+                    //Store mapping
+                    if (storeId > 0)
+                    {
+                        query = from t in query
+                                join sm in _storeMappingRepository.Table
+                                on new { c1 = t.Id, c2 = "Topic" } equals new { c1 = sm.EntityId, c2 = sm.EntityName } into t_sm
+                                from sm in t_sm.DefaultIfEmpty()
+                                where !t.LimitedToStores || storeId == sm.StoreId
+                                select t;
+
+                        //only distinct items (group by ID)
+                        query = from t in query
+                                group t by t.Id
+                                    into tGroup
+                                    orderby tGroup.Key
+                                    select tGroup.FirstOrDefault();
+                        query = query.OrderBy(t => t.SystemName);
+                    }
+
+                    return query.ToList();
+                }
+            });
+        }
         /// <summary>
         /// Inserts a topic
         /// </summary>

@@ -18,6 +18,7 @@ using Nop.Core.Domain.Shipping;
 using Nop.Services.Common;
 using Nop.Services.Events;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Customers
 {
@@ -295,6 +296,154 @@ namespace Nop.Services.Customers
                 return customers;
             }
         }
+        public virtual async Task<IPagedList<Customer>> GetAllCustomersAsync(DateTime? createdFromUtc = null,
+            DateTime? createdToUtc = null, int affiliateId = 0, int vendorId = 0,
+            int[] customerRoleIds = null, string email = null, string username = null,
+            string firstName = null, string lastName = null,
+            int dayOfBirth = 0, int monthOfBirth = 0,
+            string company = null, string phone = null, string zipPostalCode = null,
+            bool loadOnlyWithShoppingCart = false, ShoppingCartType? sct = null,
+            int pageIndex = 0, int pageSize = 2147483647)
+        {
+            return await Task.Factory.StartNew<IPagedList<Customer>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = _customerRepository.Table;
+                    if (createdFromUtc.HasValue)
+                        query = query.Where(c => createdFromUtc.Value <= c.CreatedOnUtc);
+                    if (createdToUtc.HasValue)
+                        query = query.Where(c => createdToUtc.Value >= c.CreatedOnUtc);
+                    if (affiliateId > 0)
+                        query = query.Where(c => affiliateId == c.AffiliateId);
+                    if (vendorId > 0)
+                        query = query.Where(c => vendorId == c.VendorId);
+                    query = query.Where(c => !c.Deleted);
+                    if (customerRoleIds != null && customerRoleIds.Length > 0)
+                        query = query.Where(c => c.CustomerRoles.Select(cr => cr.Id).Intersect(customerRoleIds).Any());
+                    if (!String.IsNullOrWhiteSpace(email))
+                        query = query.Where(c => c.Email.Contains(email));
+                    if (!String.IsNullOrWhiteSpace(username))
+                        query = query.Where(c => c.Username.Contains(username));
+                    if (!String.IsNullOrWhiteSpace(firstName))
+                    {
+                        query = query
+                            .Join(_gaRepository.Table, x => x.Id, y => y.EntityId, (x, y) => new { Customer = x, Attribute = y })
+                            .Where((z => z.Attribute.KeyGroup == "Customer" &&
+                                z.Attribute.Key == SystemCustomerAttributeNames.FirstName &&
+                                z.Attribute.Value.Contains(firstName)))
+                            .Select(z => z.Customer);
+                    }
+                    if (!String.IsNullOrWhiteSpace(lastName))
+                    {
+                        query = query
+                            .Join(_gaRepository.Table, x => x.Id, y => y.EntityId, (x, y) => new { Customer = x, Attribute = y })
+                            .Where((z => z.Attribute.KeyGroup == "Customer" &&
+                                z.Attribute.Key == SystemCustomerAttributeNames.LastName &&
+                                z.Attribute.Value.Contains(lastName)))
+                            .Select(z => z.Customer);
+                    }
+                    //date of birth is stored as a string into database.
+                    //we also know that date of birth is stored in the following format YYYY-MM-DD (for example, 1983-02-18).
+                    //so let's search it as a string
+                    if (dayOfBirth > 0 && monthOfBirth > 0)
+                    {
+                        //both are specified
+                        string dateOfBirthStr = monthOfBirth.ToString("00", CultureInfo.InvariantCulture) + "-" + dayOfBirth.ToString("00", CultureInfo.InvariantCulture);
+                        //EndsWith is not supported by SQL Server Compact
+                        //so let's use the following workaround http://social.msdn.microsoft.com/Forums/is/sqlce/thread/0f810be1-2132-4c59-b9ae-8f7013c0cc00
+
+                        //we also cannot use Length function in SQL Server Compact (not supported in this context)
+                        //z.Attribute.Value.Length - dateOfBirthStr.Length = 5
+                        //dateOfBirthStr.Length = 5
+                        query = query
+                            .Join(_gaRepository.Table, x => x.Id, y => y.EntityId, (x, y) => new { Customer = x, Attribute = y })
+                            .Where((z => z.Attribute.KeyGroup == "Customer" &&
+                                z.Attribute.Key == SystemCustomerAttributeNames.DateOfBirth &&
+                                z.Attribute.Value.Substring(5, 5) == dateOfBirthStr))
+                            .Select(z => z.Customer);
+                    }
+                    else if (dayOfBirth > 0)
+                    {
+                        //only day is specified
+                        string dateOfBirthStr = dayOfBirth.ToString("00", CultureInfo.InvariantCulture);
+                        //EndsWith is not supported by SQL Server Compact
+                        //so let's use the following workaround http://social.msdn.microsoft.com/Forums/is/sqlce/thread/0f810be1-2132-4c59-b9ae-8f7013c0cc00
+
+                        //we also cannot use Length function in SQL Server Compact (not supported in this context)
+                        //z.Attribute.Value.Length - dateOfBirthStr.Length = 8
+                        //dateOfBirthStr.Length = 2
+                        query = query
+                            .Join(_gaRepository.Table, x => x.Id, y => y.EntityId, (x, y) => new { Customer = x, Attribute = y })
+                            .Where((z => z.Attribute.KeyGroup == "Customer" &&
+                                z.Attribute.Key == SystemCustomerAttributeNames.DateOfBirth &&
+                                z.Attribute.Value.Substring(8, 2) == dateOfBirthStr))
+                            .Select(z => z.Customer);
+                    }
+                    else if (monthOfBirth > 0)
+                    {
+                        //only month is specified
+                        string dateOfBirthStr = "-" + monthOfBirth.ToString("00", CultureInfo.InvariantCulture) + "-";
+                        query = query
+                            .Join(_gaRepository.Table, x => x.Id, y => y.EntityId, (x, y) => new { Customer = x, Attribute = y })
+                            .Where((z => z.Attribute.KeyGroup == "Customer" &&
+                                z.Attribute.Key == SystemCustomerAttributeNames.DateOfBirth &&
+                                z.Attribute.Value.Contains(dateOfBirthStr)))
+                            .Select(z => z.Customer);
+                    }
+                    //search by company
+                    if (!String.IsNullOrWhiteSpace(company))
+                    {
+                        query = query
+                            .Join(_gaRepository.Table, x => x.Id, y => y.EntityId, (x, y) => new { Customer = x, Attribute = y })
+                            .Where((z => z.Attribute.KeyGroup == "Customer" &&
+                                z.Attribute.Key == SystemCustomerAttributeNames.Company &&
+                                z.Attribute.Value.Contains(company)))
+                            .Select(z => z.Customer);
+                    }
+                    //search by phone
+                    if (!String.IsNullOrWhiteSpace(phone))
+                    {
+                        query = query
+                            .Join(_gaRepository.Table, x => x.Id, y => y.EntityId, (x, y) => new { Customer = x, Attribute = y })
+                            .Where((z => z.Attribute.KeyGroup == "Customer" &&
+                                z.Attribute.Key == SystemCustomerAttributeNames.Phone &&
+                                z.Attribute.Value.Contains(phone)))
+                            .Select(z => z.Customer);
+                    }
+                    //search by zip
+                    if (!String.IsNullOrWhiteSpace(zipPostalCode))
+                    {
+                        query = query
+                            .Join(_gaRepository.Table, x => x.Id, y => y.EntityId, (x, y) => new { Customer = x, Attribute = y })
+                            .Where((z => z.Attribute.KeyGroup == "Customer" &&
+                                z.Attribute.Key == SystemCustomerAttributeNames.ZipPostalCode &&
+                                z.Attribute.Value.Contains(zipPostalCode)))
+                            .Select(z => z.Customer);
+                    }
+
+                    if (loadOnlyWithShoppingCart)
+                    {
+                        int? sctId = null;
+                        if (sct.HasValue)
+                            sctId = (int)sct.Value;
+
+                        query = sct.HasValue ?
+                            query.Where(c => c.ShoppingCartItems.Any(x => x.ShoppingCartTypeId == sctId)) :
+                            query.Where(c => c.ShoppingCartItems.Any());
+                    }
+
+                    query = query.OrderByDescending(c => c.CreatedOnUtc);
+
+                    var customers = new PagedList<Customer>(query, pageIndex, pageSize);
+                    return customers;
+                }
+            });
+        }
 
         /// <summary>
         /// Gets all customers by customer format (including deleted ones)
@@ -316,6 +465,25 @@ namespace Nop.Services.Customers
                 var customers = query.ToList();
                 return customers;
             }
+        }
+        public virtual async Task<IList<Customer>> GetAllCustomersByPasswordFormatAsync(PasswordFormat passwordFormat)
+        {
+            int passwordFormatId = (int)passwordFormat;
+            return await Task.Factory.StartNew<IList<Customer>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = _customerRepository.Table;
+                    query = query.Where(c => c.PasswordFormatId == passwordFormatId);
+                    query = query.OrderByDescending(c => c.CreatedOnUtc);
+                    var customers = query.ToList();
+                    return customers;
+                }
+            });
         }
 
         /// <summary>
@@ -345,6 +513,29 @@ namespace Nop.Services.Customers
                 var customers = new PagedList<Customer>(query, pageIndex, pageSize);
                 return customers;
             }
+        }
+        public virtual async Task<IPagedList<Customer>> GetOnlineCustomersAsync(DateTime lastActivityFromUtc,
+            int[] customerRoleIds, int pageIndex, int pageSize)
+        {
+            return await Task.Factory.StartNew<IPagedList<Customer>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = _customerRepository.Table;
+                    query = query.Where(c => lastActivityFromUtc <= c.LastActivityDateUtc);
+                    query = query.Where(c => !c.Deleted);
+                    if (customerRoleIds != null && customerRoleIds.Length > 0)
+                        query = query.Where(c => c.CustomerRoles.Select(cr => cr.Id).Intersect(customerRoleIds).Any());
+
+                    query = query.OrderByDescending(c => c.LastActivityDateUtc);
+                    var customers = new PagedList<Customer>(query, pageIndex, pageSize);
+                    return customers;
+                }
+            });
         }
 
         /// <summary>
@@ -384,6 +575,15 @@ namespace Nop.Services.Customers
             
             return _customerRepository.GetById(customerId);
         }
+        public virtual async Task<Customer> GetCustomerByIdAsync(int customerId)
+        {
+            if (customerId == 0)
+                return null;
+            return await Task.Factory.StartNew<Customer>(() =>
+            {
+                return _customerRepository.GetById(customerId);
+            });
+        }
 
         /// <summary>
         /// Get customers by identifiers
@@ -409,6 +609,27 @@ namespace Nop.Services.Customers
             }
             return sortedCustomers;
         }
+        public virtual async Task<IList<Customer>> GetCustomersByIdsAsync(int[] customerIds)
+        {
+            if (customerIds == null || customerIds.Length == 0)
+                return new List<Customer>();
+            return await Task.Factory.StartNew<IList<Customer>>(() =>
+            {
+                var query = from c in _customerRepository.Table
+                            where customerIds.Contains(c.Id)
+                            select c;
+                var customers = query.ToList();
+                //sort by passed identifiers
+                var sortedCustomers = new List<Customer>();
+                foreach (int id in customerIds)
+                {
+                    var customer = customers.Find(x => x.Id == id);
+                    if (customer != null)
+                        sortedCustomers.Add(customer);
+                }
+                return sortedCustomers;
+            });
+        }
 
         /// <summary>
         /// Gets a customer by GUID
@@ -432,6 +653,27 @@ namespace Nop.Services.Customers
                 var customer = query.FirstOrDefault();
                 return customer;
             }
+        }
+        public virtual async Task<Customer> GetCustomerByGuidAsync(Guid customerGuid)
+        {
+            if (customerGuid == Guid.Empty)
+                return null;
+            return await Task.Factory.StartNew<Customer>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from c in _customerRepository.Table
+                                where c.CustomerGuid == customerGuid
+                                orderby c.Id
+                                select c;
+                    var customer = query.FirstOrDefault();
+                    return customer;
+                }
+            });
         }
 
         /// <summary>
@@ -457,6 +699,27 @@ namespace Nop.Services.Customers
                 return customer;
             }
         }
+        public virtual async Task<Customer> GetCustomerByEmailAsync(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return null;
+            return await Task.Factory.StartNew<Customer>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from c in _customerRepository.Table
+                                orderby c.Id
+                                where c.Email == email
+                                select c;
+                    var customer = query.FirstOrDefault();
+                    return customer;
+                }
+            });
+        }
 
         /// <summary>
         /// Get customer by system name
@@ -480,6 +743,27 @@ namespace Nop.Services.Customers
                 var customer = query.FirstOrDefault();
                 return customer;
             }
+        }
+        public virtual async Task<Customer> GetCustomerBySystemNameAsync(string systemName)
+        {
+            if (string.IsNullOrWhiteSpace(systemName))
+                return null;
+            return await Task.Factory.StartNew<Customer>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from c in _customerRepository.Table
+                                orderby c.Id
+                                where c.SystemName == systemName
+                                select c;
+                    var customer = query.FirstOrDefault();
+                    return customer;
+                }
+            });
         }
 
         /// <summary>
@@ -505,6 +789,27 @@ namespace Nop.Services.Customers
                 return customer;
             }
         }
+        public virtual async Task<Customer> GetCustomerByUsernameAsync(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                return null;
+            return await Task.Factory.StartNew<Customer>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from c in _customerRepository.Table
+                                orderby c.Id
+                                where c.Username == username
+                                select c;
+                    var customer = query.FirstOrDefault();
+                    return customer;
+                }
+            });
+        }
         
         /// <summary>
         /// Insert a guest customer
@@ -522,6 +827,26 @@ namespace Nop.Services.Customers
 
             //add to 'Guests' role
             var guestRole = GetCustomerRoleBySystemName(SystemCustomerRoleNames.Guests);
+            if (guestRole == null)
+                throw new NopException("'Guests' role could not be loaded");
+            customer.CustomerRoles.Add(guestRole);
+
+            _customerRepository.Insert(customer);
+
+            return customer;
+        }
+        public virtual async Task<Customer> InsertGuestCustomerAsync()
+        {
+            var customer = new Customer()
+            {
+                CustomerGuid = Guid.NewGuid(),
+                Active = true,
+                CreatedOnUtc = DateTime.UtcNow,
+                LastActivityDateUtc = DateTime.UtcNow,
+            };
+
+            //add to 'Guests' role
+            var guestRole = await GetCustomerRoleBySystemNameAsync(SystemCustomerRoleNames.Guests);
             if (guestRole == null)
                 throw new NopException("'Guests' role could not be loaded");
             customer.CustomerRoles.Add(guestRole);
@@ -757,6 +1082,15 @@ namespace Nop.Services.Customers
 
             return _customerRoleRepository.GetById(customerRoleId);
         }
+        public virtual async Task<CustomerRole> GetCustomerRoleByIdAsync(int customerRoleId)
+        {
+            if (customerRoleId == 0)
+                return null;
+            return await Task.Factory.StartNew<CustomerRole>(() =>
+            {
+                return _customerRoleRepository.GetById(customerRoleId);
+            });
+        }
 
         /// <summary>
         /// Gets a customer role
@@ -786,6 +1120,32 @@ namespace Nop.Services.Customers
                 }
             });
         }
+        public virtual async Task<CustomerRole> GetCustomerRoleBySystemNameAsync(string systemName)
+        {
+            if (String.IsNullOrWhiteSpace(systemName))
+                return null;
+            
+            string key = string.Format(CUSTOMERROLES_BY_SYSTEMNAME_KEY, systemName);
+            return await Task.Factory.StartNew<CustomerRole>(() =>
+            {
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = from cr in _customerRoleRepository.Table
+                                    orderby cr.Id
+                                    where cr.SystemName == systemName
+                                    select cr;
+                        var customerRole = query.FirstOrDefault();
+                        return customerRole;
+                    }
+                });
+            });
+        }
 
         /// <summary>
         /// Gets all customer roles
@@ -810,6 +1170,29 @@ namespace Nop.Services.Customers
                     var customerRoles = query.ToList();
                     return customerRoles;
                 }
+            });
+        }
+        public virtual async Task<IList<CustomerRole>> GetAllCustomerRolesAsync(bool showHidden = false)
+        {
+            string key = string.Format(CUSTOMERROLES_ALL_KEY, showHidden);
+            return await Task.Factory.StartNew<IList<CustomerRole>>(() =>
+            {
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = from cr in _customerRoleRepository.Table
+                                    orderby cr.Name
+                                    where (showHidden || cr.Active)
+                                    select cr;
+                        var customerRoles = query.ToList();
+                        return customerRoles;
+                    }
+                });
             });
         }
         

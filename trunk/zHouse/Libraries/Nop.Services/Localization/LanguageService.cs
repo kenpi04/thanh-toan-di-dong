@@ -7,6 +7,7 @@ using Nop.Core.Domain.Localization;
 using Nop.Services.Configuration;
 using Nop.Services.Events;
 using Nop.Services.Stores;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Localization
 {
@@ -162,6 +163,55 @@ namespace Nop.Services.Localization
             }
             return languages;
         }
+        public virtual async Task<IList<Language>> GetAllLanguagesAsync(bool showHidden = false, int storeId = 0)
+        {
+            string key = string.Format(LANGUAGES_ALL_KEY, showHidden);
+            var languages = await Task.Factory.StartNew<List<Language>>(() =>
+            {
+                return _cacheManager.Get(key, () =>
+                {
+                    var query = _languageRepository.Table;
+                    if (!showHidden)
+                        query = query.Where(l => l.Published);
+                    query = query.OrderBy(l => l.DisplayOrder);
+
+                    //Store mapping
+                    //usually we don't have more than 2-3 languages
+                    //and the code below could generate too complex and heavy SQL code
+                    //so let's load all languages here
+                    //and then filter them using "_storeMappingService".
+                    //if (storeId > 0)
+                    //{
+                    //    query = from l in query
+                    //            join sm in _storeMappingRepository.Table
+                    //            on new { c1 = l.Id, c2 = "Language" } equals new { c1 = sm.EntityId, c2 = sm.EntityName } into l_sm
+                    //            from sm in l_sm.DefaultIfEmpty()
+                    //            where !l.LimitedToStores || storeId == sm.StoreId
+                    //            select l;
+
+                    //    //only distinct languages (group by ID)
+                    //    query = from l in query
+                    //            group l by l.Id
+                    //            into lGroup
+                    //            orderby lGroup.Key
+                    //            select lGroup.FirstOrDefault();
+                    //    query = query.OrderBy(l => l.DisplayOrder);
+                    //}
+
+                    return query.ToList();
+                });
+            });
+
+            
+            //store mapping
+            if (storeId > 0)
+            {
+                languages = languages
+                    .Where(l => _storeMappingService.AuthorizeAsync(l, storeId).Result)
+                    .ToList();
+            }
+            return languages;
+        }
 
         /// <summary>
         /// Gets a language
@@ -175,6 +225,17 @@ namespace Nop.Services.Localization
             
             string key = string.Format(LANGUAGES_BY_ID_KEY, languageId);
             return _cacheManager.Get(key, () => { return _languageRepository.GetById(languageId); });
+        }
+        public virtual async Task<Language> GetLanguageByIdAsync(int languageId)
+        {
+            if (languageId == 0)
+                return null;
+
+            string key = string.Format(LANGUAGES_BY_ID_KEY, languageId);
+            return await Task.Factory.StartNew<Language>(() =>
+            {
+                return _cacheManager.Get(key, () => { return _languageRepository.GetById(languageId); });
+            });
         }
 
         /// <summary>

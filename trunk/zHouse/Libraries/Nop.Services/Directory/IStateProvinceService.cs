@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Nop.Core.Domain.Directory;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Directory
 {
@@ -20,14 +21,14 @@ namespace Nop.Services.Directory
         /// <param name="stateProvinceId">The state/province identifier</param>
         /// <returns>State/province</returns>
         StateProvince GetStateProvinceById(int stateProvinceId);
-
+        Task<StateProvince> GetStateProvinceByIdAsync(int stateProvinceId);
         /// <summary>
         /// Gets a state/province 
         /// </summary>
         /// <param name="abbreviation">The state/province abbreviation</param>
         /// <returns>State/province</returns>
         StateProvince GetStateProvinceByAbbreviation(string abbreviation);
-        
+        Task<StateProvince> GetStateProvinceByAbbreviationAsync(string abbreviation);
         /// <summary>
         /// Gets a state/province collection by country identifier
         /// </summary>
@@ -35,7 +36,7 @@ namespace Nop.Services.Directory
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>State/province collection</returns>
         IList<StateProvince> GetStateProvincesByCountryId(int countryId, bool showHidden = false);
-
+        Task<IList<StateProvince>> GetStateProvincesByCountryIdAsync(int countryId, bool showHidden = false);
         /// <summary>
         /// Inserts a state/province
         /// </summary>
@@ -49,8 +50,9 @@ namespace Nop.Services.Directory
         void UpdateStateProvince(StateProvince stateProvince);
 
         IList<District> GetDistHCM(int stateId = 23, bool showHidden = false);
-
+        Task<IList<District>> GetDistrictByStateProvinceIdAsync(int stateId = 23, bool showHidden = false);
         District GetDistrictById(int districtId);
+        Task<District> GetDistrictByIdAsync(int districtId);
 
         void InsertDistrict(District district);
 
@@ -59,7 +61,9 @@ namespace Nop.Services.Directory
         void DeleteDistrict(District district);
 
         IList<Ward> GetWardByDistrictId(int districtId);
+        Task<IList<Ward>> GetWardByDistrictIdAsync(int districtId);
 
         IList<Street> GetStreetByDistrictId(int districtId);
+        Task<IList<Street>> GetStreetByDistrictIdAsync(int districtId);
     }
 }

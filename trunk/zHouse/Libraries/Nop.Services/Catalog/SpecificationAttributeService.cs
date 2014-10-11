@@ -7,6 +7,7 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Services.Events;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -83,7 +84,13 @@ namespace Nop.Services.Catalog
 
             return _specificationAttributeRepository.GetById(specificationAttributeId);
         }
+        public virtual async Task<SpecificationAttribute> GetSpecificationAttributeByIdAsync(int specificationAttributeId)
+        {
+            if (specificationAttributeId == 0)
+                return null;
 
+            return await Task.Factory.StartNew<SpecificationAttribute>(() => { return _specificationAttributeRepository.GetById(specificationAttributeId); });
+        }
         /// <summary>
         /// Gets specification attributes
         /// </summary>
@@ -105,7 +112,24 @@ namespace Nop.Services.Catalog
                 return specificationAttributes;
             }
         }
-
+        public virtual async Task<IPagedList<SpecificationAttribute>> GetSpecificationAttributesAsync(int pageIndex = 0, int pageSize = int.MaxValue)
+        {
+            return await Task.Factory.StartNew<IPagedList<SpecificationAttribute>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from sa in _specificationAttributeRepository.Table
+                                orderby sa.DisplayOrder
+                                select sa;
+                    var specificationAttributes = new PagedList<SpecificationAttribute>(query, pageIndex, pageSize);
+                    return specificationAttributes;
+                }
+            });
+        }
         /// <summary>
         /// Deletes a specification attribute
         /// </summary>
@@ -173,7 +197,15 @@ namespace Nop.Services.Catalog
 
             return _specificationAttributeOptionRepository.GetById(specificationAttributeOptionId);
         }
-
+        public virtual async Task<SpecificationAttributeOption> GetSpecificationAttributeOptionByIdAsync(int specificationAttributeOptionId)
+        {
+            if (specificationAttributeOptionId == 0)
+                return null;
+            return await Task.Factory.StartNew<SpecificationAttributeOption>(() =>
+            {
+                return _specificationAttributeOptionRepository.GetById(specificationAttributeOptionId);
+            });
+        }
         /// <summary>
         /// Gets a specification attribute option by specification attribute id
         /// </summary>
@@ -198,7 +230,28 @@ namespace Nop.Services.Catalog
                 }
             });
         }
-
+        public virtual async Task<IList<SpecificationAttributeOption>> GetSpecificationAttributeOptionsBySpecificationAttributeAsync(int specificationAttributeId)
+        {
+            return await Task.Factory.StartNew<IList<SpecificationAttributeOption>>(() =>
+            {
+                return _cacheManager.Get("nop.SPA.bySAid." + specificationAttributeId, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = from sao in _specificationAttributeOptionRepository.Table
+                                    orderby sao.DisplayOrder
+                                    where sao.SpecificationAttributeId == specificationAttributeId
+                                    select sao;
+                        var specificationAttributeOptions = query.ToList();
+                        return specificationAttributeOptions;
+                    }
+                });
+            });
+        }
         /// <summary>
         /// Deletes a specification attribute option
         /// </summary>
@@ -280,7 +333,10 @@ namespace Nop.Services.Catalog
         {
             return GetProductSpecificationAttributesByProductId(productId, null, null);
         }
-
+        public virtual async Task<IList<ProductSpecificationAttribute>> GetProductSpecificationAttributesByProductIdAsync(int productId)
+        {
+            return await GetProductSpecificationAttributesByProductIdAsync(productId, null, null);
+        }
         /// <summary>
         /// Gets a product specification attribute mapping collection
         /// </summary>
@@ -320,7 +376,40 @@ namespace Nop.Services.Catalog
                 }
             });
         }
+        public virtual async Task<IList<ProductSpecificationAttribute>> GetProductSpecificationAttributesByProductIdAsync(int productId,
+            bool? allowFiltering, bool? showOnProductPage)
+        {
+            string allowFilteringCacheStr = "null";
+            if (allowFiltering.HasValue)
+                allowFilteringCacheStr = allowFiltering.ToString();
+            string showOnProductPageCacheStr = "null";
+            if (showOnProductPage.HasValue)
+                showOnProductPageCacheStr = showOnProductPage.ToString();
+            string key = string.Format(PRODUCTSPECIFICATIONATTRIBUTE_ALLBYPRODUCTID_KEY, productId, allowFilteringCacheStr, showOnProductPageCacheStr);
+            return await Task.Factory.StartNew<IList<ProductSpecificationAttribute>>(() =>
+            {
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = _productSpecificationAttributeRepository.Table;
+                        query = query.Where(psa => psa.ProductId == productId);
+                        if (allowFiltering.HasValue)
+                            query = query.Where(psa => psa.AllowFiltering == allowFiltering.Value);
+                        if (showOnProductPage.HasValue)
+                            query = query.Where(psa => psa.ShowOnProductPage == showOnProductPage.Value);
+                        query = query.OrderBy(psa => psa.DisplayOrder);
 
+                        var productSpecificationAttributes = query.ToList();
+                        return productSpecificationAttributes;
+                    }
+                });
+            });
+        }
         /// <summary>
         /// Gets a product specification attribute mapping 
         /// </summary>
@@ -333,7 +422,15 @@ namespace Nop.Services.Catalog
             
             return _productSpecificationAttributeRepository.GetById(productSpecificationAttributeId);
         }
-
+        public virtual async Task<ProductSpecificationAttribute> GetProductSpecificationAttributeByIdAsync(int productSpecificationAttributeId)
+        {
+            if (productSpecificationAttributeId == 0)
+                return null;
+            return await Task.Factory.StartNew<ProductSpecificationAttribute>(() =>
+            {
+                return _productSpecificationAttributeRepository.GetById(productSpecificationAttributeId);
+            });
+        }
         /// <summary>
         /// Inserts a product specification attribute mapping
         /// </summary>

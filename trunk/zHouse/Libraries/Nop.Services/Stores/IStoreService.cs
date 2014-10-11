@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Nop.Core.Domain.Stores;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Stores
 {
@@ -19,6 +20,7 @@ namespace Nop.Services.Stores
         /// </summary>
         /// <returns>Store collection</returns>
         IList<Store> GetAllStores();
+        Task<IList<Store>> GetAllStoresAsync();
 
         /// <summary>
         /// Gets a store 
@@ -26,6 +28,7 @@ namespace Nop.Services.Stores
         /// <param name="storeId">Store identifier</param>
         /// <returns>Store</returns>
         Store GetStoreById(int storeId);
+        Task<Store> GetStoreByIdAsync(int storeId);
 
         /// <summary>
         /// Inserts a store

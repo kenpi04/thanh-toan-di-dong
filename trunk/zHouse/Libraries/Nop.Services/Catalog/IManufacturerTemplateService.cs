@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Nop.Core.Domain.Catalog;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -19,6 +20,7 @@ namespace Nop.Services.Catalog
         /// </summary>
         /// <returns>Manufacturer templates</returns>
         IList<ManufacturerTemplate> GetAllManufacturerTemplates();
+        Task<IList<ManufacturerTemplate>> GetAllManufacturerTemplatesAsync();
 
         /// <summary>
         /// Gets a manufacturer template
@@ -26,6 +28,7 @@ namespace Nop.Services.Catalog
         /// <param name="manufacturerTemplateId">Manufacturer template identifier</param>
         /// <returns>Manufacturer template</returns>
         ManufacturerTemplate GetManufacturerTemplateById(int manufacturerTemplateId);
+        Task<ManufacturerTemplate> GetManufacturerTemplateByIdAsync(int manufacturerTemplateId);
 
         /// <summary>
         /// Inserts manufacturer template

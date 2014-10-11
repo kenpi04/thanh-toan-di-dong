@@ -7,6 +7,7 @@ using Nop.Core.Domain.Customers;
 using Nop.Core.Infrastructure;
 using Nop.Services.Common;
 using Nop.Services.Localization;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Customers
 {
@@ -23,6 +24,26 @@ namespace Nop.Services.Customers
                 throw new ArgumentNullException("customer");
             var firstName = customer.GetAttribute<string>(SystemCustomerAttributeNames.FirstName);
             var lastName = customer.GetAttribute<string>(SystemCustomerAttributeNames.LastName);
+
+            string fullName = "";
+            if (!String.IsNullOrWhiteSpace(firstName) && !String.IsNullOrWhiteSpace(lastName))
+                fullName = string.Format("{0} {1}", lastName, firstName);
+            else
+            {
+                if (!String.IsNullOrWhiteSpace(firstName))
+                    fullName = firstName;
+
+                if (!String.IsNullOrWhiteSpace(lastName))
+                    fullName = lastName;
+            }
+            return fullName;
+        }
+        public static async Task<string> GetFullNameAsync(this Customer customer)
+        {
+            if (customer == null)
+                throw new ArgumentNullException("customer");
+            var firstName = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.FirstName);
+            var lastName = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.LastName);
 
             string fullName = "";
             if (!String.IsNullOrWhiteSpace(firstName) && !String.IsNullOrWhiteSpace(lastName))
@@ -69,6 +90,42 @@ namespace Nop.Services.Customers
                     break;
                 case CustomerNameFormat.ShowFirstName:
                     result = customer.GetAttribute<string>(SystemCustomerAttributeNames.FirstName);
+                    break;
+                default:
+                    break;
+            }
+
+            if (stripTooLong && maxLength > 0)
+            {
+                result = CommonHelper.EnsureMaximumLength(result, maxLength);
+            }
+
+            return result;
+        }
+        public static async Task<string> FormatUserNameAsync(this Customer customer, bool stripTooLong = false, int maxLength = 0)
+        {
+            if (customer == null)
+                return string.Empty;
+
+            if (customer.IsGuest())
+            {
+                return await EngineContext.Current.Resolve<ILocalizationService>().GetResourceAsync("Customer.Guest");
+            }
+
+            string result = string.Empty;
+            switch (EngineContext.Current.Resolve<CustomerSettings>().CustomerNameFormat)
+            {
+                case CustomerNameFormat.ShowEmails:
+                    result = customer.Email;
+                    break;
+                case CustomerNameFormat.ShowUsernames:
+                    result = customer.Username;
+                    break;
+                case CustomerNameFormat.ShowFullNames:
+                    result = customer.GetFullName();
+                    break;
+                case CustomerNameFormat.ShowFirstName:
+                    result = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.FirstName);
                     break;
                 default:
                     break;

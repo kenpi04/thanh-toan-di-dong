@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Nop.Core.Domain.Directory;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Directory
 {
@@ -20,6 +21,7 @@ namespace Nop.Services.Directory
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Country collection</returns>
         IList<Country> GetAllCountries(bool showHidden = false);
+        Task<IList<Country>> GetAllCountriesAsync(bool showHidden = false);
 
         /// <summary>
         /// Gets all countries that allow billing
@@ -41,6 +43,7 @@ namespace Nop.Services.Directory
         /// <param name="countryId">Country identifier</param>
         /// <returns>Country</returns>
         Country GetCountryById(int countryId);
+        Task<Country> GetCountryByIdAsync(int countryId);
 
         /// <summary>
         /// Get countries by identifiers
@@ -48,6 +51,7 @@ namespace Nop.Services.Directory
         /// <param name="countryIds">Country identifiers</param>
         /// <returns>Countries</returns>
         IList<Country> GetCountriesByIds(int[] countryIds);
+        Task<IList<Country>> GetCountriesByIdsAsync(int[] countryIds);
 
         /// <summary>
         /// Gets a country by two letter ISO code

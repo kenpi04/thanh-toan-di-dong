@@ -6,6 +6,7 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Directory;
 using Nop.Services.Events;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Directory
 {
@@ -115,6 +116,29 @@ namespace Nop.Services.Directory
                 }
             });
         }
+        public virtual async Task<IList<Country>> GetAllCountriesAsync(bool showHidden = false)
+        {
+            string key = string.Format(COUNTRIES_ALL_KEY, showHidden);
+            return await Task.Factory.StartNew<IList<Country>>(() =>
+            {
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = from c in _countryRepository.Table
+                                    orderby c.DisplayOrder, c.Name
+                                    where showHidden || c.Published
+                                    select c;
+                        var countries = query.ToList();
+                        return countries;
+                    }
+                });
+            });
+        }
 
         /// <summary>
         /// Gets all countries that allow billing
@@ -180,6 +204,15 @@ namespace Nop.Services.Directory
 
             return _countryRepository.GetById(countryId);
         }
+        public virtual async Task<Country> GetCountryByIdAsync(int countryId)
+        {
+            if (countryId == 0)
+                return null;
+            return await Task.Factory.StartNew<Country>(() =>
+            {
+                return _countryRepository.GetById(countryId);
+            });
+        }
 
         /// <summary>
         /// Get countries by identifiers
@@ -210,6 +243,34 @@ namespace Nop.Services.Directory
                 }
                 return sortedCountries;
             }
+        }
+        public virtual async Task<IList<Country>> GetCountriesByIdsAsync(int[] countryIds)
+        {
+            if (countryIds == null || countryIds.Length == 0)
+                return new List<Country>();
+            return await Task.Factory.StartNew<IList<Country>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from c in _countryRepository.Table
+                                where countryIds.Contains(c.Id)
+                                select c;
+                    var countries = query.ToList();
+                    //sort by passed identifiers
+                    var sortedCountries = new List<Country>();
+                    foreach (int id in countryIds)
+                    {
+                        var country = countries.Find(x => x.Id == id);
+                        if (country != null)
+                            sortedCountries.Add(country);
+                    }
+                    return sortedCountries;
+                }
+            });
         }
 
         /// <summary>

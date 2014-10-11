@@ -7,6 +7,8 @@ using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Localization;
+using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Nop.Services.Localization
 {
@@ -77,14 +79,42 @@ namespace Nop.Services.Localization
         {
             if (entityId == 0 || string.IsNullOrEmpty(localeKeyGroup))
                 return new List<LocalizedProperty>();
-
-            var query = from lp in _localizedPropertyRepository.Table
-                        orderby lp.Id
-                        where lp.EntityId == entityId &&
-                              lp.LocaleKeyGroup == localeKeyGroup
-                        select lp;
-            var props = query.ToList();
-            return props;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+               {
+                   IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+               }
+               ))
+            {
+                var query = from lp in _localizedPropertyRepository.Table
+                            orderby lp.Id
+                            where lp.EntityId == entityId &&
+                                  lp.LocaleKeyGroup == localeKeyGroup
+                            select lp;
+                var props = query.ToList();
+                return props;
+            }
+        }
+        protected virtual async Task<IList<LocalizedProperty>> GetLocalizedPropertiesAsync(int entityId, string localeKeyGroup)
+        {
+            if (entityId == 0 || string.IsNullOrEmpty(localeKeyGroup))
+                return new List<LocalizedProperty>();
+            return await Task.Factory.StartNew<IList<LocalizedProperty>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from lp in _localizedPropertyRepository.Table
+                                orderby lp.Id
+                                where lp.EntityId == entityId &&
+                                      lp.LocaleKeyGroup == localeKeyGroup
+                                select lp;
+                    var props = query.ToList();
+                    return props;
+                }
+            });
         }
 
         /// <summary>
@@ -115,6 +145,35 @@ namespace Nop.Services.Localization
                     list.Add(localizedPropertyForCaching);
                 }
                 return list;
+            });
+        }
+        protected virtual async Task<IList<LocalizedPropertyForCaching>> GetAllLocalizedPropertiesCachedAsync()
+        {
+            return await Task.Factory.StartNew<IList<LocalizedPropertyForCaching>>(() =>
+            {
+                //cache
+                string key = string.Format(LOCALIZEDPROPERTY_ALL_KEY);
+                return _cacheManager.Get(key, () =>
+                {
+                    var query = from lp in _localizedPropertyRepository.Table
+                                select lp;
+                    var localizedProperties = query.ToList();
+                    var list = new List<LocalizedPropertyForCaching>();
+                    foreach (var lp in localizedProperties)
+                    {
+                        var localizedPropertyForCaching = new LocalizedPropertyForCaching()
+                        {
+                            Id = lp.Id,
+                            EntityId = lp.EntityId,
+                            LanguageId = lp.LanguageId,
+                            LocaleKeyGroup = lp.LocaleKeyGroup,
+                            LocaleKey = lp.LocaleKey,
+                            LocaleValue = lp.LocaleValue
+                        };
+                        list.Add(localizedPropertyForCaching);
+                    }
+                    return list;
+                });
             });
         }
 
@@ -164,6 +223,15 @@ namespace Nop.Services.Localization
 
             return _localizedPropertyRepository.GetById(localizedPropertyId);
         }
+        public virtual async Task<LocalizedProperty> GetLocalizedPropertyByIdAsync(int localizedPropertyId)
+        {
+            if (localizedPropertyId == 0)
+                return null;
+            return await Task.Factory.StartNew<LocalizedProperty>(() =>
+            {
+                return _localizedPropertyRepository.GetById(localizedPropertyId);
+            });
+        }
 
         /// <summary>
         /// Find localized value
@@ -202,18 +270,81 @@ namespace Nop.Services.Localization
                 string key = string.Format(LOCALIZEDPROPERTY_KEY, languageId, entityId, localeKeyGroup, localeKey);
                 return _cacheManager.Get(key, () =>
                 {
-                    var source = _localizedPropertyRepository.Table;
-                    var query = from lp in source
-                                where lp.LanguageId == languageId &&
-                                lp.EntityId == entityId &&
-                                lp.LocaleKeyGroup == localeKeyGroup &&
-                                lp.LocaleKey == localeKey
-                                select lp.LocaleValue;
-                    var localeValue = query.FirstOrDefault();
-                    //little hack here. nulls aren't cacheable so set it to ""
-                    if (localeValue == null)
-                        localeValue = "";
-                    return localeValue;
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+               {
+                   IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+               }
+               ))
+                    {
+                        var source = _localizedPropertyRepository.Table;
+                        var query = from lp in source
+                                    where lp.LanguageId == languageId &&
+                                    lp.EntityId == entityId &&
+                                    lp.LocaleKeyGroup == localeKeyGroup &&
+                                    lp.LocaleKey == localeKey
+                                    select lp.LocaleValue;
+                        var localeValue = query.FirstOrDefault();
+                        //little hack here. nulls aren't cacheable so set it to ""
+                        if (localeValue == null)
+                            localeValue = "";
+                        return localeValue;
+                    }
+                });
+            }
+        }
+        public virtual async Task<string> GetLocalizedValueAsync(int languageId, int entityId, string localeKeyGroup, string localeKey)
+        {
+            if (_localizationSettings.LoadAllLocalizedPropertiesOnStartup)
+            {
+                string key = string.Format(LOCALIZEDPROPERTY_KEY, languageId, entityId, localeKeyGroup, localeKey);
+                return await Task.Factory.StartNew<string>(() =>
+                {
+                    return _cacheManager.Get(key, () =>
+                    {
+                        //load all records (we know they are cached)
+                        var source = GetAllLocalizedPropertiesCached();
+                        var query = from lp in source
+                                    where lp.LanguageId == languageId &&
+                                    lp.EntityId == entityId &&
+                                    lp.LocaleKeyGroup == localeKeyGroup &&
+                                    lp.LocaleKey == localeKey
+                                    select lp.LocaleValue;
+                        var localeValue = query.FirstOrDefault();
+                        //little hack here. nulls aren't cacheable so set it to ""
+                        if (localeValue == null)
+                            localeValue = "";
+                        return localeValue;
+                    });
+                });
+            }
+            else
+            {
+                //gradual loading
+                string key = string.Format(LOCALIZEDPROPERTY_KEY, languageId, entityId, localeKeyGroup, localeKey);
+                return await Task.Factory.StartNew<string>(() =>
+                {
+                    return _cacheManager.Get(key, () =>
+                    {
+                        using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                        {
+                            var source = _localizedPropertyRepository.Table;
+                            var query = from lp in source
+                                        where lp.LanguageId == languageId &&
+                                        lp.EntityId == entityId &&
+                                        lp.LocaleKeyGroup == localeKeyGroup &&
+                                        lp.LocaleKey == localeKey
+                                        select lp.LocaleValue;
+                            var localeValue = query.FirstOrDefault();
+                            //little hack here. nulls aren't cacheable so set it to ""
+                            if (localeValue == null)
+                                localeValue = "";
+                            return localeValue;
+                        }
+                    });
                 });
             }
         }
@@ -299,7 +430,7 @@ namespace Nop.Services.Localization
                 lp.LocaleKey.Equals(localeKey, StringComparison.InvariantCultureIgnoreCase)); //should be culture invariant
 
             string localeValueStr = CommonHelper.To<string>(localeValue);
-            
+
             if (prop != null)
             {
                 if (string.IsNullOrWhiteSpace(localeValueStr))

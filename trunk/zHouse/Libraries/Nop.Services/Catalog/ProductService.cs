@@ -16,6 +16,7 @@ using Nop.Services.Events;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -179,6 +180,28 @@ namespace Nop.Services.Catalog
                 return products;
             }
         }
+        public virtual async Task<IList<Product>> GetAllProductsDisplayedOnHomePageAsync()
+        {
+            return await Task.Factory.StartNew<IList<Product>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from p in _productRepository.Table
+                                orderby p.Name
+                                where p.Published &&
+                                !p.Deleted &&
+                                p.ShowOnHomePage &&
+                                p.Status.Equals((short)ProductStatusEnum.Approved)//only approved
+                                select p;
+                    var products = query.ToList();
+                    return products;
+                }
+            });
+        }
 
         /// <summary>
         /// Gets product
@@ -192,6 +215,16 @@ namespace Nop.Services.Catalog
 
             string key = string.Format(PRODUCTS_BY_ID_KEY, productId);
             return _cacheManager.Get(key, () => { return _productRepository.GetById(productId); });
+        }
+        public virtual async Task<Product> GetProductByIdAsync(int productId)
+        {
+            if (productId == 0)
+                return null;
+            return await Task.Factory.StartNew<Product>(() =>
+            {
+                string key = string.Format(PRODUCTS_BY_ID_KEY, productId);
+                return _cacheManager.Get(key, () => { return _productRepository.GetById(productId); });
+            });
         }
 
         /// <summary>
@@ -224,6 +257,35 @@ namespace Nop.Services.Catalog
                 }
                 return sortedProducts;
             }
+        }
+        public virtual async Task<IList<Product>> GetProductsByIdsAsync(int[] productIds)
+        {
+            return await Task.Factory.StartNew<IList<Product>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    if (productIds == null || productIds.Length == 0)
+                        return new List<Product>();
+
+                    var query = from p in _productRepository.Table
+                                where productIds.Contains(p.Id)
+                                select p;
+                    var products = query.ToList();
+                    //sort by passed identifiers
+                    var sortedProducts = new List<Product>();
+                    foreach (int id in productIds)
+                    {
+                        var product = products.Find(x => x.Id == id);
+                        if (product != null)
+                            sortedProducts.Add(product);
+                    }
+                    return sortedProducts;
+                }
+            });
         }
 
         /// <summary>
@@ -1102,6 +1164,30 @@ namespace Nop.Services.Catalog
                 return product;
             }
         }
+        public virtual async Task<Product> GetProductBySkuAsync(string sku)
+        {
+            if (String.IsNullOrEmpty(sku))
+                return null;
+
+            sku = sku.Trim();
+            return await Task.Factory.StartNew<Product>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from p in _productRepository.Table
+                                orderby p.Id
+                                where !p.Deleted &&
+                                p.Sku == sku
+                                select p;
+                    var product = query.FirstOrDefault();
+                    return product;
+                }
+            });
+        }
 
         /// <summary>
         /// Adjusts inventory
@@ -1563,6 +1649,25 @@ namespace Nop.Services.Catalog
                 return productPictures;
             }
         }
+        public virtual async Task<IList<ProductPicture>> GetProductPicturesByProductIdAsync(int productId)
+        {
+            return await Task.Factory.StartNew<IList<ProductPicture>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from pp in _productPictureRepository.Table
+                                where pp.ProductId == productId
+                                orderby pp.DisplayOrder
+                                select pp;
+                    var productPictures = query.ToList();
+                    return productPictures;
+                }
+            });
+        }
 
         /// <summary>
         /// Gets a product picture
@@ -1575,6 +1680,15 @@ namespace Nop.Services.Catalog
                 return null;
 
             return _productPictureRepository.GetById(productPictureId);
+        }
+        public virtual async Task<ProductPicture> GetProductPictureByIdAsync(int productPictureId)
+        {
+            if (productPictureId == 0)
+                return null;
+            return await Task.Factory.StartNew<ProductPicture>(() =>
+            {
+                return _productPictureRepository.GetById(productPictureId);
+            });
         }
 
         /// <summary>
@@ -1649,6 +1763,38 @@ namespace Nop.Services.Catalog
                 return content;
             }
         }
+        public virtual async Task<IList<ProductReview>> GetAllProductReviewsAsync(int customerId, bool? approved,
+            DateTime? fromUtc = null, DateTime? toUtc = null,
+            string message = null, int productId = 0)
+        {
+            return await Task.Factory.StartNew<IList<ProductReview>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = _productReviewRepository.Table;
+                    if (approved.HasValue)
+                        query = query.Where(c => c.IsApproved == approved);
+                    if (customerId > 0)
+                        query = query.Where(c => c.CustomerId == customerId);
+                    if (fromUtc.HasValue)
+                        query = query.Where(c => fromUtc.Value <= c.CreatedOnUtc);
+                    if (toUtc.HasValue)
+                        query = query.Where(c => toUtc.Value >= c.CreatedOnUtc);
+                    if (!String.IsNullOrEmpty(message))
+                        query = query.Where(c => c.Title.Contains(message) || c.ReviewText.Contains(message));
+                    if (productId > 0)
+                        query = query.Where(c => c.ProductId == productId);
+
+                    query = query.OrderBy(c => c.CreatedOnUtc);
+                    var content = query.ToList();
+                    return content;
+                }
+            });
+        }
 
         /// <summary>
         /// Gets product review
@@ -1661,6 +1807,15 @@ namespace Nop.Services.Catalog
                 return null;
 
             return _productReviewRepository.GetById(productReviewId);
+        }
+        public virtual async Task<ProductReview> GetProductReviewByIdAsync(int productReviewId)
+        {
+            if (productReviewId == 0)
+                return null;
+            return await Task.Factory.StartNew<ProductReview>(() =>
+            {
+                return _productReviewRepository.GetById(productReviewId);
+            });
         }
 
         /// <summary>

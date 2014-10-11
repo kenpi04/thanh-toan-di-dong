@@ -5,6 +5,7 @@ using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Stores;
 using Nop.Services.Events;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Stores
 {
@@ -99,6 +100,21 @@ namespace Nop.Services.Stores
                 return stores;
             });
         }
+        public virtual async Task<IList<Store>> GetAllStoresAsync()
+        {
+            string key = STORES_ALL_KEY;
+            return await Task.Factory.StartNew<IList<Store>> (() =>
+            {
+                return _cacheManager.Get(key, () =>
+                {
+                    var query = from s in _storeRepository.Table
+                                orderby s.DisplayOrder, s.Id
+                                select s;
+                    var stores = query.ToList();
+                    return stores;
+                });
+            });
+        }
 
         /// <summary>
         /// Gets a store 
@@ -112,6 +128,17 @@ namespace Nop.Services.Stores
             
             string key = string.Format(STORES_BY_ID_KEY, storeId);
             return _cacheManager.Get(key, () => { return _storeRepository.GetById(storeId); });
+        }
+        public virtual async Task<Store> GetStoreByIdAsync(int storeId)
+        {
+            if (storeId == 0)
+                return null;
+            string key = string.Format(STORES_BY_ID_KEY, storeId);
+
+            return await Task.Factory.StartNew<Store>(() =>
+            {
+                return _cacheManager.Get(key, () => { return _storeRepository.GetById(storeId); });
+            });
         }
 
         /// <summary>

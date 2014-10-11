@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -25,7 +26,8 @@ namespace Nop.Services.Catalog
         /// <returns>Categories</returns>
         IPagedList<Category> GetAllCategories(string categoryName = "",
             int pageIndex = 0, int pageSize = int.MaxValue, bool showHidden = false);
-
+        Task<IPagedList<Category>> GetAllCategoriesAsync(string categoryName = "",
+            int pageIndex = 0, int pageSize = int.MaxValue, bool showHidden = false);
         /// <summary>
         /// Gets all categories filtered by parent category identifier
         /// </summary>
@@ -34,20 +36,21 @@ namespace Nop.Services.Catalog
         /// <returns>Category collection</returns>
         IList<Category> GetAllCategoriesByParentCategoryId(int parentCategoryId,
             bool showHidden = false);
-
+        Task<IList<Category>> GetAllCategoriesByParentCategoryIdAsync(int parentCategoryId,
+            bool showHidden = false);
         /// <summary>
         /// Gets all categories displayed on the home page
         /// </summary>
         /// <returns>Categories</returns>
         IList<Category> GetAllCategoriesDisplayedOnHomePage();
-                
+        Task<IList<Category>> GetAllCategoriesDisplayedOnHomePageAsync();        
         /// <summary>
         /// Gets a category
         /// </summary>
         /// <param name="categoryId">Category identifier</param>
         /// <returns>Category</returns>
         Category GetCategoryById(int categoryId);
-
+        Task<Category> GetCategoryByIdAsync(int categoryId);
         /// <summary>
         /// Inserts category
         /// </summary>
@@ -82,7 +85,8 @@ namespace Nop.Services.Catalog
         /// <returns>Product a category mapping collection</returns>
         IPagedList<ProductCategory> GetProductCategoriesByCategoryId(int categoryId,
             int pageIndex, int pageSize, bool showHidden = false);
-
+        Task<IPagedList<ProductCategory>> GetProductCategoriesByCategoryIdAsync(int categoryId,
+            int pageIndex, int pageSize, bool showHidden = false);
         /// <summary>
         /// Gets a product category mapping collection
         /// </summary>
@@ -90,6 +94,7 @@ namespace Nop.Services.Catalog
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Product category mapping collection</returns>
         IList<ProductCategory> GetProductCategoriesByProductId(int productId, bool showHidden = false);
+        Task<IList<ProductCategory>> GetProductCategoriesByProductIdAsync(int productId, bool showHidden = false);
 
         /// <summary>
         /// Gets a product category mapping 
@@ -97,7 +102,7 @@ namespace Nop.Services.Catalog
         /// <param name="productCategoryId">Product category mapping identifier</param>
         /// <returns>Product category mapping</returns>
         ProductCategory GetProductCategoryById(int productCategoryId);
-
+        Task<ProductCategory> GetProductCategoryByIdAsync(int productCategoryId);
         /// <summary>
         /// Inserts a product category mapping
         /// </summary>

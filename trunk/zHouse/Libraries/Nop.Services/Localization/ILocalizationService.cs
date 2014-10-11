@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Nop.Core.Domain.Localization;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Localization
 {
@@ -27,7 +28,7 @@ namespace Nop.Services.Localization
         /// <param name="resourceName">A string representing a resource name</param>
         /// <returns>Locale string resource</returns>
         LocaleStringResource GetLocaleStringResourceByName(string resourceName);
-
+        Task<LocaleStringResource> GetLocaleStringResourceByNameAsync(string resourceName);
         /// <summary>
         /// Gets a locale string resource
         /// </summary>
@@ -37,7 +38,8 @@ namespace Nop.Services.Localization
         /// <returns>Locale string resource</returns>
         LocaleStringResource GetLocaleStringResourceByName(string resourceName, int languageId,
             bool logIfNotFound = true);
-
+        Task<LocaleStringResource> GetLocaleStringResourceByNameAsync(string resourceName, int languageId,
+            bool logIfNotFound = true);
         /// <summary>
         /// Gets all locale string resources by language identifier
         /// </summary>
@@ -63,14 +65,14 @@ namespace Nop.Services.Localization
         /// <param name="languageId">Language identifier</param>
         /// <returns>Locale string resources</returns>
         Dictionary<string, KeyValuePair<int, string>> GetAllResourceValues(int languageId);
-
+        Task<Dictionary<string, KeyValuePair<int, string>>> GetAllResourceValuesAsync(int languageId);
         /// <summary>
         /// Gets a resource string based on the specified ResourceKey property.
         /// </summary>
         /// <param name="resourceKey">A string representing a ResourceKey.</param>
         /// <returns>A string representing the requested resource string.</returns>
         string GetResource(string resourceKey);
-
+        Task<string> GetResourceAsync(string resourceKey);
         /// <summary>
         /// Gets a resource string based on the specified ResourceKey property.
         /// </summary>
@@ -82,7 +84,8 @@ namespace Nop.Services.Localization
         /// <returns>A string representing the requested resource string.</returns>
         string GetResource(string resourceKey, int languageId,
             bool logIfNotFound = true, string defaultValue = "", bool returnEmptyIfNotFound = false);
-
+        Task<string> GetResourceAsync(string resourceKey, int languageId,
+            bool logIfNotFound = true, string defaultValue = "", bool returnEmptyIfNotFound = false);
         /// <summary>
         /// Export language resources to xml
         /// </summary>

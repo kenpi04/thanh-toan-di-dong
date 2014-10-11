@@ -1,6 +1,7 @@
 ﻿using System;
 using Nop.Core;
 using Nop.Core.Domain.Messages;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Messages
 {
@@ -47,6 +48,7 @@ namespace Nop.Services.Messages
         /// <param name="email">The newsletter subscription email</param>
         /// <returns>NewsLetter subscription</returns>
         NewsLetterSubscription GetNewsLetterSubscriptionByEmail(string email);
+        Task<NewsLetterSubscription> GetNewsLetterSubscriptionByEmailAsync(string email);
 
         /// <summary>
         /// Gets the newsletter subscription list

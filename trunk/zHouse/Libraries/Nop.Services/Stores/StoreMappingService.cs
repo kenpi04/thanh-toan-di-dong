@@ -5,6 +5,8 @@ using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Stores;
+using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Nop.Services.Stores
 {
@@ -85,6 +87,15 @@ namespace Nop.Services.Stores
 
             return _storeMappingRepository.GetById(storeMappingId);
         }
+        public virtual async Task<StoreMapping> GetStoreMappingByIdAsync(int storeMappingId)
+        {
+            if (storeMappingId == 0)
+                return null;
+            return await Task.Factory.StartNew<StoreMapping>(() =>
+            {
+                return _storeMappingRepository.GetById(storeMappingId);
+            });
+        }
 
         /// <summary>
         /// Gets store mapping records
@@ -99,13 +110,43 @@ namespace Nop.Services.Stores
 
             int entityId = entity.Id;
             string entityName = typeof(T).Name;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+            {
+                var query = from sm in _storeMappingRepository.Table
+                            where sm.EntityId == entityId &&
+                            sm.EntityName == entityName
+                            select sm;
+                var storeMappings = query.ToList();
+                return storeMappings;
+            }
+        }
+        public virtual async Task<IList<StoreMapping>> GetStoreMappingsAsync<T>(T entity) where T : BaseEntity, IStoreMappingSupported
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
 
-            var query = from sm in _storeMappingRepository.Table
-                        where sm.EntityId == entityId &&
-                        sm.EntityName == entityName
-                        select sm;
-            var storeMappings = query.ToList();
-            return storeMappings;
+            int entityId = entity.Id;
+            string entityName = typeof(T).Name;
+            return await Task.Factory.StartNew<IList<StoreMapping>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from sm in _storeMappingRepository.Table
+                                where sm.EntityId == entityId &&
+                                sm.EntityName == entityName
+                                select sm;
+                    var storeMappings = query.ToList();
+                    return storeMappings;
+                }
+            });
         }
 
 
@@ -183,15 +224,54 @@ namespace Nop.Services.Stores
             string key = string.Format(STOREMAPPING_BY_ENTITYID_NAME_KEY, entityId, entityName);
             return _cacheManager.Get(key, () =>
             {
-                var query = from sm in _storeMappingRepository.Table
-                            where sm.EntityId == entityId &&
-                            sm.EntityName == entityName
-                            select sm.StoreId;
-                var result = query.ToArray();
-                //little hack here. nulls aren't cacheable so set it to ""
-                if (result == null)
-                    result = new int[0];
-                return result;
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from sm in _storeMappingRepository.Table
+                                where sm.EntityId == entityId &&
+                                sm.EntityName == entityName
+                                select sm.StoreId;
+                    var result = query.ToArray();
+                    //little hack here. nulls aren't cacheable so set it to ""
+                    if (result == null)
+                        result = new int[0];
+                    return result;
+                }
+            });
+        }
+        public virtual async Task<int[]> GetStoresIdsWithAccessAsync<T>(T entity) where T : BaseEntity, IStoreMappingSupported
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
+
+            int entityId = entity.Id;
+            string entityName = typeof(T).Name;
+
+            string key = string.Format(STOREMAPPING_BY_ENTITYID_NAME_KEY, entityId, entityName);
+            return await Task.Factory.StartNew<int[]>(() =>
+            {
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                    {
+                        var query = from sm in _storeMappingRepository.Table
+                                    where sm.EntityId == entityId &&
+                                    sm.EntityName == entityName
+                                    select sm.StoreId;
+                        var result = query.ToArray();
+                        //little hack here. nulls aren't cacheable so set it to ""
+                        if (result == null)
+                            result = new int[0];
+                        return result;
+                    }
+                });
             });
         }
 
@@ -204,6 +284,10 @@ namespace Nop.Services.Stores
         public virtual bool Authorize<T>(T entity) where T : BaseEntity, IStoreMappingSupported
         {
             return Authorize(entity, _storeContext.CurrentStore.Id);
+        }
+        public virtual async Task<bool> AuthorizeAsync<T>(T entity) where T : BaseEntity, IStoreMappingSupported
+        {
+            return await AuthorizeAsync(entity, _storeContext.CurrentStore.Id);
         }
 
         /// <summary>
@@ -226,6 +310,27 @@ namespace Nop.Services.Stores
                 return true;
 
             foreach (var storeIdWithAccess in GetStoresIdsWithAccess(entity))
+                if (storeId == storeIdWithAccess)
+                    //yes, we have such permission
+                    return true;
+
+            //no permission found
+            return false;
+        }
+        public virtual async Task<bool> AuthorizeAsync<T>(T entity, int storeId) where T : BaseEntity, IStoreMappingSupported
+        {
+            if (entity == null)
+                return false;
+
+            if (storeId == 0)
+                //return true if no store specified/found
+                return true;
+
+            if (!entity.LimitedToStores)
+                return true;
+
+            var access = await GetStoresIdsWithAccessAsync(entity);
+            foreach (var storeIdWithAccess in access)
                 if (storeId == storeIdWithAccess)
                     //yes, we have such permission
                     return true;

@@ -6,6 +6,7 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Directory;
 using Nop.Services.Events;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Directory
 {
@@ -67,7 +68,12 @@ namespace Nop.Services.Directory
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// Get all district in Ho Chi Minh city(default id=23)
+        /// </summary>
+        /// <param name="stateId">stateproviceId</param>
+        /// <param name="showHidden">show hidden</param>
+        /// <returns>District collections</returns>
         public virtual IList<District> GetDistHCM(int stateId = 23, bool showHidden = false)
         {
             return _cacheManager.Get(string.Format("Nop.district-{0}-{1}", stateId, showHidden), () =>
@@ -87,9 +93,30 @@ namespace Nop.Services.Directory
                     return query.ToList();
                 }
             });
-          
-        }     
-            
+        }
+        public virtual async Task<IList<District>> GetDistrictByStateProvinceIdAsync(int stateId = 23, bool showHidden = false)
+        {
+            return await Task.Factory.StartNew<IList<District>>(() =>
+            {
+                return _cacheManager.Get(string.Format("Nop.district-{0}-{1}", stateId, showHidden), () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = from d in _districtRepository.Table
+                                    where (d.StateProvinceId == stateId) &&
+                                    (showHidden || d.Published)
+                                    orderby d.DisplayOrder
+                                    select d;
+
+                        return query.ToList();
+                    }
+                });
+            });
+        }    
         /// <summary>
         /// Deletes a state/province
         /// </summary>
@@ -119,7 +146,15 @@ namespace Nop.Services.Directory
 
             return _stateProvinceRepository.GetById(stateProvinceId);
         }
-
+        public virtual async Task<StateProvince> GetStateProvinceByIdAsync(int stateProvinceId)
+        {
+            if (stateProvinceId == 0)
+                return null;
+            return await Task.Factory.StartNew<StateProvince>(() =>
+            {
+                return _stateProvinceRepository.GetById(stateProvinceId);
+            });
+        }
         /// <summary>
         /// Gets a state/province 
         /// </summary>
@@ -140,7 +175,24 @@ namespace Nop.Services.Directory
                 return stateProvince;
             }
         }
-        
+        public virtual async Task<StateProvince> GetStateProvinceByAbbreviationAsync(string abbreviation)
+        {
+            return await Task.Factory.StartNew<StateProvince>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from sp in _stateProvinceRepository.Table
+                                where sp.Abbreviation == abbreviation
+                                select sp;
+                    var stateProvince = query.FirstOrDefault();
+                    return stateProvince;
+                }
+            });
+        }
         /// <summary>
         /// Gets a state/province collection by country identifier
         /// </summary>
@@ -168,7 +220,30 @@ namespace Nop.Services.Directory
                 }
             });
         }
-
+        public virtual async Task<IList<StateProvince>> GetStateProvincesByCountryIdAsync(int countryId, bool showHidden = false)
+        {
+            string key = string.Format(STATEPROVINCES_ALL_KEY, countryId);
+            return await Task.Factory.StartNew<IList<StateProvince>>(() =>
+            {
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = from sp in _stateProvinceRepository.Table
+                                    orderby sp.DisplayOrder
+                                    where sp.CountryId == countryId &&
+                                    (showHidden || sp.Published)
+                                    select sp;
+                        var stateProvinces = query.ToList();
+                        return stateProvinces;
+                    }
+                });
+            });
+        }
         /// <summary>
         /// Inserts a state/province
         /// </summary>
@@ -211,7 +286,15 @@ namespace Nop.Services.Directory
 
             return _districtRepository.GetById(districtId);
         }
-
+        public virtual async Task<District> GetDistrictByIdAsync(int districtId)
+        {
+            if (districtId == 0)
+                return null;
+            return await Task.Factory.StartNew<District>(() =>
+            {
+                return _districtRepository.GetById(districtId);
+            });
+        }
         public virtual void InsertDistrict(District district)
         {
             if (district == null)
@@ -276,7 +359,30 @@ namespace Nop.Services.Directory
                 }
             });
         }
-
+        public virtual async Task<IList<Ward>> GetWardByDistrictIdAsync(int districtId)
+        {
+            if (districtId < 0)
+                return null;
+            return await Task.Factory.StartNew<IList<Ward>>(() =>
+            {
+                return _cacheManager.Get(string.Format("Nop.wardbydistrictId-{0}", districtId), () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                        ))
+                    {
+                        var query = from w in _wardRepository.Table
+                                    where w.DistrictId == districtId
+                                    select w;
+                        if (query != null)
+                            return query.ToList();
+                        return null;
+                    }
+                });
+            });
+        }
         public virtual IList<Street> GetStreetByDistrictId(int districtId)
         {
             if (districtId < 0)
@@ -297,6 +403,30 @@ namespace Nop.Services.Directory
                         return query.ToList();
                     return null;
                 }
+            });
+        }
+        public virtual async Task<IList<Street>> GetStreetByDistrictIdAsync(int districtId)
+        {
+            if (districtId < 0)
+                return null;
+            return await Task.Factory.StartNew<IList<Street>>(() =>
+            {
+                return _cacheManager.Get(string.Format("Nop.streetbydistrictid-{0}", districtId), () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                        ))
+                    {
+                        var query = from s in _streetRepository.Table
+                                    where s.DistrictId == districtId
+                                    select s;
+                        if (query != null)
+                            return query.ToList();
+                        return null;
+                    }
+                });
             });
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -17,7 +18,7 @@ namespace Nop.Services.Catalog
         /// <param name="specificationAttributeId">The specification attribute identifier</param>
         /// <returns>Specification attribute</returns>
         SpecificationAttribute GetSpecificationAttributeById(int specificationAttributeId);
-
+        Task<SpecificationAttribute> GetSpecificationAttributeByIdAsync(int specificationAttributeId);
         /// <summary>
         /// Gets specification attributes
         /// </summary>
@@ -25,7 +26,7 @@ namespace Nop.Services.Catalog
         /// <param name="pageSize">Page size</param>
         /// <returns>Specification attributes</returns>
         IPagedList<SpecificationAttribute> GetSpecificationAttributes(int pageIndex = 0, int pageSize = int.MaxValue);
-
+        Task<IPagedList<SpecificationAttribute>> GetSpecificationAttributesAsync(int pageIndex = 0, int pageSize = int.MaxValue);
         /// <summary>
         /// Deletes a specification attribute
         /// </summary>
@@ -54,14 +55,14 @@ namespace Nop.Services.Catalog
         /// <param name="specificationAttributeOption">The specification attribute option</param>
         /// <returns>Specification attribute option</returns>
         SpecificationAttributeOption GetSpecificationAttributeOptionById(int specificationAttributeOption);
-
+        Task<SpecificationAttributeOption> GetSpecificationAttributeOptionByIdAsync(int specificationAttributeOption);
         /// <summary>
         /// Gets a specification attribute option by specification attribute id
         /// </summary>
         /// <param name="specificationAttributeId">The specification attribute identifier</param>
         /// <returns>Specification attribute option</returns>
         IList<SpecificationAttributeOption> GetSpecificationAttributeOptionsBySpecificationAttribute(int specificationAttributeId);
-
+        Task<IList<SpecificationAttributeOption>> GetSpecificationAttributeOptionsBySpecificationAttributeAsync(int specificationAttributeId);
         /// <summary>
         /// Deletes a specification attribute option
         /// </summary>
@@ -96,7 +97,7 @@ namespace Nop.Services.Catalog
         /// <param name="productId">Product identifier</param>
         /// <returns>Product specification attribute mapping collection</returns>
         IList<ProductSpecificationAttribute> GetProductSpecificationAttributesByProductId(int productId);
-
+        Task<IList<ProductSpecificationAttribute>> GetProductSpecificationAttributesByProductIdAsync(int productId);
         /// <summary>
         /// Gets a product specification attribute mapping collection
         /// </summary>
@@ -106,14 +107,15 @@ namespace Nop.Services.Catalog
         /// <returns>Product specification attribute mapping collection</returns>
         IList<ProductSpecificationAttribute> GetProductSpecificationAttributesByProductId(int productId,
             bool? allowFiltering, bool? showOnProductPage);
-
+        Task<IList<ProductSpecificationAttribute>> GetProductSpecificationAttributesByProductIdAsync(int productId,
+            bool? allowFiltering, bool? showOnProductPage);
         /// <summary>
         /// Gets a product specification attribute mapping 
         /// </summary>
         /// <param name="productSpecificationAttributeId">Product specification attribute mapping identifier</param>
         /// <returns>Product specification attribute mapping</returns>
         ProductSpecificationAttribute GetProductSpecificationAttributeById(int productSpecificationAttributeId);
-
+        Task<ProductSpecificationAttribute> GetProductSpecificationAttributeByIdAsync(int productSpecificationAttributeId);
         /// <summary>
         /// Inserts a product specification attribute mapping
         /// </summary>

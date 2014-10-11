@@ -6,6 +6,7 @@ using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Security;
 using Nop.Core.Infrastructure;
 using Nop.Core.Plugins;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Localization
 {
@@ -25,6 +26,13 @@ namespace Nop.Services.Localization
             var workContext = EngineContext.Current.Resolve<IWorkContext>();
             return GetLocalized(entity, keySelector, workContext.WorkingLanguage.Id);
         }
+        public static async Task<string> GetLocalizedAsync<T>(this T entity,
+            Expression<Func<T, string>> keySelector)
+            where T : BaseEntity, ILocalizedEntity
+        {
+            var workContext = EngineContext.Current.Resolve<IWorkContext>();
+            return await GetLocalizedAsync(entity, keySelector, workContext.WorkingLanguage.Id);
+        }
         /// <summary>
         /// Get localized property of an entity
         /// </summary>
@@ -41,6 +49,13 @@ namespace Nop.Services.Localization
             where T : BaseEntity, ILocalizedEntity
         {
             return GetLocalized<T, string>(entity, keySelector, languageId, returnDefaultValue, ensureTwoPublishedLanguages);
+        }
+        public static async Task<string> GetLocalizedAsync<T>(this T entity,
+            Expression<Func<T, string>> keySelector, int languageId,
+            bool returnDefaultValue = true, bool ensureTwoPublishedLanguages = true)
+            where T : BaseEntity, ILocalizedEntity
+        {
+            return await GetLocalizedAsync<T, string>(entity, keySelector, languageId, returnDefaultValue, ensureTwoPublishedLanguages);
         }
         /// <summary>
         /// Get localized property of an entity
@@ -114,6 +129,68 @@ namespace Nop.Services.Localization
             
             return result;
         }
+        public static async Task<TPropType> GetLocalizedAsync<T, TPropType>(this T entity,
+            Expression<Func<T, TPropType>> keySelector, int languageId,
+            bool returnDefaultValue = true, bool ensureTwoPublishedLanguages = true)
+            where T : BaseEntity, ILocalizedEntity
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
+
+            var member = keySelector.Body as MemberExpression;
+            if (member == null)
+            {
+                throw new ArgumentException(string.Format(
+                    "Expression '{0}' refers to a method, not a property.",
+                    keySelector));
+            }
+
+            var propInfo = member.Member as PropertyInfo;
+            if (propInfo == null)
+            {
+                throw new ArgumentException(string.Format(
+                       "Expression '{0}' refers to a field, not a property.",
+                       keySelector));
+            }
+
+            TPropType result = default(TPropType);
+            string resultStr = string.Empty;
+
+            //load localized value
+            string localeKeyGroup = typeof(T).Name;
+            string localeKey = propInfo.Name;
+
+            if (languageId > 0)
+            {
+                //ensure that we have at least two published languages
+                bool loadLocalizedValue = true;
+                if (ensureTwoPublishedLanguages)
+                {
+                    var lService = EngineContext.Current.Resolve<ILanguageService>();
+                    var taskTotalPublishedLanguages = await lService.GetAllLanguagesAsync();
+                    var totalPublishedLanguages = taskTotalPublishedLanguages.Count;
+                    loadLocalizedValue = totalPublishedLanguages >= 2;
+                }
+
+                //localized value
+                if (loadLocalizedValue)
+                {
+                    var leService = EngineContext.Current.Resolve<ILocalizedEntityService>();
+                    resultStr = await leService.GetLocalizedValueAsync(languageId, entity.Id, localeKeyGroup, localeKey);
+                    if (!String.IsNullOrEmpty(resultStr))
+                        result = CommonHelper.To<TPropType>(resultStr);
+                }
+            }
+
+            //set default value if required
+            if (String.IsNullOrEmpty(resultStr) && returnDefaultValue)
+            {
+                var localizer = keySelector.Compile();
+                result = localizer(entity);
+            }
+
+            return result;
+        }
 
 
 
@@ -132,6 +209,14 @@ namespace Nop.Services.Localization
                 throw new ArgumentNullException("workContext");
 
             return GetLocalizedEnum<T>(enumValue, localizationService, workContext.WorkingLanguage.Id);
+        }
+        public static async Task<string> GetLocalizedEnumAsync<T>(this T enumValue, ILocalizationService localizationService, IWorkContext workContext)
+            where T : struct
+        {
+            if (workContext == null)
+                throw new ArgumentNullException("workContext");
+
+            return await GetLocalizedEnumAsync<T>(enumValue, localizationService, workContext.WorkingLanguage.Id);
         }
         /// <summary>
         /// Get localized value of enum
@@ -162,6 +247,27 @@ namespace Nop.Services.Localization
 
             return result;
         }
+        public static async Task<string> GetLocalizedEnumAsync<T>(this T enumValue, ILocalizationService localizationService, int languageId)
+            where T : struct
+        {
+            if (localizationService == null)
+                throw new ArgumentNullException("localizationService");
+
+            if (!typeof(T).IsEnum) throw new ArgumentException("T must be an enumerated type");
+
+            //localized value
+            string resourceName = string.Format("Enums.{0}.{1}",
+                typeof(T).ToString(),
+                //Convert.ToInt32(enumValue)
+                enumValue.ToString());
+            string result = await localizationService.GetResourceAsync(resourceName, languageId, false, "", true);
+
+            //set default value if required
+            if (String.IsNullOrEmpty(result))
+                result = CommonHelper.ConvertEnum(enumValue.ToString());
+
+            return result;
+        }
 
 
         /// <summary>
@@ -179,6 +285,14 @@ namespace Nop.Services.Localization
                 throw new ArgumentNullException("workContext");
 
             return GetLocalizedPermissionName(permissionRecord, localizationService, workContext.WorkingLanguage.Id);
+        }
+        public static async Task<string> GetLocalizedPermissionNameAsync(this PermissionRecord permissionRecord,
+            ILocalizationService localizationService, IWorkContext workContext)
+        {
+            if (workContext == null)
+                throw new ArgumentNullException("workContext");
+
+            return await GetLocalizedPermissionNameAsync(permissionRecord, localizationService, workContext.WorkingLanguage.Id);
         }
         /// <summary>
         /// Get localized value of enum
@@ -200,6 +314,25 @@ namespace Nop.Services.Localization
             //localized value
             string resourceName = string.Format("Permission.{0}", permissionRecord.SystemName);
             string result = localizationService.GetResource(resourceName, languageId, false, "", true);
+
+            //set default value if required
+            if (String.IsNullOrEmpty(result))
+                result = permissionRecord.Name;
+
+            return result;
+        }
+        public static async Task<string> GetLocalizedPermissionNameAsync(this PermissionRecord permissionRecord,
+            ILocalizationService localizationService, int languageId)
+        {
+            if (permissionRecord == null)
+                throw new ArgumentNullException("permissionRecord");
+
+            if (localizationService == null)
+                throw new ArgumentNullException("localizationService");
+
+            //localized value
+            string resourceName = string.Format("Permission.{0}", permissionRecord.SystemName);
+            string result = await localizationService.GetResourceAsync(resourceName, languageId, false, "", true);
 
             //set default value if required
             if (String.IsNullOrEmpty(result))
