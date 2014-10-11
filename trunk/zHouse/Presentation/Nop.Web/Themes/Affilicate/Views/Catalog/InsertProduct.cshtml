@@ -24,6 +24,10 @@
         </div>
         @Html.Partial("_CreateOrUpdateProduct", Model)
     }
+    <div class="floatLeft">
+        <div class="blueText">Góp ý báo lỗi</div>
+        @Html.Partial("_SupportContact", new Nop.Web.Models.Common.ContactUsModel())
+    </div>
 </div>
 <div class="clearBoth"></div>
 

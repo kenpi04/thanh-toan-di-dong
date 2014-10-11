@@ -341,5 +341,7 @@ namespace Nop.Web.Models.Catalog
         /// Khuyen mai
         /// </summary>
         public string Promotion { get; set; }
+
+        public string UserAgreementText { get; set; }
     }
 }

@@ -42,6 +42,7 @@ using Nop.Web.Models.Media;
 using Nop.Core.Domain.Messages;
 using Nop.Services.Topics;
 using System.Threading.Tasks;
+using Nop.Web.Models.Common;
 
 namespace Nop.Web.Controllers
 {
@@ -4507,6 +4508,33 @@ namespace Nop.Web.Controllers
             return View("_ProductDetailsPictures", cachedPictures);
 
 
+        }
+        [HttpPost]
+        [CaptchaValidator]
+        public ActionResult SupportContact(ContactUsModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                //email
+
+                var mes = new Message
+                {
+                    Email = model.Email,
+                    Body = model.Enquiry,
+                    CreatedOn = DateTime.Now,
+                    BookDate = DateTime.Now,
+                    ProductId = 0,
+                    Phone = model.Phone,
+                    Name = model.FullName,
+                    Type = model.Type
+
+                };
+                _messagesService.InsertMessage(mes);
+                return Json(_localizationService.GetResource("Products.Contact.SuccessfullySent"));
+
+            }
+            return Json("Lỗi! Không thành công");
         }
     }
 }
