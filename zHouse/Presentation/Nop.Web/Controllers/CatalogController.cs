@@ -3274,10 +3274,10 @@ namespace Nop.Web.Controllers
         }
 
         [HttpGet]
-        public string GetSlugFromId(string domainName, string priceString, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string Q = null)
+        public string GetSlugFromId(string domainName, string priceString, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string Q = null,int type=0)
         {
             if (String.IsNullOrEmpty(domainName)) domainName = Request.Url.Host;
-            if (categoryId == 0) categoryId = 1;
+            if (categoryId == 0) categoryId = type;
             var slug = _urlRecordService.GetSlugFromId(domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds, Q);
             return slug;
         }
@@ -4271,6 +4271,7 @@ namespace Nop.Web.Controllers
         [HttpGet]
         public ActionResult ProductSearch(SearchModel model)
         {
+            
             if (model.PagingFilteringContext.PageSize <= 0) model.PagingFilteringContext.PageSize = _catalogSettings.SearchPageProductsPerPage;
             if (model.PagingFilteringContext.PageNumber <= 0) model.PagingFilteringContext.PageNumber = 1;
             decimal minPriceConverted = decimal.Zero, maxPriceConverted = decimal.Zero;

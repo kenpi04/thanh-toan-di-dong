@@ -1375,7 +1375,7 @@ margin-top: 7px; }
 .tab-links a {padding: 9px 15px;display: inline-block;border-radius: 3px 3px 0px 0px;background: #dedede;font-size: 13px;font-weight: 600;color: #4c4c4c;transition: all linear 0.15s;}
 .tab-links a:hover {background: #dedede;text-decoration: none;}
 li.active a, li.active a:hover {background: #fff;color: #4c4c4c;border: 1px solid #dedede;border-bottom: 0;}
-.tab-content {padding: 9px 9px 0px 9px;border-radius: 3px;border: 1px solid #dedede;background: #fff;float:left}
+.tab-content {padding: 9px 9px 9px 9px;border-radius: 3px;border: 1px solid #dedede;background: #fff;float:left}
 .tab {display: none;}
 .tab.active {display: block;}
 .request-label{text-align:right;}
