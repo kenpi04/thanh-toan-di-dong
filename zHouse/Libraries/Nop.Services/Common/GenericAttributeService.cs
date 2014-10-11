@@ -7,6 +7,8 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Common;
 using Nop.Data;
 using Nop.Services.Events;
+using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Nop.Services.Common
 {
@@ -87,8 +89,30 @@ namespace Nop.Services.Common
         {
             if (attributeId == 0)
                 return null;
-
-            return _genericAttributeRepository.GetById(attributeId);
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+            {
+                return _genericAttributeRepository.GetById(attributeId);
+            }
+        }
+        public virtual async Task<GenericAttribute> GetAttributeByIdAsync(int attributeId)
+        {
+            if (attributeId == 0)
+                return null;
+            return await Task.Factory.StartNew<GenericAttribute>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    return _genericAttributeRepository.GetById(attributeId);
+                }
+            });
         }
 
         /// <summary>
@@ -138,12 +162,42 @@ namespace Nop.Services.Common
             string key = string.Format(GENERICATTRIBUTE_KEY, entityId, keyGroup);
             return _cacheManager.Get(key, () =>
             {
-                var query = from ga in _genericAttributeRepository.Table
-                            where ga.EntityId == entityId &&
-                            ga.KeyGroup == keyGroup
-                            select ga;
-                var attributes = query.ToList();
-                return attributes;
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from ga in _genericAttributeRepository.Table
+                                where ga.EntityId == entityId &&
+                                ga.KeyGroup == keyGroup
+                                select ga;
+                    var attributes = query.ToList();
+                    return attributes;
+                }
+            });
+        }
+        public virtual async Task<IList<GenericAttribute>> GetAttributesForEntityAsync(int entityId, string keyGroup)
+        {
+            string key = string.Format(GENERICATTRIBUTE_KEY, entityId, keyGroup);
+            return await Task.Factory.StartNew<IList<GenericAttribute>>(() =>
+            {
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                    {
+                        var query = from ga in _genericAttributeRepository.Table
+                                    where ga.EntityId == entityId &&
+                                    ga.KeyGroup == keyGroup
+                                    select ga;
+                        var attributes = query.ToList();
+                        return attributes;
+                    }
+                });
             });
         }
 
@@ -202,7 +256,52 @@ namespace Nop.Services.Common
                 }
             }
         }
+        public virtual async Task SaveAttributeAsync<TPropType>(BaseEntity entity, string key, TPropType value, int storeId = 0)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
 
+            string keyGroup = entity.GetUnproxiedEntityType().Name;
+
+            var tk = await GetAttributesForEntityAsync(entity.Id, keyGroup);
+            var props = tk.Where(x => x.StoreId == storeId).ToList();
+            var prop = props.FirstOrDefault(ga =>
+                ga.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase)); //should be culture invariant
+
+            string valueStr = CommonHelper.To<string>(value);
+
+            if (prop != null)
+            {
+                if (string.IsNullOrWhiteSpace(valueStr))
+                {
+                    //delete
+                    DeleteAttribute(prop);
+                }
+                else
+                {
+                    //update
+                    prop.Value = valueStr;
+                    UpdateAttribute(prop);
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(valueStr))
+                {
+                    //insert
+                    prop = new GenericAttribute()
+                    {
+                        EntityId = entity.Id,
+                        Key = key,
+                        KeyGroup = keyGroup,
+                        Value = valueStr,
+                        StoreId = storeId,
+
+                    };
+                    InsertAttribute(prop);
+                }
+            }
+        }
         #endregion
     }
 }

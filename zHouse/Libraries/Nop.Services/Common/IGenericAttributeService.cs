@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Common;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Common
 {
@@ -21,6 +22,7 @@ namespace Nop.Services.Common
         /// <param name="attributeId">Attribute identifier</param>
         /// <returns>An attribute</returns>
         GenericAttribute GetAttributeById(int attributeId);
+        Task<GenericAttribute> GetAttributeByIdAsync(int attributeId);
 
         /// <summary>
         /// Inserts an attribute
@@ -41,6 +43,7 @@ namespace Nop.Services.Common
         /// <param name="keyGroup">Key group</param>
         /// <returns>Get attributes</returns>
         IList<GenericAttribute> GetAttributesForEntity(int entityId, string keyGroup);
+        Task<IList<GenericAttribute>> GetAttributesForEntityAsync(int entityId, string keyGroup);
         
         /// <summary>
         /// Save attribute value
@@ -51,5 +54,6 @@ namespace Nop.Services.Common
         /// <param name="value">Value</param>
         /// <param name="storeId">Store identifier; pass 0 if this attribute will be available for all stores</param>
         void SaveAttribute<TPropType>(BaseEntity entity, string key, TPropType value, int storeId = 0);
+        Task SaveAttributeAsync<TPropType>(BaseEntity entity, string key, TPropType value, int storeId = 0);
     }
 }

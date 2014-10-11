@@ -13,6 +13,8 @@ using Nop.Core.Domain.Localization;
 using Nop.Data;
 using Nop.Services.Events;
 using Nop.Services.Logging;
+using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Nop.Services.Localization
 {
@@ -144,7 +146,13 @@ namespace Nop.Services.Localization
 
             return null;
         }
+        public virtual async Task<LocaleStringResource> GetLocaleStringResourceByNameAsync(string resourceName)
+        {
+            if (_workContext.WorkingLanguage != null)
+                return await GetLocaleStringResourceByNameAsync(resourceName, _workContext.WorkingLanguage.Id);
 
+            return null;
+        }
         /// <summary>
         /// Gets a locale string resource
         /// </summary>
@@ -165,7 +173,29 @@ namespace Nop.Services.Localization
                 _logger.Warning(string.Format("Resource string ({0}) not found. Language ID = {1}", resourceName, languageId));
             return localeStringResource;
         }
+        public virtual async Task<LocaleStringResource> GetLocaleStringResourceByNameAsync(string resourceName, int languageId,
+            bool logIfNotFound = true)
+        {
+            return await Task.Factory.StartNew<LocaleStringResource>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from lsr in _lsrRepository.Table
+                                orderby lsr.ResourceName
+                                where lsr.LanguageId == languageId && lsr.ResourceName == resourceName
+                                select lsr;
+                    var localeStringResource = query.FirstOrDefault();
 
+                    if (localeStringResource == null && logIfNotFound)
+                        _logger.Warning(string.Format("Resource string ({0}) not found. Language ID = {1}", resourceName, languageId));
+                    return localeStringResource;
+                }
+            });
+        }
         /// <summary>
         /// Gets all locale string resources by language identifier
         /// </summary>
@@ -173,12 +203,19 @@ namespace Nop.Services.Localization
         /// <returns>Locale string resources</returns>
         public virtual IList<LocaleStringResource> GetAllResources(int languageId)
         {
-            var query = from l in _lsrRepository.Table
-                        orderby l.ResourceName
-                        where l.LanguageId == languageId
-                        select l;
-            var locales = query.ToList();
-            return locales;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            {
+                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+            }
+            ))
+            {
+                var query = from l in _lsrRepository.Table
+                            orderby l.ResourceName
+                            where l.LanguageId == languageId
+                            select l;
+                var locales = query.ToList();
+                return locales;
+            }
         }
 
         /// <summary>
@@ -227,23 +264,61 @@ namespace Nop.Services.Localization
             string key = string.Format(LOCALSTRINGRESOURCES_ALL_KEY, languageId);
             return _cacheManager.Get(key, () =>
             {
-                var query = from l in _lsrRepository.Table
-                            orderby l.ResourceName
-                            where l.LanguageId == languageId
-                            select l;
-                var locales = query.ToList();
-                //format: <name, <id, value>>
-                var dictionary = new Dictionary<string, KeyValuePair<int, string>>();
-                foreach (var locale in locales)
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
                 {
-                    var resourceName = locale.ResourceName.ToLowerInvariant();
-                    if (!dictionary.ContainsKey(resourceName))
-                        dictionary.Add(resourceName, new KeyValuePair<int, string>(locale.Id, locale.ResourceValue));
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
                 }
-                return dictionary;
+                ))
+                {
+                    var query = from l in _lsrRepository.Table
+                                orderby l.ResourceName
+                                where l.LanguageId == languageId
+                                select l;
+                    var locales = query.ToList();
+                    //format: <name, <id, value>>
+                    var dictionary = new Dictionary<string, KeyValuePair<int, string>>();
+                    foreach (var locale in locales)
+                    {
+                        var resourceName = locale.ResourceName.ToLowerInvariant();
+                        if (!dictionary.ContainsKey(resourceName))
+                            dictionary.Add(resourceName, new KeyValuePair<int, string>(locale.Id, locale.ResourceValue));
+                    }
+                    return dictionary;
+                }
             });
         }
+        public virtual async Task<Dictionary<string, KeyValuePair<int, string>>> GetAllResourceValuesAsync(int languageId)
+        {
+            return await Task.Factory.StartNew<Dictionary<string, KeyValuePair<int, string>>>(() =>
+            {
+                string key = string.Format(LOCALSTRINGRESOURCES_ALL_KEY, languageId);
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = from l in _lsrRepository.Table
+                                    orderby l.ResourceName
+                                    where l.LanguageId == languageId
+                                    select l;
+                        var locales = query.ToList();
 
+                        //format: <name, <id, value>>
+                        var dictionary = new Dictionary<string, KeyValuePair<int, string>>();
+                        foreach (var locale in locales)
+                        {
+                            var resourceName = locale.ResourceName.ToLowerInvariant();
+                            if (!dictionary.ContainsKey(resourceName))
+                                dictionary.Add(resourceName, new KeyValuePair<int, string>(locale.Id, locale.ResourceValue));
+                        }
+                        return dictionary;
+                    }
+                });
+            });
+        }
         /// <summary>
         /// Gets a resource string based on the specified ResourceKey property.
         /// </summary>
@@ -256,7 +331,13 @@ namespace Nop.Services.Localization
             
             return "";
         }
-        
+        public virtual async Task<string> GetResourceAsync(string resourceKey)
+        {
+            if (_workContext.WorkingLanguage != null)
+                return await GetResourceAsync(resourceKey, _workContext.WorkingLanguage.Id);
+
+            return "";
+        }
         /// <summary>
         /// Gets a resource string based on the specified ResourceKey property.
         /// </summary>
@@ -315,7 +396,57 @@ namespace Nop.Services.Localization
             }
             return result;
         }
+        public virtual async Task<string> GetResourceAsync(string resourceKey, int languageId,
+            bool logIfNotFound = true, string defaultValue = "", bool returnEmptyIfNotFound = false)
+        {
+            string result = string.Empty;
+            if (resourceKey == null)
+                resourceKey = string.Empty;
+            resourceKey = resourceKey.Trim().ToLowerInvariant();
+            if (_localizationSettings.LoadAllLocaleRecordsOnStartup)
+            {
+                //load all records (we know they are cached)
+                var resources = await GetAllResourceValuesAsync(languageId);
+                if (resources.ContainsKey(resourceKey))
+                {
+                    result = resources[resourceKey].Value;
+                }
+            }
+            else
+            {
+                //gradual loading
+                string key = string.Format(LOCALSTRINGRESOURCES_BY_RESOURCENAME_KEY, languageId, resourceKey);
+                string lsr = await Task.Factory.StartNew<string>(() =>
+                {
+                   return _cacheManager.Get(key, () =>
+                   {
+                       var query = from l in _lsrRepository.Table
+                                   where l.ResourceName == resourceKey
+                                   && l.LanguageId == languageId
+                                   select l.ResourceValue;
+                       return query.FirstOrDefault();
+                   });
+                });
+                if (lsr != null)
+                    result = lsr;
+            }
+            if (String.IsNullOrEmpty(result))
+            {
+                if (logIfNotFound)
+                    _logger.Warning(string.Format("Resource string ({0}) is not found. Language ID = {1}", resourceKey, languageId));
 
+                if (!String.IsNullOrEmpty(defaultValue))
+                {
+                    result = defaultValue;
+                }
+                else
+                {
+                    if (!returnEmptyIfNotFound)
+                        result = resourceKey;
+                }
+            }
+            return result;
+        }
         /// <summary>
         /// Export language resources to xml
         /// </summary>

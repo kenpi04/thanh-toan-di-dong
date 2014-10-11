@@ -8,6 +8,7 @@ using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Seo;
 using Nop.Core.Infrastructure;
 using Nop.Services.Localization;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Seo
 {
@@ -114,6 +115,12 @@ namespace Nop.Services.Seo
             var workContext = EngineContext.Current.Resolve<IWorkContext>();
             return GetSeName(entity, workContext.WorkingLanguage.Id);
         }
+        public static async Task<string> GetSeNameAsync<T>(this T entity)
+            where T : BaseEntity, ISlugSupported
+        {
+            var workContext = EngineContext.Current.Resolve<IWorkContext>();
+            return await GetSeNameAsync(entity, workContext.WorkingLanguage.Id);
+        }
 
         /// <summary>
         ///  Get search engine name
@@ -155,6 +162,41 @@ namespace Nop.Services.Seo
             if (String.IsNullOrEmpty(result) && returnDefaultValue)
             {
                 result = urlRecordService.GetActiveSlug(entity.Id, entityName, 0);
+            }
+
+            return result;
+        }
+        public static async Task<string> GetSeNameAsync<T>(this T entity, int languageId, bool returnDefaultValue = true,
+            bool ensureTwoPublishedLanguages = true)
+            where T : BaseEntity, ISlugSupported
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
+
+            string result = string.Empty;
+            string entityName = typeof(T).Name;
+
+            var urlRecordService = EngineContext.Current.Resolve<IUrlRecordService>();
+            if (languageId > 0)
+            {
+                //ensure that we have at least two published languages
+                bool loadLocalizedValue = true;
+                if (ensureTwoPublishedLanguages)
+                {
+                    var lService = EngineContext.Current.Resolve<ILanguageService>();
+                    var totalPublishedLanguages = (await lService.GetAllLanguagesAsync()).Count;
+                    loadLocalizedValue = totalPublishedLanguages >= 2;
+                }
+                //localized value
+                if (loadLocalizedValue)
+                {
+                    result = await urlRecordService.GetActiveSlugAsync(entity.Id, entityName, languageId);
+                }
+            }
+            //set default value if required
+            if (String.IsNullOrEmpty(result) && returnDefaultValue)
+            {
+                result = await urlRecordService.GetActiveSlugAsync(entity.Id, entityName, 0);
             }
 
             return result;
@@ -224,7 +266,62 @@ namespace Nop.Services.Seo
 
             return seName;
         }
+        public static async Task<string> ValidateSeNameAsync<T>(this T entity, string seName, string name, bool ensureNotEmpty)
+             where T : BaseEntity, ISlugSupported
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
 
+            //use name if sename is not specified
+            if (String.IsNullOrWhiteSpace(seName) && !String.IsNullOrWhiteSpace(name))
+                seName = name;
+
+            //validation
+            seName = await GetSeNameAsync(seName);
+
+            //max length
+            //For long URLs we can get the following error:
+            //"the specified path, file name, or both are too long. The fully qualified file name must be less than 260 characters, and the directory name must be less than 248 characters"
+            //that's why we limit it to 200 here (consider a store URL + probably added {0}-{1} below)
+            seName = CommonHelper.EnsureMaximumLength(seName, 200);
+
+            if (String.IsNullOrWhiteSpace(seName))
+            {
+                if (ensureNotEmpty)
+                {
+                    //use entity identifier as sename if empty
+                    seName = entity.Id.ToString();
+                }
+                else
+                {
+                    //return. no need for further processing
+                    return seName;
+                }
+            }
+
+            //ensure this sename is not reserved yet
+            string entityName = typeof(T).Name;
+            var urlRecordService = EngineContext.Current.Resolve<IUrlRecordService>();
+            var seoSettings = EngineContext.Current.Resolve<SeoSettings>();
+            int i = 2;
+            var tempSeName = seName;
+            while (true)
+            {
+                //check whether such slug already exists (and that is not the current product)
+                var urlRecord = await urlRecordService.GetBySlugAsync(tempSeName);
+                var reserved1 = urlRecord != null && !(urlRecord.EntityId == entity.Id && urlRecord.EntityName.Equals(entityName, StringComparison.InvariantCultureIgnoreCase));
+                //and it's not in the list of reserved slugs
+                var reserved2 = seoSettings.ReservedUrlRecordSlugs.Contains(tempSeName, StringComparer.InvariantCultureIgnoreCase);
+                if (!reserved1 && !reserved2)
+                    break;
+
+                tempSeName = string.Format("{0}-{1}", seName, i);
+                i++;
+            }
+            seName = tempSeName;
+
+            return seName;
+        }
 
         /// <summary>
         /// Get SE name
@@ -235,6 +332,11 @@ namespace Nop.Services.Seo
         {
             var seoSettings = EngineContext.Current.Resolve<SeoSettings>();
             return GetSeName(name, seoSettings.ConvertNonWesternChars, seoSettings.AllowUnicodeCharsInUrls);
+        }
+        public static async Task<string> GetSeNameAsync(string name)
+        {
+            var seoSettings = EngineContext.Current.Resolve<SeoSettings>();
+            return await GetSeNameAsync(name, seoSettings.ConvertNonWesternChars, seoSettings.AllowUnicodeCharsInUrls);
         }
 
         /// <summary>
@@ -285,7 +387,50 @@ namespace Nop.Services.Seo
                 name2 = name2.Replace("__", "_");
             return name2;
         }
+        public static async Task<string> GetSeNameAsync(string name, bool convertNonWesternChars, bool allowUnicodeCharsInUrls)
+        {
+            return await Task.Factory.StartNew<string>(() =>
+            {
+                if (String.IsNullOrEmpty(name))
+                    return name;
+                string okChars = "abcdefghijklmnopqrstuvwxyz1234567890 _-";
+                name = name.Trim().ToLowerInvariant();
 
+                if (convertNonWesternChars)
+                {
+                    if (_seoCharacterTable == null)
+                        InitializeSeoCharacterTable();
+                }
+
+                var sb = new StringBuilder();
+                foreach (char c in name.ToCharArray())
+                {
+                    string c2 = c.ToString();
+                    if (convertNonWesternChars)
+                    {
+                        if (_seoCharacterTable.ContainsKey(c2))
+                            c2 = _seoCharacterTable[c2];
+                    }
+
+                    if (allowUnicodeCharsInUrls)
+                    {
+                        if (char.IsLetterOrDigit(c) || okChars.Contains(c2))
+                            sb.Append(c2);
+                    }
+                    else if (okChars.Contains(c2))
+                    {
+                        sb.Append(c2);
+                    }
+                }
+                string name2 = sb.ToString();
+                name2 = name2.Replace(" ", "-");
+                while (name2.Contains("--"))
+                    name2 = name2.Replace("--", "-");
+                while (name2.Contains("__"))
+                    name2 = name2.Replace("__", "_");
+                return name2;
+            });
+        }
         /// <summary>
         /// Stores Unicode characters and their "normalized"
         /// values to a hash table. Character codes are referenced

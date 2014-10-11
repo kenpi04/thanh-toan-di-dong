@@ -4,6 +4,7 @@ using System.Linq;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Services.Events;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -65,6 +66,18 @@ namespace Nop.Services.Catalog
             var templates = query.ToList();
             return templates;
         }
+        public virtual async Task<IList<ManufacturerTemplate>> GetAllManufacturerTemplatesAsync()
+        {
+            return await Task.Factory.StartNew<IList<ManufacturerTemplate>>(() =>
+            {
+                var query = from pt in _manufacturerTemplateRepository.Table
+                            orderby pt.DisplayOrder
+                            select pt;
+
+                var templates = query.ToList();
+                return templates;
+            });
+        }
 
         /// <summary>
         /// Gets a manufacturer template
@@ -77,6 +90,15 @@ namespace Nop.Services.Catalog
                 return null;
 
             return _manufacturerTemplateRepository.GetById(manufacturerTemplateId);
+        }
+        public virtual async Task<ManufacturerTemplate> GetManufacturerTemplateByIdAsync(int manufacturerTemplateId)
+        {
+            if (manufacturerTemplateId == 0)
+                return null;
+            return await Task.Factory.StartNew<ManufacturerTemplate>(() =>
+            {
+                return _manufacturerTemplateRepository.GetById(manufacturerTemplateId);
+            });
         }
 
         /// <summary>

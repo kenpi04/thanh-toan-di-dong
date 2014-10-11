@@ -18,7 +18,7 @@
                 <a href="@Url.RouteUrl("Login")" class="submenu" id="menuLogin">Đăng nhập</a>}
                 else
                 {<a href="@Url.RouteUrl("LogOut")" class="submenu" id="menuLogin">Thoát</a>
-                 <a href="@Url.RouteUrl("CustomerInfo")" class="submenu" id="menuLogin">@(customer.Username ?? customer.Email)</a>}
+                 <a href="@Url.RouteUrl("CustomerOrders")" class="submenu" id="menuLogin">@(customer.Username ?? customer.Email)</a>}
             </div>
         </div>
         <div class="top">            

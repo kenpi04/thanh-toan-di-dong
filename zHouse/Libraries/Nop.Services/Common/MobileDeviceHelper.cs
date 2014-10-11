@@ -2,6 +2,7 @@ using System.Web;
 using Nop.Core;
 using Nop.Core.Domain;
 using Nop.Core.Domain.Customers;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Common
 {
@@ -75,6 +76,10 @@ namespace Nop.Services.Common
         public virtual bool CustomerDontUseMobileVersion()
         {
             return _workContext.CurrentCustomer.GetAttribute<bool>(SystemCustomerAttributeNames.DontUseMobileVersion, _storeContext.CurrentStore.Id);
+        }
+        public virtual async Task<bool> CustomerDontUseMobileVersionAsync()
+        {
+            return await _workContext.CurrentCustomer.GetAttributeAsync<bool>(SystemCustomerAttributeNames.DontUseMobileVersion, _storeContext.CurrentStore.Id);
         }
 
         #endregion

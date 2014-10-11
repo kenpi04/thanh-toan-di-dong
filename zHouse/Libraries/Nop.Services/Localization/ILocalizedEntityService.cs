@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using Nop.Core;
 using Nop.Core.Domain.Localization;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Localization
 {
@@ -22,6 +23,7 @@ namespace Nop.Services.Localization
         /// <param name="localizedPropertyId">Localized property identifier</param>
         /// <returns>Localized property</returns>
         LocalizedProperty GetLocalizedPropertyById(int localizedPropertyId);
+        Task<LocalizedProperty> GetLocalizedPropertyByIdAsync(int localizedPropertyId);
 
         /// <summary>
         /// Find localized value
@@ -32,6 +34,7 @@ namespace Nop.Services.Localization
         /// <param name="localeKey">Locale key</param>
         /// <returns>Found localized value</returns>
         string GetLocalizedValue(int languageId, int entityId, string localeKeyGroup, string localeKey);
+        Task<string> GetLocalizedValueAsync(int languageId, int entityId, string localeKeyGroup, string localeKey);
 
         /// <summary>
         /// Inserts a localized property

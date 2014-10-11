@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Nop.Core.Domain.Localization;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Localization
 {
@@ -21,6 +22,7 @@ namespace Nop.Services.Localization
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Language collection</returns>
         IList<Language> GetAllLanguages(bool showHidden = false, int storeId = 0);
+        Task<IList<Language>> GetAllLanguagesAsync(bool showHidden = false, int storeId = 0);
 
         /// <summary>
         /// Gets a language
@@ -28,6 +30,7 @@ namespace Nop.Services.Localization
         /// <param name="languageId">Language identifier</param>
         /// <returns>Language</returns>
         Language GetLanguageById(int languageId);
+        Task<Language> GetLanguageByIdAsync(int languageId);
 
         /// <summary>
         /// Inserts a language

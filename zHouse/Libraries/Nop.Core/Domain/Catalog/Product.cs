@@ -443,11 +443,13 @@ namespace Nop.Core.Domain.Catalog
 
         /// <summary>
         /// Gets or sets the available start date and time
+        /// Ngay bat dau
         /// </summary>
         public DateTime? AvailableStartDateTimeUtc { get; set; }
 
         /// <summary>
         /// Gets or sets the available end date and time
+        /// Ngay het han
         /// </summary>
         public DateTime? AvailableEndDateTimeUtc { get; set; }
 

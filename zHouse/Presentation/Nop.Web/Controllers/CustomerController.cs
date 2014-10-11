@@ -35,6 +35,7 @@ using Nop.Web.Models.Common;
 using Nop.Web.Models.Customer;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Caching;
+using System.Threading.Tasks;
 namespace Nop.Web.Controllers
 {
     public partial class CustomerController : BaseNopController
@@ -176,7 +177,7 @@ namespace Nop.Web.Controllers
             model.HideRewardPoints = !_rewardPointsSettings.Enabled;
             model.HideForumSubscriptions = !_forumSettings.ForumsEnabled || !_forumSettings.AllowCustomersToManageSubscriptions;
             model.HideReturnRequests = !_orderSettings.ReturnRequestsEnabled ||
-                _orderService.SearchReturnRequests(_storeContext.CurrentStore.Id, customer.Id, 0, null, 0, 1).Count == 0;
+               _orderService.SearchReturnRequests(_storeContext.CurrentStore.Id, customer.Id, 0, null, 0, 1).Count == 0;
             model.HideDownloadableProducts = _customerSettings.HideDownloadableProductsTab;
             model.HideBackInStockSubscriptions = _customerSettings.HideBackInStockSubscriptionsTab;
             return model;
@@ -336,61 +337,204 @@ namespace Nop.Web.Controllers
             model.NavigationModel = GetCustomerNavigationModel(customer);
             model.NavigationModel.SelectedTab = CustomerNavigationEnum.Info;
         }
+        [NonAction]
+        protected async Task PrepareCustomerInfoModelAsync(CustomerInfoModel model, Customer customer, bool excludeProperties)
+        {
+            if (model == null)
+                throw new ArgumentNullException("model");
+
+            if (customer == null)
+                throw new ArgumentNullException("customer");
+
+            model.AllowCustomersToSetTimeZone = _dateTimeSettings.AllowCustomersToSetTimeZone;
+            foreach (var tzi in _dateTimeHelper.GetSystemTimeZones())
+                model.AvailableTimeZones.Add(new SelectListItem() { Text = tzi.DisplayName, Value = tzi.Id, Selected = (excludeProperties ? tzi.Id == model.TimeZoneId : tzi.Id == _dateTimeHelper.CurrentTimeZone.Id) });
+
+            if (!excludeProperties)
+            {
+                model.VatNumber = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.VatNumber);
+                model.FirstName = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.FirstName);
+                model.LastName = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.LastName);
+                model.Gender = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Gender);
+                var dateOfBirth = await customer.GetAttributeAsync<DateTime?>(SystemCustomerAttributeNames.DateOfBirth);
+                if (dateOfBirth.HasValue)
+                {
+                    model.DateOfBirthDay = dateOfBirth.Value.Day;
+                    model.DateOfBirthMonth = dateOfBirth.Value.Month;
+                    model.DateOfBirthYear = dateOfBirth.Value.Year;
+                }
+                model.Company = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Company);
+                model.StreetAddress = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.StreetAddress);
+                model.StreetAddress2 = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.StreetAddress2);
+                model.ZipPostalCode = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.ZipPostalCode);
+                model.City = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.City);
+                model.CountryId = await customer.GetAttributeAsync<int>(SystemCustomerAttributeNames.CountryId);
+                model.StateProvinceId = await customer.GetAttributeAsync<int>(SystemCustomerAttributeNames.StateProvinceId);
+                model.Phone = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Phone);
+                model.Fax = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Fax);
+
+                //newsletter
+                var newsletter = await _newsLetterSubscriptionService.GetNewsLetterSubscriptionByEmailAsync(customer.Email);
+                model.Newsletter = newsletter != null && newsletter.Active;
+
+                model.Signature = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Signature);
+
+                model.Email = customer.Email;
+                model.Username = customer.Username;
+            }
+            else
+            {
+                if (_customerSettings.UsernamesEnabled && !_customerSettings.AllowUsersToChangeUsernames)
+                    model.Username = customer.Username;
+            }
+
+            //countries and states
+            if (_customerSettings.CountryEnabled)
+            {
+                model.AvailableCountries.Add(new SelectListItem() { Text = await _localizationService.GetResourceAsync("Address.SelectCountry"), Value = "0" });
+                var countries = await _countryService.GetAllCountriesAsync();
+                foreach (var c in countries)
+                {
+                    model.AvailableCountries.Add(new SelectListItem()
+                    {
+                        Text = await c.GetLocalizedAsync(x => x.Name),
+                        Value = c.Id.ToString(),
+                        Selected = c.Id == model.CountryId
+                    });
+                }
+
+                if (_customerSettings.StateProvinceEnabled)
+                {
+                    //states
+                    var states = await _stateProvinceService.GetStateProvincesByCountryIdAsync(model.CountryId);
+                    if (states.Count > 0)
+                    {
+                        foreach (var s in states)
+                            model.AvailableStates.Add(new SelectListItem() { Text = await s.GetLocalizedAsync(x => x.Name), Value = s.Id.ToString(), Selected = (s.Id == model.StateProvinceId) });
+                    }
+                    else
+                        model.AvailableStates.Add(new SelectListItem() { Text = await _localizationService.GetResourceAsync("Address.OtherNonUS"), Value = "0" });
+
+                }
+            }
+            model.DisplayVatNumber = _taxSettings.EuVatEnabled;
+            var vat = await customer.GetAttributeAsync<int>(SystemCustomerAttributeNames.VatNumberStatusId);
+            model.VatNumberStatusNote = await ((VatNumberStatus)vat)
+                .GetLocalizedEnumAsync(_localizationService, _workContext);
+            model.GenderEnabled = _customerSettings.GenderEnabled;
+            model.DateOfBirthEnabled = _customerSettings.DateOfBirthEnabled;
+            model.CompanyEnabled = _customerSettings.CompanyEnabled;
+            model.CompanyRequired = _customerSettings.CompanyRequired;
+            model.StreetAddressEnabled = _customerSettings.StreetAddressEnabled;
+            model.StreetAddressRequired = _customerSettings.StreetAddressRequired;
+            model.StreetAddress2Enabled = _customerSettings.StreetAddress2Enabled;
+            model.StreetAddress2Required = _customerSettings.StreetAddress2Required;
+            model.ZipPostalCodeEnabled = _customerSettings.ZipPostalCodeEnabled;
+            model.ZipPostalCodeRequired = _customerSettings.ZipPostalCodeRequired;
+            model.CityEnabled = _customerSettings.CityEnabled;
+            model.CityRequired = _customerSettings.CityRequired;
+            model.CountryEnabled = _customerSettings.CountryEnabled;
+            model.StateProvinceEnabled = _customerSettings.StateProvinceEnabled;
+            model.PhoneEnabled = _customerSettings.PhoneEnabled;
+            model.PhoneRequired = _customerSettings.PhoneRequired;
+            model.FaxEnabled = _customerSettings.FaxEnabled;
+            model.FaxRequired = _customerSettings.FaxRequired;
+            model.NewsletterEnabled = _customerSettings.NewsletterEnabled;
+            model.UsernamesEnabled = _customerSettings.UsernamesEnabled;
+            model.AllowUsersToChangeUsernames = _customerSettings.AllowUsersToChangeUsernames;
+            model.CheckUsernameAvailabilityEnabled = _customerSettings.CheckUsernameAvailabilityEnabled;
+            model.SignatureEnabled = _forumSettings.ForumsEnabled && _forumSettings.SignaturesEnabled;
+
+            //external authentication
+            foreach (var ear in _openAuthenticationService.GetExternalIdentifiersFor(customer))
+            {
+                var authMethod = _openAuthenticationService.LoadExternalAuthenticationMethodBySystemName(ear.ProviderSystemName);
+                if (authMethod == null || !authMethod.IsMethodActive(_externalAuthenticationSettings))
+                    continue;
+
+                model.AssociatedExternalAuthRecords.Add(new CustomerInfoModel.AssociatedExternalAuthModel()
+                {
+                    Id = ear.Id,
+                    Email = ear.Email,
+                    ExternalIdentifier = ear.ExternalIdentifier,
+                    AuthMethodName = authMethod.GetLocalizedFriendlyName(_localizationService, _workContext.WorkingLanguage.Id)
+                });
+            }
+
+
+            model.NavigationModel = GetCustomerNavigationModel(customer);
+            model.NavigationModel.SelectedTab = CustomerNavigationEnum.Info;
+        }
         
         [NonAction]
-        protected CustomerOrderListModel PrepareCustomerOrderListModel(Customer customer,
-            string priceString="", string attributeOptionIds="",int wardId = 0, int categoryId = 0,
+        protected CustomerOrderListModel PrepareCustomerOrderListModel(Customer customer, DateTime? startDate = null, DateTime? endDate = null,
+            string priceString="", string attributeOptionIds="",int wardId = 0, int categoryId = 0, int statusEndDate = 0, int status = 0, string sku="",
             int pageIndex = 0, int pageSize = 20)
         {
             if (customer == null)
                 throw new ArgumentNullException("customer");
-            List<int>attr=new List<int>();
-            int pf = 0, pt = 0;
+            //List<int>attr=new List<int>();
+            //int pf = 0, pt = 0;
             
            
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(priceString))
-                {
-                    string[] prices = priceString.Split('-');
-                    int.TryParse(prices[0], out pf);
-                    int.TryParse(prices[1], out pt);
-                }
-            }
-            catch { }
+            //try
+            //{
+            //    if (!string.IsNullOrWhiteSpace(priceString))
+            //    {
+            //        string[] prices = priceString.Split('-');
+            //        int.TryParse(prices[0], out pf);
+            //        int.TryParse(prices[1], out pt);
+            //    }
+            //}
+            //catch { }
 
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(attributeOptionIds))
-                {
-                    string[] splitString = attributeOptionIds.Split('-');
-                    attr = splitString.Select(x => Convert.ToInt32(x)).ToList();
-                    attr.Remove(0);
-                }
-            }
-            catch
-            {}
+            //try
+            //{
+            //    if (!string.IsNullOrWhiteSpace(attributeOptionIds))
+            //    {
+            //        string[] splitString = attributeOptionIds.Split('-');
+            //        attr = splitString.Select(x => Convert.ToInt32(x)).ToList();
+            //        attr.Remove(0);
+            //    }
+            //}
+            //catch
+            //{}
 
             var model = new CustomerOrderListModel();
             model.NavigationModel = GetCustomerNavigationModel(customer);
-            model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;            
-            var orders = _orderService.SearchOrders(storeId: 0,
-                customerId: customer.Id);
-            var products = _productService.SearchProducts(
-                categoryIds: new List<int> {categoryId },
-                            manufacturerId: 0,
-                            storeId: 0,
-                            customerId: customer.Id,
-                            visibleIndividuallyOnly: true,                          
-                            priceMin:pf,
-                            priceMax:pt,
-                            languageId: 0,
-                            filteredSpecs: attr,
-                            districtIds: new List<int> { 611 },
-                            wardId:new List<int>{ wardId},                          
-                            pageIndex: pageIndex,
-                            pageSize: pageSize
-                );
+            model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;
+            var products = new List<Product>();
+            if (!String.IsNullOrWhiteSpace(sku))
+            {
+                var product = _productService.GetProductBySku(sku);
+                if (product != null)
+                    products.Add(product);
+            }
+            else
+            {
+                 products = _productService.SearchProducts(
+                    categoryIds: new List<int> { categoryId },
+                                manufacturerId: 0,
+                                storeId: 0,
+                                customerId: customer.Id,
+                                visibleIndividuallyOnly: true,
+                    //priceMin:pf,
+                    //priceMax:pt,
+                                languageId: 0,
+                    //filteredSpecs: attr,
+                    //districtIds: new List<int> { 611 },
+                    //wardId:new List<int>{ wardId},                          
+                                pageIndex: pageIndex,
+                                pageSize: pageSize,
+                                status: (ProductStatusEnum)status,
+                                startDateTimeUtc: startDate,
+                                endDateTimeUtc: endDate                                
+                    ).ToList();
+                 if (statusEndDate == 1)//con han
+                     products = products.Where(p => p.AvailableEndDateTimeUtc < DateTime.Now).ToList();
+                 else if (statusEndDate == 2)//het han
+                     products = products.Where(p => p.AvailableEndDateTimeUtc > DateTime.Now).ToList();
+            }
             foreach(var product in products)
             {
                 var productProfileModel = new CustomerOrderListModel.ProductProfileModel()
@@ -401,13 +545,15 @@ namespace Nop.Web.Controllers
                     Sename = product.GetSeName(),
                     CreatedOn = product.CreatedOnUtc,
                     UpdatedOn = product.UpdatedOnUtc,
-                    Area = product.Area.ToString("{0:0.00}"),
+                    AvailableStartDateTimeUtc = product.AvailableStartDateTimeUtc,
+                    AvailableEndDateTimeUtc = product.AvailableEndDateTimeUtc,
+                    Area = product.Area,
                     Price = product.CallForPrice ? "Thỏa thuận" : Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ"),
-                    BathRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
-                    BedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
+                    //BathRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
+                    //BedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
                     TinhTrang = GetOptionName(product, ProductAttributeEnum.Status),
                     ViewNumber = product.ViewNumber.ToString(),
-                    TrangThaiDuyet = _localizationService.GetResource(Enum.GetName(typeof(ProductStatusEnum),product.Status)),
+                    TrangThaiDuyet = ((ProductStatusEnum)product.Status == ProductStatusEnum.Approved && product.AvailableEndDateTimeUtc > DateTime.Now) ? "Đã hết hạn" : _localizationService.GetResource(Enum.GetName(typeof(ProductStatusEnum),product.Status)),
                     DefaultPictureModel = _cacheManager.Get(string.Format(Nop.Web.Infrastructure.Cache.ModelCacheEventConsumer.PRODUCT_DEFAULTPICTURE_MODEL_KEY, product.Id, 80, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id), () =>
                     {
                         var picture = _pictureService.GetPicturesByProductId(product.Id, 1).FirstOrDefault();
@@ -424,40 +570,6 @@ namespace Nop.Web.Controllers
                 model.Products.Add(productProfileModel);
             }
            
-            //foreach (var order in orders)
-            //{
-            //    var orderModel = new CustomerOrderListModel.OrderDetailsModel()
-            //    {
-            //        Id = order.Id,
-            //        CreatedOn = _dateTimeHelper.ConvertToUserTime(order.CreatedOnUtc, DateTimeKind.Utc),
-            //        OrderStatus = order.OrderStatus.GetLocalizedEnum(_localizationService, _workContext),
-            //        IsReturnRequestAllowed = _orderProcessingService.IsReturnRequestAllowed(order)
-            //    };
-            //    var orderTotalInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderTotal, order.CurrencyRate);
-            //    orderModel.OrderTotal = _priceFormatter.FormatPrice(orderTotalInCustomerCurrency, true, order.CustomerCurrencyCode, false, _workContext.WorkingLanguage);
-
-            //    model.Orders.Add(orderModel);
-            //}
-
-            //var recurringPayments = _orderService.SearchRecurringPayments(_storeContext.CurrentStore.Id,
-            //    customer.Id, 0, null, 0, int.MaxValue);
-            //foreach (var recurringPayment in recurringPayments)
-            //{
-            //    var recurringPaymentModel = new CustomerOrderListModel.RecurringOrderModel()
-            //    {
-            //        Id = recurringPayment.Id,
-            //        StartDate = _dateTimeHelper.ConvertToUserTime(recurringPayment.StartDateUtc, DateTimeKind.Utc).ToString(),
-            //        CycleInfo = string.Format("{0} {1}", recurringPayment.CycleLength, recurringPayment.CyclePeriod.GetLocalizedEnum(_localizationService, _workContext)),
-            //        NextPayment = recurringPayment.NextPaymentDate.HasValue ? _dateTimeHelper.ConvertToUserTime(recurringPayment.NextPaymentDate.Value, DateTimeKind.Utc).ToString() : "",
-            //        TotalCycles = recurringPayment.TotalCycles,
-            //        CyclesRemaining = recurringPayment.CyclesRemaining,
-            //        InitialOrderId = recurringPayment.InitialOrder.Id,
-            //        CanCancel = _orderProcessingService.CanCancelRecurringPayment(customer, recurringPayment),
-            //    };
-
-            //    model.RecurringOrders.Add(recurringPaymentModel);
-            //}
-
             return model;
         }
 
@@ -489,12 +601,12 @@ namespace Nop.Web.Controllers
 
         [HttpPost]
         [CaptchaValidator]
-        public ActionResult Login(LoginModel model, string returnUrl, bool captchaValid)
+        public async Task<ActionResult> Login(LoginModel model, string returnUrl, bool captchaValid)
         {
             //validate CAPTCHA
             if (_captchaSettings.Enabled && _captchaSettings.ShowOnLoginPage && !captchaValid)
             {
-                ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptcha"));
+                ModelState.AddModelError("", await _localizationService.GetResourceAsync("Common.WrongCaptcha"));
             }
 
             if (ModelState.IsValid)
@@ -503,21 +615,21 @@ namespace Nop.Web.Controllers
                 {
                     model.Username = model.Username.Trim();
                 }
-                var loginResult = _customerRegistrationService.ValidateCustomer(_customerSettings.UsernamesEnabled ? model.Username : model.Email, model.Password);
+                var loginResult = await _customerRegistrationService.ValidateCustomerAsync(_customerSettings.UsernamesEnabled ? model.Username : model.Email, model.Password);
                 switch (loginResult)
                 {
                     case CustomerLoginResults.Successful:
                         {
-                            var customer = _customerSettings.UsernamesEnabled ? _customerService.GetCustomerByUsername(model.Username) : _customerService.GetCustomerByEmail(model.Email);
+                            var customer = _customerSettings.UsernamesEnabled ? await _customerService.GetCustomerByUsernameAsync(model.Username) : await _customerService.GetCustomerByEmailAsync(model.Email);
 
                             //migrate shopping cart
-                            _shoppingCartService.MigrateShoppingCart(_workContext.CurrentCustomer, customer, true);
+                            //_shoppingCartService.MigrateShoppingCart(_workContext.CurrentCustomer, customer, true);
 
                             //sign in new customer
                             _authenticationService.SignIn(customer, model.RememberMe);
 
                             //activity log
-                            _customerActivityService.InsertActivity("PublicStore.Login", _localizationService.GetResource("ActivityLog.PublicStore.Login"), customer);
+                            _customerActivityService.InsertActivity("PublicStore.Login", await _localizationService.GetResourceAsync("ActivityLog.PublicStore.Login"), customer);
 
                             if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                                 return Redirect(returnUrl);
@@ -616,7 +728,7 @@ namespace Nop.Web.Controllers
         [HttpPost]
         [CaptchaValidator]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterModel model, string returnUrl, bool captchaValid)
+        public async Task<ActionResult> Register(RegisterModel model, string returnUrl, bool captchaValid)
         {
             //check whether registration is allowed
             if (_customerSettings.UserRegistrationType == UserRegistrationType.Disabled)
@@ -628,14 +740,14 @@ namespace Nop.Web.Controllers
                 _authenticationService.SignOut();
                 
                 //Save a new record
-                _workContext.CurrentCustomer = _customerService.InsertGuestCustomer();
+                _workContext.CurrentCustomer = await _customerService.InsertGuestCustomerAsync();
             }
             var customer = _workContext.CurrentCustomer;
 
             //validate CAPTCHA
             if (_captchaSettings.Enabled && _captchaSettings.ShowOnRegistrationPage && !captchaValid)
             {
-                ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptcha"));
+                ModelState.AddModelError("", await _localizationService.GetResourceAsync("Common.WrongCaptcha"));
             }
             
             if (ModelState.IsValid)
@@ -648,18 +760,18 @@ namespace Nop.Web.Controllers
                 bool isApproved = _customerSettings.UserRegistrationType == UserRegistrationType.Standard;
                 var registrationRequest = new CustomerRegistrationRequest(customer, model.Email,
                     _customerSettings.UsernamesEnabled ? model.Username : model.Email, model.Password, _customerSettings.DefaultPasswordFormat, isApproved);
-                var registrationResult = _customerRegistrationService.RegisterCustomer(registrationRequest);
+                var registrationResult = await _customerRegistrationService.RegisterCustomerAsync(registrationRequest);
                 if (registrationResult.Success)
                 {
                     //properties
                     if (_dateTimeSettings.AllowCustomersToSetTimeZone)
                     {
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.TimeZoneId, model.TimeZoneId);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.TimeZoneId, model.TimeZoneId);
                     }
                     //VAT number
                     if (_taxSettings.EuVatEnabled)
                     {
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.VatNumber, model.VatNumber);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.VatNumber, model.VatNumber);
                         
                         string vatName = "";
                         string vatAddress = "";
@@ -675,9 +787,9 @@ namespace Nop.Web.Controllers
 
                     //form fields
                     if (_customerSettings.GenderEnabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.Gender, model.Gender);
-                    _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.FirstName, model.FirstName);
-                    _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.LastName, model.LastName);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.Gender, model.Gender);
+                    await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.FirstName, model.FirstName);
+                    await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.LastName, model.LastName);
                     if (_customerSettings.DateOfBirthEnabled)
                     {
                         DateTime? dateOfBirth = null;
@@ -686,32 +798,32 @@ namespace Nop.Web.Controllers
                             dateOfBirth = new DateTime(model.DateOfBirthYear.Value, model.DateOfBirthMonth.Value, model.DateOfBirthDay.Value);
                         }
                         catch { }
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.DateOfBirth, dateOfBirth);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.DateOfBirth, dateOfBirth);
                     }
                     if (_customerSettings.CompanyEnabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.Company, model.Company);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.Company, model.Company);
                     if (_customerSettings.StreetAddressEnabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.StreetAddress, model.StreetAddress);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.StreetAddress, model.StreetAddress);
                     if (_customerSettings.StreetAddress2Enabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.StreetAddress2, model.StreetAddress2);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.StreetAddress2, model.StreetAddress2);
                     if (_customerSettings.ZipPostalCodeEnabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.ZipPostalCode, model.ZipPostalCode);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.ZipPostalCode, model.ZipPostalCode);
                     if (_customerSettings.CityEnabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.City, model.City);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.City, model.City);
                     if (_customerSettings.CountryEnabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.CountryId, model.CountryId);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.CountryId, model.CountryId);
                     if (_customerSettings.CountryEnabled && _customerSettings.StateProvinceEnabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.StateProvinceId, model.StateProvinceId);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.StateProvinceId, model.StateProvinceId);
                     if (_customerSettings.PhoneEnabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.Phone, model.Phone);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.Phone, model.Phone);
                     if (_customerSettings.FaxEnabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.Fax, model.Fax);
+                        await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.Fax, model.Fax);
 
                     //newsletter
                     if (_customerSettings.NewsletterEnabled)
                     {
                         //save newsletter value
-                        var newsletter = _newsLetterSubscriptionService.GetNewsLetterSubscriptionByEmail(model.Email);
+                        var newsletter = await _newsLetterSubscriptionService.GetNewsLetterSubscriptionByEmailAsync(model.Email);
                         if (newsletter != null)
                         {
                             if (model.Newsletter)
@@ -750,20 +862,20 @@ namespace Nop.Web.Controllers
                     //insert default address (if possible)
                     var defaultAddress = new Address()
                     {
-                        FirstName = customer.GetAttribute<string>(SystemCustomerAttributeNames.FirstName),
-                        LastName = customer.GetAttribute<string>(SystemCustomerAttributeNames.LastName),
+                        FirstName = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.FirstName),
+                        LastName = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.LastName),
                         Email = customer.Email,
-                        Company = customer.GetAttribute<string>(SystemCustomerAttributeNames.Company),
-                        CountryId = customer.GetAttribute<int>(SystemCustomerAttributeNames.CountryId) > 0 ? 
-                            (int?)customer.GetAttribute<int>(SystemCustomerAttributeNames.CountryId) : null,
-                        StateProvinceId = customer.GetAttribute<int>(SystemCustomerAttributeNames.StateProvinceId) > 0 ?
-                            (int?)customer.GetAttribute<int>(SystemCustomerAttributeNames.StateProvinceId) : null,
-                        City = customer.GetAttribute<string>(SystemCustomerAttributeNames.City),
-                        Address1 = customer.GetAttribute<string>(SystemCustomerAttributeNames.StreetAddress),
-                        Address2 = customer.GetAttribute<string>(SystemCustomerAttributeNames.StreetAddress2),
-                        ZipPostalCode = customer.GetAttribute<string>(SystemCustomerAttributeNames.ZipPostalCode),
-                        PhoneNumber = customer.GetAttribute<string>(SystemCustomerAttributeNames.Phone),
-                        FaxNumber = customer.GetAttribute<string>(SystemCustomerAttributeNames.Fax),
+                        Company = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Company),
+                        CountryId = await customer.GetAttributeAsync<int>(SystemCustomerAttributeNames.CountryId) > 0 ? 
+                            (int?) await customer.GetAttributeAsync<int>(SystemCustomerAttributeNames.CountryId) : null,
+                        StateProvinceId = await customer.GetAttributeAsync<int>(SystemCustomerAttributeNames.StateProvinceId) > 0 ?
+                            (int?) await customer.GetAttributeAsync<int>(SystemCustomerAttributeNames.StateProvinceId) : null,
+                        City = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.City),
+                        Address1 = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.StreetAddress),
+                        Address2 = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.StreetAddress2),
+                        ZipPostalCode = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.ZipPostalCode),
+                        PhoneNumber = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Phone),
+                        FaxNumber = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Fax),
                         CreatedOnUtc = customer.CreatedOnUtc
                     };
                     if (this._addressService.IsAddressValid(defaultAddress))
@@ -789,7 +901,7 @@ namespace Nop.Web.Controllers
                         case UserRegistrationType.EmailValidation:
                             {
                                 //email validation message
-                                _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.AccountActivationToken, Guid.NewGuid().ToString());
+                                await _genericAttributeService.SaveAttributeAsync(customer, SystemCustomerAttributeNames.AccountActivationToken, Guid.NewGuid().ToString());
                                 _workflowMessageService.SendCustomerEmailValidationMessage(customer, _workContext.WorkingLanguage.Id);
 
                                 //result
@@ -853,24 +965,24 @@ namespace Nop.Web.Controllers
             model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnRegistrationPage;
             if (_customerSettings.CountryEnabled)
             {
-                model.AvailableCountries.Add(new SelectListItem() { Text = _localizationService.GetResource("Address.SelectCountry"), Value = "0" });
-                foreach (var c in _countryService.GetAllCountries())
+                model.AvailableCountries.Add(new SelectListItem() { Text = await _localizationService.GetResourceAsync("Address.SelectCountry"), Value = "0" });
+                foreach (var c in await _countryService.GetAllCountriesAsync())
                 {
-                    model.AvailableCountries.Add(new SelectListItem() { Text = c.GetLocalized(x => x.Name), Value = c.Id.ToString(), Selected = (c.Id == model.CountryId) });
+                    model.AvailableCountries.Add(new SelectListItem() { Text = await c.GetLocalizedAsync(x => x.Name), Value = c.Id.ToString(), Selected = (c.Id == model.CountryId) });
                 }
 
 
                 if (_customerSettings.StateProvinceEnabled)
                 {
                     //states
-                    var states = _stateProvinceService.GetStateProvincesByCountryId(model.CountryId).ToList();
+                    var states = await _stateProvinceService.GetStateProvincesByCountryIdAsync(model.CountryId);
                     if (states.Count > 0)
                     {
                         foreach (var s in states)
-                            model.AvailableStates.Add(new SelectListItem() { Text = s.GetLocalized(x => x.Name), Value = s.Id.ToString(), Selected = (s.Id == model.StateProvinceId) });
+                            model.AvailableStates.Add(new SelectListItem() { Text = await s.GetLocalizedAsync(x => x.Name), Value = s.Id.ToString(), Selected = (s.Id == model.StateProvinceId) });
                     }
                     else
-                        model.AvailableStates.Add(new SelectListItem() { Text = _localizationService.GetResource("Address.OtherNonUS"), Value = "0" });
+                        model.AvailableStates.Add(new SelectListItem() { Text = await _localizationService.GetResourceAsync("Address.OtherNonUS"), Value = "0" });
 
                 }
             }
@@ -1011,7 +1123,7 @@ namespace Nop.Web.Controllers
         #region Info
 
         [NopHttpsRequirement(SslRequirement.Yes)]
-        public ActionResult Info()
+        public async Task<ActionResult> Info()
         {
             if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
                 return new HttpUnauthorizedResult();
@@ -1019,7 +1131,7 @@ namespace Nop.Web.Controllers
             var customer = _workContext.CurrentCustomer;        
 
             var model = new CustomerInfoModel();
-            PrepareCustomerInfoModel(model, customer, false);
+            await PrepareCustomerInfoModelAsync(model, customer, false);
 
             return View(model);
         }
@@ -1318,13 +1430,15 @@ namespace Nop.Web.Controllers
         #region Orders
 
         [NopHttpsRequirement(SslRequirement.Yes)]
-        public ActionResult Orders( string priceString, string attributeOptionIds,int wardId = 0, int categoryId = 0)
+        public ActionResult Orders(DateTime? startDate, DateTime? endDate, int categoryId = 0, int statusEndDate = 0, int status = 0, string sku = "")
         {
-            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
-                return new HttpUnauthorizedResult();
-
             var customer = _workContext.CurrentCustomer;
-            var model = PrepareCustomerOrderListModel(customer,priceString,attributeOptionIds,wardId,categoryId);
+
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !customer.IsAdmin()))
+                return new HttpUnauthorizedResult();
+            
+            //var model = PrepareCustomerOrderListModel(customer,priceString,attributeOptionIds,wardId,categoryId);
+            var model = PrepareCustomerOrderListModel(customer, startDate: startDate, endDate:endDate, categoryId:categoryId, status:status,statusEndDate:statusEndDate);
               if (Request.IsAjaxRequest())
                 return View("_PartialProductCustomer", model.Products);
             return View(model);
@@ -1979,15 +2093,16 @@ namespace Nop.Web.Controllers
 
         #endregion
 
-        #region Products
+        #region Products       
 
         [NopHttpsRequirement(SslRequirement.Yes)]
         public ActionResult Products()
         {
-            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !_workContext.CurrentCustomer.IsAdmin()))
+            var customer = _workContext.CurrentCustomer;
+
+            if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !customer.IsAdmin()))
                 return new HttpUnauthorizedResult();
 
-            var customer = _workContext.CurrentCustomer;
             var model = PrepareCustomerOrderListModel(customer);
             return View(model);
         }

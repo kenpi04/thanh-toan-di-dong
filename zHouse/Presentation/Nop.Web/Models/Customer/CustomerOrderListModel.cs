@@ -50,7 +50,7 @@ namespace Nop.Web.Models.Customer
             public string Sku { get; set; }
             public string Name { get; set; }
             public string Sename { get; set; }
-            public string Area { get; set; }
+            public decimal Area { get; set; }
             public string Price { get; set; }
             public string BathRoom { get; set; }
             public string BedRoom { get; set; }
@@ -58,7 +58,8 @@ namespace Nop.Web.Models.Customer
             public string ViewNumber { get; set; }
             public DateTime CreatedOn { get; set; }
             public DateTime UpdatedOn { get; set; }
-            public DateTime? ExpiredOn { get; set; }
+            public DateTime? AvailableStartDateTimeUtc { get; set; }
+            public DateTime? AvailableEndDateTimeUtc { get; set; }
             public string TrangThaiDuyet { get; set; }
             public Media.PictureModel DefaultPictureModel { get; set; }
         }

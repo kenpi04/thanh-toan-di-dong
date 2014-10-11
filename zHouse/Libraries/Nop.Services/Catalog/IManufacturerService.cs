@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -27,13 +28,17 @@ namespace Nop.Services.Catalog
             int pageIndex = 0,
             int pageSize = int.MaxValue,
             bool showHidden = false);
-
+        Task<IPagedList<Manufacturer>> GetAllManufacturersAsync(string manufacturerName = "",
+            int pageIndex = 0,
+            int pageSize = int.MaxValue,
+            bool showHidden = false);
         /// <summary>
         /// Gets a manufacturer
         /// </summary>
         /// <param name="manufacturerId">Manufacturer identifier</param>
         /// <returns>Manufacturer</returns>
         Manufacturer GetManufacturerById(int manufacturerId);
+        Task<Manufacturer> GetManufacturerByIdAsync(int manufacturerId);
 
         /// <summary>
         /// Inserts a manufacturer
@@ -63,7 +68,8 @@ namespace Nop.Services.Catalog
         /// <returns>Product manufacturer collection</returns>
         IPagedList<ProductManufacturer> GetProductManufacturersByManufacturerId(int manufacturerId,
             int pageIndex, int pageSize, bool showHidden = false);
-
+        Task<IPagedList<ProductManufacturer>> GetProductManufacturersByManufacturerIdAsync(int manufacturerId,
+            int pageIndex, int pageSize, bool showHidden = false);
         /// <summary>
         /// Gets a product manufacturer mapping collection
         /// </summary>
@@ -71,6 +77,7 @@ namespace Nop.Services.Catalog
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Product manufacturer mapping collection</returns>
         IList<ProductManufacturer> GetProductManufacturersByProductId(int productId, bool showHidden = false);
+        Task<IList<ProductManufacturer>> GetProductManufacturersByProductIdAsync(int productId, bool showHidden = false);
         
         /// <summary>
         /// Gets a product manufacturer mapping 
@@ -78,6 +85,7 @@ namespace Nop.Services.Catalog
         /// <param name="productManufacturerId">Product manufacturer mapping identifier</param>
         /// <returns>Product manufacturer mapping</returns>
         ProductManufacturer GetProductManufacturerById(int productManufacturerId);
+        Task<ProductManufacturer> GetProductManufacturerByIdAsync(int productManufacturerId);
 
         /// <summary>
         /// Inserts a product manufacturer mapping

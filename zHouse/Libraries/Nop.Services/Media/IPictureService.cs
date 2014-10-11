@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Media;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Media
 {
@@ -79,6 +80,7 @@ namespace Nop.Services.Media
         /// <param name="pictureId">Picture identifier</param>
         /// <returns>Picture</returns>
         Picture GetPictureById(int pictureId);
+        Task<Picture> GetPictureByIdAsync(int pictureId);
 
         /// <summary>
         /// Deletes a picture
@@ -93,6 +95,7 @@ namespace Nop.Services.Media
         /// <param name="pageSize">Items on each page</param>
         /// <returns>Paged list of pictures</returns>
         IPagedList<Picture> GetPictures(int pageIndex, int pageSize);
+        Task<IPagedList<Picture>> GetPicturesAsync(int pageIndex, int pageSize);
 
         /// <summary>
         /// Gets pictures by product identifier
@@ -101,6 +104,7 @@ namespace Nop.Services.Media
         /// <param name="recordsToReturn">Number of records to return. 0 if you want to get all items</param>
         /// <returns>Pictures</returns>
         IList<Picture> GetPicturesByProductId(int productId, int recordsToReturn = 0);
+        Task<IList<Picture>> GetPicturesByProductIdAsync(int productId, int recordsToReturn = 0);
 
         /// <summary>
         /// Inserts a picture
@@ -132,6 +136,7 @@ namespace Nop.Services.Media
         /// <param name="seoFilename">The SEO filename</param>
         /// <returns>Picture</returns>
         Picture SetSeoFilename(int pictureId, string seoFilename);
+        Task<Picture> SetSeoFilenameAsync(int pictureId, string seoFilename);
 
         /// <summary>
         /// Gets or sets a value indicating whether the images should be stored in data base.

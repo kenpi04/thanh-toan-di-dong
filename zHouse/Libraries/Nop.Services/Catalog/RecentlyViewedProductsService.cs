@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Nop.Core.Domain.Catalog;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -20,7 +21,7 @@ namespace Nop.Services.Catalog
         #endregion
 
         #region Ctor
-        
+
         /// <summary>
         /// Ctor
         /// </summary>
@@ -46,6 +47,10 @@ namespace Nop.Services.Catalog
         protected IList<int> GetRecentlyViewedProductsIds()
         {
             return GetRecentlyViewedProductsIds(int.MaxValue);
+        }
+        protected async Task<IList<int>> GetRecentlyViewedProductsIdsAsync()
+        {
+            return await GetRecentlyViewedProductsIdsAsync(int.MaxValue);
         }
 
         /// <summary>
@@ -76,6 +81,31 @@ namespace Nop.Services.Catalog
 
             return productIds;
         }
+        protected async Task<IList<int>> GetRecentlyViewedProductsIdsAsync(int number)
+        {
+            return await Task.Factory.StartNew<IList<int>>(() =>
+            {
+                var productIds = new List<int>();
+                var recentlyViewedCookie = _httpContext.Request.Cookies.Get("NopCommerce.RecentlyViewedProducts");
+                if ((recentlyViewedCookie == null) || (recentlyViewedCookie.Values == null))
+                    return productIds;
+                string[] values = recentlyViewedCookie.Values.GetValues("RecentlyViewedProductIds");
+                if (values == null)
+                    return productIds;
+                foreach (string productId in values)
+                {
+                    int prodId = int.Parse(productId);
+                    if (!productIds.Contains(prodId))
+                    {
+                        productIds.Add(prodId);
+                        if (productIds.Count >= number)
+                            break;
+                    }
+                }
+
+                return productIds;
+            });
+        }
 
         #endregion
 
@@ -94,6 +124,17 @@ namespace Nop.Services.Catalog
             foreach (var product in _productService.GetProductsByIds(productIds.ToArray()))
                 if (product.Published && !product.Deleted)
                     products.Add(product);
+            return products;
+        }
+        public virtual async Task<IList<Product>> GetRecentlyViewedProductsAsync(int number)
+        {
+            var products = new List<Product>();
+            var productIds = await GetRecentlyViewedProductsIdsAsync(number);
+            var ps = await _productService.GetProductsByIdsAsync(productIds.ToArray());
+            foreach (var product in ps)
+                if (product.Published && !product.Deleted)
+                    products.Add(product);
+
             return products;
         }
 
@@ -134,7 +175,39 @@ namespace Nop.Services.Catalog
             recentlyViewedCookie.Expires = DateTime.Now.AddDays(10.0);
             _httpContext.Response.Cookies.Set(recentlyViewedCookie);
         }
-        
+        public virtual async void AddProductToRecentlyViewedListAsync(int productId)
+        {
+            if (!_catalogSettings.RecentlyViewedProductsEnabled)
+                return;
+
+            var oldProductIds = await GetRecentlyViewedProductsIdsAsync();
+            var newProductIds = new List<int>();
+            newProductIds.Add(productId);
+            foreach (int oldProductId in oldProductIds)
+                if (oldProductId != productId)
+                    newProductIds.Add(oldProductId);
+
+            var recentlyViewedCookie = _httpContext.Request.Cookies.Get("NopCommerce.RecentlyViewedProducts");
+            if (recentlyViewedCookie == null)
+            {
+                recentlyViewedCookie = new HttpCookie("NopCommerce.RecentlyViewedProducts");
+                recentlyViewedCookie.HttpOnly = true;
+            }
+            recentlyViewedCookie.Values.Clear();
+            int maxProducts = _catalogSettings.RecentlyViewedProductsNumber;
+            if (maxProducts <= 0)
+                maxProducts = 10;
+            int i = 1;
+            foreach (int newProductId in newProductIds)
+            {
+                recentlyViewedCookie.Values.Add("RecentlyViewedProductIds", newProductId.ToString());
+                if (i == maxProducts)
+                    break;
+                i++;
+            }
+            recentlyViewedCookie.Expires = DateTime.Now.AddDays(10.0);
+            _httpContext.Response.Cookies.Set(recentlyViewedCookie);
+        }
         #endregion
     }
 }

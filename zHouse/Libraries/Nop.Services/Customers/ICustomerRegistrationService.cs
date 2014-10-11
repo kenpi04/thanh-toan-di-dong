@@ -1,4 +1,5 @@
 using Nop.Core.Domain.Customers;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Customers
 {
@@ -14,6 +15,7 @@ namespace Nop.Services.Customers
         /// <param name="password">Password</param>
         /// <returns>Result</returns>
         CustomerLoginResults ValidateCustomer(string usernameOrEmail, string password);
+        Task<CustomerLoginResults> ValidateCustomerAsync(string usernameOrEmail, string password);
 
         /// <summary>
         /// Register customer
@@ -21,6 +23,7 @@ namespace Nop.Services.Customers
         /// <param name="request">Request</param>
         /// <returns>Result</returns>
         CustomerRegistrationResult RegisterCustomer(CustomerRegistrationRequest request);
+        Task<CustomerRegistrationResult> RegisterCustomerAsync(CustomerRegistrationRequest request);
 
         /// <summary>
         /// Change password

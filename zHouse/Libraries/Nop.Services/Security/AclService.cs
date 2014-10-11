@@ -6,6 +6,8 @@ using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Security;
+using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Nop.Services.Security
 {
@@ -86,6 +88,15 @@ namespace Nop.Services.Security
 
             return _aclRecordRepository.GetById(aclRecordId);
         }
+        public virtual async Task<AclRecord> GetAclRecordByIdAsync(int aclRecordId)
+        {
+            if (aclRecordId == 0)
+                return null;
+            return await Task.Factory.StartNew<AclRecord>(() =>
+            {
+                return _aclRecordRepository.GetById(aclRecordId);
+            });
+        }
 
         /// <summary>
         /// Gets ACL records
@@ -108,7 +119,29 @@ namespace Nop.Services.Security
             var aclRecords = query.ToList();
             return aclRecords;
         }
-
+        public virtual async Task<IList<AclRecord>> GetAclRecordsAsync<T>(T entity) where T : BaseEntity, IAclSupported
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
+            return await Task.Factory.StartNew<IList<AclRecord>>(() =>
+            {
+                int entityId = entity.Id;
+                string entityName = typeof(T).Name;
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadUncommitted
+                }
+                ))
+                {
+                    var query = from ur in _aclRecordRepository.Table
+                                where ur.EntityId == entityId &&
+                                ur.EntityName == entityName
+                                select ur;
+                    var aclRecords = query.ToList();
+                    return aclRecords;
+                }
+            });
+        }
 
         /// <summary>
         /// Inserts an ACL record
@@ -195,6 +228,38 @@ namespace Nop.Services.Security
                 return result;
             });
         }
+        public virtual async Task<int[]> GetCustomerRoleIdsWithAccessAsync<T>(T entity) where T : BaseEntity, IAclSupported
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
+
+            return await Task.Factory.StartNew<int[]>(() =>
+            {
+                int entityId = entity.Id;
+                string entityName = typeof(T).Name;
+
+                string key = string.Format(ACLRECORD_BY_ENTITYID_NAME_KEY, entityId, entityName);
+                return _cacheManager.Get(key, () =>
+                {
+                    using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                    {
+                        IsolationLevel = IsolationLevel.ReadUncommitted
+                    }
+                    ))
+                    {
+                        var query = from ur in _aclRecordRepository.Table
+                                    where ur.EntityId == entityId &&
+                                    ur.EntityName == entityName
+                                    select ur.CustomerRoleId;
+                        var result = query.ToArray();
+                        //little hack here. nulls aren't cacheable so set it to ""
+                        if (result == null)
+                            result = new int[0];
+                        return result;
+                    }
+                });
+            });
+        }
 
         /// <summary>
         /// Authorize ACL permission
@@ -205,6 +270,10 @@ namespace Nop.Services.Security
         public virtual bool Authorize<T>(T entity) where T : BaseEntity, IAclSupported
         {
             return Authorize(entity, _workContext.CurrentCustomer);
+        }
+        public virtual async Task<bool> AuthorizeAsync<T>(T entity) where T : BaseEntity, IAclSupported
+        {
+            return await AuthorizeAsync(entity, _workContext.CurrentCustomer);
         }
 
         /// <summary>
@@ -227,6 +296,26 @@ namespace Nop.Services.Security
 
             foreach (var role1 in customer.CustomerRoles.Where(cr => cr.Active))
                 foreach (var role2Id in GetCustomerRoleIdsWithAccess(entity))
+                    if (role1.Id == role2Id)
+                        //yes, we have such permission
+                        return true;
+
+            //no permission found
+            return false;
+        }
+        public virtual async Task<bool> AuthorizeAsync<T>(T entity, Customer customer) where T : BaseEntity, IAclSupported
+        {
+            if (entity == null)
+                return false;
+
+            if (customer == null)
+                return false;
+
+            if (!entity.SubjectToAcl)
+                return true;
+
+            foreach (var role1 in customer.CustomerRoles.Where(cr => cr.Active))
+                foreach (var role2Id in await GetCustomerRoleIdsWithAccessAsync(entity))
                     if (role1.Id == role2Id)
                         //yes, we have such permission
                         return true;

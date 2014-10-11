@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Orders;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Customers
 {
@@ -43,13 +44,22 @@ namespace Nop.Services.Customers
             string company = null, string phone = null, string zipPostalCode = null,
             bool loadOnlyWithShoppingCart = false, ShoppingCartType? sct = null,
             int pageIndex = 0, int pageSize = 2147483647); //Int32.MaxValue
-        
+        Task<IPagedList<Customer>> GetAllCustomersAsync(DateTime? createdFromUtc = null,
+            DateTime? createdToUtc = null, int affiliateId = 0, int vendorId = 0,
+            int[] customerRoleIds = null, string email = null, string username = null,
+            string firstName = null, string lastName = null,
+            int dayOfBirth = 0, int monthOfBirth = 0,
+            string company = null, string phone = null, string zipPostalCode = null,
+            bool loadOnlyWithShoppingCart = false, ShoppingCartType? sct = null,
+            int pageIndex = 0, int pageSize = 2147483647); //Int32.MaxValue
+
         /// <summary>
         /// Gets all customers by customer format (including deleted ones)
         /// </summary>
         /// <param name="passwordFormat">Password format</param>
         /// <returns>Customers</returns>
         IList<Customer> GetAllCustomersByPasswordFormat(PasswordFormat passwordFormat);
+        Task<IList<Customer>> GetAllCustomersByPasswordFormatAsync(PasswordFormat passwordFormat);
 
         /// <summary>
         /// Gets online customers
@@ -60,6 +70,8 @@ namespace Nop.Services.Customers
         /// <param name="pageSize">Page size</param>
         /// <returns>Customer collection</returns>
         IPagedList<Customer> GetOnlineCustomers(DateTime lastActivityFromUtc,
+            int[] customerRoleIds, int pageIndex, int pageSize);
+        Task<IPagedList<Customer>> GetOnlineCustomersAsync(DateTime lastActivityFromUtc,
             int[] customerRoleIds, int pageIndex, int pageSize);
 
         /// <summary>
@@ -74,6 +86,7 @@ namespace Nop.Services.Customers
         /// <param name="customerId">Customer identifier</param>
         /// <returns>A customer</returns>
         Customer GetCustomerById(int customerId);
+        Task<Customer> GetCustomerByIdAsync(int customerId);
 
         /// <summary>
         /// Get customers by identifiers
@@ -81,6 +94,7 @@ namespace Nop.Services.Customers
         /// <param name="customerIds">Customer identifiers</param>
         /// <returns>Customers</returns>
         IList<Customer> GetCustomersByIds(int[] customerIds);
+        Task<IList<Customer>> GetCustomersByIdsAsync(int[] customerIds);
 
         /// <summary>
         /// Gets a customer by GUID
@@ -88,6 +102,7 @@ namespace Nop.Services.Customers
         /// <param name="customerGuid">Customer GUID</param>
         /// <returns>A customer</returns>
         Customer GetCustomerByGuid(Guid customerGuid);
+        Task<Customer> GetCustomerByGuidAsync(Guid customerGuid);
 
         /// <summary>
         /// Get customer by email
@@ -95,6 +110,7 @@ namespace Nop.Services.Customers
         /// <param name="email">Email</param>
         /// <returns>Customer</returns>
         Customer GetCustomerByEmail(string email);
+        Task<Customer> GetCustomerByEmailAsync(string email);
         
         /// <summary>
         /// Get customer by system role
@@ -102,6 +118,7 @@ namespace Nop.Services.Customers
         /// <param name="systemName">System name</param>
         /// <returns>Customer</returns>
         Customer GetCustomerBySystemName(string systemName);
+        Task<Customer> GetCustomerBySystemNameAsync(string systemName);
 
         /// <summary>
         /// Get customer by username
@@ -109,12 +126,14 @@ namespace Nop.Services.Customers
         /// <param name="username">Username</param>
         /// <returns>Customer</returns>
         Customer GetCustomerByUsername(string username);
+        Task<Customer> GetCustomerByUsernameAsync(string username);
 
         /// <summary>
         /// Insert a guest customer
         /// </summary>
         /// <returns>Customer</returns>
         Customer InsertGuestCustomer();
+        Task<Customer> InsertGuestCustomerAsync();
 
         /// <summary>
         /// Insert a customer
@@ -171,6 +190,7 @@ namespace Nop.Services.Customers
         /// <param name="customerRoleId">Customer role identifier</param>
         /// <returns>Customer role</returns>
         CustomerRole GetCustomerRoleById(int customerRoleId);
+        Task<CustomerRole> GetCustomerRoleByIdAsync(int customerRoleId);
 
         /// <summary>
         /// Gets a customer role
@@ -178,6 +198,7 @@ namespace Nop.Services.Customers
         /// <param name="systemName">Customer role system name</param>
         /// <returns>Customer role</returns>
         CustomerRole GetCustomerRoleBySystemName(string systemName);
+        Task<CustomerRole> GetCustomerRoleBySystemNameAsync(string systemName);
 
         /// <summary>
         /// Gets all customer roles
@@ -185,6 +206,7 @@ namespace Nop.Services.Customers
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Customer role collection</returns>
         IList<CustomerRole> GetAllCustomerRoles(bool showHidden = false);
+        Task<IList<CustomerRole>> GetAllCustomerRolesAsync(bool showHidden = false);
 
         /// <summary>
         /// Inserts a customer role

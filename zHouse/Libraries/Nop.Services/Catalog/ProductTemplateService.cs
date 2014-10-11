@@ -4,6 +4,8 @@ using System.Linq;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Services.Events;
+using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Nop.Services.Catalog
 {
@@ -58,12 +60,38 @@ namespace Nop.Services.Catalog
         /// <returns>Product templates</returns>
         public virtual IList<ProductTemplate> GetAllProductTemplates()
         {
-            var query = from pt in _productTemplateRepository.Table
-                        orderby pt.DisplayOrder
-                        select pt;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            {
+                IsolationLevel = IsolationLevel.ReadUncommitted
+            }
+                ))
+            {
+                var query = from pt in _productTemplateRepository.Table
+                            orderby pt.DisplayOrder
+                            select pt;
 
-            var templates = query.ToList();
-            return templates;
+                var templates = query.ToList();
+                return templates;
+            }
+        }
+        public virtual async Task<IList<ProductTemplate>> GetAllProductTemplatesAsync()
+        {
+            return await Task.Factory.StartNew<IList<ProductTemplate>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from pt in _productTemplateRepository.Table
+                                orderby pt.DisplayOrder
+                                select pt;
+
+                    var templates = query.ToList();
+                    return templates;
+                }
+            });
         }
 
         /// <summary>
@@ -75,8 +103,30 @@ namespace Nop.Services.Catalog
         {
             if (productTemplateId == 0)
                 return null;
-
-            return _productTemplateRepository.GetById(productTemplateId);
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            {
+                IsolationLevel = IsolationLevel.ReadUncommitted
+            }
+                ))
+            {
+                return _productTemplateRepository.GetById(productTemplateId);
+            }
+        }
+        public virtual async Task<ProductTemplate> GetProductTemplateByIdAsync(int productTemplateId)
+        {
+            if (productTemplateId == 0)
+                return null;
+            return await Task.Factory.StartNew<ProductTemplate>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    return _productTemplateRepository.GetById(productTemplateId);
+                }
+            });
         }
 
         /// <summary>

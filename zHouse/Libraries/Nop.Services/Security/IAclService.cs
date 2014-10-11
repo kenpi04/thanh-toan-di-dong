@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Security;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Security
 {
@@ -22,6 +23,7 @@ namespace Nop.Services.Security
         /// <param name="aclRecordId">ACL record identifier</param>
         /// <returns>ACL record</returns>
         AclRecord GetAclRecordById(int aclRecordId);
+        Task<AclRecord> GetAclRecordByIdAsync(int aclRecordId);
         
         /// <summary>
         /// Gets ACL records
@@ -30,6 +32,7 @@ namespace Nop.Services.Security
         /// <param name="entity">Entity</param>
         /// <returns>ACL records</returns>
         IList<AclRecord> GetAclRecords<T>(T entity) where T : BaseEntity, IAclSupported;
+        Task<IList<AclRecord>> GetAclRecordsAsync<T>(T entity) where T : BaseEntity, IAclSupported;
 
         /// <summary>
         /// Inserts an ACL record
@@ -58,6 +61,7 @@ namespace Nop.Services.Security
         /// <param name="entity">Wntity</param>
         /// <returns>Customer role identifiers</returns>
         int[] GetCustomerRoleIdsWithAccess<T>(T entity) where T : BaseEntity, IAclSupported;
+        Task<int[]> GetCustomerRoleIdsWithAccessAsync<T>(T entity) where T : BaseEntity, IAclSupported;
 
         /// <summary>
         /// Authorize ACL permission
@@ -66,6 +70,7 @@ namespace Nop.Services.Security
         /// <param name="entity">Wntity</param>
         /// <returns>true - authorized; otherwise, false</returns>
         bool Authorize<T>(T entity) where T : BaseEntity, IAclSupported;
+        Task<bool> AuthorizeAsync<T>(T entity) where T : BaseEntity, IAclSupported;
 
         /// <summary>
         /// Authorize ACL permission
@@ -75,5 +80,6 @@ namespace Nop.Services.Security
         /// <param name="customer">Customer</param>
         /// <returns>true - authorized; otherwise, false</returns>
         bool Authorize<T>(T entity, Customer customer) where T : BaseEntity, IAclSupported;
+        Task<bool> AuthorizeAsync<T>(T entity, Customer customer) where T : BaseEntity, IAclSupported;
     }
 }

@@ -102,6 +102,13 @@ namespace Nop.Web.Models.Catalog
         [DisplayFormat(DataFormatString = "{0:###,##}")]
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.AreaUse")]
         public decimal AreaUse { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.AvailableStartDateTime")]
+        public DateTime? AvailableStartDateTime { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.AvailableEndDateTime")]
+        public DateTime? AvailableEndDateTime { get; set; }
+
         public class PictureUploadModel
         {
             public int Id { get; set; }

@@ -5,6 +5,7 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Messages;
 using Nop.Data;
 using Nop.Services.Events;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Messages
 {
@@ -160,6 +161,21 @@ namespace Nop.Services.Messages
                                           select nls;
 
             return newsLetterSubscriptions.FirstOrDefault();
+        }
+        public virtual async Task<NewsLetterSubscription> GetNewsLetterSubscriptionByEmailAsync(string email)
+        {
+            if (!CommonHelper.IsValidEmail(email)) return null;
+
+            email = email.Trim();
+            return await Task.Factory.StartNew<NewsLetterSubscription>(() =>
+            {
+                var newsLetterSubscriptions = from nls in _subscriptionRepository.Table
+                                              where nls.Email == email
+                                              orderby nls.Id
+                                              select nls;
+
+                return newsLetterSubscriptions.FirstOrDefault();
+            });
         }
 
         /// <summary>

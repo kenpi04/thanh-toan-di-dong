@@ -34,22 +34,21 @@
         @Html.RequiredHint()
         @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại", })
         @Html.RequiredHint()
-        @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })
-        <br />
-        <br>
+        @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })       
+    </div><!----boxWrapper------->
+</div><!---floatLeft---->
+<div class="floatLeft">
+    <div class="boxWrapper form-request-contact">
+        <div class="blueText">ĐỊA CHỈ BẤT ĐỘNG SẢN</div>
         @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
-
         @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect", id = "ddlQuan" })
         @Html.RequiredHint()
         @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường", new { @class = "formBoxInSelect" })
         @Html.RequiredHint()
         @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect" })
         @Html.RequiredHint()
-        <br /> <br />
-        @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:68%", placeholder = "Địa chỉ đầy đủ" })
-    </div><!----boxWrapper------->
-</div><!---floatLeft---->
-<div class="floatLeft">
+        @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:82.3%", placeholder = "Địa chỉ đầy đủ" })
+    </div>
     <div class="blueText">THÔNG TIN PHÁP LÝ</div>
     <div class="boxWrapperSmall">
         @foreach (var i in Model.PhapLy)
@@ -63,15 +62,15 @@
 <div class="floatLeft">
     <div class="blueText">THÔNG TIN CĂN NHÀ</div>
     <div class="boxWrapperSmall form-request-contact">
-        <table style="width:900px">
+        <table style="width:100%">
             <tbody>
                 <tr>
-                    <td>@Html.LabelFor(x => x.Price) </td>
+                    <td class="request-label">@Html.LabelFor(x => x.Price,"Giá (vnđ)")</td>
                     <td>
                         @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable", placeholder = "Giá" })
                         @Html.RequiredHint()
-                        <span id="price-text">vnđ</span>
-                    <td>@Html.LabelFor(x => x.NumberFloors) </td>
+                        <span id="price-text"></span>
+                    <td class="request-label">@Html.LabelFor(x => x.NumberFloors) </td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.NumberFloors)
@@ -83,24 +82,24 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.CateId) </td>
+                    <td class="request-label">@Html.LabelFor(x => x.CateId) </td>
                     <td>
                         @Html.DropDownListFor(x => x.CateId, Model.Categories, new { @class = "formBoxInSelectTable" })
                         @Html.RequiredHint()
                     </td>
-                    <td>Diện tích sử dụng: </td>
+                    <td class="request-label">@Html.LabelFor(x => x.AreaUse)</td>
                     <td>
-                        @Html.TextBoxFor(x => x.AreaUse, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" }) m2
+                        @Html.TextBoxFor(x => x.AreaUse, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" })
                         @Html.RequiredHint()
                     </td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.Area) </td>
+                    <td class="request-label">@Html.LabelFor(x => x.Area)</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Area, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích" }) m2
+                        @Html.TextBoxFor(x => x.Area, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích" })
                         @Html.RequiredHint()
                     </td>
-                    <td>@Html.LabelFor(x => x.BedRooms) </td>
+                    <td class="request-label">@Html.LabelFor(x => x.BedRooms) </td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.BedRooms)
@@ -113,13 +112,13 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.Width) </td>
+                    <td class="request-label">@Html.LabelFor(x => x.Width) </td>
                     <td>
                         @*@Html.TextBoxFor(x => x.Width, "{0:0.00}", )*@
-                        @Html.TextBoxFor(x => x.Width, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều ngang" }) m
+                        @Html.TextBoxFor(x => x.Width, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều ngang" })
                         @Html.RequiredHint()
                     </td>
-                    <td>@Html.LabelFor(x => x.BathRooms)</td>
+                    <td class="request-label">@Html.LabelFor(x => x.BathRooms)</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.BathRooms)
@@ -131,12 +130,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.Dept)</td>
+                    <td class="request-label">@Html.LabelFor(x => x.Dept)</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Dept, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều sâu" }) m
+                        @Html.TextBoxFor(x => x.Dept, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều sâu" })
                         @Html.RequiredHint()
                     </td>
-                    <td>@Html.LabelFor(x => x.Directors)</td>
+                    <td class="request-label">@Html.LabelFor(x => x.Directors)</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.Directors)
@@ -148,7 +147,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.StatusList)</td>
+                    <td class="request-label">@Html.LabelFor(x => x.StatusList)</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.StatusList)
@@ -291,6 +290,7 @@
         var pictureids = [];
         $("#Price").keyup(function () {
             var price = $(this).val();
+            if(price>9999999){price = 9999999;$("#Price").val(price);}
             $("#price-text").html(StringPrice(price, "vnđ"));
         })
         ISFIRSTLOAD=true;
@@ -332,15 +332,15 @@
             $.get("@Url.Action("GetWardByDistrictId", "Common")", { id: selectedId }, function (d) {
                 $.each(d.Ward, function (i, o) {
                     var option= $("<option/>").val(o.Id).text(o.Name);
-                    if(ISFIRSTLOAD&&o.Id==@Model.WardId)
+                    if((ISFIRSTLOAD) && (o.Id==@Model.WardId))
                         option.attr("selected","selected");
                     ddlWard.append(option);
                 })
 
                 $.each(d.Street, function (i, o) {
                     var option= $("<option/>").val(o.Id).text(o.Name);
-                    if(ISFIRSTLOAD&&o.Id==@Model.StreetId)
-                          option.attr("selected","selected");
+                    if((ISFIRSTLOAD) && (o.Id==@Model.StreetId))
+                    {option.attr("selected","selected")};
                     ddlStreet.append(option);
                 })
                 if(ISFIRSTLOAD)

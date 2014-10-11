@@ -1,4 +1,5 @@
 
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Nop.Services.Common
@@ -24,5 +25,6 @@ namespace Nop.Services.Common
         /// Returns a value indicating whether current customer prefer to use full desktop version (even request is made by a mobile device)
         /// </summary>
         bool CustomerDontUseMobileVersion();
+        Task<bool> CustomerDontUseMobileVersionAsync();
     }
 }

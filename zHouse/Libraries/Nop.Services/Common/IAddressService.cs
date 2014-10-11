@@ -1,6 +1,7 @@
 
 
 using Nop.Core.Domain.Common;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Common
 {
@@ -21,6 +22,7 @@ namespace Nop.Services.Common
         /// <param name="countryId">Country identifier</param>
         /// <returns>Number of addresses</returns>
         int GetAddressTotalByCountryId(int countryId);
+        Task<int> GetAddressTotalByCountryIdAsync(int countryId);
 
         /// <summary>
         /// Gets total number of addresses by state/province identifier
@@ -28,6 +30,7 @@ namespace Nop.Services.Common
         /// <param name="stateProvinceId">State/province identifier</param>
         /// <returns>Number of addresses</returns>
         int GetAddressTotalByStateProvinceId(int stateProvinceId);
+        Task<int> GetAddressTotalByStateProvinceIdAsync(int stateProvinceId);
 
         /// <summary>
         /// Gets an address by address identifier
@@ -35,6 +38,7 @@ namespace Nop.Services.Common
         /// <param name="addressId">Address identifier</param>
         /// <returns>Address</returns>
         Address GetAddressById(int addressId);
+        Task<Address> GetAddressByIdAsync(int addressId);
 
         /// <summary>
         /// Inserts an address
@@ -54,5 +58,6 @@ namespace Nop.Services.Common
         /// <param name="address">Address to validate</param>
         /// <returns>Result</returns>
         bool IsAddressValid(Address address);
+        Task<bool> IsAddressValidAsync(Address address);
     }
 }

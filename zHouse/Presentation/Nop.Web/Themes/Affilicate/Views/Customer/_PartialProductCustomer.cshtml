@@ -18,14 +18,18 @@
                     </div>
                     <div class="product-col1">
                         <p><span>Tình trạng: </span><span>@product.TinhTrang</span></p>
-                        <p><span>@product.BathRoom</span></p>
-                        <p><span>@product.BedRoom</span></p>
+                        <p><span>Ngày đăng: </span><span>@(product.AvailableStartDateTimeUtc.HasValue ? product.AvailableStartDateTimeUtc.Value.ToString("dd/MM/yy hh:mm:ss") : "_")</span></p>
+                        <p><span>Hết hạn: </span><span>@(product.AvailableEndDateTimeUtc.HasValue ? product.AvailableEndDateTimeUtc.Value.ToString("dd/MM/yy hh:mm:ss") : "_")</span></p>
+                        @*<p><span>@product.BathRoom</span></p>
+                        <p><span>@product.BedRoom</span></p>*@
                     </div>
-                    <p><strong>Đăng: </strong><span>@product.CreatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Cập nhật: </strong><span>@product.UpdatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Hết hạn: </strong><span>@(product.ExpiredOn.HasValue ? product.ExpiredOn.Value.ToString("dd/MM/YY hh:mm:ss") : "_")</span></p>
+                    @*<p><strong>Đăng: </strong><span>@product.CreatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Cập nhật: </strong><span>@product.UpdatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Hết hạn: </strong><span>@(product.ExpiredOn.HasValue ? product.ExpiredOn.Value.ToString("dd/MM/YY hh:mm:ss") : "_")</span></p>*@
                 </div>
                 <div class="side-3" style="width:19%;margin:0">
                     <div class="block block-account-navigation" style="margin-bottom:0">
-                        <div class="title-1"><img src="~/Themes/Zhouse/Content/images/info-icon-19.png" title="Trạng thái duyệt" alt="info icon" />@product.TrangThaiDuyet</div>
+                        <div class="title-1"><img src="~/Themes/Zhouse/Content/images/info-icon-19.png" title="Trạng thái duyệt" alt="info icon" />
+                        @product.TrangThaiDuyet
+                        </div>
                         <div class="title-1"><img src="~/Themes/Zhouse/Content/images/view-icon-17.png" title="Lượt xem" alt="view icon" />@product.ViewNumber</div>
                         <div class="listbox" style="padding-bottom:0;">
                             <ul class="list">

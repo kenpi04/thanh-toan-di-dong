@@ -2,7 +2,6 @@
 @using Nop.Web.Models.Catalog;
 @{
     var isRtl = this.ShouldUseRtlTheme();
-    //Model.PriceRange.RemoveAt(0);
 }
 @helper RenderCategoryLine(CategorySimpleModel category, int level)
 {
@@ -103,6 +102,30 @@
     </li>
     <li><a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategoriesNews.FirstOrDefault().Value })">Kiến thức</a>
           <div class="top-menu-triangle"></div>
+        <div class="sublist kienthuc" style="width: 200px; margin-left: -18px;">
+            <ul>
+                @foreach (var c in Model.CategoriesNews)
+                {
+                    <li><a href="@Url.RouteUrl("CateNews", new { SeName = c.Value })">@c.Text</a></li>
+                }
+            </ul>
+        </div>
+    </li>
+    <li>
+        <a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategoriesNews.FirstOrDefault().Value })">Tư vấn</a>
+        <div class="top-menu-triangle"></div>
+        <div class="sublist kienthuc" style="width: 200px; margin-left: -18px;">
+            <ul>
+                @foreach (var c in Model.CategoriesNews)
+                {
+                    <li><a href="@Url.RouteUrl("CateNews", new { SeName = c.Value })">@c.Text</a></li>
+                }
+            </ul>
+        </div>
+    </li>
+    <li>
+        <a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategoriesNews.FirstOrDefault().Value })">Lời khuyên</a>
+        <div class="top-menu-triangle"></div>
         <div class="sublist kienthuc" style="width: 200px; margin-left: -18px;">
             <ul>
                 @foreach (var c in Model.CategoriesNews)

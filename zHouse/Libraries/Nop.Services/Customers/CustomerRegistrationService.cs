@@ -5,6 +5,7 @@ using Nop.Core.Domain.Customers;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
 using Nop.Services.Security;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Customers
 {
@@ -66,6 +67,50 @@ namespace Nop.Services.Customers
                 customer = _customerService.GetCustomerByUsername(usernameOrEmail);
             else
                 customer = _customerService.GetCustomerByEmail(usernameOrEmail);
+
+            if (customer == null)
+                return CustomerLoginResults.CustomerNotExist;
+            if (customer.Deleted)
+                return CustomerLoginResults.Deleted;
+            if (!customer.Active)
+                return CustomerLoginResults.NotActive;
+            //only registered can login
+            if (!customer.IsRegistered())
+                return CustomerLoginResults.NotRegistered;
+
+            string pwd = "";
+            switch (customer.PasswordFormat)
+            {
+                case PasswordFormat.Encrypted:
+                    pwd = _encryptionService.EncryptText(password);
+                    break;
+                case PasswordFormat.Hashed:
+                    pwd = _encryptionService.CreatePasswordHash(password, customer.PasswordSalt, _customerSettings.HashedPasswordFormat);
+                    break;
+                default:
+                    pwd = password;
+                    break;
+            }
+
+            bool isValid = pwd == customer.Password;
+
+            //save last login date
+            if (isValid)
+            {
+                customer.LastLoginDateUtc = DateTime.UtcNow;
+                _customerService.UpdateCustomer(customer);
+                return CustomerLoginResults.Successful;
+            }
+            else
+                return CustomerLoginResults.WrongPassword;
+        }
+        public virtual async Task<CustomerLoginResults> ValidateCustomerAsync(string usernameOrEmail, string password)
+        {
+            Customer customer = null;
+            if (_customerSettings.UsernamesEnabled)
+                customer = await _customerService.GetCustomerByUsernameAsync(usernameOrEmail);
+            else
+                customer = await _customerService.GetCustomerByEmailAsync(usernameOrEmail);
 
             if (customer == null)
                 return CustomerLoginResults.CustomerNotExist;
@@ -220,7 +265,120 @@ namespace Nop.Services.Customers
             _customerService.UpdateCustomer(request.Customer);
             return result;
         }
-        
+        public virtual async Task<CustomerRegistrationResult> RegisterCustomerAsync(CustomerRegistrationRequest request)
+        {
+            if (request == null)
+                throw new ArgumentNullException("request");
+
+            if (request.Customer == null)
+                throw new ArgumentException("Can't load current customer");
+
+            var result = new CustomerRegistrationResult();
+            if (request.Customer.IsSearchEngineAccount())
+            {
+                result.AddError("Search engine can't be registered");
+                return result;
+            }
+            if (request.Customer.IsBackgroundTaskAccount())
+            {
+                result.AddError("Background task account can't be registered");
+                return result;
+            }
+            if (request.Customer.IsRegistered())
+            {
+                result.AddError("Current customer is already registered");
+                return result;
+            }
+            if (String.IsNullOrEmpty(request.Email))
+            {
+                result.AddError(await _localizationService.GetResourceAsync("Account.Register.Errors.EmailIsNotProvided"));
+                return result;
+            }
+            if (!CommonHelper.IsValidEmail(request.Email))
+            {
+                result.AddError(await _localizationService.GetResourceAsync("Common.WrongEmail"));
+                return result;
+            }
+            if (String.IsNullOrWhiteSpace(request.Password))
+            {
+                result.AddError(await _localizationService.GetResourceAsync("Account.Register.Errors.PasswordIsNotProvided"));
+                return result;
+            }
+            if (_customerSettings.UsernamesEnabled)
+            {
+                if (String.IsNullOrEmpty(request.Username))
+                {
+                    result.AddError(await _localizationService.GetResourceAsync("Account.Register.Errors.UsernameIsNotProvided"));
+                    return result;
+                }
+            }
+
+            //validate unique user
+            var requestEmail = await _customerService.GetCustomerByEmailAsync(request.Email);
+            if (requestEmail != null)
+            {
+                result.AddError(await _localizationService.GetResourceAsync("Account.Register.Errors.EmailAlreadyExists"));
+                return result;
+            }
+            if (_customerSettings.UsernamesEnabled)
+            {
+                var requestUserName = await _customerService.GetCustomerByUsernameAsync(request.Email);
+                if (requestUserName != null)
+                {
+                    result.AddError(await _localizationService.GetResourceAsync("Account.Register.Errors.UsernameAlreadyExists"));
+                    return result;
+                }
+            }
+
+            //at this point request is valid
+            request.Customer.Username = request.Username;
+            request.Customer.Email = request.Email;
+            request.Customer.PasswordFormat = request.PasswordFormat;
+
+            switch (request.PasswordFormat)
+            {
+                case PasswordFormat.Clear:
+                    {
+                        request.Customer.Password = request.Password;
+                    }
+                    break;
+                case PasswordFormat.Encrypted:
+                    {
+                        request.Customer.Password = _encryptionService.EncryptText(request.Password);
+                    }
+                    break;
+                case PasswordFormat.Hashed:
+                    {
+                        string saltKey = _encryptionService.CreateSaltKey(5);
+                        request.Customer.PasswordSalt = saltKey;
+                        request.Customer.Password = _encryptionService.CreatePasswordHash(request.Password, saltKey, _customerSettings.HashedPasswordFormat);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            request.Customer.Active = request.IsApproved;
+
+            //add to 'Registered' role
+            var registeredRole = await _customerService.GetCustomerRoleBySystemNameAsync(SystemCustomerRoleNames.Registered);
+            if (registeredRole == null)
+                throw new NopException("'Registered' role could not be loaded");
+            request.Customer.CustomerRoles.Add(registeredRole);
+            //remove from 'Guests' role
+            var guestRole = request.Customer.CustomerRoles.FirstOrDefault(cr => cr.SystemName == SystemCustomerRoleNames.Guests);
+            if (guestRole != null)
+                request.Customer.CustomerRoles.Remove(guestRole);
+
+            //Add reward points for customer registration (if enabled)
+            if (_rewardPointsSettings.Enabled &&
+                _rewardPointsSettings.PointsForRegistration > 0)
+                request.Customer.AddRewardPointsHistoryEntry(_rewardPointsSettings.PointsForRegistration, _localizationService.GetResource("RewardPoints.Message.EarnedForRegistration"));
+
+            _customerService.UpdateCustomer(request.Customer);
+            return result;
+        }
+
         /// <summary>
         /// Change password
         /// </summary>

@@ -5,6 +5,7 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Services.Events;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -73,6 +74,25 @@ namespace Nop.Services.Catalog
                 return templates;
             }
         }
+        public virtual async Task<IList<CategoryTemplate>> GetAllCategoryTemplatesAsync()
+        {
+            return await Task.Factory.StartNew<IList<CategoryTemplate>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from pt in _categoryTemplateRepository.Table
+                                orderby pt.DisplayOrder
+                                select pt;
+
+                    var templates = query.ToList();
+                    return templates;
+                }
+            });
+        }
  
         /// <summary>
         /// Gets a category template
@@ -85,6 +105,15 @@ namespace Nop.Services.Catalog
                 return null;
 
             return _categoryTemplateRepository.GetById(categoryTemplateId);
+        }
+        public virtual async Task<CategoryTemplate> GetCategoryTemplateByIdAsync(int categoryTemplateId)
+        {
+            if (categoryTemplateId == 0)
+                return null;
+            return await Task.Factory.StartNew<CategoryTemplate>(() =>
+            {
+                return _categoryTemplateRepository.GetById(categoryTemplateId);
+            });
         }
 
         /// <summary>

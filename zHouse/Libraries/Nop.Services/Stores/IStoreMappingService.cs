@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nop.Core;
 using Nop.Core.Domain.Stores;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Stores
 {
@@ -21,6 +22,7 @@ namespace Nop.Services.Stores
         /// <param name="storeMappingId">Store mapping record identifier</param>
         /// <returns>Store mapping record</returns>
         StoreMapping GetStoreMappingById(int storeMappingId);
+        Task<StoreMapping> GetStoreMappingByIdAsync(int storeMappingId);
 
         /// <summary>
         /// Gets store mapping records
@@ -29,6 +31,7 @@ namespace Nop.Services.Stores
         /// <param name="entity">Entity</param>
         /// <returns>Store mapping records</returns>
         IList<StoreMapping> GetStoreMappings<T>(T entity) where T : BaseEntity, IStoreMappingSupported;
+        Task<IList<StoreMapping>> GetStoreMappingsAsync<T>(T entity) where T : BaseEntity, IStoreMappingSupported;
 
         /// <summary>
         /// Inserts a store mapping record
@@ -57,6 +60,7 @@ namespace Nop.Services.Stores
         /// <param name="entity">Wntity</param>
         /// <returns>Store identifiers</returns>
         int[] GetStoresIdsWithAccess<T>(T entity) where T : BaseEntity, IStoreMappingSupported;
+        Task<int[]> GetStoresIdsWithAccessAsync<T>(T entity) where T : BaseEntity, IStoreMappingSupported;
 
         /// <summary>
         /// Authorize whether entity could be accessed in the current store (mapped to this store)
@@ -65,6 +69,7 @@ namespace Nop.Services.Stores
         /// <param name="entity">Wntity</param>
         /// <returns>true - authorized; otherwise, false</returns>
         bool Authorize<T>(T entity) where T : BaseEntity, IStoreMappingSupported;
+        Task<bool> AuthorizeAsync<T>(T entity) where T : BaseEntity, IStoreMappingSupported;
 
         /// <summary>
         /// Authorize whether entity could be accessed in a store (mapped to this store)
@@ -74,5 +79,6 @@ namespace Nop.Services.Stores
         /// <param name="storeId">Store identifier</param>
         /// <returns>true - authorized; otherwise, false</returns>
         bool Authorize<T>(T entity, int storeId) where T : BaseEntity, IStoreMappingSupported;
+        Task<bool> AuthorizeAsync<T>(T entity, int storeId) where T : BaseEntity, IStoreMappingSupported;
     }
 }

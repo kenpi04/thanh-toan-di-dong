@@ -14,6 +14,7 @@ using Nop.Services.Events;
 using Nop.Services.Logging;
 using Nop.Services.Seo;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Media
 {
@@ -623,6 +624,22 @@ namespace Nop.Services.Media
 
             return _pictureRepository.GetById(pictureId);
         }
+        public virtual async Task<Picture> GetPictureByIdAsync(int pictureId)
+        {
+            if (pictureId == 0)
+                return null;
+            return await Task.Factory.StartNew<Picture>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    return _pictureRepository.GetById(pictureId);
+                }
+            });
+        }
 
         /// <summary>
         /// Deletes a picture
@@ -668,6 +685,24 @@ namespace Nop.Services.Media
                 return pics;
             }
         }
+        public virtual async Task<IPagedList<Picture>> GetPicturesAsync(int pageIndex, int pageSize)
+        {
+            return await Task.Factory.StartNew<IPagedList<Picture>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from p in _pictureRepository.Table
+                                orderby p.Id descending
+                                select p;
+                    var pics = new PagedList<Picture>(query, pageIndex, pageSize);
+                    return pics;
+                }
+            });
+        }
         
 
         /// <summary>
@@ -699,6 +734,32 @@ namespace Nop.Services.Media
                 var pics = query.ToList();
                 return pics;
             }
+        }
+        public virtual async Task<IList<Picture>> GetPicturesByProductIdAsync(int productId, int recordsToReturn = 0)
+        {
+            if (productId == 0)
+                return new List<Picture>();
+            return await Task.Factory.StartNew<IList<Picture>>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from p in _pictureRepository.Table
+                                join pp in _productPictureRepository.Table on p.Id equals pp.PictureId
+                                orderby pp.DisplayOrder
+                                where pp.ProductId == productId
+                                select p;
+
+                    if (recordsToReturn > 0)
+                        query = query.Take(recordsToReturn);
+
+                    var pics = query.ToList();
+                    return pics;
+                }
+            });
         }
 
         /// <summary>
@@ -793,6 +854,20 @@ namespace Nop.Services.Media
         public virtual Picture SetSeoFilename(int pictureId, string seoFilename)
         {
             var picture = GetPictureById(pictureId);
+            if (picture == null)
+                throw new ArgumentException("No picture found with the specified id");
+
+            //update if it has been changed
+            if (seoFilename != picture.SeoFilename)
+            {
+                //update picture
+                picture = UpdatePicture(picture.Id, LoadPictureBinary(picture), picture.MimeType, seoFilename, true, false);
+            }
+            return picture;
+        }
+        public virtual async Task<Picture> SetSeoFilenameAsync(int pictureId, string seoFilename)
+        {
+            var picture = await GetPictureByIdAsync(pictureId);
             if (picture == null)
                 throw new ArgumentException("No picture found with the specified id");
 

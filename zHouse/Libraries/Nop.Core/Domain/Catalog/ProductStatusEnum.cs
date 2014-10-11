@@ -2,6 +2,9 @@
 
 namespace Nop.Core.Domain.Catalog
 {
+    /// <summary>
+    /// Trang thai duyet
+    /// </summary>
    public enum ProductStatusEnum
     {
         /// <summary>
