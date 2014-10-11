@@ -1,5 +1,6 @@
 ﻿@model String
 @using Nop.Web.Framework.UI;
+@using Nop.Core.Domain.Customers;
 @{
     //we do not bundle this script file (does not work for some reasons in bundle)
     Html.AddScriptParts("~/Content/editors/tinymce/tiny_mce.js", true);
@@ -18,7 +19,8 @@
             // General options
             mode: "exact",
             elements: "@ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty)",
-            theme: "advanced",
+            theme: @Html.Raw(WorkContext.CurrentCustomer.IsAdmin() ? "'advanced'" : "'simple'"),
+            //theme: "advanced",
             height: "350",
             width: "790",
             verify_html: false,
