@@ -57,9 +57,7 @@
     });
     $(function () {
         $("#frmSearchHOme-ban,#frmSearchHOme-thue").submit(function () {
-            var data = $(this).serialize();       
-
-            
+            var data = $(this).serialize();            
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {
                 window.location.href = d;
             })
