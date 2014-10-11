@@ -284,195 +284,195 @@
     </div>
 </div><!---floatLeft---->
 
-<script type="text/javascript">
-    $(function () {
-        $(".jqte-test").jqte();
-        var pictureids = [];
-        $("#Price").keyup(function () {
-            var price = $(this).val();
-            if(price>9999999){price = 9999999;$("#Price").val(price);}
-            $("#price-text").html(StringPrice(price, "vnđ"));
-        })
-        ISFIRSTLOAD=true;
-        $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
-        $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
-        $("#insertProduct-button").click(function () {
-            if(!$("#frmProduct").valid())
-            {
-                $('html,body').animate({
-                    scrollTop: $("#panel-error").offset().top
-                });
-                return false;
-            }
-            if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
-                alert('Vui lòng chọn hình ảnh đăng');
-            }
-            else if (Checkfiles($("#FileUpload")))
-            {
-                alert("File không hợp lệ");
-            }
-            else {
-                displayAjaxLoading(true);
-                if($("div[id^=SWFUpload_]").size()==0)
-                {
-                    $("#frmProduct").submit();
-                }
-                else
-                    $('#FileUpload').uploadify('upload', '*')
-            }
-            return false;
-        })
-
-        $("#ddlQuan").change(function () {
-            var selectedId = $(this).val();
-            var ddlWard = $("#@Html.FieldIdFor(x => x.WardId)");
-            var ddlStreet = $("#@Html.FieldIdFor(x => x.StreetId)");
-            ddlWard.html("<option value=0>Chọn phường</option>");
-            ddlStreet.html("<option value=0>Chọn đường</option>");
-            $.get("@Url.Action("GetWardByDistrictId", "Common")", { id: selectedId }, function (d) {
-                $.each(d.Ward, function (i, o) {
-                    var option= $("<option/>").val(o.Id).text(o.Name);
-                    if((ISFIRSTLOAD) && (o.Id==@Model.WardId))
-                        option.attr("selected","selected");
-                    ddlWard.append(option);
-                })
-
-                $.each(d.Street, function (i, o) {
-                    var option= $("<option/>").val(o.Id).text(o.Name);
-                    if((ISFIRSTLOAD) && (o.Id==@Model.StreetId))
-                    {option.attr("selected","selected")};
-                    ddlStreet.append(option);
-                })
-                if(ISFIRSTLOAD)
-                {
-                    ddlWard.click();
-                    ddlStreet.click();
-                    ISFIRSTLOAD=false;
-                }
-            }).error(function () {
-
-                alert("Fail receice from server!");
+    <script type="text/javascript">
+        $(function () {
+            $(".jqte-test").jqte();
+            var pictureids = [];
+            $("#Price").keyup(function () {
+                var price = $(this).val();
+                if(price>9999999){price = 9999999;$("#Price").val(price);}
+                $("#price-text").html(StringPrice(price, "vnđ"));
             })
-        })
-        $("#ddlQuan").change();
-        $('#FileUpload').uploadify({
-            'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
-            'uploader': '@Url.Action("UploadPicture", "Catalog")',
-            'multi': true,
-            'method': 'post',
-            'buttonText': 'CHỌN ẢNH ĐĂNG...',
-            'auto': false,
-            'fileSizeLimit': '3MB',
-            'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg',
-            'uploadLimit': 20,
-            'cancelImg': '@Url.Content("~/Content/uploadify/uploadify-cancel.png")',
-            'removeCompleted': false,
-            'onSelect': function (file) {
-                flag_error = 1;
-                $("div[id^=SWFUpload]").each(function(){
-                    if($(this).find("textarea[name=PictureTitle_0]").length==0)
-                    {
-                        $(this).append('<textarea name="PictureTitle_0" cols="10" rows="5"></textarea>')
-                    }
-                })
-            },
-            'onUploadStart': function (file) {
-                if (file == null || file.name == '') {
-                    alert('Vui lòng chọn hình ảnh đăng');
-                    $('#FileUpload').uploadify('stop');
-                    return;
-                }
-            },
-            'onUploadSuccess': function (file, data, response) {
-                pictureids.push(data);
-            },
-            'onQueueComplete': function (queueData) {
-                if(pictureids.length>0)
+            ISFIRSTLOAD=true;
+            $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
+            $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
+            $("#insertProduct-button").click(function () {
+                if(!$("#frmProduct").valid())
                 {
-                    $("textarea[name=PictureTitle_0]").each(function(i,p){
-                        $(this).attr("name","PictureTitle_"+pictureids[i]);
+                    $('html,body').animate({
+                        scrollTop: $("#panel-error").offset().top
                     });
-                }
-                if ($("div[id^=SWFUpload_]").size()==0||$("textarea[name^=PictureTitle_][name!=PictureTitle_0]").size()==0) {
-                    alert('Vui lòng chọn hình ảnh đăng');
                     return false;
                 }
-                if ($("#frmProduct").valid()) {
-                    $('#frmProduct').submit();
+                if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
+                    alert('Vui lòng chọn hình ảnh đăng');
                 }
-                else
+                else if (Checkfiles($("#FileUpload")))
                 {
-
+                    alert("File không hợp lệ");
                 }
-                //alert(queueData.uploadsSuccessful + ' files were successfully uploaded.');
-            }
-        });
-    });
-    function Checkfiles(fup) {
-        //var fup = document.getElementById(filename);
-        var fileName = fup.val();
-        var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
-        if (ext == "gif" || ext == "GIF" || ext == "JPEG" || ext == "jpeg" || ext == "jpg" || ext == "JPG" || ext == "png" || ext == "PNG") {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    var add=[3];
-    function formatAdd()
-    {
-        add[0]=($("#@Html.FieldIdFor(x => x.NumberOfHome)").val());
-        add[1]=($("#@Html.FieldIdFor(x => x.StreetId) option[value!=0]:selected").text());
-        add[2]=($("#@Html.FieldIdFor(x => x.WardId) option[value!=0]:selected").text());
-        add[3]=($("#ddlQuan option[value!=0]:selected").text());
-        var result="";
-        for(var i in add)
-        {
-            if(add[i]!="")
-                result+=add[i]+", ";
-        }
-        $("#@Html.FieldIdFor(x => x.FullAddress)").val(result);
-    }
-</script>
-@if (Model.Id > 0)
-{
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            var price=@Model.Price;
-            $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
-        })
-        var CLICK=false;
-        function deletePicture(id) {
-            if($("#lstPic li").length==1||CLICK)
-                return;
-            var picture_id = $("#picture_id_"+id);
-            CLICK=true;
-            $.ajax({
-                cache: false,
-                type: "POST",
-                data: { "id": id },
-                url: "@Url.Action("ProductPictureDelete")",
-                dataType: 'json',
-                success: function (data, textStatus, jqXHR) {
-                    if (data.error == 0) {
-                        alert(data.message);
-                        picture_id.remove();
-                        CLICK=false;
+                else {
+                    displayAjaxLoading(true);
+                    if($("div[id^=SWFUpload_]").size()==0)
+                    {
+                        $("#frmProduct").submit();
                     }
-                    else {
-                        CLICK=false;
-                        alert(data.message);
+                    else
+                        $('#FileUpload').uploadify('upload', '*')
+                }
+                return false;
+            })
+
+            $("#ddlQuan").change(function () {
+                var selectedId = $(this).val();
+                var ddlWard = $("#@Html.FieldIdFor(x => x.WardId)");
+                var ddlStreet = $("#@Html.FieldIdFor(x => x.StreetId)");
+                ddlWard.html("<option value=0>Chọn phường</option>");
+                ddlStreet.html("<option value=0>Chọn đường</option>");
+                $.get("@Url.Action("GetWardByDistrictId", "Common")", { id: selectedId }, function (d) {
+                    $.each(d.Ward, function (i, o) {
+                        var option= $("<option/>").val(o.Id).text(o.Name);
+                        if((ISFIRSTLOAD) && (o.Id==@Model.WardId))
+                            option.attr("selected","selected");
+                        ddlWard.append(option);
+                    })
+
+                    $.each(d.Street, function (i, o) {
+                        var option= $("<option/>").val(o.Id).text(o.Name);
+                        if((ISFIRSTLOAD) && (o.Id==@Model.StreetId))
+                        {option.attr("selected","selected")};
+                        ddlStreet.append(option);
+                    })
+                    if(ISFIRSTLOAD)
+                    {
+                        ddlWard.click();
+                        ddlStreet.click();
+                        ISFIRSTLOAD=false;
+                    }
+                }).error(function () {
+
+                    alert("Fail receice from server!");
+                })
+            })
+            $("#ddlQuan").change();
+            $('#FileUpload').uploadify({
+                'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
+                'uploader': '@Url.Action("UploadPicture", "Catalog")',
+                'multi': true,
+                'method': 'post',
+                'buttonText': 'CHỌN ẢNH ĐĂNG...',
+                'auto': false,
+                'fileSizeLimit': '3MB',
+                'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg',
+                'uploadLimit': 20,
+                'cancelImg': '@Url.Content("~/Content/uploadify/uploadify-cancel.png")',
+                'removeCompleted': false,
+                'onSelect': function (file) {
+                    flag_error = 1;
+                    $("div[id^=SWFUpload]").each(function(){
+                        if($(this).find("textarea[name=PictureTitle_0]").length==0)
+                        {
+                            $(this).append('<textarea name="PictureTitle_0" cols="10" rows="5"></textarea>')
+                        }
+                    })
+                },
+                'onUploadStart': function (file) {
+                    if (file == null || file.name == '') {
+                        alert('Vui lòng chọn hình ảnh đăng');
+                        $('#FileUpload').uploadify('stop');
+                        return;
                     }
                 },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    alert('Failed to retrieve data.');
-                    //statesProgressd.hide();
+                'onUploadSuccess': function (file, data, response) {
+                    pictureids.push(data);
+                },
+                'onQueueComplete': function (queueData) {
+                    if(pictureids.length>0)
+                    {
+                        $("textarea[name=PictureTitle_0]").each(function(i,p){
+                            $(this).attr("name","PictureTitle_"+pictureids[i]);
+                        });
+                    }
+                    if ($("div[id^=SWFUpload_]").size()==0||$("textarea[name^=PictureTitle_][name!=PictureTitle_0]").size()==0) {
+                        alert('Vui lòng chọn hình ảnh đăng');
+                        return false;
+                    }
+                    if ($("#frmProduct").valid()) {
+                        $('#frmProduct').submit();
+                    }
+                    else
+                    {
+
+                    }
+                    //alert(queueData.uploadsSuccessful + ' files were successfully uploaded.');
                 }
             });
-            //return event.defaultPrevented || event.returnValue == false;
-            return false;
+        });
+        function Checkfiles(fup) {
+            //var fup = document.getElementById(filename);
+            var fileName = fup.val();
+            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (ext == "gif" || ext == "GIF" || ext == "JPEG" || ext == "jpeg" || ext == "jpg" || ext == "JPG" || ext == "png" || ext == "PNG") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        var add=[3];
+        function formatAdd()
+        {
+            add[0]=($("#@Html.FieldIdFor(x => x.NumberOfHome)").val());
+            add[1]=($("#@Html.FieldIdFor(x => x.StreetId) option[value!=0]:selected").text());
+            add[2]=($("#@Html.FieldIdFor(x => x.WardId) option[value!=0]:selected").text());
+            add[3]=($("#ddlQuan option[value!=0]:selected").text());
+            var result="";
+            for(var i in add)
+            {
+                if(add[i]!="")
+                    result+=add[i]+", ";
+            }
+            $("#@Html.FieldIdFor(x => x.FullAddress)").val(result);
         }
     </script>
-}
+    @if (Model.Id > 0)
+    {
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                var price=@Model.Price;
+                $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
+            })
+            var CLICK=false;
+            function deletePicture(id) {
+                if($("#lstPic li").length==1||CLICK)
+                    return;
+                var picture_id = $("#picture_id_"+id);
+                CLICK=true;
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    data: { "id": id },
+                    url: "@Url.Action("ProductPictureDelete")",
+                    dataType: 'json',
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.error == 0) {
+                            alert(data.message);
+                            picture_id.remove();
+                            CLICK=false;
+                        }
+                        else {
+                            CLICK=false;
+                            alert(data.message);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve data.');
+                        //statesProgressd.hide();
+                    }
+                });
+                //return event.defaultPrevented || event.returnValue == false;
+                return false;
+            }
+        </script>
+    }

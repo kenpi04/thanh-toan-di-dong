@@ -1,0 +1,132 @@
+﻿@model Nop.Web.Models.Catalog.ProductDetailsModel
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+}
+<link rel="stylesheet" media="print" href="@Url.Content("~/Themes/print.css")" />
+<meta property="og:url" content="@Url.RouteUrl("Product", new {SeName=Model.SeName })" />
+<meta property="og:image" content="@Model.DefaultPictureModel.ImageUrl" />
+<meta property="og:type" content="product" />
+<meta property="og:site_name" content="zhouse.com.vn" />
+@Html.Action("ProductBreadcrumb", "Catalog", new { productId = Model.Id })
+<div class="mainContent" itemscope itemtype="http://data-vocabulary.org/Product">
+    <div class="whiteBgLeft">
+        <div class="detailTable">
+            <div class="detail-info">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="greyBgTD">Tên dự án:</td>
+                            <td>@Model.Promotion</td>
+
+                        </tr>
+                        <tr>
+                            <td class="greyBgTD">Loại hình</td>
+                            <td>@Model.CateName</td>
+
+                        </tr>
+                        <tr>
+                            <td class="greyBgTD">Vị trí</td>
+                            <td>@Model.FullAddress</td>
+
+                        </tr>
+                        <tr>
+                            <td class="greyBgTD">Diện tích đất:</td>
+                            <td>@(!string.IsNullOrWhiteSpace(Model.Area) ? Model.Area + "m2" : "-") </td>
+                        </tr>
+                        <tr>
+                            <td class="greyBgTD">Số tầng:</td>
+                            <td>@Model.Width.ToString("#")</td>
+                        </tr>
+                        <tr>
+                            <td class="greyBgTD">Số block:</td>
+                            <td>@Model.Dept </td>
+                        </tr>
+                        <tr>
+                            <td class="greyBgTD">Thời gian khởi công</td>
+                            <td>@Model.StartConstructionDate </td>
+                        </tr>
+
+                        <tr>
+                            <td class="greyBgTD">Thời gian hoàn thành:</td>
+                            <td> @Model.FinishConstructionDate</td>
+                        </tr>
+                        <tr>
+                            <td class="greyBgTD">Chủ đầu tư:</td>
+                            <td>@Model.ManufacturerPartNumber</td>
+                        </tr>
+                        <tr>
+                            <td class="greyBgTD">Đơn vị thi công:</td>
+                            <td>@Model.Gtin</td>
+                        </tr>
+
+
+                        <tr>
+                            <td class="greyBgTD">Tên gọi khác:</td>
+                            <td>
+                               
+                                @Model.UserAgreementText
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="greyBgTD">Cơ sở vật chất</td>
+                            <td>
+                                @if (Model.Facilities.Count > 0)
+                                {
+                                    @Model.Facilities.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
+                                }
+                                else
+                                { <text>-</text>}
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="greyBgTD">Môi trường xung quanh</td>
+
+                            <td>
+                                @if (Model.Environments.Count > 0)
+                                {
+                                    @Model.Environments.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
+                                }
+                                else
+                                {
+                                    <text>-</text>
+                                }
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="detail-picture" id="detail-picture">
+                <img src="@Model.DefaultPictureModel.FullSizeImageUrl" />
+            </div>
+         
+            <div class="clearfix"></div>
+        </div><!----detailTable---->
+        <div class="div-map">
+            <div class="map-title">
+                <p>Vị trí dự án</p>
+            </div>
+            <div style="width:100%;height:400px; display:inline-block">
+                @Html.Partial("_Map", Model)
+            </div>
+        </div>
+
+        <div id="tab-detail" class="whiteBgLeft" style="margin-top:-1px;" itemprop="description">
+            <div class="map-title">
+                <p>Vị trí dự án</p>
+            </div>
+            @Html.Raw(Model.FullDescription)
+        </div><!---whiteBgLeft-->
+     
+        </div>
+    </div>
+<script>
+    loadScript();
+</script>

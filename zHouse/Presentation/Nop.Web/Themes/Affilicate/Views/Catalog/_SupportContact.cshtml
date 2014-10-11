@@ -1,0 +1,41 @@
+﻿@model Nop.Web.Models.Common.ContactUsModel
+@{
+    Layout = null;
+}
+<form id="frmContactus" method="post">
+
+    <div class="panel-error">
+        @Html.ValidationSummary(false)
+    </div>
+    @Html.TextBoxFor(model => model.FullName, new { @class = "mapBox", placeholder = T("ContactUs.FullName.Hint") }) @Html.RequiredHint()<br />
+    @Html.TextBoxFor(model => model.Phone, new { @class = "mapBox", placeholder = T("ContactUs.Phone.Hint") })@Html.RequiredHint()<br />
+    @Html.TextBoxFor(model => model.Email, new { @class = "mapBox", placeholder = T("ContactUs.Email.Hint") })@Html.RequiredHint()<br />
+    @Html.DropDownListFor(model => model.Type, new List<SelectListItem> { 
+new SelectListItem{Text="Hỗ trợ",Value="30"},
+new SelectListItem{Text="Báo lỗi",Value="40"},
+new SelectListItem{Text="Góp ý",Value="50"},
+})<br />
+    @Html.TextAreaFor(model => model.Enquiry, new { @class = "mapBox", placeholder = T("ContactUs.Enquiry.Hint"), style = "width:290px;height:51px" })
+<br />    @if (Model.DisplayCaptcha)
+    {
+        <div class="captcha-box">
+            @Html.Raw(Html.GenerateCaptcha())
+        </div>
+    }
+    <input type="submit" id="btn-send-contact" name="send-mail" class="blueBtn" value="GỬI" style="float:left;margin-right:8px" />
+</form>
+<script>
+    $("#frmContactus").submit(function () {
+        if($(this).valid())
+        {
+            var data = $(this).serialize();
+            $.post("@Url.Action("SupportContact","Catalog")", data, function (d) {
+                $("#frmContactus").html(d);
+                
+            })
+            return false;
+        }
+    })
+</script>
+
+

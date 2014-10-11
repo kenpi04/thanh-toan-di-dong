@@ -27,5 +27,6 @@ namespace Nop.Web.Models.Common
         public string Result { get; set; }
 
         public bool DisplayCaptcha { get; set; }
+        public int Type { get; set; }
     }
 }
