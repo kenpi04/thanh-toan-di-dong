@@ -26,23 +26,31 @@
         }
     }
 </script>
-<div class="page search-page">
+
+<div class="mainContent">
     <div class="page-title">
         <h1> Tìm thấy @Model.PagingFilteringContext.TotalItems kết quả  "@ViewBag.ResultString"</h1>
     </div>
-    <div class="page-body">
-      
-        <div id="list-product">
-            @foreach (var product in Model.Products)
-            {
-                @Html.Partial("_ProductBox", product)
-            }
-        </div>
-        <div class="clearfix"></div>
-        <div class="pager">
-            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
-        </div>
-        @Html.Widget("categorydetails_bottom")
+    <div class="leftContentTwist" style="width:70%">
+
+
+            <div id="list-product">
+                @foreach (var product in Model.Products)
+                {
+                    @Html.Partial("_ProductBox", product)
+                }
+            </div>
+            <div class="clearfix"></div>
+            <div class="pager">
+                @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+            </div>
+            @Html.Widget("categorydetails_bottom")
+        
+
     </div>
-  
+    <div class="rightContentTwist" style="width:30%">
+        @Html.Action("SearchBoxHead", "Catalog", new { isHome = true, isMarketPlace = true, categoryId = 1, categoryRentId = 16 })
+    </div>
+
 </div>
+

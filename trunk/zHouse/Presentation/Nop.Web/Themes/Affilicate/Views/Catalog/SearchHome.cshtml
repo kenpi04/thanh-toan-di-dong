@@ -13,6 +13,7 @@
                 <div id="tab1" class="tab active">
                     @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id = "frmSearchHOme-ban", style = "float:left;display:inline-block;" }))
                     {
+<input type="hidden" name="type" value="1" />
                         @Html.DropDownList("districtId", Model.Districts, new { id = "districtSelect", @class = "box" })
                         @Html.DropDownList("priceString", Model.PriceRange, new { @class = "box" })
                         @Html.DropDownList("areaString", Model.Areas, new { @class = "box" })
@@ -25,7 +26,7 @@
                 </div>
                 <div id="tab2" class="tab">
                     @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id = "frmSearchHOme-thue", style = "float:left;display:inline-block;" }))
-                    {
+                    {<input type="hidden" name="type" value="16" />
                         @Html.DropDownList("districtId", Model.Districts, new { @class = "box" })
                         @Html.DropDownList("wardId", Model.Wards, new { @class = "box" })
                         @Html.DropDownList("priceString", Model.PriceRangeRent, new { @class = "box" })
@@ -55,8 +56,10 @@
         });
     });
     $(function () {
-        $("#frmSearchHOme-mua,#frmSearchHOme-thue").submit(function () {
-            var data = $(this).serialize();
+        $("#frmSearchHOme-ban,#frmSearchHOme-thue").submit(function () {
+            var data = $(this).serialize();       
+
+            
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {
                 window.location.href = d;
             })
