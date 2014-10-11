@@ -1,7 +1,7 @@
 ﻿﻿@model Nop.Web.Models.Catalog.InsertProductModel
 @using Nop.Core.Domain.Customers
 <link href="~/Content/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="~/Content/uploadify/jquery.uploadify.min.js"></script>
+<script type="text/javascript" src="~/Content/uploadify/jquery.uploadify.min.js?t=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
 @{
     Html.AppendScriptParts("~/Scripts/jquery-te-1.4.0.min.js");
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/editorsimple.css");
@@ -362,7 +362,7 @@
             'method': 'post',
             'buttonText': 'CHỌN ẢNH ĐĂNG...',
             'auto': false,
-            'fileSizeLimit': '3MB',
+            'fileSizeLimit': '3000KB',
             'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg',
             'uploadLimit': 20,
             'cancelImg': '@Url.Content("~/Content/uploadify/uploadify-cancel.png")',
