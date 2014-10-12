@@ -7,6 +7,7 @@
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/editorsimple.css");
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/jquery-te-1.4.0.css");
     bool isLogin = WorkContext.CurrentCustomer.IsRegistered();
+    Model.Price = 1;
 }
 @Html.AntiForgeryToken()
 @Html.HiddenFor(x => x.Id)
@@ -20,6 +21,7 @@
 <div id="panel-error" class="message-error">
     @Html.ValidationSummary()
 </div>
+@Html.HiddenFor(model => model.Price)
 <i class="note">(*) Bắt buộc phải nhập/chọn.</i>
 <div class="floatLeft">
     <div class="blueText">THÔNG TIN LIÊN HỆ</div>
