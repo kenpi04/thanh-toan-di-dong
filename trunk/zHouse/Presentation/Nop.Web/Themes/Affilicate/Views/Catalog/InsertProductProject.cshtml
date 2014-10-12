@@ -1,23 +1,15 @@
 ﻿@model Nop.Web.Models.Catalog.InsertProductModel
 @{
-    if (!ViewBag.IsRegistered)
-    {
-        Layout = "~/Views/Shared/_RootNoHeadFoot.cshtml";
-    }
-    else
-    {
-        Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
-        Html.AddTitleParts(T("PageTitle.Account").Text);
-    }
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Html.AddTitleParts(T("PageTitle.Account.InsertProductProject").Text);
 }
-@if (ViewBag.IsRegistered)
-{
-    @section left{
-        @Html.Partial("~/Themes/Affilicate/Views/Customer/MyAccountNavigation.cshtml", Model.NavigationModel, new ViewDataDictionary())
-}}
+
+@section left{
+    @Html.Partial("~/Themes/Affilicate/Views/Customer/MyAccountNavigation.cshtml", Model.NavigationModel, new ViewDataDictionary())
+}
 <div class="page-body">
-    <div>@ViewBag.TemplateId</div> 
-    @using (Html.BeginForm("InsertProduct", "Catalog", FormMethod.Post, new { id = "frmProduct" }))
+    <div>@ViewBag.TemplateId</div>
+    @using (Html.BeginForm("InsertProductProject", "Catalog", FormMethod.Post, new { id = "frmProduct" }))
     {
         <div class="message-error">
             @Html.ValidationSummary(true)
