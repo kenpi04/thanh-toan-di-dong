@@ -185,7 +185,7 @@ namespace Nop.Core.Domain.Catalog
         public bool UnlimitedDownloads { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum number of downloads
+        /// so lan up tin trong ngay
         /// </summary>
         public int MaxNumberOfDownloads { get; set; }
 
@@ -474,7 +474,7 @@ namespace Nop.Core.Domain.Catalog
         public DateTime CreatedOnUtc { get; set; }
 
         /// <summary>
-        /// Gets or sets the date and time of product update
+        /// Thoi gian up tin
         /// </summary>
         public DateTime UpdatedOnUtc { get; set; }
 
