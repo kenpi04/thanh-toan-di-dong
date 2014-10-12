@@ -468,7 +468,7 @@ namespace Nop.Web.Controllers
         
         [NonAction]
         protected CustomerOrderListModel PrepareCustomerOrderListModel(Customer customer, DateTime? startDate = null, DateTime? endDate = null,
-            string priceString="", string attributeOptionIds="",int wardId = 0, int categoryId = 0, int statusEndDate = 0, int status = 0, string sku="",
+            string priceString="", string attributeOptionIds="",int wardId = 0, int categoryId = 0, int statusEndDate = 0, int status = 0, int productId = 0,
             int pageIndex = 0, int pageSize = 20)
         {
             if (customer == null)
@@ -478,10 +478,10 @@ namespace Nop.Web.Controllers
             model.NavigationModel = GetCustomerNavigationModel(customer);
             model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;
             var products = new List<Product>();
-            if (!String.IsNullOrWhiteSpace(sku))
+            if (productId>0)
             {
-                var product = _productService.GetProductBySku(sku);
-                if (product != null)
+                var product = _productService.GetProductById(productId);
+                if (product != null || !product.Deleted)
                 {
                     if (product.CustomerId == customer.Id)
                         products.Add(product);
@@ -523,7 +523,7 @@ namespace Nop.Web.Controllers
                     Price = product.CallForPrice ? "Thỏa thuận" : Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ"),
                     //BathRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
                     //BedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
-                    TinhTrang = GetOptionName(product, ProductAttributeEnum.Status),
+                    //TinhTrang = GetOptionName(product, ProductAttributeEnum.Status),
                     ViewNumber = product.ViewNumber.ToString(),
                     TrangThaiDuyet = ((ProductStatusEnum)product.Status == ProductStatusEnum.Approved && product.AvailableEndDateTimeUtc < DateTime.Now) ? "Đã hết hạn" : _localizationService.GetResource(Enum.GetName(typeof(ProductStatusEnum),product.Status)),
                     DefaultPictureModel = _cacheManager.Get(string.Format(Nop.Web.Infrastructure.Cache.ModelCacheEventConsumer.PRODUCT_DEFAULTPICTURE_MODEL_KEY, product.Id, 80, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id), () =>
@@ -1402,7 +1402,7 @@ namespace Nop.Web.Controllers
         #region Orders
 
         [NopHttpsRequirement(SslRequirement.Yes)]
-        public ActionResult Orders(DateTime? startDate, DateTime? endDate, int categoryId = 0, int statusEndDate = 0, int status = 0, string sku = "")
+        public ActionResult Orders(DateTime? startDate, DateTime? endDate, int categoryId = 0, int statusEndDate = 0, int status = 0, int productId = 0)
         {
             var customer = _workContext.CurrentCustomer;
 
@@ -1411,7 +1411,7 @@ namespace Nop.Web.Controllers
             
             //var model = PrepareCustomerOrderListModel(customer,priceString,attributeOptionIds,wardId,categoryId);
             var model = PrepareCustomerOrderListModel(customer, startDate: startDate, endDate: endDate,
-                categoryId: categoryId, status: status, statusEndDate: statusEndDate, sku: sku);
+                categoryId: categoryId, status: status, statusEndDate: statusEndDate, productId: productId);
               if (Request.IsAjaxRequest())
                 return View("_PartialProductCustomer", model.Products);
             return View(model);
