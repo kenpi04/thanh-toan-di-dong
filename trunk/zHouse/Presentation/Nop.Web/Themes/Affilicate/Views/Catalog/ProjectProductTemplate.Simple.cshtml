@@ -13,7 +13,9 @@
 @Html.Action("ProductBreadcrumb", "Catalog", new { productId = Model.Id })
 <div class="mainContent" itemscope itemtype="http://data-vocabulary.org/Product">
     <div class="whiteBgLeft">
-        <div class="detailTable">
+        <div class="detailTable" style="background: none;
+border: none;
+width: 100%">
             <div class="detail-info">
                 <table>
                     <tbody>
@@ -66,13 +68,13 @@
                         <tr>
                             <td class="greyBgTD">Tên gọi khác:</td>
                             <td>
-                               
+
                                 @Model.UserAgreementText
                             </td>
 
                         </tr>
 
-                     
+
                     </tbody>
                 </table>
 
@@ -80,10 +82,10 @@
             <div class="detail-picture" id="detail-picture">
                 <img src="@Model.DefaultPictureModel.FullSizeImageUrl" />
             </div>
-         
+
             <div class="clearfix"></div>
         </div><!----detailTable---->
-        <div class="div-map">
+        <div class="div-map" style="width: 800px;margin-top:10px">
             <div class="map-title">
                 <p>Vị trí dự án</p>
             </div>
@@ -92,7 +94,7 @@
             </div>
         </div>
 
-        <div id="tab-detail" class="whiteBgLeft" style="margin-top:-1px;" itemprop="description">
+        <div id="tab-detail" class="whiteBgLeft" style="width: 800px;margin-top:10px" itemprop="description">
             <div class="map-title">
                 <p>Vị trí dự án</p>
             </div>
@@ -111,7 +113,7 @@
             </div><!---twoColRight---->
             @Html.Action("ProductEmailAFriend", new { isBook = true })
         </div><!--pinkBgRight----->
-        @Html.Action("RelatedProductCustomer", new { customerId = Model.CustomerId })
+      
         <div class="ad">
             @Html.FptBanner(104)
         </div><!----rightContent---------------->
