@@ -261,7 +261,7 @@
 <div class="floatLeft">
     <div class="blueText">MÔ TẢ CHI TIẾT</div>
     <div class="boxWrapperSmall">
-        @Html.EditorFor(x => x.Desription, "RichEditor")
+        @Html.EditorFor(x => x.FullDescription, "RichEditor")
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
@@ -332,14 +332,14 @@
             $.get("@Url.Action("GetWardByDistrictId", "Common")", { id: selectedId }, function (d) {
                 $.each(d.Ward, function (i, o) {
                     var option= $("<option/>").val(o.Id).text(o.Name);
-                    if(ISFIRSTLOAD&&o.Id==@Model.WardId)
+                    if(ISFIRSTLOAD&&(o.Id==@Model.WardId))
                         option.attr("selected","selected");
                     ddlWard.append(option);
                 })
 
                 $.each(d.Street, function (i, o) {
                     var option= $("<option/>").val(o.Id).text(o.Name);
-                    if(ISFIRSTLOAD&&o.Id==@Model.StreetId)
+                    if(ISFIRSTLOAD&&(o.Id==@Model.StreetId))
                           option.attr("selected","selected");
                     ddlStreet.append(option);
                 })
