@@ -25,8 +25,8 @@
     $(function () {
         $("#searchProduct").click(function () {
             var data = {
-                startDate: $("#startDate").val(),
-                endDate: $("#endDate").val(),
+                startDate:ConverDate( $("#startDate").val()),
+                endDate:ConverDate( $("#endDate").val()),
                 categoryId: $("#categoryId").val(),
                 status: $("#status").val(),
                 statusEndDate: $("#statusEndDate").val(),
@@ -66,6 +66,11 @@
         $("#startDate").datepicker();
         $("#endDate").datepicker();
     })
-
-
+    function ConverDate(date)
+    {
+        if (date != '') {
+            var a = date.split('/');
+            return a[1] + "/" + a[0] + "/" + a[2];
+        }
+    }
 </script>
