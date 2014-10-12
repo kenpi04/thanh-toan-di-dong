@@ -473,33 +473,7 @@ namespace Nop.Web.Controllers
         {
             if (customer == null)
                 throw new ArgumentNullException("customer");
-            //List<int>attr=new List<int>();
-            //int pf = 0, pt = 0;
             
-           
-            //try
-            //{
-            //    if (!string.IsNullOrWhiteSpace(priceString))
-            //    {
-            //        string[] prices = priceString.Split('-');
-            //        int.TryParse(prices[0], out pf);
-            //        int.TryParse(prices[1], out pt);
-            //    }
-            //}
-            //catch { }
-
-            //try
-            //{
-            //    if (!string.IsNullOrWhiteSpace(attributeOptionIds))
-            //    {
-            //        string[] splitString = attributeOptionIds.Split('-');
-            //        attr = splitString.Select(x => Convert.ToInt32(x)).ToList();
-            //        attr.Remove(0);
-            //    }
-            //}
-            //catch
-            //{}
-
             var model = new CustomerOrderListModel();
             model.NavigationModel = GetCustomerNavigationModel(customer);
             model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;
@@ -508,7 +482,10 @@ namespace Nop.Web.Controllers
             {
                 var product = _productService.GetProductBySku(sku);
                 if (product != null)
-                    products.Add(product);
+                {
+                    if (product.CustomerId == customer.Id)
+                        products.Add(product);
+                }
             }
             else
             {
@@ -518,12 +495,7 @@ namespace Nop.Web.Controllers
                                 storeId: customer.IsAdmin() ? 0 : _storeContext.CurrentStore.Id,
                                 customerId: customer.Id,
                                 visibleIndividuallyOnly: true,
-                    //priceMin:pf,
-                    //priceMax:pt,
                                 languageId: 0,
-                    //filteredSpecs: attr,
-                    //districtIds: new List<int> { 611 },
-                    //wardId:new List<int>{ wardId},                          
                                 pageIndex: pageIndex,
                                 pageSize: pageSize,
                                 status: (ProductStatusEnum)status,
@@ -1438,7 +1410,8 @@ namespace Nop.Web.Controllers
                 return new HttpUnauthorizedResult();
             
             //var model = PrepareCustomerOrderListModel(customer,priceString,attributeOptionIds,wardId,categoryId);
-            var model = PrepareCustomerOrderListModel(customer, startDate: startDate, endDate:endDate, categoryId:categoryId, status:status,statusEndDate:statusEndDate);
+            var model = PrepareCustomerOrderListModel(customer, startDate: startDate, endDate: endDate,
+                categoryId: categoryId, status: status, statusEndDate: statusEndDate, sku: sku);
               if (Request.IsAjaxRequest())
                 return View("_PartialProductCustomer", model.Products);
             return View(model);
