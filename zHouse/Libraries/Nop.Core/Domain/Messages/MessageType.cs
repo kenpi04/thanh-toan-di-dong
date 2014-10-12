@@ -11,6 +11,9 @@ namespace Nop.Core.Domain.Messages
         EmailAFriend = 5,
         WrongNews = 10,
         Contact = 15,
-        Book=20
+        Book=20,
+        Support=30,
+        Error=40,
+        Feedback=50
     }
 }
