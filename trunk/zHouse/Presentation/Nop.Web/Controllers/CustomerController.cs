@@ -553,7 +553,7 @@ namespace Nop.Web.Controllers
                     //BedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
                     TinhTrang = GetOptionName(product, ProductAttributeEnum.Status),
                     ViewNumber = product.ViewNumber.ToString(),
-                    TrangThaiDuyet = ((ProductStatusEnum)product.Status == ProductStatusEnum.Approved && product.AvailableEndDateTimeUtc > DateTime.Now) ? "Đã hết hạn" : _localizationService.GetResource(Enum.GetName(typeof(ProductStatusEnum),product.Status)),
+                    TrangThaiDuyet = ((ProductStatusEnum)product.Status == ProductStatusEnum.Approved && product.AvailableEndDateTimeUtc < DateTime.Now) ? "Đã hết hạn" : _localizationService.GetResource(Enum.GetName(typeof(ProductStatusEnum),product.Status)),
                     DefaultPictureModel = _cacheManager.Get(string.Format(Nop.Web.Infrastructure.Cache.ModelCacheEventConsumer.PRODUCT_DEFAULTPICTURE_MODEL_KEY, product.Id, 80, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id), () =>
                     {
                         var picture = _pictureService.GetPicturesByProductId(product.Id, 1).FirstOrDefault();
