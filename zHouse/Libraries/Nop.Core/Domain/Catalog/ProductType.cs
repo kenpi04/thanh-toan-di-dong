@@ -13,5 +13,13 @@ namespace Nop.Core.Domain.Catalog
         /// Grouped product
         /// </summary>
         GroupedProduct = 10,
+        /// <summary>
+        /// Cho thue
+        /// </summary>
+        RentProduct = 20,
+        /// <summary>
+        /// Du an
+        /// </summary>
+        ProjectProduct = 30,
     }
 }
