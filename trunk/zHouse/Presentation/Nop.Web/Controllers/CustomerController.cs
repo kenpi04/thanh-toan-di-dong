@@ -515,7 +515,7 @@ namespace Nop.Web.Controllers
                  products = _productService.SearchProducts(
                     categoryIds: new List<int> { categoryId },
                                 manufacturerId: 0,
-                                storeId: 0,
+                                storeId: customer.IsAdmin() ? 0 : _storeContext.CurrentStore.Id,
                                 customerId: customer.Id,
                                 visibleIndividuallyOnly: true,
                     //priceMin:pf,
