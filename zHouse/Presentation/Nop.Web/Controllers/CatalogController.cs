@@ -3553,9 +3553,8 @@ namespace Nop.Web.Controllers
             return View(model);
 
         }
-        [HttpPost]
-        [ValidateInput(false)]
-        [ValidateAntiForgeryToken]
+        [HttpPost]  
+       
         public async Task<JsonResult> UpdateProductAsync(int productId, int action, int? value)
         {
             var customer = _workContext.CurrentCustomer;
@@ -3816,6 +3815,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("PageNotFound");
 
             var model = new InsertProductModel();
+            model.ProductType = (int)ProductType.ProjectProduct;
             await PreparingInsertProductModelAsync(model, customer, categoryId: 2);
             
             model.NavigationModel = GetCustomerNavigationModel();
@@ -3923,6 +3923,11 @@ namespace Nop.Web.Controllers
 
                 return RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }
+            model.ProductType = (int)ProductType.ProjectProduct;
+            await PreparingInsertProductModelAsync(model, customer, categoryId: 2);
+            model.NavigationModel = GetCustomerNavigationModel();
+            model.NavigationModel.SelectedTab = Nop.Web.Models.Customer.CustomerNavigationEnum.PostNewsProject;
+
             return View(model);
         }
 
@@ -4090,6 +4095,7 @@ namespace Nop.Web.Controllers
                 //thoi gian dang tin
                 AvailableStartDateTime = p.AvailableStartDateTimeUtc,
                 AvailableEndDateTime = p.AvailableEndDateTimeUtc,
+                ProductType=p.ProductTypeId
             };
             var cate = p.ProductCategories.FirstOrDefault();
             if (cate != null)
@@ -4220,6 +4226,7 @@ namespace Nop.Web.Controllers
                 model.NumberBlocks = await GetListOptionNameAsync(null, ProductAttributeEnum.NumberBlock);
                 model.PhapLy = await GetListOptionNameAsync(null, ProductAttributeEnum.PhapLy);
             }
+            
         }
         public ActionResult UploadPicture(HttpPostedFileBase Filedata)
         {
