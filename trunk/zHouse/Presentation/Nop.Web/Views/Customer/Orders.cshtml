@@ -129,7 +129,7 @@
                             <p><span>@product.BathRoom</span></p>
                             <p><span>@product.BedRoom</span></p>
                         </div>
-                        <p><strong>Đăng: </strong><span>@product.CreatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Cập nhật: </strong><span>@product.UpdatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Hết hạn: </strong><span>@(product.ExpiredOn.HasValue ?  product.ExpiredOn.Value.ToString("dd/MM/YY hh:mm:ss"): "_")</span></p>
+                        <p><strong>Đăng: </strong><span>@product.CreatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Cập nhật: </strong><span>@product.UpdatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Hết hạn: </strong><span>@(product.AvailableEndDateTimeUtc.HasValue ?  product.AvailableEndDateTimeUtc.Value.ToString("dd/MM/YY hh:mm:ss"): "_")</span></p>
                     </div>            
                     <div class="side-3" style="width:19%;margin:0">
                         <div class="block block-account-navigation" style="margin-bottom:0">
