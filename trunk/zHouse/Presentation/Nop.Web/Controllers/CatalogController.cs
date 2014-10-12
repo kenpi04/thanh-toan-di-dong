@@ -3324,10 +3324,11 @@ namespace Nop.Web.Controllers
             else ViewBag.IsRegistered = false;
             return View(model);
         }
+
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult InsertProduct(InsertProductModel model, FormCollection form)
+        public async Task<ActionResult> InsertProduct(InsertProductModel model, FormCollection form)
         {
             var customer = _workContext.CurrentCustomer;
             //kiem tra dang nhap:neu ko la zhouse va chua register
@@ -3357,7 +3358,7 @@ namespace Nop.Web.Controllers
                 product.ProductType = ProductType.SimpleProduct;
                 PreapringProductToEntity(model, product);
                 product.Price = model.Price * 1000000;
-                string seName = product.ValidateSeName(product.Name, product.Name, true);
+                string seName = await product.ValidateSeNameAsync(product.Name, product.Name, true);
                 if (_storeContext.CurrentStore.Id != 1)
                 {
                     product.LimitedToStores = true;
@@ -3369,7 +3370,7 @@ namespace Nop.Web.Controllers
                 //Stores: (!= 1 thi khong lay Id != 1)                
                 if (_storeContext.CurrentStore.Id != 1)
                 {
-                    var allStores = _storeService.GetAllStores().Where(s => s.Id != 1);
+                    var allStores = (await _storeService.GetAllStoresAsync()).Where(s => s.Id != 1);
                     foreach (var store in allStores)
                     {
                         _storeMappingService.InsertStoreMapping(product, store.Id);
@@ -3424,106 +3425,6 @@ namespace Nop.Web.Controllers
             return View(model);
 
         }
-        //[HttpPost]
-        //[ValidateInput(false)]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> InsertProduct(InsertProductModel model, FormCollection form)
-        //{
-        //    var customer = _workContext.CurrentCustomer;
-        //    //kiem tra dang nhap:neu ko la zhouse va chua register
-        //    if (!customer.IsRegistered() && _storeContext.CurrentStore.Id != 1)
-        //        return new HttpUnauthorizedResult();
-
-        //    if (model == null)
-        //        throw new Exception("Product is null");
-        //    if (ModelState.IsValid)
-        //    {
-        //        var product = new Product();
-        //        var selectedId = form.GetValues("SelectedOptionAttributes");
-        //        if (selectedId.Length > 0)
-        //            model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
-
-        //        var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
-        //        foreach (var tit in titlePic)
-        //        {
-        //            model.PictureIds.Add(new InsertProductModel.PictureUploadModel
-        //            {
-        //                Id = int.Parse(tit.Replace("PictureTitle_", "")),
-        //                Title = form.GetValue(tit).AttemptedValue
-        //            });
-        //        }
-        //        //template
-        //        product.ProductTemplateId = 1;
-        //        product.ProductType = ProductType.SimpleProduct;
-        //        PreapringProductToEntity(model, product);
-        //        product.Price = model.Price * 1000000;
-        //        string seName = await product.ValidateSeNameAsync(product.Name, product.Name, true);
-        //        if (_storeContext.CurrentStore.Id != 1)
-        //        {
-        //            product.LimitedToStores = true;
-        //        }
-        //        _productService.InsertProduct(product);
-        //        _urlRecordService.SaveSlug(product, seName, 0);
-
-        //        #region Store
-        //        //Stores: (!= 1 thi khong lay Id != 1)                
-        //        if (_storeContext.CurrentStore.Id != 1)
-        //        {
-        //            var allStores = (await _storeService.GetAllStoresAsync()).Where(s => s.Id != 1);
-        //            foreach (var store in allStores)
-        //            {
-        //                _storeMappingService.InsertStoreMapping(product, store.Id);
-        //            }
-        //        }
-        //        #endregion
-
-        //        #region Insert Categories
-        //        var productCate = new ProductCategory
-        //        {
-        //            CategoryId = model.CateId,
-        //            ProductId = product.Id,
-        //            IsFeaturedProduct = false
-        //        };
-        //        _categoryService.InsertProductCategory(productCate);
-
-        //        #endregion
-
-        //        #region InsertPictures
-        //        foreach (var i in model.PictureIds)
-        //        {
-        //            var pictureproduct = new ProductPicture
-        //            {
-        //                PictureId = i.Id,
-        //                ProductId = product.Id,
-        //                Description = i.Title
-        //            };
-        //            _productService.InsertProductPicture(pictureproduct);
-        //            _pictureService.SetSeoFilename(i.Id, _pictureService.GetPictureSeName(product.Name));
-        //        }
-        //        #endregion
-
-        //        #region Insert SPA
-        //        foreach (var i in model.SelectedOptionAttributes)
-        //        {
-        //            var SPAProduct = new ProductSpecificationAttribute
-        //            {
-        //                ProductId = product.Id,
-        //                SpecificationAttributeOptionId = i,
-        //                ShowOnProductPage = false,
-        //                AllowFiltering = true,
-        //            };
-        //            _specificationAttributeService.InsertProductSpecificationAttribute(SPAProduct);
-        //        }
-        //        #endregion
-
-        //        if (customer.IsRegistered())
-        //            return RedirectToAction("Orders", "Customer");
-
-        //        return RedirectToAction("InsertProductSuccess", new { productId = product.Id });
-        //    }
-        //    return View(model);
-
-        //}
         public ActionResult EditProduct(int id)
         {
             if (!_workContext.CurrentCustomer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
@@ -3657,32 +3558,60 @@ namespace Nop.Web.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> UpdateProductAsync(int productId, int action, bool? value)
+        public async Task<JsonResult> UpdateProductAsync(int productId, int action, int? value)
         {
             var customer = _workContext.CurrentCustomer;
+            string resultMessage = "";
+            //kiem tra la admin va storeid =1
             if (!customer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
-                return Json("-1");
-
-            if (productId == 0)
-                return Json("-1");
-
+            {
+                resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.permisson");
+                return Json(resultMessage);
+            }
+            //find product
             var product = await _productService.GetProductByIdAsync(productId);
             if (product == null)
-                return Json("-1");
-
+            {
+                resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.notfoundproduct");
+                return Json(resultMessage);
+            }
+            //permission product for customer
             if (!customer.IsAdmin() && product.CustomerId != customer.Id)
-                return Json("-1");
+            {
+                resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.notfoundproduct");
+                return Json(resultMessage);
+            }
 
             if (action == 1)//published
             {
-                product.Published = value.Value;
-                _productService.UpdateProduct(product);
-                return Json("1");
+                if (value.HasValue)
+                {
+                    try
+                    {
+                        product.Published = Convert.ToBoolean(value.Value);
+                        _productService.UpdateProduct(product);
+                        resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
+                        return Json(resultMessage);
+                    }
+                    catch
+                    {
+                        resultMessage = _localizationService.GetResource("updateproduct.error.updatefail");
+                        return Json(resultMessage);
+                    }
+                }
             }
             if (action == 2)//deleted
             {
-                _productService.DeleteProduct(product);
-                return Json("1");
+                try
+                {
+                    _productService.DeleteProduct(product);
+                    resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
+                    return Json(resultMessage);
+                }
+                catch {
+                    resultMessage = _localizationService.GetResource("updateproduct.error.updatefail");
+                    return Json(resultMessage);
+                }                
             }
             if (action == 3)//up count
             {
@@ -3690,22 +3619,69 @@ namespace Nop.Web.Controllers
                 {
                     if (product.MaxNumberOfDownloads < 6)
                     {
-                        product.UpdatedOnUtc = DateTime.Now;
-                        product.MaxNumberOfDownloads = product.MaxNumberOfDownloads + 1;
-                        _productService.UpdateProduct(product);
-                        return Json("1");
+                        try
+                        {
+                            product.UpdatedOnUtc = DateTime.Now;
+                            product.MaxNumberOfDownloads = product.MaxNumberOfDownloads + 1;
+                            _productService.UpdateProduct(product);
+                            resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
+                            return Json(resultMessage);
+                        }
+                        catch
+                        {
+                            resultMessage = _localizationService.GetResource("updateproduct.error.updatefail");
+                            return Json(resultMessage);
+                        }
                     }
-                    else return Json("0");
+                    else {
+                        resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.countupmorethanpolicy");
+                        return Json(resultMessage);
+                    }
                 }
                 else if (product.AvailableStartDateTimeUtc.HasValue && product.AvailableStartDateTimeUtc.Value < DateTime.Now)
                 {
-                    product.UpdatedOnUtc = DateTime.Now;
-                    product.MaxNumberOfDownloads = product.MaxNumberOfDownloads + 1;
-                    product.AvailableStartDateTimeUtc = DateTime.Now;
-                    return Json("1");
+                    try
+                    {
+                        product.UpdatedOnUtc = DateTime.Now;
+                        product.MaxNumberOfDownloads = product.MaxNumberOfDownloads + 1;
+                        product.AvailableStartDateTimeUtc = DateTime.Now;
+                        resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
+                        return Json(resultMessage);
+                    }
+                    catch
+                    {
+                        resultMessage = _localizationService.GetResource("updateproduct.error.updatefail");
+                        return Json(resultMessage);
+                    }
                 }
             }
-            return Json("0");
+            if(action == 4)//Duyet tin
+            {
+                if (value.HasValue)
+                {
+                    try
+                    {
+
+                        product.Status = (short)value.Value;
+                        _productService.UpdateProduct(product);
+                        resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
+                        return Json(resultMessage);
+                    }
+                    catch
+                    {
+                        resultMessage = _localizationService.GetResource("updateproduct.error.updatefail");
+                        return Json(resultMessage);
+                    }
+                }
+                else
+                {
+                    resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatefail");
+                    return Json(resultMessage);
+                }
+            }
+
+            resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatefail");
+            return Json(resultMessage);
         }
         #endregion
 
@@ -3843,7 +3819,7 @@ namespace Nop.Web.Controllers
 
             var model = new InsertProductModel();
             await PreparingInsertProductModelAsync(model, customer, categoryId: 2);
-
+            
             model.NavigationModel = GetCustomerNavigationModel();
             model.NavigationModel.SelectedTab = Nop.Web.Models.Customer.CustomerNavigationEnum.PostNewsProject;
 
