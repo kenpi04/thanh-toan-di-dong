@@ -1893,9 +1893,7 @@ namespace Nop.Web.Controllers
             if (!product.Published && !_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
                 return InvokeHttp404();
 
-            if (product.ProductStatus != ProductStatusEnum.Approved && product.ProductStatus != ProductStatusEnum.PendingAproved)
-                return InvokeHttp404();
-            if (product.ProductStatus == ProductStatusEnum.PendingAproved && product.CustomerId != _workContext.CurrentCustomer.Id)
+            if ((product.ProductStatus == ProductStatusEnum.PendingAproved && product.CustomerId != _workContext.CurrentCustomer.Id)||product.ProductStatus != ProductStatusEnum.Approved)
                 return InvokeHttp404();
             //ACL (access control list)
             //if (!_aclService.Authorize(product))
