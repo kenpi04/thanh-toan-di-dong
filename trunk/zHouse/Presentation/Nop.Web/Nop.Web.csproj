@@ -2237,7 +2237,7 @@
     <Content Include="Themes\Affilicate\Views\Catalog\InsertProductProject.cshtml" />
     <Content Include="Themes\Affilicate\Views\Customer\_SearchBox.cshtml" />
     <Content Include="Themes\Affilicate\Views\Catalog\ProjectProductTemplate.Simple.cshtml" />
-    <Content Include="Themes\Affilicate\Views\Catalog\_SupportContact.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Shared\_SupportContact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

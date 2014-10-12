@@ -72,33 +72,7 @@
 
                         </tr>
 
-                        <tr>
-                            <td class="greyBgTD">Cơ sở vật chất</td>
-                            <td>
-                                @if (Model.Facilities.Count > 0)
-                                {
-                                    @Model.Facilities.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
-                                }
-                                else
-                                { <text>-</text>}
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="greyBgTD">Môi trường xung quanh</td>
-
-                            <td>
-                                @if (Model.Environments.Count > 0)
-                                {
-                                    @Model.Environments.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
-                                }
-                                else
-                                {
-                                    <text>-</text>
-                                }
-                            </td>
-                        </tr>
-
+                     
                     </tbody>
                 </table>
 
@@ -126,6 +100,22 @@
         </div><!---whiteBgLeft-->
      
         </div>
+    <div class="rightContent">
+        <div class="pinkBgRight">
+            <b>BẠN CẦN THÊM THÔNG TIN?</b>
+            <div class="twoColRight">
+                <div class="twoColRightPic"><a href="#"><img src="../Themes/Zhouse/Content/images/i1.png" class="circleImg"></a></div>
+                <div class="twoColRightText" style="font-size:15px;color:#fff">
+                    <b>0936734949 <br>0968309789</b>
+                </div>
+            </div><!---twoColRight---->
+            @Html.Action("ProductEmailAFriend", new { isBook = true })
+        </div><!--pinkBgRight----->
+        @Html.Action("RelatedProductCustomer", new { customerId = Model.CustomerId })
+        <div class="ad">
+            @Html.FptBanner(104)
+        </div><!----rightContent---------------->
+    </div>
     </div>
 <script>
     loadScript();

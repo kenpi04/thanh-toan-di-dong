@@ -120,7 +120,7 @@ namespace Nop.Web.Models.Catalog
             public int Id { get; set; }
             public string Title { get; set; }
         }
-
+        public int ProductType { get; set; }
         public List<SelectListItem> ThichHop { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.StatusList")]
         public List<SelectListItem> StatusList { get; set; }

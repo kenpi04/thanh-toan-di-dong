@@ -45,6 +45,7 @@
             <div class="icon-list">
                 <a class="icon-contact" href="@Url.RouteUrl("ContactUs")" title="Liên hệ"></a>
                 <a class="icon-request" href="@Url.RouteUrl("InsertProduct")" title="Đăng tin miễn phí"></a>
+                <a class="icon-contact" onclick="showSupport()"></a>
             </div>
             @RenderBody()            
         </div>
@@ -52,8 +53,23 @@
     @Html.Action("Footer", "Common", new { stateId = 0 })
 </div>
 @*@Html.Widget("body_end_html_tag_before")*@
-<div style="display:none" id="popup"></div>
+<div style="display:none" id="popup">
+    <div style="width:329px;height:350px;padding:5px">
+        <div class="title-block">Góp ý báo lỗi</div>
+        @Html.Partial("_SupportContact", new Nop.Web.Models.Common.ContactUsModel())
+    </div>
+</div>
 <script type="text/javascript">
+    function showSupport()
+    {
+        $("#popup").modal({
+            onShow: function (d) {
+                
+                $.validator.unobtrusive.parse("#frmContactUs")
+               
+            }
+        });
+    }
   $(document).ready(function () {
         var headerTop = $('.top-header').offset().top;
         var headerBottom = headerTop + 29; // Sub-menu should appear after this distance from top.
