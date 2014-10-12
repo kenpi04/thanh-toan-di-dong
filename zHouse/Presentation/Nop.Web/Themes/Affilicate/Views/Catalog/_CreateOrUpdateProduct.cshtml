@@ -6,11 +6,11 @@
     Html.AppendScriptParts("~/Scripts/jquery-te-1.4.0.min.js");
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/editorsimple.css");
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/jquery-te-1.4.0.css");
-    bool isLogin = WorkContext.CurrentCustomer.IsRegistered();
-    if (Model.Id > 0)
-    {
+    //bool isLogin = WorkContext.CurrentCustomer.IsRegistered();
+    //if (Model.Id > 0)
+    //{
 
-    }
+    //}
 }
 @Html.AntiForgeryToken()
 @Html.HiddenFor(x => x.Id)
@@ -26,11 +26,11 @@
 <div id="panel-error" class="message-error">
     @Html.ValidationSummary()
 </div>
-<i class="note">(*) Không được để trống</i>
+<i class="note">(*) Bắt buộc phải nhập/chọn.</i>
 <div class="floatLeft">
     <div class="blueText">THÔNG TIN LIÊN HỆ</div>
     <div class="boxWrapper form-request-contact">
-        @Html.TextBoxFor(x => x.ContactName, new { @class = "formBoxIn", placeholder = "Họ và tên" })
+        @Html.TextBoxFor(x => x.ContactName, new { @class = "formBoxIn", placeholder = "Họ và tên" })    
         @Html.RequiredHint()
         @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại", })
         @Html.RequiredHint()
@@ -252,6 +252,15 @@
     </div>
 </div><!---floatLeft----->
 <div class="floatLeft">
+    <div class="blueText">THỜI GIAN TIN ĐĂNG</div>
+    <div class="boxWrapperSmall">
+        @Html.TextBoxFor(x => x.AvailableStartDateTime, new { @class = " formBoxInText" })
+    </div>
+    <div class="boxWrapperSmall">
+        @Html.TextBoxFor(x => x.AvailableEndDateTime, new { @class = " formBoxInText" })
+    </div>
+</div><!---floatLeft---->
+<div class="floatLeft">
     <div class="blueText">TIÊU ĐỀ</div>
     <div class="boxWrapperSmall">
         @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:100%" })
@@ -260,7 +269,7 @@
 <div class="floatLeft">
     <div class="blueText">MÔ TẢ CHI TIẾT</div>
     <div class="boxWrapperSmall">
-        @Html.EditorFor(x => x.Desription, "RichEditor")
+        @Html.EditorFor(x => x.FullDescription, "RichEditor")
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
