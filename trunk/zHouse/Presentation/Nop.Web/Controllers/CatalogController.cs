@@ -2947,7 +2947,7 @@ namespace Nop.Web.Controllers
         }
 
         [NopHttpsRequirement(SslRequirement.No)]
-        public ActionResult CompareProducts()
+        public async Task<ActionResult> CompareProducts(List<int>productId)
         {
             if (!_catalogSettings.CompareProductsEnabled)
                 return RedirectToRoute("HomePage");
@@ -2957,8 +2957,20 @@ namespace Nop.Web.Controllers
                 IncludeShortDescriptionInCompareProducts = _catalogSettings.IncludeShortDescriptionInCompareProducts,
                 IncludeFullDescriptionInCompareProducts = _catalogSettings.IncludeFullDescriptionInCompareProducts,
             };
+           
+            IList<Product> products= new List<Product>();
+              if(productId.Count==0)
+               products = _compareProductsService.GetComparedProducts();
+            else
+              {
+                  if(productId.Count>3)                  
+                      productId = productId.Take(3).ToList();
+                  products =await _productService.GetProductsByIdsAsync(productId.ToArray());
 
-            var products = _compareProductsService.GetComparedProducts();
+
+
+
+              }
 
             //ACL and store mapping
             // products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
