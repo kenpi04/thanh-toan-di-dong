@@ -67,7 +67,7 @@ namespace Nop.Web.Models.Catalog
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Description")]
         [AllowHtml]
-        public string Desription { get; set; }
+        public string FullDescription { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.FullAddress")]
         public string FullAddress { get; set; }
         /// <summary>
