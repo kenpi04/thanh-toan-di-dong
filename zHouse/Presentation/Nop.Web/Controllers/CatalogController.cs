@@ -776,7 +776,8 @@ namespace Nop.Web.Controllers
                 {
                     return new PictureModel
                     {
-                        ImageUrl = _pictureService.GetPictureUrl(defaultpic.PictureId, defaultPictureSize, true)
+                        FullSizeImageUrl = _pictureService.GetPictureUrl(defaultpic.PictureId, defaultPictureSize, true),
+                        
                     };
                 });
 

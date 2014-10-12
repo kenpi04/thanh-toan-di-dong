@@ -33,6 +33,7 @@
             <div class="icon-list">
                 <a class="icon-contact" href="@Url.RouteUrl("ContactUs")"></a>
                 <a class="icon-request" href="@Url.RouteUrl("InsertProduct")"></a>
+                
             </div>
             @RenderBody()
             <div class="clearBoth"></div>
@@ -41,6 +42,7 @@
                 <div id="recent-view">
                 </div>
                 <script type="text/javascript">
+
                     $("#recent-view").html("<div class='please-wait'></div>").load("@Url.Action("RecentlyViewedProductsBlock", "Catalog", new { productThumbPictureSize = 254})")
                 </script>
             }
@@ -51,4 +53,6 @@
     @Html.Action("Footer", "Common")
 </div>
 @Html.Widget("body_end_html_tag_before")
-<div style="display:none" id="popup"></div>
+<div style="display:none" id="popup">
+    
+</div>
