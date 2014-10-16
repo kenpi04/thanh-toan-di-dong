@@ -6,13 +6,27 @@
     </div>
     <div class="listbox">
         <ul class="list">
-            @Html.Widget("account_navigation_before")
-            
-            <li><a href="@Url.RouteUrl("PostNews")" class="@if (Model.SelectedTab == CustomerNavigationEnum.PostNews)
+            @*@Html.Widget("account_navigation_before")*@
+            <li>
+                <a href="@Url.RouteUrl("CustomerOrders")" class="@if (Model.SelectedTab == CustomerNavigationEnum.Orders)
+                                                                    {<text>active</text>}
+                                                                    else
+                                                                    {<text>inactive</text>}">@T("Account.CustomerOrders")</a>
+                                                                </li>
+            <li><a href="@Url.RouteUrl("PostNews")" class="@if(Model.SelectedTab == CustomerNavigationEnum.PostNews)
                                                                    {<text>active</text>}
                                                                    else
                                                                    {<text>inactive</text>}">@T("Account.PostNews")</a></li>
-
+            <li><a href="@Url.RouteUrl("PostNewsRent")" class="@if(Model.SelectedTab == CustomerNavigationEnum.PostNewsRent)
+                                                                   {<text>active</text>}
+                                                                   else
+                                                                   {<text>inactive</text>}">@T("Account.PostNewsRent")</a>
+                                                            </li>
+            <li><a href="@Url.RouteUrl("PostNewsProject")" class="@if (Model.SelectedTab == CustomerNavigationEnum.PostNewsProject)
+                                                                   {<text>active</text>}
+                                                                   else
+                                                                   {<text>inactive</text>}">@T("Account.PostNewsProject")</a>
+                                                            </li>            
             @if (!Model.HideInfo)
             {
                 <li><a href="@Url.RouteUrl("CustomerInfo")" class="@if (Model.SelectedTab == CustomerNavigationEnum.Info)
@@ -20,28 +34,14 @@
                                                                    else
                                                                    {<text>inactive</text>}">@T("Account.CustomerInfo")</a></li>
             }
-            @if (!Model.HideAddresses)
-            {
-                <li><a href="@Url.RouteUrl("CustomerAddresses")" class="@if (Model.SelectedTab == CustomerNavigationEnum.Addresses)
-                                                                        {<text>active</text>}
-                                                                        else
-                                                                        {<text>inactive</text>}">@T("Account.CustomerAddresses")</a></li>
-            }
-            @if (!Model.HideOrders)
-            { 
-                <li><a href="@Url.RouteUrl("CustomerOrders")" class="@if (Model.SelectedTab == CustomerNavigationEnum.Orders)
-                                                                     {<text>active</text>}
-                                                                     else
-                                                                     {<text>inactive</text>}">@T("Account.CustomerOrders")</a></li>
-            }
-            @if (!Model.HideReturnRequests)
+            @*@if (!Model.HideReturnRequests)
             { 
                 <li><a href="@Url.RouteUrl("CustomerReturnRequests")" class="@if (Model.SelectedTab == CustomerNavigationEnum.ReturnRequests)
                                                                              {<text>active</text>}
                                                                              else
                                                                              {<text>inactive</text>}">@T("Account.CustomerReturnRequests")</a></li>
-            }
-            @if (!Model.HideDownloadableProducts)
+            }*@
+            @*@if (!Model.HideDownloadableProducts)
             { 
                 <li><a href="@Url.RouteUrl("CustomerDownloadableProducts")" class="@if (Model.SelectedTab == CustomerNavigationEnum.DownloadableProducts)
                                                                                    {<text>active</text>}
@@ -54,7 +54,7 @@
                                                                                    {<text>active</text>}
                                                                                    else
                                                                                    {<text>inactive</text>}">@T("Account.BackInStockSubscriptions")</a></li>
-            }
+            }*@
             @if (!Model.HideRewardPoints)
             { 
                 <li><a href="@Url.RouteUrl("CustomerRewardPoints")" class="@if (Model.SelectedTab == CustomerNavigationEnum.RewardPoints)
@@ -76,14 +76,14 @@
                                                                      else
                                                                      {<text>inactive</text>}">@T("Account.Avatar")</a></li> 
             }
-            @if (!Model.HideForumSubscriptions)
+            @*@if (!Model.HideForumSubscriptions)
             { 
                 <li><a href="@Url.RouteUrl("CustomerForumSubscriptions")" class="@if (Model.SelectedTab == CustomerNavigationEnum.ForumSubscriptions)
                                                                                  {<text>active</text>}
                                                                                  else
                                                                                  {<text>inactive</text>}">@T("Account.ForumSubscriptions")</a></li>
-            }
-            @Html.Widget("account_navigation_after")
+            }*@
+            @*@Html.Widget("account_navigation_after")*@
         </ul>
     </div>
 </div>

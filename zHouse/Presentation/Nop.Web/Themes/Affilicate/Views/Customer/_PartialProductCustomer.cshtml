@@ -33,7 +33,12 @@
                         <div class="title-1"><img src="~/Themes/Zhouse/Content/images/view-icon-17.png" title="Lượt xem" alt="view icon" />@product.ViewNumber</div>
                         <div class="listbox" style="padding-bottom:0;">
                             <ul class="list">
-                                <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditPostNews", new { id = product.Id })')">Sửa tin</a></li>
+                                @if(product.ProductType == Nop.Core.Domain.Catalog.ProductType.SimpleProduct){
+                                <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditPostNews", new { id = product.Id })')">Sửa tin</a></li>}
+                                @if (product.ProductType == Nop.Core.Domain.Catalog.ProductType.RentProduct){
+                                    <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditPostNewsRent", new { id = product.Id })')">Sửa tin</a></li>}
+                                @if (product.ProductType == Nop.Core.Domain.Catalog.ProductType.ProjectProduct){
+                                    <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditPostNewsProject", new { id = product.Id })')">Sửa tin</a></li>}                                                                                                                                                         
                                 <li class="small" id="publish-@product.Id"><a onclick="updateNew(@product.Id,1,0)">Ngừng đăng tin</a></li>
                                 <li class="small"><a onclick="updateNew(@product.Id,2,0)">Xóa tin</a></li>
                                 <li class="small"><a onclick="updateNew(@product.Id,3,0)">Làm mới tin</a></li>

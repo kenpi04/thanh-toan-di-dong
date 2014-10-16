@@ -175,11 +175,11 @@ namespace Nop.Web.Controllers
             var model = new CustomerNavigationModel();
             model.HideAvatar = !_customerSettings.AllowCustomersToUploadAvatars;
             model.HideRewardPoints = !_rewardPointsSettings.Enabled;
-            model.HideForumSubscriptions = !_forumSettings.ForumsEnabled || !_forumSettings.AllowCustomersToManageSubscriptions;
-            model.HideReturnRequests = !_orderSettings.ReturnRequestsEnabled ||
-               _orderService.SearchReturnRequests(_storeContext.CurrentStore.Id, customer.Id, 0, null, 0, 1).Count == 0;
-            model.HideDownloadableProducts = _customerSettings.HideDownloadableProductsTab;
-            model.HideBackInStockSubscriptions = _customerSettings.HideBackInStockSubscriptionsTab;
+            model.HideForumSubscriptions = true;//!_forumSettings.ForumsEnabled || !_forumSettings.AllowCustomersToManageSubscriptions;
+            model.HideReturnRequests = true;// !_orderSettings.ReturnRequestsEnabled ||
+               //_orderService.SearchReturnRequests(_storeContext.CurrentStore.Id, customer.Id, 0, null, 0, 1).Count == 0;
+            model.HideDownloadableProducts = true; //_customerSettings.HideDownloadableProductsTab;
+            model.HideBackInStockSubscriptions = true;//_customerSettings.HideBackInStockSubscriptionsTab;
             return model;
         }
 
@@ -542,6 +542,88 @@ namespace Nop.Web.Controllers
                 model.Products.Add(productProfileModel);
             }
            
+            return model;
+        }
+        [NonAction]
+        protected async Task<CustomerOrderListModel> PrepareCustomerOrderListModelAsync(Customer customer, DateTime? startDate = null, DateTime? endDate = null,
+            string priceString = "", string attributeOptionIds = "", int wardId = 0, int categoryId = 0, int storeId= 0, int statusEndDate = 0, int status = 0, int productId = 0,
+            int pageIndex = 0, int pageSize = 20)
+        {
+            if (customer == null)
+                throw new ArgumentNullException("customer");
+
+            var model = new CustomerOrderListModel();
+            model.NavigationModel = GetCustomerNavigationModel(customer);
+            model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;
+            var products = new List<Product>();
+            if (productId > 0)//tim theo ma tin
+            {
+                var product = await _productService.GetProductByIdAsync(productId);
+                if (product != null || !product.Deleted)
+                {
+                    if (product.CustomerId == customer.Id)
+                        products.Add(product);
+                }
+            }
+            else//tim khac
+            {
+                products = _productService.SearchProducts(
+                   categoryIds: new List<int> { categoryId },
+                               manufacturerId: 0,
+                               storeId: storeId,
+                               customerId: customer.Id,
+                               visibleIndividuallyOnly: true,
+                               languageId: 0,
+                               pageIndex: pageIndex,
+                               pageSize: pageSize,
+                               status: (ProductStatusEnum)status,
+                               startDateTimeUtc: startDate,
+                               endDateTimeUtc: endDate
+                   ).ToList();
+                if (statusEndDate == 1)//con han
+                    products = products.Where(p => p.AvailableEndDateTimeUtc < DateTime.Now).ToList();
+                else if (statusEndDate == 2)//het han
+                    products = products.Where(p => p.AvailableEndDateTimeUtc > DateTime.Now).ToList();
+            }
+            foreach (var product in products)
+            {
+                var productProfileModel = new CustomerOrderListModel.ProductProfileModel()
+                {
+                    Id = product.Id,
+                    Sku = product.Sku,
+                    Name = product.Name,
+                    Sename = await product.GetSeNameAsync(),
+                    CreatedOn = product.CreatedOnUtc,
+                    UpdatedOn = product.UpdatedOnUtc,
+                    AvailableStartDateTimeUtc = product.AvailableStartDateTimeUtc,
+                    AvailableEndDateTimeUtc = product.AvailableEndDateTimeUtc,
+                    Area = product.Area,
+                    //Price = product.CallForPrice ? "Thỏa thuận" : Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ"),
+                    //BathRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
+                    //BedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
+                    //TinhTrang = GetOptionName(product, ProductAttributeEnum.Status),
+                    ViewNumber = product.ViewNumber.ToString(),
+                    TrangThaiDuyet = ((ProductStatusEnum)product.Status == ProductStatusEnum.Approved && product.AvailableEndDateTimeUtc < DateTime.Now) ? "Đã hết hạn" : await _localizationService.GetResourceAsync(Enum.GetName(typeof(ProductStatusEnum), product.Status)),
+                    ProductType = product.ProductType,
+                    DefaultPictureModel = _cacheManager.Get(string.Format(Nop.Web.Infrastructure.Cache.ModelCacheEventConsumer.PRODUCT_DEFAULTPICTURE_MODEL_KEY, product.Id, 80, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id), () =>
+                    {
+                        var picture = _pictureService.GetPicturesByProductId(product.Id, 1).FirstOrDefault();
+                        var pictureModel = new Nop.Web.Models.Media.PictureModel()
+                        {
+                            ImageUrl = _pictureService.GetPictureUrl(picture, 143),
+                            FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
+                            Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat"), product.Name),
+                            AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), product.Name)
+                        };
+                        return pictureModel;
+                    })
+                };
+                if (product.ProductType == ProductType.SimpleProduct)
+                    productProfileModel.Price = product.CallForPrice ? "Thỏa thuận" : Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ");
+                else { productProfileModel.Price = product.CallForPrice ? "Thỏa thuận" : product.Price.ToString("#"); }
+                model.Products.Add(productProfileModel);
+            }
+
             return model;
         }
 
@@ -1402,7 +1484,7 @@ namespace Nop.Web.Controllers
         #region Orders
 
         [NopHttpsRequirement(SslRequirement.Yes)]
-        public ActionResult Orders(DateTime? startDate, DateTime? endDate, int categoryId = 0, int statusEndDate = 0, int status = 0, int productId = 0)
+        public async Task<ActionResult> Orders(DateTime? startDate, DateTime? endDate, int categoryId = 0, int statusEndDate = 0, int status = 0, int productId = 0)
         {
             var customer = _workContext.CurrentCustomer;
 
@@ -1410,8 +1492,8 @@ namespace Nop.Web.Controllers
                 return new HttpUnauthorizedResult();
             
             //var model = PrepareCustomerOrderListModel(customer,priceString,attributeOptionIds,wardId,categoryId);
-            var model = PrepareCustomerOrderListModel(customer, startDate: startDate, endDate: endDate,
-                categoryId: categoryId, status: status, statusEndDate: statusEndDate, productId: productId);
+            var model = await PrepareCustomerOrderListModelAsync(customer, startDate: startDate, endDate: endDate,
+                categoryId: categoryId, storeId: _storeContext.CurrentStore.Id, status: status, statusEndDate: statusEndDate, productId: productId);
               if (Request.IsAjaxRequest())
                 return View("_PartialProductCustomer", model.Products);
             return View(model);

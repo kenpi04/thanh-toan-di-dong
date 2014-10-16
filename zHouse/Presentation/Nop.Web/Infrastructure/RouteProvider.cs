@@ -9,6 +9,12 @@ namespace Nop.Web.Infrastructure
     {
         public void RegisterRoutes(RouteCollection routes)
         {
+            //ban do
+            routes.MapLocalizedRoute("map",
+                         "ban-do",
+                         new { controller = "Catalog", action = "Map" },
+                         new[] { "Nop.Web.Controllers" });
+
             //yeu cau tin request
             routes.MapLocalizedRoute("InsertProduct",
                          "request",
@@ -39,11 +45,21 @@ namespace Nop.Web.Infrastructure
                          "customer/dang-tin-cho-thue",
                          new { controller = "Catalog", action = "InsertProductRent" },
                          new[] { "Nop.Web.Controllers" });
+            routes.MapLocalizedRoute("EditPostNewsRent",
+                         "customer/sua-tin-cho-thue/{id}",
+                         new { controller = "Catalog", action = "EditProductRent" },
+                         new { id = @"\d+" },
+                         new[] { "Nop.Web.Controllers" });
 
             //yeu cau tin request du an
             routes.MapLocalizedRoute("PostNewsProject",
                          "customer/dang-tin-du-an",
                          new { controller = "Catalog", action = "InsertProductProject" },
+                         new[] { "Nop.Web.Controllers" });
+            routes.MapLocalizedRoute("EditPostNewsProject",
+                         "customer/sua-tin-du-an/{id}",
+                         new { controller = "Catalog", action = "EditProductProject" },
+                         new { id = @"\d+" },
                          new[] { "Nop.Web.Controllers" });
             //router search
             //routes.MapLocalizedRoute("Search",

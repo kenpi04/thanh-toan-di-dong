@@ -445,6 +445,105 @@ namespace Nop.Web.Controllers
         }
 
         [NonAction]
+        protected async Task<IEnumerable<ProductOverviewModel>> PrepareProductOverviewModelsAsyn(IEnumerable<Product> products,
+            bool preparePriceModel = true, bool preparePictureModel = true,
+            int? productThumbPictureSize = null, bool prepareSpecificationAttributes = false)
+        {
+            if (products == null)
+                throw new ArgumentNullException("products");
+
+            var models = new List<ProductOverviewModel>();
+            foreach (var product in products)
+            {
+                var model = new ProductOverviewModel()
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Sku = product.Sku,
+                    ShortDescription = product.ShortDescription,
+                    // FullDescription = product.GetLocalized(x => x.FullDescription),
+                    SeName = await product.GetSeNameAsync(),
+                    //ContactName = product.ContactName,
+                    //ContactPhone = product.ContactPhone,
+                    //Email = product.ContactEmail,
+
+                    NumBedRoom = await GetOptionNameAsync(product, ProductAttributeEnum.NumberOfBedRoom),
+                    NumBadRoom = await GetOptionNameAsync(product, ProductAttributeEnum.NumberOfBadRoom),
+                    Status = await GetOptionNameAsync(product, ProductAttributeEnum.Status),
+                    NumberBlock = await GetOptionNameAsync(product, ProductAttributeEnum.NumberBlock),
+                    Directors = await GetOptionNameAsync(product, ProductAttributeEnum.Director),
+                    Area = product.Area,
+                    AreaUse = product.AreaUse,
+                    FullAddress = product.FullAddress,
+                    DictrictName = product.District == null ? "" : product.District.Name,
+                    ChuDauTu = product.ManufacturerPartNumber,
+                    StatusId = product.GiftCardTypeId
+
+                };
+                if (product.CallForPrice)
+                {
+                    model.ProductPrice.Price = "Thỏa thuận";
+                }
+                else
+                {
+                    model.ProductPrice.Price = Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ");
+                }
+
+
+                //picture
+                if (preparePictureModel)
+                {
+                    #region Prepare product picture
+
+                    //If a size has been set in the view, we use it in priority
+                    int pictureSize = productThumbPictureSize.HasValue ? productThumbPictureSize.Value : _mediaSettings.ProductThumbPictureSize;
+                    //prepare picture model
+                    var defaultProductPictureCacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_DEFAULTPICTURE_MODEL_KEY, product.Id, pictureSize, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id);
+                    model.DefaultPictureModel = _cacheManager.Get(defaultProductPictureCacheKey, () =>
+                    {
+                        var picture = _pictureService.GetPicturesByProductId(product.Id, 1).FirstOrDefault();
+                        var pictureModel = new PictureModel()
+                        {
+                            ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize),
+                            FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
+                            Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat"), model.Name),
+                            AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), model.Name)
+                        };
+                        return pictureModel;
+                    });
+
+                    #endregion
+                }
+
+                //specs
+                if (prepareSpecificationAttributes)
+                {
+                    model.PhapLy = await GetOptionNameAsync(product, ProductAttributeEnum.PhapLy);
+                    model.SpecificationAttributeModels = await PrepareProductSpecificationModelAsync(product);
+                    var cosoVC = model.SpecificationAttributeModels.Where(x => x.SpecificationAttributeId == (int)ProductAttributeEnum.CoSoVatChat).Select(x => x.SpecificationAttributeOption);
+                    if (cosoVC.Count() > 0)
+                        model.CoSoVatChat = cosoVC.Aggregate((a, b) => a + "</br>" + b);
+                    var moitruong = model.SpecificationAttributeModels.Where(x => x.SpecificationAttributeId == (int)ProductAttributeEnum.Enviroment).Select(x => x.SpecificationAttributeOption);
+                    if (cosoVC.Count() > 0)
+                        model.Moitruong = cosoVC.Aggregate((a, b) => a + "</br>" + b);
+                    var tienngi = model.SpecificationAttributeModels.Where(x => x.SpecificationAttributeId == (int)ProductAttributeEnum.TienIch).Select(x => x.SpecificationAttributeOption);
+                    if (tienngi.Count() > 0)
+                        model.TienNghi = cosoVC.Aggregate((a, b) => a + "</br>" + b);
+
+                }
+                if (product.ProductCategories.Count > 0)
+                {
+                    var defaultProductCate = (await _categoryService.GetProductCategoriesByProductIdAsync(product.Id)).FirstOrDefault();
+                    var defaultCata = await _categoryService.GetCategoryByIdAsync(defaultProductCate.CategoryId);
+                    model.CateName = defaultCata.Name;
+                    model.IsProject = defaultCata.Id == 2 || defaultCata.ParentCategoryId == 2;
+                }
+                models.Add(model);
+            }
+            return models;
+        }
+
+        [NonAction]
         protected IList<ProductSpecificationModel> PrepareProductSpecificationModel(Product product)
         {
             if (product == null)
@@ -464,6 +563,31 @@ namespace Nop.Web.Controllers
                        };
                    }).ToList();
                 return model;
+            });
+        }
+
+        [NonAction]
+        protected async Task<IList<ProductSpecificationModel>> PrepareProductSpecificationModelAsync(Product product)
+        {
+            if (product == null)
+                throw new ArgumentNullException("product");
+            return await Task.Factory.StartNew<IList<ProductSpecificationModel>>(() =>
+            {
+                string cacheKey = string.Format(ModelCacheEventConsumer.PRODUCT_SPECS_MODEL_KEY, product.Id, _workContext.WorkingLanguage.Id);
+                return _cacheManager.Get(cacheKey, () =>
+                {
+                    var model = _specificationAttributeService.GetProductSpecificationAttributesByProductId(product.Id, null, true)
+                       .Select(psa =>
+                       {
+                           return new ProductSpecificationModel()
+                           {
+                               SpecificationAttributeId = psa.SpecificationAttributeOption.SpecificationAttributeId,
+                               SpecificationAttributeName = psa.SpecificationAttributeOption.SpecificationAttribute.GetLocalized(x => x.Name),
+                               SpecificationAttributeOption = !String.IsNullOrEmpty(psa.CustomValue) ? psa.CustomValue : psa.SpecificationAttributeOption.Name,
+                           };
+                       }).ToList();
+                    return model;
+                });
             });
         }
 
@@ -926,10 +1050,9 @@ namespace Nop.Web.Controllers
         #region Categories
 
         [NopHttpsRequirement(SslRequirement.No)]
-        //[OutputCache(Duration = 300, VaryByParam = "*", Location = System.Web.UI.OutputCacheLocation.ServerAndClient)]
-        public ActionResult Category(int categoryId, SearchModel searchModel, CatalogPagingFilteringModel command, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0)
+        public async Task<ActionResult> Category(int categoryId, SearchModel searchModel, CatalogPagingFilteringModel command, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0)
         {
-            var category = _categoryService.GetCategoryById(categoryId);
+            var category = await _categoryService.GetCategoryByIdAsync(categoryId);
             if (category == null || category.Deleted)
                 return InvokeHttp404();
 
@@ -1101,7 +1224,7 @@ namespace Nop.Web.Controllers
                 }
             }
 
-
+            #region comment
 
             //var customerRolesIds = _workContext.CurrentCustomer.CustomerRoles
             //    .Where(cr => cr.Active).Select(cr => cr.Id).ToList();
@@ -1191,7 +1314,7 @@ namespace Nop.Web.Controllers
                     model.FeaturedProducts = PrepareProductOverviewModels(featuredProducts).ToList();
                 }
             }*/
-
+#endregion
 
             var categoryIds = new List<int>();
             categoryIds.Add(category.Id);
@@ -1218,7 +1341,8 @@ namespace Nop.Web.Controllers
                 orderBy: (ProductSortingEnum)command.OrderBy,
                 pageIndex: command.PageNumber - 1,
                 pageSize: command.PageSize);
-            model.Products = PrepareProductOverviewModels(products).ToList();
+            var modelProducts = await PrepareProductOverviewModelsAsyn(products);
+            model.Products = modelProducts.ToList();
 
             model.PagingFilteringContext.LoadPagedList(products);
             model.PagingFilteringContext.ViewMode = viewMode;
@@ -1247,7 +1371,7 @@ namespace Nop.Web.Controllers
             //Title add District
             if (districtId > 0)
             {
-                var district = _stateProvinceService.GetDistrictById(districtId);
+                var district = await _stateProvinceService.GetDistrictByIdAsync(districtId);
                 model.MetaTitle += district != null ? " " + district.Name : "";
             }
 
@@ -2959,17 +3083,15 @@ namespace Nop.Web.Controllers
             };
 
             IList<Product> products = new List<Product>();
-            if (productId.Count == 0)
-                products = _compareProductsService.GetComparedProducts();
+            if (productId == null || productId.Count == 0)
+            {
+                products = await _compareProductsService.GetComparedProductsAsync();
+            }
             else
             {
                 if (productId.Count > 3)
                     productId = productId.Take(3).ToList();
                 products = await _productService.GetProductsByIdsAsync(productId.ToArray());
-
-
-
-
             }
 
             //ACL and store mapping
@@ -3425,20 +3547,24 @@ namespace Nop.Web.Controllers
             return View(model);
 
         }
-        public ActionResult EditProduct(int id)
+        
+        public async Task<ActionResult> EditProduct(int id)
         {
-            if (!_workContext.CurrentCustomer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
+            var customer = _workContext.CurrentCustomer;
+            if (!customer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
                 return RedirectToRoute("PageNotfound");
-            var product = _productService.GetProductById(id);
+            var product = await _productService.GetProductByIdAsync(id);
             if (product == null)
                 return RedirectToRoute("PageNotfound");
-            if (!_workContext.CurrentCustomer.IsAdmin() && product.CustomerId != _workContext.CurrentCustomer.Id)
+            if (!customer.IsAdmin() && product.CustomerId != customer.Id)
                 return RedirectToRoute("PageNotfound");
+            if (!customer.IsRegistered())
+                return new HttpUnauthorizedResult();
 
             var model = ProductToInsertModel(product);
-            PreparingInsertProductModel(model);
+            await PreparingInsertProductModelAsync(model, customer, categoryId:1);
             //PreapringProductToEntity(model, product);
-            if (_workContext.CurrentCustomer.IsRegistered())
+            if (customer.IsRegistered())
             {
                 ViewBag.IsRegistered = true;
                 model.NavigationModel = GetCustomerNavigationModel();
@@ -3450,22 +3576,29 @@ namespace Nop.Web.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProduct(InsertProductModel model, FormCollection form)
+        public async Task<ActionResult> EditProduct(InsertProductModel model, FormCollection form)
         {
-            if (!_workContext.CurrentCustomer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
+            var customer = _workContext.CurrentCustomer;
+            if (!customer.IsRegistered())
+                return new HttpUnauthorizedResult();
+            if (!customer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
                 return RedirectToRoute("PageNotfound");
 
             if (model == null)
                 throw new Exception("Product is null");
 
-            var product = _productService.GetProductById(model.Id);
+            var product = await _productService.GetProductByIdAsync(model.Id);
             if (product == null)
                 return RedirectToRoute("HomePage");
-            if (!_workContext.CurrentCustomer.IsAdmin() && product.CustomerId != _workContext.CurrentCustomer.Id)
+            if (!customer.IsAdmin() && product.CustomerId != customer.Id)
                 return RedirectToRoute("PageNotfound");
+          
 
             if (ModelState.IsValid)
             {
+                //template
+                product.ProductTemplateId = 1;
+                product.ProductType = ProductType.SimpleProduct;
                 PreapringProductToEntity(model, product);
                 product.Price = model.Price * 1000000;
                 var selectedId = form.GetValues("SelectedOptionAttributes");
@@ -3548,15 +3681,15 @@ namespace Nop.Web.Controllers
                 _productService.UpdateProduct(product);
                 //string seName = product.ValidateSeName(product.GetSeName(), product.Name, true);
                 //_urlRecordService.SaveSlug(product, seName, 0);
-                if (_workContext.CurrentCustomer.IsRegistered())
+                if (customer.IsRegistered())
                     return RedirectToAction("Orders", "Customer");
                 return RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }
             return View(model);
 
         }
-        [HttpPost]  
-       
+        
+        [HttpPost]       
         public async Task<JsonResult> UpdateProductAsync(int productId, int action, int? value)
         {
             var customer = _workContext.CurrentCustomer;
@@ -3702,7 +3835,6 @@ namespace Nop.Web.Controllers
 
             return View(model);
         }
-
         [HttpPost]
         [ValidateInput(false)]
         [ValidateAntiForgeryToken]
@@ -3804,6 +3936,141 @@ namespace Nop.Web.Controllers
                 return RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }
             return View(model);
+        }
+
+        public async Task<ActionResult> EditProductRent(int id)
+        {
+            var customer = _workContext.CurrentCustomer;
+
+            if (!customer.IsRegistered())
+                return new HttpUnauthorizedResult();
+            if (!customer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
+                return RedirectToRoute("PageNotfound");
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+                return RedirectToRoute("PageNotfound");
+            if (!customer.IsAdmin() && product.CustomerId != customer.Id)
+                return RedirectToRoute("PageNotfound");
+
+            var model = ProductToInsertModel(product);
+            await PreparingInsertProductModelAsync(model, customer, categoryId: 16);
+            
+                model.NavigationModel = GetCustomerNavigationModel();
+                model.NavigationModel.SelectedTab = Nop.Web.Models.Customer.CustomerNavigationEnum.PostNewsRent;
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditProductRent(InsertProductModel model, FormCollection form)
+        {
+            var customer = _workContext.CurrentCustomer;
+            if (!customer.IsRegistered())
+                return new HttpUnauthorizedResult();
+
+            if (!customer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
+                return RedirectToRoute("PageNotfound");
+
+            if (model == null)
+                throw new Exception("Product is null");
+
+            var product = await _productService.GetProductByIdAsync(model.Id);
+            if (product == null)
+                return RedirectToRoute("PageNotfound");
+            if (!customer.IsAdmin() && product.CustomerId != customer.Id)
+                return RedirectToRoute("PageNotfound");
+
+            if (ModelState.IsValid)
+            {
+                //template & ProductType
+                product.ProductTemplateId = 1;
+                product.ProductType = ProductType.RentProduct;
+                PreapringProductToEntity(model, product);
+                product.Price = model.Price;
+                var selectedId = form.GetValues("SelectedOptionAttributes");
+                if (selectedId.Length > 0)
+                    model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+
+                var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
+                foreach (var tit in titlePic)
+                {
+                    model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                    {
+                        Id = int.Parse(tit.Replace("PictureTitle_", "")),
+                        Title = form.GetValue(tit).AttemptedValue
+                    });
+                }
+
+                #region Insert Categories
+                var cate = product.ProductCategories.FirstOrDefault();
+                if (cate != null)
+                {
+                    cate.CategoryId = model.CateId;
+                    _categoryService.UpdateProductCategory(cate);
+                }
+
+                #endregion
+
+                #region EditPictures
+                //delete
+
+                //add new
+                var productPic = product.ProductPictures.Select(x => x.PictureId);
+                foreach (var i in model.PictureIds)
+                {
+                    if (!productPic.Contains(i.Id))
+                    {
+                        var pictureproduct = new ProductPicture
+                        {
+                            PictureId = i.Id,
+                            ProductId = product.Id,
+                            Description = i.Title
+                        };
+                        _productService.InsertProductPicture(pictureproduct);
+                        _pictureService.SetSeoFilename(i.Id, _pictureService.GetPictureSeName(product.Name));
+                    }
+                    else
+                    {
+                        var pictureProduct = product.ProductPictures.FirstOrDefault(x => x.PictureId == i.Id);
+                        if (pictureProduct != null)
+                        {
+                            pictureProduct.Description = i.Title;
+                            _productService.UpdateProductPicture(pictureProduct);
+                        }
+                    }
+                }
+                #endregion
+
+                #region Edit SPA
+                //delete
+                var listAttrDelete = product.ProductSpecificationAttributes.Where(x => !model.SelectedOptionAttributes.Contains(x.SpecificationAttributeOptionId)).ToList();
+                foreach (var i in listAttrDelete)
+                {
+                    _specificationAttributeService.DeleteProductSpecificationAttribute(i);
+                }
+                //add new
+                foreach (var i in model.SelectedOptionAttributes)
+                {
+                    if (product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOptionId == i).Count() == 0)
+                    {
+                        var SPAProduct = new ProductSpecificationAttribute
+                        {
+                            ProductId = product.Id,
+                            SpecificationAttributeOptionId = i,
+                            ShowOnProductPage = false,
+                            AllowFiltering = true,
+                        };
+                        _specificationAttributeService.InsertProductSpecificationAttribute(SPAProduct);
+                    }
+                }
+                #endregion
+                _productService.UpdateProduct(product);
+                //string seName = product.ValidateSeName(product.GetSeName(), product.Name, true);
+                //_urlRecordService.SaveSlug(product, seName, 0);
+                return RedirectToAction("Orders", "Customer");
+            }
+            return View(model);
+
         }
         #endregion
 
@@ -3933,6 +4200,142 @@ namespace Nop.Web.Controllers
             return View(model);
         }
 
+        public async Task<ActionResult> EditProductProject(int id)
+        {
+            var customer = _workContext.CurrentCustomer;
+
+            if (!customer.IsRegistered())
+                return new HttpUnauthorizedResult();
+            if (!customer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
+                return RedirectToRoute("PageNotfound");
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+                return RedirectToRoute("PageNotfound");
+            if (!customer.IsAdmin() && product.CustomerId != customer.Id)
+                return RedirectToRoute("PageNotfound");
+
+            var model = ProductToInsertModel(product);
+            await PreparingInsertProductModelAsync(model, customer, categoryId: 2);
+
+            model.NavigationModel = GetCustomerNavigationModel();
+            model.NavigationModel.SelectedTab = Nop.Web.Models.Customer.CustomerNavigationEnum.PostNewsProject;
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditProductProject(InsertProductModel model, FormCollection form)
+        {
+            var customer = _workContext.CurrentCustomer;
+            if (!customer.IsRegistered())
+                return new HttpUnauthorizedResult();
+
+            if (!customer.IsAdmin() && _storeContext.CurrentStore.Id == 1)
+                return RedirectToRoute("PageNotfound");
+
+            if (model == null)
+                throw new Exception("Product is null");
+
+            var product = await _productService.GetProductByIdAsync(model.Id);
+            if (product == null)
+                return RedirectToRoute("PageNotfound");
+            if (!customer.IsAdmin() && product.CustomerId != customer.Id)
+                return RedirectToRoute("PageNotfound");
+
+
+            if (ModelState.IsValid)
+            {
+                //template & ProductType
+                product.ProductTemplateId = 3;
+                product.ProductType = ProductType.ProjectProduct;
+                PreapringProductToEntity(model, product);
+                product.Price = model.Price;
+                var selectedId = form.GetValues("SelectedOptionAttributes");
+                if (selectedId.Length > 0)
+                    model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
+
+                var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
+                foreach (var tit in titlePic)
+                {
+                    model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                    {
+                        Id = int.Parse(tit.Replace("PictureTitle_", "")),
+                        Title = form.GetValue(tit).AttemptedValue
+                    });
+                }
+
+                #region Insert Categories
+                var cate = product.ProductCategories.FirstOrDefault();
+                if (cate != null)
+                {
+                    cate.CategoryId = model.CateId;
+                    _categoryService.UpdateProductCategory(cate);
+                }
+
+                #endregion
+
+                #region EditPictures
+                //delete
+
+                //add new
+                var productPic = product.ProductPictures.Select(x => x.PictureId);
+                foreach (var i in model.PictureIds)
+                {
+                    if (!productPic.Contains(i.Id))
+                    {
+                        var pictureproduct = new ProductPicture
+                        {
+                            PictureId = i.Id,
+                            ProductId = product.Id,
+                            Description = i.Title
+                        };
+                        _productService.InsertProductPicture(pictureproduct);
+                        _pictureService.SetSeoFilename(i.Id, _pictureService.GetPictureSeName(product.Name));
+                    }
+                    else
+                    {
+                        var pictureProduct = product.ProductPictures.FirstOrDefault(x => x.PictureId == i.Id);
+                        if (pictureProduct != null)
+                        {
+                            pictureProduct.Description = i.Title;
+                            _productService.UpdateProductPicture(pictureProduct);
+                        }
+                    }
+                }
+                #endregion
+
+                #region Edit SPA
+                //delete
+                var listAttrDelete = product.ProductSpecificationAttributes.Where(x => !model.SelectedOptionAttributes.Contains(x.SpecificationAttributeOptionId)).ToList();
+                foreach (var i in listAttrDelete)
+                {
+                    _specificationAttributeService.DeleteProductSpecificationAttribute(i);
+                }
+                //add new
+                foreach (var i in model.SelectedOptionAttributes)
+                {
+                    if (product.ProductSpecificationAttributes.Where(x => x.SpecificationAttributeOptionId == i).Count() == 0)
+                    {
+                        var SPAProduct = new ProductSpecificationAttribute
+                        {
+                            ProductId = product.Id,
+                            SpecificationAttributeOptionId = i,
+                            ShowOnProductPage = false,
+                            AllowFiltering = true,
+                        };
+                        _specificationAttributeService.InsertProductSpecificationAttribute(SPAProduct);
+                    }
+                }
+                #endregion
+                _productService.UpdateProduct(product);
+                //string seName = product.ValidateSeName(product.GetSeName(), product.Name, true);
+                //_urlRecordService.SaveSlug(product, seName, 0);
+                return RedirectToAction("Orders", "Customer");
+            }
+            return View(model);
+
+        }
+
         #endregion
 
         private void PreapringProductToEntity(InsertProductModel inPd, Product p)
@@ -3941,6 +4344,9 @@ namespace Nop.Web.Controllers
             if (p.Id == 0)
             {
                 p.Id = inPd.Id;
+                //danh cho quan tri
+                p.CreatedOnUtc = DateTime.Now;
+
                 p.SpecialPriceEndDateTimeUtc = null;
                 p.SpecialPriceStartDateTimeUtc = null;
 
@@ -4056,12 +4462,14 @@ namespace Nop.Web.Controllers
             //template
             if (p.ProductTemplateId == 0) p.ProductTemplateId = 1;//default template            
             //duan
-            p.StartConstructionDate = inPd.StartConstructionDate;
-            p.FinishConstructionDate = inPd.FinishConstructionDate;
-            p.ManufacturerPartNumber = inPd.ChuDauTu;
-            p.Gtin = inPd.DonViThiCong;
-            //danh cho quan tri
-            p.CreatedOnUtc = DateTime.Now;
+            if (p.ProductType == ProductType.ProjectProduct)
+            {
+                p.StartConstructionDate = inPd.StartConstructionDate;
+                p.FinishConstructionDate = inPd.FinishConstructionDate;
+                p.ManufacturerPartNumber = inPd.ChuDauTu;
+                p.Gtin = inPd.DonViThiCong;
+            }
+           
             p.UpdatedOnUtc = DateTime.Now;
         }
 
@@ -4089,16 +4497,20 @@ namespace Nop.Web.Controllers
                 FullAddress = p.FullAddress,
                 DacDiemNoiBat = p.UserAgreementText,
                 Promotion = p.Promotion,
-                //duan
-                StartConstructionDate = p.StartConstructionDate,
-                FinishConstructionDate = p.FinishConstructionDate,
-                ChuDauTu = p.ManufacturerPartNumber,
-                DonViThiCong = p.Gtin,
+               
                 //thoi gian dang tin
                 AvailableStartDateTime = p.AvailableStartDateTimeUtc,
                 AvailableEndDateTime = p.AvailableEndDateTimeUtc,
                 ProductType=p.ProductTypeId
             };
+             //duan
+            if(p.ProductType == ProductType.ProjectProduct){
+                model.StartConstructionDate = p.StartConstructionDate;
+                model.FinishConstructionDate = p.FinishConstructionDate;
+                model.ChuDauTu = p.ManufacturerPartNumber;
+                model.DonViThiCong = p.Gtin;
+            }
+
             var cate = p.ProductCategories.FirstOrDefault();
             if (cate != null)
                 model.CateId = cate.CategoryId;
@@ -4197,7 +4609,7 @@ namespace Nop.Web.Controllers
         private async Task PreparingInsertProductModelAsync(InsertProductModel model, Customer customer, int categoryId = 1)
         {
             //Customer
-            model.ContactName = customer.GetFullName();
+            model.ContactName = await customer.GetFullNameAsync();
             model.ContactPhone = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Phone);
             model.Email = customer.Email;
 
@@ -4626,6 +5038,7 @@ namespace Nop.Web.Controllers
 
 
         }
+        
         [HttpPost]
         [CaptchaValidator]
         public ActionResult SupportContact(ContactUsModel model)
@@ -4643,8 +5056,8 @@ namespace Nop.Web.Controllers
                     ProductId = 0,
                     Phone = model.Phone,
                     Name = model.FullName,
-                    Type = model.Type
-
+                    Type = model.Type,
+                    Url = model.Url
                 };
                 _messagesService.InsertMessage(mes);
                 return Json(_localizationService.GetResource("Products.Contact.SuccessfullySent"));

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using Nop.Core.Domain.Catalog;
+using System.Threading.Tasks;
 
 namespace Nop.Services.Catalog
 {
@@ -69,6 +70,27 @@ namespace Nop.Services.Catalog
 
             return productIds;
         }
+        public virtual async Task<List<int>> GetComparedProductIdsAsync()
+        {
+            return await Task.Factory.StartNew<List<int>>(() =>
+            {
+                var productIds = new List<int>();
+                HttpCookie compareCookie = _httpContext.Request.Cookies.Get(COMPARE_PRODUCTS_COOKIE_NAME);
+                if ((compareCookie == null) || (compareCookie.Values == null))
+                    return productIds;
+                string[] values = compareCookie.Values.GetValues("CompareProductIds");
+                if (values == null)
+                    return productIds;
+                foreach (string productId in values)
+                {
+                    int prodId = int.Parse(productId);
+                    if (!productIds.Contains(prodId))
+                        productIds.Add(prodId);
+                }
+
+                return productIds;
+            });
+        }
 
         #endregion
 
@@ -87,6 +109,19 @@ namespace Nop.Services.Catalog
                 _httpContext.Response.Cookies.Set(compareCookie);
             }
         }
+        public virtual async Task ClearCompareProductsAsync()
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                var compareCookie = _httpContext.Request.Cookies.Get(COMPARE_PRODUCTS_COOKIE_NAME);
+                if (compareCookie != null)
+                {
+                    compareCookie.Values.Clear();
+                    compareCookie.Expires = DateTime.Now.AddYears(-1);
+                    _httpContext.Response.Cookies.Set(compareCookie);
+                }
+            });
+        }
 
         /// <summary>
         /// Gets a "compare products" list
@@ -99,6 +134,18 @@ namespace Nop.Services.Catalog
             foreach (int productId in productIds)
             {
                 var product = _productService.GetProductById(productId);
+                if (product != null && product.Published && !product.Deleted)
+                    products.Add(product);
+            }
+            return products;
+        }
+        public virtual async Task<IList<Product>> GetComparedProductsAsync()
+        {
+            var products = new List<Product>();
+            var productIds = await GetComparedProductIdsAsync();
+            foreach (int productId in productIds)
+            {
+                var product = await _productService.GetProductByIdAsync(productId);
                 if (product != null && product.Published && !product.Deleted)
                     products.Add(product);
             }
@@ -125,6 +172,22 @@ namespace Nop.Services.Catalog
             compareCookie.Expires = DateTime.Now.AddDays(10.0);
             _httpContext.Response.Cookies.Set(compareCookie);
         }
+        public virtual async Task RemoveProductFromCompareListAsync(int productId)
+        {
+            var oldProductIds = await GetComparedProductIdsAsync();
+            var newProductIds = new List<int>();
+            newProductIds.AddRange(oldProductIds);
+            newProductIds.Remove(productId);
+
+            var compareCookie = _httpContext.Request.Cookies.Get(COMPARE_PRODUCTS_COOKIE_NAME);
+            if ((compareCookie == null) || (compareCookie.Values == null))
+                return;
+            compareCookie.Values.Clear();
+            foreach (int newProductId in newProductIds)
+                compareCookie.Values.Add("CompareProductIds", newProductId.ToString());
+            compareCookie.Expires = DateTime.Now.AddDays(10.0);
+            _httpContext.Response.Cookies.Set(compareCookie);
+        }
 
         /// <summary>
         /// Adds a product to a "compare products" list
@@ -133,6 +196,33 @@ namespace Nop.Services.Catalog
         public virtual void AddProductToCompareList(int productId)
         {
             var oldProductIds = GetComparedProductIds();
+            var newProductIds = new List<int>();
+            newProductIds.Add(productId);
+            foreach (int oldProductId in oldProductIds)
+                if (oldProductId != productId)
+                    newProductIds.Add(oldProductId);
+
+            var compareCookie = _httpContext.Request.Cookies.Get(COMPARE_PRODUCTS_COOKIE_NAME);
+            if (compareCookie == null)
+            {
+                compareCookie = new HttpCookie(COMPARE_PRODUCTS_COOKIE_NAME);
+                compareCookie.HttpOnly = true;
+            }
+            compareCookie.Values.Clear();
+            int i = 1;
+            foreach (int newProductId in newProductIds)
+            {
+                compareCookie.Values.Add("CompareProductIds", newProductId.ToString());
+                if (i == _catalogSettings.CompareProductsNumber)
+                    break;
+                i++;
+            }
+            compareCookie.Expires = DateTime.Now.AddDays(10.0);
+            _httpContext.Response.Cookies.Set(compareCookie);
+        }
+        public virtual async Task AddProductToCompareListAsync(int productId)
+        {
+            var oldProductIds = await GetComparedProductIdsAsync();
             var newProductIds = new List<int>();
             newProductIds.Add(productId);
             foreach (int oldProductId in oldProductIds)

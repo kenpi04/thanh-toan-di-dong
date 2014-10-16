@@ -5,12 +5,7 @@
 @{
     Html.AppendScriptParts("~/Scripts/jquery-te-1.4.0.min.js");
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/editorsimple.css");
-    Html.AppendCssFileParts("~/Themes/DefaultClean/Content/jquery-te-1.4.0.css");
-    bool isLogin = WorkContext.CurrentCustomer.IsRegistered();
-    if (Model.Id > 0)
-    {
-
-    }
+    Html.AppendCssFileParts("~/Themes/DefaultClean/Content/jquery-te-1.4.0.css");    
 }
 @Html.AntiForgeryToken()
 @Html.HiddenFor(x => x.Id)
@@ -206,6 +201,15 @@
     </div>    
 </div><!---floatLeft----->
 <div class="floatLeft">
+    <div class="blueText">THỜI GIAN ĐĂNG TIN @Html.RequiredHint()</div>
+    <div class="boxWrapperSmall">
+        @Html.TextBoxFor(x => x.AvailableStartDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableStartDateTime1", @Id = "AvailableStartDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày bắt đầu" })
+        @Html.TextBoxFor(x => x.AvailableEndDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableEndDateTime1", @Id = "AvailableEndDateTime1", @class = " formBoxInText", placeholder = "Ngày kết thúc" })
+        @Html.HiddenFor(x => x.AvailableStartDateTime)
+        @Html.HiddenFor(x => x.AvailableEndDateTime)
+    </div>
+</div><!---floatLeft---->
+<div class="floatLeft">
     <div class="blueText" title="Tiêu đề tin đăng: hãy ghi rõ ràng đầy đủ để tin của bạn được tìm kiếm dễ dàng hơn.">TIÊU ĐỀ @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
         @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:90%", placeholder = "Ít nhất 10 ký tự. Ví dụ: Cho thuê nhà nguyên căn giá rẻ, quận Bình Tân, 5 triệu một tháng" })
@@ -250,6 +254,10 @@
                 displayAjaxLoading(true);
                 if($("div[id^=SWFUpload_]").size()==0)
                 {
+                    var startDate = ConverDate($("#AvailableStartDateTime1").val());
+                    $("#AvailableStartDateTime").val(startDate);
+                    var endDate = ConverDate($("#AvailableEndDateTime1").val());
+                    $("#AvailableEndDateTime").val(startDate);
                     $("#frmProduct").submit();
                 }
                 else

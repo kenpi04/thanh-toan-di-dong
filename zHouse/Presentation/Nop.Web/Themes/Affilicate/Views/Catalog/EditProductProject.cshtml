@@ -1,0 +1,20 @@
+﻿@model Nop.Web.Models.Catalog.InsertProductModel
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Html.AddTitleParts(T("PageTitle.Account").Text);
+}
+
+@section left
+{
+    @Html.Partial("~/Views/Customer/MyAccountNavigation.cshtml", Model.NavigationModel, new ViewDataDictionary())
+}
+<div class="page-body">
+    @using (Html.BeginForm("EditProductProject", "Catalog", FormMethod.Post, new { id = "frmProduct" }))
+    {
+        <div class="message-error">
+            @Html.ValidationSummary(true)
+        </div>
+        @Html.Partial("_CreateOrUpdateProductProject", Model)
+    }
+</div>
+<div class="clearBoth"></div>
