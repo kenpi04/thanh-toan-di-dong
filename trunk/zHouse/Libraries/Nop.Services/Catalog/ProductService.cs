@@ -326,6 +326,8 @@ namespace Nop.Services.Catalog
             _eventPublisher.EntityUpdated(product);
         }
 
+        #region search product
+
         /// <summary>
         /// Search products
         /// </summary>
@@ -1063,6 +1065,8 @@ namespace Nop.Services.Catalog
                 #endregion
             }
         }
+
+        #endregion
 
         /// <summary>
         /// Update product review totals

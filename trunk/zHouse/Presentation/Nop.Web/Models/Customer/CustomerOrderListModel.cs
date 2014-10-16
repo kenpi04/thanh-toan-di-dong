@@ -61,6 +61,7 @@ namespace Nop.Web.Models.Customer
             public DateTime? AvailableStartDateTimeUtc { get; set; }
             public DateTime? AvailableEndDateTimeUtc { get; set; }
             public string TrangThaiDuyet { get; set; }
+            public Nop.Core.Domain.Catalog.ProductType ProductType { get; set; }
             public Media.PictureModel DefaultPictureModel { get; set; }
         }
 

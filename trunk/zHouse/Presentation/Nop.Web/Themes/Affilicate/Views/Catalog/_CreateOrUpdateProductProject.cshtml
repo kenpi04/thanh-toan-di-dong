@@ -109,13 +109,13 @@
                 <tr>
                     <td>Chủ đầu tư @Html.RequiredHint() :</td>
                     <td>
-                        @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxInTable", placeholder = "Chủ đầu tư" })                        
+                        @Html.TextBoxFor(x => x.ChuDauTu, new { @class = "formBoxInTable", placeholder = "Chủ đầu tư" })                        
                     </td>
                 </tr>
                 <tr>
                     <td>Đơn vị thi công @Html.RequiredHint() :</td>
                     <td>
-                        @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxInTable", placeholder = "Tên đơn vị thi công" })
+                        @Html.TextBoxFor(x => x.DonViThiCong, new { @class = "formBoxInTable", placeholder = "Tên đơn vị thi công" })
                     </td>
                 </tr>
                 
@@ -150,6 +150,15 @@
     </div>
 </div><!---floatLeft----->
 <div class="floatLeft">
+    <div class="blueText">THỜI GIAN ĐĂNG TIN @Html.RequiredHint()</div>
+    <div class="boxWrapperSmall">        
+        @Html.TextBoxFor(x => x.AvailableStartDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableStartDateTime1", @Id="AvailableStartDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày bắt đầu" })
+        @Html.TextBoxFor(x => x.AvailableEndDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableEndDateTime1", @Id="AvailableEndDateTime1", @class = " formBoxInText", placeholder = "Ngày kết thúc" })
+        @Html.HiddenFor(x=> x.AvailableStartDateTime)
+        @Html.HiddenFor(x => x.AvailableEndDateTime)
+    </div>
+</div><!---floatLeft---->
+<div class="floatLeft">
     <div class="blueText">TIÊU ĐỀ @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
         @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:90%" })        
@@ -170,7 +179,7 @@
         ISFIRSTLOAD=true;
         $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
         $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
-        $("#insertProduct-button").click(function () {
+        $("#insertProduct-button").click(function () {            
             if(!$("#frmProduct").valid())
             {
                 $('html,body').animate({
@@ -188,7 +197,11 @@
             else {
                 displayAjaxLoading(true);
                 if($("div[id^=SWFUpload_]").size()==0)
-                {
+                {                    
+                    var startDate = ConverDate($("#AvailableStartDateTime1").val());
+                    $("#AvailableStartDateTime").val(startDate);
+                    var endDate = ConverDate($("#AvailableEndDateTime1").val());
+                    $("#AvailableEndDateTime").val(startDate);
                     $("#frmProduct").submit();
                 }
                 else
@@ -308,6 +321,10 @@
         }
         $("#@Html.FieldIdFor(x => x.FullAddress)").val(result);
     }
+
+    $("#AvailableStartDateTime1").datepicker();
+    $("#AvailableEndDateTime1").datepicker();
+
 </script>
 @if (Model.Id > 0)
 {

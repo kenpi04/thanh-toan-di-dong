@@ -2238,6 +2238,8 @@
     <Content Include="Themes\Affilicate\Views\Customer\_SearchBox.cshtml" />
     <Content Include="Themes\Affilicate\Views\Catalog\ProjectProductTemplate.Simple.cshtml" />
     <Content Include="Themes\Affilicate\Views\Shared\_SupportContact.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Catalog\EditProductProject.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Catalog\EditProductRent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

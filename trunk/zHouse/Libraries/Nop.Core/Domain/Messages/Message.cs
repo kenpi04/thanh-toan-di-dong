@@ -59,6 +59,12 @@ namespace Nop.Core.Domain.Messages
         /// Get or set the deleted
         /// </summary>
         public bool Deleted { get; set; }
+
+        /// <summary>
+        /// Url page send
+        /// </summary>
+        public string Url { get; set; }
+
         public DateTime BookDate { get; set; }
 
     }
