@@ -1,0 +1,33 @@
+﻿@model Nop.Web.Models.Catalog.SearchModel
+
+
+    <div class="whiteLeftCol">
+        <div class="greyBgTitle"><a href="#">lọc theo vị trí</a></div>
+        <div class="whiteLeftColContent">
+            @foreach (var i in Model.Districts)
+            {
+                <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+            }
+
+        </div>
+    </div>
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#">Căn hộ cao cấp</a></div>
+    <div class="whiteLeftColContent">
+        @foreach (var i in Model.AvailableManufacturers)
+        {
+            <input type="checkbox" id="Manu_@i.Value" name="@Model.Mids" value="@i.Value" />            <label for="Manu_@i.Value">@i.Text</label><br>
+        }
+
+    </div>
+</div>      
+<div class="whiteLeftCol">
+    <div class="greyBgTitle"><a href="#">Lọc theo loại</a></div>
+    <div class="whiteLeftColContent">
+        @foreach (var i in Model.AvailableCategories)
+        {
+            <input type="checkbox" id="ckDist_@i.Value" name="DistrictIds" value="@i.Value" />    <label for="ckDist_@i.Value">@i.Text</label><br>
+        }
+
+    </div>
+</div>  

@@ -1,0 +1,42 @@
+﻿@model Nop.Web.Models.Catalog.SearchModel
+@using Nop.Web.Extensions;
+@{
+   
+    }
+<div id="ListProduct">
+@if(Model.Products.Count()>0)
+{
+foreach (var i in Model.Products)
+{ 
+  
+        @Html.Partial("_ProductBox",i)
+    
+    
+}
+
+    <div class="clearBoth"></div>
+    <div class="pager">
+        @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
+    </div>
+}
+else
+{
+<div class=info-nopro>
+<b style="color:#0094ff">Sản phẩm đang được cập nhật</b>
+<div class='button-content btn-bottom'>
+	<b style="margin: 26px 0px 56px -67px;
+float: left;">Bạn có nhu cầu bán nhà, bạn mong muốn một dịch vụ uy tín</b>
+<br>
+<br>
+	<input type="button" onclick="setLocation('/request')" class="btn-rq" value=""/>
+<br>
+<b style='margin: 26px 0px 56px -67px;
+float: left;'>Bạn đang tìm kiếm ngôi nhà của mình. Hãy để zHouse giúp bạn</b>
+<br>
+<br>
+<input type="button" onclick="setLocation('/tim-kiem')" class="btn-search" value=""/>
+</div>
+
+</div>
+}
+    </div>

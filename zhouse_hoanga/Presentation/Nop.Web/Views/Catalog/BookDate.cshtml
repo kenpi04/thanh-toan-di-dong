@@ -1,0 +1,79 @@
+﻿@model ProductEmailAFriendModel
+@using Nop.Web.Models.Catalog;
+
+@using (Ajax.BeginForm("ProductEmailAFriendSend", new AjaxOptions { HttpMethod = "POST", OnComplete = "sendComplete",OnBegin="onBeginSend" }))
+{
+    <h3 class="datlichxemnha">Đặt lịch xem nhà</h3>
+   <hr />
+    @Html.HiddenFor(x=>x.ProductId)
+    <div class="message-error">
+        @Html.ValidationSummary(true)
+    </div>
+    <div class="form-fields book-email-friend">
+        <div class="inputs-left">
+            <div class="inputs select-datetime">
+                Chọn ngày giờ:<br /><br />
+                <select name="hour" class="time" >
+                    @for (int i = 1; i <= 24;i++ )
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+                <span>Giờ</span>
+                <select name="Minute" class="time">
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        <option value="@(i*15)">@(i * 15) </option>
+                    }
+                </select>
+                <span>Phút</span>
+                <br />
+              <br />
+            </div>
+            <div class="inputs date-book">
+                @Html.DatePickerDropDowns("Date", "Month", "Year",DateTime.Now.Year,DateTime.Now.Year+1,DateTime.Now.Day,DateTime.Now.Month,DateTime.Now.Year)
+            </div>
+            <div class="lb">Thông tin liên hệ</div>
+            <div class="inputs">
+                @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @style = "color:#fff" })
+                @Html.TextBoxFor(model => model.Name, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.Name.Hint") })
+            </div>
+            <div class="inputs">
+            @Html.ValidationMessageFor(model => model.Phone, string.Empty, new { @style = "color:#fff" })
+                @Html.TextBoxFor(model => model.Phone, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.Phone.Hint") })
+            </div>
+            <div class="inputs">
+               @Html.ValidationMessageFor(model => model.FriendEmail, string.Empty, new { @style = "color:#fff" })
+                @Html.TextBoxFor(model => model.FriendEmail, new { @class = "friend-email", placeholder = T("Products.EmailAFriend.YourEmailAddress.Hint") })
+            </div>
+            <div class="inputs">
+               @Html.ValidationMessageFor(model => model.PersonalMessage, string.Empty, new { @style = "color:#fff" })
+                @Html.TextAreaFor(model => model.PersonalMessage, new { @class = "friend-email-textarea", placeholder = T("Products.EmailAFriend.PersonalMessage.Hint") })
+            </div>
+            @if (Model.DisplayCaptcha)
+            {
+                <div class="captcha-box">
+                    @Html.Raw(Html.GenerateCaptcha())
+                </div>
+            }
+        </div>
+    </div>
+    <div class="buttons">
+        <input id="btnSend-request" type="submit" name="send-email" class="blueBtn send-email-a-friend-button" value="Gửi yêu cầu" />
+    </div>
+    <script type="text/javascript">
+        function onBeginSend()
+        {
+            $("#btnSend-request").val("Đang gửi...")
+        }
+            function sendComplete(d)
+                    {
+                        alert(d.responseText);
+                        $("#form0 input[type=text],#form0 textarea").val("");
+                        $("#btnSend-request").val("Gửi yêu cầu");
+                    }
+    </script>
+}
+
+
+

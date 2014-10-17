@@ -1,0 +1,83 @@
+﻿@model Nop.Web.Models.Catalog.ProductDetailsModel
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+}
+@Html.Action("ProductBreadcrumb", "Catalog", new { productId = Model.Id })
+<div class="page product-details-page">
+    <div class="page-body">
+          <div itemscope itemtype="http://schema.org/Product" data-productid="@Model.Id">
+                <div class="product-essential">
+                    <div class="detail-head">
+                        <div class="option">
+                           <div class="price-box">
+                               <span>ID: @Model.Id</span><br />
+                              <span><b>Giá:</b> @Model.ProductPrice.Price</span><br />
+                               <span><b>Tình trạng: @Model.Status</b></span>
+                               
+                           </div>
+                            <ul>
+                                <li>
+                                    <b>Khu vực:</b> @Model.DistrictName                                    
+                                </li>
+                                 <li>
+                                    <b>Hình thức:</b> @Model.HinhThuc                                    
+                                </li>
+                                 <li>
+                                    <b>Diện tích:</b> @Model.Area m<sub>2</sub>                                    
+                                </li>
+                                 <li>
+                                    <b>Hướng:</b> @Model.Directors                                    
+                                </li>
+                                 <li>
+                                    <b>Tình trạng:</b> @Model.Status
+                                                                         
+                                </li>
+                                 <li>
+                                    <b>Phòng tắm:</b> @Model.BathRooms                                    
+                                </li>
+                                 <li>
+                                    <b>Phòng ngủ:</b> @Model.BedRooms                                    
+                                </li>
+                                  <li>
+                                    <b>Cơ sở vật chất:</b> 
+                                     <ul>
+                                         @foreach (var i in Model.Facilities)
+                                         { 
+                                            <li><input type="checkbox" disabled="disabled" checked="checked" />@i.Text</li>
+                                         }
+                                     </ul>                                   
+                                </li>
+                                  <li>
+                                    <b>Mô trường xung quanh:</b>
+                                      <ul>
+                                         @foreach (var i in Model.Environments)
+                                         { 
+                                            <li><input type="checkbox" disabled="disabled" checked="checked" />@i.Text</li>
+                                         }
+                                     </ul>                                 
+                                </li>
+
+
+                            </ul>
+                        </div>
+                        <div class="picture">
+                            @Html.Widget("productdetails_before_pictures")
+                    <!--product pictures-->
+                        @Html.Partial("_ProductDetailsPictures", Model)
+                        @Html.Widget("productdetails_after_pictures")
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="detail">
+                    <h3>Mô tả chi tiết</h3>
+                    <hr />
+                    <p>@Html.Raw(Model.FullDescription)</p>
+                      </div>
+                    </div>
+              </div>
+        </div>
+    </div>
+

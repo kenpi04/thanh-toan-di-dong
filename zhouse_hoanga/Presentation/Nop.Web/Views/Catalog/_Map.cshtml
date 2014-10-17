@@ -1,0 +1,214 @@
+﻿@model Nop.Web.Models.Catalog.ProductDetailsModel
+
+<style>
+    #map_canvas { width: 100%; height: 93%; }
+</style>
+
+  <div id="lstChk">
+        <input name="radius"  type="radio" value="500"> 500m
+        <input name="radius" type="radio" value="1000"> 1km
+        <input name="radius" type="radio" value="2000"> 2km
+        <input name="radius" type="radio" value="3000"> 3km
+        <input name="radius" checked="checked" type="radio" value="5000"> 5km
+        <br>
+
+        <input type="checkbox"  value="trường" id="truong"><img src="/Themes/Zhouse/Content/images/truong.png" /> Trường học
+         <input type="checkbox"    value="bệnh+viện" id="bv"><img src="/Themes/Zhouse/Content/images/bv.png" /> Bệnh viện
+          <input type="checkbox"   value="chợ" id="cho"><img src="/Themes/Zhouse/Content/images/cho.png" /> Chợ
+           <input type="checkbox"  value="siêu+thị" id="sieuthi"><img src="/Themes/Zhouse/Content/images/sieuthi.png" /> Siêu thị
+            <input type="checkbox"  value="giải+trí" id="cong_vien"><img src="/Themes/Zhouse/Content/images/cong_vien.png" /> Giải trí
+             <input type="checkbox"  value="cơ+quan+hành+chính" id="cqhc"><img src="/Themes/Zhouse/Content/images/cqhc.png" /> Cơ quan hành chính
+              <input type="checkbox"  value="tôn+giáo" id="nha_tho"><img src="/Themes/Zhouse/Content/images/nha_tho.png" /> Tôn giáo
+    </div>
+    <div id="map_canvas">
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#lstChk input[type=checkbox]").change(function () {
+                var keyword = $(this).val();
+                var id = $(this).attr("id");
+                if ($(this).is(":checked")) {                   
+                    var radius = $("#lstChk input[name=radius]:checked").val();
+                    CheckSearch(id, keyword, radius)
+                }
+                else {
+                    if(gmarkers2[id])
+                    deleteMarkers(gmarkers2[id]);
+                }
+            });
+
+          
+        })
+        
+        var numE = 0;
+        var map;
+        icolor = 0;
+        var infowindow;
+        var center;
+        var color = ["FF8888", "88FF88", "8888FF", "88FFFF", "FF88FF", "FF8888", "FFFF88", "FFFFFF"];
+        var gmarkers2 = {};
+        function showAddress() {
+            var diachi = "@Model.FullAddress";
+            var content = "Tên liên hệ:@Model.ContactName <br> Số điện thoại: @Model.ContactPhone <br> Email:@Model.ContactEmail <br> Địa chỉ :@Model.FullAddress";
+            geocoder = new google.maps.Geocoder();
+            var myOptions = {
+                center: new google.maps.LatLng(10.794345, 106.589554),
+                zoom: 14,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            center = myOptions.center;
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            var info = new google.maps.InfoWindow({ content: content });
+            geocoder.geocode({ 'address': diachi }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
+                    center = results[0].geometry.location;
+                    map.setCenter(center);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: center
+                    });
+                    google.maps.event.addListener(marker, "click", function ()
+                    { info.open(map, marker); });
+                } else {
+                }
+            });
+           
+
+            infowindow = new google.maps.InfoWindow(
+             {
+                 size: new google.maps.Size(150, 50)
+             });
+            var key="";
+       setTimeout(function(){  $("#lstChk input[type=checkbox]:eq("+numE+")").click();},7000);
+         
+            
+        }
+
+        //   setTimeout(function(){showAddress();},2000);
+        function loadScript() {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&' +
+                'callback=showAddress';
+            document.body.appendChild(script);
+        }
+     
+
+
+        function createMarker2(latlng, name, html, image, side_bar) {
+            var contentString = html;
+            var marker = new google.maps.Marker({
+                position: latlng,
+                map: map,
+                icon: image,
+                zIndex: Math.round(latlng.lat() * -100000) << 5,
+
+            });
+
+            google.maps.event.addListener(marker, 'mouseover', function () {
+                infowindow.setContent(contentString);
+                infowindow.open(map, marker);
+            });
+            google.maps.event.addListener(marker, 'mouseout', function () {
+
+                infowindow.close(map, marker);
+            });
+            // save the info we need to use later for the side_bar
+            return marker;
+            // add a line to the side_bar html 
+        }
+
+
+
+        var currentId = null;
+        function CheckSearch(id, text, radius) {
+
+                           gmarkers2[id] = [];
+            var request = {
+                location: center,
+                radius: radius,
+                language: 'vi',
+                name:[text]
+
+            };
+            map.setCenter(center);
+            var service = new google.maps.places.PlacesService(map);
+            currentId = id;
+            service.nearbySearch(request, callback);
+        }
+        function callback(results, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+                map.setZoom(14);
+
+                var pinImage = new google.maps.MarkerImage("/Themes/Zhouse/Content/images/" +currentId+".png",
+                    new google.maps.Size(12, 20),
+                    new google.maps.Point(0, 0),
+                    new google.maps.Point(10, 34));
+               
+
+
+                for (var i = 0; i < results.length; i++) {
+                    var places = new google.maps.places.PlacesService(map);
+                    places.getDetails({ reference: results[i].reference },
+                  function (place, status) {
+                      if (status != google.maps.places.PlacesServiceStatus.OK) {
+                          return;
+                      }
+                      var html = "<div style='width:auto; height:auto'>" +
+                        "<div class='title-map'>" + place.name + "</div><br/>"
+                      html += "<div class='text-map'>"
+                      if (place.vicinity)
+                          html += "<b> Địa chỉ : </b> " + place.vicinity + "<br/>"
+                      if (place.formatted_phone_number)
+                          html += "<b> Điện thoại : </b> " + place.formatted_phone_number + "<br/>"
+                      if (place.website)
+                          html += "<b> Website : </b> " + place.website + "<br/>"
+                      html += "</div> </div>"
+                      ;
+
+                      var marker = createMarker2(place.geometry.location, place.name, html, pinImage);
+                      gmarkers2[currentId].push(marker);
+
+                  });
+
+
+                }
+            }
+if(numE<$("#lstChk input[type=checkbox]").length)
+{
+numE++;
+       setTimeout(function(){  $("#lstChk input[type=checkbox]:eq("+numE+")").click();},3000);
+}
+        }
+        // Sets the map on all markers in the array.
+        function setAllMap(map, arrmarket) {
+            for (var i = 0; i < arrmarket.length; i++) {
+                arrmarket[i].setMap(map);
+            }
+        }
+
+        // Removes the markers from the map, but keeps them in the array.
+        function clearMarkers(arrmarket) {
+            setAllMap(null, arrmarket);
+        }
+
+        // Shows any markers currently in the array.
+        function showMarkers() {
+            setAllMap(map);
+        }
+
+        // Deletes all markers in the array by removing references to them.
+        function deleteMarkers(arrmarket) {
+            clearMarkers(arrmarket);
+            arrmarket = [];
+        }
+
+
+    </script>
+
+
+
+
+

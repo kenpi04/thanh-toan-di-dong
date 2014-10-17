@@ -1,0 +1,21 @@
+﻿@model IList<ProductOverviewModel>
+@using Nop.Web.Models.Catalog;
+@if (Model.Count > 0)
+{
+    string linkCompare="";
+    
+      <div class="pinkNarrowTitleSmall" style="margin-bottom:10px">Bạn vừa xem</div>
+    foreach (var product in Model)
+    {
+        linkCompare+="productId="+product.Id+"&";
+             @Html.Partial("_ProductBox",product)
+
+    }
+    linkCompare=string.Format("{0}?{1}",@Url.Action("CompareProducts", "Catalog"),linkCompare.TrimEnd('&'));
+
+                <div class="pinkBgRightBottom">
+                    <a style="font-size:32px;color:#fff" href="@linkCompare" >SO SÁNH</a><br>
+                    CÁC BĐS VỪA XEM
+                </div>
+    
+}

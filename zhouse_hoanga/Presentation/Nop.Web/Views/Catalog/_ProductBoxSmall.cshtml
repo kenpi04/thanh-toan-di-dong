@@ -1,0 +1,14 @@
+﻿@model Nop.Web.Models.Catalog.ProductOverviewModel 
+ <div class="introColRight" style="margin-right:15px">
+                    <div class="nhonRight"></div>
+                    <div class="pinkTagRight">@Model.ProductPrice.Price</div>
+                      <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+                                    <img alt="@Model.DefaultPictureModel.AlternateText"  src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+                                </a>
+                    <div class="whiteBgRight">@Model.Name
+     <br />
+                        <div class="whiteBgCata-small">
+                            @Model.DictrictName | @Model.CateName | @Model.Area.ToString("#") m2 | @Model.NumBedRoom | @Model.NumBadRoom | Hướng @Model.Directors
+                        </div>
+     </div>
+                </div><!----introColRight---->

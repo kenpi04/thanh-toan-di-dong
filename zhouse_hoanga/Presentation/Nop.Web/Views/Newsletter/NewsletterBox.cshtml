@@ -1,0 +1,48 @@
+﻿@model NewsletterBoxModel
+@using Nop.Web.Models.Newsletter;
+
+        <div id="newsletter-subscribe-block" class="newsletter-subscribe-block">            
+          
+                <form id="newletterform">
+                Đăng ký email để nhận ngay những bất động sản mới nhất <br><br>
+                <input name="NewsletterEmail" id="newsletter-email" type="text" class="footerBox" placeholder="eMail của bạn">
+                <input type="submit" style="margin-top:0" class="blueBtn" id="newsletter-subscribe-button" value="gửi"><br />
+                <div id="newsletter-result-block" class="newsletter-result-block">
+                    @Html.ValidationMessageFor(x => x.NewsletterEmail)
+                </div>
+                    </form>        
+        </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#newsletter-subscribe-button').click(function () {
+              
+                var email = $("#newsletter-email").val();
+                if ($("#newletterform").valid()) {
+                    var subscribeProgress = $(this);
+                    subscribeProgress.val("Đang gửi..");
+                    $.ajax({
+                        cache: false,
+                        type: "POST",
+                        url: "@(Url.RouteUrl("SubscribeNewsletter"))",
+                        data: { "email": email },
+                        success: function (data) {
+                            subscribeProgress.val("Gửi");
+                            $("#newsletter-result-block").html(data.Result);
+                            if (data.Success) {
+                                $('#newsletter-subscribe-block').hide();
+                                $('#newsletter-result-block').show();
+                            }
+                            else {
+                                $('#newsletter-result-block').fadeIn("slow").delay(2000).fadeOut("slow");
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to subscribe.');
+                            subscribeProgress.val("Gửi");
+                        }
+                    });
+                }
+                return false;
+            });
+        });
+    </script>

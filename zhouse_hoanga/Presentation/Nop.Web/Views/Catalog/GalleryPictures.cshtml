@@ -1,0 +1,10 @@
+﻿@model IList<Nop.Web.Models.Media.PictureModel>
+@using Nop.Core.Domain.Media
+<div class="gallery">
+@foreach (var i in Model)
+{ 
+    <img src="@i.FullSizeImageUrl" alt="@i.AlternateText" />
+}
+        </div>
+
+

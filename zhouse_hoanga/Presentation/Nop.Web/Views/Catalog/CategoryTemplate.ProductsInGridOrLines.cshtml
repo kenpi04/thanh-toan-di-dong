@@ -1,0 +1,125 @@
+﻿@model CategoryModel
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var categoryUrl = Url.RouteUrl("Category", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(categoryUrl);
+    }
+
+    var breadcrumbDelimiter = EngineContext.Current.Resolve<CommonSettings>().BreadcrumbDelimiter;
+}
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+@using Nop.Web.Extensions;
+@*category breadcrumb*@
+@if (Model.DisplayCategoryBreadcrumb)
+{
+    <div class="breadcrumb">
+        <ul>
+            <li><a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a>
+                <span class="delimiter">@breadcrumbDelimiter</span> </li>
+            @foreach (var cat in Model.CategoryBreadcrumb)
+            {
+                var isLastCategory = cat.Id == Model.Id;
+                <li>
+                    @if (isLastCategory)
+                    {
+                        <strong class="current-item">@cat.Name</strong>
+                    }
+                    else
+                    {
+                        <a href="@Url.RouteUrl("Category", new { SeName = cat.SeName })" title="@cat.Name">@cat.Name</a>
+                        <span class="delimiter">@breadcrumbDelimiter</span>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+    @Html.Widget("categorydetails_after_breadcrumb")
+}
+<div class="page category-page">
+
+    <div class="page-body">
+        <div class="mainContent"></div>
+        <div class="search-left leftContentTwist">
+            @using (Ajax.BeginForm("ProductSearch", new { }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListProduct", LoadingElementId = "ajax-loading", OnSuccess = "searchSuccess" }, new { id = "frmSearchLeft" }))
+            {
+
+                @Html.Action("SearchBoxLeft", new { isProject = Model.Id == 2, categoryId = Model.Id })
+                <script>
+                    $(function () { 
+                    $("#frmSearchLeft input[type=checkbox],#frmSearchLeft input[type=radio]").click(function () {
+                        $("#frmSearchLeft").submit();
+                    })
+                    })
+                    function searchSuccess(d)
+                    {
+                       
+                    }
+                </script>
+            }
+        </div>
+        <div class="rightContentTwist">
+             <div class="product-list" id="ListProduct">
+            @if (Model.Products.Count > 0)
+            {
+                <h1 class="cate-title pinkNarrowTitle">@Model.Name</h1>
+              <div class="product-selectors">
+            @*view mode*@
+            @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
+            {
+                <div class="product-viewmode">
+                    
+                    @Html.DropDownList("products-viewmode", Model.PagingFilteringContext.AvailableViewModes, new { onchange = "setLocation(this.value);" })
+                </div>
+            }
+            @*sorting*@
+            @if (Model.PagingFilteringContext.AllowProductSorting && Model.Products.Count > 0)
+            {
+                <div class="product-sorting">
+                  
+                    @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
+                </div>
+            }
+        </div>
+            foreach (var product in Model.Products)
+            {
+                        @Html.Partial("_ProductBox", product)
+            }
+                    <div class="clearBoth"></div>
+                    <div class="pager">
+                        @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
+                    </div>
+            }
+            else
+            {
+	<div class=info-nopro>
+<b style="color:#0094ff; margin-left:30px;">Sản phẩm đang được cập nhật</b>
+<div class='button-content btn-bottom'>
+	<b style="margin: 26px 0px 56px -67px;
+float: left;">Bạn có nhu cầu bán nhà, bạn mong muốn một dịch vụ uy tín</b>
+<br>
+<br>
+	<input type="button" onclick="setLocation('/request')" class="btn-rq" value=""/>
+<br>
+<b style='margin: 26px 0px 56px -67px;
+float: left;'>Bạn đang tìm kiếm ngôi nhà của mình. Hãy để zHouse giúp bạn</b>
+<br>
+<br>
+<input type="button" onclick="setLocation('/tim-kiem')" class="btn-search" value=""/>
+</div>
+</div>
+            }
+     </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

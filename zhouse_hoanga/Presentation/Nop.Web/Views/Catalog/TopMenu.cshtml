@@ -1,0 +1,164 @@
+﻿@model TopMenuModel
+@using Nop.Web.Models.Catalog;
+@{
+    var isRtl = this.ShouldUseRtlTheme();
+}
+@helper RenderCategoryLine(CategorySimpleModel category, int level)
+{
+    <li>
+        <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">@category.Name
+        @if (category.NumberOfProducts.HasValue)
+        {
+            <text> </text>@T("Categories.TotalProducts", category.NumberOfProducts.Value)
+        }
+        </a>
+        @{
+            var levelClass = "";
+            if (level == 0)
+            {
+                levelClass = "firstLevel";
+            }
+             <div class="sublist">
+                 <div class="menu-col">
+                     <span class="title">Theo địa điểm</span>
+                     <ul>
+                         @if(category.Id == 1)
+                         { 
+                         foreach(var d in Model.Districts2)
+                    {
+                             <li><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>
+                    }
+                         }
+                         else { 
+                         foreach(var d in Model.Districts)
+                    {
+                             <li><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>
+                    }
+                         }
+                     </ul>
+                 </div>
+                @if (category.SubCategories.Count > 0)
+                { <div class="menu-col" style="width:176px">
+                    <span class="title">Theo loại</span>
+                    <ul>
+                        @foreach (var subCategory in category.SubCategories)
+                        {
+                            <li><a href="@Url.RouteUrl("Category", new {SeName=subCategory.SeName })">@subCategory.Name</a></li>
+                        }
+                    </ul>
+                </div>
+                }
+                 <div class="menu-col" style="width:100px">
+                     <span class="title">Theo giá</span>
+                     <ul>
+                         @foreach (var d in Model.PriceRange.Where(x => x.Value!="0-0").ToList())
+                         {
+                             <li><a href="@GetSeName(Request.Url.Host, category.SeName, null, null, d.Value, null)">@d.Text</a></li>
+                         }
+                     </ul>
+                 </div>
+            </div>}
+    </li>}
+<div id="top-menu" class="menu">
+<ul>
+    @Html.Widget("header_menu_before")
+    @if (Model.Categories.Count > 0)
+    {
+        foreach (var category in Model.Categories)
+        {
+            @RenderCategoryLine(category, 0)
+        }
+    }
+    else
+    {       
+        <li><a href="@Url.RouteUrl("HomePage")">@T("HomePage")</a></li>
+        if (Model.RecentlyAddedProductsEnabled)
+        {
+            <li><a href="@Url.RouteUrl("RecentlyAddedProducts")">@T("Products.NewProducts")</a>
+            </li>
+        }
+        <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a> </li>
+        <li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>
+        if (Model.BlogEnabled)
+        {
+            <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
+        }
+        if (Model.ForumEnabled)
+        {
+            <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
+        }
+        <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
+    }
+    <li><a href="~/t/@Model.Topics.FirstOrDefault().Value">Dịch vụ</a>
+         <div class="top-menu-triangle"></div>
+        <div class="sublist service" style="width: 200px; margin-left: -18px;">
+            <ul>
+                @foreach (var i in Model.Topics)
+                {
+                    <li><a title="@i.Value" href="~/t/@i.Value">@i.Text</a></li>
+                }
+            </ul>
+        </div>
+    </li>
+    <li><a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategoriesNews.FirstOrDefault().Value })">Kiến thức</a>
+          <div class="top-menu-triangle"></div>
+        <div class="sublist kienthuc" style="width: 200px; margin-left: -18px;">
+            <ul>
+                @foreach (var c in Model.CategoriesNews)
+                {
+                    <li><a href="@Url.RouteUrl("CateNews", new { SeName = c.Value })">@c.Text</a></li>
+                }
+            </ul>
+        </div>
+    </li>
+    <li>
+        <a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategoriesNews.FirstOrDefault().Value })">Tư vấn</a>
+        <div class="top-menu-triangle"></div>
+        <div class="sublist kienthuc" style="width: 200px; margin-left: -18px;">
+            <ul>
+                @foreach (var c in Model.CategoriesNews)
+                {
+                    <li><a href="@Url.RouteUrl("CateNews", new { SeName = c.Value })">@c.Text</a></li>
+                }
+            </ul>
+        </div>
+    </li>
+    <li>
+        <a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategoriesNews.FirstOrDefault().Value })">Lời khuyên</a>
+        <div class="top-menu-triangle"></div>
+        <div class="sublist kienthuc" style="width: 200px; margin-left: -18px;">
+            <ul>
+                @foreach (var c in Model.CategoriesNews)
+                {
+                    <li><a href="@Url.RouteUrl("CateNews", new { SeName = c.Value })">@c.Text</a></li>
+                }
+            </ul>
+        </div>
+    </li>
+@*<li>
+    <a href="http://hoidap.zhouse.com.vn" target="_blank">Hỏi đáp</a>
+</li>*@
+    <li>
+        <div class="hotlineMenu">
+            <p class="hotlineName">HOTLINE</p>
+            <p class="hotlineNumber">0932 036 456</p>
+        </div>  @*<img style="margin-top:-15px" src="~/Themes/Zhouse/Content/images/hotline.gif" alt="Hotline" />*@
+    </li>
+    @Html.Widget("header_menu_after")
+</ul>
+</div>
+<script type="text/javascript">
+    $('#top-menu li[class!=verLine]').on('mouseenter', function () {
+        $('a', $(this)).first().addClass('hover');
+        if (!$('.sublist', $(this)).first().attr("not-resize") && !$(this).parent().hasClass('top-menu')) {
+            var width = $(this).innerWidth();
+        }
+        $('.sublist', $(this)).first().addClass('active');
+        $('.top-menu-triangle', $(this)).addClass('active');
+    });
+    $('#top-menu li[class!=verLine]').on('mouseleave', function () {
+        $('a', $(this)).first().removeClass('hover');
+        $('.sublist', $(this)).first().removeClass('active');
+        $('.top-menu-triangle', $(this)).removeClass('active');
+    });
+</script>
