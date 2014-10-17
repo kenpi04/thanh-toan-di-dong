@@ -1,0 +1,27 @@
+﻿@model ProductOverviewModel
+@using Nop.Web.Models.Catalog;
+<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" data-role="none">
+    <div class="content">
+        <div class="col1">
+            <img width="74" height="74" alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+        </div>
+        <div class="col2">
+            <p>@Model.Name</p>
+            <p class="add">
+                @Model.DictrictName - @Model.CateName - @String.Format("{0}m2", @Model.Area.ToString("#.##")) - @Model.NumBedRoom - @Model.NumBadRoom - Hướng @Model.Directors
+                <span class="price" style="display:none;padding:0">
+                    <b>Giá:</b><span class="orangeText15">@Model.ProductPrice.Price</span>
+                </span>
+            </p>
+        </div><!--col2--->
+        <div class="col3">
+            <div class="contact">
+                <b>Liên hệ:</b>                
+                <b>0936734949 - 0968309789</b><br />
+            <span class="orangeText12">Giá:</span>
+            <span class="orangeText15">@Model.ProductPrice.Price</span>
+        </div><!---contact--->
+    </div><!----col3--->
+</div>
+</a>
+<div class="greyLine"></div>
