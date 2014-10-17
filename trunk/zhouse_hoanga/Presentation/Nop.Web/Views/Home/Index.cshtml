@@ -4,10 +4,12 @@
 <div class="page home-page">
     <div class="page-body">
        @Html.Widget("home_page_top")       
-        @Html.Action("HomepageProducts", "Catalog", new {pageSize=8}) 
-      
-        @Html.Action("TopicHomePage","Topic")
-       
+        @Html.FptBanner(2001)
+        @Html.Action("HomepageProducts", "Catalog", new { pageSize = 8, categoryId = 3 }) 
+        @Html.FptBanner(2002)
+        @Html.Action("HomepageProducts", "Catalog", new { pageSize = 8, categoryId = 4}) 
+        @Html.FptBanner(2003)
+        @Html.Action("TopicHomePage","Topic")       
         @Html.Widget("home_page_bottom")
     </div>
 </div>

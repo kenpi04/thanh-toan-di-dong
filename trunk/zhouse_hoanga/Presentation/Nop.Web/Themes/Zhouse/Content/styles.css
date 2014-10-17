@@ -25,8 +25,8 @@ input[type="text"]:disabled{background:none repeat scroll 0 0 #FFF}
 .clearfix{clear:both}
 select{border:1px solid #c2c2c2;color:#666;font-size:11px;padding:5px 5px 5px 10px;width:150px}
 .master-wrapper-page{background:none repeat scroll 0 0 #f1f1f1}
-.master-wrapper-content{margin:0 auto}
-.master-wrapper-main{color:#373737;width:1080px;margin:0 auto}
+.master-wrapper-content{margin:0 auto;background:#fff}
+.master-wrapper-main{color:#373737;width:945px;margin:0 auto}
 .master-wrapper-main .center-1{min-height:400px;display:inline;float:left;width:100%}
 .master-wrapper-main .side-2{float:left;width:190px;margin:10px 0;display:inline}
 .master-wrapper-main .center-2{float:left;width:860px;min-height:400px;padding:10px;margin:10px 0 10px 10px;background:#FFF;display:inline;border-radius:5px}
@@ -1005,8 +1005,8 @@ pre{white-space:pre-wrap;white-space:normal;word-wrap:break-word}
 .noborder{border:0}
 .clearBoth{clear:both}
 ul{margin:0}
-.top{width:100%;height:50px;background:#FFF;position:fixed;z-index:1000;margin-top:-2px;border-bottom:1px solid #c2c2c2}
-.wrapper{width:1080px;margin:0 auto;position:relative}
+.top{width:100%;height:50px;background:#F2f2f2;position:fixed;z-index:1000;margin-top:-2px;border-bottom:1px solid #c2c2c2}
+.wrapper{width:945px;margin:0 auto;position:relative}
 .stretchImg{width:100%}
 .logo{float:left;top:0;left:0}
 .menu{position:absolute;top:0;right:0}
@@ -1018,7 +1018,7 @@ ul{margin:0}
 .verLine{background:url(images/verLine.png) no-repeat scroll 0 0;width:1px !important;height:100px;margin:-12px 2px 0 6px}
 .searchBtn{background:url(images/searchBtn.png) no-repeat;width:27px;height:27px;border:0;cursor:pointer}
 .searchBtn:hover{background:url(images/searchBtnhover.png)}
-.topInfo{position:absolute;top:200px;margin-left:9%;z-index:100}
+.topInfo{position:absolute;top:585px;margin-left:9%;z-index:100}
 .pinkBg{background:rgba(30,30,30,0.8);border-radius:4px;padding:25px}
 .pinkNarrowTitle{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06;text-align:center}
 .box{background:#fff;width:130px;padding:5px 5px 5px 10px;border:0;margin:5px 5px 5px 0;color:#333;font-size:12px}
@@ -1028,10 +1028,13 @@ ul{margin:0}
 .blueBigBtn:hover{color:#d3eefb}
 .intro{float:left;margin:30px 0 10px 0;height:245px}
 .intro-product{float:left;width:100%}
-.introCol{float:left;width:254px;position:relative;margin-left:14px;border:1px solid #ccc;margin-bottom:14px;background:#fff;height:380px}
+.intro-product .title{width:926px;display:inline-block;background:#f1f1f1;margin-bottom:10px;margin-left:14px;}
+.intro-product .title >a{cursor:pointer;font-size:18px;line-height:22px;float:right;padding:10px;}
+.introCol{float:left;width:254px;position:relative;margin-left:14px;border:1px solid #ccc;margin-bottom:14px;background:#fff;height:220px;padding:5px;width:47%}
 .introCol:hover {box-shadow:2px 2px 6px #ccc }
 .product-list .introCol {margin-left:27px !important }
-.introCol .info-picture{min-height:220px}
+.introCol .info-picture{max-height:220px;width:45%;overflow:hidden;float:left;}
+.info-left{float:left;width:52%;margin-left:10px;display:inline-block;}
  .new{position:absolute;top:0;right:-5px;width:96px;height:54px}
 .tag-30 {background:url(images/new.png) no-repeat }
 .tag-10 {background:url(images/da-ban.png) no-repeat }
@@ -1043,15 +1046,15 @@ ul{margin:0}
 .backBtn:hover{background:url(images/backhover.png)}
 .nextBtn{background:url(images/next.png) no-repeat;width:32px;height:108px;border:0;cursor:pointer;position:absolute;right:0;margin-top:63px}
 .nextBtn:hover{background:url(images/nexthover.png)}
-.whiteBg{background:#fff;border:0 solid #c2c2c2;padding:5px 10px 5px 10px;color:#2d9fd8;font-size:13px;font-weight:bold;float:left;height:40px}
+.whiteBg{background:#fff;font-size:16px;font-weight:bold;float:left}
 .whiteBg:hover{color:#d21f79}
 .whiteBgBig{background:#fff;border:1px solid #c2c2c2;width:310px;padding:20px 20px 20px 0;font-size:12px;float:left;position:relative;margin-bottom:10px;height:140px}
 .whiteBgBig li{list-style-image:url(images/list.png);margin-left:46px;text-align:left;padding:3px 0}
 .whiteBgBig li a{color:#666;text-decoration:none;font-size:13px}
 .whiteBgBig li a:hover{color:#1e98d5}
 .nhonDown{background:url(images/nhonDown.png) no-repeat;width:19px;height:17px;position:absolute;bottom:-17px;left:160px}
-.frame{float:left;margin:20px 0 10px 0}
-.frame table{border-collapse:collapse;width:1080px}
+.frame{margin:20px 0 10px 0}
+.frame table{border-collapse:collapse;width:100%}
 .frame table td{background:#fff;border:1px solid #c2c2c2;text-align:center;padding:20px 0;color:#1e98d5;font-weight:bold;width:236px}
 .smallPinkText{color:#c06;font-size:13px;clear:both}
 .threeCol{width:333px;float:left;margin-right:40px}
@@ -1091,7 +1094,7 @@ ul{margin:0}
 .nivo-controlNav a{cursor:pointer;z-index:9;font-size:11px;padding:5px 10px;margin-right:5px;background:#fff;opacity:.8}
 .nivo-controlNav a.active{font-weight:bold;background:#c06}
 .nivo-controlNav a:hover{color:#d41212}
-#slider{background:url("images/loading.gif") no-repeat scroll 50% 50% transparent;height:665px;position:relative;width:100%;margin-left:3px;margin-top:2px;margin-bottom:10px;margin-left:auto;margin-right:auto}
+#slider{background:url("images/loading.gif") no-repeat scroll 50% 50% transparent;height:665px;position:relative;width:100%;margin-left:3px;margin-top:2px;margin-left:auto;margin-right:auto}
 .nivo-slice{display:block;height:100%;position:absolute;z-index:50}
 .nivo-caption{background:none repeat scroll 0 0 #000;bottom:0;color:#FFF;font-weight:bold;left:0;position:absolute;width:100%;z-index:89}
 .nivo-caption p{margin:0;padding:5px}
@@ -1167,8 +1170,10 @@ ul{margin:0}
 .friend-email{width:100%}
 .simplemodal-close{background:url(images/x.png) no-repeat;width:22px;height:22px;position:absolute;right:-5px;top:-5px}
 #popup h1{padding:5px 0;background:#c06;color:#fff;font-weight:bold;font-size:14px;text-align:center;text-transform:uppercase}
-.whiteBgCata{padding:7px 5px;font-size:13px; line-height: 16px;color:#666;border-top:1px #ddd dashed;float:left;width:245px;margin-top:10px;height:55px}
+.whiteBgCata{font-size:14px; line-height: 16px;color:#666;float:left;margin-top:10px;}
+.whiteBgCata >p {padding:3px 0;margin:0;}
 .whiteBgCata-small{padding:7px 5px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:100%;margin-top:10px;height:55px}
+.info-left .price{font-size:24px;color:#333333;float:left;margin-top:10px;}
 .pinkNarrowTitle30{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06}
 .whiteLeftCol{float:left;width:220px;margin: 0 0px 10px 0;background:#fff}
 .rightContentTwist{width:850px;float:right}
@@ -1205,12 +1210,13 @@ ul{margin:0}
 .menu-col .title{font-weight:bold}
 .p-name:hover{color:#d82d7f}
 textarea.formBoxInText{height:70px}
-.menu-footer{height:38x;line-height:38px;text-align:center}
-.menu-footer ul{width:700px;margin:0 auto}
+.menu-footer{height:38px;line-height:38px;text-align:center}
+.menu-footer ul{margin:0 auto;display:inline-block;}
 .menu-footer ul a{font-weight:bold}
 .picture-title{background:#000;opacity:.8;width:100%;padding:10px;text-align:center;height:40px;position:absolute;margin-top:-10px}
 #carousel li {margin-right:6px }
-.block-title {font-size:35px;color:#999;text-align:center;font-family:"Myriad Pro",Arial,Helvetica,sans-serif‏;padding:25px 0}
+.block-title {font-size:22px;color:#333;font-family:"Myriad Pro",Arial,Helvetica,sans-serif‏;padding:10px 10px;float:left;width:80%;font-weight:400}
+#list-product-home{display:inline-block;}
 .adv-yourhouse {background:url(images/button-request.png) no-repeat;width:344px;height:86px;position:absolute;z-index:100; left: 199px;margin-top: -130px;cursor:pointer }
 .btn-map {background:url(images/maps-button.gif) no-repeat;width:193px;height:50px;display:block;    margin-top: 20px; }
 .btn-QA {background:url(images/faq-button.gif) no-repeat;width:171px;height:50px;display:block;border:none;}

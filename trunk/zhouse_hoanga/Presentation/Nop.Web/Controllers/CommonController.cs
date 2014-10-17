@@ -443,7 +443,7 @@ namespace Nop.Web.Controllers
                 RecentlyViewedProductsEnabled = _catalogSettings.RecentlyViewedProductsEnabled,
                 RecentlyAddedProductsEnabled = _catalogSettings.RecentlyAddedProductsEnabled,
                 //Districts=_stateProvinceService.GetDistHCM(stateId).ToSelectList(x=>x.Name,x=>x.GetSeName()),
-                Districts = stateId == 0 ? _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.GetSeName()).ToList() : _stateProvinceService.GetWardByDistrictId(stateId).ToSelectList(x => x.Name, x => x.GetSeName()),
+                //Districts = Nop.Web.Framework.Extensions.GetPrice(), //stateId == 0 ? _stateProvinceService.GetDistHCM().ToSelectList(x => x.Name, x => x.GetSeName()).ToList() : _stateProvinceService.GetWardByDistrictId(stateId).ToSelectList(x => x.Name, x => x.GetSeName()),
                 Topics=_topicService.GetAllTopics(0,2).ToSelectList(x=>x.Title,x=>x.SystemName)
             };
 
