@@ -1,0 +1,64 @@
+﻿
+@model DistrictModel
+
+@using Telerik.Web.Mvc.UI;
+
+@Html.ValidationSummary(false)
+
+
+@Html.HiddenFor(model => model.Id)
+@*@Html.Telerik().TabStrip().Name("district-edit").Items(x =>
+{
+    x.Add().Text(T("Admin.ContentManagement.Topics.Info").Text).Content(TabInfo().ToHtmlString());
+    x.Add().Text(T("Admin.Common.SEO").Text).Content(TabSeo().ToHtmlString());
+    x.Add().Text(T("Admin.ContentManagement.Topics.Stores").Text).Content(TabStores().ToHtmlString());
+
+    //generate an event
+    EngineContext.Current.Resolve<IEventPublisher>().Publish(new AdminTabStripCreated(x, "topic-edit"));
+}).ClientEvents(events => events.OnSelect("telerik_on_tab_select")).SetSelectedTabIndex(GetSelectedTabIndex())*@
+
+@*save selected tab index*@
+@*<input type="hidden" id="selected-tab-index" name="selected-tab-index" value="@(GetSelectedTabIndex())">*@
+
+@*@helper TabInfo()
+{*@
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Name):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.DisplayOrder):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.DisplayOrder)
+                @Html.ValidationMessageFor(model => model.DisplayOrder)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.Published):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Published)
+                @Html.ValidationMessageFor(model => model.Published)
+            </td>
+        </tr>        
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.StateProvinceId):
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(x => x.StateProvinceId, Model.StateProvinces)
+                @Html.ValidationMessageFor(model => model.StateProvinceId)
+            </td>
+        </tr>       
+    </table>
+    
+    
