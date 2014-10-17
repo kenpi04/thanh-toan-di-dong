@@ -1,30 +1,17 @@
 ﻿@model IList<ProductOverviewModel>
-
 @using Nop.Web.Models.Catalog;
-@{
-    //Html.AppendScriptParts("~/Scripts/jquery-carousel.js");
-}
 @if (Model.Count > 0)
 {
     <div class="wrapper">
         <div class="intro-product">            
-            <h2 class="block-title"> BĐS được quan tâm nhiều</h2>
-            <div id="list-product-home">
-                <ul>
+            <div class="title"><h2 class="block-title">@ViewBag.TitleString</h2><a href="@ViewBag.All">Xem tất cả</a></div>
+            <div id="list-product-home">                
                     @foreach(var item in Model)
                     {
-                        <li>
                             @Html.Partial("_ProductBox",item)
-                        </li>
                     }
-                </ul>
             </div>
         </div>
-          <div class="clearBoth"></div>
-            <div class="btn-bottom">
-            <input type="button" onclick="setLocation('@Url.RouteUrl("InsertProduct")')" class="btn-rq" />
-            <input  type="button" onclick="setLocation('@Url.RouteUrl("ProductSearch")')" class="btn-search"/>
-            <div class="smallPinkText">Hơn <b>200</b>  căn hộ, căn nhà để bạn tìm kiếm và chọn lựa trên zHOUSE.com.vn</div>
-        </div>
+          <div class="clearBoth"></div>           
     </div>    
 }

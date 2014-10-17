@@ -1,9 +1,6 @@
 ﻿@model ProductOverviewModel
 @using Nop.Core.Domain.Orders
 @using Nop.Web.Models.Catalog;
-@{
-   
-}
 <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
 @if(!Model.IsProject)
 {
@@ -14,8 +11,6 @@
             {
             <div class="new tag-@Model.StatusId"></div>
             }
-            <div class="nhon"></div>
-            <div class="pinkTag">@Model.ProductPrice.Price</div>
             @if (Request.IsAjaxRequest())
             {
             <img  alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
@@ -25,9 +20,18 @@
             <img class="lazy" data-original="@Model.DefaultPictureModel.ImageUrl" alt="@Model.DefaultPictureModel.AlternateText" width="254" height="254" title="@Model.DefaultPictureModel.Title" />
             }
         </div>
-        <div class="whiteBg p-name">@Model.Name</div>
-        <div class="whiteBgCata">@Model.DictrictName - @Model.CateName - @Model.Area.ToString("#.##") m2 - @Model.NumBedRoom - @Model.NumBadRoom - Hướng @Model.Directors</div>
-
+        <div class="info-left">
+            <div class="whiteBg p-name">@Model.Name</div>
+            <div class="whiteBgCata" style="font-style:italic">Nhà đúc 3 tấm kiên cố, gần nhiều tiện ích trung tâm quận Bình Tân</div>
+            <div class="whiteBgCata">
+                <p>Diện tích: @Model.Area.ToString("#.##")m2 ( 4x16 )</p>
+                <p>@Model.NumBedRoom - @Model.NumBadRoom</p>
+                <p>Hướng: hướng @Model.Directors</p> 
+            </div>
+            <div class="price">
+                Giá: @Model.ProductPrice.Price
+            </div>
+        </div>
     </div>
 
 }

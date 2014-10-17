@@ -1427,7 +1427,7 @@ namespace Nop.Web.Controllers
                     BlogEnabled = false,//_blogSettings.Enabled,
                     ForumEnabled = false,//_forumSettings.ForumsEnabled,
                     //Districts = _stateProvinceService.GetDistHCM(stateId, true).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName()),
-                    Districts2 = stateId == 0 ? _stateProvinceService.GetDistHCM(showHidden: true).ToSelectList(x => x.Name, x => x.GetSeName()) : _stateProvinceService.GetWardByDistrictId(stateId).OrderBy(x => x.Name).ToSelectList(x => x.Name, x => x.GetSeName())
+                    //Districts2 = stateId == 0 ? _stateProvinceService.GetDistHCM(showHidden: true).ToSelectList(x => x.Name, x => x.GetSeName()) : _stateProvinceService.GetWardByDistrictId(stateId).OrderBy(x => x.Name).ToSelectList(x => x.Name, x => x.GetSeName())
                     //Districts2 = _stateProvinceService.GetDistHCM(stateId, false).OrderBy(x => x.DisplayOrder).ToSelectList(x => x.Name, x => x.GetSeName())
                 };
                 model.CategoriesNews = _catenewsService.GetAllCategories().ToSelectList(x => x.Name, x => x.GetSeName());
@@ -2366,15 +2366,34 @@ namespace Nop.Web.Controllers
         }*/
 
         [ChildActionOnly]
-        public ActionResult HomepageProducts(int? pageSize, int? productThumbPictureSize)
+        public ActionResult HomepageProducts(int? pageSize, int? productThumbPictureSize, int categoryId=0, string titleString ="")
         {
-            var products = _productService.GetAllProductsDisplayedOnHomePage();
-            //ACL and store mapping
-            products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)).ToList();
-
+            var listProductHomePages = _productService.GetAllProductsDisplayedOnHomePage();
+            var linkAll = string.Empty;
+            var products = new List<Product>();
+            if (categoryId > 0)
+            {
+                foreach (var product in listProductHomePages)
+                {
+                    var p = product.ProductCategories.Any(c => c.CategoryId == categoryId);
+                    if (p) products.Add(product);
+                }
+            }
+            else { products = listProductHomePages.ToList(); }
             var model = PrepareProductOverviewModels(products, true, true, productThumbPictureSize)
                 .ToList();
 
+            var category = _categoryService.GetCategoryById(categoryId);
+            if (category != null)
+            {
+                linkAll = category.GetSeName();
+                if (String.IsNullOrEmpty(titleString))
+                {
+                    titleString = category.Name;
+                }
+            }            
+            ViewBag.TitleString = titleString;
+            ViewBag.All = linkAll;
             return PartialView(model);
         }
 

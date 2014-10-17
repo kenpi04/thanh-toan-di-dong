@@ -3,32 +3,27 @@
     Layout = null;
 }
 
-@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new {id="frmSearchHead" }))
+@using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id = "frmSearchHead" }))
 {<div class="top2">
-    	
-            <div class="wholeSearch">
-               <div class="wrapper">
-              @Html.DropDownList("wardId",Model.Wards,new{@class="formBoxSelect"})
-              @Html.DropDownList("priceString",Model.PriceRange,new{@class="formBoxSelect"})
-              @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "formBoxSelect" })
-              @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "formBoxSelect",id="ddlDir" })
-              @Html.DropDownList("attributeOptionIds", Model.BedRooms, "Số phòng ngủ", new { @class = "formBoxSelect",id="ddlBed" })
-              @Html.DropDownList("attributeOptionIds", Model.BathRooms, "Số phòng tắm", new { @class = "formBoxSelect",id="ddlBath" })
+
+        <div class="wholeSearch">
+            <div class="wrapper">
+                @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "formBoxSelect" })
+                @Html.DropDownList("priceString", Model.PriceRange, new { @class = "formBoxSelect" })
+                @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "formBoxSelect", id = "ddlDir" })
+                @Html.DropDownList("attributeOptionIds", Model.BedRooms, "Số phòng ngủ", new { @class = "formBoxSelect", id = "ddlBed" })
                 <input type="submit" class="blueBtn" value="tìm kiếm">
-                   </div>
             </div>
-        
+        </div>
     </div>
-  
 }
 <script type="text/javascript">
     $(function () {
         $("#frmSearchHead").submit(function () {
             var data = {
-                wardId: $("#wardId").val(),
-                priceString:$("#priceString").val(),
-                categoryId:$("#categoryId").val(),
-                attributeOptionIds: $("#ddlDir").val() + "-" + $("#ddlBath").val() + "-" + $("#ddlBed").val()
+                priceString: $("#priceString").val(),
+                categoryId: $("#categoryId").val(),
+                attributeOptionIds: $("#ddlDir").val() + "-" + $("#ddlBed").val()
             };
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {
                 window.location.href = d;

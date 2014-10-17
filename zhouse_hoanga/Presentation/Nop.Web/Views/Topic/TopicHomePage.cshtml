@@ -4,43 +4,36 @@
         <table>
             <tbody>
                 <tr>
-                    <td colspan="4"><h3 class="pinkNarrowTitle">Tại sao bạn chọn mua và bán Nhà trên zHouse.com.vn?</h3></td>
+                    <td colspan="4"><h3 class="pinkNarrowTitle">CÔNG TY CỔ PHẦN ĐẦU TƯ & XÂY DỰNG HOA NGA</h3></td>
                 </tr>
                 <tr>
                     <td> 
                         <a href="t/tai-sao-mua-nha-tren-zhouse">
                             <img src="@Url.Content("~/Themes/Zhouse/Content/images/h1.png")" alt="Chỉ bán nhà có sổ hồng">
                         </a><br><br>
-                            Chỉ bán nhà có sổ hồng
+                        MUA BÁN NHÀ ĐẤT
 </td>
                     <td>
                         <a href="t/tai-sao-mua-nha-tren-zhouse">
                             <img src="@Url.Content("~/Themes/Zhouse/Content/images/h2.png")" alt="Thông tin đa dạng và đầy đủ"></a><br><br>
-                            Thông tin đa dạng và đầy đủ
+                        XÂY DỰNG DÂN DỤNG
 </td>
                     <td>
                         <a href="t/tai-sao-mua-nha-tren-zhouse">
                             <img src="@Url.Content("~/Themes/Zhouse/Content/images/h3.png")" alt="Đội ngũ chuyên gia"></a><br><br>
-                            Đội ngũ chuyên gia
+                        THỦ TỤC PHÁP LÝ
 </td>
-                    <td>
+                    @*<td>
                         <a href="t/tai-sao-mua-nha-tren-zhouse">
                             <img src="@Url.Content("~/Themes/Zhouse/Content/images/h4.png")" alt="Sự tin tưởng"></a><br><br>
                             Sự tin tưởng
-</td>
+</td>*@
                 </tr>
             </tbody>
         </table>
-
         <br><br>
-      
-
-        <div class="intro">
-         
+        @*<div class="intro">
             @Html.Action("HomePageNewsCate","News")
-          
-
-
             <div class="threeCol" style="margin: 0;float:right">
                 <div class="whiteBgBig">
                     <ul>
@@ -49,23 +42,17 @@
                             <li><a title="@i.Title" href="@Url.RouteUrl("Topic", new {SystemName=i.SystemName })">@i.Title</a></li> 
                         
                         }
-                        
-                      
                     </ul>
                     <div class="nhonDown"></div>
-                </div>@*whiteBgBig*@
+                </div>
                 <div class="pinkNarrowTitle"><h4>Dịch vụ</h4> </div>
-            </div>@*threeCol*@
-
-
-        </div>@*intro*@
-
+            </div>
+        </div>*@
          <div class="clearBoth"></div>
-            <div class="btn-bottom">
+            @*<div class="btn-bottom">
            <input type="button" onclick="setLocation('@Url.RouteUrl("InsertProduct")')" class="btn-rq" />
             <input  type="button" onclick="setLocation('@Url.RouteUrl("ProductSearch")')" class="btn-search"/>
             <div class="smallPinkText">Hơn <b>200</b>  căn hộ, căn nhà để bạn tìm kiếm và chọn lựa trên zHOUSE.com.vn</div>
-        </div>
-
+        </div>*@
     </div>
 </div>
