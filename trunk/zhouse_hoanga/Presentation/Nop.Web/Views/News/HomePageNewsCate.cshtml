@@ -1,0 +1,20 @@
+﻿@model List<Nop.Web.Models.News.FNewsItemListModel>
+@{
+    Layout = null;
+}
+@foreach(var row in Model)
+{ 
+<div class="threeCol">
+    <div class="whiteBgBig">
+        <ul>
+            @foreach(var news in row.NewsItems)
+            { 
+            <li><a title="@news.Title" href="@Url.RouteUrl("NewsItem", new {SeName=news.SeName })">@news.Title</a></li>
+            }
+           
+        </ul>
+        <div class="nhonDown"></div>
+    </div>
+    <h4 class="pinkNarrowTitle">@row.CateName</h4>
+</div>
+}

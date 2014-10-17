@@ -1,0 +1,68 @@
+﻿﻿@model FooterModel
+@using Nop.Web.Models.Common;
+
+<div class="footer">
+    <div class="footerBg">
+        <div class="wrapper">
+            <div class="footerCol">
+                <b>Nhà ở</b><br><br>
+                <ul>
+                    @foreach (var i in Model.Districts)
+                    {
+                        <li><a href="@GetSeName(Request.Url.Host,"nha-ban",i.Value)">Nhà ở @i.Text</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="footerCol">
+                <b>Chung cư</b><br><br>
+                <ul>
+                    @foreach (var i in Model.Districts)
+                    {
+                        <li><a href="@GetSeName(Request.Url.Host,"nha-du-an",i.Value)">Chung cư @i.Text</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="footerCol">
+                <b>Hướng dẫn- thủ tục mua nhà</b><br><br>
+                <ul>
+                    @foreach (var i in Model.Topics)
+                    {
+                        <li><a href="@Url.RouteUrl("Topic", new {SystemName=i.Value })">@i.Text</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="footerCol">
+                <b>Kết nối với chúng tôi</b><br><br>
+
+                @Html.Action("NewsletterBox", "NewsLetter")<br />
+                <a href="http://facebook.com/zhouseonline" target="_blank"><img src="@Url.Content("~/Themes/Zhouse/Content/images/footerLink.png")" class="noborder" alt="facebook zHouseOnline"></a>
+                <input type="button" onclick="setLocation('http://hoidap.zhouse.com.vn')" class="btn-QA" value="" />
+            </div>
+        </div>
+    </div>
+    <div class="clearBoth"></div>
+    <div class="menu-footer">
+        <ul>
+            <li><h4><a href="@Url.RouteUrl("ContactUs")#div-gioithieu">Giới thiệu</a></h4></li>
+            <li><h4><a href="@Url.RouteUrl("Topic", new {SystemName="hop-tac" })">Hợp tác</a></h4></li>
+            <li><h4><a href="@Url.RouteUrl("Topic", new {SystemName="tuyen-dung" })">Tuyển dụng</a></h4></li>
+            <li><h4><a href="@Url.RouteUrl("Topic", new {SystemName="dieu-khoan-su-dung" })">Điều khoản sử dụng</a></h4></li>
+            <li><h4><a href="#">Blogs</a></h4></li>
+            <li><h4><a href="@Url.RouteUrl("ContactUs")#div-contact">Liên hệ</a></h4></li>
+        </ul>
+    </div>
+    <div class="wrapper">
+        <div class="footerEnd">
+            <p>Copyright 2014 © zHouse.com.vn - Bản quyền thuộc về zHouse.com.vn</p>
+            <p>Vận hành bởi Công ty Cổ phẩn đầu tư và xây dựng Hạnh Phúc</p>
+            <p>Địa chỉ: 144/12/18a Đường Số 6, P. Bình Hưng Hòa B, Q. Bình Tân, Tp. Hồ Chí Minh - Điện thoại:(+84)8 6681 3308</p>
+            <p>Email: contact@zHouse.com.vn | Website: <a href="http://zHouse.com.vn">http://zHouse.com.vn</a></p>
+            <p>Thiết kế bởi <a href="http://ecomsolute.com">eCOMsolute.com</a></p>
+            <p>Website đang trong thời gian thử nghiệm chờ đăng ký</p>
+        </div>
+        <div class="map-link">
+            <a class="btn-map" href="@Url.RouteUrl("map")"></a>
+        </div>
+    </div>
+    @Html.Widget("footer")
+</div>

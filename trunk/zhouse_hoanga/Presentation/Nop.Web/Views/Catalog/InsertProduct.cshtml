@@ -1,0 +1,19 @@
+﻿@model Nop.Web.Models.Catalog.InsertProductModel
+@{
+    Layout = "~/Views/Shared/_RootNoHeadFoot.cshtml";
+}
+
+
+       
+        <div class="page-body">
+            @using(Html.BeginForm("InsertProduct","Catalog",FormMethod.Post,new{id="frmProduct"}))
+            {
+               
+                @Html.Partial("_CreateOrUpdateProduct",Model)
+               
+           
+            }
+           </div>
+     <div class="clearBoth"></div>
+     
+

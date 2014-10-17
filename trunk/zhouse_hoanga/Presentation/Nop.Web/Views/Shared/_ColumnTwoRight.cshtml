@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+}
+
+<div class="center-2">
+    @Html.Widget("main_column_before")
+    @RenderBody()
+    @Html.Widget("main_column_after")
+</div>
+<div class="side-2 col-right">
+    @if (IsSectionDefined("right"))
+    {
+        @RenderSection("right")
+    }
+</div>

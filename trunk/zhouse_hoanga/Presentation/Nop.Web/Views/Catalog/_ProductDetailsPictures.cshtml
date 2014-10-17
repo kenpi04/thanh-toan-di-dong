@@ -1,0 +1,55 @@
+﻿@model IList<Nop.Web.Models.Media.PictureModel>
+@using Nop.Core.Domain.Media
+@using Nop.Core.Infrastructure
+@using Nop.Web.Models.Catalog;
+@{
+    Html.AddScriptParts("~/Scripts/slimbox2.js");
+
+}
+@if (Model.Count > 0)
+{ 
+ 
+   <div id="slider-detail" class="flexslider">
+  <ul class="slides">
+      @foreach(var i in Model)
+      {
+    <li style="text-align:-webkit-center">
+        <img style="width:auto" alt="@i.AlternateText" title="@i.Title" src="@i.FullSizeImageUrl" />
+    </li>
+      }
+   
+  </ul>
+</div>
+<div id="carousel" class="flexslider">
+  <ul class="slides">
+       @foreach(var i in Model)
+      {
+        <li>
+          <img style="width:auto" src="@i.ImageUrl" alt="@i.AlternateText" title="@i.Title"/>
+        </li>
+       }
+    
+  </ul>
+</div>
+    <script>
+        $(window).load(function () {
+            // The slider being synced must be initialized first
+            $('#carousel').flexslider({
+                animation: "slide",
+                controlNav: false,
+                animationLoop: false,
+                slideshow: false,
+                itemWidth: 80,
+                itemMargin: 5,
+                asNavFor: '#slider-detail'
+            });
+            $('#slider-detail').flexslider({
+                animation: "slide",
+                controlNav: false,
+                animationLoop: false,
+                slideshow: false,
+                sync: "#carousel"
+            });
+        });
+    </script>
+}
