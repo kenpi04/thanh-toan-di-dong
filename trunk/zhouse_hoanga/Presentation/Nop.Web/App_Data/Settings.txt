@@ -1,0 +1,2 @@
+DataProvider: sqlserver
+DataConnectionString: Data Source=Dungvt\dungvt;Initial Catalog=dbzhouse_hoanga;Integrated Security=False;User Id=sa; Password =123456; Persist Security Info=False;MultipleActiveResultSets=True
