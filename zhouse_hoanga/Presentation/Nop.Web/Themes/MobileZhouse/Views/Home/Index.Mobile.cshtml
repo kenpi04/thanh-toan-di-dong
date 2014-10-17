@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+}
+<div class="page home-page">
+    <div class="page-body">
+        <div class="ui-grid-a">
+            <div class="ui-block-a" id="state_home">
+                @* @Html.Action("FptStateNavi", "Catalog", new { stat = 0 })*@
+            </div>
+             <div class="ui-block-b">
+              
+                @*  @Html.DropDownList("DistrictNavigation", new List<SelectListItem>() {new SelectListItem{Text="Chọn quận",Value="0",Selected=true} }, new { @class = "search-select", id = "DistrictNavigation_home" })*@
+            </div>
+        </div>
+        
+         @Html.Action("HomepageProducts","Catalog")
+      @* <script type="text/javascript">
+
+           $(function () {
+               $("input[tab]").click(function () {
+                   $(this).attr("class", "greenTab");
+                   var tab = $(this).attr("tab");
+                   $("input[tab!=" + tab + "]").attr("class", "greyTab");
+                   $("div[id^=tab]").hide();
+                   $(tab).show();                 
+               })
+               $("#state_home select").change(function () {
+                   var id = $(this).find("option:selected").val();
+                   var ddlDistrics = $("#DistrictNavigation_home");
+                   $.ajax({
+                       cache: false,
+                       type: "GET",
+                       url: "@(Url.RouteUrl("GetDistrictByStateId"))",
+                                   data: { "stateProvinceId": id },
+                                   success: function (data) {
+                                       ddlDistrics.html('');
+
+                                       ddlDistrics.append($('<option></option>').val(0).html("Chọn quận huyện"));
+                                       $.each(data, function (id, option) {
+                                           ddlDistrics.append($('<option></option>').val(option.id).html(option.name));
+                                       });
+                                       ddlDistrics.selectmenu("refresh");
+                                       changeSelect();
+                                      
+                                   },
+                                   error: function (xhr, ajaxOptions, thrownError) {
+                                       alert('Failed to retrieve states.');
+
+                                   }
+                               });
+               })
+               $("#DistrictNavigation_home").change(function () {
+                   changeSelect();
+               });
+           })
+           function changeSelect()
+           {
+               //var isVipTab = $("#tab-div-vip").is(":hidden");
+               //if (!isVipTab) {
+               //    PAGE_INDEX_VIP = 0;
+               //    $("#viewMore-vip").click();
+               //    $("#product-list-vip").html("");
+               //}
+               //else {
+                   PAGE_INDEX_NEW = 0;
+                   $("#viewMore-new").click();
+                   $("#product-list-new").html("");
+              // }
+           }
+       </script>*@
+    </div>
+</div>

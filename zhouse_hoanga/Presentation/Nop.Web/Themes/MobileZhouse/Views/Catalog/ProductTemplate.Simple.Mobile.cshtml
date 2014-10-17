@@ -1,0 +1,242 @@
+﻿@model ProductDetailsModel
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Models.Catalog;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AppendScriptParts("~/Scripts/jquery.flexslider.js");
+
+    //title, meta
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+
+
+    var canonicalUrlsEnabled = EngineContext.Current.Resolve<SeoSettings>().CanonicalUrlsEnabled;
+    if (canonicalUrlsEnabled)
+    {
+        var productUrl = Url.RouteUrl("Product", new { SeName = Model.SeName }, this.Request.Url.Scheme);
+        Html.AddCanonicalUrlParts(productUrl);
+    }
+}
+@if (Model.Id > 0)
+{
+@Html.HiddenFor(model => model.Id)
+    <meta property="og:url" content="@Url.RouteUrl("Product", new { SeName = Model.SeName })"/>
+<meta property="og:image" content="@Model.DefaultPictureModel.ImageUrl"/>
+<meta property="og:type" content="product"/>
+<meta property="og:site_name" content="zhouse.com.vn"/>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+<div class="page search-page" style="font-size:14px">
+    <div class="page-body">
+        <div data-role="main" itemscope itemtype="http://data-vocabulary.org/Product">
+            <div data-role="fieldcontain">
+               @Html.Action("GetProductImages", new {productId=Model.Id })
+            </div>
+            <h1 class="product-name">@Model.Name</h1>
+              <div class="blueBar">                   
+                       Thông tin cơ bản
+                </div>
+             <table class="table-detail">
+                        <tbody>
+                              <tr>
+                                <td >Giá</td>
+                                <td class="field-price">@Model.ProductPrice.Price</td>
+                            </tr>
+                             <tr>
+                                <td>Tình trạng</td>
+                                <td>@Model.ProductStatusText</td>
+                            </tr>
+                            </tbody>
+                  </table>
+
+              <div class="blueBar">                   
+                       Thông tin chi tiết
+                </div>
+              @if(Model.IsProject)
+                        {
+                         @Html.Partial("_ProductSpecficationOptionProject",Model)
+                        }
+                        else
+                        {
+                          @Html.Partial("_ProductSpecficationOptionHouse", Model)
+                        }
+                <div class="field-address">
+
+                    <a data-role="button" id="showbigmap" data-rel="popup" href="#popupMap">Xem bản đồ</a>
+
+                </div>
+                
+            @*</div>*@
+            @*<div data-role="fieldcontain">*@
+                @*<h3 class="blueborder">Thông tin liên hệ</h3>*@
+             <div class="blueBar">                   
+                       Thông tin liên hệ
+                </div>
+
+                <div class="greyBg">
+                    @*<div class="iconLeft"><img style="max-width:100%" src="/Themes/MobileZhouse/Content/images/Phoneicon.png"/></div>*@
+                    <div class="infoRight">
+                        <ul class="contact-detail">
+                            <li><h3><span>zHouse</span></h3></li>
+                            <li><span>Hotline: </span><a href="tel:0936734949">0936734949</a>  -  <a href="tel:0968309789">0968309789</a></li>
+                            <li><span>Địa chỉ:</span>  144/12/18a đường số 6, P.Bình Hưng Hòa B, Q.Bình Tân</li>
+                            <li><span>Email:</span>  contact@zHouse.com.vn</li>
+                        </ul>
+                    </div>
+                </div>
+            @*</div>*@
+            <div class="clearboth"></div>
+            @*<div data-role="fieldcontain">*@
+                <div data-role="fieldcontain">
+                      <div class="blueBar">                   
+                     Mô tả chi tiết
+                </div>
+                    <div class="bar-content div-fulldes">
+                        <p>@Html.Raw(Model.FullDescription)</p>
+                    </div>
+                </div>
+
+           
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#slider-banner-detail").flexslider({
+            directionNav: true,             //Boolean: Create navigation for previous/next navigation? (true/false)
+            prevText: "",           //String: Set the text for the "previous" directionNav item
+            nextText: "",
+            controlNav: false,
+            start:function(slider){
+                $("img[imgsrc]").each(function(){
+                    $(this).attr('src',$(this).attr("imgsrc")).removeAttr("style");
+                });
+            },
+            after:function(slider){
+                var index=$(".flex-active-slide")[0];
+                var i=$("li").index(index);
+               
+                $("#numpic").html(i+1);
+                
+            }
+        });    
+    })
+    
+    $(function(){
+        $("#slider-banner-detail").on("swiperight",function(){
+            $("#slider-banner-detail").flexslider("next");
+        })
+        .on("swipeleft",function(){
+            $("#slider-banner-detail").flexslider("prev");
+        });
+    })
+</script>
+@*<script type="text/javascript">
+    var map;
+    var gmarkers = [];
+    var map = null;
+    var map2 = null;
+    var lat = '@Model.';
+    var lng = '@Model.Address.LongTiTudeGoogleMap';
+    if(lat=='')
+        lat=0;
+    if(lng=='')
+        lng=0;
+    function initialize( str) {
+        var mapOptions = {
+            zoom:15,
+            center: new google.maps.LatLng(lat,lng )
+        };
+        
+        var image = {
+            url: '../Themes/DefaultClean/Content/images/20.png',
+            origin: new google.maps.Point(0, 0),                  
+            anchor: new google.maps.Point(0, 32)
+        };
+
+        map = new google.maps.Map(document.getElementById(str),
+            mapOptions);
+        
+
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lat,lng ),
+            map: map ,
+            icon : image        
+        });    
+               
+        
+        
+        google.maps.event.addListener(marker, 'click', function () {
+            //  infowindow.setContent(@Model.Name.ToString());
+            var html="<b>@Model.Name</b>";
+            html+="@Model.Address.FullAddress";            
+            marker.openInfoWindowHtml(html);
+        });
+        // save the info we need to use later for the side_bar
+        
+
+    }
+
+
+   
+       
+  
+
+    $('#showbigmap').click(function ()
+    {
+
+        setTimeout(function () {  google.maps.event.addDomListener(window, 'load', initialize("map")); }, 1000);
+       
+    })
+    $( document ).on( "pageinit", function() {
+        $( "#map" )
+            .attr( "width", 0 )
+            .attr( "height", 0 );
+ 
+        $( "#map" )
+            .css( { "width" : 0, "height" : 0 } );
+ 
+        $( "#popupMap" ).on({
+            popupbeforeposition: function() {
+                var size = scale( 480, 600, 0, 1 ),
+                    w = size.width,
+                    h = size.height;
+ 
+                $( "#map" )
+                    .attr( "width", w )
+                    .attr( "height", h );
+ 
+                $( "#map").css( { "width": w, "height" : h } );
+            },
+            popupafterclose: function() {
+                $( "#map" )
+                    .attr( "width", 0 )
+                    .attr( "height", 0 );
+ 
+                $( "#map" ).css( { "width": 0, "height" : 0 } );
+            }
+        });
+    });
+   
+
+</script>*@
+
+
+<div id="popupMap" data-role="popup" data-position-to="window" data-transition="slide" data-shadow="true">
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <div id="map">
+        <div class="div_loading"></div>
+    </div>
+</div>
+}
+else
+{
+       <div class="page-title">
+        <br />
+        <span style="font-size: 18px; padding: 20px;">Tin đăng của bạn sẽ được duyệt trong vòng 4-12 tiếng kể từ lúc gửi tin.</span>
+        <br />
+    </div>
+
+}
