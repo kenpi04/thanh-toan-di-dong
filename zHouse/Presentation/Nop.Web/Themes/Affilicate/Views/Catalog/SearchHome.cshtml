@@ -37,6 +37,16 @@
                         <input type="submit" style="width:50%" class="blueBtn" value="tìm kiếm">
                     }
                 </div>
+                <div id="tab3" class="tab">
+                    @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id = "frmSearchHOme-thue", style = "float:left;display:inline-block;" }))
+                    {<input type="hidden" name="type" value="16" />
+                        @Html.DropDownList("districtId", Model.Districts, new { @class = "box" })
+                      
+                        @Html.DropDownList("categoryId", Model.AvailableCategories, new { @class = "box" })
+                     
+                        <input type="submit" style="width:50%" class="blueBtn" value="tìm kiếm">
+                    }
+                </div>
             </div>
         </div>
         <div class="clearBoth"></div>
@@ -44,6 +54,26 @@
 </div>
 
 <script type="text/javascript">
+    //Ham selected box search 
+    //function activeSelect(option)
+    //{
+    //    if(option.districtId)
+    //    {
+    //        $("#districtId").val(option.districtId);
+    //    }
+    //    if (option.wardId) {
+    //        $("#wardId").val(option.wardId);
+    //    }
+    //    if (option.priceString) {
+    //        $("#priceString").val(option.priceString);
+    //    }
+    //    if (option.areaString) {
+    //        $("#areaString").val(option.areaString);
+    //    }
+    //    if (option.categoryId) {
+    //        $("#categoryId").val(option.categoryId);
+    //    }
+    //}
     $(document).ready(function () {
         $('.tabs .tab-links a').on('click', function (e) {
             var currentAttrValue = $(this).attr('href');

@@ -1,0 +1,98 @@
+﻿@model string
+
+<script>
+    function loadScript() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&' +
+            'callback=initMap';
+        document.body.appendChild(script);
+    }
+    var map, geocoder,info,marker;
+    function showAdd(latlgn,marker)
+    {
+       
+        geocoder.geocode({ 'location': latlgn }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
+               
+                 info = new google.maps.InfoWindow({ content: results[0].formatted_address });
+                info.open(map, marker); 
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+    }
+    function initMap()
+    {
+       
+            var myOptions = {
+                center: new google.maps.LatLng(10.79101, 106.68960),
+                zoom: 14,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                panControl: true,
+                zoomControl: true,
+
+            };
+            center = myOptions.center;
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            geocoder = new google.maps.Geocoder();
+         
+            marker = new google.maps.Marker({
+                map: map,
+                position: center,
+                draggable:true
+            });          
+          
+            $("#LatTiTudeGoogleMap").val(center.lat().toFixed(5));
+            $("#LongTiTudeGoogleMap").val(center.lng().toFixed(5));
+
+
+            google.maps.event.addListener(marker, "dragend", function (e) {
+                var point =  e.latLng;
+                map.panTo(point);
+                $("#LatTiTudeGoogleMap").val(point.lat().toFixed(5));
+                $("#LongTiTudeGoogleMap").val(point.lng().toFixed(5));
+                showAdd(point, marker);
+
+            });
+
+
+            google.maps.event.addListener(map, "moveend", function (ex) {
+
+                google.maps.event.addListener(marker, "dragend", function (e) {
+                    var point =  e.latLng;
+                    map.panTo(point);
+                    geocodePosition(point);
+                    $("#LatTiTudeGoogleMap").val(point.lat().toFixed(5));
+                    $("#LongTiTudeGoogleMap").val(point.lng().toFixed(5));
+                    showAdd(point, marker);
+
+                });
+
+            });
+
+        
+    }
+    loadScript();
+    $("#FullAddress").blur(function () {
+        var addString = $("#FullAddress").val();
+        geocoder.geocode({ 'address': addString }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
+
+                var info = new google.maps.InfoWindow({ content: results[0].formatted_address });
+                center = results[0].geometry.location;
+                map.setCenter(center);
+                marker.setPosition(center)
+                info.open(map, marker);
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+    })
+</script>
+<input type="hidden" id="LatTiTudeGoogleMap" name="LatTiTudeGoogleMap" />
+<input type="hidden" id="LongTiTudeGoogleMap" name="LongTiTudeGoogleMap" />
+<div id="map_canvas" style="width:700px;height:600px"></div>
+

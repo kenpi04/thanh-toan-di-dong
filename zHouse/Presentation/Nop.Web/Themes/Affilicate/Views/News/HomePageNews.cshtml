@@ -3,7 +3,7 @@
 @if (Model.NewsItems.Count > 0)
 {  
     <div class="news-list-homepage"> 
-        <div class="news-items">
+        <div class="news-items" id="news-list">
             @foreach (var item in Model.NewsItems)
             {
                 <div class="item">
@@ -26,4 +26,18 @@
             }            
         </div>
     </div>    
+    if(Model.NewsItems.Count>4)
+    { 
+    <script type="text/javascript">
+        function get_request() {
+            $('#news-list .item:first').hide(1000, function () {
+                $(this).appendTo("#news-list")
+                $(this).show(1000);
+            });
+          
+            setTimeout(get_request, 5000);
+        }
+        get_request();
+    </script>
+}
 }

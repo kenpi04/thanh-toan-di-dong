@@ -1381,3 +1381,4 @@ li.active a, li.active a:hover {background: #fff;color: #4c4c4c;border: 1px soli
 .tab.active {display: block;}
 .request-label{text-align:right;}
 .request-label label{padding-right:10px;}
+.loading-img{background:url(images/loading.gif);width:24px;height:24px;display:block;margin:0 auto}

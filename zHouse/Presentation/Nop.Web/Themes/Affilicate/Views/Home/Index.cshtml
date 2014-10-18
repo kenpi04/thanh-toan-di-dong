@@ -3,11 +3,19 @@
 }
 <div class="page home-page">
     <div class="page-body">
-       @*@Html.Widget("home_page_top")*@       
-        @Html.Action("NewProducts", "Catalog", new { pageSize = 20, productThumbPictureSize = 109 }) 
-      
+       @*@Html.Widget("home_page_top")*@   
+        <div id="new-product-div">
+          
+        </div>
+        <div id="project-product-div">
+           
+        </div>
         @Html.Action("TopicHomePage","Topic")
        
         @*@Html.Widget("home_page_bottom")*@
     </div>
+    <script type="text/javascript">
+        $("#new-product-div").html("<div class=loading-img></div>").load('@Url.Action("NewProducts", "Catalog", new { pageSize = 18, productThumbPictureSize = 109 })');
+        $("#project-product-div").html("<div class=loading-img></div>").load('@Url.Action("HomePageProjectProducts", "Catalog", new { pageSize = 18, productThumbPictureSize = 109 })')
+    </script>
 </div>
