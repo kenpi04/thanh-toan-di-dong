@@ -2378,7 +2378,19 @@ namespace Nop.Web.Controllers
             return PartialView(model);
         }
 
-        [ChildActionOnly]
+        public ActionResult HomepageProjectProducts(int? pageSize, int? productThumbPictureSize)
+        {
+            var products = _productService.GetAllProductsDisplayedOnHomePage();
+            //ACL and store mapping
+            products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)&&p.ProductType==ProductType.ProjectProduct).ToList();
+
+            var model = PrepareProductOverviewModels(products, true, true, productThumbPictureSize)
+                .ToList();
+
+            return PartialView(model);
+        }
+
+
         public ActionResult NewProducts(int? pageSize, int? productThumbPictureSize)
         {
             var products = _productService.SearchProducts(pageSize: pageSize.HasValue ? pageSize.Value : 8,
@@ -4424,6 +4436,8 @@ namespace Nop.Web.Controllers
             p.ContactName = inPd.ContactName;
             p.ContactPhone = inPd.ContactPhone;
             p.HouseNumber = inPd.NumberOfHome;
+            p.LongTiTudeGoogleMap = inPd.LongTiTudeGoogleMap;
+            p.LatTiTudeGoogleMap = inPd.LatTiTudeGoogleMap;
 
             p.DistrictId = inPd.DistrictId;
             p.WardId = inPd.WardId;
@@ -4864,29 +4878,37 @@ namespace Nop.Web.Controllers
             return PartialView("_ProductListPartial", model);
 
         }
-        private SearchModel PreparingSearchModel(bool isproject = false, int categoryId = 0, int categoryRentId = 0, bool isMarketPlace = false)
+        private SearchModel PreparingSearchModel(bool isproject = false,
+            int selectedDistrictId=0,
+            int selectedWardId=0,
+            int selectedCateId=0,
+            int selectedBathroomId=0,
+            int selectedBedroomId=0,
+            int selectedDirectorId=0,
+            int categoryId = 0,
+            int categoryRentId = 0, bool isMarketPlace = false)
         {
             string keyCache = string.Format("modelSearch-{0}-{1}-{2}-{3}", isproject, categoryId, categoryRentId, isMarketPlace);
-            return _cacheManager.Get(keyCache, () =>
+         var dataModel=   _cacheManager.Get(keyCache, () =>
             {
                 return Task.Run(async () =>
                 {
                     var model = new SearchModel();
                     var cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).ToList();
                     model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                    model.AvailableCategories.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Selected = true, Value = "0" });
+                    model.AvailableCategories.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Value = "0" });
                     model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResourceAsync("Product.Status.Enum." + x.ToString()).Result, x => ((int)x).ToString());
-                    model.Status.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectStatus"), Selected = true, Value = "0" });
+                    model.Status.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectStatus"), Value = "0" });
                     var dir = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.Director);
                     model.Directories = dir.ToSelectList(x => x.Name, x => x.Id.ToString());
-                    model.Directories.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
+                    model.Directories.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync(" Product.Search.SelectDirector"), Value = "0" });
                     var bed = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.NumberOfBedRoom);
                     model.BedRooms = bed.ToSelectList(x => x.Name, x => x.Id.ToString());
                     if (!isMarketPlace)
                     {
                         var w = await _stateProvinceService.GetWardByDistrictIdAsync(611);
                         model.Wards = w.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                        model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Selected = true, Value = "0" });
+                        model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Value = "0" });
                         var bath = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.NumberOfBadRoom);
                         model.BathRooms = bath.ToSelectList(x => x.Name, x => x.Id.ToString());
                     }
@@ -4894,15 +4916,29 @@ namespace Nop.Web.Controllers
                     {
                         var dis = await _stateProvinceService.GetDistrictByStateProvinceIdAsync();
                         model.Districts = dis.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                        model.Districts.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectDistrict"), Selected = true, Value = "0" });
+                        model.Districts.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectDistrict"), Value = "0" });
                         var caterent = _categoryService.GetAllCategoriesByParentCategoryId(categoryRentId).ToList();
                         model.AvailableCategoriesRent = caterent.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                        model.AvailableCategoriesRent.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Selected = true, Value = "0" });
-                        model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Selected = true, Value = "0" });
+                        model.AvailableCategoriesRent.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"),  Value = "0" });
+                        model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Value = "0" });
                     }
                     return model;
                 }).Result;
             });
+            if(selectedCateId!=0)
+                dataModel.AvailableCategories.FirstOrDefault(x => int.Parse(x.Value) == selectedCateId).Selected = true;
+            if (selectedDistrictId != 0)
+                dataModel.Districts.FirstOrDefault(x => int.Parse(x.Value) == selectedDistrictId).Selected = true;
+            if (selectedWardId != 0)
+                dataModel.Districts.FirstOrDefault(x => int.Parse(x.Value) == selectedWardId).Selected = true;
+            if (selectedBathroomId!=0)
+                dataModel.BathRooms.FirstOrDefault(x => int.Parse(x.Value) == selectedBathroomId).Selected = true;
+            if (selectedBedroomId != 0)
+                dataModel.AvailableCategories.FirstOrDefault(x => int.Parse(x.Value) == selectedBedroomId).Selected = true;
+            if (selectedDirectorId != 0)
+                dataModel.AvailableCategories.FirstOrDefault(x => int.Parse(x.Value) == selectedDirectorId).Selected = true;
+            return dataModel;
+
         }
 
         [ChildActionOnly]
@@ -4915,11 +4951,28 @@ namespace Nop.Web.Controllers
             return PartialView("SearchBoxLeft", model);
         }
         [ChildActionOnly]
-        public ActionResult SearchBoxHead(bool isHome, bool isMarketPlace = false, int categoryId = 1, int categoryRentId = 16)
+        public ActionResult SearchBoxHead(bool isHome,
+            int selectedDistrictId=0,
+            int selectedWardId=0,
+            int selectedCateId=0,
+            int selectedBathroomId=0,
+            int selectedBedroomId=0,
+            int selectedDirectorId=0,
+            List<int> attribute = null,
+            bool isMarketPlace = false, int categoryId = 1, int categoryRentId = 16)
         {
             var model = new SearchModel();
-            if (!isMarketPlace) model = PreparingSearchModel(categoryId: categoryId);
-            else model = PreparingSearchModel(categoryId: categoryId, categoryRentId: categoryRentId, isMarketPlace: isMarketPlace);
+            if (!isMarketPlace) model = PreparingSearchModel(
+                categoryId: categoryId
+            );
+            else model = PreparingSearchModel(
+                selectedDistrictId:selectedDistrictId,
+                selectedBedroomId:selectedBedroomId,
+                selectedBathroomId:selectedBathroomId,
+                selectedDirectorId:selectedDirectorId,               
+                selectedCateId:selectedCateId,
+                selectedWardId:selectedWardId,
+                categoryId: categoryId, categoryRentId: categoryRentId, isMarketPlace: isMarketPlace);
             if (isHome)
                 return View("SearchHome", model);
             return View(model);

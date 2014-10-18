@@ -114,6 +114,11 @@ namespace Nop.Web.Models.Catalog
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.AvailableEndDateTime")]
         public DateTime? AvailableEndDateTime { get; set; }
+        public string LatTiTudeGoogleMap { get; set; }
+        /// <summary>
+        /// Gets or sets the Longtitude google map - vi do
+        /// </summary>
+        public string LongTiTudeGoogleMap { get; set; }
 
         public class PictureUploadModel
         {

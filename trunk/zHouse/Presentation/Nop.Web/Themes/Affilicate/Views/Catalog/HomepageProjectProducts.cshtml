@@ -1,7 +1,7 @@
 ﻿@model IList<ProductOverviewModel>
 @using Nop.Web.Models.Catalog;
 @{
-    //Html.AppendScriptParts("~/Scripts/jquery-carousel.js");
+   
     int i = 1;
     int positionbanner = 200;
 }
@@ -9,7 +9,7 @@
 {
     <div class="wrapper">
         <div class="intro-product">
-            <div><h2 class="block-title">Nhà bán mới nhất</h2><a class="block-title-xemthem" href="/nha-ban"><u>xem thêm</u></a></div>
+            <div><h2 class="block-title">Dự án nổi bật</h2><a class="block-title-xemthem" href="/nha-du-an"><u>xem thêm</u></a></div>
             <div id="list-product-home">
                 @foreach (var item in Model)
                 {
@@ -20,11 +20,12 @@
                         <div style="float:left;width:98%;max-height:100px;overflow:hidden;margin-bottom:10px;">
                             @Html.FptBanner(Position: positionbanner)
                         </div>
-                    }i++;}
+                    } i++;
+                }
             </div>
         </div>
         <div style="max-width:23%;float:left">
             @Html.FptBanner(Position: 102)
-        </div>        
+        </div>
     </div>
 }
