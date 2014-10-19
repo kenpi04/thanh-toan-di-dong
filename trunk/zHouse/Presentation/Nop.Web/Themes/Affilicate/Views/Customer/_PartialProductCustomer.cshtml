@@ -58,28 +58,28 @@
          <script type="text/javascript">
                             function updateNew(id,action,value)
                             {
-                                $.post("@Url.Action("UpdateProductAsync", "Catalog")", { productId: id, action: action, value: value }, function (d) {
-                                    alert(d);
-                                    if(action==1)
-                                    {
-                                        var status = "Ngừng đăng tin";
-                                       
-                                        if (value == 1) {
-                                            status = "Tin đang đăng";
-                                            $("#publish-" + id).html('<a onclick="updateNew('+id+',1,0)">Ngừng đăng tin</a>');
-                                        }
-                                        else
-                                            $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,1)">Đăng tin</a>');
+                                if (confirm("Bạn có chắc thay đổi trạng thái?")) {
+                                    $.post("@Url.Action("UpdateProductAsync", "Catalog")", { productId: id, action: action, value: value }, function (d) {
+                                        alert(d);
+                                        if (action == 1) {
+                                            var status = "Ngừng đăng tin";
+
+                                            if (value == 1) {
+                                                status = "Tin đang đăng";
+                                                $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,0)">Ngừng đăng tin</a>');
+                                            }
+                                            else
+                                                $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,1)">Đăng tin</a>');
                                             $("#status_" + id).html(status);
-                                        
-                                            
-                                    }
-                                    if(action==2)
-                                    {
-                                        $("#item-" + id).hide("slow");
-                                        $("#item"+id).remove();
-                                    }
-                                })
+
+
+                                        }
+                                        if (action == 2) {
+                                            $("#item-" + id).hide("slow");
+                                            $("#item" + id).remove();
+                                        }
+                                    })
+                                }
                             }
 
                         </script>

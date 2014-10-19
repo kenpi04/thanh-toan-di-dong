@@ -119,6 +119,8 @@ namespace Nop.Web.Models.Catalog
         public string ContactName { get; set; }
         public string ContactEmail { get; set; }
         public string ContactPhone { get; set; }
+        public string Lat { get; set; }
+        public string Lng { get; set; }
         /// <summary>
         /// ngay thi cong
         /// </summary>

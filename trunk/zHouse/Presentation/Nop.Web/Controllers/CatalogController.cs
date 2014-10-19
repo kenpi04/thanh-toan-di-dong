@@ -829,7 +829,9 @@ namespace Nop.Web.Controllers
                 Dept = product.Height,
                 StatusId = product.GiftCardTypeId,
                 Promotion = product.Promotion,
-                DacDiemNoiBat = product.UserAgreementText
+                DacDiemNoiBat = product.UserAgreementText,
+                Lat=product.LatTiTudeGoogleMap,
+                Lng=product.LongTiTudeGoogleMap
             };
             bool isProject = false;
             if (product.ProductCategories.Count > 0)

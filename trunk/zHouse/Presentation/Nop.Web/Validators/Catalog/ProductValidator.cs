@@ -20,8 +20,10 @@ namespace Nop.Web.Validators.Catalog
                 RuleFor(x => x.StreetId).NotEqual(0).When(x=>x.ProductType==(int)ProductType.RentProduct).WithMessage(localizationService.GetResource("Products.Fields.Street.Required"));
                 RuleFor(x => x.WardId).NotEqual(0).When(x => x.ProductType == (int)ProductType.RentProduct).WithMessage(localizationService.GetResource("Products.Fields.WardId.Required"));
                 RuleFor(x => x.DistrictId).NotEqual(0).When(x => x.ProductType == (int)ProductType.RentProduct).WithMessage(localizationService.GetResource("Products.Fields.DistrictId.Required"));
-            
-            RuleFor(x => x.Name).NotEmpty().WithMessage(localizationService.GetResource("Product.Fields.Name.Required"));
+
+                RuleFor(x => x.Name).NotEmpty().When(x => x.ProductType == (int)ProductType.RentProduct).WithMessage(localizationService.GetResource("Product.Fields.Name.Required"))
+                    .Length(10, 150).WithMessage(localizationService.GetResource("Product.Field.Name.LengthRequired"));
+                RuleFor(x => x.FullDescription).NotEmpty().When(x => x.ProductType == (int)ProductType.RentProduct).WithMessage(localizationService.GetResource("Product.Field.FullDescription.Required"));
             RuleFor(x => x.Price).NotEmpty().When(x => x.ProductType == (int)ProductType.RentProduct).WithMessage(localizationService.GetResource("Products.Fields.Price.Required"))
                 .LessThan(99999).WithMessage(localizationService.GetResource("Product.Fields.Price.Overload"));
             RuleFor(x => x.CateId).NotEmpty().WithMessage(localizationService.GetResource("Products.Fields.CateId.Required"));

@@ -45,7 +45,7 @@
         @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:82.3%", placeholder = "Địa chỉ đầy đủ" })
     </div>
     <div class="blueText">THÔNG TIN PHÁP LÝ</div>
-    <div class="boxWrapperSmall">
+    <div class="boxWrapperSmall" id="PhapLy">
         @foreach (var i in Model.PhapLy)
         {
             <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") /> @Html.Raw("&nbsp;" + i.Text + "&nbsp;&nbsp;&nbsp;")
@@ -162,7 +162,7 @@
 <div class="floatLeft">
     <div class="colA"><div class="blueText">Cơ sở vật chất</div></div>
     <div class="colB">
-        <ul style="list-style: none">
+        <ul style="list-style: none" id="CoSoVatChat">
             @foreach (var i in Model.Facilities)
             {
                 <li style="float: left; width: 20%">
@@ -180,7 +180,7 @@
 <div class="floatLeft">
     <div class="colA"><div class="blueText">Môi trường xung quanh</div></div>
     <div class="colB">
-        <ul style="list-style: none">
+        <ul style="list-style: none" id="MoiTruong">
             @foreach (var i in Model.Environments)
             {
                 <li style="float: left; width: 20%">
@@ -196,7 +196,7 @@
     </div>
 </div><!----floatLeft----->
 <div class="floatLeft">
-    <div class="colA"><div class="blueText">Thích hợp</div></div>
+    <div class="colA" id="ThichHop"><div class="blueText">Thích hợp</div></div>
     @foreach (var i in Model.ThichHop)
     {
         <div class="colB" style="float:left;margin-right:20px"> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") /> @Html.Label(i.Text)</div>
@@ -314,6 +314,23 @@
                     });
                     return false;
                 }
+                if($("#PhapLy input:checked").length==0)
+                {
+                    alert('Vui lòng chọn thông tin pháp lý!');
+                }
+                else if($("#CoSoVatChat input:checked").length==0)
+                {
+                    alert("Vui lòng chọn một cơ sở vật chất");
+                }
+                else if($('#MoiTruong input:checked').length==0)
+                {
+                    alert("Vui lòng chọn môi trường xung quanh");
+                }
+                else if($("#ThichHop input:checked").length==0)
+                {
+                    alert("Vui lòng chọn loại thích hợp của căn nhà");
+                }
+                else
                 if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
                     alert('Vui lòng chọn hình ảnh đăng');
                 }
