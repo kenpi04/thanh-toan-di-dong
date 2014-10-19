@@ -1087,6 +1087,8 @@ namespace Nop.Web.Controllers
             {
                 foreach (ProductSortingEnum enumValue in Enum.GetValues(typeof(ProductSortingEnum)))
                 {
+                    if (enumValue == ProductSortingEnum.NameAsc || enumValue == ProductSortingEnum.NameDesc)
+                        continue;
                     var currentPageUrl = _webHelper.GetThisPageUrl(true);
                     var sortUrl = _webHelper.ModifyQueryString(currentPageUrl, "orderby=" + ((int)enumValue).ToString(), null);
 
@@ -4922,7 +4924,11 @@ namespace Nop.Web.Controllers
                         var caterent = _categoryService.GetAllCategoriesByParentCategoryId(categoryRentId).ToList();
                         model.AvailableCategoriesRent = caterent.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
                         model.AvailableCategoriesRent.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"),  Value = "0" });
+                        var cateProject = _categoryService.GetAllCategoriesByParentCategoryId(2).ToList();
                         model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Value = "0" });
+                        model.AvaiilableCategoriesProject = cateProject.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                        model.AvaiilableCategoriesProject.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Value = "0" });
+                      
                     }
                     return model;
                 }).Result;
