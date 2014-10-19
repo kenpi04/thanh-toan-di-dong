@@ -47,32 +47,38 @@
         var center;
         var color = ["FF8888", "88FF88", "8888FF", "88FFFF", "FF88FF", "FF8888", "FFFF88", "FFFFFF"];
         var gmarkers2 = {};
+       
         function showAddress() {
             var diachi = "@Model.FullAddress";
             var content = "Tên liên hệ:@Model.ContactName <br> Số điện thoại: @Model.ContactPhone <br> Email:@Model.ContactEmail <br> Địa chỉ :@Model.FullAddress";
             geocoder = new google.maps.Geocoder();
             var myOptions = {
-                center: new google.maps.LatLng(10.794345, 106.589554),
+                center: new google.maps.LatLng(@Model.Lat, @Model.Lng),
                 zoom: 14,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             center = myOptions.center;
             map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
             var info = new google.maps.InfoWindow({ content: content });
-            geocoder.geocode({ 'address': diachi }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
-                    center = results[0].geometry.location;
-                    map.setCenter(center);
-                    var marker = new google.maps.Marker({
-                        map: map,
-                        position: center
-                    });
-                    google.maps.event.addListener(marker, "click", function ()
-                    { info.open(map, marker); });
-                } else {
-                }
+            var marker = new google.maps.Marker({
+                           map: map,
+                            position: center
             });
+            info.open(map,marker)
+            //geocoder.geocode({ 'address': diachi }, function (results, status) {
+            //    if (status == google.maps.GeocoderStatus.OK) {
+            //        //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
+            //        center = results[0].geometry.location;
+            //        map.setCenter(center);
+            //        var marker = new google.maps.Marker({
+            //            map: map,
+            //            position: center
+            //        });
+            //        google.maps.event.addListener(marker, "click", function ()
+            //        { info.open(map, marker); });
+            //    } else {
+            //    }
+            //});
            
 
             infowindow = new google.maps.InfoWindow(
