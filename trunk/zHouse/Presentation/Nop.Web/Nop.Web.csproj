@@ -2240,6 +2240,8 @@
     <Content Include="Themes\Affilicate\Views\Shared\_SupportContact.cshtml" />
     <Content Include="Themes\Affilicate\Views\Catalog\EditProductProject.cshtml" />
     <Content Include="Themes\Affilicate\Views\Catalog\EditProductRent.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Catalog\_MapInsertProduct.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Catalog\HomepageProjectProducts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
