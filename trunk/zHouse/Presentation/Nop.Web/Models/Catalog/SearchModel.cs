@@ -72,6 +72,7 @@ namespace Nop.Web.Models.Catalog
         [NopResourceDisplayName("Search.AdvancedSearch")]
         public bool As { get; set; }
         public IList<SelectListItem> AvailableCategories { get; set; }
+        public IList<SelectListItem> AvaiilableCategoriesProject { get; set; }
         public IList<SelectListItem> AvailableCategoriesRent { get; set; }
         public IList<SelectListItem> AvailableManufacturers { get; set; }
         public SearchPagingFilteringModel PagingFilteringContext { get; set; }
