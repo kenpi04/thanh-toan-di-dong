@@ -830,8 +830,8 @@ namespace Nop.Web.Controllers
                 StatusId = product.GiftCardTypeId,
                 Promotion = product.Promotion,
                 DacDiemNoiBat = product.UserAgreementText,
-                Lat=product.LatTiTudeGoogleMap,
-                Lng=product.LongTiTudeGoogleMap
+                Lat = product.LatTiTudeGoogleMap,
+                Lng = product.LongTiTudeGoogleMap
             };
             bool isProject = false;
             if (product.ProductCategories.Count > 0)
@@ -903,7 +903,7 @@ namespace Nop.Web.Controllers
                     return new PictureModel
                     {
                         FullSizeImageUrl = _pictureService.GetPictureUrl(defaultpic.PictureId, defaultPictureSize, true),
-                        
+
                     };
                 });
 
@@ -1318,7 +1318,7 @@ namespace Nop.Web.Controllers
                     model.FeaturedProducts = PrepareProductOverviewModels(featuredProducts).ToList();
                 }
             }*/
-#endregion
+            #endregion
 
             var categoryIds = new List<int>();
             categoryIds.Add(category.Id);
@@ -2386,7 +2386,7 @@ namespace Nop.Web.Controllers
         {
             var products = _productService.GetAllProductsDisplayedOnHomePage();
             //ACL and store mapping
-            products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p)&&p.ProductType==ProductType.ProjectProduct).ToList();
+            products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p) && p.ProductType == ProductType.ProjectProduct).ToList();
 
             var model = PrepareProductOverviewModels(products, true, true, productThumbPictureSize)
                 .ToList();
@@ -3150,7 +3150,7 @@ namespace Nop.Web.Controllers
 
         [NopHttpsRequirement(SslRequirement.No)]
         [ValidateInput(false)]
-        public ActionResult Search(SearchModel model, SearchPagingFilteringModel command, int categoryId = 0, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0, string priceString = "", string attributeOptionIds = "")
+        public ActionResult Search(SearchModel model, SearchPagingFilteringModel command, int categoryId = 0, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0, string priceString = "", string areaString = "", string attributeOptionIds = "")
         {
             if (model == null)
                 model = new SearchModel();
@@ -3234,6 +3234,8 @@ namespace Nop.Web.Controllers
             int manufacturerId = 0;
             decimal? minPriceConverted = null;
             decimal? maxPriceConverted = null;
+            decimal? minAreaConverted = null;
+            decimal? maxAreaConverted = null;
             bool searchInDescriptions = false;
             if (model.As)
             {
@@ -3285,6 +3287,16 @@ namespace Nop.Web.Controllers
                     if (decimal.TryParse(p[1].ToString(), out maxPrice))
                         maxPriceConverted = maxPrice * 1000000;
                 }
+                if (!String.IsNullOrEmpty(areaString))
+                {
+                    var p = areaString.Split('-');
+                    decimal minArea = decimal.Zero;
+                    if (decimal.TryParse(p[0].ToString(), out minArea))
+                        minAreaConverted = minArea;
+                    decimal maxArea = decimal.Zero;
+                    if (decimal.TryParse(p[1].ToString(), out maxArea))
+                        maxAreaConverted = maxArea;
+                }
                 if (!String.IsNullOrEmpty(attributeOptionIds))
                 {
                     var options = attributeOptionIds.Split('-');
@@ -3306,6 +3318,8 @@ namespace Nop.Web.Controllers
                 visibleIndividuallyOnly: true,
                 priceMin: minPriceConverted,
                 priceMax: maxPriceConverted,
+                areaMin: minAreaConverted,
+                areaMax: maxAreaConverted,
                 keywords: model.Q,
                 searchDescriptions: searchInDescriptions,
                 searchSku: true,
@@ -3425,11 +3439,11 @@ namespace Nop.Web.Controllers
         }
 
         [HttpGet]
-        public string GetSlugFromId(string domainName, string priceString, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string Q = null, int type = 0)
+        public string GetSlugFromId(string domainName, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string Q = null, int type = 0, string priceString = "0-0", string areaString = "0-0")
         {
             if (String.IsNullOrEmpty(domainName)) domainName = Request.Url.Host;
             if (categoryId == 0) categoryId = type;
-            var slug = _urlRecordService.GetSlugFromId(domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, attributeOptionIds, Q);
+            var slug = _urlRecordService.GetSlugFromId(domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, areaString, attributeOptionIds, Q);
             return slug;
         }
         #endregion
@@ -3563,7 +3577,7 @@ namespace Nop.Web.Controllers
             return View(model);
 
         }
-        
+
         public async Task<ActionResult> EditProduct(int id)
         {
             var customer = _workContext.CurrentCustomer;
@@ -3578,7 +3592,7 @@ namespace Nop.Web.Controllers
                 return new HttpUnauthorizedResult();
 
             var model = ProductToInsertModel(product);
-            await PreparingInsertProductModelAsync(model, customer, categoryId:1);
+            await PreparingInsertProductModelAsync(model, customer, categoryId: 1);
             //PreapringProductToEntity(model, product);
             if (customer.IsRegistered())
             {
@@ -3608,7 +3622,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("HomePage");
             if (!customer.IsAdmin() && product.CustomerId != customer.Id)
                 return RedirectToRoute("PageNotfound");
-          
+
 
             if (ModelState.IsValid)
             {
@@ -3704,8 +3718,8 @@ namespace Nop.Web.Controllers
             return View(model);
 
         }
-        
-        [HttpPost]       
+
+        [HttpPost]
         public async Task<JsonResult> UpdateProductAsync(int productId, int action, int? value)
         {
             var customer = _workContext.CurrentCustomer;
@@ -3756,10 +3770,11 @@ namespace Nop.Web.Controllers
                     resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
                     return Json(resultMessage);
                 }
-                catch {
+                catch
+                {
                     resultMessage = _localizationService.GetResource("updateproduct.error.updatefail");
                     return Json(resultMessage);
-                }                
+                }
             }
             if (action == 3)//up count
             {
@@ -3781,7 +3796,8 @@ namespace Nop.Web.Controllers
                             return Json(resultMessage);
                         }
                     }
-                    else {
+                    else
+                    {
                         resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.countupmorethanpolicy");
                         return Json(resultMessage);
                     }
@@ -3803,7 +3819,7 @@ namespace Nop.Web.Controllers
                     }
                 }
             }
-            if(action == 4)//Duyet tin
+            if (action == 4)//Duyet tin
             {
                 if (value.HasValue)
                 {
@@ -3970,9 +3986,9 @@ namespace Nop.Web.Controllers
 
             var model = ProductToInsertModel(product);
             await PreparingInsertProductModelAsync(model, customer, categoryId: 16);
-            
-                model.NavigationModel = GetCustomerNavigationModel();
-                model.NavigationModel.SelectedTab = Nop.Web.Models.Customer.CustomerNavigationEnum.PostNewsRent;
+
+            model.NavigationModel = GetCustomerNavigationModel();
+            model.NavigationModel.SelectedTab = Nop.Web.Models.Customer.CustomerNavigationEnum.PostNewsRent;
             return View(model);
         }
         [HttpPost]
@@ -4102,7 +4118,7 @@ namespace Nop.Web.Controllers
             var model = new InsertProductModel();
             model.ProductType = (int)ProductType.ProjectProduct;
             await PreparingInsertProductModelAsync(model, customer, categoryId: 2);
-            
+
             model.NavigationModel = GetCustomerNavigationModel();
             model.NavigationModel.SelectedTab = Nop.Web.Models.Customer.CustomerNavigationEnum.PostNewsProject;
 
@@ -4487,7 +4503,7 @@ namespace Nop.Web.Controllers
                 p.ManufacturerPartNumber = inPd.ChuDauTu;
                 p.Gtin = inPd.DonViThiCong;
             }
-           
+
             p.UpdatedOnUtc = DateTime.Now;
         }
 
@@ -4515,14 +4531,15 @@ namespace Nop.Web.Controllers
                 FullAddress = p.FullAddress,
                 DacDiemNoiBat = p.UserAgreementText,
                 Promotion = p.Promotion,
-               
+
                 //thoi gian dang tin
                 AvailableStartDateTime = p.AvailableStartDateTimeUtc,
                 AvailableEndDateTime = p.AvailableEndDateTimeUtc,
-                ProductType=p.ProductTypeId
+                ProductType = p.ProductTypeId
             };
-             //duan
-            if(p.ProductType == ProductType.ProjectProduct){
+            //duan
+            if (p.ProductType == ProductType.ProjectProduct)
+            {
                 model.StartConstructionDate = p.StartConstructionDate;
                 model.FinishConstructionDate = p.FinishConstructionDate;
                 model.ChuDauTu = p.ManufacturerPartNumber;
@@ -4658,7 +4675,7 @@ namespace Nop.Web.Controllers
                 model.NumberBlocks = await GetListOptionNameAsync(null, ProductAttributeEnum.NumberBlock);
                 model.PhapLy = await GetListOptionNameAsync(null, ProductAttributeEnum.PhapLy);
             }
-            
+
         }
         public ActionResult UploadPicture(HttpPostedFileBase Filedata)
         {
@@ -4883,12 +4900,12 @@ namespace Nop.Web.Controllers
 
         }
         private SearchModel PreparingSearchModel(bool isproject = false,
-            int selectedDistrictId=0,
-            int selectedWardId=0,
-            int selectedCateId=0,
-            int selectedBathroomId=0,
-            int selectedBedroomId=0,
-            int selectedDirectorId=0,
+            int selectedDistrictId = 0,
+            int selectedWardId = 0,
+            int selectedCateId = 0,
+            int selectedBathroomId = 0,
+            int selectedBedroomId = 0,
+            int selectedDirectorId = 0,
             int categoryId = 0,
             int categoryRentId = 0, bool isMarketPlace = false)
         {
@@ -4926,9 +4943,9 @@ namespace Nop.Web.Controllers
                         model.AvailableCategoriesRent.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"),  Value = "0" });
                         var cateProject = _categoryService.GetAllCategoriesByParentCategoryId(2).ToList();
                         model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Value = "0" });
+                        model.BedRooms.Insert(0, new SelectListItem {Text ="Chọn số phòng ngủ", Selected= true, Value="0" });
                         model.AvaiilableCategoriesProject = cateProject.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
                         model.AvaiilableCategoriesProject.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Value = "0" });
-                      
                     }
                     return model;
                 }).Result;
@@ -4960,12 +4977,12 @@ namespace Nop.Web.Controllers
         }
         [ChildActionOnly]
         public ActionResult SearchBoxHead(bool isHome,
-            int selectedDistrictId=0,
-            int selectedWardId=0,
-            int selectedCateId=0,
-            int selectedBathroomId=0,
-            int selectedBedroomId=0,
-            int selectedDirectorId=0,
+            int selectedDistrictId = 0,
+            int selectedWardId = 0,
+            int selectedCateId = 0,
+            int selectedBathroomId = 0,
+            int selectedBedroomId = 0,
+            int selectedDirectorId = 0,
             List<int> attribute = null,
             bool isMarketPlace = false, int categoryId = 1, int categoryRentId = 16)
         {
@@ -4974,12 +4991,12 @@ namespace Nop.Web.Controllers
                 categoryId: categoryId
             );
             else model = PreparingSearchModel(
-                selectedDistrictId:selectedDistrictId,
-                selectedBedroomId:selectedBedroomId,
-                selectedBathroomId:selectedBathroomId,
-                selectedDirectorId:selectedDirectorId,               
-                selectedCateId:selectedCateId,
-                selectedWardId:selectedWardId,
+                selectedDistrictId: selectedDistrictId,
+                selectedBedroomId: selectedBedroomId,
+                selectedBathroomId: selectedBathroomId,
+                selectedDirectorId: selectedDirectorId,
+                selectedCateId: selectedCateId,
+                selectedWardId: selectedWardId,
                 categoryId: categoryId, categoryRentId: categoryRentId, isMarketPlace: isMarketPlace);
             if (isHome)
                 return View("SearchHome", model);
@@ -5099,7 +5116,7 @@ namespace Nop.Web.Controllers
 
 
         }
-        
+
         [HttpPost]
         [CaptchaValidator]
         public ActionResult SupportContact(ContactUsModel model)

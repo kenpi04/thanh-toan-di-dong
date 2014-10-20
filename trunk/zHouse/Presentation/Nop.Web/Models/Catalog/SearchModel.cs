@@ -87,6 +87,7 @@ namespace Nop.Web.Models.Catalog
         public int DistrictId { get; set; }
         public int StatusId { get; set; }
         public string PriceString { get; set; }
+        public string AreaString { get; set; }
         public bool OnlyCustomer { get; set; }
         public IList<int> Cids { get; set; }
         public IList<int> DistrictIds { get; set; }

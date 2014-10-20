@@ -1343,6 +1343,7 @@ margin-top: 7px; }
 .icon-director{background:url(/Themes/Affilicate/Content/images/icon-direction.png) no-repeat}
 .icon-bathRoom{background:url(/Themes/Affilicate/Content/images/icon-bath.png) no-repeat}
 .icon-location{background:url(/Themes/Affilicate/Content/images/icon-location.png) no-repeat}
+.icon-investor{background:url(/Themes/Affilicate/Content/images/icon-investor.png) no-repeat}
 .div-table{display:table;border:1px solid #dedede;float:left;width:835px;min-width:50%;margin:10px 0;}
 .div-table .header-row{display:table-row;background:#fafafa;text-align:center;text-transform:uppercase;font-weight:700;color:#c06;}
 .div-table .item-cell{display:table-cell;width:50%;border-right:1px solid #dedede;border-bottom:1px solid #dedede;}
@@ -1352,6 +1353,8 @@ margin-top: 7px; }
 .div-map{width:835px;height:100%;border:1px solid #dedede;border-radius:4px;display:inline-block;margin-bottom:5px;}
 .div-map .map-title{background:#fafafa;padding:7px;border-bottom:1px solid #dedede;}
 .div-map .map-title p{color:#c06;font-size:15px;font-weight:700;padding:0;margin:0;}
+.div-map.map-project{width:800px;margin-top:10px;}
+.div-map.map-project map{width:100%;height:400px;display:inline-block;}
 /*market*/
 .banner-home {width:510px;height:352px;overflow:hidden;cursor:pointer;float:left}
 .new-column {box-sizing:border-box;width:270px;float:left;}
@@ -1380,5 +1383,10 @@ li.active a, li.active a:hover {background: #fff;color: #4c4c4c;border: 1px soli
 .tab {display: none;}
 .tab.active {display: block;}
 .request-label{text-align:right;}
+.request-label label{padding-right:10px;}
+.product-selectors .project{margin-right:10px;}
+.project{width:29.2%;}
+.project .info-picture{float:none;width:100%;max-height:219px;height:100%;}
+.project .whiteBgCata > span{width:100%;}
 .request-label label{padding-right:10px;}
 .loading-img{background:url(images/loading.gif);width:24px;height:24px;display:block;margin:0 auto}

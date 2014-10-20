@@ -7,172 +7,171 @@
     Html.AppendScriptParts("~/Scripts/tab.js");
     Html.AppendScriptParts("~/Scripts/jquery.simplemodal.js");
     Html.AddScriptParts("~/Scripts/jquery.flexslider.js");
-    Html.AddCssFileParts("~/Themes/Zhouse/Content/flexslider.css");  
+    Html.AddCssFileParts("~/Themes/Zhouse/Content/flexslider.css");
 }
 <link rel="stylesheet" media="print" href="@Url.Content("~/Themes/print.css")" />
-<meta property="og:url" content="@Url.RouteUrl("Product", new {SeName=Model.SeName })"/>
-<meta property="og:image" content="@Model.DefaultPictureModel.ImageUrl"/>
-<meta property="og:type" content="product"/>
-<meta property="og:site_name" content="zhouse.com.vn"/>
+<meta property="og:url" content="@Url.RouteUrl("Product", new {SeName=Model.SeName })" />
+<meta property="og:image" content="@Model.DefaultPictureModel.ImageUrl" />
+<meta property="og:type" content="product" />
+<meta property="og:site_name" content="zhouse.com.vn" />
 @Html.Action("ProductBreadcrumb", "Catalog", new { productId = Model.Id })
-        <div class="mainContent"  itemscope itemtype="http://data-vocabulary.org/Product">
-            <div class="leftContent">
-                <div class="whiteBgLeft">
-                    <div class="blueTitle"><h1 itemprop="name">@Model.Name</h1></div>
-                    @if(!Model.IsProject)
-                    {
-                        <text>
+<div class="mainContent" itemscope itemtype="http://data-vocabulary.org/Product">
+    <div class="leftContent">
+        <div class="whiteBgLeft">
+            <div class="blueTitle"><h1 itemprop="name">@Model.Name</h1></div>
+            @if (!Model.IsProject)
+            {
+                <text>
                     ID:<span itemprop="identifier">@Model.Id</span>
-                    <div class="pinkPrice" itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">     
-                         <meta itemprop="price" content="@Model.ProductPrice.PriceValue" />
-                      <meta itemprop="currency" content="VND" />   
+                    <div class="pinkPrice" itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
+                        <meta itemprop="price" content="@Model.ProductPrice.PriceValue" />
+                        <meta itemprop="currency" content="VND" />
                         <span> @Model.ProductPrice.Price</span>
                     </div>
                     Tình trạng: <a class="blueText"> <b>@Model.ProductStatusText</b></a>
-                    </text>
-                    }
-                    <div class="share" id="share-div">
-                        <script >
-                            $.get("@Url.Action("ShareButton")",function(d){
-                                $("#share-div").html(d);
-                            })
-                        </script>
-                </div><!---whiteBgLeft----->
-                    </div>
-                <div class="detailTable">
-                    <div class="detail-info">
-                        @if(Model.IsProject)
-                        {
-                         @Html.Partial("_ProductSpecficationOptionProject",Model)
-                        }
-                        else
-                        {
-                          @Html.Partial("_ProductSpecficationOptionHouse", Model)
-                        }
-                    </div>
-                    <div class="detail-picture" id="detail-picture">
-                    </div>
-                       <script>
-                           $(function(){
-                               $("#detail-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new { productId = Model.Id })",function(d){
-                               
-                                   $('#carousel').flexslider({
-                                       animation: "slide",
-                                       controlNav: false,
-                                       animationLoop: false,
-                                       slideshow: false,
-                                       itemWidth: 80,
-                                       itemMargin: 5,
-                                       asNavFor: '#slider-detail'
-                                   });
-                                   $('#slider-detail').flexslider({
-                                       animation: "slide",
-                                       controlNav: false,
-                                       animationLoop: false,
-                                       slideshow: false,
-                                       sync: "#carousel"
-                                   });
-                               })
-                           })
-                      </script>
-                 <div class="clearfix"></div>
-                </div><!----detailTable---->
-                <div class="floatLeft">
-                    <center>
-                        <input type="button" onclick="setLocation('@Url.RouteUrl("AddProductToCompare", new { productId = Model.Id })')" class="blueBtn" value="so sánh">
-                        <input type="button" class="blueBtn" onclick="sendMailFriend()" value="gửi email">
-                        <input type="button" class="blueBtn" value="in ra" onclick="setLocation('@Url.Action("Product",new{productId=Model.Id,isprint=true})')"/>
-                        <input type="button" class="blueBtn" value="download pdf">
-                    </center>
-                </div><!---floatLeft-------------->
-            @if (!string.IsNullOrWhiteSpace(Model.Promotion) || !string.IsNullOrWhiteSpace(Model.DacDiemNoiBat))
-            {
-                <div class="div-table">
-                    <div class="header-row">
-                        @if (!string.IsNullOrWhiteSpace(Model.Promotion))
-                        {
-                            <div class="item-cell">
-                                <p>Khuyến mãi</p>
-                            </div>}
-                        @if (!string.IsNullOrWhiteSpace(Model.DacDiemNoiBat))
-                        {
-                            <div class="item-cell">
-                                <p>Đặc điểm nổi bật</p>
-                            </div>}
-                    </div>
-                    <div class="item-row">
-                        @if (!string.IsNullOrWhiteSpace(Model.Promotion))
-                        {
-                            <div class="item-cell">
-                                @Html.Raw(Model.Promotion)
-                            </div>}
-                        @if (!string.IsNullOrWhiteSpace(Model.DacDiemNoiBat))
-                        {
-                            <div class="item-cell">
-                                @Html.Raw(Model.DacDiemNoiBat)
-                            </div>}
-                    </div>
-                </div>
+                </text>
             }
-            <div class="div-map">
-                <div class="map-title">
-                    <p>Các tiện ích xung quanh</p>
+            <div class="share" id="share-div">
+                <script>
+                    $.get("@Url.Action("ShareButton")", function (d) {
+                        $("#share-div").html(d);
+                    })
+                </script>
+            </div><!---whiteBgLeft----->
+        </div>
+        <div class="detailTable">
+            <div class="detail-info">
+                @if (Model.IsProject)
+                {
+                    @Html.Partial("_ProductSpecficationOptionProject", Model)
+                }
+                else
+                {
+                    @Html.Partial("_ProductSpecficationOptionHouse", Model)
+                }
+            </div>
+            <div class="detail-picture" id="detail-picture">
+            </div>
+            <script>
+                $(function () {
+                    $("#detail-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new { productId = Model.Id })", function (d) {
+
+                        $('#carousel').flexslider({
+                            animation: "slide",
+                            controlNav: false,
+                            animationLoop: false,
+                            slideshow: false,
+                            itemWidth: 80,
+                            itemMargin: 5,
+                            asNavFor: '#slider-detail'
+                        });
+                        $('#slider-detail').flexslider({
+                            animation: "slide",
+                            controlNav: false,
+                            animationLoop: false,
+                            slideshow: false,
+                            sync: "#carousel"
+                        });
+                    })
+                })
+            </script>
+            <div class="clearfix"></div>
+        </div><!----detailTable---->
+        <div class="floatLeft">
+            <center>
+                <input type="button" onclick="setLocation('@Url.RouteUrl("AddProductToCompare", new { productId = Model.Id })')" class="blueBtn" value="so sánh">
+                <input type="button" class="blueBtn" onclick="sendMailFriend()" value="gửi email">
+                <input type="button" class="blueBtn" value="in ra" onclick="setLocation('@Url.Action("Product",new{productId=Model.Id,isprint=true})')" />
+                <input type="button" class="blueBtn" value="download pdf">
+            </center>
+        </div><!---floatLeft-------------->
+        @if (!string.IsNullOrWhiteSpace(Model.Promotion) || !string.IsNullOrWhiteSpace(Model.DacDiemNoiBat))
+        {
+            <div class="div-table">
+                <div class="header-row">
+                    @if (!string.IsNullOrWhiteSpace(Model.Promotion))
+                    {
+                        <div class="item-cell">
+                            <p>Khuyến mãi</p>
+                        </div>}
+                    @if (!string.IsNullOrWhiteSpace(Model.DacDiemNoiBat))
+                    {
+                        <div class="item-cell">
+                            <p>Đặc điểm nổi bật</p>
+                        </div>}
                 </div>
-                <div style="width:100%;height:400px; display:inline-block">
-                    @Html.Partial("_Map", Model)
+                <div class="item-row">
+                    @if (!string.IsNullOrWhiteSpace(Model.Promotion))
+                    {
+                        <div class="item-cell">
+                            @Html.Raw(Model.Promotion)
+                        </div>}
+                    @if (!string.IsNullOrWhiteSpace(Model.DacDiemNoiBat))
+                    {
+                        <div class="item-cell">
+                            @Html.Raw(Model.DacDiemNoiBat)
+                        </div>}
                 </div>
             </div>
-                <div class="whiteBgTab" id="tabs">
-                    <div class="tabBtnActive" tab="#tab-detail"><h2><a>MÔ TẢ CHI TIẾT</a></h2></div>
-                    <div class="tabBtn" tab="#tab-pictures"><h2><a>HÌNH ẢNH CLIP</a></h2></div>
-                </div><!---whiteBgTab-->
-                <div id="tab-detail" class="whiteBgLeft" style="margin-top:-1px;" itemprop="description">
-                    @Html.Raw(Model.FullDescription)                       
-                </div><!---whiteBgLeft-->
-                <div id="tab-pictures" class="whiteBgLeft" style="margin-top:-1px;">
-                </div>
-                <script type="text/javascript">   
-                            loadScript();
-                    $(function () {
-                        $.tabs("#tabs div");
-                        window.setTimeout(function(){
-                            $("#tab-pictures").load("@Url.Action("GetProductImages", new {productId=Model.Id})&isGallery=True");
-                        },5000);
-                    })
-                    function sendMailFriend()
-                    {
-                        $.get("@Url.Action("ProductEmailAFriend", "Catalog")", function (d) {
-                            $("#popup").html(d);
-                            $("#popup").modal({
-                                onClose: function () {
-                                    $("#popup").hide();
-                                    $.modal.close();
-                                }
-                            });
-                            $.validator.unobtrusive.parse("#form0")
-                        })
-                    }
-                </script>
-                <div class="floatLeft">
-                   @Html.Action("ProductReviews", "Catalog", new { productId = Model.Id })
-                </div>
-            </div><!-----leftContent-------------->
-            <div class="rightContent">
-                <div class="pinkBgRight">
-                    <b>BẠN CẦN THÊM THÔNG TIN?</b>
-                    <div class="twoColRight">
-                        <div class="twoColRightPic"><a href="#"><img src="../Themes/Zhouse/Content/images/i1.png" class="circleImg"></a></div>
-                        <div class="twoColRightText" style="font-size:15px;color:#fff">                           
-                            <b>0936734949 <br>0968309789</b>
-                        </div>
-                    </div><!---twoColRight---->
-                    @Html.Action("ProductEmailAFriend", new { isBook = true })
-                </div><!--pinkBgRight----->
-            @Html.Action("RelatedProductCustomer", new { customerId = Model.CustomerId })
-                <div class="ad">
-                    @Html.FptBanner(104)
-                </div><!----rightContent---------------->
+        }
+        <div class="div-map">
+            <div class="map-title">
+                <p>Các tiện ích xung quanh</p>
+            </div>
+            <div style="width:100%;height:400px; display:inline-block">
+                @Html.Partial("_Map", Model)
+            </div>
         </div>
-            </div>     
-    
+        <div class="whiteBgTab" id="tabs">
+            <div class="tabBtnActive" tab="#tab-detail"><h2><a>MÔ TẢ CHI TIẾT</a></h2></div>
+            <div class="tabBtn" tab="#tab-pictures"><h2><a>HÌNH ẢNH CLIP</a></h2></div>
+        </div><!---whiteBgTab-->
+        <div id="tab-detail" class="whiteBgLeft" style="margin-top:-1px;" itemprop="description">
+            @Html.Raw(Model.FullDescription)
+        </div><!---whiteBgLeft-->
+        <div id="tab-pictures" class="whiteBgLeft" style="margin-top:-1px;">
+        </div>
+        <script type="text/javascript">
+            loadScript();
+            $(function () {
+                $.tabs("#tabs div");
+                window.setTimeout(function () {
+                    $("#tab-pictures").load("@Url.Action("GetProductImages", new {productId=Model.Id})&isGallery=True");
+                }, 5000);
+            })
+            function sendMailFriend() {
+                $.get("@Url.Action("ProductEmailAFriend", "Catalog")", function (d) {
+                    $("#popup").html(d);
+                    $("#popup").modal({
+                        onClose: function () {
+                            $("#popup").hide();
+                            $.modal.close();
+                        }
+                    });
+                    $.validator.unobtrusive.parse("#form0")
+                })
+            }
+        </script>
+        <div class="floatLeft">
+            @Html.Action("ProductReviews", "Catalog", new { productId = Model.Id })
+        </div>
+    </div><!-----leftContent-------------->
+    <div class="rightContent">
+        <div class="pinkBgRight">
+            <b>BẠN CẦN THÊM THÔNG TIN?</b>
+            <div class="twoColRight">
+                <div class="twoColRightPic"><a href="#"><img src="../Themes/Zhouse/Content/images/i1.png" class="circleImg"></a></div>
+                <div class="twoColRightText" style="font-size:15px;color:#fff">
+                    <b>0936734949 <br>0968309789</b>
+                </div>
+            </div><!---twoColRight---->
+            @Html.Action("ProductEmailAFriend", new { isBook = true })
+        </div><!--pinkBgRight----->
+        @Html.Action("RelatedProductCustomer", new { customerId = Model.CustomerId })
+        <div class="ad">
+            @Html.FptBanner(104)
+        </div><!----rightContent---------------->
+    </div>
+</div>
+
 
