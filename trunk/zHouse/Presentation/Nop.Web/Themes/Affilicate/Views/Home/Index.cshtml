@@ -1,21 +1,18 @@
 ﻿@{
-    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";    
 }
 <div class="page home-page">
     <div class="page-body">
        @*@Html.Widget("home_page_top")*@   
-        <div id="new-product-div">
-          
+        <div id="new-product-div">            
         </div>
         <div id="project-product-div">
-           
         </div>
         @Html.Action("TopicHomePage","Topic")
-       
         @*@Html.Widget("home_page_bottom")*@
     </div>
     <script type="text/javascript">
-        $("#new-product-div").html("<div class=loading-img></div>").load('@Url.Action("NewProducts", "Catalog", new { pageSize = 18, productThumbPictureSize = 109 })');
-        $("#project-product-div").html("<div class=loading-img></div>").load('@Url.Action("HomePageProjectProducts", "Catalog", new { pageSize = 18, productThumbPictureSize = 109 })')
+        $("#new-product-div").html("<div class=loading-img></div>").load('@Url.Action("NewProducts", "Catalog")' + '?pageSize=18&productThumbPictureSize=105&categoryId=1');
+        $("#project-product-div").html("<div class=loading-img></div>").load('@Url.Action("HomePageProjectProducts", "Catalog")'+'?pageSize=4&productThumbPictureSize=105');
     </script>
 </div>
