@@ -21,7 +21,7 @@
                 @Html.Action("TopMenu", "Catalog")
             </div>
         </div>
-        @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome })
+        @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome, categoryId=1 })
         @Html.Widget("content_before")
         <div class="ajax-loading-block-window" id="ajax-loading" style="display: none">
             <div class="loading-image">

@@ -20,9 +20,11 @@
 <script type="text/javascript">
     $(function () {
         $("#frmSearchHead").submit(function () {
+            var cateId = $("#categoryId").val()
+            if (cateId == 0) { cateId = 1;}
             var data = {
                 priceString: $("#priceString").val(),
-                categoryId: $("#categoryId").val(),
+                categoryId: cateId,
                 attributeOptionIds: $("#ddlDir").val() + "-" + $("#ddlBed").val()
             };
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {

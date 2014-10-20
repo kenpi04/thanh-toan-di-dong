@@ -10,37 +10,39 @@
     Html.AddMetaKeywordParts(Model.MetaKeywords);
 }
 <div class="page news-list-page">
-         <div class="breadcrumb">
+    <div class="breadcrumb">
         <ul>
-            <li><a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a>
-                <span class="delimiter">/</span> </li>
-          <li>
-              @Model.CateName
-          </li>              
+            <li>
+                <a href="@Url.RouteUrl("HomePage")" title="@T("Categories.Breadcrumb.Top")">@T("Categories.Breadcrumb.Top")</a>
+                <span class="delimiter">/</span>
+            </li>
+            <li>
+                @Model.CateName
+            </li>
         </ul>
     </div>
     <div class="mainContent">
         <div class="leftContentTwist">
-     @Html.Action("NewsCateNavigation")
+            @Html.Action("NewsCateNavigation")
             <div class="ad"><a href="#"><img src="@Url.Content("~/Themes/Zhouse/Content/images/ad.png")" class="adBorder"></a></div>
-        </div>  
-        <div class="rightContentTwist">            
-            @foreach(var item in Model.NewsItems)
-            { 
-            <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@item.Title">
-            <div class="introCol">
-                <div class="info-picture-news" >
-                    @*<div class="nhon"></div>*@
-                    @if (item.DefaultPictureModel != null)
-                    {
-                        <img alt="@item.DefaultPictureModel.AlternateText" src="@item.DefaultPictureModel.ImageUrl" title="@item.DefaultPictureModel.Title" />
-                    }
-                </div>
-                <div class="whiteBg">@item.Title</div>
-                <div class="whiteBgCata news-short">@item.Short.TrimString(160)</div>
-            </div>
-        </a>
-            }        
+        </div>
+        <div class="rightContentTwist-News">
+            @foreach (var item in Model.NewsItems)
+            {
+                <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@item.Title">
+                    <div class="introCol">
+                        <div class="info-picture-news">
+                            @*<div class="nhon"></div>*@
+                            @if (item.DefaultPictureModel != null)
+                            {
+                                <img alt="@item.DefaultPictureModel.AlternateText" src="@item.DefaultPictureModel.ImageUrl" title="@item.DefaultPictureModel.Title" />
+                            }
+                        </div>
+                        <div class="whiteBg">@item.Title</div>
+                        <div class="news-short">@item.Short.TrimString(100)</div>
+                    </div>
+                </a>
+            }
         </div>
     </div>
 </div>

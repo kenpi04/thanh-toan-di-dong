@@ -1066,8 +1066,8 @@ namespace Nop.Web.Controllers
             //    return InvokeHttp404();
 
             //Store mapping
-            if (!_storeMappingService.Authorize(category))
-                return InvokeHttp404();
+            //if (!_storeMappingService.Authorize(category))
+            //    return InvokeHttp404();
 
             //'Continue shopping' URL
             //_genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
@@ -1101,28 +1101,28 @@ namespace Nop.Web.Controllers
 
 
             //view mode
-            model.PagingFilteringContext.AllowProductViewModeChanging = _catalogSettings.AllowProductViewModeChanging;
-            var viewMode = !string.IsNullOrEmpty(command.ViewMode)
-                ? command.ViewMode
-                : _catalogSettings.DefaultViewMode;
-            if (model.PagingFilteringContext.AllowProductViewModeChanging)
-            {
-                var currentPageUrl = _webHelper.GetThisPageUrl(true);
-                //grid
-                model.PagingFilteringContext.AvailableViewModes.Add(new SelectListItem()
-                {
-                    Text = _localizationService.GetResource("Categories.ViewMode.Grid"),
-                    Value = _webHelper.ModifyQueryString(currentPageUrl, "viewmode=grid", null),
-                    Selected = viewMode == "grid"
-                });
-                //list
-                model.PagingFilteringContext.AvailableViewModes.Add(new SelectListItem()
-                {
-                    Text = _localizationService.GetResource("Categories.ViewMode.List"),
-                    Value = _webHelper.ModifyQueryString(currentPageUrl, "viewmode=list", null),
-                    Selected = viewMode == "list"
-                });
-            }
+            //model.PagingFilteringContext.AllowProductViewModeChanging = _catalogSettings.AllowProductViewModeChanging;
+            //var viewMode = !string.IsNullOrEmpty(command.ViewMode)
+            //    ? command.ViewMode
+            //    : _catalogSettings.DefaultViewMode;
+            //if (model.PagingFilteringContext.AllowProductViewModeChanging)
+            //{
+            //    var currentPageUrl = _webHelper.GetThisPageUrl(true);
+            //    //grid
+            //    model.PagingFilteringContext.AvailableViewModes.Add(new SelectListItem()
+            //    {
+            //        Text = _localizationService.GetResource("Categories.ViewMode.Grid"),
+            //        Value = _webHelper.ModifyQueryString(currentPageUrl, "viewmode=grid", null),
+            //        Selected = viewMode == "grid"
+            //    });
+            //    //list
+            //    model.PagingFilteringContext.AvailableViewModes.Add(new SelectListItem()
+            //    {
+            //        Text = _localizationService.GetResource("Categories.ViewMode.List"),
+            //        Value = _webHelper.ModifyQueryString(currentPageUrl, "viewmode=list", null),
+            //        Selected = viewMode == "list"
+            //    });
+            //}
 
             //page size
             model.PagingFilteringContext.AllowCustomersToSelectPageSize = false;
@@ -1345,7 +1345,7 @@ namespace Nop.Web.Controllers
             model.Products = modelProducts.ToList();
 
             model.PagingFilteringContext.LoadPagedList(products);
-            model.PagingFilteringContext.ViewMode = viewMode;
+            //model.PagingFilteringContext.ViewMode = viewMode;
 
             //specs
             model.PagingFilteringContext.SpecificationFilter.PrepareSpecsFilters(alreadyFilteredSpecOptionIds,
@@ -1369,11 +1369,11 @@ namespace Nop.Web.Controllers
             //_customerActivityService.InsertActivity("PublicStore.ViewCategory", _localizationService.GetResource("ActivityLog.PublicStore.ViewCategory"), category.Name);
 
             //Title add District
-            if (districtId > 0)
-            {
-                var district = await _stateProvinceService.GetDistrictByIdAsync(districtId);
-                model.MetaTitle += district != null ? " " + district.Name : "";
-            }
+            //if (districtId > 0)
+            //{
+            //    var district = await _stateProvinceService.GetDistrictByIdAsync(districtId);
+            //    model.MetaTitle += district != null ? " " + district.Name : "";
+            //}
 
             return View(templateViewPath, model);
         }
@@ -3469,7 +3469,7 @@ namespace Nop.Web.Controllers
                 return new HttpUnauthorizedResult();
 
             var model = new InsertProductModel();
-            await PreparingInsertProductModelAsync(model, customer, categoryId: 1);
+            await PreparingInsertProductModelAsync(model, customer, categoryId: 0);
             if (customer.IsRegistered())
             {
                 ViewBag.IsRegistered = true;
@@ -4463,9 +4463,9 @@ namespace Nop.Web.Controllers
             p.StreetId = inPd.StreetId;
             p.StateProvinceId = 23;//23 ho chi minh
             //Thoi gian dang tin: ngay bat dau - ket thuc
-            p.AvailableEndDateTimeUtc = inPd.AvailableStartDateTime.HasValue ? inPd.AvailableStartDateTime.Value.AddDays(_catalogSettings.DaysAvailablePublished) : DateTime.Now.AddDays(_catalogSettings.DaysAvailablePublished);
-            p.AvailableStartDateTimeUtc = inPd.AvailableStartDateTime ?? DateTime.Now;
-            p.Status = (int)ProductStatusEnum.PendingAproved;//trang thai cho duyet            
+            //p.AvailableEndDateTimeUtc = inPd.AvailableStartDateTime.HasValue ? inPd.AvailableStartDateTime.Value.AddDays(_catalogSettings.DaysAvailablePublished) : DateTime.Now.AddDays(_catalogSettings.DaysAvailablePublished);
+            //p.AvailableStartDateTimeUtc = inPd.AvailableStartDateTime ?? DateTime.Now;
+            p.Status = (int)ProductStatusEnum.Approved;//trang thai cho duyet            
 
             //loai product
             if (p.ProductTypeId == 0) p.ProductType = ProductType.SimpleProduct;
@@ -4639,7 +4639,7 @@ namespace Nop.Web.Controllers
 
         }
         [NonAction]
-        private async Task PreparingInsertProductModelAsync(InsertProductModel model, Customer customer, int categoryId = 1)
+        private async Task PreparingInsertProductModelAsync(InsertProductModel model, Customer customer, int categoryId = 0)
         {
             //Customer
             model.ContactName = await customer.GetFullNameAsync();
@@ -4647,8 +4647,15 @@ namespace Nop.Web.Controllers
             model.Email = customer.Email;
 
             model.Districts = (await _stateProvinceService.GetDistrictByStateProvinceIdAsync()).ToSelectList(x => x.Name, x => x.Id.ToString());
+            if(categoryId==0)
+            {
+                var categories = await _categoryService.GetAllCategoriesAsync();
+                model.Categories = categories.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+            }
+            else{
             model.Categories = (await _categoryService.GetAllCategoriesByParentCategoryIdAsync(categoryId))
                             .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
+            }
             if (categoryId == 2)//du an
             {
                 model.StatusList = (await GetListOptionNameAsync(null, ProductAttributeEnum.TinhTrangDuAn)).ToList();
@@ -4908,21 +4915,21 @@ namespace Nop.Web.Controllers
                     var cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).ToList();
                     model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
                     model.AvailableCategories.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Selected = true, Value = "0" });
-                    model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResourceAsync("Product.Status.Enum." + x.ToString()).Result, x => ((int)x).ToString());
-                    model.Status.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectStatus"), Selected = true, Value = "0" });
+                    //model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResourceAsync("Product.Status.Enum." + x.ToString()).Result, x => ((int)x).ToString());
+                    //model.Status.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectStatus"), Selected = true, Value = "0" });
                     var dir = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.Director);
                     model.Directories = dir.ToSelectList(x => x.Name, x => x.Id.ToString());
                     model.Directories.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync(" Product.Search.SelectDirector"), Selected = true, Value = "0" });
                     var bed = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.NumberOfBedRoom);
                     model.BedRooms = bed.ToSelectList(x => x.Name, x => x.Id.ToString());
-                    if (!isMarketPlace)
-                    {
-                        var w = await _stateProvinceService.GetWardByDistrictIdAsync(611);
-                        model.Wards = w.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                        model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Selected = true, Value = "0" });
-                        var bath = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.NumberOfBadRoom);
-                        model.BathRooms = bath.ToSelectList(x => x.Name, x => x.Id.ToString());
-                    }
+                    //if (!isMarketPlace)
+                    //{
+                        //var w = await _stateProvinceService.GetWardByDistrictIdAsync(611);
+                        //model.Wards = w.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                        //model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Selected = true, Value = "0" });
+                        //var bath = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.NumberOfBadRoom);
+                        //model.BathRooms = bath.ToSelectList(x => x.Name, x => x.Id.ToString());
+                    //}
                     if (isMarketPlace)
                     {
                         var dis = await _stateProvinceService.GetDistrictByStateProvinceIdAsync();

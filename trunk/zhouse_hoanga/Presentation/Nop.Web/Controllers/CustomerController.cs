@@ -561,7 +561,7 @@ namespace Nop.Web.Controllers
                 var product = await _productService.GetProductByIdAsync(productId);
                 if (product != null || !product.Deleted)
                 {
-                    if (product.CustomerId == customer.Id)
+                    if (customer.IsAdmin() || product.CustomerId == customer.Id)
                         products.Add(product);
                 }
             }
@@ -571,14 +571,15 @@ namespace Nop.Web.Controllers
                    categoryIds: new List<int> { categoryId },
                                manufacturerId: 0,
                                storeId: storeId,
-                               customerId: customer.Id,
+                               customerId: customer.IsAdmin() ? 0 : customer.Id,
                                visibleIndividuallyOnly: true,
                                languageId: 0,
                                pageIndex: pageIndex,
                                pageSize: pageSize,
                                status: (ProductStatusEnum)status,
                                startDateTimeUtc: startDate,
-                               endDateTimeUtc: endDate
+                               endDateTimeUtc: endDate,
+                               showHidden:true
                    ).ToList();
                 if (statusEndDate == 1)//con han
                     products = products.Where(p => p.AvailableEndDateTimeUtc < DateTime.Now).ToList();
@@ -595,16 +596,17 @@ namespace Nop.Web.Controllers
                     Sename = await product.GetSeNameAsync(),
                     CreatedOn = product.CreatedOnUtc,
                     UpdatedOn = product.UpdatedOnUtc,
-                    AvailableStartDateTimeUtc = product.AvailableStartDateTimeUtc,
-                    AvailableEndDateTimeUtc = product.AvailableEndDateTimeUtc,
+                    //AvailableStartDateTimeUtc = product.AvailableStartDateTimeUtc,
+                    //AvailableEndDateTimeUtc = product.AvailableEndDateTimeUtc,
                     Area = product.Area,
                     //Price = product.CallForPrice ? "Thỏa thuận" : Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ"),
                     //BathRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
                     //BedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
                     //TinhTrang = GetOptionName(product, ProductAttributeEnum.Status),
                     ViewNumber = product.ViewNumber.ToString(),
-                    TrangThaiDuyet = ((ProductStatusEnum)product.Status == ProductStatusEnum.Approved && product.AvailableEndDateTimeUtc < DateTime.Now) ? "Đã hết hạn" : await _localizationService.GetResourceAsync(Enum.GetName(typeof(ProductStatusEnum), product.Status)),
-                    ProductType = product.ProductType,
+                    //TrangThaiDuyet = ((ProductStatusEnum)product.Status == ProductStatusEnum.Approved && product.AvailableEndDateTimeUtc < DateTime.Now) ? "Đã hết hạn" : await _localizationService.GetResourceAsync(Enum.GetName(typeof(ProductStatusEnum), product.Status)),
+                    //ProductType = product.ProductType,
+                    TinhTrang = await product.GiftCardType.GetLocalizedEnumAsync(_localizationService, 1),
                     DefaultPictureModel = _cacheManager.Get(string.Format(Nop.Web.Infrastructure.Cache.ModelCacheEventConsumer.PRODUCT_DEFAULTPICTURE_MODEL_KEY, product.Id, 80, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id), () =>
                     {
                         var picture = _pictureService.GetPicturesByProductId(product.Id, 1).FirstOrDefault();
