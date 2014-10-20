@@ -8,7 +8,7 @@
 @using Nop.Web.Models.Catalog;
 @using Nop.Web.Extensions;
 
-<script type="text/javascript">
+@*<script type="text/javascript">
     $(document).ready(function () {
 
         $("#@Html.FieldIdFor(model => model.As)").click(toggleAdvancedSearch);
@@ -25,16 +25,24 @@
             $('#advanced-search-block').hide();
         }
     }
-</script>
-
+</script>*@
 <div class="mainContent">
     <div class="page-title">
         <h1> Tìm thấy @Model.PagingFilteringContext.TotalItems kết quả  "@ViewBag.ResultString"</h1>
     </div>
     <div class="leftContentTwist" style="width:70%">
-
-
             <div id="list-product">
+                <div class="product-selectors">
+                    @*view mode*@
+                    @if (Model.Products.Count > 0)
+                    {
+                        <div class="product-viewmode">
+                            <div class="pager">
+                                @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+                            </div>
+                        </div>
+                    }                    
+                </div>
                 @foreach (var product in Model.Products)
                 {
                     @Html.Partial("_ProductBox", product)
@@ -44,9 +52,7 @@
             <div class="pager">
                 @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
             </div>
-            @Html.Widget("categorydetails_bottom")
-        
-
+            @*@Html.Widget("categorydetails_bottom")*@
     </div>
     <div class="rightContentTwist" style="width:30%">
         @Html.Action("SearchBoxHead", "Catalog", new { isHome = true, isMarketPlace = true, categoryId = 1, categoryRentId = 16 })
@@ -54,6 +60,5 @@
         <br />
         @Html.FptBanner(208)
     </div>
-
 </div>
 

@@ -22,17 +22,14 @@ width: 100%">
                         <tr>
                             <td class="greyBgTD">Tên dự án:</td>
                             <td>@Model.Promotion</td>
-
                         </tr>
                         <tr>
                             <td class="greyBgTD">Loại hình</td>
                             <td>@Model.CateName</td>
-
                         </tr>
                         <tr>
                             <td class="greyBgTD">Vị trí</td>
                             <td>@Model.FullAddress</td>
-
                         </tr>
                         <tr>
                             <td class="greyBgTD">Diện tích đất:</td>
@@ -50,7 +47,6 @@ width: 100%">
                             <td class="greyBgTD">Thời gian khởi công</td>
                             <td>@Model.StartConstructionDate </td>
                         </tr>
-
                         <tr>
                             <td class="greyBgTD">Thời gian hoàn thành:</td>
                             <td> @Model.FinishConstructionDate</td>
@@ -63,44 +59,34 @@ width: 100%">
                             <td class="greyBgTD">Đơn vị thi công:</td>
                             <td>@Model.Gtin</td>
                         </tr>
-
-
                         <tr>
                             <td class="greyBgTD">Tên gọi khác:</td>
                             <td>
-
                                 @Model.UserAgreementText
                             </td>
-
                         </tr>
-
-
                     </tbody>
                 </table>
-
             </div>
             <div class="detail-picture" id="detail-picture">
                 <img src="@Model.DefaultPictureModel.FullSizeImageUrl" />
             </div>
-
             <div class="clearfix"></div>
         </div><!----detailTable---->
-        <div class="div-map" style="width: 800px;margin-top:10px">
+        <div class="div-map map-project">
             <div class="map-title">
                 <p>Vị trí dự án</p>
             </div>
-            <div style="width:100%;height:400px; display:inline-block">
+            <div class="map">
                 @Html.Partial("_Map", Model)
             </div>
         </div>
-
-        <div id="tab-detail" class="whiteBgLeft" style="width: 800px;margin-top:10px" itemprop="description">
+        <div id="tab-detail" class="div-map map-project" itemprop="description">
             <div class="map-title">
-                <p>Vị trí dự án</p>
+                <p>Giới thiệu dự án</p>
             </div>
             @Html.Raw(Model.FullDescription)
         </div><!---whiteBgLeft-->
-     
         </div>
     <div class="rightContent">
         <div class="pinkBgRight">
@@ -113,7 +99,6 @@ width: 100%">
             </div><!---twoColRight---->
             @Html.Action("ProductEmailAFriend", new { isBook = true })
         </div><!--pinkBgRight----->
-      
         <div class="ad">
             @Html.FptBanner(104)
         </div><!----rightContent---------------->

@@ -368,6 +368,8 @@ namespace Nop.Services.Catalog
             bool? featuredProducts = null,
             decimal? priceMin = null,
             decimal? priceMax = null,
+            decimal? areaMin = null,
+            decimal? areaMax = null,
             int productTagId = 0,
             string keywords = null,
             bool searchDescriptions = false,
@@ -391,7 +393,7 @@ namespace Nop.Services.Catalog
                 pageIndex, pageSize, categoryIds, manufacturerId,
                 storeId, vendorId, warehouseId,
                 parentGroupedProductId, productType, visibleIndividuallyOnly, featuredProducts,
-                priceMin, priceMax, productTagId, keywords, searchDescriptions, searchSku,
+                priceMin, priceMax, areaMin, areaMax, productTagId, keywords, searchDescriptions, searchSku,
                 searchProductTags, languageId, customerId, filteredSpecs, status, districtIds, streetId, wardId, stateProvinceId, startDateTimeUtc, endDateTimeUtc, orderBy, showHidden);
         }
 
@@ -439,6 +441,8 @@ namespace Nop.Services.Catalog
             bool? featuredProducts = null,
             decimal? priceMin = null,
             decimal? priceMax = null,
+            decimal? areaMin = null,
+            decimal? areaMax = null,
             int productTagId = 0,
             string keywords = null,
             bool searchDescriptions = false,
@@ -630,6 +634,16 @@ namespace Nop.Services.Catalog
                 pPriceMax.Value = priceMax.HasValue ? (object)priceMax.Value : DBNull.Value;
                 pPriceMax.DbType = DbType.Decimal;
 
+                var pAreaMin = _dataProvider.GetParameter();
+                pAreaMin.ParameterName = "AreaMin";
+                pAreaMin.Value = areaMin.HasValue ? (object)areaMin.Value : DBNull.Value;
+                pAreaMin.DbType = DbType.Decimal;
+
+                var pAreaMax = _dataProvider.GetParameter();
+                pAreaMax.ParameterName = "AreaMax";
+                pAreaMax.Value = areaMax.HasValue ? (object)areaMax.Value : DBNull.Value;
+                pAreaMax.DbType = DbType.Decimal;
+
                 var pKeywords = _dataProvider.GetParameter();
                 pKeywords.ParameterName = "Keywords";
                 pKeywords.Value = keywords != null ? (object)keywords : DBNull.Value;
@@ -762,6 +776,8 @@ namespace Nop.Services.Catalog
                     pFeaturedProducts,
                     pPriceMin,
                     pPriceMax,
+                    pAreaMin,
+                    pAreaMax,
                     pKeywords,
                     pSearchDescriptions,
                     pSearchSku,
