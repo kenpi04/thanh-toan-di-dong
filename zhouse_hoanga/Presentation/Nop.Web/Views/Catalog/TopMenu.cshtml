@@ -15,7 +15,7 @@
             }
              <div class="sublist">     
                  @if (category.SubCategories.Count > 0)
-                 { <div class="menu-col" style="width:176px">
+                 { <div class="menu-col" style="height:229px">
                      <span class="title">Loại nhà</span>
                      <ul>
                          @foreach (var subCategory in category.SubCategories)
@@ -25,7 +25,7 @@
                      </ul>
                  </div>
                  }    
-                 <div class="menu-col" style="width:100px">
+                 <div class="menu-col">
                      <span class="title">Khoảng giá</span>
                      <ul>
                          @foreach (var d in Model.PriceRange.Where(x => x.Value != "0-0").ToList())
@@ -34,7 +34,7 @@
                          }
                      </ul>
                  </div>               
-                 <div class="menu-col" style="width:100px">
+                 <div class="menu-col">
                      <span class="title">Theo hướng</span>
                      <ul>
                          <li><a href="@GetSeName(Request.Url.Host, category.SeName, null, null, null, "36")">Hướng Đông</a></li>
@@ -50,7 +50,7 @@
 <div id="top-menu" class="menu">
 <ul>
     @Html.Widget("header_menu_before")
-    <li><a href="@Url.RouteUrl("ContactUs")">Giới thiệu</a></li>
+    <li><a href="@Url.RouteUrl("Topic", new { SystemName="ContactUs" })">Giới thiệu</a></li>
     @if (Model.Categories.Count > 0)
     {
         foreach (var category in Model.Categories)
@@ -69,35 +69,11 @@
                 }
             </ul>
         </div>
-    </li>
-    @*<li>
-        <a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategoriesNews.FirstOrDefault().Value })">Tư vấn</a>
-        <div class="top-menu-triangle"></div>
-        <div class="sublist kienthuc" style="width: 200px; margin-left: -18px;">
-            <ul>
-                @foreach (var c in Model.CategoriesNews)
-                {
-                    <li><a href="@Url.RouteUrl("CateNews", new { SeName = c.Value })">@c.Text</a></li>
-                }
-            </ul>
-        </div>
-    </li>
-    <li>
-        <a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategoriesNews.FirstOrDefault().Value })">Lời khuyên</a>
-        <div class="top-menu-triangle"></div>
-        <div class="sublist kienthuc" style="width: 200px; margin-left: -18px;">
-            <ul>
-                @foreach (var c in Model.CategoriesNews)
-                {
-                    <li><a href="@Url.RouteUrl("CateNews", new { SeName = c.Value })">@c.Text</a></li>
-                }
-            </ul>
-        </div>
-    </li>*@
+    </li>   
     <li>
         <div class="hotlineMenu">
             <p class="hotlineName">HOTLINE</p>
-            <p class="hotlineNumber">0932 036 456</p>
+            <p class="hotlineNumber">0903 772 598</p>
         </div>
     </li>
     @Html.Widget("header_menu_after")

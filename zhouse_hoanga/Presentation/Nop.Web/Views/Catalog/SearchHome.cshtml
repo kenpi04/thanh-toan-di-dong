@@ -8,7 +8,7 @@
                 @Html.DropDownList("priceString", Model.PriceRange, new { @class = "box" })
                 @Html.DropDownList("attributeOptionIds", Model.Directories, new { @class = "box", id = "ddlDir" })
                 @Html.DropDownList("attributeOptionIds", Model.BedRooms, "Số phòng ngủ", new { @class = "box", id = "ddlBed" })
-                <input type="submit" style="margin-right:4px" class="blueBtn" value="tìm kiếm">
+                <input type="submit" style="margin-right:4px;width:125px;height:37px;" class="blueBtn" value="tìm kiếm">
                 <div class="clearBoth"></div>
             </div>
         </div>
@@ -18,9 +18,11 @@
 <script type="text/javascript">
     $(function () {
         $("#frmSearchHOme").submit(function () {
+            var cateId = $("#categoryId").val()
+            if (cateId == "0") { cateId = 1;}
             var data = {
                 priceString: $("#priceString").val(),
-                categoryId: $("#categoryId").val(),
+                categoryId: cateId,
                 attributeOptionIds: $("#ddlDir").val() + "-" + $("#ddlBed").val()
             };
             $.get("@Url.Action("GetSlugFromId")", data, function (d) {

@@ -14,15 +14,12 @@
 }
 @Html.AntiForgeryToken()
 @Html.HiddenFor(x => x.Id)
-<div class="request-title blueTitle">QUẢNG CÁO NGÔI NHÀ CỦA BẠN</div>
+<div class="request-title blueTitle">ĐĂNG TIN BẤT ĐỘNG SẢN</div>
 <p>
     Quảng cáo về căn nhà của bạn càng chi tiết, người mua sẽ càng dễ tìm kiếm thấy bạn hơn.<br /><br />
     Nếu bạn gặp vấn đề gì trong quá trình gởi thông tin hãy liên hệ với chúng tôi qua Hotline: <b>0939448124.</b><br><br />
     Nhân viên của chúng tôi sẽ hỗ trợ bạn.
 </p>
-<div class="free-text">
-    HOÀN TOÀN MIỄN PHÍ
-</div>
 <div id="panel-error" class="message-error">
     @Html.ValidationSummary()
 </div>
@@ -46,7 +43,8 @@
         @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect" })
         @Html.RequiredHint()
         <br /> <br />
-        @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:68%", placeholder = "Địa chỉ đầy đủ" })
+        @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:99%", placeholder = "Địa chỉ đầy đủ" })
+        @Html.Hidden("cityName","Hồ Chí Minh")
     </div><!----boxWrapper------->
 </div><!---floatLeft---->
 <div class="floatLeft">
@@ -63,15 +61,15 @@
 <div class="floatLeft">
     <div class="blueText">THÔNG TIN CĂN NHÀ</div>
     <div class="boxWrapperSmall form-request-contact">
-        <table style="width:900px">
+        <table style="width:100%">
             <tbody>
                 <tr>
-                    <td>@Html.LabelFor(x => x.Price) </td>
+                    <td>@Html.LabelFor(x => x.Price) (vnđ)@Html.RequiredHint()</td>
                     <td>
                         @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable", placeholder = "Giá" })
-                        @Html.RequiredHint()
-                        <span id="price-text">vnđ</span>
-                    <td>@Html.LabelFor(x => x.NumberFloors) </td>
+                        
+                        <span id="price-text"></span>
+                    <td>@Html.LabelFor(x => x.NumberFloors) @Html.RequiredHint()</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.NumberFloors)
@@ -79,28 +77,28 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                        @Html.RequiredHint()
+                        
                     </td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.CateId) </td>
+                    <td>@Html.LabelFor(x => x.CateId) @Html.RequiredHint()</td>
                     <td>
                         @Html.DropDownListFor(x => x.CateId, Model.Categories, new { @class = "formBoxInSelectTable" })
-                        @Html.RequiredHint()
+                        
                     </td>
-                    <td>Diện tích sử dụng: </td>
+                    <td>Diện tích sử dụng: (m2) @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.AreaUse, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" }) m2
-                        @Html.RequiredHint()
+                        @Html.TextBoxFor(x => x.AreaUse, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" })
+                        
                     </td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.Area) </td>
+                    <td>@Html.LabelFor(x => x.Area) (m2) @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Area, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích" }) m2
-                        @Html.RequiredHint()
+                        @Html.TextBoxFor(x => x.Area, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích" })
+                    
                     </td>
-                    <td>@Html.LabelFor(x => x.BedRooms) </td>
+                    <td>@Html.LabelFor(x => x.BedRooms) @Html.RequiredHint()</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.BedRooms)
@@ -108,18 +106,18 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                        @Html.RequiredHint()
+                        
                     </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.Width) </td>
+                    <td>@Html.LabelFor(x => x.Width) (m) @Html.RequiredHint()</td>
                     <td>
                         @*@Html.TextBoxFor(x => x.Width, "{0:0.00}", )*@
-                        @Html.TextBoxFor(x => x.Width, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều ngang" }) m
-                        @Html.RequiredHint()
+                        @Html.TextBoxFor(x => x.Width, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều ngang" })
+                        
                     </td>
-                    <td>@Html.LabelFor(x => x.BathRooms)</td>
+                    <td>@Html.LabelFor(x => x.BathRooms) @Html.RequiredHint()</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.BathRooms)
@@ -127,16 +125,16 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                        @Html.RequiredHint()
+                        
                     </td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.Dept)</td>
+                    <td>@Html.LabelFor(x => x.Dept) (m) @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Dept, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều sâu" }) m
-                        @Html.RequiredHint()
+                        @Html.TextBoxFor(x => x.Dept, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều sâu" })
+                        
                     </td>
-                    <td>@Html.LabelFor(x => x.Directors)</td>
+                    <td>@Html.LabelFor(x => x.Directors) @Html.RequiredHint()</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.Directors)
@@ -144,11 +142,11 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                        @Html.RequiredHint()
+                        
                     </td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.StatusList)</td>
+                    <td>@Html.LabelFor(x => x.StatusList) @Html.RequiredHint()</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.StatusList)
@@ -156,7 +154,7 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                        @Html.RequiredHint()
+                        
                     </td>
                     <td></td>
                     <td></td>
@@ -229,7 +227,7 @@
             <li>Hình chụp sân thượng</li>
             <li>Hình từ ban công, cửa xuống các hướng đường</li>
         </ul>
-        <div style="float:right;margin-right:54px">
+        <div style="float:left;margin-right:54px">
             <input type="file" id="FileUpload" />
         </div>
     </div><!---rightTable---->
@@ -253,13 +251,13 @@
     </div>
 </div><!---floatLeft----->
 <div class="floatLeft">
-    <div class="blueText">TIÊU ĐỀ</div>
+    <div class="blueText">TIÊU ĐỀ @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
-        @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:100%" })
+        @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:99%" })
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
-    <div class="blueText">MÔ TẢ CHI TIẾT</div>
+    <div class="blueText">MÔ TẢ CHI TIẾT @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
         @Html.EditorFor(x => x.FullDescription, "RichEditor")
     </div>
@@ -295,7 +293,7 @@
         })
         ISFIRSTLOAD=true;
         $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
-        $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
+        $("#@Html.FieldIdFor(x => x.StreetId),#ddlQuan,#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
         $("#insertProduct-button").click(function () {
             if(!$("#frmProduct").valid())
             {
@@ -420,8 +418,9 @@
         }
     }
     var add=[3];
+    var cityName=$("#cityName").val();
     function formatAdd()
-    {
+    {        
         add[0]=($("#@Html.FieldIdFor(x => x.NumberOfHome)").val());
         add[1]=($("#@Html.FieldIdFor(x => x.StreetId) option[value!=0]:selected").text());
         add[2]=($("#@Html.FieldIdFor(x => x.WardId) option[value!=0]:selected").text());
@@ -432,6 +431,7 @@
             if(add[i]!="")
                 result+=add[i]+", ";
         }
+        result = result+cityName;
         $("#@Html.FieldIdFor(x => x.FullAddress)").val(result);
     }
 </script>

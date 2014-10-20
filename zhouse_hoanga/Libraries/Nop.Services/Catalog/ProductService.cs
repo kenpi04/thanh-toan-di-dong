@@ -1029,16 +1029,16 @@ namespace Nop.Services.Catalog
                     //otherwise sort by name
                     query = query.OrderBy(p => p.Name);
                 }
-                else if (orderBy == ProductSortingEnum.NameAsc)
-                {
-                    //Name: A to Z
-                    query = query.OrderBy(p => p.Name);
-                }
-                else if (orderBy == ProductSortingEnum.NameDesc)
-                {
-                    //Name: Z to A
-                    query = query.OrderByDescending(p => p.Name);
-                }
+                //else if (orderBy == ProductSortingEnum.NameAsc)
+                //{
+                //    //Name: A to Z
+                //    query = query.OrderBy(p => p.Name);
+                //}
+                //else if (orderBy == ProductSortingEnum.NameDesc)
+                //{
+                //    //Name: Z to A
+                //    query = query.OrderByDescending(p => p.Name);
+                //}
                 else if (orderBy == ProductSortingEnum.PriceAsc)
                 {
                     //Price: Low to High

@@ -1,19 +1,17 @@
 ﻿@model Nop.Web.Models.Catalog.InsertProductModel
 @{
-    Layout = "~/Views/Shared/_RootNoHeadFoot.cshtml";
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    Html.AddTitleParts(T("PageTitle.Account.InsertProduct").Text);
 }
+@section left{
+    @Html.Partial("~/Views/Customer/MyAccountNavigation.cshtml", Model.NavigationModel, new ViewDataDictionary())
+}
+<div class="page-body">
+    @using (Html.BeginForm("InsertProduct", "Catalog", FormMethod.Post, new { id = "frmProduct" }))
+    {
+        @Html.Partial("_CreateOrUpdateProduct", Model)
+    }
+</div>
+<div class="clearBoth"></div>
 
-
-       
-        <div class="page-body">
-            @using(Html.BeginForm("InsertProduct","Catalog",FormMethod.Post,new{id="frmProduct"}))
-            {
-               
-                @Html.Partial("_CreateOrUpdateProduct",Model)
-               
-           
-            }
-           </div>
-     <div class="clearBoth"></div>
-     
 
