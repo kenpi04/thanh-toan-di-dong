@@ -1,14 +1,15 @@
-﻿@model Nop.Web.Models.Catalog.ProductOverviewModel 
- <div class="introColRight" style="margin-right:15px">
-                    <div class="nhonRight"></div>
-                    <div class="pinkTagRight">@Model.ProductPrice.Price</div>
-                      <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-                                    <img alt="@Model.DefaultPictureModel.AlternateText"  src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
-                                </a>
-                    <div class="whiteBgRight">@Model.Name
-     <br />
-                        <div class="whiteBgCata-small">
-                            @Model.DictrictName | @Model.CateName | @Model.Area.ToString("#") m2 | @Model.NumBedRoom | @Model.NumBadRoom | Hướng @Model.Directors
-                        </div>
-     </div>
-                </div><!----introColRight---->
+﻿@model Nop.Web.Models.Catalog.ProductOverviewModel
+<div class="introColRight-detail">
+    <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+        @Model.Name
+    </a>
+    <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+        <div class="picture"><img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" /></div>
+    </a>
+    <div class="whiteBgCata">
+        <span style="color:#c06"><i class="icon-price"></i>@Model.ProductPrice.Price</span>
+        <span><i class="icon-area"></i>@Model.Area.ToString("#") m2</span>
+        <span><i class="icon-director"></i>Hướng @Model.Directors</span>
+        <span><i class="icon-location"></i>@Model.DictrictName</span>
+    </div>
+</div>

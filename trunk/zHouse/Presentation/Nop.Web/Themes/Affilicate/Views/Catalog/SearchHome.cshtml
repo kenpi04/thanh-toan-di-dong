@@ -39,9 +39,7 @@
                     @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { id = "frmSearchHOme-thue", style = "float:left;display:inline-block;" }))
                     {<input type="hidden" name="type" value="2" />
                         @Html.DropDownList("districtId", Model.Districts, new { @class = "box" })
-                      
                         @Html.DropDownList("categoryId", Model.AvaiilableCategoriesProject, new { @class = "box" })
-                     
                         <input type="submit" style="width:50%" class="blueBtn" value="tìm kiếm">
                     }
                 </div>

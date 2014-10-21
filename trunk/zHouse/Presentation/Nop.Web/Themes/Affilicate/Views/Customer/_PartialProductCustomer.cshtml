@@ -5,9 +5,6 @@
         foreach (var product in Model)
         {
             <div class="section order-item" id="item-@product.Id">
-                @*<div class="title">
-                        <strong>@T("Account.CustomerOrders.OrderNumber"): @product.Id (@product.Sku)</strong>
-                    </div>*@
                 <div class="product-hinh"><img src="@product.DefaultPictureModel.ImageUrl" alt="@product.DefaultPictureModel.AlternateText" title="Hình của @product.DefaultPictureModel.Title" /></div>
                 <div class="product-content">
                     <p style="margin:0;line-height:normal"><a href="@Url.RouteUrl("Product", new { sename = product.Sename })" target="_blank" title="@product.Name" style="font-weight:700">@product.Name</a></p>
@@ -20,10 +17,7 @@
                         <p><span>Tình trạng: </span><span>@product.TinhTrang</span></p>
                         <p><span>Ngày đăng: </span><span>@(product.AvailableStartDateTimeUtc.HasValue ? product.AvailableStartDateTimeUtc.Value.ToString("dd/MM/yy hh:mm:ss") : "_")</span></p>
                         <p><span>Hết hạn: </span><span>@(product.AvailableEndDateTimeUtc.HasValue ? product.AvailableEndDateTimeUtc.Value.ToString("dd/MM/yy hh:mm:ss") : "_")</span></p>
-                        @*<p><span>@product.BathRoom</span></p>
-                        <p><span>@product.BedRoom</span></p>*@
                     </div>
-                    @*<p><strong>Đăng: </strong><span>@product.CreatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Cập nhật: </strong><span>@product.UpdatedOn.ToString("dd/MM/yy hh:mm:ss")</span> | <strong>Hết hạn: </strong><span>@(product.ExpiredOn.HasValue ? product.ExpiredOn.Value.ToString("dd/MM/YY hh:mm:ss") : "_")</span></p>*@
                 </div>
                 <div class="side-3" style="width:19%;margin:0">
                     <div class="block block-account-navigation" style="margin-bottom:0">
@@ -45,45 +39,33 @@
                             </ul>
                         </div>
                     </div>
-                </div>
-                @*<div class="buttons" style="float:left;max-width:200px">
-                        <label>@product.TrangThaiDuyet | Lượt Xem: @product.ViewNumber</label>
-                        <a onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')">Sửa tin</a>
-                        <input type="button" value="Ngừng Đăng Tin" class="blueBtn" onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')" />
-                        <input type="button" value="Xóa Tin" class="blueBtn" onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')" />
-                        <input type="button" value="Làm Mới Tin" class="blueBtn" onclick="setLocation('@Url.RouteUrl("EditProduct", new { id = product.Id })')" />
-                    </div>*@
+                </div>               
             </div>
         }
          <script type="text/javascript">
-                            function updateNew(id,action,value)
-                            {
-                                if (confirm("Bạn có chắc thay đổi trạng thái?")) {
-                                    $.post("@Url.Action("UpdateProductAsync", "Catalog")", { productId: id, action: action, value: value }, function (d) {
-                                        alert(d);
-                                        if (action == 1) {
-                                            var status = "Ngừng đăng tin";
+             function updateNew(id, action, value) {
+                 if (confirm("Bạn có chắc thay đổi trạng thái?")) {
+                     $.post("@Url.Action("UpdateProductAsync", "Catalog")", { productId: id, action: action, value: value }, function (d) {
+                         alert(d);
+                         if (action == 1) {
+                             var status = "Ngừng đăng tin";
 
-                                            if (value == 1) {
-                                                status = "Tin đang đăng";
-                                                $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,0)">Ngừng đăng tin</a>');
-                                            }
-                                            else
-                                                $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,1)">Đăng tin</a>');
-                                            $("#status_" + id).html(status);
-
-
-                                        }
-                                        if (action == 2) {
-                                            $("#item-" + id).hide("slow");
-                                            $("#item" + id).remove();
-                                        }
-                                    })
-                                }
-                            }
-
-                        </script>
-                       
+                             if (value == 1) {
+                                 status = "Tin đang đăng";
+                                 $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,0)">Ngừng đăng tin</a>');
+                             }
+                             else
+                                 $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,1)">Đăng tin</a>');
+                             $("#status_" + id).html(status);
+                         }
+                         if (action == 2) {
+                             $("#item-" + id).hide("slow");
+                             $("#item" + id).remove();
+                         }
+                     })
+                 }
+             }
+        </script>
     }
     else
     {

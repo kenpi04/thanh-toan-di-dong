@@ -36,6 +36,7 @@ using Nop.Web.Models.Customer;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Caching;
 using System.Threading.Tasks;
+using Nop.Web.Framework.UI.Paging;
 namespace Nop.Web.Controllers
 {
     public partial class CustomerController : BaseNopController
@@ -545,9 +546,8 @@ namespace Nop.Web.Controllers
             return model;
         }
         [NonAction]
-        protected async Task<CustomerOrderListModel> PrepareCustomerOrderListModelAsync(Customer customer, DateTime? startDate = null, DateTime? endDate = null,
-            string priceString = "", string attributeOptionIds = "", int wardId = 0, int categoryId = 0, int storeId= 0, int statusEndDate = 0, int status = 0, int productId = 0,
-            int pageIndex = 0, int pageSize = 20)
+        protected async Task<CustomerOrderListModel> PrepareCustomerOrderListModelAsync(Customer customer, PagingFilteringModel paging, DateTime? startDate = null, DateTime? endDate = null,
+            string priceString = "", string attributeOptionIds = "", int wardId = 0, int categoryId = 0, int storeId= 0, int statusEndDate = 0, int status = 0, int productId = 0)
         {
             if (customer == null)
                 throw new ArgumentNullException("customer");
@@ -561,29 +561,35 @@ namespace Nop.Web.Controllers
                 var product = await _productService.GetProductByIdAsync(productId);
                 if (product != null || !product.Deleted)
                 {
-                    if (product.CustomerId == customer.Id)
+                    if (customer.IsAdmin() || product.CustomerId == customer.Id)
                         products.Add(product);
                 }
             }
             else//tim khac
             {
-                products = _productService.SearchProducts(
+                paging.PageSize = 20;
+                if (paging.PageNumber <= 0) paging.PageNumber = 1;
+
+                var listProducts = _productService.SearchProducts(
                    categoryIds: new List<int> { categoryId },
                                manufacturerId: 0,
                                storeId: storeId,
-                               customerId: customer.Id,
+                               customerId: customer.IsAdmin()?0: customer.Id,
                                visibleIndividuallyOnly: true,
                                languageId: 0,
-                               pageIndex: pageIndex,
-                               pageSize: pageSize,
+                               pageIndex: paging.PageNumber-1,
+                               pageSize: paging.PageSize,
                                status: (ProductStatusEnum)status,
                                startDateTimeUtc: startDate,
                                endDateTimeUtc: endDate
-                   ).ToList();
+                   );
+                model.PagingFilteringContext.LoadPagedList(listProducts);
+                products = listProducts.ToList();
                 if (statusEndDate == 1)//con han
                     products = products.Where(p => p.AvailableEndDateTimeUtc < DateTime.Now).ToList();
                 else if (statusEndDate == 2)//het han
                     products = products.Where(p => p.AvailableEndDateTimeUtc > DateTime.Now).ToList();
+                
             }
             foreach (var product in products)
             {
@@ -622,7 +628,7 @@ namespace Nop.Web.Controllers
                     productProfileModel.Price = product.CallForPrice ? "Thỏa thuận" : Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ");
                 else { productProfileModel.Price = product.CallForPrice ? "Thỏa thuận" : product.Price.ToString("#"); }
                 model.Products.Add(productProfileModel);
-            }
+            }            
 
             return model;
         }
@@ -1484,7 +1490,7 @@ namespace Nop.Web.Controllers
         #region Orders
 
         [NopHttpsRequirement(SslRequirement.Yes)]
-        public async Task<ActionResult> Orders(DateTime? startDate, DateTime? endDate, int categoryId = 0, int statusEndDate = 0, int status = 0, int productId = 0)
+        public async Task<ActionResult> Orders(PagingFilteringModel command, DateTime? startDate, DateTime? endDate, int categoryId = 0, int statusEndDate = 0, int status = 0, int productId = 0)
         {
             var customer = _workContext.CurrentCustomer;
 
@@ -1493,7 +1499,7 @@ namespace Nop.Web.Controllers
             
             //var model = PrepareCustomerOrderListModel(customer,priceString,attributeOptionIds,wardId,categoryId);
             var model = await PrepareCustomerOrderListModelAsync(customer, startDate: startDate, endDate: endDate,
-                categoryId: categoryId, storeId: _storeContext.CurrentStore.Id, status: status, statusEndDate: statusEndDate, productId: productId);
+                categoryId: categoryId, storeId: _storeContext.CurrentStore.Id, status: status, statusEndDate: statusEndDate, productId: productId, paging:command);
               if (Request.IsAjaxRequest())
                 return View("_PartialProductCustomer", model.Products);
             return View(model);

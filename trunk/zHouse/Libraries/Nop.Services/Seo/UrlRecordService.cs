@@ -753,9 +753,9 @@ namespace Nop.Services.Seo
                         new SqlParameter("districtId", districtId),
                         new SqlParameter("wardId", wardId),
                         new SqlParameter("streetId", streetId),
-                        new SqlParameter("priceString", priceString),
+                        new SqlParameter("priceString", priceString ?? ""),
                         new SqlParameter("areaString", areaString ?? ""),
-                        new SqlParameter("attibuteOptionIds", attributeOptionIds),
+                        new SqlParameter("attibuteOptionIds", attributeOptionIds ?? ""),
                         new SqlParameter("sku", sku ?? ""),
                         pSlug
                         );
