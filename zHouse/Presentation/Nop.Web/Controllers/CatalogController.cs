@@ -2382,31 +2382,29 @@ namespace Nop.Web.Controllers
             return PartialView(model);
         }
 
-        public ActionResult HomepageProjectProducts(int? pageSize, int? productThumbPictureSize)
+        public async Task<ActionResult> HomepageProjectProducts(int? pageSize, int? productThumbPictureSize)
         {
-            var products = _productService.GetAllProductsDisplayedOnHomePage();
+            var products = await _productService.GetAllProductsDisplayedOnHomePageAsync();
             //ACL and store mapping
             products = products.Where(p => _aclService.Authorize(p) && _storeMappingService.Authorize(p) && p.ProductType == ProductType.ProjectProduct).ToList();
 
-            var model = PrepareProductOverviewModels(products, true, true, productThumbPictureSize)
-                .ToList();
+            var model = (await PrepareProductOverviewModelsAsyn(products, true, true, productThumbPictureSize)).ToList();
 
             return PartialView(model);
         }
 
 
-        public ActionResult NewProducts(int? pageSize, int? productThumbPictureSize)
-        {
-            var products = _productService.SearchProducts(pageSize: pageSize.HasValue ? pageSize.Value : 8,
-                                                          categoryIds: new List<int> { 1 },
-                                                          storeId: _storeContext.CurrentStore.Id,
-                                                          status: ProductStatusEnum.Approved,
-                                                          orderBy: ProductSortingEnum.CreatedOn);
+        public async Task<ActionResult> NewProducts(int? pageSize, int? productThumbPictureSize, int? categoryId)
+        {            
+                var products = _productService.SearchProducts(pageSize: pageSize.HasValue ? pageSize.Value : 8,
+                                                              categoryIds: new List<int> { categoryId.HasValue ? categoryId.Value : 1 },
+                                                              storeId: _storeContext.CurrentStore.Id,
+                                                              status: ProductStatusEnum.Approved,
+                                                              orderBy: ProductSortingEnum.CreatedOn);
 
-            var model = PrepareProductOverviewModels(products, true, true, productThumbPictureSize)
-                .ToList();
+                var model = (await PrepareProductOverviewModelsAsyn(products, true, true, productThumbPictureSize)).ToList();
 
-            return PartialView("HomepageProducts", model);
+                return PartialView("HomepageProducts", model);            
         }
 
         /*
@@ -3439,11 +3437,11 @@ namespace Nop.Web.Controllers
         }
 
         [HttpGet]
-        public string GetSlugFromId(string domainName, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string Q = null, int type = 0, string priceString = "0-0", string areaString = "0-0")
+        public async Task<string> GetSlugFromId(string domainName, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string Q = null, int type = 0, string priceString = "0-0", string areaString = "0-0")
         {
             if (String.IsNullOrEmpty(domainName)) domainName = Request.Url.Host;
             if (categoryId == 0) categoryId = type;
-            var slug = _urlRecordService.GetSlugFromId(domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, areaString, attributeOptionIds, Q);
+            var slug = await _urlRecordService.GetSlugFromIdAsync(domainName, categoryId, stateProvinceId, districtId, wardId, streetId, priceString, areaString, attributeOptionIds, Q);
             return slug;
         }
         #endregion
@@ -4910,53 +4908,53 @@ namespace Nop.Web.Controllers
             int categoryRentId = 0, bool isMarketPlace = false)
         {
             string keyCache = string.Format("modelSearch-{0}-{1}-{2}-{3}", isproject, categoryId, categoryRentId, isMarketPlace);
-         var dataModel=   _cacheManager.Get(keyCache, () =>
-            {
-                return Task.Run(async () =>
-                {
-                    var model = new SearchModel();
-                    var cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).ToList();
-                    model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                    model.AvailableCategories.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Value = "0" });
-                    model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResourceAsync("Product.Status.Enum." + x.ToString()).Result, x => ((int)x).ToString());
-                    model.Status.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectStatus"), Value = "0" });
-                    var dir = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.Director);
-                    model.Directories = dir.ToSelectList(x => x.Name, x => x.Id.ToString());
-                    model.Directories.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync(" Product.Search.SelectDirector"), Value = "0" });
-                    var bed = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.NumberOfBedRoom);
-                    model.BedRooms = bed.ToSelectList(x => x.Name, x => x.Id.ToString());
-                    if (!isMarketPlace)
-                    {
-                        var w = await _stateProvinceService.GetWardByDistrictIdAsync(611);
-                        model.Wards = w.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                        model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Value = "0" });
-                        var bath = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.NumberOfBadRoom);
-                        model.BathRooms = bath.ToSelectList(x => x.Name, x => x.Id.ToString());
-                    }
-                    if (isMarketPlace)
-                    {
-                        var dis = await _stateProvinceService.GetDistrictByStateProvinceIdAsync();
-                        model.Districts = dis.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                        model.Districts.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectDistrict"), Value = "0" });
-                        var caterent = _categoryService.GetAllCategoriesByParentCategoryId(categoryRentId).ToList();
-                        model.AvailableCategoriesRent = caterent.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                        model.AvailableCategoriesRent.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"),  Value = "0" });
-                        var cateProject = _categoryService.GetAllCategoriesByParentCategoryId(2).ToList();
-                        model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Value = "0" });
-                        model.BedRooms.Insert(0, new SelectListItem {Text ="Chọn số phòng ngủ", Selected= true, Value="0" });
-                        model.AvaiilableCategoriesProject = cateProject.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
-                        model.AvaiilableCategoriesProject.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Value = "0" });
-                    }
-                    return model;
-                }).Result;
-            });
-            if(selectedCateId!=0)
+            var dataModel = _cacheManager.Get(keyCache, () =>
+               {
+                   return Task.Run(async () =>
+                   {
+                       var model = new SearchModel();
+                       var cate = _categoryService.GetAllCategoriesByParentCategoryId(categoryId).ToList();
+                       model.AvailableCategories = cate.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                       model.AvailableCategories.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Value = "0" });
+                       model.Status = Enum.GetValues(typeof(ProductStatusEnum)).Cast<ProductStatusEnum>().ToSelectList(x => _localizationService.GetResourceAsync("Product.Status.Enum." + x.ToString()).Result, x => ((int)x).ToString());
+                       model.Status.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectStatus"), Value = "0" });
+                       var dir = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.Director);
+                       model.Directories = dir.ToSelectList(x => x.Name, x => x.Id.ToString());
+                       model.Directories.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync(" Product.Search.SelectDirector"), Value = "0" });
+                       var bed = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.NumberOfBedRoom);
+                       model.BedRooms = bed.ToSelectList(x => x.Name, x => x.Id.ToString());
+                       if (!isMarketPlace)
+                       {
+                           var w = await _stateProvinceService.GetWardByDistrictIdAsync(611);
+                           model.Wards = w.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                           model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Value = "0" });
+                           var bath = await _specificationAttributeService.GetSpecificationAttributeOptionsBySpecificationAttributeAsync((int)ProductAttributeEnum.NumberOfBadRoom);
+                           model.BathRooms = bath.ToSelectList(x => x.Name, x => x.Id.ToString());
+                       }
+                       if (isMarketPlace)
+                       {
+                           var dis = await _stateProvinceService.GetDistrictByStateProvinceIdAsync();
+                           model.Districts = dis.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                           model.Districts.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectDistrict"), Value = "0" });
+                           var caterent = _categoryService.GetAllCategoriesByParentCategoryId(categoryRentId).ToList();
+                           model.AvailableCategoriesRent = caterent.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                           model.AvailableCategoriesRent.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Value = "0" });
+                           var cateProject = _categoryService.GetAllCategoriesByParentCategoryId(2).ToList();
+                           model.Wards.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectWard"), Value = "0" });
+                           model.BedRooms.Insert(0, new SelectListItem { Text = "Chọn số phòng ngủ", Selected = true, Value = "0" });
+                           model.AvaiilableCategoriesProject = cateProject.ToSelectList(x => x.Name, x => x.Id.ToString()).ToList();
+                           model.AvaiilableCategoriesProject.Insert(0, new SelectListItem { Text = await _localizationService.GetResourceAsync("Product.Search.SelectCate"), Value = "0" });
+                       }
+                       return model;
+                   }).Result;
+               });
+            if (selectedCateId != 0)
                 dataModel.AvailableCategories.FirstOrDefault(x => int.Parse(x.Value) == selectedCateId).Selected = true;
             if (selectedDistrictId != 0)
                 dataModel.Districts.FirstOrDefault(x => int.Parse(x.Value) == selectedDistrictId).Selected = true;
             if (selectedWardId != 0)
                 dataModel.Districts.FirstOrDefault(x => int.Parse(x.Value) == selectedWardId).Selected = true;
-            if (selectedBathroomId!=0)
+            if (selectedBathroomId != 0)
                 dataModel.BathRooms.FirstOrDefault(x => int.Parse(x.Value) == selectedBathroomId).Selected = true;
             if (selectedBedroomId != 0)
                 dataModel.AvailableCategories.FirstOrDefault(x => int.Parse(x.Value) == selectedBedroomId).Selected = true;
@@ -5014,19 +5012,22 @@ namespace Nop.Web.Controllers
             return input.TrimString(150);
         }
 
-        [ChildActionOnly]
-        public ActionResult RelatedProductCustomer(int customerId)
+        public async Task<ActionResult> RelatedProductCustomer(int Id, int? productThumbPictureSize, int? pageSize = 5)
         {
-            var customer = _customerService.GetCustomerById(customerId);
-            if (customer == null)
+            var product = await _productService.GetProductByIdAsync(Id);
+            var category = product.ProductCategories.FirstOrDefault();
+
+
+            if (product == null)
                 return Content("");
             var products = _productService.SearchProducts(
                    storeId: _storeContext.CurrentStore.Id,
-                      visibleIndividuallyOnly: true,
-                      customerId: customerId,
+                   categoryIds: new List<int>{category == null ? category.Id:0},
+                   districtIds: new List<int>{product.DistrictId},
+                      visibleIndividuallyOnly: true,                      
                    orderBy: ProductSortingEnum.CreatedOn,
-                   pageSize: 2);
-            var model = PrepareProductOverviewModels(products, preparePictureModel: true, productThumbPictureSize: 220);
+                   pageSize: pageSize.HasValue?pageSize.Value:5);
+            var model = PrepareProductOverviewModels(products, preparePictureModel: true, productThumbPictureSize: productThumbPictureSize);
             return View(model);
         }
 

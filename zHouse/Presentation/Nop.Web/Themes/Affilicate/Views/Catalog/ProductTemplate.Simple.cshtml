@@ -83,6 +83,7 @@
                 <input type="button" class="blueBtn" onclick="sendMailFriend()" value="gửi email">
                 <input type="button" class="blueBtn" value="in ra" onclick="setLocation('@Url.Action("Product",new{productId=Model.Id,isprint=true})')" />
                 <input type="button" class="blueBtn" value="download pdf">
+                <input type="button" class="blueBtn" value="Báo tin sai">
             </center>
         </div><!---floatLeft-------------->
         @if (!string.IsNullOrWhiteSpace(Model.Promotion) || !string.IsNullOrWhiteSpace(Model.DacDiemNoiBat))
@@ -152,26 +153,37 @@
                 })
             }
         </script>
-        <div class="floatLeft">
-            @Html.Action("ProductReviews", "Catalog", new { productId = Model.Id })
-        </div>
+        @*<div class="floatLeft">
+                @Html.Action("ProductReviews", "Catalog", new { productId = Model.Id })
+            </div>*@
     </div><!-----leftContent-------------->
     <div class="rightContent">
         <div class="pinkBgRight">
             <b>BẠN CẦN THÊM THÔNG TIN?</b>
             <div class="twoColRight">
-                <div class="twoColRightPic"><a href="#"><img src="../Themes/Zhouse/Content/images/i1.png" class="circleImg"></a></div>
-                <div class="twoColRightText" style="font-size:15px;color:#fff">
-                    <b>0936734949 <br>0968309789</b>
+                <div class="contact item-row">
+                    <div class="contact item-cell"><img src="../Themes/Affilicate/Content/images/icon_people_white_15.png"></div>
+                    <div class="contact item-cell"><span>@Model.ContactName</span></div>
+                </div>
+                <div class="contact item-row">
+                    <div class="contact item-cell"><img src="../Themes/Affilicate/Content/images/icon_phone_white_15.png"></div>
+                    <div class="contact item-cell"><span>@Model.ContactPhone</span></div>
+                </div>
+                <div class="contact item-row">
+                    <div class="contact item-cell"><img src="../Themes/Affilicate/Content/images/icon_email_white_15.png"></div>
+                    <div class="contact item-cell"><span>@Model.ContactEmail</span></div>
                 </div>
             </div><!---twoColRight---->
-            @Html.Action("ProductEmailAFriend", new { isBook = true })
         </div><!--pinkBgRight----->
-        @Html.Action("RelatedProductCustomer", new { customerId = Model.CustomerId })
+        <div id="relatedproduct-div"></div>
+        @*@Html.Action("RelatedProductCustomer", new { Id = Model.Id, productThumbPictureSize = 105, pageSize = 10 })*@
         <div class="ad">
             @Html.FptBanner(104)
         </div><!----rightContent---------------->
     </div>
 </div>
+<script type="text/javascript">
+    $("#relatedproduct-div").html("<div class=loading-img></div>").load('@Url.Action("RelatedProductCustomer", "Catalog")' + '?pageSize=10&productThumbPictureSize=105&Id=' + '@Model.Id');
+</script>
 
 

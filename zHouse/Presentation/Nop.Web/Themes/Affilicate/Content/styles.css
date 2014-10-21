@@ -1111,9 +1111,9 @@ ul{margin:0}
 .mainContent{float:left;width:1080px;margin:0}
 .rightContent{width:230px;float:right}
 .leftContent{width:705px;float:left;margin-right:10px}
-.pinkBgRight{background:#c06;width:100%;float:left;padding:20px 10px 20px 20px;color:#fff;margin-bottom:5px}
+.pinkBgRight{background:#c06;width:100%;float:left;padding:20px 0px 0px 14px;color:#fff;margin-bottom:5px}
 .circleImg{border-radius:100px;border:0}
-.twoColRight{float:left;width:100%;margin:10px 0}
+.twoColRight{float:left;width:100%;margin:15px 0}
 .twoColRightPic{float:left;width:60px;margin-right:20px}
 .twoColRightText{float:left;width:120px;margin-top:10px;font-size:14px}
 .introColRight{float:left;width:220px;position:relative;margin:5px 0}
@@ -1168,10 +1168,10 @@ ul{margin:0}
 #popup{background:none repeat scroll 0 0 #fff;padding:4px}
 .friend-email{width:100%}
 .simplemodal-close{background:url(images/x.png) no-repeat;width:22px;height:22px;position:absolute;right:-5px;top:-5px}
-#popup h1{padding:5px 0;background:#c06;color:#fff;font-weight:bold;font-size:14px;text-align:center;text-transform:uppercase}
+#popup h1{padding:8px 0;background:#c06;color:#fff;font-weight:bold;font-size:14px;text-align:center;text-transform:uppercase;margin-top:10px}
 .whiteBgCata{padding:4px 0 4px 0px;border-radius:3px;overflow:hidden;background-color:#f5f5f5}
 .whiteBgCata > span {min-width:92px;width:45%; padding:0 0 0 10px;display:inline-block;line-height:24px}
-.whiteBgCata-small{padding:7px 5px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:100%;margin-top:10px;height:55px}
+.whiteBgCata-small{padding:7px 0px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:100%;margin-top:10px;font-weight:normal}
 .pinkNarrowTitle30{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06}
 .whiteLeftCol{float:left;width:220px;margin: 0 0px 10px 0;background:#fff}
 .rightContentTwist{width:795px;float:right}
@@ -1296,7 +1296,6 @@ textarea.formBoxInText{height:70px}
 .search-left .greyBgTitle {width:238px;background-color:#e1e1e1 }
 .search-left .whiteLeftCol {width:238px }
 .free-text {float:right;color:#c06;font-size:24px;font-weight:bold }
-
 /*Why page*/
 .div1 {background:url(images/house.png) no-repeat right 0 #fff;width:100%;height:620px }
 .div1 .text { left: 70px; position: absolute; top: 91px; }
@@ -1305,9 +1304,7 @@ textarea.formBoxInText{height:70px}
 .div1 span.dauhoi { font-size: 119pt; margin-left: 40px; margin-top: -78px; position: absolute;color:#1e98d5 }
 .info .text-1 {color:#1e98d5;font-size:24pt }
 .info .text-2 {color:#c06;font-size:57pt }
-.info .text-info { color: #000;
-    float: right;
-    width: 297px;}
+.info .text-info { color: #000;float: right;width: 297px;}
 .text-24 {font-size:24pt }
 .info {margin-top:100px }
 .div2 {background:url(images/street.png) no-repeat;height:544px;width:100%;box-shadow: 4px 1px 2px 1px #333; }
@@ -1317,12 +1314,8 @@ textarea.formBoxInText{height:70px}
 .div4 {background:url(images/bg2.png) no-repeat right 0 #fff;height:680px;width:100%;box-shadow: 4px 1px 2px 1px #333;  }
 .div4-i { width: 413px; position: absolute; margin-top: 390px; margin-left: 426px; }
 .div4-i .text-info {margin-top:25px }
-.div3-i {background:url(images/bg4.png) no-repeat;width:601px;height:222px;position:absolute;padding-left: 154px;
-padding-top: 15px;right: 10px;
-margin-top: 225px; }
-.div3-i .text-info {float: left !important;
-color: #fff;
-margin-top: 7px; }
+.div3-i {background:url(images/bg4.png) no-repeat;width:601px;height:222px;position:absolute;padding-left: 154px;padding-top: 15px;right: 10px;margin-top: 225px; }
+.div3-i .text-info {float: left !important;color: #fff;margin-top: 7px;}
 .datlichxemnha{font-size:100%;}
 .register-form{width:44%;margin:0 auto}
 .form-fields .error {margin-left: 148px;font-size: 10px;margin-bottom: 10px;}
@@ -1390,3 +1383,12 @@ li.active a, li.active a:hover {background: #fff;color: #4c4c4c;border: 1px soli
 .project .whiteBgCata > span{width:100%;}
 .request-label label{padding-right:10px;}
 .loading-img{background:url(images/loading.gif);width:24px;height:24px;display:block;margin:0 auto}
+.twoColRight .item-cell{display:table-cell;max-width:214px;overflow:hidden;}
+.twoColRight .item-cell >img{max-width:30px}
+.twoColRight .item-cell >span{padding-left:13px;font-weight:700;line-height:30px;font-size:14px;}
+.introColRight-detail{float:left;width:100%;position:relative;margin:5px 0;padding:7px;background:#fff}
+.introColRight-detail >a{display:block;font-weight:700;line-height:15px;margin-bottom:3px;cursor:pointer;text-decoration:none;}
+.introColRight-detail .picture{width:80px;max-height:104px;overflow:hidden;float:left;text-align:center;margin-right:4px;}
+.introColRight-detail >img{width:100%;}
+.introColRight-detail .whiteBgCata >span{width:100%;padding-left:5px;font-size:12px;}
+.email-friend .inputs-left .inputs{width:94%}

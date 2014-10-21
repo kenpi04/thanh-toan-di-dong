@@ -6,6 +6,7 @@
     Html.AddTitleParts(T("PageTitle.Account").Text);
 }
 @using Nop.Web.Models.Customer;
+@using Nop.Web.Extensions;
 @section left
 {
     @Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
@@ -15,8 +16,16 @@
         <h1>@T("Account.MyAccount") - @T("Account.CustomerOrders")</h1>
     </div>
     <div class="page-body">
-      
+
         @Html.Partial("_SearchBox")
-      @Html.Partial("_PartialProductCustomer", Model.Products)
+        <div class="order-list" id="product-list-cus">
+            @Html.Partial("_PartialProductCustomer", Model.Products)
+        </div>
+        <div class="pager">
+            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+        </div>
     </div>
 </div>
+@*<script type="text/javascript">
+    $("#product-list-cus").html("<div class=loading-img></div>").load('@Url.Action("Orders", "Customer")' + '?pageSize='+'@Model.PagingFilteringContext.PageSize'+'18&productThumbPictureSize=105&categoryId=1');
+</script>*@

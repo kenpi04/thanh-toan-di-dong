@@ -197,14 +197,24 @@
 </div><!----floatLeft----->
 <div class="floatLeft">
     <div class="colA" id="ThichHop"><div class="blueText">Thích hợp</div></div>
-    @foreach (var i in Model.ThichHop)
+    <div class="colB">
+        <ul style="list-style: none" id="ThichHop">
+            @foreach (var i in Model.ThichHop)
+            {
+                <li style="float: left; width: 20%">
+                    <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") />
+                    @Html.Label(i.Text)
+                </li>
+            }
+        </ul>
+    </div>
+    @*@foreach (var i in Model.ThichHop)
     {
         <div class="colB" style="float:left;margin-right:20px"> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") /> @Html.Label(i.Text)</div>
-    }
+    }*@
     <div class="clearBoth"></div>
-    <br />
     <div class="boxWrapperSmall">
-        @Html.TextAreaFor(x => x.NoteEnvironments, new { @class = "formBoxInText", placeholder = "vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)" })
+        @Html.TextAreaFor(x => x.NoteThichHop, new { @class = "formBoxInText", placeholder = "vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)" })
     </div>
 </div><!----floatLeft----->
 <div class="floatLeft">
@@ -258,7 +268,7 @@
 <div class="floatLeft">
     <div class="blueText">TIÊU ĐỀ</div>
     <div class="boxWrapperSmall">
-        @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:100%" })
+        @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:99%" })
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
@@ -283,15 +293,16 @@
     <div class="blueText">CHÚ Ý CỦA NGƯỜI BÁN</div>
     <div class="boxWrapperSmall">
         <textarea class="formBoxInText">(Để lại lời nhắn để chúng tôi có thể phục vụ bạn tốt hơn)</textarea>
-        <br>
-        <input style="float:right" type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
     <div class="blueText">CHỌN VỊ TRÍ NHÀ TRÊN BẢN ĐỒ</div>
     <div class="boxWrapperSmall">
-        @Html.Partial("_MapInsertProduct", "");
+        @Html.Partial("_MapInsertProduct", "")
     </div>
+</div>
+<div class="floatLeft">
+    <input style="float:right" type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
 </div>
 
     <script type="text/javascript">
