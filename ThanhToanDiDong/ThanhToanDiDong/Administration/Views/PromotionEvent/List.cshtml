@@ -1,0 +1,45 @@
+﻿@model FilterModel
+@{
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Danh sách khuyến mãi";
+}
+
+<div class="container-fluid">
+    @using (Html.BeginForm("Paging", "PromotionEvent", FormMethod.Get, new { update = "data", @class = "form-inline", role = "form" }))
+    {
+        @Html.HiddenFor(x => x.PagingModel.CurrentPage)
+        @Html.HiddenFor(x => x.PagingModel.ItemsPerPage)
+        <div class="form-group">
+            <label class="sr-only">Từ ngày</label>
+            @Html.TextBoxFor(x => x.StartDate, new { placeholder = "Từ ngày", @class = "form-control datepicker", Value = "" })
+        </div>
+        <div class="form-group">
+            <label class="sr-only">Đến ngày</label>
+            @Html.TextBoxFor(x => x.EndDate, new { placeholder = "đến ngày", @class = "form-control datepicker", Value = "" })
+        </div>
+        <input type="submit" value="Tìm kiếm" class="btn btn-default" />
+    }
+</div>
+<div class="container-fluid">
+    <a class="btn btn-default" href="@Url.Action("Create")">Thêm mới</a>
+</div>
+<div id="data">
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#@Html.IdFor(x=>x.StartDate)").val("");
+        $("#@Html.IdFor(x=>x.EndDate)").val("");
+        $("form").submit();       
+    })
+</script>
+<script type="text/javascript">
+    function Delete(id) {
+        if (confirm("Bạn có chắc muốn xóa?")) {
+            $.post("@Url.Action("Delete")", { id: id }, function (d) {
+                if (d = 1) {
+                    $("#item-" + id).remove();
+                } else { alert("Cập nhật thất bại.") }
+            });
+    };
+    }
+</script>

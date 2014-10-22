@@ -18,7 +18,8 @@ namespace ThanhToanDiDong.Admin.Controllers
         OrderService _orderService = new OrderService();
         ProviderService _providerService = new ProviderService();
         ServicesService _service = new ServicesService();
-        CardMobileService _cardMobile = new CardMobileService();
+        CardMobileService _cardMobileService = new CardMobileService();
+        PromotionEventService _promotionEventService = new PromotionEventService();
         public ActionResult Index()
         {
             return View();
@@ -26,19 +27,19 @@ namespace ThanhToanDiDong.Admin.Controllers
         public ActionResult OrderList()
         {
             var model = new OrderListModel();
-            model.CateMobiles = new CategoryCardMobileService().GetAll().Select(x => new SelectListItem {Value=x.Id.ToString(),Text=x.Name }).ToList();
+            model.CateMobiles = new CategoryCardMobileService().GetAll().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
             model.PagingModel = new PagingInfo
             {
-                CurrentPage=1,
-                ItemsPerPage=1
+                CurrentPage = 1,
+                ItemsPerPage = 1
             };
             return View(model);
-            
+
         }
         [HttpGet]
         public ActionResult OrderPage(OrderListModel model)
         {
-            int? cate=model.CateId;
+            int? cate = model.CateId;
             if (model.CateId == 0)
                 cate = null;
             DateTime? startDateValue = (model.StartDate == null) ? null
@@ -47,7 +48,7 @@ namespace ThanhToanDiDong.Admin.Controllers
             DateTime? endDateValue = (model.EndDate == null) ? null
                             : (DateTime?)model.EndDate;
 
-            var order = _orderService.GetPage(cate,true, startDateValue, endDateValue,OrderType.CARD, (OrderStatusEnum)model.Status, model.PagingModel.CurrentPage, model.PagingModel.ItemsPerPage);
+            var order = _orderService.GetPage(cate, true, startDateValue, endDateValue, OrderType.CARD, (OrderStatusEnum)model.Status, model.PagingModel.CurrentPage, model.PagingModel.ItemsPerPage);
             return PartialView("_OrderList", order);
         }
         public ActionResult BillList()
@@ -63,14 +64,15 @@ namespace ThanhToanDiDong.Admin.Controllers
         [HttpGet]
         public ActionResult BillPage(OrderListModel model)
         {
-          
+
             DateTime? startDateValue = (model.StartDate == null) ? null
                             : (DateTime?)model.StartDate;
 
             DateTime? endDateValue = (model.EndDate == null) ? null
                             : (DateTime?)model.EndDate;
 
-            var order = _orderService.GetPage(null,false, startDateValue, endDateValue, OrderType.BILLING, (OrderStatusEnum)model.Status, model.PagingModel.CurrentPage, model.PagingModel.ItemsPerPage).Select(x => {
+            var order = _orderService.GetPage(null, false, startDateValue, endDateValue, OrderType.BILLING, (OrderStatusEnum)model.Status, model.PagingModel.CurrentPage, model.PagingModel.ItemsPerPage).Select(x =>
+            {
                 var provider = _providerService.GetById(x.ProviderId);
                 return new OrderItemModel
                 {
@@ -78,14 +80,14 @@ namespace ThanhToanDiDong.Admin.Controllers
                     Id = x.Id,
                     ProviderName = provider.ProviderName,
                     ServiceName = provider.Service.ServiceName,
-                    Status=Enum.GetName(typeof(OrderStatusEnum),x.OrderStatusId),
-                    TotalPrice=string.Format("{0:0,0}", x.TotalAmount)
+                    Status = Enum.GetName(typeof(OrderStatusEnum), x.OrderStatusId),
+                    TotalPrice = string.Format("{0:0,0}", x.TotalAmount)
 
                 };
-            
+
             });
             return PartialView("_BillList", order);
-        
+
         }
 
         public ActionResult Note(int id)
@@ -96,28 +98,29 @@ namespace ThanhToanDiDong.Admin.Controllers
         public ActionResult ChangePrice()
         {
             var model = new List<CardMobile>();
-            model = _cardMobile.GetAll().ToList();
+            model = _cardMobileService.GetAll().ToList();
             return View(model);
         }
         [HttpPost]
         public ActionResult EditPrice(int id, decimal price)
         {
-            var card = _cardMobile.GetById(id);
+            var card = _cardMobileService.GetById(id);
             if (card == null)
                 return Json(new
                 {
-                    success=false,
-                    mgs="lỗi ! ko tìm thấy card này"
+                    success = false,
+                    mgs = "lỗi ! ko tìm thấy card này"
                 });
             card.UnitSellingPrice = price;
-            _cardMobile.InsertOrUpdate(card);
+            _cardMobileService.InsertOrUpdate(card);
             return Json(new
             {
                 success = true
                ,
-                mgs = string.Format("{0:0,0}",card.UnitSellingPrice)
+                mgs = string.Format("{0:0,0}", card.UnitSellingPrice)
             });
         }
+
         
     }
 }
