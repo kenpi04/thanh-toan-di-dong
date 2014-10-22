@@ -18,6 +18,7 @@
      new SelectListItem { Text = "Không duyệt", Value = "30" },
 })
 <input type="text" name="productId" id="productId" placeholder="Mã tin" />
+<input type="hidden" id="PageNumber" value="0" />
 <input type="submit" name="searchProduct" id="searchProduct" class="blueBtn" value="tìm kiếm">
 <label>(*Chú ý: Nếu "Mã tin" có dữ liệu sẽ ưu tiên tìm mã tin)</label>
 <div class="clearBoth"></div>
@@ -30,7 +31,8 @@
                 categoryId: $("#categoryId").val(),
                 status: $("#status").val(),
                 statusEndDate: $("#statusEndDate").val(),
-                productId: $('#productId').val()
+                productId: $('#productId').val(),
+                PageNumber:$('#PageNumer').val()
             };
 
             $.get("@Url.Action("Orders","Customer")", data, function (d) {
