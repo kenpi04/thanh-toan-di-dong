@@ -1,0 +1,29 @@
+﻿@model PromotionEventModel
+@{
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Sửa khuyến mãi";
+}
+<form id="promotionevent-form">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class=" container-fluid">
+            <a class="btn btn-default" href="@Url.Action("List")" role="button">Trở về danh sách</a>
+        </div>
+    </nav>
+    @Html.Partial("_CreateOrUpdate", Model)
+</form>
+<script type="text/javascript">
+    $("#savePromotion").click(function () {
+        var data = {
+            Id: $("#Id").val(),
+            Description: $("#Description").val(),
+            Published: $("#Published").prop('checked')
+        }
+        $.post("@Url.Action("Edit")", data, function (d) {
+            if (d == 1) {
+                window.location.href = "@Url.Action("List")";
+            }else {alert("error")}
+        })
+        return false;
+    })
+</script>
+

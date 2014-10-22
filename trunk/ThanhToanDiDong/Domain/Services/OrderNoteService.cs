@@ -19,7 +19,7 @@ namespace Domain.Services
         {
             var q = _orderNoteRepository.Table;
             
-            q.OrderBy(x=>x.Id);
+            q = q.OrderBy(x=>x.Id);
             return q.ToPagedList(pageIndex, pageSize);
         }
         public IEnumerable<OrderNote> GetAll(Func<OrderNote, Boolean> where = null)

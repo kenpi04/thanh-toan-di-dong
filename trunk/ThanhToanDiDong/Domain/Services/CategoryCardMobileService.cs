@@ -19,7 +19,7 @@ namespace Domain.Services
         {
             var q = _cardMobileCateRepository.Table.Where(x => !x.Deleted);
             
-            q.OrderBy(x=>x.Id);
+            q = q.OrderBy(x=>x.Id);
             return q.ToPagedList(pageIndex, pageSize);
         }
         public IEnumerable<CategoryCardMobile> GetAll(Func<CategoryCardMobile, Boolean> where = null)

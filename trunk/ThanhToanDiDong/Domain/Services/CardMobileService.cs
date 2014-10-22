@@ -20,7 +20,7 @@ namespace Domain.Services
         {
             var q = _cardMobileRepository.Table.Where(x=>!x.Deleted);
             
-            q.OrderBy(x=>x.Id);
+            q = q.OrderBy(x=>x.Id);
             return q.ToPagedList(pageIndex, pageSize);
         }
         public IEnumerable<CardMobile> GetAll(Func<CardMobile,Boolean> where=null)

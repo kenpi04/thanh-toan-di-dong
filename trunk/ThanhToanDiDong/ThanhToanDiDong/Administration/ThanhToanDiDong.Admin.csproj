@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminAreaRegistration.cs" />
+    <Compile Include="Controllers\PromotionEventController.cs" />
     <Compile Include="Filter\Auth.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -123,6 +124,8 @@
     <Compile Include="Models\OrderItemModel.cs" />
     <Compile Include="Models\OrderListModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
+    <Compile Include="Models\FilterModel.cs" />
+    <Compile Include="Models\PromotionEventModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +213,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\ChangePrice.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PromotionEvent\_PromotionEventList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PromotionEvent\_CreateOrUpdate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PromotionEvent\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PromotionEvent\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\PromotionEvent\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

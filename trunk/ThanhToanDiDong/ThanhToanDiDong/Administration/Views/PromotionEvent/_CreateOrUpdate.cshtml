@@ -1,0 +1,28 @@
+﻿@model PromotionEventModel
+
+<form role="form">
+        @Html.HiddenFor(model => model.Id)
+        <div class="form-group">
+            <label for="description">Nội dung</label>
+            @Html.TextAreaFor(model => model.Description, new { @class="form-control",  placeholder="Nội dung" })
+        </div>
+        <div class="form-group">
+            <label for="published">Cho phép hiển thị</label>
+            @Html.CheckBoxFor(model => model.Published)
+        </div>
+        <a id="savePromotion" class="btn btn-default">Submit</a>
+    </form>
+
+
+<!-- The form is placed inside the body of modal -->
+<!-- Modal -->
+
+@*<div class="form-group">
+    <label>Nội dung</label>
+    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "Nội dung" })
+</div>
+<div class="form-group">
+    <label>Cho phép hiển thị</label>
+    @Html.CheckBoxFor(model => model.Published)
+</div>
+<a id="submitBtn" class="btn btn-default">Submit</a>*@

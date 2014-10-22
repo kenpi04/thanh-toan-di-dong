@@ -34,8 +34,8 @@ namespace Domain.Services
             if (endDate.HasValue)
                 q = q.Where(x => x.CreatedOn <= endDate.Value);
             if (status.HasValue)
-                q = q.Where(x => x.OrderStatusId == (int)status);            
-           q=q.OrderByDescending(x=>x.CreatedOn);
+                q = q.Where(x => x.OrderStatusId == (int)status);
+            q = q = q.OrderByDescending(x => x.CreatedOn);
             return q.ToPagedList(pageIndex, pageSize);
         }
       
