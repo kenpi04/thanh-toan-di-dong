@@ -1,0 +1,12 @@
+﻿@model List<Domain.Entity.PromotionEvent>
+@if (Model.Count > 0)
+{
+<div class="promotionNews">
+    <ul class="newsItem">
+        @foreach (var item in Model)
+        {
+            <li>@item.Description</li>
+        }        
+    </ul>
+</div>
+}

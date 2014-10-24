@@ -1,63 +1,72 @@
 ﻿@model ThanhToanDiDong.Models.Payment.BuyCardModel
 
 <div class="col-md-6">
-@using (Html.BeginForm("BuyCard", "Payment", FormMethod.Post, new { role = "form", id = "frmBuy" }))
+@using (Html.BeginForm("BuyCard", "Payment", FormMethod.Post, new { role = "form", id = "frmBuy"}))
 { 
     @Html.ValidationSummary(true);
   <div class="form-group">
-    <label for="txtPhone">Nhà mạng:</label>
-   <select id="ddlNetworks" class="form-control">
-       <option value="0">Chọn mạng</option>
+   <select id="ddlNetworksCard" class="form-control">
+       <option value="0">Chọn nhà mạng</option>
        @foreach (var i in Model.CateCards)
        { 
         <option value="@i.Id" data-img="@i.Image">@i.Name</option>
        }
    </select>
-     <span>
-         <img id="imglogo" style="display:none" />
-     </span>  
+     @*<span>
+         <img id="imglogocard" style="display:none" />
+     </span>*@  
   </div>
    <div class="form-group">
-       <label for="ddlPrice">Mệnh giá:</label>
        @Html.DropDownListFor(x => x.CardId,new List<SelectListItem>(),"Chọn mệnh giá", new {@class="form-control" })
-    @Html.ValidationMessageFor(x=>x.CardId)
+       @Html.ValidationMessageFor(x=>x.CardId)
    </div>
     <div class="form-group">
-        <label>Thành tiền</label><br />
+        @Html.DropDownListFor(x=> x.Quantity, new List<SelectListItem>(){
+       new SelectListItem(){Text="1 thẻ", Value="1"}, 
+       new SelectListItem(){Text="2 thẻ", Value="2"},
+       new SelectListItem(){Text="3 thẻ", Value="3"},
+       new SelectListItem(){Text="4 thẻ", Value="4"},
+       new SelectListItem(){Text="5 thẻ", Value="5"},
+   }, new {@class="form-control" })
+        @Html.ValidationMessageFor(x=> x.Quantity)
+    </div>
+    <div class="form-group">
+        @Html.TextBoxFor(x=>x.Email, new {@class="form-control", placeholder="Nhập email", type="email" })
+    </div>
+    <div class="form-group">
+        <label class="amount">Thành tiền</label><br />
         <span style="color:orange;font-size:16px"><b id="totalMoney-card"></b> </span>
     </div>
-  <button type="submit" class="btn btn-primary">Tiếp tục</button>
-
-
+  <button type="submit" class="btn btn-primary btn-card">Tiếp tục</button>
 }
     </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#ddlNetworks").change(function () {
-            var img = "/Content/Images/" + $(this).find("option:selected").attr("data-img");
+        $("#ddlNetworksCard").change(function () {
+            //var img = "/Content/Images/" + $(this).find("option:selected").attr("data-img");
             var value = $(this).val();
-            $("#imglogo").attr("src", img).show("slow");
+            //$("#imglogocard").attr("src", img).show("slow");
             var ddlCate = $("#@Html.IdFor(x=>x.CardId)");
-            ddlCate.html("<option value=0>Chọn mệnh giá</option");
+            ddlCate.html("<option>Chọn mệnh giá</option");
             $.ajax({
                 type: "GET",
                 url: "@Url.Action("GetCategory")",
-            data: { id: value },
-            success: function (data) {
-                if (data == "")
-                    return;
-                $.each(data, function (index, value) {
-                    ddlCate.append($("<option></option>").val(value.Value).text(value.Text).attr("data-price", value.price));
-                })
-            },
-            error: function () {
-                ddlCate.html("<option value=0>Chọn mệnh giá</option");
-            }
-        });
+                data: { id: value },
+                success: function (data) {
+                    if (data == "")
+                        return;
+                    $.each(data, function (index, value) {
+                        ddlCate.append($("<option></option>").val(value.Value).text(value.Text).attr("data-price", value.price));
+                    })
+                },
+                error: function () {
+                    ddlCate.html("<option value=0>Chọn mệnh giá</option");
+                }
+            });
         })
         $("#@Html.IdFor(x=>x.CardId)").change(function () {
-            var price = $(this).find("option:selected").attr("data-price");
-            $("#totalMoney-card").html(FormatNumeric(price) + " đ");
+            var price = $("#frmBuy").find("#@Html.IdFor(x=>x.CardId)").find("option:selected").attr("data-price");
+            $("#totalMoney-card").html(price + " vnđ");
         })
     })
 </script>
