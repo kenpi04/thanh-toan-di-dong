@@ -24,40 +24,49 @@ namespace ThanhToanDiDong.Controllers
         public ActionResult Topup()
         {
             var model = new TopupModel();
-            var cate = _cateService.GetAll().ToDictionary(x => x.PictureUrl, x => x.DauSo);
-            ViewBag.Cate = cate;
+            //var cate = _cateService.GetAll().Where(x=> x.IsSupportTopup && !x.IsCard).ToDictionary(x => x.PictureUrl, x => x.DauSo);
+            //ViewBag.Cate = cate;
             return View(model);
         }
         [HttpPost]
         public ActionResult Topup(TopupModel model)
         {
-            var cardmobile = _cardMobileService.GetById(model.PriceListId);
-            var order = new Order
+            if (ModelState.IsValid)
             {
+                var cardmobile = _cardMobileService.GetById(model.PriceListId);
+                if (cardmobile != null)
+                {
+                    var order = new Order
+                    {
 
-                CardMobileId = model.PriceListId,
-                UnitPrice = cardmobile.UnitPrice,
-                UnitSellingPrice = cardmobile.UnitSellingPrice,
-                Quantity = 1,
-                OrderStatusId = (int)OrderStatusEnum.PENDING,
-                Price = cardmobile.UnitSellingPrice,
-                NumberPhone = model.Phone,
-                PartnerId = (int)ProviderEnum.PAYOO,
-                OrderTypeId = (int)OrderType.TOPUP,
-                ProviderId = 0,
-                CustomerIp = Helper.GetIp(),
-                PaymentStatusId = (int)PaymentStatus.CHUATHANHTOAN,
-                TotalAmount = cardmobile.UnitSellingPrice,
-                OrderGuid = Guid.NewGuid(),
-                CreatedOn = DateTime.UtcNow
+                        CardMobileId = model.PriceListId,
+                        UnitPrice = cardmobile.UnitPrice,
+                        UnitSellingPrice = cardmobile.UnitSellingPrice,
+                        Quantity = 1,
+                        OrderStatusId = (int)OrderStatusEnum.PENDING,//trang thai don hang
+                        Price = cardmobile.UnitSellingPrice,
+                        NumberPhone = model.Phone,
+                        PartnerId = (int)ProviderEnum.PAYOO, //nha cung cap thanh toan
+                        OrderTypeId = (int)OrderType.TOPUP, // loai giao dich
+                        ProviderId = 0,
+                        CustomerIp = Helper.GetIp(),
+                        PaymentStatusId = (int)PaymentStatus.CHUATHANHTOAN, // trang thai thanh toan
+                        TotalAmount = cardmobile.UnitSellingPrice,
+                        OrderGuid = Guid.NewGuid(),
+                        CreatedOn = DateTime.UtcNow
 
 
 
-            };
-            _orderService.InsertOrUpdate(order);
+                    };
+                    _orderService.InsertOrUpdate(order);
 
-            return RedirectToAction("Index", "OnePay", new { orderId = order.Id });
-
+                    return RedirectToAction("Index", "OnePay", new { orderId = order.Id });
+                }
+                ViewBag.Error = "Không tìm thấy dịch vụ. Vui lòng thử lại.";
+                return View(model);
+            }
+            ViewBag.Error = "Lỗi! Vui lòng kiểm tra lại dữ liệu.";
+            return View(model);
         }
         public ActionResult PaymentSuccess()
         {
@@ -155,46 +164,107 @@ namespace ThanhToanDiDong.Controllers
         public ActionResult BuyCard()
         {
             var model = new BuyCardModel();
-            var cate = _cateService.GetAll();
+            
+            var cate = _cateService.GetAll().Where(x => x.IsCard).OrderBy(x=>x.DisplayOrder).ToList();
             model.CateCards = cate.Select(x => new BuyCardModel.CateCard
             {
                 Id = x.Id,
                 Name = x.Name,
                 Image = x.PictureUrl
-
             }).ToList();
-
-
+            
             return View(model);
         }
         [HttpPost]
         public ActionResult BuyCard(BuyCardModel model)
         {
-            var cardmobile = _cardMobileService.GetById(model.CardId);
-            var order = new Order
+            if (ModelState.IsValid)
             {
+                var cardmobile = _cardMobileService.GetById(model.CardId);
+                if (cardmobile != null)
+                {
+                    var order = new Order
+                    {
 
-                CardMobileId = cardmobile.Id,
-                UnitPrice = cardmobile.UnitPrice,
-                UnitSellingPrice = cardmobile.UnitSellingPrice,
-                Quantity = 1,
-                OrderStatusId = (int)OrderStatusEnum.PENDING,
-                Price = cardmobile.UnitSellingPrice,
-                PartnerId = (int)ProviderEnum.PAYOO,
-                OrderTypeId = (int)OrderType.CARD,
-                ProviderId = 0,
-                CustomerIp = Helper.GetIp(),
-                PaymentStatusId = (int)PaymentStatus.CHUATHANHTOAN,
-                TotalAmount = cardmobile.UnitSellingPrice,
-                OrderGuid = Guid.NewGuid(),
-                CreatedOn = DateTime.UtcNow
+                        CardMobileId = cardmobile.Id,
+                        UnitPrice = cardmobile.UnitPrice,
+                        UnitSellingPrice = cardmobile.UnitSellingPrice,
+                        Quantity = model.Quantity,
+                        OrderStatusId = (int)OrderStatusEnum.PENDING,//
+                        Price = cardmobile.UnitSellingPrice,
+                        PartnerId = (int)ProviderEnum.PAYOO,//
+                        OrderTypeId = (int)(model.IsCardGame ? OrderType.CARD : OrderType.CARDGAME),//
+                        ProviderId = 0,
+                        CustomerIp = Helper.GetIp(),
+                        PaymentStatusId = (int)PaymentStatus.CHUATHANHTOAN,//
+                        TotalAmount = cardmobile.UnitSellingPrice * model.Quantity,//
+                        OrderGuid = Guid.NewGuid(),
+                        CreatedOn = DateTime.Now
 
 
 
-            };
-            _orderService.InsertOrUpdate(order);
-            return RedirectToAction("Index", "OnePay", new { orderId = order.Id });
+                    };
+                    _orderService.InsertOrUpdate(order);
+                    return RedirectToAction("Index", "OnePay", new { orderId = order.Id });
+                }
+                ViewBag.Error = "Không tìm thấy dịch vụ. Vui lòng thử lại.";
+                return View(model);
+            }
+            ViewBag.Error = "Lỗi! Vui lòng kiểm tra lại dữ liệu.";
+            return View(model);
+        }
 
+        public ActionResult BuyCardGame()
+        {
+            var model = new BuyCardModel();
+
+            var cate = _cateService.GetAll().Where(x=> x.IsCardGame).OrderBy(x=>x.DisplayOrder).ToList();
+            model.CateCards = cate.Select(x => new BuyCardModel.CateCard
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Image = x.PictureUrl
+            }).ToList();
+
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult BuyCardGame(BuyCardModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cardmobile = _cardMobileService.GetById(model.CardId);                
+                if (cardmobile != null)
+                {
+                    var order = new Order
+                    {
+
+                        CardMobileId = cardmobile.Id,
+                        UnitPrice = cardmobile.UnitPrice,
+                        UnitSellingPrice = cardmobile.UnitSellingPrice,
+                        Quantity = model.Quantity,
+                        OrderStatusId = (int)OrderStatusEnum.PENDING,//
+                        Price = cardmobile.UnitSellingPrice,
+                        PartnerId = (int)ProviderEnum.PAYOO,//
+                        OrderTypeId = (int)(OrderType.CARDGAME),//
+                        ProviderId = 0,
+                        CustomerIp = Helper.GetIp(),
+                        PaymentStatusId = (int)PaymentStatus.CHUATHANHTOAN,//
+                        TotalAmount = cardmobile.UnitSellingPrice * model.Quantity,//
+                        OrderGuid = Guid.NewGuid(),
+                        CreatedOn = DateTime.Now
+
+
+
+                    };
+                    _orderService.InsertOrUpdate(order);
+                    return RedirectToAction("Index", "OnePay", new { orderId = order.Id });
+                }
+                ViewBag.Error = "Không tìm thấy dịch vụ. Vui lòng thử lại.";
+                return View(model);
+            }
+            ViewBag.Error = "Lỗi! Vui lòng kiểm tra lại dữ liệu.";
+            return View(model);
         }
 
     }
