@@ -22,8 +22,8 @@ $(function () {
             success: function (d) {
                 if (form.attr("update"))
                     $("#" + form.attr("update")).html(d);
-                else
-                    showMes("cập nhật thành công!", true, null);
+                //else
+                //    alert("cập nhật thành công!");
             }
         })
         return false;
