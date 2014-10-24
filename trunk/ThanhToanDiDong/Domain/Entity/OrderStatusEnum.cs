@@ -1,32 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Domain.Entity
 {
-     public enum OrderStatusEnum
+    /// <summary>
+    /// trang thai don hang
+    /// </summary>
+    public enum OrderStatusEnum
     {
-       PENDING=0,
-        PROCESSING=10,
-       COMPLETE=20,
-       CANCEL=30
+        /// <summary>
+        /// cho <=> chua thanh toan
+        /// </summary>
+        PENDING = 0,
+        /// <summary>
+        /// dang giao dich <=> da thanh toan ^ chua nhan hang
+        /// </summary>
+        PROCESSING = 10,
+        /// <summary>
+        /// da hoan thanh <=> da thanh toan & nhan hang
+        /// </summary>
+        COMPLETE = 20,
+        /// <summary>
+        /// da huy
+        /// </summary>
+        CANCEL = 30
     }
-     public enum ProviderEnum
-     { 
-        PAYOO=10,
-        MSERVICE=20
-     }
-     public enum OrderType { 
-        TOPUP=10,
-         CARD=20,
-        BILLING=30,
+    /// <summary>
+    /// Nha cung cap dich vu thanh toan
+    /// </summary>
+    public enum ProviderEnum
+    {
+        PAYOO = 10,
+        MSERVICE = 20
+    }
+    /// <summary>
+    /// Loai don hang
+    /// </summary>
+    public enum OrderType
+    {
+        /// <summary>
+        /// Nap tien dien thoai
+        /// </summary>
+        TOPUP = 10,
+        /// <summary>
+        /// Mua the dien thoai
+        /// </summary>
+        CARD = 20,
+        /// <summary>
+        /// Thanh toan hoa don
+        /// </summary>
+        BILLING = 30,
+        /// <summary>
+        /// Mua the game
+        /// </summary>
+        CARDGAME = 25
 
-     }
-     public enum PaymentStatus { 
-        CHUATHANHTOAN=0,
-        DATHANHTOAN=10,
-         HUY=20
-     }
+    }
+    /// <summary>
+    /// Trang thai thanh toan - qua Internet Banking
+    /// </summary>
+    public enum PaymentStatus
+    {
+        /// <summary>
+        /// Chua thanh toan
+        /// </summary>
+        CHUATHANHTOAN = 0,
+        /// <summary>
+        /// Da thanh toan
+        /// </summary>
+        DATHANHTOAN = 10,
+        /// <summary>
+        /// Da huy
+        /// </summary>
+        HUY = 20
+    }
 }
