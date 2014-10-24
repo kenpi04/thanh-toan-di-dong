@@ -1,61 +1,65 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - thanhtoandidong.com</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-        @Scripts.Render("~/bundles/jquery")
-        <link href="~/Content/Site.css" rel="stylesheet" />
-        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-        <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
-    </head>
-    <body>
-         <div class="progress-bar progress-bar-success" id="divPopupInfo" style="display:none;width:100%">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - thanhtoandidong.com</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="progress-bar progress-bar-success" id="divPopupInfo" style="display:none;width:100%">
         <span id="spanInfo" class="noty_text">This is a success information</span>
 
     </div>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
+    <header>
+        <div class="content-wrapper">
+            <div>
+                <a href="@Url.Action("Index", "Home")" class="logo">
+                    <img src="~/Content/Images/logo.png" />
+                </a>
             </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
+        </div>        
+    </header>
+    <div class="menu">
+        <div class="content-wrapper">
+            <nav>
+                <ul id="menu">
+                    <li class="active"><a href="#topup" data-toggle="tab">Nạp tiền điện thoại</a></li>
+                    <li ><a href="#card" data-toggle="tab">Mua thẻ điện thoại</a></li>
+                    <li ><a href="#game" data-toggle="tab">Mua thẻ game</a></li>
+                    @*<li ><a href="#bill" data-toggle="tab">Thanh toán hóa đơn</a></li>*@
+                </ul>
+            </nav>
         </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - thanhtoandidong.com.vn</p>
-                </div>
+    </div>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div>
+                <p><span>Bản quyền thuộc về thanhtoanDIDONG &copy; @DateTime.Now.Year</span></p>
+                <p><span>HOTLINE & HỖ TRỢ KỸ THUẬT :&nbsp;</span><span class="hotline">0902 482 664</span></p>
+                <p><span>Email :&nbsp;</span><span>dungvo@zhouse.com.vn</span></p>
             </div>
-        </footer>
+        </div>
+    </footer>
 
-     
-        @Scripts.Render("~/bundles/knockout")
-        @Scripts.Render("~/bundles/bootstrap")
-        @Scripts.Render("~/bundles/jqueryval")
-        <script src="~/Scripts/bootstrap.min.js"></script>
-        <script src="~/Scripts/public.common.js"></script>
-        @RenderSection("scripts", required: false)
-    </body>
+
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @*<script src="~/Scripts/public.common.js"></script>*@
+    @RenderSection("scripts", required: false)
+</body>
 </html>

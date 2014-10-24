@@ -2,21 +2,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Trang chủ";
 }
-<!-- Nav tabs -->
-<ul class="nav nav-tabs">
-  <li class="active"><a href="#topup" data-toggle="tab">Nạp card</a></li>
-  <li><a href="#card" data-toggle="tab">Mua card</a></li>
-
-</ul>
-
 <!-- Tab panes -->
 <div class="tab-content">
+   @Html.Action("PromotionNews","Home")
   <div class="tab-pane active" id="topup">
       @Html.Action("Topup","Payment")
   </div>
   <div class="tab-pane" id="card">
          @Html.Action("BuyCard","Payment")
   </div>
+    <div class="tab-pane" id="game">
+        @Html.Action("BuyCardGame", "Payment")
+    </div>
+    @*<div class="tab-pane" id="bill">
+        @Html.Action("BuyCard", "Payment")
+    </div>*@
 
 </div>
 
