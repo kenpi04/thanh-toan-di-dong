@@ -211,7 +211,9 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\background.jpg" />
     <Content Include="Content\Images\beeline.jpg" />
+    <Content Include="Content\Images\logo.jpg" />
     <Content Include="Content\Images\mobifone.jpg" />
     <Content Include="Content\Images\sfone.jpg" />
     <Content Include="Content\Images\viettel.jpg" />
@@ -345,6 +347,8 @@
     <Content Include="Views\Payment\PaymentSuccess.cshtml" />
     <Content Include="Views\OnePay\Index.cshtml" />
     <Content Include="Views\Payment\BuyCard.cshtml" />
+    <Content Include="Views\Payment\BuyCardGame.cshtml" />
+    <Content Include="Views\Home\PromotionNews.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
