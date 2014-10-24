@@ -30,6 +30,9 @@ namespace Domain.Entity
         public bool IsSupportPayment { get; set; }
         public bool IsSupportTopup { get; set; }
         public string DauSo { get; set; }
+
+        public bool IsCardGame { get; set; }
+        public bool IsCard { get; set; }
     
         public virtual ICollection<CardMobile> CardMobile { get; set; }
     }

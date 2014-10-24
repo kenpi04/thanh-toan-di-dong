@@ -18,5 +18,7 @@ namespace Domain.Entity
         public bool Published { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public bool Deleted { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }
