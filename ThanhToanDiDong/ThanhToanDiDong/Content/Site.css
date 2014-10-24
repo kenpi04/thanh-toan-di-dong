@@ -5,8 +5,7 @@
 }
 
 body {
-    background-color: #fff;
-    border-top: solid 10px #000;
+    background-color: #fff;    
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
@@ -95,19 +94,20 @@ h5, h6 {
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 0 auto;
-    max-width: 960px;
+    max-width: 600px;
 }
 
 #body {
-    background-color: #efeeef;
+    background:url('/Content/Images/background.jpg');
     clear: both;
     padding-bottom: 35px;
+    padding-top:15px;
 }
 
     .main-content {
-        background: url("../Images/accent.png") no-repeat;
-        padding-left: 10px;
-        padding-top: 30px;
+        /*background: url("../Images/accent.png") no-repeat;*/
+        /*padding-left: 10px;
+        padding-top: 30px;*/
     }
 
     .featured + .main-content {
@@ -123,6 +123,7 @@ footer {
     background-color: #e2e2e2;
     font-size: .8em;
     height: 100px;
+    padding-top:10px;
 }
 
 
@@ -180,11 +181,13 @@ footer {
 /* menu
 ----------------------------------------------------------*/
 ul#menu {
-    font-size: 1.3em;
-    font-weight: 600;
-    margin: 0 0 5px;
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
     padding: 0;
-    text-align: right;
+    text-align: left;
+    height:50px;
+    line-height:50px;    
 }
 
     ul#menu li {
@@ -192,15 +195,16 @@ ul#menu {
         list-style: none;
         padding-left: 15px;
     }
+    
 
         ul#menu li a {
             background: none;
-            color: #999;
+            color: #000;
             text-decoration: none;
         }
+        ul#menu li.active a{color:#0e76bc}
 
-        ul#menu li a:hover {
-            color: #333;
+        ul#menu li a:hover {            
             text-decoration: none;
         }
 
@@ -586,7 +590,17 @@ tr.pager td {
     padding: 0 0.25em 0 0;
 }
 
-
+.menu{background:#eaeaea;}
+.logo{padding:0;margin:0}
+.amount{color:#fff;}
+.form-control{border-radius:0 !important}
+.totalMoney{color:orange;font-size:16px;}
+.btn-card{border-radius:0 !important;width:50%}
+.hotline{font-size:24px; font-family:Impact; color:#B32D28;}
+.promotionNews{text-align:left;color:#ffffff; line-height:20px;}
+.promotionNews ul{list-style:square;}
+.promotionNews ul li{line-height: 23px;}
+.tab-pane{padding-left:10px;}
 /********************
 *   Mobile Styles   *
 ********************/
