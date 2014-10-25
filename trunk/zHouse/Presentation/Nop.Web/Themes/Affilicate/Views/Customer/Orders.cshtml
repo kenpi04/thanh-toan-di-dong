@@ -21,9 +21,7 @@
         <div class="order-list" id="product-list-cus">
             @*@Html.Partial("_PartialProductCustomer", Model.Products)*@
         </div>
-        <div id="pager-li" class="pager">
-            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
-        </div>
+      
         <script type="text/javascript">
             $("#pager-li li.individual-page a").click(function () {
                 var page = parseInt($(this).text());
