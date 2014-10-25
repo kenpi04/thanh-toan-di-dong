@@ -2,8 +2,8 @@
  <div class="introColRight" style="margin-right:15px">
                     <div class="nhonRight"></div>
                     <div class="pinkTagRight">@Model.ProductPrice.Price</div>
-                      <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-                                    <img alt="@Model.DefaultPictureModel.AlternateText"  src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+                      <a style="display:block;min-height:220px" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+                                    <img style="width:220px;height:220px" alt="@Model.DefaultPictureModel.AlternateText"  src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
                                 </a>
                     <div class="whiteBgRight">@Model.Name
      <br />

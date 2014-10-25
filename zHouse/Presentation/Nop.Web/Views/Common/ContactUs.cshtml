@@ -65,7 +65,7 @@
             <p>Vay vốn mua nhà thủ tục nhanh chóng, giải ngân nhanh với lãi suất thấp nhất.</p>
         </div>
         <div class="talkBlue">
-            <h2><span class="title30" style="font-size:18px">DV</span> <span class="title40">QUẢNG CÁO</span></h2>
+            <h2 style="width:261px"><span class="title30" style="font-size:18px">DV</span> <span class="title40">QUẢNG CÁO</span></h2>
             <p>Các bạn muốn tự mình bán nhà? Zhouse luôn có những gói quảng cáo giúp bạn tự mua bán nhà mình một cách nhanh nhất‏.</p>
         </div>
     </div><!----fullContent---->
@@ -78,76 +78,81 @@
         <div class="mapCol1">
             <span class="blueText" style="font-size:16px">zHOUSE.com.vn</span><br />
             <span class="blueText" style="font-size:13px">Online House Exchange</span><br />
-            <p>144/12/18a Đường Số 6, P. Bình Hưng Hòa B,<br /> Q. Bình Tân, Tp. Hồ Chí Minh<br />Tel: (+84)8 6681 3308. <br /><br />Đừng ngần ngại, hãy liên hệ ngay với chúng tôi!</p>
+            <p>144/12/18a Đường Số 6, P. Bình Hưng Hòa B,<br /> Q. Bình Tân, Tp. Hồ Chí Minh<br />Tel: (+84)8 6681 3308. <br /><br />Đừng ngần ngại, hãy liên hệ ngay với chúng tôi</p>
             <form id="frmContactus" method="post">
                 <div class="panel-error">
                     @Html.ValidationSummary(false)
                 </div>
-                @Html.TextBoxFor(model => model.FullName, new { @class = "mapBox", placeholder = T("ContactUs.FullName.Hint") })
-                @Html.TextBoxFor(model => model.Phone, new { @class = "mapBox", placeholder = T("ContactUs.Phone.Hint") })
+                @Html.TextBoxFor(model => model.FullName, new { @class = "mapBox", placeholder = T("ContactUs.FullName.Hint") }) @Html.RequiredHint()
+                @Html.TextBoxFor(model => model.Phone, new { @class = "mapBox", placeholder = T("ContactUs.Phone.Hint") }) @Html.RequiredHint()
                 @Html.TextBoxFor(model => model.Email, new { @class = "mapBox", placeholder = T("ContactUs.Email.Hint") })
-                @Html.TextAreaFor(model => model.Enquiry, new { @class = "mapBox", placeholder = T("ContactUs.Enquiry.Hint"), style = "width:290px;height:51px" })
+                @Html.TextAreaFor(model => model.Enquiry, new { @class = "mapBox", placeholder = T("ContactUs.Enquiry.Hint"), style = "width:290px;height:51px" }) @Html.RequiredHint()
                 @if (Model.DisplayCaptcha)
                 {
                     <div class="captcha-box">
                         @Html.Raw(Html.GenerateCaptcha())
                     </div>}
-                <input type="submit" id="btn-send-contact" name="send-mail" class="blueBtn" value="CHUYỂN" style="float:right;margin-right:8px" />
+                <input type="submit" id="btn-send-contact" name="send-mail" class="blueBtn" value="CHUYỂN" />
             </form>
         </div><!--mapCol1---->
         <div class="mapCol2">
             <div id="map_canvas" style="width:550px;height:330px;border:solid 2px #fff;box-shadow:1px 1px 1px #808080;margin-bottom:10px"></div>
             <script>
-                $("#frmContactus").submit(function () {
-                    var frm = $(this);
-                    if (frm.valid()) {
-                        $("#btn-send-contact").val("Đang gửi...");
-                        $("#btn-send-contact").attr("disabled", "disabled");
-                        $.ajax({
-                            type: "POST",
-                            url: "@Url.Action("ContactUsSend", "Common")",
-                            data: frm.serialize(),
-                            success: function (d) {
-                                alert(d);
-                                $("#btn-send-contact").val("CHUYỂN");
-                                $("#btn-send-contact").removeAttr("disabled");
-                            },
-                            error: function () {
-                                alert("Error!");
-                                $("#btn-send-contact").val("CHUYỂN");
-                                $("#btn-send-contact").removeAttr("disabled");
-                            }
-                        })
-                    }
-                    return false;
-                })
-                function showAddress() {
-                    var diachi = "44/12/18a,Đường Số 6,Bình Hưng Hòa b,Bình Tân,Hồ Chí Minh";
-                    var content = 'Địa chỉ: 144/12/18a Đường Số 6, P. Bình Hưng Hòa B, Q. Bình Tân, Tp. Hồ Chí Minh - Điện thoại: 0939.448.124<br>        Email: info@zHouse.com.vn | Website: <a href="http://zHouse.com.vn">http://zHouse.com.vn</a><br>        Thiết kế bởi <a href="http://ecomsolute.com">eCOMsolute.com</a> <br>';
-                    geocoder = new google.maps.Geocoder();
-                    var myOptions = {
-                        center: new google.maps.LatLng(10.794345, 106.589554),
-                        zoom: 17,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-                    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-                    var info = new google.maps.InfoWindow({ content: content });
-                    var marker = new google.maps.Marker({
-                        map: map,
-                        position: new google.maps.LatLng(10.794345, 106.589554)
-                    });
-                    google.maps.event.addListener(marker, "click", function ()
-                    { info.open(map, marker); });
+    $("#frmContactus").submit(function () {
+        var frm = $(this);
+        if (frm.valid()) {
+            $("#btn-send-contact").val("Đang gửi...");
+            $("#btn-send-contact").attr("disabled", "disabled");
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ContactUsSend", "Common")",
+                data: frm.serialize(),
+                success: function (d) {
+                    alert(d);
+                    $("#btn-send-contact").val("CHUYỂN");
+                    $("#btn-send-contact").removeAttr("disabled");
+                    $("#@Html.IdFor(x=>x.FullName)").val("");
+                    $("#@Html.IdFor(x=>x.Phone)").val("");
+                    $("#@Html.IdFor(x=>x.Email)").val("");
+                    $("#@Html.IdFor(x=>x.Enquiry)").val("");
+                },
+                error: function () {
+                    alert("Error!");
+                    $("#btn-send-contact").val("CHUYỂN");
+                    $("#btn-send-contact").removeAttr("disabled");
                 }
-                //   setTimeout(function(){showAddress();},2000);
-                function loadScript() {
-                    var script = document.createElement('script');
-                    script.type = 'text/javascript';
-                    script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&' +
-                        'callback=showAddress';
-                    document.body.appendChild(script);
-                }
-                window.setTimeout(loadScript, 5000);
+            })
+        }
+        return false;
+    })
+    function showAddress() {
+        var diachi = "44/12/18a,Đường Số 6,Bình Hưng Hòa b,Bình Tân,Hồ Chí Minh";
+        var content = 'Địa chỉ: 144/12/18a Đường Số 6, P. Bình Hưng Hòa B, Q. Bình Tân, Tp. Hồ Chí Minh <br> Điện thoại: 0939.448.124<br>        Email: info@zHouse.com.vn | Website: <a href="http://zHouse.com.vn">http://zHouse.com.vn</a>';
+        geocoder = new google.maps.Geocoder();
+        var myOptions = {
+            center: new google.maps.LatLng(10.794345, 106.589554),
+            zoom: 17,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        var info = new google.maps.InfoWindow({ content: content });
+        var marker = new google.maps.Marker({
+            map: map,
+            position: new google.maps.LatLng(10.794345, 106.589554)
+        });
+        google.maps.event.addListener(marker, "click", function ()
+        { info.open(map, marker); });
+        info.open(map, marker);
+    }
+    //   setTimeout(function(){showAddress();},2000);
+    function loadScript() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&' +
+            'callback=showAddress';
+        document.body.appendChild(script);
+    }
+    window.setTimeout(loadScript, 5000);
             </script>
         </div><!--mapCol2---->
     </div><!---wrapperLarge---->

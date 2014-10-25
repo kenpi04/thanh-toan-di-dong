@@ -569,19 +569,20 @@ namespace Nop.Web.Controllers
             {
                 paging.PageSize = 20;
                 if (paging.PageNumber <= 0) paging.PageNumber = 1;
+                ProductStatusEnum? approvedStatus=null; if(status != 0) approvedStatus = (ProductStatusEnum)status;
 
                 var listProducts = _productService.SearchProducts(
                    categoryIds: new List<int> { categoryId },
-                               manufacturerId: 0,
                                storeId: storeId,
                                customerId: customer.IsAdmin()?0: customer.Id,
                                visibleIndividuallyOnly: true,
                                languageId: 0,
                                pageIndex: paging.PageNumber-1,
                                pageSize: paging.PageSize,
-                               status: (ProductStatusEnum)status,
+                               status: approvedStatus,
                                startDateTimeUtc: startDate,
-                               endDateTimeUtc: endDate
+                               endDateTimeUtc: endDate,
+                               showHidden:true
                    );
                 model.PagingFilteringContext.LoadPagedList(listProducts);
                 products = listProducts.ToList();
@@ -650,7 +651,7 @@ namespace Nop.Web.Controllers
         #region Login / logout / register
         
         [NopHttpsRequirement(SslRequirement.Yes)]
-        public ActionResult Login(bool? checkoutAsGuest)
+        public async Task<ActionResult> Login(bool? checkoutAsGuest)
         {
             var model = new LoginModel();
             model.UsernamesEnabled = _customerSettings.UsernamesEnabled;
@@ -697,20 +698,20 @@ namespace Nop.Web.Controllers
                                 return RedirectToRoute("HomePage");
                         }
                     case CustomerLoginResults.CustomerNotExist:
-                        ModelState.AddModelError("", _localizationService.GetResource("Account.Login.WrongCredentials.CustomerNotExist"));
+                        ModelState.AddModelError("", await _localizationService.GetResourceAsync("Account.Login.WrongCredentials.CustomerNotExist"));
                         break;
                     case CustomerLoginResults.Deleted:
-                        ModelState.AddModelError("", _localizationService.GetResource("Account.Login.WrongCredentials.Deleted"));
+                        ModelState.AddModelError("", await _localizationService.GetResourceAsync("Account.Login.WrongCredentials.Deleted"));
                         break;
                     case CustomerLoginResults.NotActive:
-                        ModelState.AddModelError("", _localizationService.GetResource("Account.Login.WrongCredentials.NotActive"));
+                        ModelState.AddModelError("", await _localizationService.GetResourceAsync("Account.Login.WrongCredentials.NotActive"));
                         break;
                     case CustomerLoginResults.NotRegistered:
-                        ModelState.AddModelError("", _localizationService.GetResource("Account.Login.WrongCredentials.NotRegistered"));
+                        ModelState.AddModelError("", await _localizationService.GetResourceAsync("Account.Login.WrongCredentials.NotRegistered"));
                         break;
                     case CustomerLoginResults.WrongPassword:
                     default:
-                        ModelState.AddModelError("", _localizationService.GetResource("Account.Login.WrongCredentials"));
+                        ModelState.AddModelError("", await _localizationService.GetResourceAsync("Account.Login.WrongCredentials"));
                         break;
                 }
             }
@@ -722,7 +723,7 @@ namespace Nop.Web.Controllers
         }
 
         [NopHttpsRequirement(SslRequirement.Yes)]
-        public ActionResult Register()
+        public async Task<ActionResult> Register()
         {
             //check whether registration is allowed
             if (_customerSettings.UserRegistrationType == UserRegistrationType.Disabled)
@@ -759,23 +760,23 @@ namespace Nop.Web.Controllers
             model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnRegistrationPage;
             if (_customerSettings.CountryEnabled)
             {
-                model.AvailableCountries.Add(new SelectListItem() { Text = _localizationService.GetResource("Address.SelectCountry"), Value = "0" });
+                model.AvailableCountries.Add(new SelectListItem() { Text = await _localizationService.GetResourceAsync("Address.SelectCountry"), Value = "0" });
                 foreach (var c in _countryService.GetAllCountries())
                 {
-                    model.AvailableCountries.Add(new SelectListItem() { Text = c.GetLocalized(x => x.Name), Value = c.Id.ToString() });
+                    model.AvailableCountries.Add(new SelectListItem() { Text = c.Name, Value = c.Id.ToString() });
                 }
                 
                 if (_customerSettings.StateProvinceEnabled)
                 {
                     //states
-                    var states = _stateProvinceService.GetStateProvincesByCountryId(model.CountryId).ToList();
+                    var states = (await _stateProvinceService.GetStateProvincesByCountryIdAsync(model.CountryId)).ToList();
                     if (states.Count > 0)
                     {
                         foreach (var s in states)
-                            model.AvailableStates.Add(new SelectListItem() { Text = s.GetLocalized(x => x.Name), Value = s.Id.ToString(), Selected = (s.Id == model.StateProvinceId) });
+                            model.AvailableStates.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString(), Selected = (s.Id == model.StateProvinceId) });
                     }
                     else
-                        model.AvailableStates.Add(new SelectListItem() { Text = _localizationService.GetResource("Address.OtherNonUS"), Value = "0" });
+                        model.AvailableStates.Add(new SelectListItem() { Text = await _localizationService.GetResourceAsync("Address.OtherNonUS"), Value = "0" });
 
                 }
             }
@@ -1028,7 +1029,7 @@ namespace Nop.Web.Controllers
                 model.AvailableCountries.Add(new SelectListItem() { Text = await _localizationService.GetResourceAsync("Address.SelectCountry"), Value = "0" });
                 foreach (var c in await _countryService.GetAllCountriesAsync())
                 {
-                    model.AvailableCountries.Add(new SelectListItem() { Text = await c.GetLocalizedAsync(x => x.Name), Value = c.Id.ToString(), Selected = (c.Id == model.CountryId) });
+                    model.AvailableCountries.Add(new SelectListItem() { Text = c.Name, Value = c.Id.ToString(), Selected = (c.Id == model.CountryId) });
                 }
 
 
@@ -1039,7 +1040,7 @@ namespace Nop.Web.Controllers
                     if (states.Count > 0)
                     {
                         foreach (var s in states)
-                            model.AvailableStates.Add(new SelectListItem() { Text = await s.GetLocalizedAsync(x => x.Name), Value = s.Id.ToString(), Selected = (s.Id == model.StateProvinceId) });
+                            model.AvailableStates.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString(), Selected = (s.Id == model.StateProvinceId) });
                     }
                     else
                         model.AvailableStates.Add(new SelectListItem() { Text = await _localizationService.GetResourceAsync("Address.OtherNonUS"), Value = "0" });
@@ -1497,11 +1498,17 @@ namespace Nop.Web.Controllers
             if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !customer.IsAdmin()))
                 return new HttpUnauthorizedResult();
             
-            //var model = PrepareCustomerOrderListModel(customer,priceString,attributeOptionIds,wardId,categoryId);
-            var model = await PrepareCustomerOrderListModelAsync(customer, startDate: startDate, endDate: endDate,
-                categoryId: categoryId, storeId: _storeContext.CurrentStore.Id, status: status, statusEndDate: statusEndDate, productId: productId, paging:command);
-              if (Request.IsAjaxRequest())
+            var model = new CustomerOrderListModel();
+            if (Request.IsAjaxRequest())
+            {
+                model = await PrepareCustomerOrderListModelAsync(customer, startDate: startDate, endDate: endDate,
+                    categoryId: categoryId, storeId: _storeContext.CurrentStore.Id, status: status, statusEndDate: statusEndDate, productId: productId, paging: command);
+
                 return View("_PartialProductCustomer", model.Products);
+            }
+            model.NavigationModel = GetCustomerNavigationModel(customer);
+            model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;
+            model.Products = null;
             return View(model);
         }
 
