@@ -32,7 +32,7 @@
                 status: $("#status").val(),
                 statusEndDate: $("#statusEndDate").val(),
                 productId: $('#productId').val(),
-                PageNumber:$('#PageNumer').val()
+                PageNumber:$('#PageNumber').val()
             };
             $("#product-list-cus").html("<div class=loading-img></div>");
             $.get("@Url.Action("Orders","Customer")", data, function (d) {
