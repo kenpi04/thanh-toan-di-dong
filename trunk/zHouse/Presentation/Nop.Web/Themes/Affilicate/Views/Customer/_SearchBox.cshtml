@@ -26,15 +26,15 @@
     $(function () {
         $("#searchProduct").click(function () {
             var data = {
-                startDate:ConverDate( $("#startDate").val()),
-                endDate:ConverDate( $("#endDate").val()),
+                startDate:ConverDate($("#startDate").val()),
+                endDate:ConverDate($("#endDate").val()),
                 categoryId: $("#categoryId").val(),
                 status: $("#status").val(),
                 statusEndDate: $("#statusEndDate").val(),
                 productId: $('#productId').val(),
                 PageNumber:$('#PageNumer').val()
             };
-
+            $("#product-list-cus").html("<div class=loading-img></div>");
             $.get("@Url.Action("Orders","Customer")", data, function (d) {
                 $("#product-list-cus").replaceWith(d);
             })

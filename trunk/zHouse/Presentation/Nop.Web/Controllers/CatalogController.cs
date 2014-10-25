@@ -1343,6 +1343,7 @@ namespace Nop.Web.Controllers
                 stateProvinceId: stateProvinceId,
                 streetId: streetId,
                 orderBy: (ProductSortingEnum)command.OrderBy,
+                status:ProductStatusEnum.Approved,
                 pageIndex: command.PageNumber - 1,
                 pageSize: command.PageSize);
             var modelProducts = await PrepareProductOverviewModelsAsyn(products);
@@ -3326,6 +3327,7 @@ namespace Nop.Web.Controllers
                 pageIndex: command.PageNumber - 1,
                 pageSize: command.PageSize,
                 filteredSpecs: selectedOptionIds,
+                status:ProductStatusEnum.Approved,
                 stateProvinceId: stateProvinceId,
                 districtIds: new List<int> { 611 },
                 wardId: new List<int> { districtId },
@@ -3437,7 +3439,7 @@ namespace Nop.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<string> GetSlugFromId(string domainName, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string Q = null, int type = 0, string priceString = "0-0", string areaString = "0-0")
+        public async Task<string> GetSlugFromId(string domainName, string attributeOptionIds, int categoryId = 0, int stateProvinceId = 0, int districtId = 0, int wardId = 0, int streetId = 0, string Q = null, int type = 1, string priceString = "0-0", string areaString = "0-0")
         {
             if (String.IsNullOrEmpty(domainName)) domainName = Request.Url.Host;
             if (categoryId == 0) categoryId = type;
@@ -4951,15 +4953,18 @@ namespace Nop.Web.Controllers
             if (selectedCateId != 0)
                 dataModel.AvailableCategories.FirstOrDefault(x => int.Parse(x.Value) == selectedCateId).Selected = true;
             if (selectedDistrictId != 0)
-                dataModel.Districts.FirstOrDefault(x => int.Parse(x.Value) == selectedDistrictId).Selected = true;
+            {
+                if(dataModel.Districts != null && dataModel.Districts.Count > 0)
+                    dataModel.Districts.FirstOrDefault(x => int.Parse(x.Value) == selectedDistrictId).Selected = true;
+            }
             if (selectedWardId != 0)
-                dataModel.Districts.FirstOrDefault(x => int.Parse(x.Value) == selectedWardId).Selected = true;
+                dataModel.Wards.FirstOrDefault(x => int.Parse(x.Value) == selectedWardId).Selected = true;
             if (selectedBathroomId != 0)
                 dataModel.BathRooms.FirstOrDefault(x => int.Parse(x.Value) == selectedBathroomId).Selected = true;
             if (selectedBedroomId != 0)
-                dataModel.AvailableCategories.FirstOrDefault(x => int.Parse(x.Value) == selectedBedroomId).Selected = true;
+                dataModel.BedRooms.FirstOrDefault(x => int.Parse(x.Value) == selectedBedroomId).Selected = true;
             if (selectedDirectorId != 0)
-                dataModel.AvailableCategories.FirstOrDefault(x => int.Parse(x.Value) == selectedDirectorId).Selected = true;
+                dataModel.Directories.FirstOrDefault(x => int.Parse(x.Value) == selectedDirectorId).Selected = true;
             return dataModel;
 
         }
@@ -5027,7 +5032,7 @@ namespace Nop.Web.Controllers
                       visibleIndividuallyOnly: true,                      
                    orderBy: ProductSortingEnum.CreatedOn,
                    pageSize: pageSize.HasValue?pageSize.Value:5);
-            var model = PrepareProductOverviewModels(products, preparePictureModel: true, productThumbPictureSize: productThumbPictureSize);
+            var model = await PrepareProductOverviewModelsAsyn(products, preparePictureModel: true, productThumbPictureSize: productThumbPictureSize);
             return View(model);
         }
 

@@ -9,6 +9,10 @@ namespace Nop.Web.Models.Common
     [Validator(typeof(ContactUsValidator))]
     public partial class ContactUsModel : BaseNopModel
     {
+        public ContactUsModel(string url = null)
+        {
+            this.Url = url;
+        }
         [AllowHtml]
         [NopResourceDisplayName("ContactUs.Email")]
         public string Email { get; set; }
@@ -20,7 +24,7 @@ namespace Nop.Web.Models.Common
         [AllowHtml]
         [NopResourceDisplayName("ContactUs.FullName")]
         public string FullName { get; set; }
-               [NopResourceDisplayName("ContactUs.Phone")]
+        [NopResourceDisplayName("ContactUs.Phone")]
         public string Phone { get; set; }
 
         public bool SuccessfullySent { get; set; }

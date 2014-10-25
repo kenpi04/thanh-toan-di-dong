@@ -161,9 +161,12 @@
                     </div><!---twoColRight---->
                     @Html.Action("ProductEmailAFriend", new { isBook = true })
                 </div><!--pinkBgRight----->
-            @Html.Action("RelatedProductCustomer", new { customerId = Model.CustomerId })
+                <div id="relatedproduct-div"></div>
                 <div class="ad">
                     @Html.FptBanner(4)
                 </div><!----rightContent---------------->
         </div>
             </div>
+<script type="text/javascript">
+    $("#relatedproduct-div").html("<div class=loading-img></div>").load('@Url.Action("RelatedProductCustomer", "Catalog")' + '?pageSize=10&productThumbPictureSize=220&Id=' + '@Model.Id');
+</script>
