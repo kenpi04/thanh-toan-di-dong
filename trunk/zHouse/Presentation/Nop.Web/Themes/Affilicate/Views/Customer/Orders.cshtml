@@ -21,7 +21,7 @@
         </div>
       
         <script type="text/javascript">
-            $("#pager-li li.individual-page a").click(function () {
+            $(document).on("click","#pager-li li.individual-page a",function () {
                 var page = parseInt($(this).text());
                 $("#PageNumber").val(page);
                 $("#searchProduct").click();
