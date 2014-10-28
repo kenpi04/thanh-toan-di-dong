@@ -9,36 +9,34 @@
     <div class="master-wrapper-content">
         <div class="top-header">
             <div class="wrapper">
-                <a href="http://dungvt-001-site1.myasp.net/" title="Đi đến trang chính zHouse.com.vn">zHouse</a>
+                <a href="http://zhouse.com.vn/" title="Đi đến trang chính zHouse.com.vn">zHouse</a>
                 <a href="@Url.RouteUrl("HomePage")" class="isactive">MarketPlace</a>
                 <a href="http://hoidap.zhouse.com.vn/" class="submenu">Hỏi đáp</a>
                 <a href="@Url.RouteUrl("InsertProduct")" class="submenu" title="Đăng tin miễn phí">Đăng tin</a>
                 @if (!customer.IsRegistered())
                 {<a href="@Url.RouteUrl("Register")" class="submenu" id="menuLogin">Đăng ký</a>
-                <a href="@Url.RouteUrl("Login")" class="submenu" id="menuLogin">Đăng nhập</a>}
+                    <a href="@Url.RouteUrl("Login")" class="submenu" id="menuLogin">Đăng nhập</a>}
                 else
                 {<a href="@Url.RouteUrl("LogOut")" class="submenu" id="menuLogin">Thoát</a>
-                 <a href="@Url.RouteUrl("CustomerOrders")" class="submenu" id="menuLogin">@(customer.Username ?? customer.Email)</a>}
+                    <a href="@Url.RouteUrl("CustomerOrders")" class="submenu" id="menuLogin">@(customer.Username ?? customer.Email)</a>}
             </div>
         </div>
-        <div class="top">            
-                <div class="wrapper">
-                    <div class="logo"><a href="@Url.RouteUrl("HomePage")"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder" alt="Logo Zhouse.com.vn"></a></div>
-                    @Html.Action("TopMenu", "Catalog", new { stateId = 0 })
-                </div>
-            </div>        
+        <div class="top">
+            <div class="wrapper">
+                <div class="logo"><a href="@Url.RouteUrl("HomePage")"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder" alt="Logo Zhouse.com.vn"></a></div>
+                @Html.Action("TopMenu", "Catalog", new { stateId = 0 })
+            </div>
+        </div>
         <div class="master-wrapper-main">
             @if (isHome)
             {
                 <div class="wrapper" style="padding-top:10px">
                     <div class="search-home">
-                        @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome, isMarketPlace = true, categoryId = 1, categoryRentId = 16  })
+                        @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome, isMarketPlace = true, categoryId = 1, categoryRentId = 16 })
                         <div class="banner-home">
                             @Html.FptBanner(Position: 103, stateId: 0, viewName: "BannerSlideShow")
                         </div>
-                        <div class="new-column">
-                            @Html.Action("HomePageNews", "News", new { pageSize = 10 })
-                        </div>
+                        <div class="new-column load-ajax" data-url="@Url.Action("HomePageNews", "News", new { pageSize = 10 })"></div>
                     </div>
                 </div>
             }
@@ -47,7 +45,7 @@
                 <a class="icon-request" href="@Url.RouteUrl("InsertProduct")" title="Đăng tin miễn phí"></a>
                 <a class="icon-feedback" onclick="showSupport()" title="Báo lỗi/góp ý. Luôn trân trọng những gì bạn gửi"></a>
             </div>
-            @RenderBody()            
+            @RenderBody()
         </div>
     </div>
     @Html.Action("Footer", "Common", new { stateId = 0 })
@@ -59,16 +57,18 @@
         @Html.Partial("_SupportContact", new Nop.Web.Models.Common.ContactUsModel(Request.Url.AbsoluteUri))
     </div>
 </div>
+<div class="ajax-loading-block-window" id="ajax-loading" style="display: none">
+    <div class="loading-image"></div>
+</div>
 <script type="text/javascript">
-    function showSupport()
-    {
+    function showSupport() {
         $("#popup").modal({
             onShow: function (d) {
                 $.validator.unobtrusive.parse("#frmContactUs")
             }
         });
     }
-  $(document).ready(function () {
+    $(document).ready(function () {
         var headerTop = $('.top-header').offset().top;
         var headerBottom = headerTop + 29; // Sub-menu should appear after this distance from top.
         $(window).scroll(function () {
@@ -80,4 +80,4 @@
             }
         }
         );
-  });</script>
+    });</script>

@@ -29,7 +29,7 @@ namespace Nop.Web.Controllers
 
         #region Methods
        
-        [ChildActionOnly]
+        //[ChildActionOnly]
         public ActionResult BannerShow(int?Position,int?StateId,int?StoreId,string viewName)
         {
             string keyCache = string.Format(Nop.Web.Infrastructure.Cache.ModelCacheEventConsumer.BANNER_MODEL_KEY, Position, StateId, StoreId, viewName);            

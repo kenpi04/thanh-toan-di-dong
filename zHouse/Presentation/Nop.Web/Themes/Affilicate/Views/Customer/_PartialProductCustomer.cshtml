@@ -1,5 +1,7 @@
 ﻿@model Nop.Web.Models.Customer.CustomerOrderListModel
 @using Nop.Web.Extensions;
+@using Nop.Core.Domain.Customers;
+@{var isAdmin = WorkContext.CurrentCustomer.IsAdmin();}
 <div class="order-list" id="product-list-cus">
     @if (Model.Products.Count > 0)
     {
@@ -10,64 +12,98 @@
                 <div class="product-content">
                     <p style="margin:0;line-height:normal"><a href="@Url.RouteUrl("Product", new { sename = product.Sename })" target="_blank" title="@product.Name" style="font-weight:700">@product.Name</a></p>
                     <div class="product-col1">
-                        <p><span>ID: </span><span>@product.Id</span></p>
-                        <p><span>Diện tích: </span><span>@product.Area</span></p>
-                        <p><span>Giá: </span><span>@product.Price</span></p>
+                        <div class="item-row">
+                            <div class="item-cell">ID:</div><div class="item-cell">@product.Id</div>
+                        </div>
+                        <div class="item-row">
+                            <div class="item-cell">Diện tích: </div><div class="item-cell">@product.Area.ToString("0.##") m2</div>
+                        </div>
+                        <div class="item-row">
+                            <div class="item-cell">Giá: </div><div class="item-cell">@product.Price</div>
+                        </div>
                     </div>
                     <div class="product-col1">
-                        <p><span>Tình trạng: </span><span>@product.TinhTrang</span></p>
-                        <p><span>Ngày đăng: </span><span>@(product.AvailableStartDateTimeUtc.HasValue ? product.AvailableStartDateTimeUtc.Value.ToString("dd/MM/yy hh:mm:ss") : "_")</span></p>
-                        <p><span>Hết hạn: </span><span>@(product.AvailableEndDateTimeUtc.HasValue ? product.AvailableEndDateTimeUtc.Value.ToString("dd/MM/yy hh:mm:ss") : "_")</span></p>
+                        <div class="item-row">
+                            <div class="item-cell">Tình trạng: </div><div class="item-cell">@product.TinhTrang</div>
+                        </div>
+                        <div class="item-row">
+                            <div class="item-cell">Ngày đăng: </div><div class="item-cell">@(product.AvailableStartDateTimeUtc.HasValue ? product.AvailableStartDateTimeUtc.Value.ToString("dd/MM/yyyy") : "")</div>
+                        </div>
+                        <div class="item-row">
+                            <div class="item-cell">Hết hạn: </div><div class="item-cell">@(product.AvailableEndDateTimeUtc.HasValue ? product.AvailableEndDateTimeUtc.Value.ToString("dd/MM/yyyy") : "")</div>
+                        </div>
                     </div>
+                    <div class="product-col1"><a onclick="updateNew(@product.Id,3,0)" title="Làm mới tin"><img src="~/Themes/Affilicate/Content/images/icon-refresh.png" /></a></div>
+                    @if (isAdmin)
+                    {
+                        if (product.TrangThaiDuyetId == 10)
+                        {
+                            <div class="product-col1"><a onclick="updateNew(@product.Id,4,20)" title="Bấm vào để duyệt tin"><img id="approved-@product.Id" src="~/Themes/Affilicate/Content/images/icon-notyetapproved.png" /></a></div>}
+                        if (product.TrangThaiDuyetId == 20)
+                        {
+                            <div class="product-col1"><a onclick="updateNew(@product.Id,4,10)" title="Bấm vào để bỏ duyệt tin"><img id="approved-@product.Id" src="~/Themes/Affilicate/Content/images/icon-approved.png" /></a></div>}
+                    }
+
                 </div>
                 <div class="side-3" style="width:19%;margin:0">
                     <div class="block block-account-navigation" style="margin-bottom:0">
-                        <div class="title-1"><img src="~/Themes/Zhouse/Content/images/info-icon-19.png" title="Trạng thái duyệt" alt="info icon" />
-                       <span id="status_@product.Id"> @product.TrangThaiDuyet</span>
+                        <div class="title-1">
+                            <img src="~/Themes/Zhouse/Content/images/info-icon-19.png" title="Trạng thái duyệt" alt="info icon" />
+                            <span id="status_@product.Id">@product.TrangThaiDuyet</span>
                         </div>
-                        <div class="title-1"><img src="~/Themes/Zhouse/Content/images/view-icon-17.png" title="Lượt xem" alt="view icon" />@product.ViewNumber</div>
+                        <div class="title-1"><img src="~/Themes/Zhouse/Content/images/view-icon-17.png" title="Lượt xem" alt="view icon" style="margin-right:14px" /><span>@product.ViewNumber</span></div>
                         <div class="listbox" style="padding-bottom:0;">
                             <ul class="list">
-                                @if(product.ProductType == Nop.Core.Domain.Catalog.ProductType.SimpleProduct){
-                                <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditPostNews", new { id = product.Id })')">Sửa tin</a></li>}
-                                @if (product.ProductType == Nop.Core.Domain.Catalog.ProductType.RentProduct){
+                                @if (product.ProductType == Nop.Core.Domain.Catalog.ProductType.SimpleProduct)
+                                {
+                                    <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditPostNews", new { id = product.Id })')">Sửa tin</a></li>}
+                                @if (product.ProductType == Nop.Core.Domain.Catalog.ProductType.RentProduct)
+                                {
                                     <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditPostNewsRent", new { id = product.Id })')">Sửa tin</a></li>}
-                                @if (product.ProductType == Nop.Core.Domain.Catalog.ProductType.ProjectProduct){
-                                    <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditPostNewsProject", new { id = product.Id })')">Sửa tin</a></li>}                                                                                                                                                         
+                                @if (product.ProductType == Nop.Core.Domain.Catalog.ProductType.ProjectProduct)
+                                {
+                                    <li class="small"><a onclick="setLocation('@Url.RouteUrl("EditPostNewsProject", new { id = product.Id })')">Sửa tin</a></li>}
                                 <li class="small" id="publish-@product.Id"><a onclick="updateNew(@product.Id,1,0)">Ngừng đăng tin</a></li>
                                 <li class="small"><a onclick="updateNew(@product.Id,2,0)">Xóa tin</a></li>
-                                <li class="small"><a onclick="updateNew(@product.Id,3,0)">Làm mới tin</a></li>
+                                @*<li class="small"><a onclick="updateNew(@product.Id,3,0)">Làm mới tin</a></li>*@
                             </ul>
                         </div>
                     </div>
-                </div>               
+                </div>
             </div>
         }
-         <script type="text/javascript">
-             function updateNew(id, action, value) {
-                 if (confirm("Bạn có chắc thay đổi trạng thái?")) {
-                     $.post("@Url.Action("UpdateProductAsync", "Catalog")", { productId: id, action: action, value: value }, function (d) {
-                         alert(d);
-                         if (action == 1) {
-                             var status = "Ngừng đăng tin";
+        <script type="text/javascript">
+    function updateNew(id, action, value) {
+        if (confirm("Bạn có chắc thay đổi trạng thái?")) {
+            $.post("@Url.Action("UpdateProductAsync", "Catalog")", { productId: id, action: action, value: value }, function (d) {
+                alert(d);
+                        if (action == 1) {
+                            var status = "Ngừng đăng tin";
 
-                             if (value == 1) {
-                                 status = "Tin đang đăng";
-                                 $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,0)">Ngừng đăng tin</a>');
-                             }
-                             else
-                                 $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,1)">Đăng tin</a>');
-                             $("#status_" + id).html(status);
-                         }
-                         if (action == 2) {
-                             $("#item-" + id).hide("slow");
-                             $("#item" + id).remove();
-                         }
-                     })
-                 }
-             }
+                            if (value == 1) {
+                                status = "Tin đang đăng";
+                                $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,0)">Ngừng đăng tin</a>');
+                            }
+                            else
+                                $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,1)">Đăng tin</a>');
+                            $("#status_" + id).html(status);
+                        }
+                        if (action == 2) {
+                            $("#item-" + id).hide("slow");
+                            $("#item" + id).remove();
+                        }
+                        if (action == 4)
+                        {
+                            var src;
+                            if (value = 20) src = "'/Themes/Affilicate/Content/images/icon-notyetapproved.png'";
+                            if (value = 10) src = "'/Themes/Affilicate/Content/images/icon-approved.png'";
+                            $("approved-" + id).attr("src",src);
+                        }
+                    })
+                }
+            }
         </script>
-          <div id="pager-li" class="pager">
+        <div id="pager-li" class="pager">
             @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
         </div>
     }

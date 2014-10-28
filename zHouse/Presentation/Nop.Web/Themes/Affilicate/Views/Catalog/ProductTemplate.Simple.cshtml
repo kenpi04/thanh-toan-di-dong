@@ -175,15 +175,10 @@
                 </div>
             </div><!---twoColRight---->
         </div><!--pinkBgRight----->
-        <div id="relatedproduct-div"></div>
-        @Html.Action("RelatedProductCustomer", new { Id = Model.Id, productThumbPictureSize = 105, pageSize = 10 })
+        <div class="load-ajax" data-url="@Url.Action("RelatedProductCustomer", new { Id = Model.Id, productThumbPictureSize = 105, pageSize = 10 })"></div>        
         <div class="ad">
             @Html.FptBanner(104)
         </div><!----rightContent---------------->
     </div>
 </div>
-<script type="text/javascript">
-    $("#relatedproduct-div").html("<div class=loading-img></div>").load('@Url.Action("RelatedProductCustomer", "Catalog")' + '?pageSize=10&productThumbPictureSize=105&Id=' + '@Model.Id');
-</script>
-
 

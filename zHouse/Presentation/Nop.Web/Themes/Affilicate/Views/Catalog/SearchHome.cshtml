@@ -3,8 +3,8 @@
     <div class="pinkBg">
         <div class="tabs">
             <ul class="tab-links">
-                <li class="active"><a href="#tab1">Bán nhà</a></li>
-                <li><a href="#tab2">Thuê nhà</a></li>
+                <li class="active"><a href="#tab1">Nhà bán</a></li>
+                <li><a href="#tab2">Nhà thuê</a></li>
                 <li><a href="#tab3">Dự án</a></li>
             </ul>
             <div class="tab-content">
@@ -49,27 +49,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    //Ham selected box search 
-    //function activeSelect(option)
-    //{
-    //    if(option.districtId)
-    //    {
-    //        $("#districtId").val(option.districtId);
-    //    }
-    //    if (option.wardId) {
-    //        $("#wardId").val(option.wardId);
-    //    }
-    //    if (option.priceString) {
-    //        $("#priceString").val(option.priceString);
-    //    }
-    //    if (option.areaString) {
-    //        $("#areaString").val(option.areaString);
-    //    }
-    //    if (option.categoryId) {
-    //        $("#categoryId").val(option.categoryId);
-    //    }
-    //}
+<script type="text/javascript">   
     $(document).ready(function () {
         $('.tabs .tab-links a').on('click', function (e) {
             var currentAttrValue = $(this).attr('href');

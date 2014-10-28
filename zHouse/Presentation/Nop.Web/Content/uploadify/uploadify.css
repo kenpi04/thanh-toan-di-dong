@@ -66,6 +66,10 @@ Released under the MIT License <http://www.opensource.org/licenses/mit-license.p
 	margin-top: 5px;
 	max-width: 350px;
 	padding: 10px;
+    width:191px;
+    float:left;
+    margin-right:2px;
+    height:119px;
 }
 .uploadify-error {
 	background-color: #FDE5DD !important;
@@ -90,3 +94,4 @@ Released under the MIT License <http://www.opensource.org/licenses/mit-license.p
 	height: 3px;
 	width: 1px;
 }
+.fileName{display:block;height:26px;width:175px;}

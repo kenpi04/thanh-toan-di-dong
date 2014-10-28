@@ -17,12 +17,12 @@
     Nếu bạn gặp vấn đề gì trong quá trình gởi thông tin hãy liên hệ với chúng tôi qua Hotline: <b>0939448124.</b><br />
     Nhân viên của chúng tôi sẽ hỗ trợ bạn.
 </p>
-<br />
+<i class="note">(*) Bắt buộc phải nhập/chọn.</i>
 <div id="panel-error" class="message-error">
     @Html.ValidationSummary()
 </div>
 @Html.HiddenFor(model => model.Price)
-<i class="note">(*) Bắt buộc phải nhập/chọn.</i>
+
 <div class="floatLeft">
     <div class="blueText">THÔNG TIN LIÊN HỆ</div>
     <div class="boxWrapper form-request-contact">
@@ -151,17 +151,28 @@
 </div><!---floatLeft----->
 <div class="floatLeft">
     <div class="blueText">THỜI GIAN ĐĂNG TIN @Html.RequiredHint()</div>
-    <div class="boxWrapperSmall">        
-        @Html.TextBoxFor(x => x.AvailableStartDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableStartDateTime1", @Id="AvailableStartDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày bắt đầu" })
-        @Html.TextBoxFor(x => x.AvailableEndDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableEndDateTime1", @Id="AvailableEndDateTime1", @class = " formBoxInText", placeholder = "Ngày kết thúc" })
-        @Html.HiddenFor(x=> x.AvailableStartDateTime)
+    <div class="boxWrapperSmall">
+        <table>
+            <tbody>
+                <tr class="table-dateTime">
+                    <td>@Html.LabelFor(x => x.AvailableStartDateTime)</td>
+                    <td>@Html.LabelFor(x => x.AvailableEndDateTime)</td>
+                </tr>
+                <tr class="table-dateTime">
+                    <td>@Html.TextBoxFor(x => x.AvailableStartDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableStartDateTime1", @Id = "AvailableStartDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày bắt đầu" })</td>
+                    <td>@Html.TextBoxFor(x => x.AvailableEndDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableEndDateTime1", @Id = "AvailableEndDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày kết thúc" })</td>
+                </tr>
+            </tbody>
+        </table>
+        @Html.HiddenFor(x => x.AvailableStartDateTime)
         @Html.HiddenFor(x => x.AvailableEndDateTime)
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
     <div class="blueText">TIÊU ĐỀ @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
-        @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:90%" })        
+        @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:99%" })        
+        <label style="color:#888;font-style:italic;">(Tiêu đề ít nhất 10 ký tự và nhiều nhất 150 ký tự.</label>
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
@@ -169,9 +180,6 @@
     <div class="boxWrapperSmall">
         @Html.EditorFor(x => x.FullDescription, "RichEditor")
     </div>
-</div><!---floatLeft---->
-<div class="floatLeft">
-        <input type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
 </div><!---floatLeft---->
 <script type="text/javascript">
     $(function () {
@@ -198,11 +206,7 @@
                 displayAjaxLoading(true);
                 if($("div[id^=SWFUpload_]").size()==0)
                 {                    
-                    var startDate = ConverDate($("#AvailableStartDateTime1").val());
-                    $("#AvailableStartDateTime").val(startDate);
-                    var endDate = ConverDate($("#AvailableEndDateTime1").val());
-                    $("#AvailableEndDateTime").val(startDate);
-                    $("#frmProduct").submit();
+                    formSubmit();
                 }
                 else
                     $('#FileUpload').uploadify('upload', '*')
@@ -249,7 +253,7 @@
             'method': 'post',
             'buttonText': 'CHỌN ẢNH ĐĂNG...',
             'auto': false,
-            'fileSizeLimit': '3MB',
+            'fileSizeLimit': '2MB',
             'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg',
             'uploadLimit': 1,
             'cancelImg': '@Url.Content("~/Content/uploadify/uploadify-cancel.png")',
@@ -284,17 +288,20 @@
                     alert('Vui lòng chọn hình ảnh đăng');
                     return false;
                 }
-                if ($("#frmProduct").valid()) {
-                    $('#frmProduct').submit();
-                }
-                else
-                {
-
-                }
-                //alert(queueData.uploadsSuccessful + ' files were successfully uploaded.');
+                formSubmit();
             }
         });
     });
+    function formSubmit()
+    {
+        if ($("#frmProduct").valid()) {
+            var startDate = ConverDate($("#AvailableStartDateTime1").val());
+            $("#AvailableStartDateTime").val(startDate);
+            var endDate = ConverDate($("#AvailableEndDateTime1").val());
+            $("#AvailableEndDateTime").val(endDate);
+            $('#frmProduct').submit();
+        }
+    }
     function Checkfiles(fup) {
         //var fup = document.getElementById(filename);
         var fileName = fup.val();
@@ -319,7 +326,9 @@
             if(add[i]!="")
                 result+=add[i]+", ";
         }
-        $("#@Html.FieldIdFor(x => x.FullAddress)").val(result);
+        $("#@Html.FieldIdFor(x => x.FullAddress)").val(result+'Hồ Chí Minh');
+        if(!ISFIRSTLOAD){
+            getMap();}
     }
 
     $("#AvailableStartDateTime1").datepicker();
@@ -362,3 +371,12 @@
         }
     </script>
 }
+<div class="floatLeft">
+    <div class="blueText">CHỌN VỊ TRÍ BẤT ĐỘNG SẢN TRÊN BẢN ĐỒ</div>
+    <div class="boxWrapperSmall">
+        @Html.Partial("_MapInsertProduct", Model)
+    </div>
+</div>
+<div class="floatLeft">
+    <input type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
+</div>

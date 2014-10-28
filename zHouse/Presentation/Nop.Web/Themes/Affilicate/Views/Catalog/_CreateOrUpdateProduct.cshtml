@@ -5,42 +5,39 @@
 @{
     Html.AppendScriptParts("~/Scripts/jquery-te-1.4.0.min.js");
     Html.AppendCssFileParts("~/Themes/DefaultClean/Content/editorsimple.css");
-    Html.AppendCssFileParts("~/Themes/DefaultClean/Content/jquery-te-1.4.0.css");    
+    Html.AppendCssFileParts("~/Themes/DefaultClean/Content/jquery-te-1.4.0.css");
 }
 @Html.AntiForgeryToken()
 @Html.HiddenFor(x => x.Id)
-<div class="request-title blueTitle">QUẢNG CÁO NGÔI NHÀ CỦA BẠN</div>
+<div class="request-title blueTitle">QUẢNG CÁO NGÔI BẤT ĐỘNG SẢN CỦA BẠN <span class="free-text">Hoàn toàn miễn phí</span></div>
 <p>
-    Quảng cáo về căn nhà của bạn càng chi tiết, người mua sẽ càng dễ tìm kiếm thấy bạn hơn.<br /><br />
-    Nếu bạn gặp vấn đề gì trong quá trình gởi thông tin hãy liên hệ với chúng tôi qua Hotline: <b>0939448124.</b><br><br />
+    Quảng cáo về bất động sản của bạn càng chi tiết, người mua sẽ càng dễ tìm kiếm thấy bạn hơn.<br />
+    Nếu bạn gặp vấn đề gì trong quá trình gởi thông tin hãy liên hệ với chúng tôi qua Hotline: <b>0939448124.</b><br />
     Nhân viên của chúng tôi sẽ hỗ trợ bạn.
 </p>
-<div class="free-text">
-    HOÀN TOÀN MIỄN PHÍ
-</div>
+<i class="note">(*) Bắt buộc phải nhập/chọn.</i>
 <div id="panel-error" class="message-error">
     @Html.ValidationSummary()
 </div>
-<i class="note">(*) Bắt buộc phải nhập/chọn.</i>
 <div class="floatLeft">
     <div class="blueText">THÔNG TIN LIÊN HỆ</div>
     <div class="boxWrapper form-request-contact">
-        @Html.TextBoxFor(x => x.ContactName, new { @class = "formBoxIn", placeholder = "Họ và tên" })    
+        @Html.TextBoxFor(x => x.ContactName, new { @class = "formBoxIn", placeholder = "Họ và tên" })
         @Html.RequiredHint()
         @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại", })
         @Html.RequiredHint()
-        @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })       
+        @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })
     </div><!----boxWrapper------->
 </div><!---floatLeft---->
 <div class="floatLeft">
     <div class="boxWrapper form-request-contact">
         <div class="blueText">ĐỊA CHỈ BẤT ĐỘNG SẢN</div>
         @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
-        @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect", id = "ddlQuan" })
+        @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect", id = "ddlQuan"})
         @Html.RequiredHint()
-        @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường", new { @class = "formBoxInSelect" })
+        @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường", new { @class = "formBoxInSelect"})
         @Html.RequiredHint()
-        @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect" })
+        @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect"})
         @Html.RequiredHint()
         @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:82.3%", placeholder = "Địa chỉ đầy đủ" })
     </div>
@@ -60,11 +57,11 @@
         <table style="width:100%">
             <tbody>
                 <tr>
-                    <td class="request-label">@Html.LabelFor(x => x.Price,"Giá (vnđ)")</td>
+                    <td class="request-label">@Html.LabelFor(x => x.Price, "Giá (vnđ)")</td>
                     <td>
                         @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable", placeholder = "Giá" })
                         @Html.RequiredHint()
-                        <span id="price-text"></span>
+                        <span id="price-text">(Giá liên hệ = 0)</span>
                     <td class="request-label">@Html.LabelFor(x => x.NumberFloors) </td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
@@ -84,14 +81,13 @@
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.AreaUse)</td>
                     <td>
-                        @Html.TextBoxFor(x => x.AreaUse, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" })
-                        @Html.RequiredHint()
+                        @Html.TextBoxFor(x => x.AreaUse, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" })
                     </td>
                 </tr>
                 <tr>
                     <td class="request-label">@Html.LabelFor(x => x.Area)</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Area, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích" })
+                        @Html.TextBoxFor(x => x.Area, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích"})
                         @Html.RequiredHint()
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.BedRooms) </td>
@@ -109,8 +105,7 @@
                 <tr>
                     <td class="request-label">@Html.LabelFor(x => x.Width) </td>
                     <td>
-                        @*@Html.TextBoxFor(x => x.Width, "{0:0.00}", )*@
-                        @Html.TextBoxFor(x => x.Width, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều ngang" })
+                        @Html.TextBoxFor(x => x.Width, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều rộng" })
                         @Html.RequiredHint()
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.BathRooms)</td>
@@ -127,7 +122,7 @@
                 <tr>
                     <td class="request-label">@Html.LabelFor(x => x.Dept)</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Dept, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều sâu" })
+                        @Html.TextBoxFor(x => x.Dept, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều dài" })
                         @Html.RequiredHint()
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.Directors)</td>
@@ -208,17 +203,13 @@
             }
         </ul>
     </div>
-    @*@foreach (var i in Model.ThichHop)
-    {
-        <div class="colB" style="float:left;margin-right:20px"> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") /> @Html.Label(i.Text)</div>
-    }*@
     <div class="clearBoth"></div>
     <div class="boxWrapperSmall">
         @Html.TextAreaFor(x => x.NoteThichHop, new { @class = "formBoxInText", placeholder = "vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)" })
     </div>
 </div><!----floatLeft----->
 <div class="floatLeft">
-    <div class="blueText">HÌNH ẢNH NHÀ <small> (Hình càng rõ ràng, đầy đủ, ngôi nhà của bạn bán càng nhanh)</small></div>
+    <div class="blueText">HÌNH ẢNH BẤT ĐỘNG SẢN<small> (Hình càng rõ ràng, đầy đủ, bất động sản sẽ được chú ý hơn)</small></div>
     <div class="rightTable">
         <ul>
             <li>Hình đường, không gian xung quanh</li>
@@ -233,7 +224,7 @@
             <li>Hình chụp sân thượng</li>
             <li>Hình từ ban công, cửa xuống các hướng đường</li>
         </ul>
-        <div style="float:right;margin-right:54px">
+        <div>
             <input type="file" id="FileUpload" />
         </div>
     </div><!---rightTable---->
@@ -253,26 +244,38 @@
         <div class="clearBoth"></div>
     </div>
     <div class="clearBoth">
-        <i class="note">(*)Hình ảnh đầy đủ giúp quảng cáo ngôi nhà của bạn tốt hơn (Kích thước đề nghị 700x700 px hình vuông,dung lượng nhỏ hơn 2Mb)</i>
+        <i class="note">(*)Hình ảnh đầy đủ giúp quảng cáo ngôi nhà của bạn tốt hơn (Kích thước đề nghị 700x700 px hình vuông,dung lượng nhỏ hơn 2Mb)</i><br />
+        <i>Hình đầu tiên sẽ là hình đại diện.</i>
     </div>
 </div><!---floatLeft----->
 <div class="floatLeft">
     <div class="blueText">THỜI GIAN ĐĂNG TIN @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
-        @Html.TextBoxFor(x => x.AvailableStartDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableStartDateTime1", @Id = "AvailableStartDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày bắt đầu" })
-        @Html.TextBoxFor(x => x.AvailableEndDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableEndDateTime1", @Id = "AvailableEndDateTime1", @class = " formBoxInText", placeholder = "Ngày kết thúc" })
+        <table>
+            <tbody>
+                <tr class="table-dateTime">
+                    <td>@Html.LabelFor(x => x.AvailableStartDateTime)</td>
+                    <td>@Html.LabelFor(x => x.AvailableEndDateTime)</td>
+                </tr>
+                <tr class="table-dateTime">
+                    <td>@Html.TextBoxFor(x => x.AvailableStartDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableStartDateTime1", @Id = "AvailableStartDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày bắt đầu" })</td>
+                    <td>@Html.TextBoxFor(x => x.AvailableEndDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableEndDateTime1", @Id = "AvailableEndDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày kết thúc" })</td>
+                </tr>
+            </tbody>
+        </table>
         @Html.HiddenFor(x => x.AvailableStartDateTime)
         @Html.HiddenFor(x => x.AvailableEndDateTime)
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
-    <div class="blueText">TIÊU ĐỀ</div>
+    <div class="blueText" title="Tiêu đề tin đăng: hãy ghi rõ ràng đầy đủ để tin của bạn được tìm kiếm dễ dàng hơn.">TIÊU ĐỀ @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
-        @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:99%" })
+        @Html.TextBoxFor(x => x.Name, new { @class = "formBoxInText", style = "width:99%", placeholder = "Tiêu đề" })
+        <label style="color:#888;font-style:italic;">(Tiêu đề ít nhất 10 ký tự và nhiều nhất 150 ký tự. Ví dụ: Bán nhà sổ hồng quận Bình Tân, 3 tấm, giá 1.5 tỷ, 80m2, bao sang tên)</label>
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
-    <div class="blueText">MÔ TẢ CHI TIẾT</div>
+    <div class="blueText">MÔ TẢ CHI TIẾT @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
         @Html.EditorFor(x => x.FullDescription, "RichEditor")
     </div>
@@ -292,232 +295,231 @@
 <div class="floatLeft">
     <div class="blueText">CHÚ Ý CỦA NGƯỜI BÁN</div>
     <div class="boxWrapperSmall">
-        <textarea class="formBoxInText">(Để lại lời nhắn để chúng tôi có thể phục vụ bạn tốt hơn)</textarea>
+        <textarea class="formBoxInText" placeholder="(Để lại lời nhắn để chúng tôi có thể phục vụ bạn tốt hơn)"></textarea>
     </div>
 </div><!---floatLeft---->
+
+
+<script type="text/javascript">
+    $(function () {
+        $(".jqte-test").jqte();
+        var pictureids = [];
+        $("#Price").keyup(function () {
+            var price = $(this).val();
+            if(price>9999999){price = 9999999;$("#Price").val(price);}
+            if(price<0){price=0;$("#Price").val(price);}
+            $("#price-text").html(StringPrice(price, "vnđ"));
+        })
+        ISFIRSTLOAD=true;
+        $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
+        $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
+        $("#insertProduct-button").click(function () {
+            if(!$("#frmProduct").valid())
+            {
+                $('html,body').animate({
+                    scrollTop: $(".request-title").offset().top
+                });
+                return false;
+            }
+            if($("#PhapLy input:checked").length==0)
+            {
+                alert('Vui lòng chọn thông tin pháp lý!');
+            }
+            else if($("#CoSoVatChat input:checked").length==0)
+            {
+                alert("Vui lòng chọn ít nhất một thuộc tính cơ sở vật chất");
+            }
+            else if($('#MoiTruong input:checked').length==0)
+            {
+                alert("Vui lòng chọn ít nhất một thuộc tính môi trường xung quanh");
+            }
+            else if($("#ThichHop input:checked").length==0)
+            {
+                alert("Vui lòng chọn loại thích hợp của căn nhà");
+            }
+            else if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
+                    alert('Vui lòng chọn hình ảnh đăng');
+            }else if (Checkfiles($("#FileUpload"))){
+                    alert("File không hợp lệ");
+            }else {
+                    displayAjaxLoading(true);
+                    if($("div[id^=SWFUpload_]").size()==0)
+                    {
+                        formSubmit();
+                    }
+                    else
+                        $('#FileUpload').uploadify('upload', '*')
+            }
+            return false;
+        })
+
+        $("#ddlQuan").change(function () {
+            var selectedId = $(this).val();
+            var ddlWard = $("#@Html.FieldIdFor(x => x.WardId)");
+            var ddlStreet = $("#@Html.FieldIdFor(x => x.StreetId)");
+            ddlWard.html("<option value=>Chọn phường</option>");
+            ddlStreet.html("<option value=>Chọn đường</option>");
+            $.get("@Url.Action("GetWardByDistrictId", "Common")", { id: selectedId }, function (d) {
+                $.each(d.Ward, function (i, o) {
+                    var option= $("<option/>").val(o.Id).text(o.Name);
+                    if((ISFIRSTLOAD) && (o.Id==@Model.WardId))
+                        option.attr("selected","selected");
+                    ddlWard.append(option);
+                })
+
+                $.each(d.Street, function (i, o) {
+                    var option= $("<option/>").val(o.Id).text(o.Name);
+                    if((ISFIRSTLOAD) && (o.Id==@Model.StreetId))
+                    {option.attr("selected","selected")};
+                    ddlStreet.append(option);
+                })
+                if(ISFIRSTLOAD)
+                {
+                    ddlWard.click();
+                    ddlStreet.click();
+                    ISFIRSTLOAD=false;
+                }
+            }).error(function () {
+
+                alert("Fail receice from server!");
+            })
+        })
+        $("#ddlQuan").change();
+        $('#FileUpload').uploadify({
+            'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
+            'uploader': '@Url.Action("UploadPicture", "Catalog")',
+            'multi': true,
+            'method': 'post',
+            'buttonText': 'CHỌN ẢNH ĐĂNG...',
+            'auto': false,
+            'fileSizeLimit': '2MB',
+            'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg',
+            'uploadLimit': 20,
+            'cancelImg': '@Url.Content("~/Content/uploadify/uploadify-cancel.png")',
+            'removeCompleted': false,
+            'onSelect': function (file) {
+                flag_error = 1;
+                $("div[id^=SWFUpload]").each(function(){
+                    if($(this).find("textarea[name=PictureTitle_0]").length==0)
+                    {
+                        $(this).append('<textarea name="PictureTitle_0" cols="10" rows="5"></textarea>')
+                    }
+                })
+            },
+            'onUploadStart': function (file) {
+                if (file == null || file.name == '') {
+                    alert('Vui lòng chọn hình ảnh đăng');
+                    $('#FileUpload').uploadify('stop');
+                    return;
+                }
+            },
+            'onUploadSuccess': function (file, data, response) {
+                pictureids.push(data);
+            },
+            'onQueueComplete': function (queueData) {
+                if(pictureids.length>0)
+                {
+                    $("textarea[name=PictureTitle_0]").each(function(i,p){
+                        $(this).attr("name","PictureTitle_"+pictureids[i]);
+                    });
+                }
+                if ($("div[id^=SWFUpload_]").size()==0||$("textarea[name^=PictureTitle_][name!=PictureTitle_0]").size()==0) {
+                    alert('Vui lòng chọn hình ảnh đăng');
+                    return false;
+                }
+                formSubmit();               
+            }
+        });
+    });    
+
+    function formSubmit()
+    {
+        if ($("#frmProduct").valid()) {
+            var startDate = ConverDate($("#AvailableStartDateTime1").val());
+            $("#AvailableStartDateTime").val(startDate);
+            var endDate = ConverDate($("#AvailableEndDateTime1").val());
+            $("#AvailableEndDateTime").val(endDate);
+            $('#frmProduct').submit();
+        }
+    }
+
+    function Checkfiles(fup) {
+        //var fup = document.getElementById(filename);
+        var fileName = fup.val();
+        var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+        if (ext == "gif" || ext == "GIF" || ext == "JPEG" || ext == "jpeg" || ext == "jpg" || ext == "JPG" || ext == "png" || ext == "PNG") {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    var add=[3];
+    function formatAdd()
+    {
+        add[0]=($("#@Html.FieldIdFor(x => x.NumberOfHome)").val());
+        add[1]=($("#@Html.FieldIdFor(x => x.StreetId) option[value!=0]:selected").text());
+        add[2]=($("#@Html.FieldIdFor(x => x.WardId) option[value!=0]:selected").text());
+        add[3]=($("#ddlQuan option[value!=0]:selected").text());
+        var result="";
+        for(var i in add)
+        {
+            if(add[i]!="")
+                result+=add[i]+", ";
+        }
+        $("#@Html.FieldIdFor(x => x.FullAddress)").val(result+'Hồ Chí Minh');
+        if(!ISFIRSTLOAD){
+            getMap();}
+    }
+    $("#AvailableStartDateTime1").datepicker();
+    $("#AvailableEndDateTime1").datepicker();
+
+</script>
+@if (Model.Id > 0)
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var price=@Model.Price;
+            $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
+        })
+        var CLICK=false;
+        function deletePicture(id) {
+            if($("#lstPic li").length==1||CLICK)
+                return;
+            var picture_id = $("#picture_id_"+id);
+            CLICK=true;
+            $.ajax({
+                cache: false,
+                type: "POST",
+                data: { "id": id },
+                url: "@Url.Action("ProductPictureDelete")",
+                dataType: 'json',
+                success: function (data, textStatus, jqXHR) {
+                    if (data.error == 0) {
+                        alert(data.message);
+                        picture_id.remove();
+                        CLICK=false;
+                    }
+                    else {
+                        CLICK=false;
+                        alert(data.message);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve data.');
+                }
+            });
+            return false;
+        }
+    </script>
+}
 <div class="floatLeft">
-    <div class="blueText">CHỌN VỊ TRÍ NHÀ TRÊN BẢN ĐỒ</div>
+    <div class="blueText">CHỌN VỊ TRÍ BẤT ĐỘNG SẢN TRÊN BẢN ĐỒ</div>
     <div class="boxWrapperSmall">
-        @Html.Partial("_MapInsertProduct", "")
+        @Html.Partial("_MapInsertProduct", Model)
     </div>
 </div>
 <div class="floatLeft">
     <input style="float:right" type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
 </div>
-
-    <script type="text/javascript">
-        $(function () {
-            $(".jqte-test").jqte();
-            var pictureids = [];
-            $("#Price").keyup(function () {
-                var price = $(this).val();
-                if(price>9999999){price = 9999999;$("#Price").val(price);}
-                $("#price-text").html(StringPrice(price, "vnđ"));
-            })
-            ISFIRSTLOAD=true;
-            $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
-            $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
-            $("#insertProduct-button").click(function () {
-                if(!$("#frmProduct").valid())
-                {
-                    $('html,body').animate({
-                        scrollTop: $("#panel-error").offset().top
-                    });
-                    return false;
-                }
-                if($("#PhapLy input:checked").length==0)
-                {
-                    alert('Vui lòng chọn thông tin pháp lý!');
-                }
-                else if($("#CoSoVatChat input:checked").length==0)
-                {
-                    alert("Vui lòng chọn một cơ sở vật chất");
-                }
-                else if($('#MoiTruong input:checked').length==0)
-                {
-                    alert("Vui lòng chọn môi trường xung quanh");
-                }
-                else if($("#ThichHop input:checked").length==0)
-                {
-                    alert("Vui lòng chọn loại thích hợp của căn nhà");
-                }
-                else
-                if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
-                    alert('Vui lòng chọn hình ảnh đăng');
-                }
-                else if (Checkfiles($("#FileUpload")))
-                {
-                    alert("File không hợp lệ");
-                }
-                else {
-                    displayAjaxLoading(true);
-                    if($("div[id^=SWFUpload_]").size()==0)
-                    {
-                        var startDate = ConverDate($("#AvailableStartDateTime1").val());
-                        $("#AvailableStartDateTime").val(startDate);
-                        var endDate = ConverDate($("#AvailableEndDateTime1").val());
-                        $("#AvailableEndDateTime").val(startDate);
-                        $("#frmProduct").submit();
-                    }
-                    else
-                        $('#FileUpload').uploadify('upload', '*')
-                }
-                return false;
-            })
-
-            $("#ddlQuan").change(function () {
-                var selectedId = $(this).val();
-                var ddlWard = $("#@Html.FieldIdFor(x => x.WardId)");
-                var ddlStreet = $("#@Html.FieldIdFor(x => x.StreetId)");
-                ddlWard.html("<option value=0>Chọn phường</option>");
-                ddlStreet.html("<option value=0>Chọn đường</option>");
-                $.get("@Url.Action("GetWardByDistrictId", "Common")", { id: selectedId }, function (d) {
-                    $.each(d.Ward, function (i, o) {
-                        var option= $("<option/>").val(o.Id).text(o.Name);
-                        if((ISFIRSTLOAD) && (o.Id==@Model.WardId))
-                            option.attr("selected","selected");
-                        ddlWard.append(option);
-                    })
-
-                    $.each(d.Street, function (i, o) {
-                        var option= $("<option/>").val(o.Id).text(o.Name);
-                        if((ISFIRSTLOAD) && (o.Id==@Model.StreetId))
-                        {option.attr("selected","selected")};
-                        ddlStreet.append(option);
-                    })
-                    if(ISFIRSTLOAD)
-                    {
-                        ddlWard.click();
-                        ddlStreet.click();
-                        ISFIRSTLOAD=false;
-                    }
-                }).error(function () {
-
-                    alert("Fail receice from server!");
-                })
-            })
-            $("#ddlQuan").change();
-            $('#FileUpload').uploadify({
-                'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
-                'uploader': '@Url.Action("UploadPicture", "Catalog")',
-                'multi': true,
-                'method': 'post',
-                'buttonText': 'CHỌN ẢNH ĐĂNG...',
-                'auto': false,
-                'fileSizeLimit': '3MB',
-                'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg',
-                'uploadLimit': 20,
-                'cancelImg': '@Url.Content("~/Content/uploadify/uploadify-cancel.png")',
-                'removeCompleted': false,
-                'onSelect': function (file) {
-                    flag_error = 1;
-                    $("div[id^=SWFUpload]").each(function(){
-                        if($(this).find("textarea[name=PictureTitle_0]").length==0)
-                        {
-                            $(this).append('<textarea name="PictureTitle_0" cols="10" rows="5"></textarea>')
-                        }
-                    })
-                },
-                'onUploadStart': function (file) {
-                    if (file == null || file.name == '') {
-                        alert('Vui lòng chọn hình ảnh đăng');
-                        $('#FileUpload').uploadify('stop');
-                        return;
-                    }
-                },
-                'onUploadSuccess': function (file, data, response) {
-                    pictureids.push(data);
-                },
-                'onQueueComplete': function (queueData) {
-                    if(pictureids.length>0)
-                    {
-                        $("textarea[name=PictureTitle_0]").each(function(i,p){
-                            $(this).attr("name","PictureTitle_"+pictureids[i]);
-                        });
-                    }
-                    if ($("div[id^=SWFUpload_]").size()==0||$("textarea[name^=PictureTitle_][name!=PictureTitle_0]").size()==0) {
-                        alert('Vui lòng chọn hình ảnh đăng');
-                        return false;
-                    }
-                    if ($("#frmProduct").valid()) {
-                        $('#frmProduct').submit();
-                    }
-                    else
-                    {
-
-                    }
-                    //alert(queueData.uploadsSuccessful + ' files were successfully uploaded.');
-                }
-            });
-        });
-        function Checkfiles(fup) {
-            //var fup = document.getElementById(filename);
-            var fileName = fup.val();
-            var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
-            if (ext == "gif" || ext == "GIF" || ext == "JPEG" || ext == "jpeg" || ext == "jpg" || ext == "JPG" || ext == "png" || ext == "PNG") {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-        var add=[3];
-        function formatAdd()
-        {
-            add[0]=($("#@Html.FieldIdFor(x => x.NumberOfHome)").val());
-            add[1]=($("#@Html.FieldIdFor(x => x.StreetId) option[value!=0]:selected").text());
-            add[2]=($("#@Html.FieldIdFor(x => x.WardId) option[value!=0]:selected").text());
-            add[3]=($("#ddlQuan option[value!=0]:selected").text());
-            var result="";
-            for(var i in add)
-            {
-                if(add[i]!="")
-                    result+=add[i]+", ";
-            }
-            $("#@Html.FieldIdFor(x => x.FullAddress)").val(result);
-        }
-        $("#AvailableStartDateTime1").datepicker();
-        $("#AvailableEndDateTime1").datepicker();
-
-    </script>
-    @if (Model.Id > 0)
-    {
-        <script type="text/javascript">
-
-            $(document).ready(function () {
-                var price=@Model.Price;
-                $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
-            })
-            var CLICK=false;
-            function deletePicture(id) {
-                if($("#lstPic li").length==1||CLICK)
-                    return;
-                var picture_id = $("#picture_id_"+id);
-                CLICK=true;
-                $.ajax({
-                    cache: false,
-                    type: "POST",
-                    data: { "id": id },
-                    url: "@Url.Action("ProductPictureDelete")",
-                    dataType: 'json',
-                    success: function (data, textStatus, jqXHR) {
-                        if (data.error == 0) {
-                            alert(data.message);
-                            picture_id.remove();
-                            CLICK=false;
-                        }
-                        else {
-                            CLICK=false;
-                            alert(data.message);
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert('Failed to retrieve data.');
-                        //statesProgressd.hide();
-                    }
-                });
-                //return event.defaultPrevented || event.returnValue == false;
-                return false;
-            }
-        </script>
-    }
