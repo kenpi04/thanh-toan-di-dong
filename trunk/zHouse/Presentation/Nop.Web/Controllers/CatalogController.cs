@@ -1052,7 +1052,7 @@ namespace Nop.Web.Controllers
         #region Categories
 
         [NopHttpsRequirement(SslRequirement.No)]
-        public async Task<ActionResult> Category(int categoryId, SearchModel searchModel, CatalogPagingFilteringModel command, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0)
+        public async Task<ActionResult> Category(int categoryId, SearchModel searchModel, CatalogPagingFilteringModel command, int streetId = 0, int wardId = 0, int districtId = 0, int stateProvinceId = 0, int? productThumbPictureSize = null)
         {
             var category = await _categoryService.GetCategoryByIdAsync(categoryId);
             if (category == null || category.Deleted)
@@ -2394,7 +2394,6 @@ namespace Nop.Web.Controllers
             return PartialView(model);
         }
 
-
         public async Task<ActionResult> NewProducts(int? pageSize, int? productThumbPictureSize, int? categoryId)
         {            
                 var products = _productService.SearchProducts(pageSize: pageSize.HasValue ? pageSize.Value : 8,
@@ -3574,6 +3573,16 @@ namespace Nop.Web.Controllers
 
                 return RedirectToAction("InsertProductSuccess", new { productId = product.Id });
             }
+
+            //repare mode if error
+            await PreparingInsertProductModelAsync(model, customer, categoryId: 1);
+            if (customer.IsRegistered())
+            {
+                ViewBag.IsRegistered = true;
+                model.NavigationModel = GetCustomerNavigationModel();
+                model.NavigationModel.SelectedTab = Nop.Web.Models.Customer.CustomerNavigationEnum.PostNews;
+            }
+            else ViewBag.IsRegistered = false;
             return View(model);
 
         }
@@ -3823,17 +3832,25 @@ namespace Nop.Web.Controllers
             {
                 if (value.HasValue)
                 {
-                    try
+                    if (customer.IsAdmin())
                     {
+                        try
+                        {
 
-                        product.Status = (short)value.Value;
-                        _productService.UpdateProduct(product);
-                        resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
-                        return Json(resultMessage);
+                            product.Status = (short)value.Value;
+                            _productService.UpdateProduct(product);
+                            resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
+                            return Json(resultMessage);
+                        }
+                        catch
+                        {
+                            resultMessage = _localizationService.GetResource("updateproduct.error.updatefail");
+                            return Json(resultMessage);
+                        }
                     }
-                    catch
+                    else
                     {
-                        resultMessage = _localizationService.GetResource("updateproduct.error.updatefail");
+                        resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatefail");
                         return Json(resultMessage);
                     }
                 }
@@ -4464,7 +4481,7 @@ namespace Nop.Web.Controllers
             p.StreetId = inPd.StreetId;
             p.StateProvinceId = 23;//23 ho chi minh
             //Thoi gian dang tin: ngay bat dau - ket thuc
-            p.AvailableEndDateTimeUtc = inPd.AvailableStartDateTime.HasValue ? inPd.AvailableStartDateTime.Value.AddDays(_catalogSettings.DaysAvailablePublished) : DateTime.Now.AddDays(_catalogSettings.DaysAvailablePublished);
+            p.AvailableEndDateTimeUtc = inPd.AvailableEndDateTime;//inPd.AvailableStartDateTime.HasValue ? inPd.AvailableStartDateTime.Value.AddDays(_catalogSettings.DaysAvailablePublished) : DateTime.Now.AddDays(_catalogSettings.DaysAvailablePublished);
             p.AvailableStartDateTimeUtc = inPd.AvailableStartDateTime ?? DateTime.Now;
             p.Status = (int)ProductStatusEnum.PendingAproved;//trang thai cho duyet            
 
@@ -4531,7 +4548,8 @@ namespace Nop.Web.Controllers
                 FullAddress = p.FullAddress,
                 DacDiemNoiBat = p.UserAgreementText,
                 Promotion = p.Promotion,
-
+                LatTiTudeGoogleMap = p.LatTiTudeGoogleMap,
+                LongTiTudeGoogleMap = p.LongTiTudeGoogleMap,
                 //thoi gian dang tin
                 AvailableStartDateTime = p.AvailableStartDateTimeUtc,
                 AvailableEndDateTime = p.AvailableEndDateTimeUtc,
@@ -4644,10 +4662,13 @@ namespace Nop.Web.Controllers
         private async Task PreparingInsertProductModelAsync(InsertProductModel model, Customer customer, int categoryId = 1)
         {
             //Customer
-            model.ContactName = await customer.GetFullNameAsync();
-            model.ContactPhone = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Phone);
-            model.Email = customer.Email;
-
+            if (model.Id == 0)
+            {
+                model.ContactName = await customer.GetFullNameAsync();
+                model.ContactPhone = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Phone);
+                model.Email = customer.Email;
+                model.AvailableStartDateTime = DateTime.Now;                
+            }
             model.Districts = (await _stateProvinceService.GetDistrictByStateProvinceIdAsync()).ToSelectList(x => x.Name, x => x.Id.ToString());
             model.Categories = (await _categoryService.GetAllCategoriesByParentCategoryIdAsync(categoryId))
                             .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name }).ToList();
@@ -5021,15 +5042,13 @@ namespace Nop.Web.Controllers
         {
             var product = await _productService.GetProductByIdAsync(Id);
             var category = product.ProductCategories.FirstOrDefault();
-
-
             if (product == null)
                 return Content("");
             var products = _productService.SearchProducts(
                    storeId: _storeContext.CurrentStore.Id,
                    categoryIds: new List<int>{category == null ? category.Id:0},
                    districtIds: new List<int>{product.DistrictId},
-                      visibleIndividuallyOnly: true,                      
+                   visibleIndividuallyOnly: true,                      
                    orderBy: ProductSortingEnum.CreatedOn,
                    pageSize: pageSize.HasValue?pageSize.Value:5);
             var model = await PrepareProductOverviewModelsAsyn(products, preparePictureModel: true, productThumbPictureSize: productThumbPictureSize);

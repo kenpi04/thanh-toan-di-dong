@@ -1,55 +1,64 @@
-﻿@model string
+﻿@model Nop.Web.Models.Catalog.InsertProductModel
+
+@Html.HiddenFor(x=> x.LatTiTudeGoogleMap)
+@Html.HiddenFor(x=>x.LongTiTudeGoogleMap)
+@*<input type="hidden" id="LatTiTudeGoogleMap" name="LatTiTudeGoogleMap" />
+<input type="hidden" id="LongTiTudeGoogleMap" name="LongTiTudeGoogleMap" />*@
+<div id="map_canvas" style="width:100%;height:400px"></div>
 
 <script>
-    function loadScript() {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&' +
-            'callback=initMap';
-        document.body.appendChild(script);
-    }
-    var map, geocoder,info,marker;
-    function showAdd(latlgn,marker)
-    {
-       
-        geocoder.geocode({ 'location': latlgn }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
-               
-                 info = new google.maps.InfoWindow({ content: results[0].formatted_address });
-                info.open(map, marker); 
-            } else {
-                alert("Geocode was not successful for the following reason: " + status);
-            }
-        });
-    }
-    function initMap()
-    {
-       
+    
+        function loadScript() {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&' +
+                'callback=initMap';
+            document.body.appendChild(script);
+        }
+        var map = null, geocoder = null, info = null, marker = null;
+        function showAdd(latlgn, marker) {
+            geocoder.geocode({ 'location': latlgn }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
+                    if (info) { info.close(); }
+                    info = new google.maps.InfoWindow({ content: results[0].formatted_address });
+                    info.open(map, marker);
+                } else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        }
+        function initMap() {
+            var lat = $("#LatTiTudeGoogleMap").val();
+            if (lat == null || lat == "") lat = 10.79101;
+            var long = $("#LongTiTudeGoogleMap").val();
+            if (long == null || long == "") long = 106.68960;
+
             var myOptions = {
-                center: new google.maps.LatLng(10.79101, 106.68960),
-                zoom: 14,
+                center: new google.maps.LatLng(lat, long),
+                zoom: 16,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 panControl: true,
                 zoomControl: true,
+                streetViewControl: false
 
             };
             center = myOptions.center;
             map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
             geocoder = new google.maps.Geocoder();
-         
+
             marker = new google.maps.Marker({
                 map: map,
                 position: center,
-                draggable:true
-            });          
-          
+                draggable: true
+            });
+
             $("#LatTiTudeGoogleMap").val(center.lat().toFixed(5));
             $("#LongTiTudeGoogleMap").val(center.lng().toFixed(5));
 
 
             google.maps.event.addListener(marker, "dragend", function (e) {
-                var point =  e.latLng;
+                var point = e.latLng;
                 map.panTo(point);
                 $("#LatTiTudeGoogleMap").val(point.lat().toFixed(5));
                 $("#LongTiTudeGoogleMap").val(point.lng().toFixed(5));
@@ -57,42 +66,38 @@
 
             });
 
-
             google.maps.event.addListener(map, "moveend", function (ex) {
 
                 google.maps.event.addListener(marker, "dragend", function (e) {
-                    var point =  e.latLng;
+                    var point = e.latLng;
                     map.panTo(point);
                     geocodePosition(point);
                     $("#LatTiTudeGoogleMap").val(point.lat().toFixed(5));
                     $("#LongTiTudeGoogleMap").val(point.lng().toFixed(5));
                     showAdd(point, marker);
-
                 });
-
             });
+        }
+        loadScript();
 
-        
-    }
-    loadScript();
-    $("#FullAddress").blur(function () {
-        var addString = $("#FullAddress").val();
-        geocoder.geocode({ 'address': addString }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
+        function getMap() {
+            var addString = $("#FullAddress").val();
+            geocoder.geocode({ 'address': addString }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
+                    if (info) { info.close(); }
+                    info = new google.maps.InfoWindow({ content: results[0].formatted_address });
+                    center = results[0].geometry.location;                    
+                    map.setCenter(center);
+                    marker.setPosition(center)
+                    info.open(map, marker);
+                    $("#LatTiTudeGoogleMap").val(center.lat().toFixed(5));
+                    $("#LongTiTudeGoogleMap").val(center.lng().toFixed(5));
+                } else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        };
 
-                var info = new google.maps.InfoWindow({ content: results[0].formatted_address });
-                center = results[0].geometry.location;
-                map.setCenter(center);
-                marker.setPosition(center)
-                info.open(map, marker);
-            } else {
-                alert("Geocode was not successful for the following reason: " + status);
-            }
-        });
-    })
 </script>
-<input type="hidden" id="LatTiTudeGoogleMap" name="LatTiTudeGoogleMap" />
-<input type="hidden" id="LongTiTudeGoogleMap" name="LongTiTudeGoogleMap" />
-<div id="map_canvas" style="width:100%;height:400px"></div>
 

@@ -23,7 +23,7 @@ fieldset{margin:0 0 15px;border:1px solid #c9c9c9;padding:15px}
 legend{font-weight:bold;line-height:20px;font-size:16px}
 input[type="text"],input[type="password"]{background:#fff;border:1px solid #ddd;padding:6px;color:#333;margin-bottom:6px}
 input[type="text"]:disabled{background:none repeat scroll 0 0 #FFF}
-span [class^="icon-"]{display:inline-block;width:20px;height:20px;margin-right:4px;vertical-align:middle}
+span [class^="icon-"]{display:inline-block;width:20px;height:20px;vertical-align:middle}
 .clearfix{clear:both}
 select{border:1px solid #c2c2c2;color:#666;font-size:11px;padding:5px 5px 5px 10px;width:150px}
 .master-wrapper-page{background:none repeat scroll 0 0 #f1f1f1}
@@ -130,7 +130,7 @@ td.fieldname{font-size:12px}
 .clearer{zoom:1}
 .clearer:after{content:".";display:block;clear:both;height:0;font-size:0;line-height:0;visibility:hidden}
 .ajax-loading-block-window{position:fixed;top:50%;left:50%;width:128px;height:128px;overflow:hidden;z-index:1104}
-.ajax-loading-block-window .loading-image{position:absolute;top:0;left:0;width:128px;height:128px;background-image:url('images/ajax_loader_large.gif')}
+.ajax-loading-block-window .loading-image{position:absolute;top:0;left:0;width:128px;height:128px;background-image:url('images/ajax_loader_large.gif');background-repeat:no-repeat;}
 .please-wait{background:url('images/ajax_loader_small.gif') no-repeat;padding-left:20px}
 .data-table{width:100%;border:1px solid #EEE;border-collapse:collapse;border-spacing:0;empty-cells:show}
 .data-table th{font-weight:bold;padding:3px 8px;white-space:nowrap;vertical-align:middle}
@@ -168,7 +168,7 @@ a.eu-cookie-privacyinfo-tag{color:#b80709 !important;text-decoration:underline}
 .block .title strong{font-weight:700}
 .block .listbox{font-size:11px;padding:5px 10px 10px;line-height:18px;margin:0;border-radius:0 0 5px 5px}
 .block .listbox ul{margin:0;padding:0 0 0 2px;color:#5c5b5b;background-color:inherit}
-.block a{color:#5c5b5b;font-size:1.1em;font-weight:400;text-decoration:none}
+.block a{color:#5c5b5b;font-size:1.3em;font-weight:400;text-decoration:none}
 .block a:hover{color:#b80709;text-decoration:underline;font-weight:normal}
 .block li{background:url("images/bullet-right.gif") no-repeat left 8px;list-style:none outside none;line-height:18px;padding:4px 1px 3px 13px}
 .block li.separator{background:0;height:1px;line-height:1px;width:auto;font-size:1px;margin:0;padding:0}
@@ -527,7 +527,7 @@ a.eu-cookie-privacyinfo-tag{color:#b80709 !important;text-decoration:underline}
 .breadcrumb .current-item{font-size:.9em;font-weight:normal}
 .news-items .news-pic{width:70px;float:left;margin-right:5px;height:70px}
 .news-items .news-pic img{width:100%;height:100%}
-.news-items .news-text{float:left;width:169px;height:70px;overflow:hidden;font-size:12px}
+.news-items .news-text{float:left;width:168px;height:70px;overflow:hidden;font-size:12px}
 .news-list-page,.news-list-homepage{margin-bottom:15px;padding-bottom:5px;padding-left:0}
 .news-list-homepage .title{padding:10px 10px 10px 0;margin:0 0 0 10px;font-weight:700;text-transform:uppercase;font-size:1.1em;color:#3a3a3a;text-align:center}
 .news-items{padding:0;float:left;margin-left:10px;height:352px;overflow:hidden}
@@ -663,7 +663,7 @@ a.eu-cookie-privacyinfo-tag{color:#b80709 !important;text-decoration:underline}
 .account-page .result{font-family:Verdana,Arial,sans-serif;font-size:10px;font-weight:700;color:red}
 .account-page .page-title{margin-bottom:20px}
 .account-page .page-body{margin:0;padding:0;color:#555}
-.account-page .section{padding:10px;margin-bottom:20px;border:1px solid #eee;border-radius:5px;zoom:1}
+.account-page .section{padding:10px;margin-bottom:20px;border:1px solid #eee;border-radius:5px;zoom:1;font-size:1.1em;}
 .account-page .section:after{content:".";display:block;clear:both;height:0;font-size:0;line-height:0;visibility:hidden}
 .account-page .section .title{margin:-17px 0 14px;zoom:1}
 .account-page .section .title strong{background:#fff}
@@ -1170,7 +1170,7 @@ ul{margin:0}
 .simplemodal-close{background:url(images/x.png) no-repeat;width:22px;height:22px;position:absolute;right:-5px;top:-5px}
 #popup h1{padding:8px 0;background:#c06;color:#fff;font-weight:bold;font-size:14px;text-align:center;text-transform:uppercase;margin-top:10px}
 .whiteBgCata{padding:4px 0 4px 0px;border-radius:3px;overflow:hidden;background-color:#f5f5f5}
-.whiteBgCata > span {min-width:92px;width:45%; padding:0 0 0 10px;display:inline-block;line-height:24px}
+.whiteBgCata > span {min-width:92px;width:45%; padding:0 0 0 3px;display:inline-block;line-height:24px}
 .whiteBgCata-small{padding:7px 0px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:100%;margin-top:10px;font-weight:normal}
 .pinkNarrowTitle30{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06}
 .whiteLeftCol{float:left;width:220px;margin: 0 0px 10px 0;background:#fff}
@@ -1235,7 +1235,7 @@ textarea.formBoxInText{height:70px}
 .rightTable li {margin:5px 0;list-style:circle;width:300px;float:left}
 .rightTable ul {margin-left:30px;display:inline-block; }
 .createproduct-page .page-body {padding:20px }
-.note {color:#d41212 }
+.note {color:#d41212;line-height:30px; }
 .date-book select {width:50px; }
 .date-book .selector {margin-right:5px }
 .lb {padding:10px 0px;color:#fff;font-weight:bold }
@@ -1319,10 +1319,13 @@ textarea.formBoxInText{height:70px}
 .datlichxemnha{font-size:100%;}
 .register-form{width:44%;margin:0 auto}
 .form-fields .error {margin-left: 148px;font-size: 10px;margin-bottom: 10px;}
-.product-hinh{height:auto;width:18%; float:left;border:1px solid;border-radius:5px 5px 0 0;border-color:#f6f6f4;text-align:center}
-.product-hinh img{max-height:34%;max-width:100%; margin:0 auto;}
+.product-hinh{width:124px;height:124px; float:left;border:1px solid;border-radius:5px 5px 0 0;border-color:#f6f6f4;text-align:center;overflow:hidden;}
+.product-hinh img{height:100%;max-width:100%; margin:0 auto;}
 .product-content{float:left;padding:5px 5px 0 10px;width:60%}
-.product-col1{float:left;width:50%;}
+.product-col1{float:left;width:50%;margin-top:5px}
+.product-col1 a{cursor:pointer;}
+.product-col1 .item-row{display:table-row;}
+.product-col1 .item-cell{display:table-cell;padding:5px 10px 0px 0px}
 .list .small{background:url(/Themes/Zhouse/Content//images/plus-icon-10.png) no-repeat left 8px}
 .list .small a{cursor:pointer}
 .logo-marketplace{float:left;padding:19px;vertical-align:middle;}
@@ -1393,3 +1396,6 @@ li.active a, li.active a:hover {background: #fff;color: #4c4c4c;border: 1px soli
 .introColRight-detail .whiteBgCata >span{width:100%;padding-left:5px;font-size:12px;}
 .email-friend .inputs-left .inputs{width:94%}
 .flex-active-slide{width:auto !important}
+tr.table-dateTime{line-height:23px;}
+.table-dateTime td{padding-right:10px;}
+#FullDescription_tbl{width:100% !important}

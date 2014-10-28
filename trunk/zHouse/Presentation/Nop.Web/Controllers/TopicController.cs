@@ -107,7 +107,7 @@ namespace Nop.Web.Controllers
             return PartialView(cacheModel);
         }
 
-        [ChildActionOnly]
+        //[ChildActionOnly]
         //[OutputCache(Duration = 500, VaryByParam = "none")]
         public ActionResult TopicHomePage()
         {

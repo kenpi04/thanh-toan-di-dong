@@ -16,10 +16,8 @@
         <h1>@T("Account.MyAccount") - @T("Account.CustomerOrders")</h1>
     </div>
     <div class="page-body">
-
         @Html.Partial("_SearchBox")
-        <div class="order-list" id="product-list-cus">
-            @*@Html.Partial("_PartialProductCustomer", Model.Products)*@
+        <div class="order-list load-ajax" id="product-list-cus" data-url="@Url.Action("Orders", "Customer")">
         </div>
       
         <script type="text/javascript">
@@ -32,8 +30,3 @@
         </script>
     </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function () { 
-        $("#product-list-cus").html("<div class=loading-img></div>").load('@Url.Action("Orders", "Customer")');
-    })
-</script>

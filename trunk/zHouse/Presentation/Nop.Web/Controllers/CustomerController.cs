@@ -587,9 +587,9 @@ namespace Nop.Web.Controllers
                 model.PagingFilteringContext.LoadPagedList(listProducts);
                 products = listProducts.ToList();
                 if (statusEndDate == 1)//con han
-                    products = products.Where(p => p.AvailableEndDateTimeUtc < DateTime.Now).ToList();
+                    products = products.Where(p => p.AvailableEndDateTimeUtc >= DateTime.Now).ToList();
                 else if (statusEndDate == 2)//het han
-                    products = products.Where(p => p.AvailableEndDateTimeUtc > DateTime.Now).ToList();
+                    products = products.Where(p => p.AvailableEndDateTimeUtc < DateTime.Now).ToList();
                 
             }
             foreach (var product in products)
@@ -610,6 +610,7 @@ namespace Nop.Web.Controllers
                     //BedRoom = GetOptionName(product, ProductAttributeEnum.NumberOfBedRoom),
                     //TinhTrang = GetOptionName(product, ProductAttributeEnum.Status),
                     ViewNumber = product.ViewNumber.ToString(),
+                    TrangThaiDuyetId = product.Status,
                     TrangThaiDuyet = ((ProductStatusEnum)product.Status == ProductStatusEnum.Approved && product.AvailableEndDateTimeUtc < DateTime.Now) ? "Đã hết hạn" : await _localizationService.GetResourceAsync(Enum.GetName(typeof(ProductStatusEnum), product.Status)),
                     ProductType = product.ProductType,
                     DefaultPictureModel = _cacheManager.Get(string.Format(Nop.Web.Infrastructure.Cache.ModelCacheEventConsumer.PRODUCT_DEFAULTPICTURE_MODEL_KEY, product.Id, 80, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id), () =>

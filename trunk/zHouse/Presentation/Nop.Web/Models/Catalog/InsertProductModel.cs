@@ -39,7 +39,7 @@ namespace Nop.Web.Models.Catalog
 
         public string NotePhapLy { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Name")]
-        public string Name { get; set; }
+        public string Name { get; set; }        
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactName")]
         public string ContactName { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.ContactPhone")]
@@ -51,6 +51,7 @@ namespace Nop.Web.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.CateId")]
         public int CateId { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Area")]
+        
         public decimal Area { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Width")]
         public decimal Width { get; set; }
@@ -105,14 +106,13 @@ namespace Nop.Web.Models.Catalog
         public IList<SelectListItem> NumberBlocks { get; set; }
         #endregion
 
-        [DisplayFormat(DataFormatString = "{0:###,##}")]
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.AreaUse")]
         public decimal AreaUse { get; set; }
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.AvailableStartDateTime")]
         public DateTime? AvailableStartDateTime { get; set; }
 
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.AvailableEndDateTime")]
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.AvailableEndDateTime")]        
         public DateTime? AvailableEndDateTime { get; set; }
         public string LatTiTudeGoogleMap { get; set; }
         /// <summary>

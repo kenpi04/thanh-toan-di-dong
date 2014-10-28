@@ -15,14 +15,10 @@
     Nếu bạn gặp vấn đề gì trong quá trình gởi thông tin hãy liên hệ với chúng tôi qua Hotline: <b>0939448124.</b><br />
     Nhân viên của chúng tôi sẽ hỗ trợ bạn.
 </p>
-<br />
-@*<div class="free-text">
-        HOÀN TOÀN MIỄN PHÍ
-    </div>*@
+<i class="note">(*) Bắt buộc phải nhập/chọn.</i>
 <div id="panel-error" class="message-error">
     @Html.ValidationSummary()
 </div>
-<i class="note">(*) Bắt buộc phải nhập/chọn.</i>
 <div class="floatLeft">
     <div class="blueText">THÔNG TIN LIÊN HỆ</div>
     <div class="boxWrapper form-request-contact">
@@ -54,11 +50,12 @@
                     <td class="request-label">@Html.LabelFor(x => x.Price, "Giá/tháng (vnđ)")</td>
                     <td>
                         @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable", placeholder = "Giá/tháng" })
-                        @Html.RequiredHint()        
+                        @Html.RequiredHint()
+                        <span id="price-text">(Giá liên hệ = 0)</span>
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.Area)</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Area, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích" })
+                        @Html.TextBoxFor(x => x.Area, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích" })
                         @Html.RequiredHint()
                     </td>                    
                 </tr>
@@ -70,7 +67,7 @@
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.Width) </td>
                     <td>
-                        @Html.TextBoxFor(x => x.Width, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều rộng" })
+                        @Html.TextBoxFor(x => x.Width, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều rộng" })
                         @Html.RequiredHint()
                     </td>
                 </tr>
@@ -87,7 +84,7 @@
                     </td>                    
                     <td class="request-label">@Html.LabelFor(x => x.Dept)</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Dept, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Chiều dài" })
+                        @Html.TextBoxFor(x => x.Dept, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều dài" })
                         @Html.RequiredHint()
                     </td>
                 </tr>
@@ -104,8 +101,7 @@
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.AreaUse)</td>
                     <td>
-                        @Html.TextBoxFor(x => x.AreaUse, "{0:0.00}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" })
-                        @Html.RequiredHint()
+                        @Html.TextBoxFor(x => x.AreaUse, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" })
                     </td>
                 </tr>                
             </tbody>
@@ -203,8 +199,18 @@
 <div class="floatLeft">
     <div class="blueText">THỜI GIAN ĐĂNG TIN @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
-        @Html.TextBoxFor(x => x.AvailableStartDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableStartDateTime1", @Id = "AvailableStartDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày bắt đầu" })
-        @Html.TextBoxFor(x => x.AvailableEndDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableEndDateTime1", @Id = "AvailableEndDateTime1", @class = " formBoxInText", placeholder = "Ngày kết thúc" })
+        <table>
+            <tbody>
+                <tr class="table-dateTime">
+                    <td>@Html.LabelFor(x => x.AvailableStartDateTime)</td>
+                    <td>@Html.LabelFor(x => x.AvailableEndDateTime)</td>
+                </tr>
+                <tr class="table-dateTime">
+                    <td>@Html.TextBoxFor(x => x.AvailableStartDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableStartDateTime1", @Id = "AvailableStartDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày bắt đầu" })</td>
+                    <td>@Html.TextBoxFor(x => x.AvailableEndDateTime, "{0:dd/MM/yyyy}", new { @Name = "AvailableEndDateTime1", @Id = "AvailableEndDateTime1", @class = " formBoxInText", type = "text", placeholder = "Ngày kết thúc" })</td>
+                </tr>
+            </tbody>
+        </table>
         @Html.HiddenFor(x => x.AvailableStartDateTime)
         @Html.HiddenFor(x => x.AvailableEndDateTime)
     </div>
@@ -212,7 +218,8 @@
 <div class="floatLeft">
     <div class="blueText" title="Tiêu đề tin đăng: hãy ghi rõ ràng đầy đủ để tin của bạn được tìm kiếm dễ dàng hơn.">TIÊU ĐỀ @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
-        @Html.TextBoxFor(x => x.Name, new { @class = " formBoxInText", style = "width:90%", placeholder = "Ít nhất 10 ký tự. Ví dụ: Cho thuê nhà nguyên căn giá rẻ, quận Bình Tân, 5 triệu một tháng" })
+        @Html.TextBoxFor(x => x.Name, new { @class = "formBoxInText", style = "width:99%", placeholder = "Tiêu đề" })
+        <label style="color:#888;font-style:italic;">(Tiêu đề ít nhất 10 ký tự và nhiều nhất 150 ký tự. Ví dụ: Cho thuê nhà nguyên căn giá rẻ, quận Bình Tân, 5 triệu một tháng)</label>        
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
@@ -221,18 +228,17 @@
         @Html.EditorFor(x => x.FullDescription, "RichEditor")
     </div>
 </div><!---floatLeft---->
-<div class="floatLeft">
-    <div class="boxWrapperSmall">
-        <br>
-        <input type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
-    </div>
-</div><!---floatLeft---->
-
 <script type="text/javascript">
     $(function () {
         $(".jqte-test").jqte();
         var pictureids = [];       
         ISFIRSTLOAD=true;
+
+        $("#Price").keyup(function () {
+            var price = $(this).val();
+            if(price>999999999){price = 999999999;$("#Price").val(price);}
+            if(price<0){price=0;$("#Price").val(price);}})
+
         $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
         $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
         $("#insertProduct-button").click(function () {
@@ -254,11 +260,7 @@
                 displayAjaxLoading(true);
                 if($("div[id^=SWFUpload_]").size()==0)
                 {
-                    var startDate = ConverDate($("#AvailableStartDateTime1").val());
-                    $("#AvailableStartDateTime").val(startDate);
-                    var endDate = ConverDate($("#AvailableEndDateTime1").val());
-                    $("#AvailableEndDateTime").val(startDate);
-                    $("#frmProduct").submit();
+                    formSubmit();
                 }
                 else
                     $('#FileUpload').uploadify('upload', '*')
@@ -340,17 +342,21 @@
                     alert('Vui lòng chọn hình ảnh đăng');
                     return false;
                 }
-                if ($("#frmProduct").valid()) {
-                    $('#frmProduct').submit();
-                }
-                else
-                {
-
-                }
+                formSubmit();
                 //alert(queueData.uploadsSuccessful + ' files were successfully uploaded.');
             }
         });
     });
+    function formSubmit()
+    {
+        if ($("#frmProduct").valid()) {
+            var startDate = ConverDate($("#AvailableStartDateTime1").val());
+            $("#AvailableStartDateTime").val(startDate);
+            var endDate = ConverDate($("#AvailableEndDateTime1").val());
+            $("#AvailableEndDateTime").val(endDate);
+            $('#frmProduct').submit();
+        }
+    }
     function Checkfiles(fup) {
         //var fup = document.getElementById(filename);
         var fileName = fup.val();
@@ -378,8 +384,12 @@
             if(add[i]!="")
                 result+=add[i]+", ";
         }
-        $("#@Html.FieldIdFor(x => x.FullAddress)").val(result);
+        $("#@Html.FieldIdFor(x => x.FullAddress)").val(result+'Hồ Chí Minh');
+        if(!ISFIRSTLOAD){
+            getMap();}
     }
+    $("#AvailableStartDateTime1").datepicker();
+    $("#AvailableEndDateTime1").datepicker();
 </script>
 @if (Model.Id > 0)
 {
@@ -417,3 +427,14 @@
         }
     </script>
 }
+<div class="floatLeft">
+    <div class="blueText">CHỌN VỊ TRÍ BẤT ĐỘNG SẢN TRÊN BẢN ĐỒ</div>
+    <div class="boxWrapperSmall">
+        @Html.Partial("_MapInsertProduct", Model)
+    </div>
+</div>
+<div class="floatLeft">
+    <div class="boxWrapperSmall">
+        <input type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
+    </div>
+</div>
