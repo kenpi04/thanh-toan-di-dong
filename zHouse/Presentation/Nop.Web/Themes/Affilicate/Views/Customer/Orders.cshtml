@@ -19,7 +19,6 @@
         @Html.Partial("_SearchBox")
         <div class="order-list load-ajax" id="product-list-cus" data-url="@Url.Action("Orders", "Customer")">
         </div>
-      
         <script type="text/javascript">
             $(document).on("click","#pager-li li.individual-page a",function () {
                 var page = parseInt($(this).text());

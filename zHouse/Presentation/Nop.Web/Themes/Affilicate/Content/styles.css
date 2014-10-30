@@ -163,6 +163,7 @@ a.eu-cookie-privacyinfo-tag{color:#b80709 !important;text-decoration:underline}
 .pager a,.pager span{display:inline-block;min-width:10px;text-align:center;color:#555;font-size:11px;font-weight:700;padding:0 8px;-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;-webkit-transition:all .218s;-moz-transition:all .218s;-ms-transition:all .218s;-o-transition:all .218s;transition:all .218s;border:1px solid gainsboro;border:1px solid rgba(0,0,0,0.1);background-color:whiteSmoke;-webkit-user-select:none;-moz-user-select:none;user-select:none;cursor:pointer;text-decoration:none}
 .pager span,.pager a:active{background-color:#f9f9f9;cursor:default}
 .pager a:hover{border:1px solid #c6c6c6;color:#333;-webkit-transition:all 0;-moz-transition:all 0;-ms-transition:all 0;-o-transition:all 0;transition:all 0;background-color:#f8f8f8;-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.1);-moz-box-shadow:0 1px 1px rgba(0,0,0,0.1);box-shadow:0 1px 1px rgba(0,0,0,0.1);text-decoration:none}
+.page-label{text-align:right;line-height:26px;font-family:Arial,'Times New Roman', Times, serif;font-weight:600;}
 .block{margin-bottom:15px;padding-bottom:5px;padding-left:0}
 .block .title{font-size:12px;letter-spacing:1px;text-align:left;padding:9px 7px;text-transform:uppercase;color:#333;border-radius:5px 5px 0 0;margin:0;background:none repeat scroll 0 0 #f6f6f4}
 .block .title strong{font-weight:700}
@@ -455,7 +456,7 @@ a.eu-cookie-privacyinfo-tag{color:#b80709 !important;text-decoration:underline}
 .sub-category-grid .sub-category-item,.manufacturer-grid .manufacturer-item{text-align:center;margin:10px;width:145px;height:180px;border:1px solid #eee}
 .sub-category-grid .sub-category-item .title,.manufacturer-grid .manufacturer-item .title{text-align:center;font-weight:700;font-size:.9em;display:block;overflow:hidden;padding:5px}
 .sub-category-grid .sub-category-item .picture,.manufacturer-grid .manufacturer-item .picture{text-align:center;padding:10px 0}
-.product-selectors{margin-right:13px;zoom:1;background:#E4E4E4;padding:4px 4px;height: 28px;}
+.product-selectors{margin-right:13px;zoom:1;background:#E4E4E4;padding:4px 4px;height: 31px;}
 .product-selectors:after{content:".";display:block;clear:both;height:0;font-size:0;line-height:0;visibility:hidden}
 .product-sorting{float:left}
 .product-viewmode{float:right}
@@ -689,7 +690,7 @@ a.eu-cookie-privacyinfo-tag{color:#b80709 !important;text-decoration:underline}
 .account-signature-text{height:100px;width:500px;border:solid 1px #e3e3e3;vertical-align:top}
 .order-list-page .recurring-payments .recurring-payments-box{text-align:left;padding:10px;height:auto}
 .order-list-page .order-list .order-item .title{font-size:13px}
-.order-list-page .order-list .order-item .title-1{font-size:12px;margin:0;padding:3px 7px;letter-spacing:1px;text-align:left;color:#333;text-transform:uppercase;border-radius:5px 5px 0 0;background:none repeat scroll 0 0 #f6f6f4;}
+.order-list-page .order-list .order-item .title-1{font-size:12px;font-weight:bold; margin:0;padding:3px 7px;letter-spacing:1px;text-align:left;color:#333;text-transform:uppercase;border-radius:5px 5px 0 0;background:none repeat scroll 0 0 #f6f6f4;}
 .order-list-page .order-list .order-item .title-1 img{margin-right:10px;width:15px}
 .order-list-page .order-list .order-item .info{float:left}
 .order-list-page .order-list .order-item .buttons{float:right}
@@ -1380,12 +1381,10 @@ li.active a, li.active a:hover {background: #fff;color: #4c4c4c;border: 1px soli
 .tab {display: none;}
 .tab.active {display: block;}
 .request-label{text-align:right;}
-.request-label label{padding-right:10px;}
 .product-selectors .project{margin-right:10px;}
 .project{width:29.2%;}
 .project .info-picture{float:none;width:100%;max-height:219px;height:100%;}
 .project .whiteBgCata > span{width:100%;}
-.request-label label{padding-right:10px;}
 .loading-img{background:url(images/loading.gif);width:24px;height:24px;display:block;margin:0 auto}
 .twoColRight .item-cell{display:table-cell;max-width:214px;overflow:hidden;}
 .twoColRight .item-cell >img{max-width:30px}
@@ -1396,7 +1395,6 @@ li.active a, li.active a:hover {background: #fff;color: #4c4c4c;border: 1px soli
 .introColRight-detail >img{width:100%;}
 .introColRight-detail .whiteBgCata >span{width:100%;padding-left:5px;font-size:12px;}
 .email-friend .inputs-left .inputs{width:94%}
-.flex-active-slide{width:auto !important}
 tr.table-dateTime{line-height:23px;}
 .table-dateTime td{padding-right:10px;}
 #FullDescription_tbl{width:100% !important}
