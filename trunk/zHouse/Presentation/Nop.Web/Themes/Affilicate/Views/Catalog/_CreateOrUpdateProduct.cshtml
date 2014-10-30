@@ -41,7 +41,7 @@
         
         @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:82.3%", placeholder = "Địa chỉ đầy đủ" })
     </div>
-    <div class="blueText" id="thongtinphaly">THÔNG TIN PHÁP LÝ</div>
+    <div class="blueText">THÔNG TIN PHÁP LÝ</div>
     <div class="boxWrapperSmall" id="PhapLy">
         @foreach (var i in Model.PhapLy)
         {
@@ -172,7 +172,7 @@
 <div class="floatLeft">
     <div class="colA"><div class="blueText">Môi trường xung quanh @Html.RequiredHint() &nbsp;&nbsp;<label class="note2">(Vui lòng chọn ít nhất 1 thuộc tính)</label></div></div>
     <div class="colB">
-        <ul style="list-style: none">
+        <ul style="list-style: none" id="MoiTruong">
             @foreach (var i in Model.Environments)
             {
                 <li style="float: left; width: 20%">
