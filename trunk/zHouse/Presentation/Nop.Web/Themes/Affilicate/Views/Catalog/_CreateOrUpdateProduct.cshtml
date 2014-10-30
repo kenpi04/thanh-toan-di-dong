@@ -22,10 +22,10 @@
 <div class="floatLeft">
     <div class="blueText">THÔNG TIN LIÊN HỆ</div>
     <div class="boxWrapper form-request-contact">
-        @Html.TextBoxFor(x => x.ContactName, new { @class = "formBoxIn", placeholder = "Họ và tên" })
+    @Html.RequiredHint()    
+    @Html.TextBoxFor(x => x.ContactName, new { @class = "formBoxIn", placeholder = "Họ và tên" })
         @Html.RequiredHint()
-        @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại", })
-        @Html.RequiredHint()
+        @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại", })        
         @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })
     </div><!----boxWrapper------->
 </div><!---floatLeft---->
@@ -33,15 +33,16 @@
     <div class="boxWrapper form-request-contact">
         <div class="blueText">ĐỊA CHỈ BẤT ĐỘNG SẢN</div>
         @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
-        @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect", id = "ddlQuan"})
         @Html.RequiredHint()
+        @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect", id = "ddlQuan"})
+        
         @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường", new { @class = "formBoxInSelect"})
         
         @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect"})
         
         @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:82.3%", placeholder = "Địa chỉ đầy đủ" })
     </div>
-    <div class="blueText">THÔNG TIN PHÁP LÝ</div>
+    <div class="blueText">THÔNG TIN PHÁP LÝ @Html.RequiredHint() &nbsp;&nbsp;<label class="note2">(Vui lòng chọn ít nhất 1 thuộc tính)</label></div>
     <div class="boxWrapperSmall" id="PhapLy">
         @foreach (var i in Model.PhapLy)
         {
@@ -57,12 +58,11 @@
         <table style="width:100%">
             <tbody>
                 <tr>
-                    <td class="request-label">@Html.LabelFor(x => x.Price, "Giá (vnđ)")</td>
+                    <td class="request-label">@Html.LabelFor(x => x.Price, "Giá (vnđ)") @Html.RequiredHint() &nbsp;</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable", placeholder = "Giá" })
-                        @Html.RequiredHint()
+                        @Html.TextBoxFor(x => x.Price, new { @class = "formBoxInTable", placeholder = "Giá" })                        
                         <span id="price-text">(Giá liên hệ = 0)</span>
-                    <td class="request-label">@Html.LabelFor(x => x.NumberFloors) </td>
+                    <td class="request-label">@Html.LabelFor(x => x.NumberFloors) &nbsp;&nbsp;</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.NumberFloors)
@@ -73,23 +73,21 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="request-label">@Html.LabelFor(x => x.CateId) </td>
+                    <td class="request-label">@Html.LabelFor(x => x.CateId) @Html.RequiredHint() &nbsp;</td>
                     <td>
-                        @Html.DropDownListFor(x => x.CateId, Model.Categories, new { @class = "formBoxInSelectTable" })
-                        @Html.RequiredHint()
+                        @Html.DropDownListFor(x => x.CateId, Model.Categories, new { @class = "formBoxInSelectTable" })                        
                     </td>
-                    <td class="request-label">@Html.LabelFor(x => x.AreaUse)</td>
+                    <td class="request-label">@Html.LabelFor(x => x.AreaUse) @Html.RequiredHint() &nbsp;</td>
                     <td>
                         @Html.TextBoxFor(x => x.AreaUse, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" })
                     </td>
                 </tr>
                 <tr>
-                    <td class="request-label">@Html.LabelFor(x => x.Area)</td>
+                    <td class="request-label">@Html.LabelFor(x => x.Area) @Html.RequiredHint() &nbsp;</td>
                     <td>
                         @Html.TextBoxFor(x => x.Area, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích"})
-                        @Html.RequiredHint()
                     </td>
-                    <td class="request-label">@Html.LabelFor(x => x.BedRooms) </td>
+                    <td class="request-label">@Html.LabelFor(x => x.BedRooms) &nbsp;&nbsp;</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.BedRooms)
@@ -101,12 +99,11 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="request-label">@Html.LabelFor(x => x.Width) </td>
+                    <td class="request-label">@Html.LabelFor(x => x.Width) @Html.RequiredHint() &nbsp;</td>
                     <td>
                         @Html.TextBoxFor(x => x.Width, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều rộng" })
-                        @Html.RequiredHint()
                     </td>
-                    <td class="request-label">@Html.LabelFor(x => x.BathRooms)</td>
+                    <td class="request-label">@Html.LabelFor(x => x.BathRooms) &nbsp;&nbsp;</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.BathRooms)
@@ -117,12 +114,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="request-label">@Html.LabelFor(x => x.Dept)</td>
+                    <td class="request-label">@Html.LabelFor(x => x.Dept) @Html.RequiredHint() &nbsp;</td>
                     <td>
                         @Html.TextBoxFor(x => x.Dept, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều dài" })
-                        @Html.RequiredHint()
                     </td>
-                    <td class="request-label">@Html.LabelFor(x => x.Directors)</td>
+                    <td class="request-label">@Html.LabelFor(x => x.Directors) @Html.RequiredHint() &nbsp;</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.Directors)
@@ -130,11 +126,10 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                        @Html.RequiredHint()
                     </td>
                 </tr>
                 <tr>
-                    <td class="request-label">@Html.LabelFor(x => x.StatusList)</td>
+                    <td class="request-label">@Html.LabelFor(x => x.StatusList) @Html.RequiredHint() &nbsp;</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.StatusList)
@@ -142,7 +137,6 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                        @Html.RequiredHint()
                     </td>
                     <td></td>
                     <td></td>

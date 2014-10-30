@@ -1509,7 +1509,8 @@ namespace Nop.Web.Controllers
             }
             model.NavigationModel = GetCustomerNavigationModel(customer);
             model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;
-            model.Products = null;
+            //model = await PrepareCustomerOrderListModelAsync(customer, startDate: startDate, endDate: endDate,
+            //        categoryId: categoryId, storeId: _storeContext.CurrentStore.Id, status: status, statusEndDate: statusEndDate, productId: productId, paging: command);
             return View(model);
         }
 
