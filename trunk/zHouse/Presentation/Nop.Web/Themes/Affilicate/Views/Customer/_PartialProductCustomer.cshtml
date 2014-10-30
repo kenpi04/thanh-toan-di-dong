@@ -94,10 +94,7 @@
                         }
                         if (action == 4)
                         {
-                            var src;
-                            if (value = 20) src = "'/Themes/Affilicate/Content/images/icon-notyetapproved.png'";
-                            if (value = 10) src = "'/Themes/Affilicate/Content/images/icon-approved.png'";
-                            $("approved-" + id).attr("src",src);
+                            $("#product-list-cus").load("@Url.Action("Orders", "Customer")");                            
                         }
                     })
                 }

@@ -16,8 +16,8 @@ namespace Nop.Web.Validators.Catalog
             RuleFor(x => x.ContactName).NotEmpty().WithMessage(localizationService.GetResource("Products.Fields.ContactName.Required"));
             RuleFor(x => x.ContactPhone).NotEmpty().WithMessage(localizationService.GetResource("Products.Fields.ContactPhone.Required"));
             RuleFor(x => x.Email).EmailAddress().WithMessage(localizationService.GetResource("Common.EmailNotValid"));
-            RuleFor(x => x.StreetId).NotEqual(0).When(x => x.ProductType != (int)ProductType.ProjectProduct).WithMessage(localizationService.GetResource("Products.Fields.Street.Required"));
-            RuleFor(x => x.WardId).NotEqual(0).When(x => x.ProductType != (int)ProductType.ProjectProduct).WithMessage(localizationService.GetResource("Products.Fields.WardId.Required"));
+            //RuleFor(x => x.StreetId).NotEqual(0).When(x => x.ProductType != (int)ProductType.ProjectProduct).WithMessage(localizationService.GetResource("Products.Fields.Street.Required"));
+            //RuleFor(x => x.WardId).NotEqual(0).When(x => x.ProductType != (int)ProductType.ProjectProduct).WithMessage(localizationService.GetResource("Products.Fields.WardId.Required"));
             RuleFor(x => x.DistrictId).NotEqual(0).When(x => x.ProductType != (int)ProductType.ProjectProduct).WithMessage(localizationService.GetResource("Products.Fields.DistrictId.Required"));
 
             RuleFor(x => x.Name).NotEmpty().WithMessage(localizationService.GetResource("Product.Fields.Name.Required"))
