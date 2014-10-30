@@ -36,12 +36,12 @@
         @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect", id = "ddlQuan"})
         @Html.RequiredHint()
         @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường", new { @class = "formBoxInSelect"})
-        @Html.RequiredHint()
+        
         @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect"})
-        @Html.RequiredHint()
+        
         @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:82.3%", placeholder = "Địa chỉ đầy đủ" })
     </div>
-    <div class="blueText">THÔNG TIN PHÁP LÝ</div>
+    <div class="blueText" id="thongtinphaly">THÔNG TIN PHÁP LÝ</div>
     <div class="boxWrapperSmall" id="PhapLy">
         @foreach (var i in Model.PhapLy)
         {
@@ -70,7 +70,6 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                        @Html.RequiredHint()
                     </td>
                 </tr>
                 <tr>
@@ -98,7 +97,6 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                        @Html.RequiredHint()
                     </td>
                     <td></td>
                 </tr>
@@ -116,7 +114,6 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                        @Html.RequiredHint()
                     </td>
                 </tr>
                 <tr>
@@ -155,7 +152,7 @@
     </div><!---boxWrapperSmall---->
 </div><!---floatLeft----->
 <div class="floatLeft">
-    <div class="colA"><div class="blueText">Cơ sở vật chất</div></div>
+    <div class="colA"><div class="blueText">Cơ sở vật chất @Html.RequiredHint() &nbsp;&nbsp;<label class="note2">(Vui lòng chọn ít nhất 1 thuộc tính)</label></div></div>
     <div class="colB">
         <ul style="list-style: none" id="CoSoVatChat">
             @foreach (var i in Model.Facilities)
@@ -173,9 +170,9 @@
     </div>
 </div><!----floatLeft----->
 <div class="floatLeft">
-    <div class="colA"><div class="blueText">Môi trường xung quanh</div></div>
+    <div class="colA"><div class="blueText">Môi trường xung quanh @Html.RequiredHint() &nbsp;&nbsp;<label class="note2">(Vui lòng chọn ít nhất 1 thuộc tính)</label></div></div>
     <div class="colB">
-        <ul style="list-style: none" id="MoiTruong">
+        <ul style="list-style: none">
             @foreach (var i in Model.Environments)
             {
                 <li style="float: left; width: 20%">
@@ -191,7 +188,7 @@
     </div>
 </div><!----floatLeft----->
 <div class="floatLeft">
-    <div class="colA" id="ThichHop"><div class="blueText">Thích hợp</div></div>
+    <div class="colA" id="ThichHop"><div class="blueText">Thích hợp @Html.RequiredHint() &nbsp;&nbsp;<label class="note2">(Vui lòng chọn ít nhất 1 thuộc tính)</label></div></div>
     <div class="colB">
         <ul style="list-style: none" id="ThichHop">
             @foreach (var i in Model.ThichHop)
@@ -208,7 +205,7 @@
         @Html.TextAreaFor(x => x.NoteThichHop, new { @class = "formBoxInText", placeholder = "vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)" })
     </div>
 </div><!----floatLeft----->
-<div class="floatLeft">
+<div class="floatLeft" id="anhdang">
     <div class="blueText">HÌNH ẢNH BẤT ĐỘNG SẢN<small> (Hình càng rõ ràng, đầy đủ, bất động sản sẽ được chú ý hơn)</small></div>
     <div class="rightTable">
         <ul>
@@ -224,9 +221,10 @@
             <li>Hình chụp sân thượng</li>
             <li>Hình từ ban công, cửa xuống các hướng đường</li>
         </ul>
-        <div>
-            <input type="file" id="FileUpload" />
+        <div>            
+            <input type="file" id="FileUpload" />                        
         </div>
+        
     </div><!---rightTable---->
     <div class="floatLeft">
         <div id="pictures">
@@ -244,8 +242,9 @@
         <div class="clearBoth"></div>
     </div>
     <div class="clearBoth">
-        <i class="note">(*)Hình ảnh đầy đủ giúp quảng cáo ngôi nhà của bạn tốt hơn (Kích thước đề nghị 700x700 px hình vuông,dung lượng nhỏ hơn 2Mb)</i><br />
+        <i class="note">(*)Hình ảnh đầy đủ giúp quảng cáo ngôi nhà của bạn tốt hơn (Kích thước đề nghị 700x700 px hình vuông,dung lượng nhỏ hơn 2Mb).</i><br />
         <i>Hình đầu tiên sẽ là hình đại diện.</i>
+        <i>Ảnh sẽ được up lên server khi bạn nhấn "Gửi thông tin".</i>
     </div>
 </div><!---floatLeft----->
 <div class="floatLeft">
@@ -271,7 +270,7 @@
     <div class="blueText" title="Tiêu đề tin đăng: hãy ghi rõ ràng đầy đủ để tin của bạn được tìm kiếm dễ dàng hơn.">TIÊU ĐỀ @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
         @Html.TextBoxFor(x => x.Name, new { @class = "formBoxInText", style = "width:99%", placeholder = "Tiêu đề" })
-        <label style="color:#888;font-style:italic;">(Tiêu đề ít nhất 10 ký tự và nhiều nhất 150 ký tự. Ví dụ: Bán nhà sổ hồng quận Bình Tân, 3 tấm, giá 1.5 tỷ, 80m2, bao sang tên)</label>
+        <label class="note">(Tiêu đề ít nhất 10 ký tự và nhiều nhất 150 ký tự. Ví dụ: Bán nhà sổ hồng quận Bình Tân, 3 tấm, giá 1.5 tỷ, 80m2, bao sang tên)</label>
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
@@ -283,13 +282,13 @@
 <div class="floatLeft">
     <div class="blueText">Đặc điểm nổi bật</div>
     <div class="boxWrapperSmall">
-        @Html.TextAreaFor(x => x.DacDiemNoiBat, new { @class = "formBoxInText", placeholder = "(Hãy nêu ít nhất 4 đặt điểm nổi bật để tạo điểm nhấn cho bất động sản của bạn.)", TextMode = "MultiLine" })
+        @Html.TextAreaFor(x => x.DacDiemNoiBat, new { @class = "formBoxInText", placeholder = "(Đặt điểm nổi bật sẽ tạo điểm nhấn cho bất động sản của bạn)", TextMode = "MultiLine" })
     </div>
 </div>
 <div class="floatLeft">
     <div class="blueText">Khyến mãi</div>
     <div class="boxWrapperSmall">
-        @Html.TextAreaFor(x => x.Promotion, new { @class = "formBoxInText", placeholder = "(Khuyến mãi khi mua bất động sản.)" })
+        @Html.TextAreaFor(x => x.Promotion, new { @class = "formBoxInText", placeholder = "(Khuyến mãi khi mua bất động sản)" })
     </div>
 </div>
 <div class="floatLeft">
@@ -324,21 +323,36 @@
             if($("#PhapLy input:checked").length==0)
             {
                 alert('Vui lòng chọn thông tin pháp lý!');
+                $('html,body').animate({
+                    scrollTop: $("#PhapLy").offset().top - 100
+                });
             }
             else if($("#CoSoVatChat input:checked").length==0)
             {
                 alert("Vui lòng chọn ít nhất một thuộc tính cơ sở vật chất");
+                $('html,body').animate({
+                    scrollTop: $("#CoSoVatChat").offset().top - 100
+                });
             }
             else if($('#MoiTruong input:checked').length==0)
             {
                 alert("Vui lòng chọn ít nhất một thuộc tính môi trường xung quanh");
+                $('html,body').animate({
+                    scrollTop: $("#MoiTruong").offset().top - 100
+                });
             }
             else if($("#ThichHop input:checked").length==0)
             {
                 alert("Vui lòng chọn loại thích hợp của căn nhà");
+                $('html,body').animate({
+                    scrollTop: $("#ThichHop").offset().top - 100
+                });
             }
             else if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
-                    alert('Vui lòng chọn hình ảnh đăng');
+                alert('Vui lòng chọn hình ảnh đăng');
+                $('html,body').animate({
+                    scrollTop: $("#anhdang").offset().top - 100
+                });
             }else if (Checkfiles($("#FileUpload"))){
                     alert("File không hợp lệ");
             }else {
@@ -357,8 +371,8 @@
             var selectedId = $(this).val();
             var ddlWard = $("#@Html.FieldIdFor(x => x.WardId)");
             var ddlStreet = $("#@Html.FieldIdFor(x => x.StreetId)");
-            ddlWard.html("<option value=>Chọn phường</option>");
-            ddlStreet.html("<option value=>Chọn đường</option>");
+            ddlWard.html("<option value='0'>Chọn phường</option>");
+            ddlStreet.html("<option value='0'>Chọn đường</option>");
             $.get("@Url.Action("GetWardByDistrictId", "Common")", { id: selectedId }, function (d) {
                 $.each(d.Ward, function (i, o) {
                     var option= $("<option/>").val(o.Id).text(o.Name);

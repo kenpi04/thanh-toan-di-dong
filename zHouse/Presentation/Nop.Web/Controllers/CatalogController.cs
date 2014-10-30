@@ -2022,9 +2022,11 @@ namespace Nop.Web.Controllers
             //It allows him to preview a product before publishing
             if (!product.Published && !_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
                 return InvokeHttp404();
+            //Phai 1 trong 2 trang thai: duyet || cho Duyet
             if (!(product.ProductStatus == ProductStatusEnum.Approved || product.ProductStatus == ProductStatusEnum.PendingAproved))
                 return InvokeHttp404();
-            if (product.ProductStatus == ProductStatusEnum.PendingAproved && product.CustomerId != _workContext.CurrentCustomer.Id)
+            //Neu cho Duyet : neu ko phai Ower hoac Admin
+            if (product.ProductStatus == ProductStatusEnum.PendingAproved && !(product.CustomerId == _workContext.CurrentCustomer.Id || _workContext.CurrentCustomer.IsAdmin()))
                 return InvokeHttp404();
             //ACL (access control list)
             //if (!_aclService.Authorize(product))
