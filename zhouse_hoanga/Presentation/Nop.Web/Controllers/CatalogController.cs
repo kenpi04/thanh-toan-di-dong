@@ -4671,7 +4671,7 @@ namespace Nop.Web.Controllers
             {
                 model.NumberFloors = await GetListOptionNameAsync(null, ProductAttributeEnum.NumberOfFloor);
             }
-            if (categoryId == 1)//ban nha
+            if (categoryId == 1 || categoryId == 0)//ban nha
             {
                 model.Directors = await GetListOptionNameAsync(null, ProductAttributeEnum.Director);
                 model.BathRooms = await GetListOptionNameAsync(null, ProductAttributeEnum.NumberOfBadRoom);

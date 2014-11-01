@@ -58,7 +58,9 @@
             @RenderCategoryLine(category, 0)
         }
     }
-
+    <li><a href="@Url.RouteUrl("Topic", new { SystemName="dat-tho-cu" })">ĐẤT THỔ CƯ</a></li>
+    <li><a href="@Url.RouteUrl("Topic", new { SystemName="vat-lieu-xay-dung" })">VLXD</a></li>
+    <li><a href="@Url.RouteUrl("Topic", new { SystemName="bao-gia" })">BÁO GIÁ</a></li>
     <li><a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategoriesNews.FirstOrDefault().Value })">Tin tức</a>
           <div class="top-menu-triangle"></div>
         <div class="sublist kienthuc" style="width: 200px; margin-left: -18px;">
@@ -69,7 +71,7 @@
                 }
             </ul>
         </div>
-    </li>   
+    </li>           
     <li>
         <div class="hotlineMenu">
             <p class="hotlineName">HOTLINE</p>

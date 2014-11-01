@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Nop.Core.Domain.Customers;
+@{
     Layout = "~/Views/Shared/_Root.Head.cshtml";
     bool isHome = Url.RequestContext.RouteData.Values["controller"].ToString().Equals("home", StringComparison.InvariantCultureIgnoreCase);
 }
@@ -20,6 +21,12 @@
                 <div class="logo"><a href="@Url.RouteUrl("HomePage")"><img src="@Url.Content("~/Themes/Zhouse/Content/images/logo.png")" class="noborder" alt="Logo Zhouse.com.vn"></a></div>
                 @Html.Action("TopMenu", "Catalog")
             </div>
+            @if (WorkContext.CurrentCustomer.IsAdmin())
+            {
+                <div class="link-admin">
+            <a href="@Url.Action("Products","Customer")">Quản trị</a>
+                | <a href="@Url.RouteUrl("Logout")">Thoát</a></div>               
+            }
         </div>
         @Html.Action("SearchBoxHead", "Catalog", new { isHome = isHome, categoryId=1 })
         @Html.Widget("content_before")
