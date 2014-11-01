@@ -40,7 +40,7 @@
         </div>
         <div class="clearfix"></div>
         <div class="pager">
-            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+            @Html.Pager(Model.PagingFilteringContext).Link(x => string.Format("{0}?page={1}", Request.Url.AbsolutePath, x))
         </div>
         @Html.Widget("categorydetails_bottom")
     </div>
