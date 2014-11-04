@@ -1,20 +1,23 @@
-﻿@Html.DropDownList("categoryId1", new List<SelectListItem> {
-    new SelectListItem { Text = "Loại nhà phố", Value = "0" },
-    new SelectListItem { Text = "Nhà 3 tấm", Value = "3" },
-     new SelectListItem { Text = "Nhà 1 trệt 1 lầu", Value = "4" },
-})
-
+﻿<select id="categoryId1" name="categoryId1">
+    <option value="0">Loại nhà phố</option>
+    <option value="3">Nhà 3 tấm</option>
+    <option value="4">Nhà 1 trệt 1 lầu</option>
+</select>
 <input type="text" name="productId" id="productId" placeholder="Mã tin" />
 <input type="submit" name="searchProduct" id="searchProduct" class="blueBtn" value="tìm kiếm">
+<label>(*Chú ý: Nếu "Mã tin" có dữ liệu sẽ ưu tiên tìm mã tin)</label>
+<input type="hidden" id="PageNumber" value="0" />
 <div class="clearBoth"></div>
 <script type="text/javascript">
             $(function () {
                 $("#searchProduct").click(function () {
                     var data = {
                         categoryId: $("#categoryId1").val(),
-                        productId: $('#productId').val()
+                        productId: $('#productId').val(),
+                        PageNumber: $('#PageNumber').val()
                     };
 
+                    $("#product-list-cus").html("<div class=loading-img></div>");
                     $.get("@Url.Action("Orders","Customer")", data, function (d) {
                         $("#product-list-cus").replaceWith(d);
                     })

@@ -1,8 +1,9 @@
-﻿@model IList<Nop.Web.Models.Customer.CustomerOrderListModel.ProductProfileModel>
+﻿@model Nop.Web.Models.Customer.CustomerOrderListModel
+@using Nop.Web.Extensions;
 <div class="order-list" id="product-list-cus">
-    @if (Model.Count > 0)
+    @if (Model.Products.Count > 0)
     {
-        foreach (var product in Model)
+        foreach (var product in Model.Products)
         {
             <div class="section order-item" id="item-@product.Id">                
                 <div class="product-hinh"><img src="@product.DefaultPictureModel.ImageUrl" alt="@product.DefaultPictureModel.AlternateText" title="Hình của @product.DefaultPictureModel.Title" /></div>
@@ -57,6 +58,10 @@
                  }
              }
          </script>
+    <div class="page-label">@string.Format("{0} / {1} trang  ({2} tin đăng)", Model.PagingFilteringContext.PageNumber, Model.PagingFilteringContext.TotalPages, Model.PagingFilteringContext.TotalItems)</div>
+    <div id="pager-li" class="pager">
+        @Html.Pager(Model.PagingFilteringContext).QueryParam("PageNumber")
+    </div>
     }
     else
     {
