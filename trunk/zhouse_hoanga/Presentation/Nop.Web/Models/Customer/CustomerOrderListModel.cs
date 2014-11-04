@@ -12,6 +12,7 @@ namespace Nop.Web.Models.Customer
             RecurringOrders = new List<RecurringOrderModel>();
             CancelRecurringPaymentErrors = new List<string>();
             Products = new List<ProductProfileModel>();
+            PagingFilteringContext = new PagingFilteringModel();
         }
 
         public IList<OrderDetailsModel> Orders { get; set; }
@@ -21,6 +22,7 @@ namespace Nop.Web.Models.Customer
         public CustomerNavigationModel NavigationModel { get; set; }
 
         public IList<ProductProfileModel> Products { get; set; }
+        public PagingFilteringModel PagingFilteringContext { get; set; }
 
         #region Nested classes
         public partial class OrderDetailsModel : BaseNopEntityModel
@@ -66,5 +68,9 @@ namespace Nop.Web.Models.Customer
         }
 
         #endregion
+    }
+    public class PagingFilteringModel : Nop.Web.Framework.UI.Paging.BasePageableModel
+    {
+
     }
 }
