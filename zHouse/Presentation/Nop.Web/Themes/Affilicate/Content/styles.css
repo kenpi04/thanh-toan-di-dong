@@ -1245,8 +1245,8 @@ textarea.formBoxInText{height:70px}
 .icon-list {position:fixed;right:0;top:50%;   z-index: 1000;}
 .icon-list a {display:block;width:50px;height:50px;margin-bottom:5px }
 .icon-list a.icon-contact {background:url(images/contacticon.jpg) no-repeat; }
-.icon-list a.icon-request {background:url(images/requesticon.png) no-repeat; }
-.icon-list a.icon-feedback {background:url(images/feedbackicon.png) no-repeat; cursor:pointer; }
+.icon-list a.icon-request {background:url(images/createnewicon.png) no-repeat; }
+.icon-list a.icon-feedback {background:url(images/erroricon.png) no-repeat; cursor:pointer; }
 /*.info-picture-news img {max-height }*/
 /*---intro-------------------*/
 .wrapperLarge { width: 1200px; margin: 0 auto; position: relative; }
@@ -1260,7 +1260,7 @@ textarea.formBoxInText{height:70px}
 .mapBtn { float: right; margin-top: 30px; }
 .title30 { font-size: 30px; font-weight: lighter; }
 .title40 { font-size: 40px; font-weight: lighter; }
-.blackBgTop { background: #000; opacity: 0.7; width: 45%; padding: 30px 50px 35px 120px; color: #fff; position: absolute; left: 0; top: 121px; text-align: justify; }
+.blackBgTop { background: #000; opacity: 0.7; width: 45%; padding: 30px 50px 35px 120px; color: #fff; position: absolute; left: 0; top: 86px; text-align: justify; }
 .downBtndiv { margin-top: -25px; }
 .downBtn { background: url(images/downBtn.png) no-repeat; width: 21px; height: 14px; border: none; cursor: pointer; }
 .downBtn:hover { background: url(images/downBtnhover.png); }
@@ -1279,7 +1279,7 @@ textarea.formBoxInText{height:70px}
 .imgBorder { border: 1px solid #d3d3d3; }
 .footerSocialLink { float: left; margin-top: 10px; }
 .footerSocialLinkCol { float: left; margin-right: 8px; }
-.input-validation-error {border:solid 1px #d41212 }
+.input-validation-error {border:solid 1px #d41212 !important}
 .btn-bottom { margin: 26px auto; clear: both; width: 462px; }
 .btn-bottom input { border: none; display: block; margin-left: 5px; float: left;cursor:pointer }
 .btn-bottom .btn-rq { background: url(images/request-button.gif) no-repeat; width: 219px; height: 50px; }
@@ -1365,6 +1365,8 @@ textarea.formBoxInText{height:70px}
 .search-left .topInfo .pinkBg{padding:15px;}
 .search-left #Q{width:39%;}
 .introCol .product-title{margin-bottom:5px;height:34px;overflow:hidden;}
+.introCol .product-title h2{line-height:15px;}
+.introCol .product-title h2 a{font-size:12px;text-decoration:none;font-family: Roboto, Helvetica, Arial, sans-serif; font-weight:700;}
 .top-header{background:#272727;width:100%;height:29px;}
 .top-header .wrapper a{color:#fff;font-size:12px;text-transform:uppercase;line-height:29px;cursor:pointer;text-decoration:none;padding:7px 15px 5px 15px}
 .top-header .wrapper .isactive{color:#000;background:#fff;}
@@ -1398,3 +1400,4 @@ li.active a, li.active a:hover {background: #fff;color: #4c4c4c;border: 1px soli
 tr.table-dateTime{line-height:23px;}
 .table-dateTime td{padding-right:10px;}
 #FullDescription_tbl{width:100% !important}
+.vertical-div{display:table-cell;vertical-align:middle;height:105px;width:106px; text-align:center;}

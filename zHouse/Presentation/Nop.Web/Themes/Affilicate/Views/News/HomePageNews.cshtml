@@ -10,11 +10,10 @@
                     <div class="news-pic">
                         <a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">
                             <img fullpic="@item.DefaultPictureModel.FullSizeImageUrl" src="@item.DefaultPictureModel.ImageUrl" alt="@item.DefaultPictureModel.AlternateText" title="@item.DefaultPictureModel.Title" /></a>
-                            @*<span class="news-date">@Html.Raw(item.CreatedOn.ToString("dd/mm</br>yyyy"))</span>*@
                     </div>                 
                     <div class="news-text">
                     <div class="news-head">
-                        <a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">
+                        <a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@item.Title">
                             @item.Title</a> 
                     </div>
                     <div class="news-details">
@@ -33,8 +32,7 @@
             $('#news-list .item:first').hide(1000, function () {
                 $(this).appendTo("#news-list")
                 $(this).show(1000);
-            });
-          
+            });          
             setTimeout(get_request, 5000);
         }
         get_request();

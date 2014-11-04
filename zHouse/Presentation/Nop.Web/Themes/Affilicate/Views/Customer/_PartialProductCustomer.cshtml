@@ -30,7 +30,7 @@
                             <div class="item-cell">Ngày đăng</div><div class="item-cell">: @(product.AvailableStartDateTimeUtc.HasValue ? product.AvailableStartDateTimeUtc.Value.ToString("dd/MM/yyyy") : "")</div>
                         </div>
                         <div class="item-row">
-                            <div class="item-cell">Hết hạn </div><div class="item-cell">: @(product.AvailableEndDateTimeUtc.HasValue ? product.AvailableEndDateTimeUtc.Value.ToString("dd/MM/yyyy") : "")</div>
+                            <div class="item-cell">Ngày hết hạn </div><div class="item-cell">: @(product.AvailableEndDateTimeUtc.HasValue ? product.AvailableEndDateTimeUtc.Value.ToString("dd/MM/yyyy") : "")</div>
                         </div>
                     </div>
                     <div class="product-col1"><a onclick="updateNew(@product.Id,3,0)" title="Làm mới tin"><img src="~/Themes/Affilicate/Content/images/icon-refresh.png" /></a></div>
@@ -93,7 +93,7 @@
                         }
                         if (action == 4)
                         {
-                            $("#product-list-cus").load("@Url.Action("Orders", "Customer")");                            
+                            $("#searchProduct").click();
                         }
                     })
                 }
@@ -101,7 +101,7 @@
         </script>
     <div class="page-label">@string.Format("{0} / {1} trang  ({2} tin đăng)", Model.PagingFilteringContext.PageNumber, Model.PagingFilteringContext.TotalPages, Model.PagingFilteringContext.TotalItems)</div>
         <div id="pager-li" class="pager">
-            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")            
+            @Html.Pager(Model.PagingFilteringContext).QueryParam("PageNumber")            
         </div>
     }
     else

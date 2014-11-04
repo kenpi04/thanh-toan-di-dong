@@ -821,7 +821,7 @@ namespace Nop.Web.Controllers
 
                 bool isApproved = _customerSettings.UserRegistrationType == UserRegistrationType.Standard;
                 var registrationRequest = new CustomerRegistrationRequest(customer, model.Email,
-                    _customerSettings.UsernamesEnabled ? model.Username : model.Email, model.Password, _customerSettings.DefaultPasswordFormat, isApproved);
+                    _customerSettings.UsernamesEnabled ? model.Username : model.Email, model.Password, _customerSettings.DefaultPasswordFormat, isApproved, _customerSettings.PhoneEnabled? model.Phone : "");
                 var registrationResult = await _customerRegistrationService.RegisterCustomerAsync(registrationRequest);
                 if (registrationResult.Success)
                 {

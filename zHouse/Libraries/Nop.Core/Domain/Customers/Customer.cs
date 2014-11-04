@@ -120,6 +120,11 @@ namespace Nop.Core.Domain.Customers
         /// Gets or sets the date and time of last activity
         /// </summary>
         public DateTime LastActivityDateUtc { get; set; }
+
+        /// <summary>
+        /// Get or set Phone Number
+        /// </summary>
+        public string PhoneNumber { get; set; }
         
         #region Navigation properties
 

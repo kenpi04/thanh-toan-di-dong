@@ -9,7 +9,7 @@
 }
 @Html.AntiForgeryToken()
 @Html.HiddenFor(x => x.Id)
-<div class="request-title blueTitle">QUẢNG CÁO NGÔI BẤT ĐỘNG SẢN CỦA BẠN <span class="free-text">Hoàn toàn miễn phí</span></div>
+<div class="request-title blueTitle">QUẢNG CÁO BẤT ĐỘNG SẢN CỦA BẠN <span class="free-text">Hoàn toàn miễn phí</span></div>
 <p>
     Quảng cáo về bất động sản của bạn càng chi tiết, người mua sẽ càng dễ tìm kiếm thấy bạn hơn.<br />
     Nếu bạn gặp vấn đề gì trong quá trình gởi thông tin hãy liên hệ với chúng tôi qua Hotline: <b>0939448124.</b><br />
@@ -31,15 +31,12 @@
 </div><!---floatLeft---->
 <div class="floatLeft">
     <div class="boxWrapper form-request-contact">
-        <div class="blueText">ĐỊA CHỈ BẤT ĐỘNG SẢN</div>
-        @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
+        <div class="blueText">ĐỊA CHỈ BẤT ĐỘNG SẢN</div>        
         @Html.RequiredHint()
-        @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect", id = "ddlQuan"})
-        
-        @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường", new { @class = "formBoxInSelect"})
-        
+        @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect", id = "ddlQuan"})        
+        @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường", new { @class = "formBoxInSelect"})        
         @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect"})
-        
+        @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
         @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:82.3%", placeholder = "Địa chỉ đầy đủ" })
     </div>
     <div class="blueText">THÔNG TIN PHÁP LÝ @Html.RequiredHint() &nbsp;&nbsp;<label class="note2">(Vui lòng chọn ít nhất 1 thuộc tính)</label></div>
@@ -77,7 +74,7 @@
                     <td>
                         @Html.DropDownListFor(x => x.CateId, Model.Categories, new { @class = "formBoxInSelectTable" })                        
                     </td>
-                    <td class="request-label">@Html.LabelFor(x => x.AreaUse) @Html.RequiredHint() &nbsp;</td>
+                    <td class="request-label">@Html.LabelFor(x => x.AreaUse) &nbsp;&nbsp;</td>
                     <td>
                         @Html.TextBoxFor(x => x.AreaUse, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích sử dụng" })
                     </td>
@@ -270,7 +267,7 @@
 <div class="floatLeft">
     <div class="blueText">MÔ TẢ CHI TIẾT @Html.RequiredHint()</div>
     <div class="boxWrapperSmall">
-        @Html.EditorFor(x => x.FullDescription, "RichEditor")
+        @Html.EditorFor(x => x.FullDescription, "RichEditor", new { style = "width:100%" })
     </div>
 </div><!---floatLeft---->
 <div class="floatLeft">
