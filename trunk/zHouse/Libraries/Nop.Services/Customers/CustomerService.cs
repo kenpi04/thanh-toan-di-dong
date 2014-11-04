@@ -810,7 +810,29 @@ namespace Nop.Services.Customers
                 }
             });
         }
-        
+
+        public virtual async Task<Customer> GetCustomerByPhoneNumberAsync(string phoneNumber)
+        {
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+                return null;
+            return await Task.Factory.StartNew<Customer>(() =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    var query = from c in _customerRepository.Table
+                                orderby c.Id
+                                where c.PhoneNumber == phoneNumber
+                                select c;
+                    var customer = query.FirstOrDefault();
+                    return customer;
+                }
+            });
+        }
+
         /// <summary>
         /// Insert a guest customer
         /// </summary>

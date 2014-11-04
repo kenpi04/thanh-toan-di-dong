@@ -26,6 +26,33 @@
                 $("#searchProduct").click();
                 return false;
             })
+
+            $(document).on("click", "#pager-li li.first-page a", function () {
+                $("#PageNumber").val(1);
+                $("#searchProduct").click();
+                return false;
+            })
+            $(document).on("click", "#pager-li li.previous-page a", function () {
+                var para = get_url_parmeters($(this).attr("href"), 'PageNumber');
+                var page = parseInt(para);
+                $("#PageNumber").val(page);
+                $("#searchProduct").click();
+                return false;
+            })
+            $(document).on("click", "#pager-li li.next-page a", function () {
+                var para = get_url_parmeters($(this).attr("href"), 'PageNumber');
+                var page = parseInt(para);
+                $("#PageNumber").val(page);
+                $("#searchProduct").click();
+                return false;
+            })
+            $(document).on("click", "#pager-li li.last-page a", function () {
+                var para = get_url_parmeters($(this).attr("href"), 'PageNumber');
+                var page = parseInt(para);
+                $("#PageNumber").val(page);
+                $("#searchProduct").click();
+                return false;
+            })
         </script>
     </div>
 </div>

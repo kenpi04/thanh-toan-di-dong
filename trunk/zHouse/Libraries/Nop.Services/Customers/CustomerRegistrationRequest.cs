@@ -10,11 +10,12 @@ namespace Nop.Services.Customers
         public string Password { get; set; }
         public PasswordFormat PasswordFormat { get; set; }
         public bool IsApproved { get; set; }
+        public string PhoneNumber { get; set; }
 
         public CustomerRegistrationRequest(Customer customer, string email, string username,
             string password, 
             PasswordFormat passwordFormat,
-            bool isApproved = true)
+            bool isApproved = true, string phoneNumber="")
         {
             this.Customer = customer;
             this.Email = email;
@@ -22,6 +23,7 @@ namespace Nop.Services.Customers
             this.Password = password;
             this.PasswordFormat = passwordFormat;
             this.IsApproved = isApproved;
+            this.PhoneNumber = phoneNumber;
         }
 
         //public bool IsValid  

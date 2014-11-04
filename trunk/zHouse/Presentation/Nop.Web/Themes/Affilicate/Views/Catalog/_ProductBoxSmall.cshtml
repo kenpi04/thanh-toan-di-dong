@@ -2,14 +2,14 @@
 <div class="introColRight-detail">
     <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
         @Model.Name
-    </a>
+    </a>    
     <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-        <div class="picture"><img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" /></div>
+        <div class="picture"><div class="vertical-div"><img alt="@(Model.DefaultPictureModel.AlternateText??Model.DefaultPictureModel.Title)" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" /></div></div>
     </a>
     <div class="whiteBgCata">
-        <span style="color:#c06"><i class="icon-price"></i>@Model.ProductPrice.Price</span>
-        <span><i class="icon-area"></i>@Model.Area.ToString("#") m2</span>
-        <span><i class="icon-director"></i>Hướng @Model.Directors</span>
-        <span><i class="icon-location"></i>@Model.DictrictName</span>
+        <span style="color:#c06"><i class="icon-price" title="Giá"></i>@Model.ProductPrice.Price</span>
+        <span><i class="icon-area" title="Diện tích"></i>@Model.Area.ToString("#") m2</span>
+        <span><i class="icon-director" title="Hướng"></i>Hướng @Model.Directors</span>
+        <span><i class="icon-location" title="Quận"></i>@Model.DictrictName</span>
     </div>
 </div>

@@ -14,7 +14,10 @@
       @foreach(var i in Model)
       {
     <li style="text-align:-webkit-center">
-        <img style="width:auto" alt="@i.AlternateText" title="@i.Title" src="@i.FullSizeImageUrl" />
+        <div style="width:100%;height:600px;text-align:center;display: table-cell;vertical-align: middle;">
+            <img style="width:auto" alt="@i.AlternateText" title="@i.Title" src="@i.FullSizeImageUrl" />
+        </div>
+  
     </li>
       }
    
@@ -25,7 +28,7 @@
        @foreach(var i in Model)
       {
         <li>
-          <img style="width:auto" src="@i.ImageUrl" alt="@i.AlternateText" title="@i.Title"/>
+          <img style="width:80px;height:80px;" src="@i.ImageUrl" alt="@i.AlternateText" title="@i.Title"/>
         </li>
        }
     
@@ -39,8 +42,8 @@
                 controlNav: false,
                 animationLoop: false,
                 slideshow: false,
-                itemWidth: 80,
-                itemMargin: 5,
+           
+                itemMargin: 0,
                 asNavFor: '#slider-detail'
             });
             $('#slider-detail').flexslider({

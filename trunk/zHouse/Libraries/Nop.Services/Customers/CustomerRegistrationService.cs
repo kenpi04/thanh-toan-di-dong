@@ -312,6 +312,14 @@ namespace Nop.Services.Customers
                     return result;
                 }
             }
+            if(_customerSettings.PhoneEnabled)
+            {
+                if(String.IsNullOrEmpty(request.PhoneNumber))
+                {
+                    result.AddError(await _localizationService.GetResourceAsync("Account.Register.Errors.PhoneNumberIsNotProvided"));
+                    return result;
+                }
+            }
 
             //validate unique user
             var requestEmail = await _customerService.GetCustomerByEmailAsync(request.Email);
@@ -330,10 +338,21 @@ namespace Nop.Services.Customers
                 }
             }
 
+            if (_customerSettings.PhoneEnabled)
+            {
+                var requestUserName = await _customerService.GetCustomerByPhoneNumberAsync(request.PhoneNumber);
+                if (requestUserName != null)
+                {
+                    result.AddError(await _localizationService.GetResourceAsync("Account.Register.Errors.PhoneNumberAlreadyExists"));
+                    return result;
+                }
+            }
+
             //at this point request is valid
             request.Customer.Username = request.Username;
             request.Customer.Email = request.Email;
             request.Customer.PasswordFormat = request.PasswordFormat;
+            request.Customer.PhoneNumber = request.PhoneNumber;
 
             switch (request.PasswordFormat)
             {

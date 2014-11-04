@@ -32,15 +32,12 @@
     </div>
     <div class="leftContentTwist" style="width:70%">
             <div id="list-product">
-                <div class="product-selectors">
-                    @*view mode*@
-                    a
+                <div class="product-selectors">                
                     @if (Model.Products.Count > 0)
                     {
                         <div class="product-viewmode">
-                            <div class="pager">
-                                
-                                @Html.Pager(Model.PagingFilteringContext).Link(x => string.Format("{0}?page={1}", Request.Url.AbsolutePath, x))
+                            <div class="pager">                                
+                                @Html.Pager(Model.PagingFilteringContext).Link(x => string.Format("{0}?pagenumber={1}", Request.Url.AbsolutePath, x))
                             </div>
                         </div>
                     }                    
@@ -52,13 +49,12 @@
             </div>
             <div class="clearfix"></div>
             <div class="pager">
-                @Html.Pager(Model.PagingFilteringContext).Link(x => string.Format("{0}?page={1}", Request.Url.AbsolutePath, x))
+                @Html.Pager(Model.PagingFilteringContext).Link(x => string.Format("{0}?pagenumber={1}", Request.Url.AbsolutePath, x))
             </div>
             @*@Html.Widget("categorydetails_bottom")*@
     </div>
     <div class="rightContentTwist" style="width:30%">
         @Html.Action("SearchBoxHead", "Catalog", new { isHome = true, isMarketPlace = true, categoryId = 1, categoryRentId = 16 })
-
         <br />
         @Html.FptBanner(208)
     </div>

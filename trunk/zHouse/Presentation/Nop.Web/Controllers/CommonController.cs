@@ -460,6 +460,7 @@ namespace Nop.Web.Controllers
             {
                 Email = _workContext.CurrentCustomer.Email,
                 FullName = _workContext.CurrentCustomer.GetFullName(),
+                Phone = _workContext.CurrentCustomer.PhoneNumber,
                 DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnContactUsPage
             };
             return View(model);

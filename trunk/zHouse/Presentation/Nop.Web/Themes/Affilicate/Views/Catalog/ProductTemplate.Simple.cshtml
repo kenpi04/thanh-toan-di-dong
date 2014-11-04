@@ -28,7 +28,7 @@
                         <meta itemprop="currency" content="VND" />
                         <span> @Model.ProductPrice.Price</span>
                     </div>
-                    Tình trạng: <a class="blueText"> <b>@Model.ProductStatusText</b></a>
+                    Tình trạng: <b class="blueText">@Model.ProductStatusText</b>
                 </text>
             }
             <div class="share" id="share-div">
@@ -79,6 +79,7 @@
         </div><!----detailTable---->
         <div class="floatLeft">
             <center>
+                <input type="button" class="blueBtn" value="Lưu tin">
                 <input type="button" onclick="setLocation('@Url.RouteUrl("AddProductToCompare", new { productId = Model.Id })')" class="blueBtn" value="so sánh">
                 <input type="button" class="blueBtn" onclick="sendMailFriend()" value="gửi email">
                 <input type="button" class="blueBtn" value="in ra" onclick="setLocation('@Url.Action("Product",new{productId=Model.Id,isprint=true})')" />
@@ -153,25 +154,28 @@
                 })
             }
         </script>
-        @*<div class="floatLeft">
-                @Html.Action("ProductReviews", "Catalog", new { productId = Model.Id })
-            </div>*@
+        <div class="floatLeft">
+            <div class="col1"><div class="pinkNarrowTitleSmall">Bình luận</div></div>
+            <div class="col2">
+                <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-numposts="5" data-colorscheme="light"></div>
+            </div>
+            </div>
     </div><!-----leftContent-------------->
     <div class="rightContent">
         <div class="pinkBgRight">
             <b>BẠN CẦN THÊM THÔNG TIN?</b>
             <div class="twoColRight">
                 <div class="contact item-row">
-                    <div class="contact item-cell"><img src="../Themes/Affilicate/Content/images/icon_people_white_15.png"></div>
-                    <div class="contact item-cell"><span>@Model.ContactName</span></div>
+                    <div class="contact item-cell"><img src="../Themes/Affilicate/Content/images/icon_people_white_15.png" title="Tên liên hệ" alt="Tên liên hệ"></div>
+                    <div class="contact item-cell" title="@Model.ContactName"><span>@Model.ContactName</span></div>
                 </div>
                 <div class="contact item-row">
-                    <div class="contact item-cell"><img src="../Themes/Affilicate/Content/images/icon_phone_white_15.png"></div>
-                    <div class="contact item-cell"><span>@Model.ContactPhone</span></div>
+                    <div class="contact item-cell"><img src="../Themes/Affilicate/Content/images/icon_phone_white_15.png" title="Điện thoại" alt="Điện thoại"></div>
+                    <div class="contact item-cell" title="@Model.ContactPhone"><span>@Model.ContactPhone</span></div>
                 </div>
                 <div class="contact item-row">
-                    <div class="contact item-cell"><img src="../Themes/Affilicate/Content/images/icon_email_white_15.png"></div>
-                    <div class="contact item-cell"><span>@Model.ContactEmail</span></div>
+                    <div class="contact item-cell"><img src="../Themes/Affilicate/Content/images/icon_email_white_15.png" title="Email liên hệ" alt="Email"></div>
+                    <div class="contact item-cell" title="@Model.ContactEmail"><span>@Model.ContactEmail</span></div>
                 </div>
             </div><!---twoColRight---->
         </div><!--pinkBgRight----->

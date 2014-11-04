@@ -1063,22 +1063,11 @@ namespace Nop.Web.Controllers
             if (!category.Published && !_permissionService.Authorize(StandardPermissionProvider.ManageCategories))
                 return InvokeHttp404();
 
-            //ACL (access control list)
-            //if (!_aclService.Authorize(category))
-            //    return InvokeHttp404();
-
             //Store mapping
             if (!_storeMappingService.Authorize(category))
                 return InvokeHttp404();
 
-            //'Continue shopping' URL
-            //_genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
-            //    SystemCustomerAttributeNames.LastContinueShoppingPage,
-            //    _webHelper.GetThisPageUrl(false),
-            //    _storeContext.CurrentStore.Id);
-
             if (command.PageNumber <= 0) command.PageNumber = 1;
-
             var model = category.ToModel();
 
             //sorting
@@ -1194,25 +1183,8 @@ namespace Nop.Web.Controllers
 
             if (command.PageSize <= 0) command.PageSize = category.PageSize;
 
-
-            //price ranges
-            //model.PagingFilteringContext.PriceRangeFilter.LoadPriceRangeFilters(category.PriceRanges, _webHelper, _priceFormatter);
-            //var selectedPriceRange = model.PagingFilteringContext.PriceRangeFilter.GetSelectedPriceRange(_webHelper, category.PriceRanges);
             decimal? minPriceConverted = 0;
             decimal? maxPriceConverted = 0;
-            //if (selectedPriceRange != null)
-            //{
-            //    if (selectedPriceRange.From.HasValue)
-            //        minPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(selectedPriceRange.From.Value, _workContext.WorkingCurrency);
-
-            //    if (selectedPriceRange.To.HasValue)
-            //        maxPriceConverted = _currencyService.ConvertToPrimaryStoreCurrency(selectedPriceRange.To.Value, _workContext.WorkingCurrency);
-            //}
-
-
-
-
-
             //category breadcrumb
             model.DisplayCategoryBreadcrumb = _catalogSettings.CategoryBreadcrumbEnabled;
             if (model.DisplayCategoryBreadcrumb)
@@ -1370,9 +1342,6 @@ namespace Nop.Web.Controllers
                 return template.ViewPath;
             });
 
-            //activity log
-            //_customerActivityService.InsertActivity("PublicStore.ViewCategory", _localizationService.GetResource("ActivityLog.PublicStore.ViewCategory"), category.Name);
-
             //Title add District
             if (districtId > 0)
             {
@@ -1421,7 +1390,7 @@ namespace Nop.Web.Controllers
         [ChildActionOnly]
         public ActionResult TopMenu(int stateId = 611)
         {
-            string cacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_MENU_MODEL_KEY, _workContext.WorkingLanguage.Id, "", _storeContext.CurrentStore.Id);
+            string cacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_MENU_MODEL_KEY, _workContext.WorkingLanguage.Id, stateId, _storeContext.CurrentStore.Id);
             var cachedModel = _cacheManager.Get(cacheKey, 60, () =>
             {
                 var categoryModel = PrepareCategorySimpleModels(0, null, 0, _catalogSettings.TopCategoryMenuSubcategoryLevelsToDisplay, true).ToList();
@@ -3259,14 +3228,14 @@ namespace Nop.Web.Controllers
                 {
                     decimal minPrice = decimal.Zero;
                     if (decimal.TryParse(model.Pf, out minPrice))
-                        minPriceConverted = minPrice * 1000000;//_currencyService.ConvertToPrimaryStoreCurrency(minPrice, _workContext.WorkingCurrency);
+                        minPriceConverted = minPrice * 1000000;
                 }
                 //max price
                 if (!string.IsNullOrEmpty(model.Pt))
                 {
                     decimal maxPrice = decimal.Zero;
                     if (decimal.TryParse(model.Pt, out maxPrice))
-                        maxPriceConverted = maxPrice * 1000000;//_currencyService.ConvertToPrimaryStoreCurrency(maxPrice, _workContext.WorkingCurrency);
+                        maxPriceConverted = maxPrice * 1000000;
                 }
 
                 searchInDescriptions = model.Sid;
@@ -3306,10 +3275,6 @@ namespace Nop.Web.Controllers
                     }
                 }
             }
-
-            //var searchInProductTags = false;
-            var searchInProductTags = searchInDescriptions;
-
             //products
             products = _productService.SearchProducts(
                 categoryIds: categoryIds,
@@ -3323,53 +3288,19 @@ namespace Nop.Web.Controllers
                 keywords: model.Q,
                 searchDescriptions: searchInDescriptions,
                 searchSku: true,
-                searchProductTags: searchInProductTags,
+                searchProductTags: false,
                 languageId: _workContext.WorkingLanguage.Id,
                 pageIndex: command.PageNumber - 1,
                 pageSize: command.PageSize,
                 filteredSpecs: selectedOptionIds,
                 status:ProductStatusEnum.Approved,
                 stateProvinceId: stateProvinceId,
-                districtIds: new List<int> { 611 },
-                wardId: new List<int> { districtId },
+                districtIds: new List<int> { districtId },
+                wardId: new List<int> { wardId },
                 streetId: streetId);
             model.Products = PrepareProductOverviewModels(products).ToList();
 
             model.NoResults = !model.Products.Any();
-
-            //search term statistics
-            //if (!String.IsNullOrEmpty(model.Q))
-            //{
-            //    var searchTerm = _searchTermService.GetSearchTermByKeyword(model.Q, _storeContext.CurrentStore.Id);
-            //    if (searchTerm != null)
-            //    {
-            //        searchTerm.Count++;
-            //        _searchTermService.UpdateSearchTerm(searchTerm);
-            //    }
-            //    else
-            //    {
-            //        searchTerm = new SearchTerm()
-            //        {
-            //            Keyword = model.Q,
-            //            StoreId = _storeContext.CurrentStore.Id,
-            //            Count = 1
-            //        };
-            //        _searchTermService.InsertSearchTerm(searchTerm);
-            //    }
-            //}
-
-            ////event
-            //_eventPublisher.Publish(new ProductSearchEvent()
-            //{
-            //    SearchTerm = model.Q,
-            //    SearchInDescriptions = searchInDescriptions,
-            //    CategoryIds = categoryIds,
-            //    ManufacturerId = manufacturerId,
-            //    WorkingLanguageId = _workContext.WorkingLanguage.Id
-            //});
-
-
-
             model.PagingFilteringContext.LoadPagedList(products);
 
             string districtName, cateName;
@@ -3378,7 +3309,7 @@ namespace Nop.Web.Controllers
             {
                 try
                 {
-                    districtName = _stateProvinceService.GetDistHCM().Where(x => x.Id == model.DistrictId).FirstOrDefault().Name;
+                    districtName = _stateProvinceService.GetDistHCM(districtId).FirstOrDefault().Name;
                 }
                 catch { }
             }
@@ -3386,7 +3317,7 @@ namespace Nop.Web.Controllers
             {
                 try
                 {
-                    cateName = _categoryService.GetCategoryById(categoryId).Name;//model.AvailableCategories.FirstOrDefault(x => x.Value == model.Cid.ToString()).Text;
+                    cateName = _categoryService.GetCategoryById(categoryId).Name;
                 }
                 catch { }
             }
@@ -5060,15 +4991,15 @@ namespace Nop.Web.Controllers
         [HttpPost]
         public ActionResult ProductPictureDelete(int id)
         {
-            if (!_workContext.CurrentCustomer.IsAdmin())
-            {
-                return Json("Bạn không có quyền thực hiện thao tác!");
-            }
+            var customer = _workContext.CurrentCustomer;
             var productPicture = _productService.GetProductPictureById(id);
             var product = _productService.GetProductById(productPicture.ProductId);
             if (product == null)
-                return Json("Product is null");
-
+                return Json(new { error = 1, message = "Product is null" }, JsonRequestBehavior.AllowGet);
+            if(!(customer.IsAdmin() || product.CustomerId == customer.Id))
+            {
+                return Json(new { error = 1, message = "Bạn không có quyền" }, JsonRequestBehavior.AllowGet);
+            }
 
 
             //var productimage = _productService.GetProductPicturesByProductId(product.Id);
@@ -5081,14 +5012,14 @@ namespace Nop.Web.Controllers
             var productId = productPicture.ProductId;
 
             //a vendor should have access only to his products
-            if (_workContext.CurrentVendor != null)
-            {
-                //var product = _productService.GetProductById(productId);
-                if (product != null && product.VendorId != _workContext.CurrentVendor.Id)
-                {
-                    return Content("This is not your product");
-                }
-            }
+            //if (_workContext.CurrentVendor != null)
+            //{
+            //    //var product = _productService.GetProductById(productId);
+            //    if (product != null && product.VendorId != _workContext.CurrentVendor.Id)
+            //    {
+            //        return Content("This is not your product");
+            //    }
+            //}
             var pictureId = productPicture.PictureId;
             _productService.DeleteProductPicture(productPicture);
             var picture = _pictureService.GetPictureById(pictureId);

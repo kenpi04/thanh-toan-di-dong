@@ -150,6 +150,7 @@
     <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -2242,6 +2243,7 @@
     <Content Include="Themes\Affilicate\Views\Catalog\EditProductRent.cshtml" />
     <Content Include="Themes\Affilicate\Views\Catalog\_MapInsertProduct.cshtml" />
     <Content Include="Themes\Affilicate\Views\Catalog\HomepageProjectProducts.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Shared\_RootFullWidth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

@@ -129,6 +129,13 @@ namespace Nop.Services.Customers
         Task<Customer> GetCustomerByUsernameAsync(string username);
 
         /// <summary>
+        /// Get customer by phone number
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <returns></returns>
+        Task<Customer> GetCustomerByPhoneNumberAsync(string phoneNumber);
+
+        /// <summary>
         /// Insert a guest customer
         /// </summary>
         /// <returns>Customer</returns>

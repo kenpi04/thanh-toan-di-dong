@@ -52,7 +52,7 @@
                                 <td>
                                       @if (Model.ThichHop.Count > 0)
                                     {
-                                          @Model.ThichHop.Aggregate((a, b) => a + "," + b)
+                                          @Model.ThichHop.Aggregate((a, b) => a + ", " + b)
                                     }
                                     else
                                     { <text>-</text>}
@@ -66,7 +66,7 @@
                                 <td>
                                     @if (Model.Facilities.Count > 0)
                                     {
-                                        @Model.Facilities.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
+                                        @Model.Facilities.Select(x => x.Text).Aggregate((a, b) => a + ", " + b)
                                     }
                                     else
                                     { <text>-</text>}
@@ -79,7 +79,7 @@
                                     <td>
                                                  @if (Model.Environments.Count > 0)
                                      {
-                                        @Model.Environments.Select(x => x.Text).Aggregate((a, b) => a + "," + b)
+                                        @Model.Environments.Select(x => x.Text).Aggregate((a, b) => a + ", " + b)
                                      }
                                     else
                                     {

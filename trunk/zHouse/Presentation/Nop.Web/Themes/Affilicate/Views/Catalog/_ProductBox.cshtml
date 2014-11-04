@@ -1,27 +1,26 @@
 ﻿@model ProductOverviewModel
 @using Nop.Core.Domain.Orders
 @using Nop.Web.Models.Catalog;
-@{
-   
-}
 @if(!Model.IsProject)
 {
     <div class="introCol">
-        <div class="product-title"><h2 style="line-height:15px;"><a style="font-size:12px;text-decoration:none;font-family: Roboto, Helvetica, Arial, sans-serif; font-weight:700;" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">@Model.Name</a></h2></div>
+        <div class="product-title"><h2><a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">@Model.Name</a></h2></div>
         <div>
             <div class="info-picture">
-                @if (Request.IsAjaxRequest())
-                {
-                    <a style="display:block;text-align:center;vertical-align:middle;" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-                        <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
-                    </a>
-                }
-                else
-                {
-                    <a style="display:block;text-align:center;vertical-align:middle;" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-                        <img class="lazy" data-original="@Model.DefaultPictureModel.ImageUrl" alt="@Model.DefaultPictureModel.AlternateText" title="@Model.DefaultPictureModel.Title" />
-                    </a>
-                }
+                <div class="vertical-div">
+                    @if (Request.IsAjaxRequest())
+                    {
+                        <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+                            <img alt="@(Model.DefaultPictureModel.AlternateText??Model.DefaultPictureModel.Title)" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+                            <img class="lazy" data-original="@Model.DefaultPictureModel.ImageUrl" alt="@(Model.DefaultPictureModel.AlternateText??Model.DefaultPictureModel.Title)" title="@Model.DefaultPictureModel.Title" />
+                        </a>
+                    }
+                </div>
             </div>
             <div style="width:70%;float:left">
                 <div class="whiteBgCata">
@@ -46,17 +45,17 @@ else
             <div class="new tag-@Model.StatusId"></div>
             }
             @if (Request.IsAjaxRequest())
-            {<a style="display:block;text-align:center;vertical-align:middle;" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-                <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" /></a>
+            {<a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+                <img alt="@(Model.DefaultPictureModel.AlternateText??Model.DefaultPictureModel.Title)" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" /></a>
                 }
                 else
                 {
-                <a style="display:block;text-align:center;vertical-align:middle;" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
-                    <img class="lazy" data-original="@Model.DefaultPictureModel.ImageUrl" alt="@Model.DefaultPictureModel.AlternateText" width="254" height="254" title="@Model.DefaultPictureModel.Title" />
+                <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+                    <img class="lazy" data-original="@Model.DefaultPictureModel.ImageUrl" alt="@(Model.DefaultPictureModel.AlternateText??Model.DefaultPictureModel.Title)" width="254" height="254" title="@Model.DefaultPictureModel.Title" />
                 </a>
                 }
 </div>
-        <div class="product-title"><h2 style="line-height:15px;"><a style="font-size:12px;text-decoration:none;font-family: Roboto, Helvetica, Arial, sans-serif; font-weight:700;" href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">@Model.Name</a></h2></div>
+        <div class="product-title"><h2><a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">@Model.Name</a></h2></div>
         <div class="whiteBgCata">            
             <span><i class="icon-category"></i>@Model.CateName</span>
             <span><i class="icon-area"></i>@Model.Area.ToString("#.##") m2</span>
