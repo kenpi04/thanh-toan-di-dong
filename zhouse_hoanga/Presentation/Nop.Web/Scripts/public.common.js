@@ -1,8 +1,23 @@
 ﻿/*
 ** nopCommerce custom js functions
 */
+$(document).ready(function (e) {
+    $(".load-ajax").each(function (index, item) {
+        var url = $(item).data("url");
+        if (url && url.length > 0) {
+            $(item).html("<div class='please-wait'></div>").load(url);
+        }
+    })
+});
 
-
+function get_url_parmeters(url, name) {
+    name = name.replace(/[[]/, "\[").replace(/[]]/, "\]");
+    var regexS = "[\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(url);
+    if (results == null) return "";
+    else return results[1];
+}
 
 function OpenWindow(query, w, h, scroll) {
     var l = (screen.width - w) / 2;
