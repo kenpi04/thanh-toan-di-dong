@@ -453,7 +453,7 @@ a.eu-cookie-privacyinfo-tag{color:#b80709 !important;text-decoration:underline}
 .sub-category-grid .sub-category-item,.manufacturer-grid .manufacturer-item{text-align:center;margin:10px;width:145px;height:180px;border:1px solid #eee}
 .sub-category-grid .sub-category-item .title,.manufacturer-grid .manufacturer-item .title{text-align:center;font-weight:700;font-size:.9em;display:block;overflow:hidden;padding:5px}
 .sub-category-grid .sub-category-item .picture,.manufacturer-grid .manufacturer-item .picture{text-align:center;padding:10px 0}
-.product-selectors{margin-bottom:10px;zoom:1;background:#E4E4E4;padding:4px 10px;height: 28px;margin-left:14px;margin-right:4px;}
+.product-selectors{margin-bottom:10px;zoom:1;background:#E4E4E4;padding:4px 10px;height:33px;margin-left:14px;margin-right:4px;}
 .product-selectors:after{content:".";display:block;clear:both;height:0;font-size:0;line-height:0;visibility:hidden}
 .product-sorting{margin:0 auto 10px;float:left}
 .product-viewmode{margin:0 auto 10px;float:right}
@@ -1023,7 +1023,7 @@ ul{margin:0}
 .pinkBg div.selector select{font-size:15px;top:12px;}
 .pinkNarrowTitle{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06;text-align:center}
 .box{background:#fff;width:130px;padding:5px 5px 5px 10px;border:0;margin:5px 5px 5px 0;color:#333;font-size:12px}
-.blueBtn{background:#1e98d5;color:#fff;font-weight:bold;text-align:center;padding:5px 15px;border:0;cursor:pointer;text-transform:uppercase;margin:0;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif}
+.blueBtn{background:#1e98d5;color:#fff;font-weight:bold;text-align:center;padding:5px 15px;border:0;cursor:pointer;text-transform:uppercase;margin:0;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif;margin-bottom:6px;}
 .blueBtn:hover{color:#d3eefb}
 .blueBigBtn{background:#1e98d5;color:#fff;font-weight:bold;font-size:15px;text-align:center;padding:10px 30px;border:0;cursor:pointer;text-transform:uppercase;margin:5px 0;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif}
 .blueBigBtn:hover{color:#d3eefb}
@@ -1353,7 +1353,7 @@ margin-top: 7px; }
 .simplemodal-wrap{overflow:visible !important;box-shadow:1px 1px 1px 1px #fff;}
 .hotlineMenu{display:inline-block;height:100%;margin-top:-16px;}
 .hotlineMenu .hotlineName{padding:0;margin:0;font-size:19px;color:#1e98d5;font-family:Impact, fantasy;}
-.hotlineMenu .hotlineNumber{padding:0;margin:0;font-size:28px;color:#c06;font-weight:700;font-family:Impact,fantasy}
+.hotlineMenu .hotlineNumber{padding:0;margin:0;font-size:20px;color:#c06;font-weight:700;}
 #FullDescription_tbl{width:100% !important}
 .link-admin{position:absolute;top:18px;right:35px;}
 .link-admin a{cursor:pointer;font-size:14px;line-height:14px;color:#c06;font-weight:bold;}
