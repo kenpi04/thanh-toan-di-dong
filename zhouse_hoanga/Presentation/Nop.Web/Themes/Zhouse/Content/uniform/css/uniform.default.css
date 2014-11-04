@@ -56,12 +56,13 @@ input[type="search"]:active {
 div.selector {
   background-image: none !important;
   line-height: 26px;
-  height: 26px;
+  height: 29px;
   padding: 0 0 0 10px;
   position: relative;
   border:solid 1px #ddd;
   overflow: hidden; 
-  background:#fff
+  background:#fff;
+  margin-bottom:6px;
 }
   div.selector span {
     text-overflow: ellipsis;
