@@ -4642,10 +4642,12 @@ namespace Nop.Web.Controllers
         private async Task PreparingInsertProductModelAsync(InsertProductModel model, Customer customer, int categoryId = 0)
         {
             //Customer
-            model.ContactName = await customer.GetFullNameAsync();
-            model.ContactPhone = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Phone);
-            model.Email = customer.Email;
-
+            if (model.Id < 0)
+            {
+                model.ContactName = await customer.GetFullNameAsync();
+                model.ContactPhone = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Phone);
+                model.Email = customer.Email;
+            }
             model.Districts = (await _stateProvinceService.GetDistrictByStateProvinceIdAsync()).ToSelectList(x => x.Name, x => x.Id.ToString());
             if(categoryId==0)
             {
