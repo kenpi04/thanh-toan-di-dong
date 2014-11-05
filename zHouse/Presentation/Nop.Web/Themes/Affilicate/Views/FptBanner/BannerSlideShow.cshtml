@@ -4,25 +4,15 @@
     Html.AddCssFileParts("~/Themes/Zhouse/Content/flexslider.css");
 }
 <div id="slider" class="flexslider">
-
     <ul class="slides">
-        @foreach (var i in Model.Banners)
-        {
-            <li>
-                @if (i.BannerType == 1)
-                {
-                    <a href="@i.Url" target="@i.Target">
-                        <img src="@i.PictureUrl" class="stretchImg"/></a>}
-                else
-                {
-                    <a href="@i.Url" target="@i.Target">@Html.Raw(i.Description)</a>
-                }
-            </li>
-        }
-
+        @foreach (var i in Model.Banners){
+        <li>
+            @if (i.BannerType == 1){
+                <a href="@i.Url" target="@i.Target"><img src="@i.PictureUrl" class="stretchImg"/></a>}
+            else{
+                <a href="@i.Url" target="@i.Target">@Html.Raw(i.Description)</a>}
+        </li>}
     </ul>
-
-
 </div>
 <script type="text/javascript">
     $(window).load(function () {
@@ -32,6 +22,5 @@
             randomize:true,
             directionNav:false
         });
-    });
-    
+    });    
 </script>

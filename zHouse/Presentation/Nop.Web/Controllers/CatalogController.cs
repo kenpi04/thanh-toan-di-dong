@@ -5076,7 +5076,6 @@ namespace Nop.Web.Controllers
         }
 
         [HttpPost]
-        [CaptchaValidator]
         public ActionResult SupportContact(ContactUsModel model)
         {
             if (ModelState.IsValid)
