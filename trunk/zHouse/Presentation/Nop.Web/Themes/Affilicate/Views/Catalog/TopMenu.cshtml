@@ -23,8 +23,8 @@
             <div class="menu-col" style="min-width:20%;max-width:40%">
                 <p class="title">Theo địa điểm</p>
                 <ul>                    
-                        @foreach (var d in Model.Districts2){
-                            <li style="width:40%"><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>}                    
+                    @foreach (var d in Model.Districts2){
+                    <li style="width:40%"><a href="@GetSeName(Request.Url.Host, category.SeName, d.Value)">@d.Text</a></li>}                    
                 </ul>
             </div>
             @if (category.SubCategories.Count > 0){ 
@@ -33,28 +33,26 @@
                 <ul>
                     @foreach (var subCategory in category.SubCategories)
                     {
-                        <li><a href="@Url.RouteUrl("Category", new {SeName=subCategory.SeName })">@subCategory.Name</a></li>
+                    <li><a href="@Url.RouteUrl("Category", new {SeName=subCategory.SeName })">@subCategory.Name</a></li>
                     }
                 </ul>
             </div>
             }
+            @if (category.Id != 2) { 
             <div class="menu-col" style="max-width:29%;min-width:20%">
                 <p class="title">Theo giá</p>
                 <ul>
                     @foreach (var d in (category.Id == 16 ? Model.PriceRangeRent.Where(x => x.Value != "0-0").ToList() : Model.PriceRange.Where(x => x.Value != "0-0").ToList()))
                     {
-                        <li><a href="@GetSeName(Request.Url.Host, category.SeName, null, null, d.Value, null)">@d.Text</a></li>
+                    <li><a href="@GetSeName(Request.Url.Host, category.SeName, null, null, d.Value, null)">@d.Text</a></li>
                     }
                 </ul>
-            </div>
+            </div>}
         </div>
     }
-</li>
-}
-
+</li>}
 <div id="top-menu" class="menu">
-    <ul>
-        @Html.Widget("header_menu_before")
+    <ul>@Html.Widget("header_menu_before")
         @if (Model.Categories.Count > 0)
         {
             foreach (var category in Model.Categories)
@@ -69,7 +67,7 @@
                 <ul>
                     @foreach (var i in Model.Topics)
                     {
-                        <li><a title="@i.Value" href="~/t/@i.Value">@i.Text</a></li>
+                    <li><a title="@i.Value" href="~/t/@i.Value">@i.Text</a></li>
                     }
                 </ul>
             </div>
@@ -81,13 +79,11 @@
                 <ul>
                     @foreach (var c in Model.CategoriesNews)
                     {
-                        <li><a href="@Url.RouteUrl("CateNews", new { SeName = c.Value })">@c.Text</a></li>
+                    <li><a href="@Url.RouteUrl("CateNews", new { SeName = c.Value })">@c.Text</a></li>
                     }
                 </ul>
             </div>
-        </li>
-
-        @Html.Widget("header_menu_after")
+        </li>@Html.Widget("header_menu_after")
     </ul>
 </div>
 <script type="text/javascript">
@@ -95,7 +91,6 @@
         $('a', $(this)).first().addClass('hover');
         if (!$('.sublist', $(this)).first().attr("not-resize") && !$(this).parent().hasClass('top-menu')) {
             var width = $(this).innerWidth();
-            @*$('.sublist', $(this)).first().css('@(isRtl ? "right" : "left")', width -13);*@
         }
         $('.sublist', $(this)).first().addClass('active');
         $('.top-menu-triangle', $(this)).addClass('active');

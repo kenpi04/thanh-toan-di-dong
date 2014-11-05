@@ -4,12 +4,9 @@
 @{
     var displayMiniProfiler = CommonHelper.GetTrustLevel() >= AspNetHostingPermissionLevel.High &&
         EngineContext.Current.Resolve<Nop.Core.Domain.StoreInformationSettings>().DisplayMiniProfilerInPublicStore;
-
-    //resources
     Html.AppendCssFileParts("~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.0.custom.min.css");
     Html.AppendCssFileParts("~/Themes/Affilicate/Content/uniform/css/uniform.default.css");
     Html.AppendScriptParts("~/Scripts/lazyload.jquery.js");
-   // Html.AppendScriptParts("~/Scripts/public.ajaxcart.js");
     Html.AppendScriptParts("~/Scripts/jquery.simplemodal.js");
     Html.AppendScriptParts("~/Scripts/public.common.js");
     Html.AppendScriptParts("~/Scripts/jquery-ui-1.10.0.min.js");
@@ -18,8 +15,6 @@
     Html.AppendScriptParts("~/Scripts/jquery.unobtrusive-ajax.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.uniform.min.js");
     Html.AppendScriptParts("~/Scripts/jquery-1.7.1.min.js");
-
-    //X-UA-Compatible tag
     var commonSettings = EngineContext.Current.Resolve<CommonSettings>();
     if (commonSettings.RenderXuaCompatible)
     {

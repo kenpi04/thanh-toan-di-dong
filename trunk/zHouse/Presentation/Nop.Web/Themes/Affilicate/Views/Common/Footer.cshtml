@@ -9,10 +9,9 @@
         <div class="wrapper">
             <div class="footerCol">
                 <b>Nhà ở</b><br><br>
-                <ul>
-                    @foreach (var i in Model.Districts)
+                <ul>@foreach (var i in Model.Districts)
                     {
-                        <li><a href="@GetSeName(Request.Url.Host,"nha-ban",i.Value)">Nhà ở @i.Text</a></li>
+                    <li><a href="@GetSeName(Request.Url.Host,"nha-ban",i.Value)">Nhà ở @i.Text</a></li>
                     }
                 </ul>
             </div>
@@ -21,7 +20,7 @@
                 <ul>
                     @foreach (var i in Model.Districts)
                     {
-                        <li><a href="@GetSeName(Request.Url.Host,"nha-du-an",i.Value)">Chung cư @i.Text</a></li>
+                    <li><a href="@GetSeName(Request.Url.Host,"nha-du-an",i.Value)">Chung cư @i.Text</a></li>
                     }
                 </ul>
             </div>
@@ -30,13 +29,12 @@
                 <ul>
                     @foreach (var i in Model.Topics)
                     {
-                        <li><a href="@Url.RouteUrl("Topic", new {SystemName=i.Value })">@i.Text</a></li>
+                    <li><a href="@Url.RouteUrl("Topic", new {SystemName=i.Value })">@i.Text</a></li>
                     }
                 </ul>
             </div>
             <div class="footerCol">
                 <b>Kết nối với chúng tôi</b><br><br>
-
                 @Html.Action("NewsletterBox", "NewsLetter")<br />
                 <a href="http://facebook.com/zhouseonline" target="_blank"><img src="@Url.Content("~/Themes/Zhouse/Content/images/footerLink.png")" class="noborder" alt="facebook zHouseOnline"></a>
                 <input type="button" onclick="setLocation('http://hoidap.zhouse.com.vn')" class="btn-QA" value="" />
@@ -66,6 +64,5 @@
         <div class="map-link">
             <a class="btn-map" href="@Url.Action("map","catalog")"></a>
         </div>
-    </div>
-    @Html.Widget("footer")
+    </div>@Html.Widget("footer")    
 </div>

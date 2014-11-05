@@ -1165,7 +1165,7 @@ ul{margin:0}
 .nhonReply{background:url(images/nhonReply.png) no-repeat;width:13px;height:8px;position:absolute;top:-8px;right:130px}
 .pinkBgRightBottom{background:#c06;width:220px;padding:70px 0;float:right;color:#fff;font-size:15px;margin:5px 10px 5px 0;text-align:center}
 #simplemodal-overlay{background-color:#000}
-#simplemodal-container .simplemodal-data{padding:6px 12px}
+#simplemodal-container .simplemodal-data{padding:6px 12px;display:inline-block;}
 #popup{background:none repeat scroll 0 0 #fff;padding:4px}
 .friend-email{width:100%}
 .simplemodal-close{background:url(images/x.png) no-repeat;width:22px;height:22px;position:absolute;right:-5px;top:-5px}
@@ -1209,6 +1209,7 @@ ul{margin:0}
 .ulStyle li a{text-decoration:none;color:#555}
 .ulStyle li a:hover{color:#000}
 .news{float:left;width:830px;margin:10px 0 0 0px;font-size:13px;text-align:justify; line-height: 20px;}
+.news p{margin-top:1em;margin-bottom:1em;}
 .newsImgBorder{border:3px solid #d3d3d3}
 .menu-col{float:left;border-right:dashed 1px #ddd}
 .menu-col:last-child{border:0}

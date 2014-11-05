@@ -51,11 +51,14 @@ namespace Nop.Web.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.CateId")]
         public int CateId { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Area")]
-        
+
+        [Range(1,999999, ErrorMessage="Diện tích phải lớn hơn 0 và nhỏ hơn 100.000")]
         public decimal Area { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Width")]
+        [Range(1, 999999, ErrorMessage = "Chiều rộng phải lớn hơn 0 và nhỏ hơn 100.000")]
         public decimal Width { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Dept")]
+        [Range(1, 999999, ErrorMessage = "Chiều dài phải lớn hơn 0 và nhỏ hơn 100.000")]
         public decimal Dept { get; set; }
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.NumberOfHome")]
         public string NumberOfHome { get; set; }

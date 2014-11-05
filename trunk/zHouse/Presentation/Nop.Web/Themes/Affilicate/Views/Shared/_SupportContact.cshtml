@@ -1,23 +1,19 @@
 ﻿@model Nop.Web.Models.Common.ContactUsModel
-@{
-    Layout = null;
-}
 <form id="frmContactus" method="post">
-
     <div class="panel-error">
         @Html.ValidationSummary(false)
     </div>
     @Html.TextBoxFor(model => model.FullName, new { @class = "mapBox", placeholder = "Nhập tên của bạn" }) @Html.RequiredHint()<br />
-    @Html.TextBoxFor(model => model.Phone, new { @class = "mapBox", placeholder = "Nhập số điện thoại của bạn" })@Html.RequiredHint()<br />
+    @Html.TextBoxFor(model => model.Phone, new { @class = "mapBox", placeholder = "Nhập số điện thoại của bạn" }) @Html.RequiredHint()<br />
     @Html.TextBoxFor(model => model.Email, new { @class = "mapBox", placeholder = "Nhập email của bạn" })<br />
-    @Html.DropDownListFor(model => model.Type, new List<SelectListItem> { 
-new SelectListItem{Text="Hỗ trợ",Value="30"},
-new SelectListItem{Text="Báo lỗi",Value="40"},
-new SelectListItem{Text="Góp ý",Value="50"},
+    @Html.DropDownListFor(model => model.Type, new List<SelectListItem> {
+    new SelectListItem{Text="Hỗ trợ",Value="30"},
+    new SelectListItem{Text="Báo lỗi",Value="40"},
+    new SelectListItem{Text="Góp ý",Value="50"},
 })<br />
-    @Html.TextBoxFor(model => model.Url, new { @class = "mapBox", placeholder = T("ContactUs.Url.Hint") })<br />
-    @Html.TextAreaFor(model => model.Enquiry, new { @class = "mapBox", placeholder = T("ContactUs.Enquiry.Hint"), style = "width:290px;height:51px" })
-<br />    @if (Model.DisplayCaptcha)
+    @Html.TextBoxFor(model => model.Url, new { Value = Request.Url.AbsoluteUri, @class = "mapBox", placeholder = T("ContactUs.Url.Hint") })<br />
+    @Html.TextAreaFor(model => model.Enquiry, new { @class = "mapBox", placeholder = T("ContactUs.Enquiry.Hint"), style = "width:290px;height:51px" }) @Html.RequiredHint()
+    <br />    @if (Model.DisplayCaptcha)
     {
         <div class="captcha-box">
             @Html.Raw(Html.GenerateCaptcha())
@@ -27,16 +23,12 @@ new SelectListItem{Text="Góp ý",Value="50"},
 </form>
 <script>
     $("#frmContactus").submit(function () {
-        if($(this).valid())
-        {
+        if ($(this).valid()) {
             var data = $(this).serialize();
-            $.post("@Url.Action("SupportContact","Catalog")", data, function (d) {
+            $.post("@Url.Action("SupportContact", "Catalog")", data, function (d) {
                 $("#frmContactus").html(d);
-                
             })
             return false;
         }
     })
 </script>
-
-
