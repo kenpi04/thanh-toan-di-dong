@@ -3662,7 +3662,7 @@ namespace Nop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> UpdateProductAsync(int productId, int action, int? value)
+        public async Task<JsonResult> UpdateProductAsync(int productId, int action, string value)
         {
             var customer = _workContext.CurrentCustomer;
             string resultMessage = "";
@@ -3688,11 +3688,11 @@ namespace Nop.Web.Controllers
 
             if (action == 1)//published
             {
-                if (value.HasValue)
+                if (!String.IsNullOrEmpty(value))
                 {
                     try
                     {
-                        product.Published = Convert.ToBoolean(value.Value);
+                        product.Published = Convert.ToBoolean(value);
                         _productService.UpdateProduct(product);
                         resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
                         return Json(resultMessage);
@@ -3763,14 +3763,14 @@ namespace Nop.Web.Controllers
             }
             if (action == 4)//Duyet tin
             {
-                if (value.HasValue)
+                if (!String.IsNullOrEmpty(value))
                 {
                     if (customer.IsAdmin())
                     {
                         try
                         {
 
-                            product.Status = (short)value.Value;
+                            product.Status = Convert.ToInt16(value);
                             _productService.UpdateProduct(product);
                             resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
                             return Json(resultMessage);
@@ -3786,6 +3786,27 @@ namespace Nop.Web.Controllers
                         resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatefail");
                         return Json(resultMessage);
                     }
+                }
+                else
+                {
+                    resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatefail");
+                    return Json(resultMessage);
+                }
+            }
+            if(action==7)
+            {
+                if (!String.IsNullOrEmpty(value))
+                {
+                    try
+                    {
+                        DateTime date;
+                        date = Convert.ToDateTime(value);
+                        product.AvailableEndDateTimeUtc = date;
+                        _productService.UpdateProduct(product);
+                        resultMessage = await _localizationService.GetResourceAsync("updateproduct.error.updatesuccessfull");
+                        return Json(resultMessage);
+                    }
+                    catch { return Json(_localizationService.GetResource("updateproduct.error.updatefail")); }
                 }
                 else
                 {
@@ -4429,6 +4450,9 @@ namespace Nop.Web.Controllers
             p.Height = inPd.Dept;
             p.Area = inPd.Area;
             p.AreaUse = inPd.AreaUse;
+            p.Length = inPd.Length;
+            p.Weight = inPd.Weight;
+            p.RequiredProductIds = inPd.ProjectName;
 
             p.CustomerId = _workContext.CurrentCustomer.Id;
             p.Name = inPd.Name;
@@ -4464,6 +4488,9 @@ namespace Nop.Web.Controllers
                 Id = p.Id,
                 Dept = p.Height,
                 Width = p.Width,
+                Weight = p.Weight,
+                Length = p.Length,
+                ProjectName = p.RequiredProductIds,
                 FullDescription = p.FullDescription,
                 DistrictId = p.DistrictId,
                 WardId = p.WardId,

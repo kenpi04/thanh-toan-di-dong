@@ -75,6 +75,22 @@ namespace Nop.Web.Models.Customer
 
     public class PagingFilteringModel:BasePageableModel
     {
-
+        public PagingFilteringModel()
+        {
+            this.categoryId = 0;
+            this.statusEndDate = 0;
+            this.status = 0;
+            this.productId = 0;
+            this.customerId = 0;
+            this.districtId = 0;
+        }
+        public DateTime? startDate { get; set; }
+        public DateTime? endDate { get; set; }
+        public int categoryId { get; set; }
+        public int statusEndDate {get;set;}
+        public int status {get;set;}
+        public int productId { get; set; }
+        public int customerId { get; set; }
+        public int districtId { get; set; }
     }
 }

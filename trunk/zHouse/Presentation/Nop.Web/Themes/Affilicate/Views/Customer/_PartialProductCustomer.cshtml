@@ -18,32 +18,31 @@
                         <div class="item-row">
                             <div class="item-cell">Diện tích</div><div class="item-cell">: @product.Area.ToString("0.##") m2</div>
                         </div>
-                        @*<div class="item-row">
-                            <div class="item-cell">Giá: </div><div class="item-cell">@product.Price</div>
-                        </div>*@
+                        <div class="item-row">
+                            <a onclick="updateNew(@product.Id,3,0)" title="Làm mới tin"><img style="padding:10px;" src="~/Themes/Affilicate/Content/images/icon-refresh.png" /></a>
+                        </div>
                     </div>
                     <div class="product-col1">
-                        @*<div class="item-row">
-                            <div class="item-cell">Tình trạng: </div><div class="item-cell">@product.TinhTrang</div>
-                        </div>*@
                         <div class="item-row">
                             <div class="item-cell">Ngày đăng</div><div class="item-cell">: @(product.AvailableStartDateTimeUtc.HasValue ? product.AvailableStartDateTimeUtc.Value.ToString("dd/MM/yyyy") : "")</div>
                         </div>
                         <div class="item-row">
-                            <div class="item-cell">Ngày hết hạn </div><div class="item-cell">: @(product.AvailableEndDateTimeUtc.HasValue ? product.AvailableEndDateTimeUtc.Value.ToString("dd/MM/yyyy") : "")</div>
+                            <div class="item-cell">Ngày hết hạn </div><div class="item-cell">: @(product.AvailableEndDateTimeUtc.HasValue ? product.AvailableEndDateTimeUtc.Value.ToString("dd/MM/yyyy") : "")
+                            <a onclick="showEndDate(@product.Id)" title="Bấm vào để gia hạn thêm tin"><img style="margin-left:10px;" id="plus-@product.Id" src="~/Themes/Affilicate/Content/images/icon-plus.png" /></a></div>                            
+                        </div>
+                        <div class="item-row">
+                            <div class="item-cell">
+                            @if(isAdmin){if (product.TrangThaiDuyetId == 10){
+                            <a onclick="updateNew(@product.Id,4,20)" title="Bấm vào để duyệt tin"><img id="approved-@product.Id" src="~/Themes/Affilicate/Content/images/icon-notyetapproved.png" /></a>}
+                            if (product.TrangThaiDuyetId == 20){
+                            <a onclick="updateNew(@product.Id,4,10)" title="Bấm vào để bỏ duyệt tin"><img id="approved-@product.Id" src="~/Themes/Affilicate/Content/images/icon-approved.png" /></a>
+                            }}</div>
+                            <div class="item-cell" id="newEndDate-@product.Id" style="display:none">
+                                <input type="text" style="width:80px;" class="newEndDate" id="newDate-@product.Id" placeholder="Chọn ngày" title="Chọn ngày hết hạn mới" />
+                                <a  onclick="updateNew(@product.Id,7,0)">Gia hạn</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="product-col1"><a onclick="updateNew(@product.Id,3,0)" title="Làm mới tin"><img src="~/Themes/Affilicate/Content/images/icon-refresh.png" /></a></div>
-                    @if (isAdmin)
-                    {
-                        if (product.TrangThaiDuyetId == 10)
-                        {
-                            <div class="product-col1"><a onclick="updateNew(@product.Id,4,20)" title="Bấm vào để duyệt tin"><img id="approved-@product.Id" src="~/Themes/Affilicate/Content/images/icon-notyetapproved.png" /></a></div>}
-                        if (product.TrangThaiDuyetId == 20)
-                        {
-                            <div class="product-col1"><a onclick="updateNew(@product.Id,4,10)" title="Bấm vào để bỏ duyệt tin"><img id="approved-@product.Id" src="~/Themes/Affilicate/Content/images/icon-approved.png" /></a></div>}
-                    }
-
                 </div>
                 <div class="side-3" style="width:19%;margin:0">
                     <div class="block block-account-navigation" style="margin-bottom:0">
@@ -72,8 +71,24 @@
             </div>
         }
         <script type="text/javascript">
+            $(document).ready(function(){
+                $('.newEndDate').each(function(){
+                    $(this).datepicker();
+                });
+            })
+            function showEndDate(id) {
+                if ($("#newEndDate-" + id).css('display') == 'none') {
+                    $("#newEndDate-" + id).show();
+                    $("#plus-" + id).attr("src", "/Themes/Affilicate/Content/images/icon-minus.png");
+                } else {
+                    $("#newEndDate-" + id).hide();
+                    $("#plus-" + id).attr("src", "/Themes/Affilicate/Content/images/icon-plus.png");
+                }
+
+            };
     function updateNew(id, action, value) {
         if (confirm("Bạn có chắc thay đổi trạng thái?")) {
+            if(action==7) value = ConverDate($("#newDate-"+id).val());            
             $.post("@Url.Action("UpdateProductAsync", "Catalog")", { productId: id, action: action, value: value }, function (d) {
                 alert(d);
                         if (action == 1) {
@@ -84,17 +99,17 @@
                                 $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,0)">Ngừng đăng tin</a>');
                             }
                             else
-                                $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,1)">Đăng tin</a>');
+                                $("#publish-" + id).html('<a onclick="updateNew(' + id + ',1,1)">Hiển thị tin</a>');
                             $("#status_" + id).html(status);
                         }
                         if (action == 2) {
                             $("#item-" + id).hide("slow");
                             $("#item" + id).remove();
                         }
-                        if (action == 4)
+                        if (action == 4 || action==7)
                         {
                             $("#searchProduct").click();
-                        }
+                        }                        
                     })
                 }
             }

@@ -1025,7 +1025,7 @@ ul{margin:0}
 .pinkBg{border-radius:4px;padding:15px}
 .pinkNarrowTitle{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06;text-align:center}
 .box{background:#fff;width:220px;padding:5px 5px 5px 10px;border:0;margin:5px 5px 5px 0;color:#333;font-size:12px;}
-.blueBtn{background:#1e98d5;color:#fff;font-weight:bold;text-align:center;padding:5px 15px;border:0;cursor:pointer;text-transform:uppercase;margin:0;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif}
+.blueBtn{background:#1e98d5;color:#fff;font-weight:bold;text-align:center;padding:5px 15px;border:0;cursor:pointer;text-transform:uppercase;margin:0 0 6px 0;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif}
 .blueBtn:hover{color:#d3eefb}
 .blueBigBtn{background:#1e98d5;color:#fff;font-weight:bold;font-size:15px;text-align:center;padding:10px 30px;border:0;cursor:pointer;text-transform:uppercase;margin:5px 0;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif}
 .blueBigBtn:hover{color:#d3eefb}
@@ -1324,7 +1324,7 @@ textarea.formBoxInText{height:70px}
 .form-fields .error {margin-left: 148px;font-size: 10px;margin-bottom: 10px;}
 .product-hinh{width:124px;height:124px; float:left;border:1px solid;border-radius:5px 5px 0 0;border-color:#f6f6f4;text-align:center;overflow:hidden;}
 .product-hinh img{height:100%;max-width:100%; margin:0 auto;}
-.product-content{float:left;padding:5px 5px 0 10px;width:60%}
+.product-content{float:left;padding:5px 5px 0 10px;width:63%}
 .product-col1{float:left;width:50%;margin-top:5px}
 .product-col1 a{cursor:pointer;}
 .product-col1 .item-row{display:table-row;}

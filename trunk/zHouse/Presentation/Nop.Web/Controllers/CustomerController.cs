@@ -546,8 +546,8 @@ namespace Nop.Web.Controllers
             return model;
         }
         [NonAction]
-        protected async Task<CustomerOrderListModel> PrepareCustomerOrderListModelAsync(Customer customer, PagingFilteringModel paging, DateTime? startDate = null, DateTime? endDate = null,
-            string priceString = "", string attributeOptionIds = "", int wardId = 0, int categoryId = 0, int storeId= 0, int statusEndDate = 0, int status = 0, int productId = 0)
+        protected async Task<CustomerOrderListModel> PrepareCustomerOrderListModelAsync(Customer customer, int pageNumber = 0, int pageSize = 20, DateTime? startDate = null, DateTime? endDate = null,
+            string priceString = "", string attributeOptionIds = "", int wardId = 0, int categoryId = 0, int storeId= 0, int statusEndDate = 0, int status = 0, int productId = 0, int customerId =0, int districtId=0)
         {
             if (customer == null)
                 throw new ArgumentNullException("customer");
@@ -559,30 +559,30 @@ namespace Nop.Web.Controllers
             if (productId > 0)//tim theo ma tin
             {
                 var product = await _productService.GetProductByIdAsync(productId);
-                if (product != null || !product.Deleted)
+                if (product != null && !product.Deleted)
                 {
                     if (customer.IsAdmin() || product.CustomerId == customer.Id)
                         products.Add(product);
                 }
             }
             else//tim khac
-            {
-                paging.PageSize = 20;
-                if (paging.PageNumber <= 0) paging.PageNumber = 1;
+            {                
+                if (pageNumber <= 0) pageNumber = 1;
                 ProductStatusEnum? approvedStatus=null; if(status != 0) approvedStatus = (ProductStatusEnum)status;
 
                 var listProducts = _productService.SearchProducts(
                    categoryIds: new List<int> { categoryId },
                                storeId: storeId,
-                               customerId: customer.IsAdmin()?0: customer.Id,
+                               customerId: customerId,
                                visibleIndividuallyOnly: true,
                                languageId: 0,
-                               pageIndex: paging.PageNumber-1,
-                               pageSize: paging.PageSize,
+                               pageIndex: pageNumber-1,
+                               pageSize: pageSize,
                                status: approvedStatus,
                                startDateTimeUtc: startDate,
                                endDateTimeUtc: endDate,
-                               showHidden:true
+                               showHidden:true,
+                               districtIds: new List<int>() { districtId }
                    );
                 model.PagingFilteringContext.LoadPagedList(listProducts);
                 products = listProducts.ToList();
@@ -1492,25 +1492,28 @@ namespace Nop.Web.Controllers
         #region Orders
 
         [NopHttpsRequirement(SslRequirement.Yes)]
-        public async Task<ActionResult> Orders(PagingFilteringModel command, DateTime? startDate, DateTime? endDate, int categoryId = 0, int statusEndDate = 0, int status = 0, int productId = 0)
+        public async Task<ActionResult> Orders(PagingFilteringModel command)
         {
             var customer = _workContext.CurrentCustomer;
 
             if (!IsCurrentUserRegistered() || (_storeContext.CurrentStore.Id == 1 && !customer.IsAdmin()))
-                return new HttpUnauthorizedResult();
-            
+            {
+                if (Request.IsAjaxRequest())
+                    return Content("Vui lòng đăng nhập lại.");
+                else return new HttpUnauthorizedResult();
+            }
             var model = new CustomerOrderListModel();
+            if (!customer.IsAdmin())
+                command.customerId = customer.Id;
             if (Request.IsAjaxRequest())
             {
-                model = await PrepareCustomerOrderListModelAsync(customer, startDate: startDate, endDate: endDate,
-                    categoryId: categoryId, storeId: _storeContext.CurrentStore.Id, status: status, statusEndDate: statusEndDate, productId: productId, paging: command);
+                model = await PrepareCustomerOrderListModelAsync(customer, startDate: command.startDate, endDate: command.endDate,
+                    categoryId: command.categoryId, storeId: _storeContext.CurrentStore.Id, status: command.status, statusEndDate: command.statusEndDate, productId: command.productId, pageNumber: command.PageNumber, pageSize:10, customerId:command.customerId, districtId:command.districtId);
 
                 return View("_PartialProductCustomer", model);
             }
             model.NavigationModel = GetCustomerNavigationModel(customer);
             model.NavigationModel.SelectedTab = CustomerNavigationEnum.Orders;
-            //model = await PrepareCustomerOrderListModelAsync(customer, startDate: startDate, endDate: endDate,
-            //        categoryId: categoryId, storeId: _storeContext.CurrentStore.Id, status: status, statusEndDate: statusEndDate, productId: productId, paging: command);
             return View(model);
         }
 

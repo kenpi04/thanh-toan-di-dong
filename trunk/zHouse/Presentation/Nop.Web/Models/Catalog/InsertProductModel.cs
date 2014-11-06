@@ -84,6 +84,22 @@ namespace Nop.Web.Models.Catalog
         /// </summary>
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Promotion")]
         public string Promotion { get; set; }
+        /// <summary>
+        /// Duong truoc nha
+        /// </summary>
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Length")]
+        public decimal Length { get; set; }
+        /// <summary>
+        /// No hau
+        /// </summary>
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Weight")]
+        public decimal Weight { get; set; }
+        /// <summary>
+        /// Ten du an: RequiredProductIds
+        /// </summary>
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.ProjectName")]
+        public string ProjectName { get; set; }
+
         public List<int> SelectedOptionAttributes { get; set; }
         public List<PictureUploadModel> PictureIds { get; set; }
 
