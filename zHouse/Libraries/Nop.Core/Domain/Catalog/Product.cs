@@ -160,7 +160,7 @@ namespace Nop.Core.Domain.Catalog
         public bool RequireOtherProducts { get; set; }
 
         /// <summary>
-        /// Gets or sets a required product identifiers (comma separated)
+        /// Gets or sets a ten du an
         /// </summary>
         public string RequiredProductIds { get; set; }
 
@@ -422,12 +422,12 @@ namespace Nop.Core.Domain.Catalog
         public bool HasDiscountsApplied { get; set; }
 
         /// <summary>
-        /// Gets or sets the weight
+        /// Gets or sets the weight / no hau
         /// </summary>
         public decimal Weight { get; set; }
 
         /// <summary>
-        /// Gets or sets the length
+        /// Gets or sets the length / duong truoc nha
         /// </summary>
         public decimal Length { get; set; }
 

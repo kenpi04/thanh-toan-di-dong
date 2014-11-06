@@ -39,6 +39,7 @@ using Nop.Web.Infrastructure.Cache;
 using Nop.Web.Models.Catalog;
 using Nop.Web.Models.Common;
 using Nop.Web.Models.Topics;
+using System.Threading.Tasks;
 
 namespace Nop.Web.Controllers
 {
@@ -841,6 +842,16 @@ namespace Nop.Web.Controllers
 
             }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public async Task<ActionResult> GetDistrictsByStateProvinceIdAsync(int id)
+        {
+            var districts = await _stateProvinceService.GetDistrictByStateProvinceIdAsync(id);
+            return Json(new
+            {
+                Districts = districts.Select(x => new { x.Id, x.Name })
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult GenericUrl()
         {
             //seems that no entity was found

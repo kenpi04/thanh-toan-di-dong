@@ -37,7 +37,7 @@
         @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường", new { @class = "formBoxInSelect"})        
         @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect"})
         @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
-        @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:82.3%", placeholder = "Địa chỉ đầy đủ" })
+        @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:678px;margin-left:9px", placeholder = "Địa chỉ đầy đủ" })
     </div>
     <div class="blueText">THÔNG TIN PHÁP LÝ @Html.RequiredHint() &nbsp;&nbsp;<label class="note2">(Vui lòng chọn ít nhất 1 thuộc tính)</label></div>
     <div class="boxWrapperSmall" id="PhapLy">
@@ -99,6 +99,7 @@
                     <td class="request-label">@Html.LabelFor(x => x.Width) @Html.RequiredHint() &nbsp;</td>
                     <td>
                         @Html.TextBoxFor(x => x.Width, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều rộng" })
+                        @Html.LabelFor(x => x.Weight) @Html.TextBoxFor(x => x.Weight, "{0:0.##}", new { @class = "formBoxInTable", @style="width:50px" , placeholder = "Nở hậu" })
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.BathRooms) &nbsp;&nbsp;</td>
                     <td>
@@ -126,6 +127,8 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="request-label">@Html.LabelFor(x=> x.Length) &nbsp;&nbsp;</td>
+                    <td>@Html.TextBoxFor(x => x.Length, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Đường trước nhà" })</td>
                     <td class="request-label">@Html.LabelFor(x => x.StatusList) @Html.RequiredHint() &nbsp;</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
@@ -134,9 +137,11 @@
                                 <option value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "selected=selected" : "")>@i.Text</option>
                             }
                         </select>
-                    </td>
-                    <td></td>
-                    <td></td>
+                    </td>                    
+                </tr>
+                <tr>
+                    <td class="request-label">@Html.LabelFor(x=> x.ProjectName) &nbsp;&nbsp;</td>
+                    <td colspan="3">@Html.TextBoxFor(x => x.ProjectName, new { placeholder="Nhập tên dự án của bđs" })</td>
                 </tr>
             </tbody>
         </table>
