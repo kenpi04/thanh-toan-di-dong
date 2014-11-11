@@ -1021,7 +1021,7 @@ ul{margin:0}
 .pinkBg div.selector{width:171px !important; height:35px !important;font-size:15px;}
 .pinkBg div.selector span{line-height:37px;padding-right:47px;height:100%;}
 .pinkBg div.selector select{font-size:15px;top:12px;}
-.pinkNarrowTitle{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06;text-align:center}
+.pinkNarrowTitle{font-family: 'Roboto Condensed', sans-serif;font-size:30px;color:#c06;text-align:center}
 .box{background:#fff;width:130px;padding:5px 5px 5px 10px;border:0;margin:5px 5px 5px 0;color:#333;font-size:12px}
 .blueBtn{background:#1e98d5;color:#fff;font-weight:bold;text-align:center;padding:5px 15px;border:0;cursor:pointer;text-transform:uppercase;margin:0;font-family:"open sans","segoe UI",Arial,Helvetica,sans-serif;margin-bottom:6px;}
 .blueBtn:hover{color:#d3eefb}
