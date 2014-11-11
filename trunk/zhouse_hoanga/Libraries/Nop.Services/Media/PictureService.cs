@@ -1054,7 +1054,7 @@ namespace Nop.Services.Media
                                        new float[] {1.0f,  0.0f,  0.0f,  0.0f, 0.0f},
                                        new float[] {0.0f,  1.0f,  0.0f,  0.0f, 0.0f},
                                        new float[] {0.0f,  0.0f,  1.0f,  0.0f, 0.0f},
-                                       new float[] {0.0f,  0.0f,  0.0f,  0.3f, 0.0f},
+                                       new float[] {0.0f,  0.0f,  0.0f,  1, 0.0f},
                                        new float[] {0.0f,  0.0f,  0.0f,  0.0f, 1.0f}
                                     };
 
