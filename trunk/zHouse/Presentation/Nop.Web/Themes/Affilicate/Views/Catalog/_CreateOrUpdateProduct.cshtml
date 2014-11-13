@@ -80,10 +80,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="request-label">@Html.LabelFor(x => x.Area) @Html.RequiredHint() &nbsp;</td>
+                    <td class="request-label">@Html.LabelFor(x => x.Width) @Html.RequiredHint() &nbsp;</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Area, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích"})
-                    </td>
+                        @Html.TextBoxFor(x => x.Width, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều rộng" })
+                        @Html.LabelFor(x => x.Weight) @Html.TextBoxFor(x => x.Weight, "{0:0.##}", new { @class = "formBoxInTable", @style = "width:50px", placeholder = "Nở hậu" })
+                    </td>                    
                     <td class="request-label">@Html.LabelFor(x => x.BedRooms) &nbsp;&nbsp;</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
@@ -96,10 +97,9 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="request-label">@Html.LabelFor(x => x.Width) @Html.RequiredHint() &nbsp;</td>
+                    <td class="request-label">@Html.LabelFor(x => x.Dept) @Html.RequiredHint() &nbsp;</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Width, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều rộng" })
-                        @Html.LabelFor(x => x.Weight) @Html.TextBoxFor(x => x.Weight, "{0:0.##}", new { @class = "formBoxInTable", @style="width:50px" , placeholder = "Nở hậu" })
+                        @Html.TextBoxFor(x => x.Dept, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều dài" })
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.BathRooms) &nbsp;&nbsp;</td>
                     <td>
@@ -112,9 +112,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="request-label">@Html.LabelFor(x => x.Dept) @Html.RequiredHint() &nbsp;</td>
+                    <td class="request-label">@Html.LabelFor(x => x.Area) @Html.RequiredHint() &nbsp;</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Dept, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều dài" })
+                        @Html.TextBoxFor(x => x.Area, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích" })
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.Directors) @Html.RequiredHint() &nbsp;</td>
                     <td>
@@ -217,26 +217,26 @@
             <li>Hình chụp sân thượng</li>
             <li>Hình từ ban công, cửa xuống các hướng đường</li>
         </ul>
-        <div>            
-            <input type="file" id="FileUpload" />                        
-        </div>
-        
-    </div><!---rightTable---->
-    <div class="floatLeft">
-        <div id="pictures">
-        </div>
-        <ul id="lstPic">
+        <ul id="lstPic" class="sortable grid">
             @foreach (var i in Model.PictureModels)
             {
-                <li id="picture_id_@i.Id" style="float:left;margin-right:10px">
-                    <input type="button" class="blueBtn" style="position: absolute;" value="Xóa" onclick="deletePicture(@i.Id)" />
-                    <img width="100" height="100" src="@i.ImageUrl" /><br />
-                    <textarea maxlength="500" name="PictureTitle_@i.PictureId" cols="10" rows="5">@i.Description</textarea>
+                <li id="picture_id_@i.Id">
+                    <input type="button" class="blueBtn" style="position: absolute;font-size:10px;padding:5px 5px;" value="Xóa" onclick="deletePicture(@i.Id)" />
+                    <img width="100" height="100" src="@i.ImageUrl" />
+                    <input type="hidden" name="picture_id_@i.PictureId" />
                 </li>
             }
         </ul>
         <div class="clearBoth"></div>
-    </div>
+        <div>            
+            <input type="file" id="FileUpload" />                        
+        </div>        
+    </div><!---rightTable---->
+    @*<div class="floatLeft">
+        <div id="pictures">
+        </div>
+        
+    </div>*@
     <div class="clearBoth">
         <i class="note">(*)Hình ảnh đầy đủ giúp quảng cáo ngôi nhà của bạn tốt hơn (Kích thước đề nghị 700x700 px hình vuông,dung lượng nhỏ hơn 2Mb).</i><br />
         <i>Hình đầu tiên sẽ là hình đại diện.</i>
@@ -298,12 +298,17 @@
 <script type="text/javascript">
     $(function () {
         $(".jqte-test").jqte();
-        var pictureids = [];
+        //var pictureids = [];
         $("#Price").keyup(function () {
             var price = $(this).val();
             if(price>9999999){price = 9999999;$("#Price").val(price);}
             if(price<0){price=0;$("#Price").val(price);}
             $("#price-text").html(StringPrice(price, "vnđ"));
+        })
+        $("#@Html.FieldIdFor(x => x.Width),#@Html.FieldIdFor(x => x.Dept)").keyup(function () {
+            var value1 = $("#@Html.FieldIdFor(x => x.Dept)").val();
+            var value2 = $("#@Html.FieldIdFor(x => x.Width)").val();
+            $("#@Html.FieldIdFor(x => x.Area)").val((value1 * value2).toFixed(2));
         })
         ISFIRSTLOAD=true;
         $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
@@ -344,21 +349,21 @@
                     scrollTop: $("#ThichHop").offset().top - 100
                 });
             }
-            else if ($("#lstPic img").size() == 0&&$("div[id^=SWFUpload_]").size()==0) {
+            else if ($("#lstPic img").size() == 0 && $("div[id^=SWFUpload_]").size()==0) {
                 alert('Vui lòng chọn hình ảnh đăng');
                 $('html,body').animate({
                     scrollTop: $("#anhdang").offset().top - 100
                 });
             }else if (Checkfiles($("#FileUpload"))){
-                    alert("File không hợp lệ");
+                alert("File không hợp lệ");
             }else {
-                    displayAjaxLoading(true);
-                    if($("div[id^=SWFUpload_]").size()==0)
-                    {
-                        formSubmit();
-                    }
-                    else
-                        $('#FileUpload').uploadify('upload', '*')
+                displayAjaxLoading(true);
+                //if($("div[id^=SWFUpload_]").size()==0)
+                //{
+                formSubmit();
+                //}
+                //else
+                //    $('#FileUpload').uploadify('upload', '*')
             }
             return false;
         })
@@ -401,20 +406,20 @@
             'multi': true,
             'method': 'post',
             'buttonText': 'CHỌN ẢNH ĐĂNG...',
-            'auto': false,
+            'auto': true,
             'fileSizeLimit': '2MB',
             'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg',
             'uploadLimit': 20,
             'cancelImg': '@Url.Content("~/Content/uploadify/uploadify-cancel.png")',
             'removeCompleted': false,
+            'queueID'  : 'lstPic',
+            'itemTemplate': '<li id="${fileID}" class="uploadify-queue-item" draggable="true" >\
+                    <div class="cancel">\
+                        <a class="cancel-a blueBtn" href="javascript:$(\'#${instanceID}\').uploadify(\'cancel\', \'${fileID}\')">Xóa</a>\
+                    </div>\
+                    <img style="display:none" class="preview" name="picture_id_0" />\<input type="hidden" name="picture_id_0" </li>',
             'onSelect': function (file) {
                 flag_error = 1;
-                $("div[id^=SWFUpload]").each(function(){
-                    if($(this).find("textarea[name=PictureTitle_0]").length==0)
-                    {
-                        $(this).append('<textarea name="PictureTitle_0" cols="10" rows="5"></textarea>')
-                    }
-                })
             },
             'onUploadStart': function (file) {
                 if (file == null || file.name == '') {
@@ -424,23 +429,25 @@
                 }
             },
             'onUploadSuccess': function (file, data, response) {
-                pictureids.push(data);
+                var obj = JSON.parse(data);
+                var img = $("img[name=picture_id_0]").first();
+                var input = $("input[name=picture_id_0]").first();
+                img.attr("name","picture_id_"+obj.id);
+                input.attr("name","picture_id_"+obj.id);
+                img.attr("src",obj.link);
+                img.show();
+                //pictureids.push(obj.id);
             },
             'onQueueComplete': function (queueData) {
-                if(pictureids.length>0)
-                {
-                    $("textarea[name=PictureTitle_0]").each(function(i,p){
-                        $(this).attr("name","PictureTitle_"+pictureids[i]);
-                    });
-                }
-                if ($("div[id^=SWFUpload_]").size()==0||$("textarea[name^=PictureTitle_][name!=PictureTitle_0]").size()==0) {
+                if ($("li[id^=SWFUpload_]").size()==0) {
                     alert('Vui lòng chọn hình ảnh đăng');
                     return false;
                 }
-                formSubmit();               
+                $('.sortable').sortable('destroy');
+                $('.sortable').sortable();
             }
         });
-    });    
+    });
 
     function formSubmit()
     {
@@ -454,7 +461,6 @@
     }
 
     function Checkfiles(fup) {
-        //var fup = document.getElementById(filename);
         var fileName = fup.val();
         var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
         if (ext == "gif" || ext == "GIF" || ext == "JPEG" || ext == "jpeg" || ext == "jpg" || ext == "JPG" || ext == "png" || ext == "PNG") {
@@ -484,11 +490,12 @@
     $("#AvailableStartDateTime1").datepicker();
     $("#AvailableEndDateTime1").datepicker();
 
+    $(function() {
+        $('.sortable').sortable();})
 </script>
 @if (Model.Id > 0)
 {
     <script type="text/javascript">
-
         $(document).ready(function () {
             var price=@Model.Price;
             $("#@Html.FieldIdFor(x => x.Price)").val(price/1000000).keyup();
@@ -533,3 +540,4 @@
 <div class="floatLeft">
     <input style="float:right" type="button" id="insertProduct-button" class="blueBigBtn" value="GỬI THÔNG TIN">
 </div>
+<script src="/Scripts/jquery.sortable.js"></script>

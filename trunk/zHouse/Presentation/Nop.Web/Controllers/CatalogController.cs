@@ -3428,15 +3428,32 @@ namespace Nop.Web.Controllers
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
 
-                var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
-                foreach (var tit in titlePic)
+                if (_storeContext.CurrentStore.Id == 1)//zhouse
                 {
-                    model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                    var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
+                    foreach (var tit in titlePic)
                     {
-                        Id = int.Parse(tit.Replace("PictureTitle_", "")),
-                        Title = form.GetValue(tit).AttemptedValue
-                    });
+                        model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                        {
+                            Id = int.Parse(tit.Replace("PictureTitle_", "")),
+                            Title = form.GetValue(tit).AttemptedValue
+                        });
+                    }
                 }
+                else
+                {
+                    //marketplace
+                    var pictureIdsNew = form.AllKeys.Where(x => x.Contains("picture_id_"));
+                    foreach (var picId in pictureIdsNew)
+                    {
+                        model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                        {
+                            Id = int.Parse(picId.Replace("picture_id_", ""))
+                        });
+                    }                    
+                }
+
+
                 //template
                 product.ProductTemplateId = 1;
                 product.ProductType = ProductType.SimpleProduct;
@@ -3473,6 +3490,7 @@ namespace Nop.Web.Controllers
 
                 #endregion
 
+                var j = 0;
                 #region InsertPictures
                 foreach (var i in model.PictureIds)
                 {
@@ -3480,10 +3498,12 @@ namespace Nop.Web.Controllers
                     {
                         PictureId = i.Id,
                         ProductId = product.Id,
-                        Description = i.Title
+                        Description = i.Title,
+                        DisplayOrder = j,
                     };
                     _productService.InsertProductPicture(pictureproduct);
                     _pictureService.SetSeoFilename(i.Id, _pictureService.GetPictureSeName(product.Name));
+                    j++;
                 }
                 #endregion
 
@@ -3577,14 +3597,28 @@ namespace Nop.Web.Controllers
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
 
-                var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
-                foreach (var tit in titlePic)
+                if (_storeContext.CurrentStore.Id == 1)//zhouse
                 {
-                    model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                    var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
+                    foreach (var tit in titlePic)
                     {
-                        Id = int.Parse(tit.Replace("PictureTitle_", "")),
-                        Title = form.GetValue(tit).AttemptedValue
-                    });
+                        model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                        {
+                            Id = int.Parse(tit.Replace("PictureTitle_", "")),
+                            Title = form.GetValue(tit).AttemptedValue
+                        });
+                    }
+                }else
+                {
+                    //marketplace
+                    var pictureIdsNew = form.AllKeys.Where(x => x.Contains("picture_id_"));
+                    foreach (var picId in pictureIdsNew)
+                    {
+                        model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                        {
+                            Id = int.Parse(picId.Replace("picture_id_", ""))
+                        });
+                    }                    
                 }
 
                 #region Insert Categories
@@ -3601,6 +3635,7 @@ namespace Nop.Web.Controllers
                 //delete
 
                 //add new
+                int j = 0;
                 var productPic = product.ProductPictures.Select(x => x.PictureId);
                 foreach (var i in model.PictureIds)
                 {
@@ -3610,7 +3645,8 @@ namespace Nop.Web.Controllers
                         {
                             PictureId = i.Id,
                             ProductId = product.Id,
-                            Description = i.Title
+                            Description = i.Title,
+                            DisplayOrder = j
                         };
                         _productService.InsertProductPicture(pictureproduct);
                         _pictureService.SetSeoFilename(i.Id, _pictureService.GetPictureSeName(product.Name));
@@ -3621,9 +3657,11 @@ namespace Nop.Web.Controllers
                         if (pictureProduct != null)
                         {
                             pictureProduct.Description = i.Title;
+                            pictureProduct.DisplayOrder = j;
                             _productService.UpdateProductPicture(pictureProduct);
                         }
                     }
+                    j++;
                 }
                 #endregion
 
@@ -4349,6 +4387,8 @@ namespace Nop.Web.Controllers
                 p.Id = inPd.Id;
                 //danh cho quan tri
                 p.CreatedOnUtc = DateTime.Now;
+                p.UpdatedOnUtc = DateTime.Now;
+                p.CustomerId = _workContext.CurrentCustomer.Id;
 
                 p.SpecialPriceEndDateTimeUtc = null;
                 p.SpecialPriceStartDateTimeUtc = null;
@@ -4435,7 +4475,7 @@ namespace Nop.Web.Controllers
             p.StreetId = inPd.StreetId;
             p.StateProvinceId = 23;//23 ho chi minh
             //Thoi gian dang tin: ngay bat dau - ket thuc
-            p.AvailableEndDateTimeUtc = inPd.AvailableEndDateTime;//inPd.AvailableStartDateTime.HasValue ? inPd.AvailableStartDateTime.Value.AddDays(_catalogSettings.DaysAvailablePublished) : DateTime.Now.AddDays(_catalogSettings.DaysAvailablePublished);
+            p.AvailableEndDateTimeUtc = inPd.AvailableEndDateTime;
             p.AvailableStartDateTimeUtc = inPd.AvailableStartDateTime ?? DateTime.Now;
             p.Status = (int)ProductStatusEnum.PendingAproved;//trang thai cho duyet            
 
@@ -4453,8 +4493,7 @@ namespace Nop.Web.Controllers
             p.Length = inPd.Length;
             p.Weight = inPd.Weight;
             p.RequiredProductIds = inPd.ProjectName;
-
-            p.CustomerId = _workContext.CurrentCustomer.Id;
+            
             p.Name = inPd.Name;
             p.FullAddress = inPd.FullAddress;
             if (p.ProductType != ProductType.SimpleProduct)
@@ -4476,9 +4515,7 @@ namespace Nop.Web.Controllers
                 p.FinishConstructionDate = inPd.FinishConstructionDate;
                 p.ManufacturerPartNumber = inPd.ChuDauTu;
                 p.Gtin = inPd.DonViThiCong;
-            }
-
-            p.UpdatedOnUtc = DateTime.Now;
+            }           
         }
 
         private InsertProductModel ProductToInsertModel(Product p)
@@ -4504,7 +4541,7 @@ namespace Nop.Web.Controllers
                 NumberOfHome = p.HouseNumber,
                 SelectedOptionAttributes = p.ProductSpecificationAttributes.Select(x => x.SpecificationAttributeOptionId).ToList(),
                 Name = p.Name,
-                PictureIds = p.ProductPictures.Select(x => new InsertProductModel.PictureUploadModel { Id = x.PictureId, Title = x.Description }).ToList(),
+                PictureIds = p.ProductPictures.OrderBy(x=>x.DisplayOrder).Select(x => new InsertProductModel.PictureUploadModel { Id = x.PictureId, Title = x.Description }).ToList(),
                 FullAddress = p.FullAddress,
                 DacDiemNoiBat = p.UserAgreementText,
                 Promotion = p.Promotion,
@@ -4528,7 +4565,7 @@ namespace Nop.Web.Controllers
             if (cate != null)
                 model.CateId = cate.CategoryId;
 
-            model.PictureModels = p.ProductPictures.Select(x => new PictureModel
+            model.PictureModels = p.ProductPictures.OrderBy(x=>x.DisplayOrder).Select(x => new PictureModel
             {
                 ImageUrl = _pictureService.GetPictureUrl(x.PictureId, 100),
                 Description = x.Description,
@@ -4718,10 +4755,14 @@ namespace Nop.Web.Controllers
             }
             fileBinary = CreateThumbnail(fileBinary, 700);
             var picture = _pictureService.InsertPicture(fileBinary, contentType, null, true);
-            return Content(picture.Id.ToString());
-            //return Json(new { data = picture.Id},JsonRequestBehavior.AllowGet);
+            var link = _pictureService.GetPictureUrl(picture.Id, 100, false);
+            var result = new {id = picture.Id.ToString(), link=link};
+            return Content(Newtonsoft.Json.JsonConvert.SerializeObject(result));
+
+            //return Json(new { data = Newtonsoft.Json.JsonConvert.SerializeObject(result) }, JsonRequestBehavior.AllowGet);
             //return picture.Id;
         }
+
         [NonAction]
         public byte[] CreateThumbnail(byte[] PassedImage, int LargestSide)
         {

@@ -464,99 +464,99 @@ namespace Nop.Web.Infrastructure
 
             //forum
             routes.MapLocalizedRoute("Boards",
-                            "boards",
+                            "dien-dan",
                             new { controller = "Boards", action = "Index" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("ActiveDiscussions",
-                            "boards/activediscussions",
+                            "dien-dan/activediscussions",
                             new { controller = "Boards", action = "ActiveDiscussions" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("ActiveDiscussionsRSS",
-                            "boards/activediscussionsrss",
+                            "dien-dan/activediscussionsrss",
                             new { controller = "Boards", action = "ActiveDiscussionsRSS" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("PostEdit",
-                            "boards/postedit/{id}",
+                            "dien-dan/postedit/{id}",
                             new { controller = "Boards", action = "PostEdit" },
                             new { id = @"\d+"},
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("PostDelete",
-                            "boards/postdelete/{id}",
+                            "dien-dan/postdelete/{id}",
                             new { controller = "Boards", action = "PostDelete" },
                             new { id = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("PostCreate",
-                            "boards/postcreate/{id}",
+                            "dien-dan/postcreate/{id}",
                             new { controller = "Boards", action = "PostCreate"},
                             new { id = @"\d+"},
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("PostCreateQuote",
-                            "boards/postcreate/{id}/{quote}",
+                            "dien-dan/postcreate/{id}/{quote}",
                             new { controller = "Boards", action = "PostCreate"},
                             new { id = @"\d+", quote = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("TopicEdit",
-                            "boards/topicedit/{id}",
+                            "dien-dan/topicedit/{id}",
                             new { controller = "Boards", action = "TopicEdit"},
                             new { id = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("TopicDelete",
-                            "boards/topicdelete/{id}",
+                            "dien-dan/topicdelete/{id}",
                             new { controller = "Boards", action = "TopicDelete"},
                             new { id = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("TopicCreate",
-                            "boards/topiccreate/{id}",
+                            "dien-dan/topiccreate/{id}",
                             new { controller = "Boards", action = "TopicCreate" },
                             new { id = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("TopicMove",
-                            "boards/topicmove/{id}",
+                            "dien-dan/topicmove/{id}",
                             new { controller = "Boards", action = "TopicMove" },
                             new { id = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("TopicWatch",
-                            "boards/topicwatch/{id}",
+                            "dien-dan/topicwatch/{id}",
                             new { controller = "Boards", action = "TopicWatch" },
                             new { id = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("TopicSlug",
-                            "boards/topic/{id}/{slug}",
+                            "dien-dan/topic/{id}/{slug}",
                             new { controller = "Boards", action = "Topic", slug = UrlParameter.Optional },
                             new { id = @"\d+"},
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("TopicSlugPaged",
-                            "boards/topic/{id}/{slug}/page/{page}",
+                            "dien-dan/topic/{id}/{slug}/page/{page}",
                             new { controller = "Boards", action = "Topic", slug = UrlParameter.Optional, page = UrlParameter.Optional },
                             new { id = @"\d+", page = @"\d+"},
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("ForumWatch",
-                            "boards/forumwatch/{id}",
+                            "dien-dan/forumwatch/{id}",
                             new { controller = "Boards", action = "ForumWatch" },
                             new { id = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("ForumRSS",
-                            "boards/forumrss/{id}",
+                            "dien-dan/forumrss/{id}",
                             new { controller = "Boards", action = "ForumRSS" },
                             new { id = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("ForumSlug",
-                            "boards/forum/{id}/{slug}",
+                            "dien-dan/forum/{id}/{slug}",
                             new { controller = "Boards", action = "Forum", slug = UrlParameter.Optional },
                             new { id = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("ForumSlugPaged",
-                            "boards/forum/{id}/{slug}/page/{page}",
+                            "dien-dan/forum/{id}/{slug}/page/{page}",
                             new { controller = "Boards", action = "Forum", slug = UrlParameter.Optional, page = UrlParameter.Optional },
                             new { id = @"\d+", page = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("ForumGroupSlug",
-                            "boards/forumgroup/{id}/{slug}",
+                            "dien-dan/forumgroup/{id}/{slug}",
                             new { controller = "Boards", action = "ForumGroup", slug = UrlParameter.Optional },
                             new { id = @"\d+" },
                             new[] { "Nop.Web.Controllers" });
             routes.MapLocalizedRoute("Search",
-                            "boards/search",
+                            "dien-dan/search",
                             new { controller = "Boards", action = "Search" },
                             new[] { "Nop.Web.Controllers" });
 
