@@ -29,8 +29,7 @@ namespace Nop.Web.Validators.Catalog
             RuleFor(x => x.Area).NotEmpty().WithMessage(localizationService.GetResource("Products.Fields.Area.Required"));
                 //.InclusiveBetween(1, 99999).When(x => x.ProductType != (int)ProductType.ProjectProduct).WithMessage(localizationService.GetResource("Products.Fields.Area.InclusiveBetween"));
 
-            RuleFor(x => x.Width).NotEmpty().WithMessage(localizationService.GetResource("Products.Fields.Width.Required"))
-                .InclusiveBetween(1, 99999).When(x => x.ProductType != (int)ProductType.ProjectProduct).WithMessage(localizationService.GetResource("Products.Fields.Width.GreaterRange"));
+            RuleFor(x => x.Width).NotEmpty().WithMessage(localizationService.GetResource("Products.Fields.Width.Required")).InclusiveBetween(1, 99999).When(x => x.ProductType != (int)ProductType.ProjectProduct).WithMessage(localizationService.GetResource("Products.Fields.Width.GreaterRange"));
                 //.LessThan(99999).When(x => x.ProductType != (int)ProductType.ProjectProduct).WithMessage(localizationService.GetResource("Products.Fields.Width.LessRange"));
             
             RuleFor(x => x.Dept).NotEmpty().WithMessage(localizationService.GetResource("Products.Fields.Dept.Required"))

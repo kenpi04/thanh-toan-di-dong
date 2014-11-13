@@ -22,81 +22,80 @@
     @Html.ValidationSummary()
 </div>
 @Html.HiddenFor(model => model.Price)
-
 <div class="floatLeft">
     <div class="blueText">THÔNG TIN LIÊN HỆ</div>
     <div class="boxWrapper form-request-contact">
+        @Html.RequiredHint()    
         @Html.TextBoxFor(x => x.ContactName, new { @class = "formBoxIn", placeholder = "Họ và tên" })
         @Html.RequiredHint()
         @Html.TextBoxFor(x => x.ContactPhone, new { @class = "formBoxIn", placeholder = "Số điện thoại", })
-        @Html.RequiredHint()
         @Html.TextBoxFor(x => x.Email, new { @class = "formBoxIn", placeholder = "Email" })
         <br />
-        <br>
-        @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
-        @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect", id = "ddlQuan" })
+        <br>        
         @Html.RequiredHint()
+        @Html.DropDownListFor(x => x.DistrictId, Model.Districts, new { @class = "formBoxInSelect", id = "ddlQuan" })        
         @Html.DropDownListFor(x => x.WardId, new List<SelectListItem>(), "Chọn phường", new { @class = "formBoxInSelect" })
         @Html.DropDownListFor(x => x.StreetId, new List<SelectListItem>(), "Chọn đường", new { @class = "formBoxInSelect" })
+        @Html.TextBoxFor(x => x.NumberOfHome, new { @class = "formBoxIn", placeholder = "Số nhà" })
         <br /> <br />
-        @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:90%", placeholder = "Địa chỉ đầy đủ" })
+        @Html.TextBoxFor(x => x.FullAddress, new { @class = "formBoxIn", style = "width:677px;margin-left:12px", placeholder = "Địa chỉ đầy đủ" })
     </div><!----boxWrapper------->
 </div><!---floatLeft---->
 <div class="floatLeft">
     <div class="blueText">TỔNG QUAN VỀ DỰ ÁN</div>
     <div class="boxWrapperSmall form-request-contact">
-        <table style="width:100%">
+        <table class="project-field">
             <tbody>                
                 <tr>                    
-                    <td>Tên dự án @Html.RequiredHint() :</td>
+                    <td>Tên dự án @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Promotion, new { @class = "formBoxInTable", placeholder = "Tên dự án" })
+                        @Html.TextBoxFor(x => x.Promotion, new { @class = "formBoxInTable", placeholder = "Tên dự án"})
                     </td>
                 </tr>
                 <tr>
-                    <td>Tên gọi khác :</td>
+                    <td>Tên gọi khác&nbsp;&nbsp;</td>
                     <td>
-                        @Html.TextAreaFor(x => x.DacDiemNoiBat, new { @class = "formBoxInTable", placeholder = "Tên gọi khác" })                        
+                        @Html.TextAreaFor(x => x.DacDiemNoiBat, new { @class = "formBoxInTable", placeholder = "Tên gọi khác", style = "width:166px;height:64px;margin-bottom:6px;" })
                     </td>
                 </tr>                
                 <tr>
-                    <td>Loại hình @Html.RequiredHint() :</td>
+                    <td>Loại hình @Html.RequiredHint()</td>
                     <td>
                         @Html.DropDownListFor(x => x.CateId, Model.Categories, new { @class = "formBoxInSelectTable" })
                     </td>                    
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.Area) @Html.RequiredHint() :</td>
+                    <td>@Html.LabelFor(x => x.Area) @Html.RequiredHint()</td>
                     <td>
                         @Html.TextBoxFor(x => x.Area, "{0:0}", new { @class = "formBoxInTable", placeholder = "Diện tích" })
                     </td>                    
                 </tr>
                 <tr>
-                    <td>Số tầng @Html.RequiredHint() :</td>
+                    <td>Số tầng @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Width, "{0:0}", new { @class = "formBoxInTable", placeholder = "Số tầng" })
+                        @Html.TextBoxFor(x => x.Width, "{0:0}", new { @class = "formBoxInTable", placeholder = "Số tầng", data_val_range = "Số tầng phải lớn hơn 0." })
                     </td>                    
                 </tr>
                 <tr>
-                    <td>Số block @Html.RequiredHint() :</td>
+                    <td>Số block @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Dept, "{0:0}", new { @class = "formBoxInTable", placeholder = "Số block" })
+                        @Html.TextBoxFor(x => x.Dept, "{0:0}", new { @class = "formBoxInTable", placeholder = "Số block", data_val_range = "Số block phải lớn hơn 0." })
                     </td>                    
                 </tr>
                 <tr>
-                    <td>Thời gian khởi công @Html.RequiredHint() :</td>
+                    <td>Thời gian khởi công @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.StartConstructionDate, new { @class = "formBoxInTable", placeholder = "Thời gian khởi công" })
+                        @Html.TextBoxFor(x => x.StartConstructionDate, new { @class = "formBoxInTable", placeholder = "Thời gian khởi công"})
                     </td>
                 </tr>
                 <tr>
-                    <td>Thời gian hoàn thành @Html.RequiredHint() :</td>
+                    <td>Thời gian hoàn thành @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.FinishConstructionDate, new { @class = "formBoxInTable", placeholder = "Thời gian hoàn thành" })
+                        @Html.TextBoxFor(x => x.FinishConstructionDate, new { @class = "formBoxInTable", placeholder = "Thời gian hoàn thành"})
                     </td>
                 </tr>
                 <tr>
-                    <td>@Html.LabelFor(x => x.StatusList) @Html.RequiredHint() :</td>
+                    <td>@Html.LabelFor(x => x.StatusList) @Html.RequiredHint()</td>
                     <td>
                         <select name="SelectedOptionAttributes" class="formBoxInSelectTable">
                             @foreach (var i in Model.StatusList)
@@ -107,13 +106,13 @@
                     </td>                    
                 </tr>
                 <tr>
-                    <td>Chủ đầu tư @Html.RequiredHint() :</td>
+                    <td>Chủ đầu tư @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.ChuDauTu, new { @class = "formBoxInTable", placeholder = "Chủ đầu tư" })                        
+                        @Html.TextBoxFor(x => x.ChuDauTu, new { @class = "formBoxInTable", placeholder = "Chủ đầu tư"})
                     </td>
                 </tr>
                 <tr>
-                    <td>Đơn vị thi công @Html.RequiredHint() :</td>
+                    <td>Đơn vị thi công @Html.RequiredHint()</td>
                     <td>
                         @Html.TextBoxFor(x => x.DonViThiCong, new { @class = "formBoxInTable", placeholder = "Tên đơn vị thi công" })
                     </td>
@@ -133,13 +132,13 @@
     <div class="floatLeft">
         <div id="pictures">
         </div>
-        <ul id="lstPic">
+        <ul id="lstPic" class="sortable grid">
             @foreach (var i in Model.PictureModels)
             {
-                <li id="picture_id_@i.Id" style="float:left;margin-right:10px">
-                    <input type="button" class="blueBtn" style="position: absolute;" value="Xóa" onclick="deletePicture(@i.Id)" />
-                    <img width="100" height="100" src="@i.ImageUrl" /><br />
-                    <textarea maxlength="500" name="PictureTitle_@i.PictureId" cols="10" rows="5">@i.Description</textarea>
+                <li id="picture_id_@i.Id">
+                    <input type="button" class="blueBtn" style="position: absolute;font-size:10px;padding:5px 5px;" value="Xóa" onclick="deletePicture(@i.Id)" />
+                    <img width="100" height="100" src="@i.ImageUrl" />
+                    <input type="hidden" name="picture_id_@i.PictureId" />
                 </li>
             }
         </ul>
@@ -182,12 +181,21 @@
     </div>
 </div><!---floatLeft---->
 <script type="text/javascript">
+    $(document).ready(function(){
+        $("#frmProduct").validate();
+        $("#@Html.IdFor(x=>x.Promotion)").rules("add", {required:true, messages: {required:"Tên dự án là bắt buộc."}});
+        $("#@Html.IdFor(x=>x.StartConstructionDate)").rules("add", {required:true, messages: {required:"Thời gian khởi công là bắt buộc." }});
+        $("#@Html.IdFor(x=>x.FinishConstructionDate)").rules("add", {required:true, messages: {required:"Thời gian hoàn thành là bắt buộc." }});
+        $("#@Html.IdFor(x=>x.DonViThiCong)").rules("add", {required:true, messages: {required:"Tên đơn vị thi công là bắt buộc." }});
+        $("#@Html.IdFor(x=>x.ChuDauTu)").rules("add", {required:true, messages: {required:"Chủ đầu tư là bắt buộc." }});
+    })
+
     $(function () {
         var pictureids = [];
         ISFIRSTLOAD=true;
         $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
         $("#@Html.FieldIdFor(x => x.StreetId),#@Html.FieldIdFor(x => x.DistrictId),#@Html.FieldIdFor(x => x.WardId)").change(formatAdd);
-        $("#insertProduct-button").click(function () {            
+        $("#insertProduct-button").click(function () {
             if(!$("#frmProduct").valid())
             {
                 $('html,body').animate({
@@ -204,12 +212,12 @@
             }
             else {
                 displayAjaxLoading(true);
-                if($("div[id^=SWFUpload_]").size()==0)
-                {                    
+                //if($("div[id^=SWFUpload_]").size()==0)
+                //{
                     formSubmit();
-                }
-                else
-                    $('#FileUpload').uploadify('upload', '*')
+                //}
+                //else
+                //    $('#FileUpload').uploadify('upload', '*')
             }
             return false;
         })
@@ -231,7 +239,7 @@
                 $.each(d.Street, function (i, o) {
                     var option= $("<option/>").val(o.Id).text(o.Name);
                     if(ISFIRSTLOAD&& (o.Id==@Model.StreetId))
-                          option.attr("selected","selected");
+                        option.attr("selected","selected");
                     ddlStreet.append(option);
                 })
                 if(ISFIRSTLOAD)
@@ -249,15 +257,21 @@
         $('#FileUpload').uploadify({
             'swf': '@Url.Content("~/Content/uploadify/uploadify.swf")',
             'uploader': '@Url.Action("UploadPicture", "Catalog")',
-            'multi': true,
+            'multi': false,
             'method': 'post',
             'buttonText': 'CHỌN ẢNH ĐĂNG...',
-            'auto': false,
+            'auto': true,
             'fileSizeLimit': '2MB',
             'fileTypeExts': '*.gif; *.jpg; *.png; *.jpeg',
             'uploadLimit': 1,
             'cancelImg': '@Url.Content("~/Content/uploadify/uploadify-cancel.png")',
             'removeCompleted': false,
+            'queueID'  : 'lstPic',
+            'itemTemplate': '<li id="${fileID}" class="uploadify-queue-item" draggable="true" >\
+                    <div class="cancel">\
+                        <a class="cancel-a blueBtn" href="javascript:$(\'#${instanceID}\').uploadify(\'cancel\', \'${fileID}\')">Xóa</a>\
+                    </div>\
+                    <img style="display:none" class="preview" name="picture_id_0" />\<input type="hidden" name="picture_id_0" </li>',
             'onSelect': function (file) {
                 flag_error = 1;
                 $("div[id^=SWFUpload]").each(function(){
@@ -275,20 +289,19 @@
                 }
             },
             'onUploadSuccess': function (file, data, response) {
-                pictureids.push(data);
+                var obj = JSON.parse(data);
+                var img = $("img[name=picture_id_0]").first();
+                var input = $("input[name=picture_id_0]").first();
+                img.attr("name","picture_id_"+obj.id);
+                input.attr("name","picture_id_"+obj.id);
+                img.attr("src",obj.link);
+                img.show();
             },
             'onQueueComplete': function (queueData) {
-                if(pictureids.length>0)
-                {
-                    $("textarea[name=PictureTitle_0]").each(function(i,p){
-                        $(this).attr("name","PictureTitle_"+pictureids[i]);
-                    });
-                }
-                if ($("div[id^=SWFUpload_]").size()==0||$("textarea[name^=PictureTitle_][name!=PictureTitle_0]").size()==0) {
+                if ($("li[id^=SWFUpload_]").size()==0) {
                     alert('Vui lòng chọn hình ảnh đăng');
                     return false;
                 }
-                formSubmit();
             }
         });
     });
@@ -340,7 +353,7 @@
     <script type="text/javascript">                
         var CLICK=false;
         function deletePicture(id) {
-            if($("#lstPic li").length==1||CLICK)
+            if($("#lstPic li").length==0||CLICK)
                 return;
             var picture_id = $("#picture_id_"+id);
             CLICK=true;
@@ -363,10 +376,8 @@
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Failed to retrieve data.');
-                    //statesProgressd.hide();
                 }
             });
-            //return event.defaultPrevented || event.returnValue == false;
             return false;
         }
     </script>
