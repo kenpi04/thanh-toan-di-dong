@@ -1045,7 +1045,7 @@ namespace Nop.Services.Media
                                     ColorMap colorMap = new ColorMap();
 
                                     colorMap.OldColor = Color.FromArgb(255, 0, 255, 0);
-                                    colorMap.NewColor = Color.FromArgb(60, 0, 0, 0);
+                                    colorMap.NewColor = Color.FromArgb(0, 0, 0, 0);
                                     ColorMap[] remapTable = { colorMap };
 
                                     imageAttributes.SetRemapTable(remapTable,
