@@ -3897,15 +3897,15 @@ namespace Nop.Web.Controllers
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
 
-                var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
-                foreach (var tit in titlePic)
-                {
-                    model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                    //marketplace
+                    var pictureIdsNew = form.AllKeys.Where(x => x.Contains("picture_id_"));
+                    foreach (var picId in pictureIdsNew)
                     {
-                        Id = int.Parse(tit.Replace("PictureTitle_", "")),
-                        Title = form.GetValue(tit).AttemptedValue
-                    });
-                }
+                        model.PictureIds.Add(new InsertProductModel.PictureUploadModel
+                        {
+                            Id = int.Parse(picId.Replace("picture_id_", ""))
+                        });
+                    }
                 //template
                 product.ProductTemplateId = 1;
                 //ProductType
@@ -3943,6 +3943,7 @@ namespace Nop.Web.Controllers
 
                 #endregion
 
+                var j = 0;
                 #region InsertPictures
                 foreach (var i in model.PictureIds)
                 {
@@ -3950,10 +3951,12 @@ namespace Nop.Web.Controllers
                     {
                         PictureId = i.Id,
                         ProductId = product.Id,
-                        Description = i.Title
+                        Description = i.Title,
+                        DisplayOrder = j,
                     };
                     _productService.InsertProductPicture(pictureproduct);
                     _pictureService.SetSeoFilename(i.Id, _pictureService.GetPictureSeName(product.Name));
+                    j++;
                 }
                 #endregion
 
@@ -4032,15 +4035,15 @@ namespace Nop.Web.Controllers
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
 
-                var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
-                foreach (var tit in titlePic)
+                //marketplace
+                var pictureIdsNew = form.AllKeys.Where(x => x.Contains("picture_id_"));
+                foreach (var picId in pictureIdsNew)
                 {
                     model.PictureIds.Add(new InsertProductModel.PictureUploadModel
                     {
-                        Id = int.Parse(tit.Replace("PictureTitle_", "")),
-                        Title = form.GetValue(tit).AttemptedValue
+                        Id = int.Parse(picId.Replace("picture_id_", ""))
                     });
-                }
+                }   
 
                 #region Insert Categories
                 var cate = product.ProductCategories.FirstOrDefault();
@@ -4056,6 +4059,7 @@ namespace Nop.Web.Controllers
                 //delete
 
                 //add new
+                int j = 0;
                 var productPic = product.ProductPictures.Select(x => x.PictureId);
                 foreach (var i in model.PictureIds)
                 {
@@ -4065,7 +4069,8 @@ namespace Nop.Web.Controllers
                         {
                             PictureId = i.Id,
                             ProductId = product.Id,
-                            Description = i.Title
+                            Description = i.Title,
+                            DisplayOrder = j
                         };
                         _productService.InsertProductPicture(pictureproduct);
                         _pictureService.SetSeoFilename(i.Id, _pictureService.GetPictureSeName(product.Name));
@@ -4076,9 +4081,11 @@ namespace Nop.Web.Controllers
                         if (pictureProduct != null)
                         {
                             pictureProduct.Description = i.Title;
+                            pictureProduct.DisplayOrder = j;
                             _productService.UpdateProductPicture(pictureProduct);
                         }
                     }
+                    j++;
                 }
                 #endregion
 
@@ -4154,13 +4161,13 @@ namespace Nop.Web.Controllers
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
 
-                var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
-                foreach (var tit in titlePic)
+                //marketplace
+                var pictureIdsNew = form.AllKeys.Where(x => x.Contains("picture_id_"));
+                foreach (var picId in pictureIdsNew)
                 {
                     model.PictureIds.Add(new InsertProductModel.PictureUploadModel
                     {
-                        Id = int.Parse(tit.Replace("PictureTitle_", "")),
-                        Title = form.GetValue(tit).AttemptedValue
+                        Id = int.Parse(picId.Replace("picture_id_", ""))
                     });
                 }
                 //template
@@ -4206,8 +4213,7 @@ namespace Nop.Web.Controllers
                     var pictureproduct = new ProductPicture
                     {
                         PictureId = i.Id,
-                        ProductId = product.Id,
-                        Description = i.Title
+                        ProductId = product.Id
                     };
                     _productService.InsertProductPicture(pictureproduct);
                     _pictureService.SetSeoFilename(i.Id, _pictureService.GetPictureSeName(product.Name));
@@ -4295,13 +4301,13 @@ namespace Nop.Web.Controllers
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
 
-                var titlePic = form.AllKeys.Where(x => x.Contains("PictureTitle_"));
-                foreach (var tit in titlePic)
+                //marketplace
+                var pictureIdsNew = form.AllKeys.Where(x => x.Contains("picture_id_"));
+                foreach (var picId in pictureIdsNew)
                 {
                     model.PictureIds.Add(new InsertProductModel.PictureUploadModel
                     {
-                        Id = int.Parse(tit.Replace("PictureTitle_", "")),
-                        Title = form.GetValue(tit).AttemptedValue
+                        Id = int.Parse(picId.Replace("picture_id_", ""))
                     });
                 }
 

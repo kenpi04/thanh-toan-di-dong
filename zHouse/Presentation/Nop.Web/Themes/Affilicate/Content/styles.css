@@ -147,7 +147,7 @@ td.fieldname{font-size:12px}
 .message-error ul li{list-style:none;padding:5px 0}
 .validation-summary-errors{font-weight:bold;color:red;padding:10px;text-align:left;background:#ddd}
 .field-validation-error{font-weight:700;color:red}
-.required{color:red}
+.required{color:red;margin-right:3px;}
 .not-found-page ul li{list-style:none;margin-top:10px}
 .sitemap-page{margin-left:auto;margin-right:auto;width:100%}
 .sitemap-page a{text-decoration:none}
@@ -1354,6 +1354,8 @@ textarea.formBoxInText{height:70px}
 .div-map .map-title p{color:#c06;font-size:15px;font-weight:700;padding:0;margin:0;}
 .div-map.map-project{width:800px;margin-top:10px;}
 .div-map.map-project map{width:100%;height:400px;display:inline-block;}
+.project-field{width:auto;}
+.project-field tr td:first-child{text-align:right}
 /*market*/
 .banner-home {width:510px;height:352px;overflow:hidden;cursor:pointer;float:left}
 .new-column {box-sizing:border-box;width:270px;float:left;}
