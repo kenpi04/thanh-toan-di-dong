@@ -2244,6 +2244,7 @@
     <Content Include="Themes\Affilicate\Views\Catalog\_MapInsertProduct.cshtml" />
     <Content Include="Themes\Affilicate\Views\Catalog\HomepageProjectProducts.cshtml" />
     <Content Include="Themes\Affilicate\Views\Shared\_RootFullWidth.cshtml" />
+    <Content Include="Themes\Affilicate\Views\Catalog\_ProductBoxRent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />

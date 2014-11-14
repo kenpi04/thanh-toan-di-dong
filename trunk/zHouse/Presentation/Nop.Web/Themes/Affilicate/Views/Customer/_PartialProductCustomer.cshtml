@@ -84,7 +84,6 @@
                     $("#newEndDate-" + id).hide();
                     $("#plus-" + id).attr("src", "/Themes/Affilicate/Content/images/icon-plus.png");
                 }
-
             };
     function updateNew(id, action, value) {
         if (confirm("Bạn có chắc thay đổi trạng thái?")) {
@@ -106,7 +105,12 @@
                             $("#item-" + id).hide("slow");
                             $("#item" + id).remove();
                         }
-                        if (action == 4 || action==7)
+                        if(action==4)
+                        {
+                            if (value == 10) { $("#approved-" + id).attr("src", "/Themes/Affilicate/Content/images/icon-notyetapproved.png"); }
+                            if (value == 20) { $("#approved-" + id).attr("src", "/Themes/Affilicate/Content/images/icon-approved.png"); }
+                        }
+                        if (action==7)
                         {
                             $("#searchProduct").click();
                         }                        

@@ -11,7 +11,6 @@
         var categoryUrl = Url.RouteUrl("Category", new { SeName = Model.SeName }, this.Request.Url.Scheme);
         Html.AddCanonicalUrlParts(categoryUrl);
     }
-
     var breadcrumbDelimiter = EngineContext.Current.Resolve<CommonSettings>().BreadcrumbDelimiter;
 }
 @using Nop.Core.Domain.Common;
@@ -19,7 +18,6 @@
 @using Nop.Core.Infrastructure;
 @using Nop.Web.Models.Catalog;
 @using Nop.Web.Extensions;
-@*category breadcrumb*@
 @if (Model.DisplayCategoryBreadcrumb)
 {
     <div class="breadcrumb">
@@ -29,21 +27,20 @@
             @foreach (var cat in Model.CategoryBreadcrumb)
             {
                 var isLastCategory = cat.Id == Model.Id;
-                <li>
-                    @if (isLastCategory)
-                    {
-                        <strong class="current-item">@cat.Name</strong>
-                    }
-                    else
-                    {
-                        <a href="@Url.RouteUrl("Category", new { SeName = cat.SeName })" title="@cat.Name">@cat.Name</a>
-                        <span class="delimiter">@breadcrumbDelimiter</span>
-                    }
-                </li>
+            <li>
+                @if (isLastCategory)
+                {
+                    <strong class="current-item">@cat.Name</strong>
+                }
+                else
+                {
+                    <a href="@Url.RouteUrl("Category", new { SeName = cat.SeName })" title="@cat.Name">@cat.Name</a>
+                    <span class="delimiter">@breadcrumbDelimiter</span>
+                }
+            </li>
             }
         </ul>
     </div>
-    @Html.Widget("categorydetails_after_breadcrumb")
 }
 <div class="page category-page">
     <div class="page-body">
@@ -52,40 +49,38 @@
             <div class="product-list" id="ListProduct">
                 @if (Model.Products.Count > 0)
                 {
-                    @*<h1 class="cate-title pinkNarrowTitle">@Model.Name</h1>*@
-                    <div class="product-selectors">
-                        @*view mode*@
-                        @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
-                        {
-                            <div class="product-viewmode">
-                                <div class="pager">
-                                    @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
-                                </div>
-                            </div>
-                        }
-                        @*sorting*@
-                        @if (Model.PagingFilteringContext.AllowProductSorting && Model.Products.Count > 0)
-                        {
-                            <div class="product-sorting">
-                                @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
-                            </div>
-                        }
-                    </div>
-                    foreach (var product in Model.Products)
+                <div class="product-selectors">
+                    @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
                     {
-                        @Html.Partial("_ProductBox", product)
-                    }
-                    <div class="clearBoth"></div>
-    <div class="pager" style="margin-right:13px;margin-bottom:5px">
-        @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
-    </div>
-                }
-                else
-                {
-                    <div class=info-nopro>
-                        <b style="color:#0094ff; margin-left:30px;">Chưa có tin đăng nào</b>                       
+                    <div class="product-viewmode">
+                        <div class="pager">
+                            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
+                        </div>
                     </div>
-                }
+                    }
+                    @if (Model.PagingFilteringContext.AllowProductSorting && Model.Products.Count > 0)
+                    {
+                    <div class="product-sorting">
+                        @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
+                    </div>
+                    }
+                </div>
+                    if(Model.Id!=16){
+                    foreach (var product in Model.Products){
+                        @Html.Partial("_ProductBox", product)
+                    }}
+                    else{
+                        foreach (var product in Model.Products){
+                            @Html.Partial("_ProductBoxRent", product)
+                    }}
+                <div class="clearBoth"></div>
+                <div class="pager" style="margin-right:13px;margin-bottom:5px">
+                    @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber").BooleanParameterName("as").BooleanParameterName("isc").BooleanParameterName("sid")
+                </div>}
+                else{
+                <div class=info-nopro>
+                    <b style="color:#0094ff; margin-left:30px;">Chưa có tin đăng nào</b>                       
+                </div>}
             </div>        
         </div>
         <div class="rightContentTwist" style="width:30%">
