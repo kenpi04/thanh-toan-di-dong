@@ -1132,7 +1132,7 @@ ul{margin:0}
 .detailTable{float:left;width:835px;margin-top:-2px;background:#fff;border:1px solid #ccc}
 .detailTable .detail-info{float:left;width:35%;margin-left:-1px}
 .detailTable .detail-picture{float:left;width:65%}
-.detailTable table{width:100%;border-collapse:collapse;position:relative;border:1px solid #c2c2c2}
+.detailTable table{width:100%;border-collapse:collapse;position:relative;border:1px solid #c2c2c2;}
 .detailTable td{background:#fff;border:1px solid #c2c2c2;padding:7px 10px;font-size:13px;line-height:20px;font-weight:bold}
 .greyBgTD{background:#fafafa !important;width:80px}
 .thumbnail{float:left;width:100%}
@@ -1172,6 +1172,7 @@ ul{margin:0}
 #popup h1{padding:8px 0;background:#c06;color:#fff;font-weight:bold;font-size:14px;text-align:center;text-transform:uppercase;margin-top:10px}
 .whiteBgCata{padding:4px 0 4px 0px;border-radius:3px;overflow:hidden;background-color:#f5f5f5}
 .whiteBgCata > span {min-width:92px;width:45%; padding:0 0 0 3px;display:inline-block;line-height:24px}
+.whiteBgCata.forRent >span{width:100%;}
 .whiteBgCata-small{padding:7px 0px;font-size:13px;color:#666;border-top:1px #ddd dashed;float:left;width:100%;margin-top:10px;font-weight:normal}
 .pinkNarrowTitle30{font-weight:900;font-stretch:ultra-condensed;font-family:"Myriad Pro",Arial,Helvetica,sans-serif;font-size:30px;color:#c06}
 .whiteLeftCol{float:left;width:220px;margin: 0 0px 10px 0;background:#fff}

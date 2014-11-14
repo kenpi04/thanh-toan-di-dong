@@ -4,34 +4,27 @@
 @using Nop.Web.Models.Catalog;
 @{
     Html.AddScriptParts("~/Scripts/slimbox2.js");
-
 }
 @if (Model.Count > 0)
-{ 
- 
-   <div id="slider-detail" class="flexslider">
+{  
+<div id="slider-detail" class="flexslider">
   <ul class="slides">
       @foreach(var i in Model)
       {
     <li style="text-align:-webkit-center">
-        <div style="width:100%;height:600px;text-align:center;display: table-cell;vertical-align: middle;">
+        <div style="width:100%;height:550px;text-align:center;display: table-cell;vertical-align: middle;">
             <img style="width:auto" alt="@i.AlternateText" title="@i.Title" src="@i.FullSizeImageUrl" />
-        </div>
-  
+        </div>  
     </li>
       }
    
   </ul>
 </div>
-<div id="carousel" class="flexslider">
-  <ul class="slides">
-       @foreach(var i in Model)
-      {
-        <li>
-          <img style="width:80px;height:80px;" src="@i.ImageUrl" alt="@i.AlternateText" title="@i.Title"/>
-        </li>
-       }
-    
+<div id="carousel" style="border-top:1px solid #ccc;padding:1px;" class="flexslider">
+  <ul class="slides">@foreach(var i in Model){
+    <li>
+        <img style="width:80px;height:80px;" src="@i.ImageUrl" alt="@i.AlternateText" title="@i.Title"/>
+    </li>}    
   </ul>
 </div>
     <script>
@@ -41,8 +34,7 @@
                 animation: "slide",
                 controlNav: false,
                 animationLoop: false,
-                slideshow: false,
-           
+                slideshow: false,           
                 itemMargin: 0,
                 asNavFor: '#slider-detail'
             });

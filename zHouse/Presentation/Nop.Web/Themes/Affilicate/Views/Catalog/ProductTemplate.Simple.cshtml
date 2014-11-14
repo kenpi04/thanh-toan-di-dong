@@ -54,8 +54,7 @@
             </div>
             <script>
                 $(function () {
-                    $("#detail-picture").html("<div class='please-wait'></div>").load("@Url.Action("GetProductImages", new { productId = Model.Id })", function (d) {
-
+                    $("#detail-picture").html("<div class='loading-img'></div>").load("@Url.Action("GetProductImages", new { productId = Model.Id })", function (d) {
                         $('#carousel').flexslider({
                             animation: "slide",
                             controlNav: false,
@@ -179,10 +178,9 @@
                 </div>
             </div><!---twoColRight---->
         </div><!--pinkBgRight----->
-        <div class="load-ajax" data-url="@Url.Action("RelatedProductCustomer", new { Id = Model.Id, productThumbPictureSize = 105, pageSize = 10 })"></div>        
+        <div class="load-ajax" data-url="@Url.Action("RelatedProductCustomer", new { Id = Model.Id, productThumbPictureSize = 105, pageSize = 8 })"></div>        
         <div class="ad">
             @Html.FptBanner(104)
         </div><!----rightContent---------------->
     </div>
 </div>
-
