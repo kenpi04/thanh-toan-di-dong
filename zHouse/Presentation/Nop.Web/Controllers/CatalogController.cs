@@ -488,8 +488,6 @@ namespace Nop.Web.Controllers
                 {
                     model.ProductPrice.Price = Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ", product.ProductTypeId);
                 }
-
-
                 //picture
                 if (preparePictureModel)
                 {
@@ -922,7 +920,7 @@ namespace Nop.Web.Controllers
             }
             else
             {
-                model.ProductPrice.Price = Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "vnđ");
+                model.ProductPrice.Price = Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, product.ProductTypeId !=16? "vnđ":" vnđ/tháng", product.ProductTypeId);
                 model.ProductPrice.PriceValue = product.Price;
             }
 
@@ -5055,7 +5053,7 @@ namespace Nop.Web.Controllers
                 return Content("");
             var products = _productService.SearchProducts(
                    storeId: _storeContext.CurrentStore.Id,
-                   categoryIds: new List<int> { category == null ? category.Id : 0 },
+                   categoryIds: new List<int> { category == null ? 0 : category.CategoryId },
                    districtIds: new List<int> { product.DistrictId },
                    visibleIndividuallyOnly: true,
                    orderBy: ProductSortingEnum.CreatedOn,
