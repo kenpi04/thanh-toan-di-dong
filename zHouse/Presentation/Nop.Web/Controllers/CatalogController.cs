@@ -486,7 +486,7 @@ namespace Nop.Web.Controllers
                 }
                 else
                 {
-                    model.ProductPrice.Price = Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ");
+                    model.ProductPrice.Price = Nop.Web.Framework.Extensions.ReturnPriceString(product.Price, "đ", product.ProductTypeId);
                 }
 
 
@@ -1315,7 +1315,7 @@ namespace Nop.Web.Controllers
                 stateProvinceId: stateProvinceId,
                 streetId: streetId,
                 orderBy: (ProductSortingEnum)command.OrderBy,
-                status:ProductStatusEnum.Approved,
+                status: ProductStatusEnum.Approved,
                 pageIndex: command.PageNumber - 1,
                 pageSize: command.PageSize);
             var modelProducts = await PrepareProductOverviewModelsAsyn(products);
@@ -1351,6 +1351,7 @@ namespace Nop.Web.Controllers
 
             return View(templateViewPath, model);
         }
+
 
         [ChildActionOnly]
         public ActionResult CategoryNavigation(int currentCategoryId, int currentProductId)
@@ -2366,16 +2367,16 @@ namespace Nop.Web.Controllers
         }
 
         public async Task<ActionResult> NewProducts(int? pageSize, int? productThumbPictureSize, int? categoryId)
-        {            
-                var products = _productService.SearchProducts(pageSize: pageSize.HasValue ? pageSize.Value : 8,
-                                                              categoryIds: new List<int> { categoryId.HasValue ? categoryId.Value : 1 },
-                                                              storeId: _storeContext.CurrentStore.Id,
-                                                              status: ProductStatusEnum.Approved,
-                                                              orderBy: ProductSortingEnum.CreatedOn);
+        {
+            var products = _productService.SearchProducts(pageSize: pageSize.HasValue ? pageSize.Value : 8,
+                                                          categoryIds: new List<int> { categoryId.HasValue ? categoryId.Value : 1 },
+                                                          storeId: _storeContext.CurrentStore.Id,
+                                                          status: ProductStatusEnum.Approved,
+                                                          orderBy: ProductSortingEnum.CreatedOn);
 
-                var model = (await PrepareProductOverviewModelsAsyn(products, true, true, productThumbPictureSize)).ToList();
+            var model = (await PrepareProductOverviewModelsAsyn(products, true, true, productThumbPictureSize)).ToList();
 
-                return PartialView("HomepageProducts", model);            
+            return PartialView("HomepageProducts", model);
         }
 
         /*
@@ -3293,7 +3294,7 @@ namespace Nop.Web.Controllers
                 pageIndex: command.PageNumber - 1,
                 pageSize: command.PageSize,
                 filteredSpecs: selectedOptionIds,
-                status:ProductStatusEnum.Approved,
+                status: ProductStatusEnum.Approved,
                 stateProvinceId: stateProvinceId,
                 districtIds: new List<int> { districtId },
                 wardId: new List<int> { wardId },
@@ -3450,7 +3451,7 @@ namespace Nop.Web.Controllers
                         {
                             Id = int.Parse(picId.Replace("picture_id_", ""))
                         });
-                    }                    
+                    }
                 }
 
 
@@ -3608,7 +3609,8 @@ namespace Nop.Web.Controllers
                             Title = form.GetValue(tit).AttemptedValue
                         });
                     }
-                }else
+                }
+                else
                 {
                     //marketplace
                     var pictureIdsNew = form.AllKeys.Where(x => x.Contains("picture_id_"));
@@ -3618,7 +3620,7 @@ namespace Nop.Web.Controllers
                         {
                             Id = int.Parse(picId.Replace("picture_id_", ""))
                         });
-                    }                    
+                    }
                 }
 
                 #region Insert Categories
@@ -3831,7 +3833,7 @@ namespace Nop.Web.Controllers
                     return Json(resultMessage);
                 }
             }
-            if(action==7)
+            if (action == 7)
             {
                 if (!String.IsNullOrEmpty(value))
                 {
@@ -3897,21 +3899,21 @@ namespace Nop.Web.Controllers
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
 
-                    //marketplace
-                    var pictureIdsNew = form.AllKeys.Where(x => x.Contains("picture_id_"));
-                    foreach (var picId in pictureIdsNew)
+                //marketplace
+                var pictureIdsNew = form.AllKeys.Where(x => x.Contains("picture_id_"));
+                foreach (var picId in pictureIdsNew)
+                {
+                    model.PictureIds.Add(new InsertProductModel.PictureUploadModel
                     {
-                        model.PictureIds.Add(new InsertProductModel.PictureUploadModel
-                        {
-                            Id = int.Parse(picId.Replace("picture_id_", ""))
-                        });
-                    }
+                        Id = int.Parse(picId.Replace("picture_id_", ""))
+                    });
+                }
                 //template
                 product.ProductTemplateId = 1;
                 //ProductType
                 product.ProductType = ProductType.RentProduct;
                 PreapringProductToEntity(model, product);
-                product.Price = model.Price;
+                product.Price = model.Price * 100000;
                 string seName = await product.ValidateSeNameAsync(product.Name, product.Name, true);
                 if (_storeContext.CurrentStore.Id != 1)
                 {
@@ -4030,7 +4032,7 @@ namespace Nop.Web.Controllers
                 product.ProductTemplateId = 1;
                 product.ProductType = ProductType.RentProduct;
                 PreapringProductToEntity(model, product);
-                product.Price = model.Price;
+                product.Price = model.Price * 100000;
                 var selectedId = form.GetValues("SelectedOptionAttributes");
                 if (selectedId.Length > 0)
                     model.SelectedOptionAttributes = selectedId.Where(x => x != "0").Select(x => int.Parse(x)).ToList();
@@ -4043,7 +4045,7 @@ namespace Nop.Web.Controllers
                     {
                         Id = int.Parse(picId.Replace("picture_id_", ""))
                     });
-                }   
+                }
 
                 #region Insert Categories
                 var cate = product.ProductCategories.FirstOrDefault();
@@ -4499,7 +4501,7 @@ namespace Nop.Web.Controllers
             p.Length = inPd.Length;
             p.Weight = inPd.Weight;
             p.RequiredProductIds = inPd.ProjectName;
-            
+
             p.Name = inPd.Name;
             p.FullAddress = inPd.FullAddress;
             if (p.ProductType != ProductType.SimpleProduct)
@@ -4521,7 +4523,7 @@ namespace Nop.Web.Controllers
                 p.FinishConstructionDate = inPd.FinishConstructionDate;
                 p.ManufacturerPartNumber = inPd.ChuDauTu;
                 p.Gtin = inPd.DonViThiCong;
-            }           
+            }
         }
 
         private InsertProductModel ProductToInsertModel(Product p)
@@ -4547,7 +4549,7 @@ namespace Nop.Web.Controllers
                 NumberOfHome = p.HouseNumber,
                 SelectedOptionAttributes = p.ProductSpecificationAttributes.Select(x => x.SpecificationAttributeOptionId).ToList(),
                 Name = p.Name,
-                PictureIds = p.ProductPictures.OrderBy(x=>x.DisplayOrder).Select(x => new InsertProductModel.PictureUploadModel { Id = x.PictureId, Title = x.Description }).ToList(),
+                PictureIds = p.ProductPictures.OrderBy(x => x.DisplayOrder).Select(x => new InsertProductModel.PictureUploadModel { Id = x.PictureId, Title = x.Description }).ToList(),
                 FullAddress = p.FullAddress,
                 DacDiemNoiBat = p.UserAgreementText,
                 Promotion = p.Promotion,
@@ -4571,7 +4573,7 @@ namespace Nop.Web.Controllers
             if (cate != null)
                 model.CateId = cate.CategoryId;
 
-            model.PictureModels = p.ProductPictures.OrderBy(x=>x.DisplayOrder).Select(x => new PictureModel
+            model.PictureModels = p.ProductPictures.OrderBy(x => x.DisplayOrder).Select(x => new PictureModel
             {
                 ImageUrl = _pictureService.GetPictureUrl(x.PictureId, 100),
                 Description = x.Description,
@@ -4670,7 +4672,7 @@ namespace Nop.Web.Controllers
                 model.ContactName = await customer.GetFullNameAsync();
                 model.ContactPhone = await customer.GetAttributeAsync<string>(SystemCustomerAttributeNames.Phone);
                 model.Email = customer.Email;
-                model.AvailableStartDateTime = DateTime.Now;                
+                model.AvailableStartDateTime = DateTime.Now;
             }
             model.Districts = (await _stateProvinceService.GetDistrictByStateProvinceIdAsync()).ToSelectList(x => x.Name, x => x.Id.ToString());
             model.Categories = (await _categoryService.GetAllCategoriesByParentCategoryIdAsync(categoryId))
@@ -4762,7 +4764,7 @@ namespace Nop.Web.Controllers
             fileBinary = CreateThumbnail(fileBinary, 700);
             var picture = _pictureService.InsertPicture(fileBinary, contentType, null, true);
             var link = _pictureService.GetPictureUrl(picture.Id, 100, false);
-            var result = new {id = picture.Id.ToString(), link=link};
+            var result = new { id = picture.Id.ToString(), link = link };
             return Content(Newtonsoft.Json.JsonConvert.SerializeObject(result));
 
             //return Json(new { data = Newtonsoft.Json.JsonConvert.SerializeObject(result) }, JsonRequestBehavior.AllowGet);
@@ -4982,7 +4984,7 @@ namespace Nop.Web.Controllers
                 dataModel.AvailableCategories.FirstOrDefault(x => int.Parse(x.Value) == selectedCateId).Selected = true;
             if (selectedDistrictId != 0)
             {
-                if(dataModel.Districts != null && dataModel.Districts.Count > 0)
+                if (dataModel.Districts != null && dataModel.Districts.Count > 0)
                     dataModel.Districts.FirstOrDefault(x => int.Parse(x.Value) == selectedDistrictId).Selected = true;
             }
             if (selectedWardId != 0)
@@ -5053,11 +5055,11 @@ namespace Nop.Web.Controllers
                 return Content("");
             var products = _productService.SearchProducts(
                    storeId: _storeContext.CurrentStore.Id,
-                   categoryIds: new List<int>{category == null ? category.Id:0},
-                   districtIds: new List<int>{product.DistrictId},
-                   visibleIndividuallyOnly: true,                      
+                   categoryIds: new List<int> { category == null ? category.Id : 0 },
+                   districtIds: new List<int> { product.DistrictId },
+                   visibleIndividuallyOnly: true,
                    orderBy: ProductSortingEnum.CreatedOn,
-                   pageSize: pageSize.HasValue?pageSize.Value:5);
+                   pageSize: pageSize.HasValue ? pageSize.Value : 5);
             var model = await PrepareProductOverviewModelsAsyn(products, preparePictureModel: true, productThumbPictureSize: productThumbPictureSize);
             return View(model);
         }
@@ -5070,7 +5072,7 @@ namespace Nop.Web.Controllers
             var product = _productService.GetProductById(productPicture.ProductId);
             if (product == null)
                 return Json(new { error = 1, message = "Product is null" }, JsonRequestBehavior.AllowGet);
-            if(!(customer.IsAdmin() || product.CustomerId == customer.Id))
+            if (!(customer.IsAdmin() || product.CustomerId == customer.Id))
             {
                 return Json(new { error = 1, message = "Bạn không có quyền" }, JsonRequestBehavior.AllowGet);
             }
