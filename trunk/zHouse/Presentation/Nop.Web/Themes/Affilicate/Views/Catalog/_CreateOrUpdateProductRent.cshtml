@@ -104,7 +104,7 @@
 <div class="floatLeft">
     <div class="colA"><div class="blueText">CƠ SỞ VẬT CHẤT @Html.RequiredHint() &nbsp;&nbsp;<label class="note2">(Vui lòng chọn ít nhất 1 thuộc tính)</label></div></div>
     <div class="colB">
-        <ul style="list-style: none">
+        <ul style="list-style: none" id="CoSoVatChat">
             @foreach (var i in Model.Facilities)
             {
                 <li style="float: left; width: 20%">
@@ -122,7 +122,7 @@
 <div class="floatLeft">
     <div class="colA"><div class="blueText">MÔI TRƯỜNG XUNG QUANH @Html.RequiredHint() &nbsp;&nbsp;<label class="note2">(Vui lòng chọn ít nhất 1 thuộc tính)</label></div></div>
     <div class="colB">
-        <ul style="list-style: none">
+        <ul style="list-style: none" id="MoiTruong">
             @foreach (var i in Model.Environments)
             {
                 <li style="float: left; width: 20%">
@@ -139,19 +139,26 @@
 </div><!----floatLeft----->
 <div class="floatLeft">
     <div class="colA"><div class="blueText">THÍCH HỢP @Html.RequiredHint() &nbsp;&nbsp;<label class="note2">(Vui lòng chọn ít nhất 1 thuộc tính)</label></div></div>
-    @foreach (var i in Model.ThichHop)
-    {
-        <div class="colB" style="float:left;margin-right:20px"> <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") /> @Html.Label(i.Text)</div>
-    }
+    <div class="colB">
+        <ul style="list-style: none" id="ThichHop">
+            @foreach (var i in Model.ThichHop)
+            {
+                <li style="float: left; width: 20%">
+                    <input type="checkbox" name="SelectedOptionAttributes" value="@i.Value" @(Model.SelectedOptionAttributes.Contains(int.Parse(i.Value)) ? "checked=checked" : "") />
+                    @Html.Label(i.Text)
+                </li>
+            }
+        </ul>
+    </div>
     <div class="clearBoth"></div>
     <br />
     <div class="boxWrapperSmall">
         @Html.TextAreaFor(x => x.NoteEnvironments, new { @class = "formBoxInText", placeholder = "vd: Bán tạp hóa, cho thuê nhà trọ, khu chợ vải ....)" })
     </div>
 </div><!----floatLeft----->
-<div class="floatLeft">
+<div class="floatLeft" id="anhdang">
     <div class="blueText">HÌNH ẢNH BẤT ĐỘNG SẢN<small> (Hình càng rõ ràng, đầy đủ, bất động sản sẽ được chú ý hơn)</small></div>
-    <div class="rightTable">        
+    <div class="rightTable">
         <div class="clearBoth">
             <i class="note">(*)Kích thước đề nghị 700x700 px hình vuông,dung lượng nhỏ hơn 2Mb</i><br />
             <i class="note">(*)Vui lòng đăng ít nhất 1 hình</i>
@@ -174,7 +181,7 @@
             }
         </ul>
         <div class="clearBoth"></div>
-    </div>    
+    </div>
 </div><!---floatLeft----->
 <div class="floatLeft">
     <div class="blueText">THỜI GIAN ĐĂNG TIN @Html.RequiredHint()</div>
@@ -216,8 +223,10 @@
 
         $("#Price").keyup(function () {
             var price = $(this).val();
-            if(price>999999999){price = 999999999;$("#Price").val(price);}
-            if(price<0){price=0;$("#Price").val(price);}})
+            if(price>99999){price = 99999;$("#Price").val(price);}
+            if(price<0){price=0;$("#Price").val(price);}
+            $("#price-text").html(StringPriceForRent(price, "vnđ"));
+        })
         $("#@Html.FieldIdFor(x => x.Width),#@Html.FieldIdFor(x => x.Dept)").keyup(function () {
             var value1 = $("#@Html.FieldIdFor(x => x.Dept)").val();
             var value2 = $("#@Html.FieldIdFor(x => x.Width)").val();
@@ -397,7 +406,11 @@
 </script>
 @if (Model.Id > 0)
 {
-    <script type="text/javascript">       
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var price=@Model.Price;
+            $("#@Html.FieldIdFor(x => x.Price)").val(price/100000).keyup();
+        })
         var CLICK=false;
         function deletePicture(id) {
             if($("#lstPic li").length==0||CLICK)

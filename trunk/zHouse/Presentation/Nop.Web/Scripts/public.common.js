@@ -5,7 +5,7 @@ $(document).ready(function (e) {
     $(".load-ajax").each(function (index, item) {
         var url = $(item).data("url");
         if (url && url.length > 0) {
-            $(item).html("<div class='please-wait'></div>").load(url);
+            $(item).html("<div class=loading-img></div>").load(url);
         }
     })
 })
@@ -144,6 +144,21 @@ function StringPrice(price, symbol) {
         return price + " triệu " + symbol;
     }
 }
+function StringPriceForRent(price, symbol) {
+    var temp;
+    if (Math.floor(price / 10) > 0) {
+        if (price % 10 != 0) {
+            return Math.floor(price / 10) + " triệu " + price % 10 + " trăm ngàn " + symbol;
+        }
+        else {
+            return Math.floor(price / 10) + " triệu " + symbol;
+        }
+    }
+    else {
+        return price + " trăm ngàn " + symbol;
+    }
+}
+
 $(function () {
     $(".datepicker").datepicker(); 
     $("input.number").keypress(function () {

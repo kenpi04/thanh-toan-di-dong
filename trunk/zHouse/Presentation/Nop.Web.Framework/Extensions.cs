@@ -387,8 +387,10 @@ namespace Nop.Web.Framework
                     new SelectListItem{Value = "1000-0", Text ="Trên 1000 m2"},
                 };
         }
-        public static string ReturnPriceString(decimal price, string symbol)
+        public static string ReturnPriceString(decimal price, string symbol, int productTypeId=5)
         {
+            if (productTypeId == 20) return ReturnPriceStringForRent(price, symbol);
+
             price = price / 1000000;
             if (Math.Floor(price / 1000) > 0)
             {
@@ -404,6 +406,25 @@ namespace Nop.Web.Framework
             else
             {
                 return ((int)price).ToString() + " triệu " + symbol;
+            }
+        }
+        public static string ReturnPriceStringForRent(decimal price, string symbol)
+        {            
+            price = price / 100000;
+            if (Math.Floor(price / 10) > 0)
+            {
+                if (price % 10 != 0)
+                {
+                    return ((int)Math.Floor(price / 10)).ToString() + " triệu " + ((int)(price % 10)).ToString() + " trăm ngàn " + symbol;
+                }
+                else
+                {
+                    return ((int)Math.Floor(price / 10)).ToString() + " triệu " + symbol;
+                }
+            }
+            else
+            {
+                return ((int)price).ToString() + " trăm ngàn " + symbol;
             }
         }
     }
