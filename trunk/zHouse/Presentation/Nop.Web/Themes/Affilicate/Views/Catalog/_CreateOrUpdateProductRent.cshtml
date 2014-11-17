@@ -54,7 +54,7 @@
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.Width) @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Width, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều rộng" })
+                        @Html.TextBoxFor(x => x.Width, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều rộng", data_val_number = "Chiều rộng phải là kiểu số." })
                     </td>                    
                 </tr>
                 <tr>
@@ -64,7 +64,7 @@
                     </td>
                     <td class="request-label">@Html.LabelFor(x => x.Dept) @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Dept, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều dài" })
+                        @Html.TextBoxFor(x => x.Dept, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Chiều dài", data_val_number = "Chiều dài phải là kiểu số." })
                     </td>                    
                 </tr>
                 <tr>
@@ -79,7 +79,7 @@
                     </td>                    
                     <td class="request-label">@Html.LabelFor(x => x.Area) @Html.RequiredHint()</td>
                     <td>
-                        @Html.TextBoxFor(x => x.Area, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích" })
+                        @Html.TextBoxFor(x => x.Area, "{0:0.##}", new { @class = "formBoxInTable", placeholder = "Diện tích", data_val_number = "Diện tích phải là kiểu số." })
                     </td>
                 </tr>
                 <tr>
@@ -230,6 +230,8 @@
         $("#@Html.FieldIdFor(x => x.Width),#@Html.FieldIdFor(x => x.Dept)").keyup(function () {
             var value1 = $("#@Html.FieldIdFor(x => x.Dept)").val();
             var value2 = $("#@Html.FieldIdFor(x => x.Width)").val();
+            if(value1<=0) {value1=0; $("#@Html.FieldIdFor(x => x.Dept)").val(value1);}
+            if(value2<=0) {value2=0; $("#@Html.FieldIdFor(x => x.Width)").val(value2);}
             $("#@Html.FieldIdFor(x => x.Area)").val((value1 * value2).toFixed(2));
         })
         $("#@Html.FieldIdFor(x => x.NumberOfHome)").keyup(formatAdd);
