@@ -288,9 +288,12 @@
         <textarea class="formBoxInText" placeholder="(Để lại lời nhắn để chúng tôi có thể phục vụ bạn tốt hơn)"></textarea>
     </div>
 </div><!---floatLeft---->
-
-
 <script type="text/javascript">
+    $(document).ready(function(){
+        $("#frmProduct").validate();
+        $("#@Html.IdFor(x=>x.Width)").rules("add", {range: [1, 999999], messages: {range:"Chiều dài phải lớn hơn 0."}});
+        $("#@Html.IdFor(x=>x.Dept)").rules("add", {range: [1, 999999], messages: {range:"Chiều rộng phải lớn hơn 0."}});
+    });
     $(function () {
         $(".jqte-test").jqte();
         $("#Price").keyup(function () {
