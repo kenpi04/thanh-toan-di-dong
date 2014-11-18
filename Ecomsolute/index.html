@@ -6,15 +6,18 @@
     <meta name="description" content="Tư vấn, thiết kế website về E-Commerce, bất động sản" />
     <link rel="stylesheet" href="styles/styles.css" />
     <title>Ecomsolute.com - eCommerces Solution Technology</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="scripts/jquery-1.7.1.min.js"></script>
+    <script src="scripts/jquery-ui-1.10.2.min.js"></script>
+    <script src="scripts/jquery.nerveSlider.js"></script>
+    <link rel="stylesheet" href="styles/nerveSlider.css">
 </head>
 <body>
     <div id="wrapper">
         <div id="header">
-            <div class="wrapper-content">
+            <div class="wrapper-content">                
                 <div class="headerTop">
                     <div class="logo">
-                        <img src="styles/logos.png" />
+                        <a href="/"><img src="styles/logos.png" /></a>
                     </div>
                     <div class="menu-top">
                         <ul>
@@ -27,67 +30,67 @@
                 </div>
                 <div class="banner" id="slideshow">
                     <div class="slide">
-                        <div class="text">
-                            <div class="text-content">
-                                <span class="text1">web</span><span class="text2">Design</span>
-                                <p>
-                                    Small Business Owners, Designers, Musicians, Photographers,
-                                    Artists, Entrepreneurs, Online Stores & more choose
-                                    e<span class="blue">COM</span> solute to create and manage their online business.
-                                </p>
+                        <div style="width:90%;margin:0 auto">
+                            <div class="text">
+                                <div class="text-content">
+                                    <span class="text1">web</span><span class="text2">Design</span>
+                                    <p>
+                                        Small Business Owners, Designers, Musicians, Photographers,
+                                        Artists, Entrepreneurs, Online Stores & more choose
+                                        e<span class="blue">COM</span> solute to create and manage their online business.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="picture">
+                                <div class="item">
+                                    <img src="styles/device.png" />
+                                </div>
                             </div>
                         </div>
-                        <div class="picture">
-                            <div class="item">
-                                <img src="styles/device.png" />
-                            </div>
-                        </div>
-                        <div class="clearboth"></div>
-                    </div>
-                    <!--<div class="slide">
-                        <div class="text">
-                            <div class="text-content">
-                                <span class="text1">web</span><span class="text2">Design</span>
-                                <p>
-                                    Small Business Owners, Designers, Musicians, Photographers,
-                                    Artists, Entrepreneurs, Online Stores & more choose
-                                    e<span class="blue">COM</span> solute to create and manage their online business.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="picture">
-                            <div class="item">
-                                <img src="styles/device.png" />
-                            </div>
-                        </div>
-                        <div class="clearboth"></div>
                     </div>
                     <div class="slide">
-                        <div class="text">
-                            <div class="text-content">
-                                <span class="text1">web</span><span class="text2">Design</span>
-                                <p>
-                                    Small Business Owners, Designers, Musicians, Photographers,
-                                    Artists, Entrepreneurs, Online Stores & more choose
-                                    e<span class="blue">COM</span> solute to create and manage their online business.
-                                </p>
+                        <div style="width:90%;margin:0 auto">
+                            <div class="text">
+                                <div class="text-content">
+                                    <span class="text1">web</span><span class="text2">Design</span>
+                                    <p>
+                                        Small Business Owners, Designers, Musicians, Photographers,
+                                        Artists, Entrepreneurs, Online Stores & more choose
+                                        e<span class="blue">COM</span> solute to create and manage their online business.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="picture">
+                                <div class="item">
+                                    <img src="styles/device.png" />
+                                </div>
                             </div>
                         </div>
-                        <div class="picture">
-                            <div class="item">
-                                <img src="styles/device.png" />
+                    </div>
+                    <div class="slide">
+                        <div style="width:90%;margin:0 auto">
+                            <div class="text">
+                                <div class="text-content">
+                                    <span class="text1">web</span><span class="text2">Design</span>
+                                    <p>
+                                        Small Business Owners, Designers, Musicians, Photographers,
+                                        Artists, Entrepreneurs, Online Stores & more choose
+                                        e<span class="blue">COM</span> solute to create and manage their online business.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="picture">
+                                <div class="item">
+                                    <img src="styles/device.png" />
+                                </div>
                             </div>
                         </div>
-                        <div class="clearboth"></div>
-                    </div>-->
+                    </div>
                 </div>
             </div>
         </div>
-
-
-
         <div id="content">
-            <div class="wrapper-content projects">
+            <div class="wrapper-content">
                 <div class="box" id="pofilo">
                     <div class="col-row">
                         <div class="col-cell">
@@ -159,7 +162,6 @@
                     </div>
                     <div class="clearboth"></div>
                 </div>
-
                 <div class="box projects" id="service">
                     <h2>our Projects</h2>
                     <ul>
@@ -212,7 +214,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col50" style="padding-top:20px">
+                    <div class="col50" style="padding-top:42px">
                         <div class="per">
 
                             <div class="avatar">
@@ -239,7 +241,6 @@
                     <div class="clearboth"></div>
                 </div>
             </div>
-
         </div>
         <div id="footer">
             <h2><span> keep calm</span>, create awesome stuff</h2>
@@ -248,42 +249,19 @@
             </h3>
         </div>
     </div>
-    <!--<script type="text/javascript">
-    $(document).ready(function () {
-
-        var currentPosition = 0;
-        var slideWidth = 1349;
-        var slides = $('.slide');
-        var numberOfSlides = slides.length;
-        var slideShowInterval;
-        var speed = 3000;
-
-
-        slideShowInterval = setInterval(changePosition, speed);
-
-        slides.wrapAll('<div id="slidesHolder"></div>')
-
-        slides.css({ 'float': 'left' });
-
-        $('#slidesHolder').css('width', slideWidth * numberOfSlides);
-
-
-        function changePosition() {
-            if (currentPosition == numberOfSlides - 1) {
-                currentPosition = 0;
-            } else {
-                currentPosition++;
-            }
-            moveSlide();
-        }
-
-
-        function moveSlide() {
-            $('#slidesHolder')
-              .animate({ 'marginLeft': slideWidth * (-currentPosition) });
-        }
-
-    });
-    </script>-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#slideshow").nerveSlider({
+                slideReverse: true,
+                sliderHeight: 587,
+                showPause: false,
+                showDots: false,
+                showLoadingOverlay: false,
+                showFilmstrip: false,
+                simultaneousCaptions: false,
+                showTimer:false
+            });           
+        })
+    </script>   
 </body>
 </html>
