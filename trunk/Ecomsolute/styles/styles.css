@@ -3,7 +3,7 @@
     font-size: 16px;
     margin: 0;
     color: #fff;
-    background-color: #000;
+    background-color: #fff;
 }
 
 a {
@@ -37,7 +37,7 @@ img {
 
 #wrapper {
     width: 100%;
-    background: #000;
+    background: #fff;
 }
 
     #wrapper .wrapper-content {
@@ -51,9 +51,8 @@ img {
 }
 
 .headerTop {
-    width: 90%;
+    width: 80%;
     margin:0 auto;
-    display:flex;
 }
 
 .menu-top {
@@ -183,21 +182,29 @@ img {
         margin-left: -1px;
     }
 
-#pofilo{width:90%;margin:0 auto;}
+#pofilo{width:80%;margin:0 auto;margin-top:40px;}
 
 .projects {
     background: url(background-project.png);
+    margin-top:40px;
+    padding:0;
 }
-
+.projects .div-title{width:100%;height:100px;position:relative;background:#000;opacity:0.5;}
     .projects h2 {
         text-align: center;
         font-size: 40px;
+        color:#fff;
+        width:100%;
+        position:absolute;
+        margin-top:-53px;
     }
-
+    .projects .div-items{background:#000;opacity:0.85;}
+    .projects ul{background:#000;opacity:0.5;}
     .projects li {
         float: left;
-        margin-top: 10px;
-        height: 200px;
+        height: 189px;
+        width:291px;
+        overflow:hidden;
     }
 
         .projects li img {
@@ -246,7 +253,7 @@ img {
 .team-left {
     float: right;
 }
-#team{margin:auto 0;}
+#team{margin:auto 0;margin-top:40px;margin-bottom:40px;}
 #team h2{font-size:40px;text-align:center;}
 
 #footer {
