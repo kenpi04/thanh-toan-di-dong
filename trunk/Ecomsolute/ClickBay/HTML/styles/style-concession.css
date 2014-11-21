@@ -1,0 +1,18 @@
+﻿.wrapper-body{width:80%;margin:0 auto}
+.wrapper-content{margin:40px 0;}
+.title{display:inline-block;font-size:15px;color:#fff;background:rgba(24, 155, 150, 1);width:100%;}
+.title-left{float:left;padding:8px;}
+.title-right{float:right;padding:8px;}
+.postitem{cursor:pointer;color:#fff !important;}
+.TicketConcession .search input{padding:6px;}
+.TicketConcession .search{padding:10px 10px 10px 0px}
+.TicketConcession .search .default{min-width:90px;background:rgba(24, 155, 150, 1);padding:8px;color:#fff;border:0;font-size:14px;}
+
+.TicketConcession table{display:table;width:100%;background:#fff;border-collapse:collapse;border-spacing:0;border:1px solid #eaeaea;border-left:0;}
+.TicketConcession table tbody tr:hover{background:#c5f3ec !important;}
+table tr{display:table-row;vertical-align:inherit;border-color:inherit;}
+table th{border-left:1px #eaeaea solid; border-bottom:1px #eaeaea solid;}
+table tbody{display: table-row-group;vertical-align:inherit;border-color:inherit;}
+table tr td, table th{padding:8px;font-size:14px;line-height:14pt;vertical-align:top;border-left:1px #eaeaea solid;border-bottom:1px #eaeaea solid;}
+.TicketConcession table tbody tr:nth-child(odd){background:#eeeeee;}
+.TicketConcession table tbody tr td a{cursor:pointer;}
