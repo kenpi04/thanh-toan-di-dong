@@ -1,6 +1,11 @@
-﻿.wrapper-body{width:80%;margin:0 auto}
+﻿img{max-width:100%;max-height:100%;}
+input,select{padding:6px;}
+input.default,a.default{min-width:90px;background:#189b96;padding:8px;color:#fff;border:0;font-size:14px;cursor:pointer}
+label.default{padding:8px;}
+input.textbox-default{}
+.wrapper-body{width:80%;margin:0 auto}
 .wrapper-content{margin:40px 0;}
-.title{display:inline-block;font-size:15px;color:#fff;background:rgba(24, 155, 150, 1);width:100%;}
+.title{display:inline-block;font-size:15px;color:#fff;background:#189b96;width:100%;}
 .title-left{float:left;padding:8px;}
 .title-right{float:right;padding:8px;}
 .postitem{cursor:pointer;color:#fff !important;}
@@ -16,3 +21,20 @@ table tbody{display: table-row-group;vertical-align:inherit;border-color:inherit
 table tr td, table th{padding:8px;font-size:14px;line-height:14pt;vertical-align:top;border-left:1px #eaeaea solid;border-bottom:1px #eaeaea solid;}
 .TicketConcession table tbody tr:nth-child(odd){background:#eeeeee;}
 .TicketConcession table tbody tr td a{cursor:pointer;}
+.TicketConcession-left{float:left;width:69%;margin-right:1%}
+.TicketConcession-right{float:left;width:30%}
+.news{display:inline-block;}
+.dangtin{margin-top:20px;}
+.div-group{margin-bottom:10px;}
+.div-group .field-name{padding:8px;float:left;width:100px}
+.div-group .box-radio{margin-left:112px;padding:5px 0;}
+#description{min-width:250px;min-height:50px;}
+#btnDangTin{margin-left:116px;}
+.TicketConcession-right article aside{border-bottom:1px solid #189b96;padding-bottom:15px;margin-bottom:10px;}
+.news-content-preview{font-size:14px;}
+.news-content-preview .news-title{color:#189b96;font-size:18px;font-weight:600;cursor:pointer;}
+.info-small{font-size:11px;color:#A9A5A5;}
+.info-small p{line-height:0;}
+.info-small p span{margin-right:10%;}
+.time-small{margin-left:0;}
+.news-content-preview .content-preview{text-align:justify;}
