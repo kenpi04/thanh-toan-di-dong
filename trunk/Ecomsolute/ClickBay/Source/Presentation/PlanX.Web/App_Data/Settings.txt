@@ -1,2 +1,2 @@
 DataProvider: sqlserver
-DataConnectionString: Data Source=DUNGVT\DUNGVT;Initial Catalog=nopbasic32;Integrated Security=False;Persist Security Info=False;User ID=sa;Password=123456;MultipleActiveResultSets=True
+DataConnectionString: Data Source=QUANGNT8\SQLEXPRESS;Initial Catalog=clickbay;Integrated Security=False;User Id=sa; Password =123456; Persist Security Info=False;MultipleActiveResultSets=True
