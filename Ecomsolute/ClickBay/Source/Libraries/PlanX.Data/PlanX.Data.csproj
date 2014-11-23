@@ -68,6 +68,10 @@
     <Compile Include="Initializers\SqlCeInitializer.cs" />
     <Compile Include="Initializers\CreateTablesIfNotExist.cs" />
     <Compile Include="EfDataProviderManager.cs" />
+    <Compile Include="Mapping\ClickBay\AirportMapping.cs" />
+    <Compile Include="Mapping\ClickBay\FlightCityMapping.cs" />
+    <Compile Include="Mapping\ClickBay\FlightCountryMapping.cs" />
+    <Compile Include="Mapping\ClickBay\TicketMapping.cs" />
     <Compile Include="Mapping\Common\SearchTermMap.cs" />
     <Compile Include="Mapping\Common\GenericAttributeMap.cs" />
     <Compile Include="Mapping\Stores\StoreMappingMap.cs" />
