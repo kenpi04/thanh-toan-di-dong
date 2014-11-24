@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlanX.Services.Clickbay
+namespace PlanX.Services.ClickBay
 {
-  public  class ClickbayContant
+  public  class ClickBayContant
     {
       public const string USERNAME = "";
       public const string PASSWORD = "";

@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using Nop.Services.Localization;
-using Nop.Web.Models.News;
+using PlanX.Services.Localization;
+using PlanX.Web.Models.News;
 
-namespace Nop.Web.Validators.News
+namespace PlanX.Web.Validators.News
 {
     public class NewsItemValidator : AbstractValidator<NewsItemModel>
     {

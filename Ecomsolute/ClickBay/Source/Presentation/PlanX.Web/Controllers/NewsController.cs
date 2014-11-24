@@ -110,32 +110,32 @@ namespace PlanX.Web.Controllers
             model.CreatedOn = _dateTimeHelper.ConvertToUserTime(newsItem.CreatedOnUtc, DateTimeKind.Utc);
             model.NumberOfComments = newsItem.CommentCount;
             model.AddNewComment.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage;
-            if (prepareComments)
-            {
-                var newsComments = newsItem.NewsComments.OrderBy(pr => pr.CreatedOnUtc);
-                foreach (var nc in newsComments)
-                {
-                    var commentModel = new NewsCommentModel()
-                    {
-                        Id = nc.Id,
-                        CustomerId = nc.CustomerId,
-                        CustomerName = nc.Customer.FormatUserName(),
-                        CommentTitle = nc.CommentTitle,
-                        CommentText = nc.CommentText,
-                        CreatedOn = _dateTimeHelper.ConvertToUserTime(nc.CreatedOnUtc, DateTimeKind.Utc),
-                        AllowViewingProfiles = _customerSettings.AllowViewingProfiles && nc.Customer != null && !nc.Customer.IsGuest(),
-                    };
-                    if (_customerSettings.AllowCustomersToUploadAvatars)
-                    {
-                        commentModel.CustomerAvatarUrl = _pictureService.GetPictureUrl(
-                            nc.Customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 
-                            _mediaSettings.AvatarPictureSize, 
-                            _customerSettings.DefaultAvatarEnabled,
-                            defaultPictureType:PictureType.Avatar);
-                    }
-                    model.Comments.Add(commentModel);
-                }
-            }
+            //if (prepareComments)
+            //{
+            //    var newsComments = newsItem.NewsComments.OrderBy(pr => pr.CreatedOnUtc);
+            //    foreach (var nc in newsComments)
+            //    {
+            //        var commentModel = new NewsCommentModel()
+            //        {
+            //            Id = nc.Id,
+            //            CustomerId = nc.CustomerId,
+            //            CustomerName = nc.Customer.FormatUserName(),
+            //            CommentTitle = nc.CommentTitle,
+            //            CommentText = nc.CommentText,
+            //            CreatedOn = _dateTimeHelper.ConvertToUserTime(nc.CreatedOnUtc, DateTimeKind.Utc),
+            //            AllowViewingProfiles = _customerSettings.AllowViewingProfiles && nc.Customer != null && !nc.Customer.IsGuest(),
+            //        };
+            //        if (_customerSettings.AllowCustomersToUploadAvatars)
+            //        {
+            //            commentModel.CustomerAvatarUrl = _pictureService.GetPictureUrl(
+            //                nc.Customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 
+            //                _mediaSettings.AvatarPictureSize, 
+            //                _customerSettings.DefaultAvatarEnabled,
+            //                defaultPictureType:PictureType.Avatar);
+            //        }
+            //        model.Comments.Add(commentModel);
+            //    }
+            //}
         }
         
         #endregion
@@ -244,7 +244,7 @@ namespace PlanX.Web.Controllers
             return View(model);
         }
 
-        [HttpPost, ActionName("NewsItem")]
+        /*[HttpPost, ActionName("NewsItem")]
         [FormValueRequired("add-comment")]
         [CaptchaValidator]
         public ActionResult NewsCommentAdd(int newsItemId, NewsItemModel model, bool captchaValid)
@@ -301,7 +301,7 @@ namespace PlanX.Web.Controllers
             PrepareNewsItemModel(model, newsItem, true);
             return View(model);
         }
-
+        */
         [ChildActionOnly]
         public ActionResult RssHeaderLink()
         {

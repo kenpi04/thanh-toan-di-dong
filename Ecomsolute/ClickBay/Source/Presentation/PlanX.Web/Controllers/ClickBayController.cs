@@ -4,15 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PlanX.Core.Domain.ClickBay;
-using PlanX.Services.Clickbay;
+using PlanX.Services.ClickBay;
 using PlanX.Web.Models.ClickBay;
 
 namespace PlanX.Web.Controllers
 {
     public class ClickBayController : Controller
     {
-        private readonly IClickbayService _clickBayService;
-        public ClickBayController(IClickbayService clickBayService)
+        private readonly IClickBayService _clickBayService;
+        public ClickBayController(IClickBayService clickBayService)
         {
             this._clickBayService = clickBayService;
         }

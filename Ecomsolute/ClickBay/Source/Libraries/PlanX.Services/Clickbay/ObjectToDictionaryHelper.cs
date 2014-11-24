@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlanX.Services.Clickbay
+namespace PlanX.Services.ClickBay
 {
   public static  class ObjectToDictionaryHelper
     {
