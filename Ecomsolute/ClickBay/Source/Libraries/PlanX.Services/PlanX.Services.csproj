@@ -119,6 +119,8 @@
     <Compile Include="Authentication\External\UserClaims.cs" />
     <Compile Include="Authentication\External\IClaimsTranslator.cs" />
     <Compile Include="Authentication\External\OpenAuthenticationParameters.cs" />
+    <Compile Include="Banner\BannerService.cs" />
+    <Compile Include="Banner\IBannerService.cs" />
     <Compile Include="Caching\ClearCacheTask.cs" />
     <Compile Include="Clickbay\ClickbayContant.cs" />
     <Compile Include="Clickbay\ClickbayService.cs" />
@@ -151,6 +153,8 @@
     <Compile Include="Customers\ICustomerReportService.cs" />
     <Compile Include="Customers\CustomerReportService.cs" />
     <Compile Include="Customers\DeleteGuestsTask.cs" />
+    <Compile Include="News\INewsService.cs" />
+    <Compile Include="News\NewsService.cs" />
     <Compile Include="Stores\IStoreMappingService.cs" />
     <Compile Include="Stores\StoreMappingService.cs" />
     <Compile Include="Stores\IStoreService.cs" />

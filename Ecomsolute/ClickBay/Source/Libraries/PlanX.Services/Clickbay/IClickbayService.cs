@@ -63,6 +63,15 @@ namespace PlanX.Services.Clickbay
         Task<IEnumerable<FlightCountry>> GetCountry();
 
         Task<BookTicket> BookTicket(BookTicket model);
+
+        FlightCity GetCityById(int id);
+
+        FlightCountry GetCountryById(int id);
+
+        BookTicket GetBookTicketById(int id);
+        Ticket GetTicketById(int id);
+
+
     }
 }
 

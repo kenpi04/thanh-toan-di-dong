@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Nop.Core;
-using Nop.Core.Domain.News;
+using PlanX.Core;
+using PlanX.Core.Domain.News;
 
-namespace Nop.Services.News
+namespace PlanX.Services.News
 {
     /// <summary>
     /// News service interface
@@ -51,20 +51,20 @@ namespace Nop.Services.News
         /// </summary>
         /// <param name="customerId">Customer identifier; 0 to load all records</param>
         /// <returns>Comments</returns>
-        IList<NewsComment> GetAllComments(int customerId);
+      //  IList<NewsComment> GetAllComments(int customerId);
 
         /// <summary>
         /// Gets a news comment
         /// </summary>
         /// <param name="newsCommentId">News comment identifier</param>
         /// <returns>News comment</returns>
-        NewsComment GetNewsCommentById(int newsCommentId);
+    //    NewsComment GetNewsCommentById(int newsCommentId);
 
         /// <summary>
         /// Deletes a news comment
         /// </summary>
         /// <param name="newsComment">News comment</param>
-        void DeleteNewsComment(NewsComment newsComment);
+       // void DeleteNewsComment(NewsComment newsComment);
 
     }
 }
