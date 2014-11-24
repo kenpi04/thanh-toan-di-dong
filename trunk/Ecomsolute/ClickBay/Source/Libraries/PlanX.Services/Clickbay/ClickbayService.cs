@@ -8,9 +8,9 @@ using System.Net.Http;
 using System.Net;
 using Newtonsoft.Json;
 
-namespace PlanX.Services.Clickbay
+namespace PlanX.Services.ClickBay
 {
-  public  class ClickbayService:IClickbayService
+  public  class ClickbayService:IClickBayService
     {
      
       public ClickbayService ()
@@ -26,7 +26,7 @@ namespace PlanX.Services.Clickbay
           bool expendTicketPriceDetails=false,bool expandOption=false
           )
         {
-            string url = ClickbayContant.URL_SEARCH;
+            string url = ClickBayContant.URL_SEARCH;
           if(expendDetails||expendTicketPriceDetails||expandOption)
           {
              List<string> querys=new List<string>();
@@ -70,7 +70,7 @@ namespace PlanX.Services.Clickbay
 
         public async Task<IEnumerable<Airport>> GetAirport()
         {
-            string result = await GetData(ClickbayContant.URL_GET_AIRPLACES);
+            string result = await GetData(ClickBayContant.URL_GET_AIRPLACES);
             if (result == null)
                 return null;
             return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<Dictionary<string, string>>(result))
@@ -84,7 +84,7 @@ namespace PlanX.Services.Clickbay
 
         public async Task<IEnumerable<FlightCity>> GetCity()
         {
-            string result = await GetData(ClickbayContant.URL_GET_CITYS);
+            string result = await GetData(ClickBayContant.URL_GET_CITYS);
             if (result == null)
                 return null;
             return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<Dictionary<string, string>>(result))
@@ -97,7 +97,7 @@ namespace PlanX.Services.Clickbay
 
         public async Task<IEnumerable<FlightCountry>> GetCountry()
         {
-            string result = await GetData(ClickbayContant.URL_GET_COUNTRIES);
+            string result = await GetData(ClickBayContant.URL_GET_COUNTRIES);
             if (result == null)
                 return null;
             return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<Dictionary<string, string>>(result))
@@ -111,7 +111,7 @@ namespace PlanX.Services.Clickbay
         public async Task<BookTicket> BookTicket(BookTicket model)
         {
             var data = model.ToDictionary().Select(x=>new KeyValuePair<string,string>(x.Key,x.Value.ToString()));
-            string resultJson = await GetData(ClickbayContant.URL_BOOK,false,data);
+            string resultJson = await GetData(ClickBayContant.URL_BOOK,false,data);
 
             return await Task.Factory.StartNew<BookTicket>(() => JsonConvert.DeserializeObject<BookTicket>(resultJson));
 
@@ -125,7 +125,7 @@ namespace PlanX.Services.Clickbay
            string resultJson=string.Empty;
          
           HttpClientHandler handler=new HttpClientHandler();
-          handler.Credentials=new NetworkCredential(ClickbayContant.USERNAME,ClickbayContant.PASSWORD);
+          handler.Credentials=new NetworkCredential(ClickBayContant.USERNAME,ClickBayContant.PASSWORD);
          HttpClient client=new HttpClient(handler);
           HttpRequestMessage request=new HttpRequestMessage{
           Method=isGET?HttpMethod.Get:HttpMethod.Post,

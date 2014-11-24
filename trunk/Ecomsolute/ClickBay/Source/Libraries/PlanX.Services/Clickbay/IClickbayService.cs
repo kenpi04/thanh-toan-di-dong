@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using PlanX.Core.Domain.ClickBay;
 
-namespace PlanX.Services.Clickbay
+namespace PlanX.Services.ClickBay
 {
-    public interface IClickbayService
+    public interface IClickBayService
     {
         /*
          Adult	Int	Người lớn

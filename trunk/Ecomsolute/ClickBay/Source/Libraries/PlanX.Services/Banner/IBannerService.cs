@@ -1,9 +1,9 @@
-﻿using Nop.Core;
-using Nop.Core.Domain.Directory;
+﻿using PlanX.Core;
+using PlanX.Core.Domain.Banner;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Nop.Services.Directory
+namespace PLanX.Services.Directory
 {
     public partial interface IBannerService
     {

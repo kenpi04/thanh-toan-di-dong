@@ -54,7 +54,7 @@ using PlanX.Web.Framework.Mvc.Routes;
 using PlanX.Web.Framework.Themes;
 using PlanX.Web.Framework.UI;
 using PlanX.Web.Framework.UI.Editor;
-using PlanX.Services.Clickbay;
+using PlanX.Services.ClickBay;
 namespace PlanX.Web.Framework
 {
     public class DependencyRegistrar : IDependencyRegistrar
@@ -151,7 +151,7 @@ namespace PlanX.Web.Framework
             //builder.RegisterType<AffiliateService>().As<IAffiliateService>().InstancePerHttpRequest();
             //builder.RegisterType<VendorService>().As<IVendorService>().InstancePerHttpRequest();
 
-            builder.RegisterType<ClickbayService>().As<IClickbayService>().InstancePerHttpRequest();
+            builder.RegisterType<ClickbayService>().As<IClickBayService>().InstancePerHttpRequest();
 
 
             builder.RegisterType<AddressService>().As<IAddressService>().InstancePerHttpRequest();

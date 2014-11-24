@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace Nop.Services.Directory
+namespace PLanX.Services.Directory
 {
     public partial class BannerService : IBannerService
     {

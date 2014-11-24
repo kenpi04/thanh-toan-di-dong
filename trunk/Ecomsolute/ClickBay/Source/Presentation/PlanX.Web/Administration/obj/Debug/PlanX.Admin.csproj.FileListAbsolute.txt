@@ -11,3 +11,9 @@ E:\Lam them\Projects\Ecomsolute\ClickBay\ClickBay\Source\Presentation\PlanX.Web\
 E:\Lam them\Projects\Ecomsolute\ClickBay\ClickBay\Source\Presentation\PlanX.Web\bin\PlanX.Admin.dll.config
 E:\Lam them\Projects\Ecomsolute\ClickBay\ClickBay\Source\Presentation\PlanX.Web\bin\PlanX.Admin.dll
 E:\Lam them\Projects\Ecomsolute\ClickBay\ClickBay\Source\Presentation\PlanX.Web\bin\PlanX.Admin.pdb
+E:\Working\Ecomsolute\ClickBay\Source\Presentation\PlanX.Web\Administration\obj\Debug\PlanX.Admin.csprojResolveAssemblyReference.cache
+E:\Working\Ecomsolute\ClickBay\Source\Presentation\PlanX.Web\Administration\obj\Debug\PlanX.Admin.dll
+E:\Working\Ecomsolute\ClickBay\Source\Presentation\PlanX.Web\Administration\obj\Debug\PlanX.Admin.pdb
+E:\Working\Ecomsolute\ClickBay\Source\Presentation\PlanX.Web\bin\PlanX.Admin.dll.config
+E:\Working\Ecomsolute\ClickBay\Source\Presentation\PlanX.Web\bin\PlanX.Admin.dll
+E:\Working\Ecomsolute\ClickBay\Source\Presentation\PlanX.Web\bin\PlanX.Admin.pdb

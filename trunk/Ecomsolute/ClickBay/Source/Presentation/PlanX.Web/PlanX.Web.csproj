@@ -27,6 +27,10 @@
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <TargetFrameworkProfile />
     <WebGreaseLibPath>..\..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -251,6 +255,7 @@
     <Compile Include="Models\Common\LanguageModel.cs" />
     <Compile Include="Models\Common\StoreThemeSelectorModel.cs" />
     <Compile Include="Models\Media\PictureModel.cs" />
+    <Compile Include="Models\News\AddNewsCommentModel.cs" />
     <Compile Include="Models\News\HomePageNewsItemsModel.cs" />
     <Compile Include="Models\News\NewsCommentModel.cs" />
     <Compile Include="Models\News\NewsItemListModel.cs" />
@@ -270,6 +275,7 @@
     <Compile Include="Validators\Install\InstallValidator.cs" />
     <Compile Include="Validators\Customer\PasswordRecoveryConfirmValidator.cs" />
     <Compile Include="Validators\Customer\PasswordRecoveryValidator.cs" />
+    <Compile Include="Validators\News\NewsItemValidator.cs" />
     <Compile Include="Validators\PrivateMessages\SendPrivateMessageValidator.cs" />
     <Compile Include="Validators\Customer\ChangePasswordValidator.cs" />
     <Compile Include="Validators\Customer\RegisterValidator.cs" />
@@ -278,50 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\InstalledPlugins.txt" />
-    <Content Include="App_Data\Install\create_required_data.sql" />
-    <Content Include="App_Data\Install\create_sample_data.sql" />
-    <Content Include="App_Data\Localization\Installation\installation.ar.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.bg.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.bs-Latn-BA.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.cz.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.da.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.de.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.fr.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.gr.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.he.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.hi.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.hr-HR.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.hu.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.is.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.it.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.jp.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.lt.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.nl.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.pl.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.pt-br.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.ro.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.ru.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_Data\Localization\Installation\installation.en.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_Data\Localization\Installation\installation.sk.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.sp.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.sv.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.tr.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.ur.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.vi.xml" />
-    <Content Include="App_Data\Localization\Installation\installation.zhs.xml" />
     <Content Include="App_Data\Settings.txt" />
-    <Content Include="App_Data\SqlServer.StoredProcedures.sql" />
-    <Content Include="App_Data\Localization\defaultResources.admin.nopres.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_Data\Localization\defaultResources.public.nopres.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_Data\SqlServer.Indexes.sql" />
     <Content Include="Content\2013.2.611\Black\editor.png" />
     <Content Include="Content\2013.2.611\Black\imagebrowser.png" />
     <Content Include="Content\2013.2.611\Black\loading.gif" />
@@ -1214,105 +1177,7 @@
     <Content Include="Themes\DefaultClean\Content\ie7.css" />
     <Content Include="Themes\DefaultClean\Content\images\ico-rss.gif" />
     <Content Include="Content\Images\default-image.gif" />
-    <Content Include="Content\install\images\install-synchronizing.gif" />
     <Content Include="Content\Images\uploaded\placeholder.txt" />
-    <Content Include="Content\install\images\bg.gif" />
-    <Content Include="Content\install\images\bodybg.gif" />
-    <Content Include="Content\install\images\bottom.gif" />
-    <Content Include="Content\install\images\bottomleft.gif" />
-    <Content Include="Content\install\images\bottomright.gif" />
-    <Content Include="Content\install\images\left.gif" />
-    <Content Include="Content\install\images\right.gif" />
-    <Content Include="Content\install\images\top.gif" />
-    <Content Include="Content\install\images\topleft.gif" />
-    <Content Include="Content\install\images\topright.gif" />
-    <Content Include="Content\install\style.css" />
-    <Content Include="Content\install\style.rtl.css" />
-    <Content Include="Content\samples\category_accessories.jpg" />
-    <Content Include="Content\samples\category_accessories_apparel.jpg" />
-    <Content Include="Content\samples\category_apparel_shoes.jpeg" />
-    <Content Include="Content\samples\category_book.jpeg" />
-    <Content Include="Content\samples\category_camera_photo.jpeg" />
-    <Content Include="Content\samples\category_cell_phones.jpeg" />
-    <Content Include="Content\samples\category_computers.jpeg" />
-    <Content Include="Content\samples\category_desktops.jpg" />
-    <Content Include="Content\samples\category_digital_downloads.jpeg" />
-    <Content Include="Content\samples\category_electronics.jpeg" />
-    <Content Include="Content\samples\category_games.jpg" />
-    <Content Include="Content\samples\category_gift_cards.jpeg" />
-    <Content Include="Content\samples\category_jeans.jpg" />
-    <Content Include="Content\samples\category_jewelry.jpeg" />
-    <Content Include="Content\samples\category_notebooks.jpg" />
-    <Content Include="Content\samples\category_shirts.jpg" />
-    <Content Include="Content\samples\category_shoes.jpg" />
-    <Content Include="Content\samples\category_software.jpg" />
-    <Content Include="Content\samples\product_AdobePhotoshop.jpeg" />
-    <Content Include="Content\samples\product_5giftcart.jpeg" />
-    <Content Include="Content\samples\product_25giftcart.jpeg" />
-    <Content Include="Content\samples\product_50giftcart.jpeg" />
-    <Content Include="Content\samples\product_100giftcart.jpeg" />
-    <Content Include="Content\samples\product_AcerAspireOne_1.jpeg" />
-    <Content Include="Content\samples\product_AcerAspireOne_2.jpeg" />
-    <Content Include="Content\samples\product_AdidasShoe_1.jpg" />
-    <Content Include="Content\samples\product_AdidasShoe_2.jpg" />
-    <Content Include="Content\samples\product_ApcUps.jpeg" />
-    <Content Include="Content\samples\product_arrow.jpg" />
-    <Content Include="Content\samples\product_asuspc1000.jpeg" />
-    <Content Include="Content\samples\product_asuspc900.jpeg" />
-    <Content Include="Content\samples\product_Baseball.jpeg" />
-    <Content Include="Content\samples\product_BattleOfLA.jpeg" />
-    <Content Include="Content\samples\product_BestGrillingRecipes.jpeg" />
-    <Content Include="Content\samples\product_BestSkilletRecipes.jpeg" />
-    <Content Include="Content\samples\product_BlackBerry.jpeg" />
-    <Content Include="Content\samples\product_CanonCamcoder.jpeg" />
-    <Content Include="Content\samples\product_CanonCamera_1.jpeg" />
-    <Content Include="Content\samples\product_CanonCamera_2.jpeg" />
-    <Content Include="Content\samples\product_CanonCamera_black.jpeg" />
-    <Content Include="Content\samples\product_CanonCamera_silver.jpeg" />
-    <Content Include="Content\samples\product_Compaq.jpeg" />
-    <Content Include="Content\samples\product_CookingForTwo.jpeg" />
-    <Content Include="Content\samples\product_Corel.jpeg" />
-    <Content Include="Content\samples\product_CustomTShirt.jpeg" />
-    <Content Include="Content\samples\product_DenimShort.jpg" />
-    <Content Include="Content\samples\product_Desktops_1.jpeg" />
-    <Content Include="Content\samples\product_Desktops_2.jpeg" />
-    <Content Include="Content\samples\product_Desktops_3.jpeg" />
-    <Content Include="Content\samples\product_DiamondBracelet_1.jpg" />
-    <Content Include="Content\samples\product_DiamondBracelet_2.jpg" />
-    <Content Include="Content\samples\product_DiamondEarrings.jpg" />
-    <Content Include="Content\samples\product_DiamondHeart.jpg" />
-    <Content Include="Content\samples\product_EatingWell.jpeg" />
-    <Content Include="Content\samples\product_EngagementRing_1.jpg" />
-    <Content Include="Content\samples\product_EngagementRing_2.jpg" />
-    <Content Include="Content\samples\product_Etnies.jpg" />
-    <Content Include="Content\samples\product_GolfBelt.jpeg" />
-    <Content Include="Content\samples\product_hat.jpg" />
-    <Content Include="Content\samples\product_Hp506.jpeg" />
-    <Content Include="Content\samples\product_HpPavilion1.jpeg" />
-    <Content Include="Content\samples\product_HpPavilion2_1.jpeg" />
-    <Content Include="Content\samples\product_HpPavilion2_2.jpeg" />
-    <Content Include="Content\samples\product_HpPavilion3.jpeg" />
-    <Content Include="Content\samples\product_Kensington.jpeg" />
-    <Content Include="Content\samples\product_LeatherHandbag_1.jpg" />
-    <Content Include="Content\samples\product_LeatherHandbag_2.jpg" />
-    <Content Include="Content\samples\product_LeviJeans_1.jpg" />
-    <Content Include="Content\samples\product_LeviJeans_2.jpg" />
-    <Content Include="Content\samples\product_MedalOfHonor.jpeg" />
-    <Content Include="Content\samples\product_Mouse.jpeg" />
-    <Content Include="Content\samples\product_Notebooks.jpeg" />
-    <Content Include="Content\samples\product_PokerFace.jpeg" />
-    <Content Include="Content\samples\product_PokerFace_2.txt" />
-    <Content Include="Content\samples\product_productPanasonic.jpeg" />
-    <Content Include="Content\samples\product_RockabillyPolka.jpg" />
-    <Content Include="Content\Images\Thumbs\placeholder.txt" />
-    <Content Include="Content\samples\product_SamsungPhone_1.jpeg" />
-    <Content Include="Content\samples\product_SamsungPhone_2.jpeg" />
-    <Content Include="Content\samples\product_SingleLadies.jpeg" />
-    <Content Include="Content\samples\product_SingleLadies_2.txt" />
-    <Content Include="Content\samples\product_Soccer.jpeg" />
-    <Content Include="Content\samples\product_SonyCamcoder.jpeg" />
-    <Content Include="Content\samples\product_Sunglasses.jpg" />
-    <Content Include="Content\samples\product_wow.jpeg" />
     <Content Include="ErrorPage.htm" />
     <Content Include="FileNotFound.htm" />
     <Content Include="Global.asax" />
@@ -1441,6 +1306,7 @@
     <Content Include="Views\Shared\_Notifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Images\Thumbs\" />
     <Folder Include="Plugins\bin\" />
     <Folder Include="Themes\ClickBay\Views\Catalog\" />
     <Folder Include="Views\ClickBay\" />
@@ -1468,9 +1334,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\samples\product_BattleOfLa_1.zip" />
-    <Content Include="Content\samples\product_PokerFace_1.zip" />
-    <Content Include="Content\samples\product_SingleLadies_1.zip" />
     <Content Include="51Degrees.mobi.config" />
     <Content Include="Views\Customer\Login.cshtml" />
     <Content Include="Views\Customer\Register.cshtml" />
@@ -1527,9 +1390,6 @@
     <Content Include="Views\Common\PageNotFound.Mobile.cshtml" />
     <Content Include="Views\Common\EuCookieLaw.Mobile.cshtml" />
     <Content Include="Views\Common\EuCookieLaw.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_Data\GeoLite2-Country.mmdb" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\PlanX.Core\PlanX.Core.csproj">
