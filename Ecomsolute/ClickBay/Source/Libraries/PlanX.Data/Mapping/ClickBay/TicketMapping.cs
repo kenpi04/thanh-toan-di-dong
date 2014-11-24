@@ -7,7 +7,9 @@ namespace PlanX.Data.Mapping.ClickBay
     {
        public TicketMapping()
        {
-           this.ToTable("")
+           this.ToTable("Ticket");
+           this.HasKey(x => x.Id);
+           
        }
     }
 }
