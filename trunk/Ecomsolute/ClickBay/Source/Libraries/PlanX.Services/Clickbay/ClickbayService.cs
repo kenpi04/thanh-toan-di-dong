@@ -158,5 +158,26 @@ namespace PlanX.Services.Clickbay
       }
 
 
+
+
+      public FlightCity GetCityById(int id)
+      {
+          throw new NotImplementedException();
+      }
+
+      public FlightCountry GetCountryById(int id)
+      {
+          throw new NotImplementedException();
+      }
+
+      public BookTicket GetBookTicketById(int id)
+      {
+          throw new NotImplementedException();
+      }
+
+      public Ticket GetTicketById(int id)
+      {
+          throw new NotImplementedException();
+      }
     }
 }

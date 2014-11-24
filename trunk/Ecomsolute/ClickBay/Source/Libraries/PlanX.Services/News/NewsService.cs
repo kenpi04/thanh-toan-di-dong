@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nop.Core;
-using Nop.Core.Data;
-using Nop.Core.Domain.News;
-using Nop.Core.Domain.Stores;
-using Nop.Services.Events;
+using PlanX.Core;
+using PlanX.Core.Data;
+using PlanX.Core.Domain.News;
+using PlanX.Core.Domain.Stores;
+using PlanX.Services.Events;
 
-namespace Nop.Services.News
+namespace PlanX.Services.News
 {
     /// <summary>
     /// News service
@@ -17,7 +17,7 @@ namespace Nop.Services.News
         #region Fields
 
         private readonly IRepository<NewsItem> _newsItemRepository;
-        private readonly IRepository<NewsComment> _newsCommentRepository;
+       // private readonly IRepository<NewsComment> _newsCommentRepository;
         private readonly IRepository<StoreMapping> _storeMappingRepository;
         private readonly IEventPublisher _eventPublisher;
 
@@ -26,12 +26,12 @@ namespace Nop.Services.News
         #region Ctor
 
         public NewsService(IRepository<NewsItem> newsItemRepository, 
-            IRepository<NewsComment> newsCommentRepository,
+          //  IRepository<NewsComment> newsCommentRepository,
             IRepository<StoreMapping> storeMappingRepository,
             IEventPublisher eventPublisher)
         {
             this._newsItemRepository = newsItemRepository;
-            this._newsCommentRepository = newsCommentRepository;
+          //  this._newsCommentRepository = newsCommentRepository;
             this._storeMappingRepository = storeMappingRepository;
             this._eventPublisher = eventPublisher;
         }
@@ -150,40 +150,40 @@ namespace Nop.Services.News
         /// </summary>
         /// <param name="customerId">Customer identifier; 0 to load all records</param>
         /// <returns>Comments</returns>
-        public virtual IList<NewsComment> GetAllComments(int customerId)
-        {
-            var query = from c in _newsCommentRepository.Table
-                        orderby c.CreatedOnUtc
-                        where (customerId == 0 || c.CustomerId == customerId)
-                        select c;
-            var content = query.ToList();
-            return content;
-        }
+        //public virtual IList<NewsComment> GetAllComments(int customerId)
+        //{
+        //    var query = from c in _newsCommentRepository.Table
+        //                orderby c.CreatedOnUtc
+        //                where (customerId == 0 || c.CustomerId == customerId)
+        //                select c;
+        //    var content = query.ToList();
+        //    return content;
+        //}
 
         /// <summary>
         /// Gets a news comment
         /// </summary>
         /// <param name="newsCommentId">News comment identifier</param>
         /// <returns>News comment</returns>
-        public virtual NewsComment GetNewsCommentById(int newsCommentId)
-        {
-            if (newsCommentId == 0)
-                return null;
+        //public virtual NewsComment GetNewsCommentById(int newsCommentId)
+        //{
+        //    if (newsCommentId == 0)
+        //        return null;
 
-            return _newsCommentRepository.GetById(newsCommentId);
-        }
+        //    return _newsCommentRepository.GetById(newsCommentId);
+        //}
 
         /// <summary>
         /// Deletes a news comment
         /// </summary>
         /// <param name="newsComment">News comment</param>
-        public virtual void DeleteNewsComment(NewsComment newsComment)
-        {
-            if (newsComment == null)
-                throw new ArgumentNullException("newsComment");
+        //public virtual void DeleteNewsComment(NewsComment newsComment)
+        //{
+        //    if (newsComment == null)
+        //        throw new ArgumentNullException("newsComment");
 
-            _newsCommentRepository.Delete(newsComment);
-        }
+        //    _newsCommentRepository.Delete(newsComment);
+        //}
 
         #endregion
     }
