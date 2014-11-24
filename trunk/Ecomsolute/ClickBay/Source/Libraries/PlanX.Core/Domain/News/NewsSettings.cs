@@ -1,7 +1,7 @@
 ﻿
-using Nop.Core.Configuration;
+using PlanX.Core.Configuration;
 
-namespace Nop.Core.Domain.News
+namespace PlanX.Core.Domain.News
 {
     public class NewsSettings : ISettings
     {

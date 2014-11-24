@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using Nop.Core.Domain.Localization;
-using Nop.Core.Domain.Seo;
-using Nop.Core.Domain.Stores;
+using PlanX.Core.Domain.Localization;
+using PlanX.Core.Domain.Seo;
+using PlanX.Core.Domain.Stores;
 
-namespace Nop.Core.Domain.News
+namespace PlanX.Core.Domain.News
 {
     /// <summary>
     /// Represents a news item
     /// </summary>
     public partial class NewsItem : BaseEntity, ISlugSupported, IStoreMappingSupported
     {
-        private ICollection<NewsComment> _newsComments;
+       // private ICollection<NewsComment> _newsComments;
 
         /// <summary>
         /// Gets or sets the language identifier
@@ -89,11 +89,11 @@ namespace Nop.Core.Domain.News
         /// <summary>
         /// Gets or sets the news comments
         /// </summary>
-        public virtual ICollection<NewsComment> NewsComments
-        {
-            get { return _newsComments ?? (_newsComments = new List<NewsComment>()); }
-            protected set { _newsComments = value; }
-        }
+        //public virtual ICollection<NewsComment> NewsComments
+        //{
+        //    get { return _newsComments ?? (_newsComments = new List<NewsComment>()); }
+        //    protected set { _newsComments = value; }
+        //}
         
         /// <summary>
         /// Gets or sets the language
