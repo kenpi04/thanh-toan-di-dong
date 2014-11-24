@@ -1,5 +1,5 @@
 ﻿@model NewsItemModel
-@using Nop.Web.Models.News;
+@using PlanX.Web.Models.News;
 @{
     Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
 
@@ -98,7 +98,7 @@
                                 <strong class="comment-text">@comment.CommentTitle</strong>
                             </div>
                             <div class="comment-body">
-                                <p class="comment-text">@Html.Raw(Nop.Core.Html.HtmlHelper.FormatText(comment.CommentText, false, true, false, false, false, false))</p>
+                                <p class="comment-text">@Html.Raw(PlanX.Core.Html.HtmlHelper.FormatText(comment.CommentText, false, true, false, false, false, false))</p>
                             </div>
                         </div>
                         @Html.Widget("newsitem_page_inside_comment")

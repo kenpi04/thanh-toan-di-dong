@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using Nop.Web.Framework;
-using Nop.Web.Framework.Mvc;
+using PlanX.Web.Framework;
+using PlanX.Web.Framework.Mvc;
 
-namespace Nop.Admin.Models.News
+namespace PlanX.Admin.Models.News
 {
     public partial class NewsItemListModel : BaseNopModel
     {

@@ -11,7 +11,7 @@ using PlanX.Admin.Models.ExternalAuthentication;
 using PlanX.Admin.Models.Localization;
 using PlanX.Admin.Models.Logging;
 using PlanX.Admin.Models.Messages;
-//using PlanX.Admin.Models.News;
+using PlanX.Admin.Models.News;
 //using PlanX.Admin.Models.Orders;
 //using PlanX.Admin.Models.Payments;
 using PlanX.Admin.Models.Plugins;
@@ -33,7 +33,7 @@ using PlanX.Core.Domain.Localization;
 using PlanX.Core.Domain.Logging;
 using PlanX.Core.Domain.Media;
 using PlanX.Core.Domain.Messages;
-//using PlanX.Core.Domain.News;
+using PlanX.Core.Domain.News;
 //using PlanX.Core.Domain.Orders;
 //using PlanX.Core.Domain.Polls;
 //using PlanX.Core.Domain.Shipping;
@@ -435,6 +435,7 @@ namespace PlanX.Admin.Infrastructure
                 .ForMember(dest => dest.EndDateUtc, mo => mo.Ignore())
                 .ForMember(dest => dest.CreatedOnUtc, mo => mo.Ignore());
             //news
+             * */
             Mapper.CreateMap<NewsItem, NewsItemModel>()
                 .ForMember(dest => dest.SeName, mo => mo.MapFrom(src => src.GetSeName(src.LanguageId, true, false)))
                 .ForMember(dest => dest.Comments, mo => mo.Ignore())
@@ -445,14 +446,14 @@ namespace PlanX.Admin.Infrastructure
                 .ForMember(dest => dest.SelectedStoreIds, mo => mo.Ignore())
                 .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
             Mapper.CreateMap<NewsItemModel, NewsItem>()
-                .ForMember(dest => dest.NewsComments, mo => mo.Ignore())
+            //    .ForMember(dest => dest.NewsComments, mo => mo.Ignore())
                 .ForMember(dest => dest.Language, mo => mo.Ignore())
                 .ForMember(dest => dest.CommentCount, mo => mo.Ignore())
                 .ForMember(dest => dest.StartDateUtc, mo => mo.Ignore())
                 .ForMember(dest => dest.EndDateUtc, mo => mo.Ignore())
                 .ForMember(dest => dest.CreatedOnUtc, mo => mo.Ignore());
             //news
-            Mapper.CreateMap<Poll, PollModel>()
+/*            Mapper.CreateMap<Poll, PollModel>()
                 .ForMember(dest => dest.StartDate, mo => mo.Ignore())
                 .ForMember(dest => dest.EndDate, mo => mo.Ignore())
                 .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());

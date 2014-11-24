@@ -11,7 +11,7 @@ using PlanX.Admin.Models.ExternalAuthentication;
 using PlanX.Admin.Models.Localization;
 using PlanX.Admin.Models.Logging;
 using PlanX.Admin.Models.Messages;
-//using PlanX.Admin.Models.News;
+using PlanX.Admin.Models.News;
 //using PlanX.Admin.Models.Orders;
 //using PlanX.Admin.Models.Payments;
 using PlanX.Admin.Models.Plugins;
@@ -33,7 +33,7 @@ using PlanX.Core.Domain.Localization;
 using PlanX.Core.Domain.Logging;
 using PlanX.Core.Domain.Media;
 using PlanX.Core.Domain.Messages;
-//using PlanX.Core.Domain.News;
+using PlanX.Core.Domain.News;
 //using PlanX.Core.Domain.Orders;
 //using PlanX.Core.Domain.Polls;
 //using PlanX.Core.Domain.Shipping;
@@ -598,20 +598,20 @@ namespace PlanX.Admin
         #region News
 
         //news items
-        //public static NewsItemModel ToModel(this NewsItem entity)
-        //{
-        //    return Mapper.Map<NewsItem, NewsItemModel>(entity);
-        //}
+        public static NewsItemModel ToModel(this NewsItem entity)
+        {
+            return Mapper.Map<NewsItem, NewsItemModel>(entity);
+        }
 
-        //public static NewsItem ToEntity(this NewsItemModel model)
-        //{
-        //    return Mapper.Map<NewsItemModel, NewsItem>(model);
-        //}
+        public static NewsItem ToEntity(this NewsItemModel model)
+        {
+            return Mapper.Map<NewsItemModel, NewsItem>(model);
+        }
 
-        //public static NewsItem ToEntity(this NewsItemModel model, NewsItem destination)
-        //{
-        //    return Mapper.Map(model, destination);
-        //}
+        public static NewsItem ToEntity(this NewsItemModel model, NewsItem destination)
+        {
+            return Mapper.Map(model, destination);
+        }
 
         #endregion
 
