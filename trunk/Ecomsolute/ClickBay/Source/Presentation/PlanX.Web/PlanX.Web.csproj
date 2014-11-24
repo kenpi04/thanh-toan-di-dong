@@ -191,10 +191,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\BaseNopController.cs" />
+    <Compile Include="Controllers\ClickBayController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\KeepAliveController.cs" />
     <Compile Include="Controllers\ExternalAuthenticationController.cs" />
     <Compile Include="Controllers\InstallController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
@@ -217,6 +219,8 @@
     <Compile Include="Infrastructure\DependencyRegistrar.cs" />
     <Compile Include="Infrastructure\BackwardCompatibility1XRouteProvider.cs" />
     <Compile Include="Infrastructure\RouteProvider.cs" />
+    <Compile Include="Models\ClickBay\SearchModel.cs" />
+    <Compile Include="Models\ClickBay\TicketModel.cs" />
     <Compile Include="Models\Common\AddressModel.cs" />
     <Compile Include="Models\Common\AdminHeaderLinksModel.cs" />
     <Compile Include="Models\Common\FooterModel.cs" />
@@ -247,6 +251,11 @@
     <Compile Include="Models\Common\LanguageModel.cs" />
     <Compile Include="Models\Common\StoreThemeSelectorModel.cs" />
     <Compile Include="Models\Media\PictureModel.cs" />
+    <Compile Include="Models\News\HomePageNewsItemsModel.cs" />
+    <Compile Include="Models\News\NewsCommentModel.cs" />
+    <Compile Include="Models\News\NewsItemListModel.cs" />
+    <Compile Include="Models\News\NewsItemModel.cs" />
+    <Compile Include="Models\News\NewsPagingFilteringModel.cs" />
     <Compile Include="Models\PrivateMessages\SendPrivateMessageModel.cs" />
     <Compile Include="Models\PrivateMessages\PrivateMessageIndexModel.cs" />
     <Compile Include="Models\PrivateMessages\PrivateMessageListModel.cs" />
@@ -858,6 +867,55 @@
     <Content Include="Scripts\2013.2.611\telerik.upload.min.js" />
     <Content Include="Scripts\2013.2.611\telerik.window.min.js" />
     <Content Include="Scripts\public.common.mobile.js" />
+    <Content Include="Themes\ClickBay\Content\ie6.css" />
+    <Content Include="Themes\ClickBay\Content\ie7.css" />
+    <Content Include="Themes\ClickBay\Content\images\ajax_loader_large.gif" />
+    <Content Include="Themes\ClickBay\Content\images\ajax_loader_small.gif" />
+    <Content Include="Themes\ClickBay\Content\images\arrow-up.png" />
+    <Content Include="Themes\ClickBay\Content\images\bbeditor-button-bg.gif" />
+    <Content Include="Themes\ClickBay\Content\images\bullet-left.gif" />
+    <Content Include="Themes\ClickBay\Content\images\bullet-right.gif" />
+    <Content Include="Themes\ClickBay\Content\images\closelabel.gif" />
+    <Content Include="Themes\ClickBay\Content\images\download-sample-bg.gif" />
+    <Content Include="Themes\ClickBay\Content\images\facebook.png" />
+    <Content Include="Themes\ClickBay\Content\images\forum-footer-bg.gif" />
+    <Content Include="Themes\ClickBay\Content\images\forum-header-bg.gif" />
+    <Content Include="Themes\ClickBay\Content\images\free-shipping.png" />
+    <Content Include="Themes\ClickBay\Content\images\google.png" />
+    <Content Include="Themes\ClickBay\Content\images\ico-arrow-r.gif" />
+    <Content Include="Themes\ClickBay\Content\images\ico-close-notification-bar.png" />
+    <Content Include="Themes\ClickBay\Content\images\ico-delete.gif" />
+    <Content Include="Themes\ClickBay\Content\images\ico-edit.gif" />
+    <Content Include="Themes\ClickBay\Content\images\ico-forum-post-add.gif" />
+    <Content Include="Themes\ClickBay\Content\images\ico-forum-post-high.gif" />
+    <Content Include="Themes\ClickBay\Content\images\ico-forum-post.gif" />
+    <Content Include="Themes\ClickBay\Content\images\ico-forum-watch.gif" />
+    <Content Include="Themes\ClickBay\Content\images\ico-forum.gif" />
+    <Content Include="Themes\ClickBay\Content\images\ico-move-topic.gif" />
+    <Content Include="Themes\ClickBay\Content\images\ico-pm.png" />
+    <Content Include="Themes\ClickBay\Content\images\ico-rss.gif" />
+    <Content Include="Themes\ClickBay\Content\images\link.png" />
+    <Content Include="Themes\ClickBay\Content\images\loading.gif" />
+    <Content Include="Themes\ClickBay\Content\images\logo-small.png" />
+    <Content Include="Themes\ClickBay\Content\images\logo.gif" />
+    <Content Include="Themes\ClickBay\Content\images\logo.png" />
+    <Content Include="Themes\ClickBay\Content\images\mouse.png" />
+    <Content Include="Themes\ClickBay\Content\images\nextlabel.gif" />
+    <Content Include="Themes\ClickBay\Content\images\prevlabel.gif" />
+    <Content Include="Themes\ClickBay\Content\images\progress-step-active.gif" />
+    <Content Include="Themes\ClickBay\Content\images\progress-step-inactive.gif" />
+    <Content Include="Themes\ClickBay\Content\images\slide2.jpg" />
+    <Content Include="Themes\ClickBay\Content\images\star-x-active.png" />
+    <Content Include="Themes\ClickBay\Content\images\star-x-inactive.png" />
+    <Content Include="Themes\ClickBay\Content\images\top-menu-background.png" />
+    <Content Include="Themes\ClickBay\Content\images\top-menu-divider.png" />
+    <Content Include="Themes\ClickBay\Content\images\top-menu-list-image-hover.png" />
+    <Content Include="Themes\ClickBay\Content\images\top-menu-list-image.png" />
+    <Content Include="Themes\ClickBay\Content\images\top-menu-triangle.png" />
+    <Content Include="Themes\ClickBay\Content\images\twiter.png" />
+    <Content Include="Themes\ClickBay\Content\styles.css" />
+    <Content Include="Themes\ClickBay\Content\styles.rtl.css" />
+    <Content Include="Themes\ClickBay\preview.jpg" />
     <Content Include="Themes\DefaultClean\Content\images\free-shipping.png" />
     <Content Include="Themes\DefaultClean\Content\images\top-menu-background.png" />
     <Content Include="Themes\DefaultClean\Content\images\top-menu-divider.png" />
@@ -1384,6 +1442,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
+    <Folder Include="Themes\ClickBay\Views\Catalog\" />
+    <Folder Include="Views\ClickBay\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\DefaultClean\theme.config" />
@@ -1488,6 +1548,37 @@
       <Project>{75fd4163-333c-4dd5-854d-2ef294e45d94}</Project>
       <Name>PlanX.Web.Framework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\ClickBay\theme.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\ClickBay\Views\Shared\Head.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\ClickBay\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\ClickBay\Views\Shared\_Root.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\ClickBay\Views\Shared\_Header.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\ClickBay\Views\Common\Footer.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\ClickBay\Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\ClickBay\Views\Shared\_ColumnOne.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\News\HomePageNews.cshtml" />
+    <Content Include="Views\News\List.cshtml" />
+    <Content Include="Views\News\List.Mobile.cshtml" />
+    <Content Include="Views\News\NewsItem.cshtml" />
+    <Content Include="Views\News\NewsItem.Mobile.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

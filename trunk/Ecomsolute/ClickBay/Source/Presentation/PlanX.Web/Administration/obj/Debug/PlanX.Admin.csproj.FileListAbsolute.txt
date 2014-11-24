@@ -1,0 +1,13 @@
+E:\Source\nopCommerce_3.20_Source-1\Presentation\PlanX.Web\bin\PlanX.Admin.dll.config
+E:\Source\nopCommerce_3.20_Source-1\Presentation\PlanX.Web\bin\PlanX.Admin.dll
+E:\Source\nopCommerce_3.20_Source-1\Presentation\PlanX.Web\bin\PlanX.Admin.pdb
+E:\Source\nopCommerce_3.20_Source-1\Presentation\PlanX.Web\Administration\obj\Debug\PlanX.Admin.csprojResolveAssemblyReference.cache
+E:\Source\nopCommerce_3.20_Source-1\Presentation\PlanX.Web\Administration\obj\Debug\PlanX.Admin.dll
+E:\Source\nopCommerce_3.20_Source-1\Presentation\PlanX.Web\Administration\obj\Debug\PlanX.Admin.pdb
+E:\Lam them\Zhouse\Ecomsolute\ClickBay\Source\Presentation\PlanX.Web\Administration\obj\Debug\PlanX.Admin.csprojResolveAssemblyReference.cache
+E:\Lam them\Projects\Ecomsolute\ClickBay\ClickBay\Source\Presentation\PlanX.Web\Administration\obj\Debug\PlanX.Admin.csprojResolveAssemblyReference.cache
+E:\Lam them\Projects\Ecomsolute\ClickBay\ClickBay\Source\Presentation\PlanX.Web\Administration\obj\Debug\PlanX.Admin.dll
+E:\Lam them\Projects\Ecomsolute\ClickBay\ClickBay\Source\Presentation\PlanX.Web\Administration\obj\Debug\PlanX.Admin.pdb
+E:\Lam them\Projects\Ecomsolute\ClickBay\ClickBay\Source\Presentation\PlanX.Web\bin\PlanX.Admin.dll.config
+E:\Lam them\Projects\Ecomsolute\ClickBay\ClickBay\Source\Presentation\PlanX.Web\bin\PlanX.Admin.dll
+E:\Lam them\Projects\Ecomsolute\ClickBay\ClickBay\Source\Presentation\PlanX.Web\bin\PlanX.Admin.pdb

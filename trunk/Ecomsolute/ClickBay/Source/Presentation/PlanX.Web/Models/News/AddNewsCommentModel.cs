@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
-using Nop.Web.Framework;
-using Nop.Web.Framework.Mvc;
+using PlanX.Web.Framework;
+using PlanX.Web.Framework.Mvc;
 
-namespace Nop.Web.Models.News
+namespace PlanX.Web.Models.News
 {
     public partial class AddNewsCommentModel : BaseNopModel
     {

@@ -80,6 +80,7 @@ namespace PlanX.Web.Controllers
         //private readonly ForumSettings _forumSettings;
         private readonly LocalizationSettings _localizationSettings;
         private readonly CaptchaSettings _captchaSettings;
+       
 
         #endregion
 

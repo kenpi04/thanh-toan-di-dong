@@ -1,6 +1,6 @@
-﻿using Nop.Web.Framework.UI.Paging;
+﻿using PlanX.Web.Framework.UI.Paging;
 
-namespace Nop.Web.Models.News
+namespace PlanX.Web.Models.News
 {
     public partial class NewsPagingFilteringModel : BasePageableModel
     {

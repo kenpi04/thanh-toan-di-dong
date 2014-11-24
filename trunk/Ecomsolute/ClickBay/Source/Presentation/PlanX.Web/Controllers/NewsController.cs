@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Web.Mvc;
-using Nop.Core;
-using Nop.Core.Caching;
-using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Localization;
-using Nop.Core.Domain.Media;
-using Nop.Core.Domain.News;
-using Nop.Services.Common;
-using Nop.Services.Customers;
-using Nop.Services.Helpers;
-using Nop.Services.Localization;
-using Nop.Services.Logging;
-using Nop.Services.Media;
-using Nop.Services.Messages;
-using Nop.Services.News;
-using Nop.Services.Seo;
-using Nop.Services.Stores;
-using Nop.Web.Framework;
-using Nop.Web.Framework.Controllers;
-using Nop.Web.Framework.Security;
-using Nop.Web.Framework.UI.Captcha;
-using Nop.Web.Infrastructure.Cache;
-using Nop.Web.Models.News;
+using PlanX.Core;
+using PlanX.Core.Caching;
+using PlanX.Core.Domain.Customers;
+using PlanX.Core.Domain.Localization;
+using PlanX.Core.Domain.Media;
+using PlanX.Core.Domain.News;
+using PlanX.Services.Common;
+using PlanX.Services.Customers;
+using PlanX.Services.Helpers;
+using PlanX.Services.Localization;
+using PlanX.Services.Logging;
+using PlanX.Services.Media;
+using PlanX.Services.Messages;
+using PlanX.Services.News;
+using PlanX.Services.Seo;
+using PlanX.Services.Stores;
+using PlanX.Web.Framework;
+using PlanX.Web.Framework.Controllers;
+using PlanX.Web.Framework.Security;
+using PlanX.Web.Framework.UI.Captcha;
+using PlanX.Web.Infrastructure.Cache;
+using PlanX.Web.Models.News;
 
-namespace Nop.Web.Controllers
+namespace PlanX.Web.Controllers
 {
     [NopHttpsRequirement(SslRequirement.No)]
     public partial class NewsController : BaseNopController
@@ -292,7 +292,7 @@ namespace Nop.Web.Controllers
 
                 //The text boxes should be cleared after a comment has been posted
                 //That' why we reload the page
-                TempData["nop.news.addcomment.result"] = _localizationService.GetResource("News.Comments.SuccessfullyAdded");
+                TempData["PlanX.news.addcomment.result"] = _localizationService.GetResource("News.Comments.SuccessfullyAdded");
                 return RedirectToRoute("NewsItem", new {SeName = newsItem.GetSeName(newsItem.LanguageId, ensureTwoPublishedLanguages: false) });
             }
 

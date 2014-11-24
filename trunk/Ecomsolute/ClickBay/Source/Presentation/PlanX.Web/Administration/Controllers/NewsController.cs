@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Nop.Admin.Models.News;
-using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.News;
-using Nop.Services.Helpers;
-using Nop.Services.Localization;
-using Nop.Services.News;
-using Nop.Services.Security;
-using Nop.Services.Seo;
-using Nop.Services.Stores;
-using Nop.Web.Framework;
-using Nop.Web.Framework.Controllers;
+using PlanX.Admin.Models.News;
+using PlanX.Core.Domain.Customers;
+using PlanX.Core.Domain.News;
+using PlanX.Services.Helpers;
+using PlanX.Services.Localization;
+using PlanX.Services.News;
+using PlanX.Services.Security;
+using PlanX.Services.Seo;
+using PlanX.Services.Stores;
+using PlanX.Web.Framework;
+using PlanX.Web.Framework.Controllers;
 using Telerik.Web.Mvc;
 
-namespace Nop.Admin.Controllers
+namespace PlanX.Admin.Controllers
 {
 	[AdminAuthorize]
     public partial class NewsController : BaseNopController
@@ -290,7 +290,7 @@ namespace Nop.Admin.Controllers
         #endregion
 
         #region Comments
-
+/*
         public ActionResult Comments(int? filterByNewsItemId)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
@@ -300,48 +300,48 @@ namespace Nop.Admin.Controllers
             return View();
         }
 
-        [HttpPost, GridAction(EnableCustomBinding = true)]
-        public ActionResult Comments(int? filterByNewsItemId, GridCommand command)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
-                return AccessDeniedView();
+        //[HttpPost, GridAction(EnableCustomBinding = true)]
+        //public ActionResult Comments(int? filterByNewsItemId, GridCommand command)
+        //{
+        //    if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
+        //        return AccessDeniedView();
 
-            IList<NewsComment> comments;
-            if (filterByNewsItemId.HasValue)
-            {
-                //filter comments by news item
-                var newsItem = _newsService.GetNewsById(filterByNewsItemId.Value);
-                comments = newsItem.NewsComments.OrderBy(bc => bc.CreatedOnUtc).ToList();
-            }
-            else
-            {
-                //load all news comments
-                comments = _newsService.GetAllComments(0);
-            }
+        //    IList<NewsComment> comments;
+        //    if (filterByNewsItemId.HasValue)
+        //    {
+        //        //filter comments by news item
+        //        var newsItem = _newsService.GetNewsById(filterByNewsItemId.Value);
+        //        comments = newsItem.NewsComments.OrderBy(bc => bc.CreatedOnUtc).ToList();
+        //    }
+        //    else
+        //    {
+        //        //load all news comments
+        //        comments = _newsService.GetAllComments(0);
+        //    }
 
-            var gridModel = new GridModel<NewsCommentModel>
-            {
-                Data = comments.PagedForCommand(command).Select(newsComment =>
-                {
-                    var commentModel = new NewsCommentModel();
-                    commentModel.Id = newsComment.Id;
-                    commentModel.NewsItemId = newsComment.NewsItemId;
-                    commentModel.NewsItemTitle = newsComment.NewsItem.Title;
-                    commentModel.CustomerId = newsComment.CustomerId;
-                    var customer = newsComment.Customer;
-                    commentModel.CustomerInfo = customer.IsRegistered() ? customer.Email : _localizationService.GetResource("Admin.Customers.Guest");
-                    commentModel.CreatedOn = _dateTimeHelper.ConvertToUserTime(newsComment.CreatedOnUtc, DateTimeKind.Utc);
-                    commentModel.CommentTitle = newsComment.CommentTitle;
-                    commentModel.CommentText = Core.Html.HtmlHelper.FormatText(newsComment.CommentText, false, true, false, false, false, false);
-                    return commentModel;
-                }),
-                Total = comments.Count,
-            };
-            return new JsonResult
-            {
-                Data = gridModel
-            };
-        }
+        //    var gridModel = new GridModel<NewsCommentModel>
+        //    {
+        //        Data = comments.PagedForCommand(command).Select(newsComment =>
+        //        {
+        //            var commentModel = new NewsCommentModel();
+        //            commentModel.Id = newsComment.Id;
+        //            commentModel.NewsItemId = newsComment.NewsItemId;
+        //            commentModel.NewsItemTitle = newsComment.NewsItem.Title;
+        //            commentModel.CustomerId = newsComment.CustomerId;
+        //            var customer = newsComment.Customer;
+        //            commentModel.CustomerInfo = customer.IsRegistered() ? customer.Email : _localizationService.GetResource("Admin.Customers.Guest");
+        //            commentModel.CreatedOn = _dateTimeHelper.ConvertToUserTime(newsComment.CreatedOnUtc, DateTimeKind.Utc);
+        //            commentModel.CommentTitle = newsComment.CommentTitle;
+        //            commentModel.CommentText = Core.Html.HtmlHelper.FormatText(newsComment.CommentText, false, true, false, false, false, false);
+        //            return commentModel;
+        //        }),
+        //        Total = comments.Count,
+        //    };
+        //    return new JsonResult
+        //    {
+        //        Data = gridModel
+        //    };
+        //}
 
         [GridAction(EnableCustomBinding = true)]
         public ActionResult CommentDelete(int? filterByNewsItemId, int id, GridCommand command)
@@ -361,7 +361,7 @@ namespace Nop.Admin.Controllers
 
             return Comments(filterByNewsItemId, command);
         }
-
+        */
 
         #endregion
     }

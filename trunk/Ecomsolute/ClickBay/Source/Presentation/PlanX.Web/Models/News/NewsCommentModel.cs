@@ -1,7 +1,7 @@
 ﻿using System;
-using Nop.Web.Framework.Mvc;
+using PlanX.Web.Framework.Mvc;
 
-namespace Nop.Web.Models.News
+namespace PlanX.Web.Models.News
 {
     public partial class NewsCommentModel : BaseNopEntityModel
     {

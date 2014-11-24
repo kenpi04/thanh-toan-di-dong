@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace PlanX.Web.Models.BookTicket
+namespace PlanX.Web.Models.ClickBay
 {
     public class SearchModel
     {
