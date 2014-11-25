@@ -148,8 +148,6 @@
     <Compile Include="Common\GenericAttributeExtentions.cs" />
     <Compile Include="Common\MobileDeviceHelper.cs" />
     <Compile Include="Common\IMiscPlugin.cs" />
-    <Compile Include="Common\IPdfService.cs" />
-    <Compile Include="Common\PdfService.cs" />
     <Compile Include="Common\IAddressService.cs" />
     <Compile Include="Common\FulltextService.cs" />
     <Compile Include="Customers\ICustomerRegistrationService.cs" />
@@ -191,8 +189,6 @@
     <Compile Include="Logging\CustomerActivityService.cs" />
     <Compile Include="Logging\ICustomerActivityService.cs" />
     <Compile Include="Media\Extensions.cs" />
-    <Compile Include="Media\IDownloadService.cs" />
-    <Compile Include="Media\DownloadService.cs" />
     <Compile Include="Media\IPictureService.cs" />
     <Compile Include="Media\PictureService.cs" />
     <Compile Include="Messages\CampaignService.cs" />

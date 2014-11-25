@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 //using PlanX.Core.Domain.Blogs;
-using PlanX.Core.Domain.Catalog;
+//using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Customers;
 //using PlanX.Core.Domain.Forums;
 using PlanX.Core.Domain.Messages;

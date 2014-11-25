@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PlanX.Core;
 //using PlanX.Core.Domain.Blogs;
-using PlanX.Core.Domain.Catalog;
+//using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Customers;
 //using PlanX.Core.Domain.Forums;
 using PlanX.Core.Domain.Messages;

@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using PlanX.Core;
 using PlanX.Core.Data;
-using PlanX.Core.Domain.Catalog;
+//using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Media;
 using PlanX.Services.Configuration;
 using PlanX.Services.Events;
