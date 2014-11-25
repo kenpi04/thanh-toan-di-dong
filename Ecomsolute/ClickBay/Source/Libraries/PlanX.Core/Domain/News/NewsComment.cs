@@ -1,7 +1,7 @@
 using System;
-using Nop.Core.Domain.Customers;
+using PlanX.Core.Domain.Customers;
 
-namespace Nop.Core.Domain.News
+namespace PlanX.Core.Domain.News
 {
     /// <summary>
     /// Represents a news comment
