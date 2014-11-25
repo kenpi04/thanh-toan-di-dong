@@ -9,7 +9,7 @@ using PlanX.Core;
 using PlanX.Core.Caching;
 using PlanX.Core.Domain;
 //using PlanX.Core.Domain.Blogs;
-using PlanX.Core.Domain.Catalog;
+//using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Common;
 using PlanX.Core.Domain.Customers;
 //using PlanX.Core.Domain.Forums;
