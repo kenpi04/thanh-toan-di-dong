@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using PlanX.Core.Domain.Catalog;
+//using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Common;
 using PlanX.Core.Domain.Customers;
 using PlanX.Core.Domain.Directory;

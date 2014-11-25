@@ -1,0 +1,134 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    
+    <link rel="stylesheet" href="~/Themes/DefaultClean/Content/metro-bootstrap.css">
+    <link rel="stylesheet" href="~/Themes/DefaultClean/Content/iconFont.min.css">
+    <link rel="stylesheet" href="~/Themes/DefaultClean/Content/styles-concession.css">
+    @*<script src="~/Themes/DefaultClean/Content/metro-bootstrap.css"></script>*@
+    <script src="~/Scripts/jquery.widget.min.js"></script>
+    <script src="~/Scripts/metro.min.js"></script>
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    <script src="~/js/metro-datepicker.js"></script>
+    <script src="~/js/metro-calendar.js"></script>
+    <script src="~/Scripts/jquery.mousewheel.js"></script>
+</head>
+<body class="metro">
+    <div>
+        <section class="TicketConcession">
+            <div class="title">
+                <span class="title-left">Nhượng Vé Máy Bay</span>
+                <span class="title-right"><a class="postitem" name="postitem">Đăng tin nhượng vé</a></span>
+            </div>
+        </section>
+        <section class="TicketConcession">
+            <div class="search">
+                <div class="input-control text" data-role="input-control">
+                    <input type="text" placeholder="Loại vé" name="ticketType" id="ticketType">
+                    <button class="btn-clear" tabindex="-1" type="button"></button>
+                </div>
+                <div class="input-control text" data-role="input-control">
+                    <input type="text" placeholder="Tên hành khách" name="passengerName" id="passengerName">
+                    <button class="btn-clear" tabindex="-1" type="button"></button>
+                </div>
+                <div class="input-control text" data-role="input-control">
+                    <input type="text" placeholder="Điểm đi" name="fromPlace" id="fromPlace">
+                    <button class="btn-clear" tabindex="-1" type="button"></button>
+                </div>
+                <div class="input-control text" data-role="input-control">
+                    <input type="text" placeholder="Điểm đến" name="toPlace" id="toPlace">
+                    <button class="btn-clear" tabindex="-1" type="button"></button>
+                </div>
+                <div class="input-control text" id="datepicker">   
+                    <input type="text" placeholder="Thời gian đi" name="departTime" id="departTime">
+                    <button class="btn-date"></button>
+                </div>
+                <input type="submit" class="default" value="Tìm vé" name="searchTicket" id="searchTicket" />
+            </div>
+        </section>
+        <section>
+            <div>
+                <table class="table striped bordered hovered">
+                    <thead>
+                        <tr>
+                            <th>Loại vé</th>
+                            <th>Tên hành khác</th>
+                            <th>Chặng bay</th>
+                            <th>Ngày đi</th>
+                            <th>Giá vé</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Jetstar thường</td>
+                            <td>Do NGHI DI (có thể đổi tên)</td>
+                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
+                            <td>07/02/2015</td>
+                            <td>1.000.000 VNĐ</td>
+                            <td>Chi tiết</td>
+                        </tr>
+                        <tr>
+                            <td>Jetstar thường</td>
+                            <td>Do NGHI DI (có thể đổi tên)</td>
+                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
+                            <td>07/02/2015</td>
+                            <td>1.000.000 VNĐ</td>
+                            <td>Chi tiết</td>
+                        </tr>
+                        <tr>
+                            <td>Jetstar thường</td>
+                            <td>Do NGHI DI (có thể đổi tên)</td>
+                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
+                            <td>07/02/2015</td>
+                            <td>1.000.000 VNĐ</td>
+                            <td>Chi tiết</td>
+                        </tr>
+                        <tr>
+                            <td>Jetstar thường</td>
+                            <td>Do NGHI DI (có thể đổi tên)</td>
+                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
+                            <td>07/02/2015</td>
+                            <td>1.000.000 VNĐ</td>
+                            <td>Chi tiết</td>
+                        </tr>
+                        <tr>
+                            <td>Jetstar thường</td>
+                            <td>Do NGHI DI (có thể đổi tên)</td>
+                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
+                            <td>07/02/2015</td>
+                            <td>1.000.000 VNĐ</td>
+                            <td>Chi tiết</td>
+                        </tr>
+                        <tr>
+                            <td>Jetstar thường</td>
+                            <td>Do NGHI DI (có thể đổi tên)</td>
+                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
+                            <td>07/02/2015</td>
+                            <td>1.000.000 VNĐ</td>
+                            <td>Chi tiết</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <script>
+    $("#datepicker").datepicker({
+        date: "2013-01-01", // set init date
+        format: "d/m/y", // set output format
+        effect: "none", // none, slide, fade
+        position: "bottom", // top or bottom,
+        locale: 'en', // 'ru' or 'en', default is $.Metro.currentLocale
+    });
+    </script>
+</body>
+</html>

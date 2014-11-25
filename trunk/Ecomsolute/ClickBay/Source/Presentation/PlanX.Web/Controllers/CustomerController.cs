@@ -68,7 +68,7 @@ namespace PlanX.Web.Controllers
         //private readonly IShoppingCartService _shoppingCartService;
         private readonly IOpenAuthenticationService _openAuthenticationService;
         //private readonly IBackInStockSubscriptionService _backInStockSubscriptionService;
-        private readonly IDownloadService _downloadService;
+        //private readonly IDownloadService _downloadService;
         private readonly IWebHelper _webHelper;
         private readonly ICustomerActivityService _customerActivityService;
 
@@ -106,7 +106,8 @@ namespace PlanX.Web.Controllers
             //IShoppingCartService shoppingCartService,
             IOpenAuthenticationService openAuthenticationService, 
             //IBackInStockSubscriptionService backInStockSubscriptionService, 
-            IDownloadService downloadService, IWebHelper webHelper,
+            //IDownloadService downloadService, 
+            IWebHelper webHelper,
             ICustomerActivityService customerActivityService, MediaSettings mediaSettings,
             IWorkflowMessageService workflowMessageService, LocalizationSettings localizationSettings,
             CaptchaSettings captchaSettings, ExternalAuthenticationSettings externalAuthenticationSettings)
@@ -141,7 +142,7 @@ namespace PlanX.Web.Controllers
             //this._shoppingCartService = shoppingCartService;
             this._openAuthenticationService = openAuthenticationService;
             //this._backInStockSubscriptionService = backInStockSubscriptionService;
-            this._downloadService = downloadService;
+            //this._downloadService = downloadService;
             this._webHelper = webHelper;
             this._customerActivityService = customerActivityService;
 

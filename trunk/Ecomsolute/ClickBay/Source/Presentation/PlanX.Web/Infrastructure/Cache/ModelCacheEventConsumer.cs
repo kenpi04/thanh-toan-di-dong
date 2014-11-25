@@ -1,6 +1,6 @@
 ﻿using PlanX.Core.Caching;
 //using PlanX.Core.Domain.Blogs;
-using PlanX.Core.Domain.Catalog;
+//using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Configuration;
 using PlanX.Core.Domain.Directory;
 using PlanX.Core.Domain.Localization;
