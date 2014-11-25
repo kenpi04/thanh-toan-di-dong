@@ -11,8 +11,6 @@ namespace PlanX.Core.Domain.News
     /// </summary>
     public partial class NewsItem : BaseEntity, ISlugSupported, IStoreMappingSupported
     {
-       // private ICollection<NewsComment> _newsComments;
-
         /// <summary>
         /// Gets or sets the language identifier
         /// </summary>
@@ -86,14 +84,15 @@ namespace PlanX.Core.Domain.News
         /// </summary>
         public DateTime CreatedOnUtc { get; set; }
 
+        private ICollection<NewsComment> _newsComments;
         /// <summary>
         /// Gets or sets the news comments
         /// </summary>
-        //public virtual ICollection<NewsComment> NewsComments
-        //{
-        //    get { return _newsComments ?? (_newsComments = new List<NewsComment>()); }
-        //    protected set { _newsComments = value; }
-        //}
+        public virtual ICollection<NewsComment> NewsComments
+        {
+            get { return _newsComments ?? (_newsComments = new List<NewsComment>()); }
+            protected set { _newsComments = value; }
+        }
         
         /// <summary>
         /// Gets or sets the language

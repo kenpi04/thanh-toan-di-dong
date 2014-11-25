@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using PlanX.Core.Domain.Catalog;
 
 namespace PlanX.Core.Domain.Media
 {
