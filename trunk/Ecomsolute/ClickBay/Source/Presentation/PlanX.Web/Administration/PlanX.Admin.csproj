@@ -155,7 +155,6 @@
     <Compile Include="Controllers\SettingController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\MessageTemplateController.cs" />
-    <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\CustomerRoleController.cs" />

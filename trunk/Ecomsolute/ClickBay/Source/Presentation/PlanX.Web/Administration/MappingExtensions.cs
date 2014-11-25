@@ -23,7 +23,7 @@ using PlanX.Admin.Models.Stores;
 //using PlanX.Admin.Models.Templates;
 using PlanX.Admin.Models.Topics;
 //using PlanX.Core.Domain.Blogs;
-using PlanX.Core.Domain.Catalog;
+//using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Common;
 using PlanX.Core.Domain.Customers;
 using PlanX.Core.Domain.Directory;
