@@ -206,7 +206,7 @@ namespace PlanX.Web.Framework
                 .InstancePerHttpRequest();
             builder.RegisterType<LanguageService>().As<ILanguageService>().InstancePerHttpRequest();
 
-            builder.RegisterType<DownloadService>().As<IDownloadService>().InstancePerHttpRequest();
+            //builder.RegisterType<DownloadService>().As<IDownloadService>().InstancePerHttpRequest();
             builder.RegisterType<PictureService>().As<IPictureService>().InstancePerHttpRequest();
 
             builder.RegisterType<MessageTemplateService>().As<IMessageTemplateService>().InstancePerHttpRequest();
@@ -279,7 +279,7 @@ namespace PlanX.Web.Framework
             //builder.RegisterType<ExportManager>().As<IExportManager>().InstancePerHttpRequest();
             //builder.RegisterType<ImportManager>().As<IImportManager>().InstancePerHttpRequest();
             builder.RegisterType<MobileDeviceHelper>().As<IMobileDeviceHelper>().InstancePerHttpRequest();
-            builder.RegisterType<PdfService>().As<IPdfService>().InstancePerHttpRequest();
+            //builder.RegisterType<PdfService>().As<IPdfService>().InstancePerHttpRequest();
             builder.RegisterType<ThemeProvider>().As<IThemeProvider>().InstancePerHttpRequest();
             builder.RegisterType<ThemeContext>().As<IThemeContext>().InstancePerHttpRequest();
 
