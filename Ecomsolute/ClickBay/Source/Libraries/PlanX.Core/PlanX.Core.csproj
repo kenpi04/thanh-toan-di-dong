@@ -89,8 +89,6 @@
   <ItemGroup>
     <Compile Include="ComponentModel\WriteLockDisposable.cs" />
     <Compile Include="Domain\Banner\Banner.cs" />
-    <Compile Include="Domain\Catalog\AttributeValueType.cs" />
-    <Compile Include="Domain\Catalog\ProductType.cs" />
     <Compile Include="Domain\ClickBay\Airport.cs" />
     <Compile Include="Domain\ClickBay\BookingPassenger.cs" />
     <Compile Include="Domain\ClickBay\BookTicket.cs" />
@@ -102,6 +100,7 @@
     <Compile Include="Domain\Common\SearchTermReportLine.cs" />
     <Compile Include="Domain\Common\SearchTerm.cs" />
     <Compile Include="Domain\Customers\CustomerLoginResults.cs" />
+    <Compile Include="Domain\News\NewsComment.cs" />
     <Compile Include="Domain\News\NewsItem.cs" />
     <Compile Include="Domain\News\NewsSettings.cs" />
     <Compile Include="Domain\Seo\WwwRequirement.cs" />
@@ -227,15 +226,7 @@
     <Compile Include="Infrastructure\WebAppTypeFinder.cs" />
     <Compile Include="IWorkContext.cs" />
     <Compile Include="Domain\Localization\LocalizedProperty.cs" />
-    <Compile Include="Domain\Catalog\ProductSortingEnum.cs" />
-    <Compile Include="Domain\Catalog\AttributeControlType.cs" />
-    <Compile Include="Domain\Catalog\BackorderMode.cs" />
-    <Compile Include="Domain\Catalog\DownloadActivationType.cs" />
-    <Compile Include="Domain\Catalog\GiftCardType.cs" />
-    <Compile Include="Domain\Catalog\LowStockActivity.cs" />
-    <Compile Include="Domain\Catalog\ManageInventoryMethod.cs" />
     <Compile Include="Domain\Media\Picture.cs" />
-    <Compile Include="Domain\Catalog\RecurringProductCyclePeriod.cs" />
     <Compile Include="IO\FileSystemSettings.cs" />
     <Compile Include="IO\FileSystemStorageProvider.cs" />
     <Compile Include="IO\IStorageFile.cs" />
