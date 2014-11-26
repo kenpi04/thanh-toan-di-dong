@@ -49,6 +49,7 @@ table.none-border tr th:first-child{border-left:none;}
 .time-small{margin-left:0;}
 .news-content-preview .content-preview{text-align:justify;}
 img.icon-small{width:10px;margin:0 4px;}
+.required{color:red;}
 #btnContinue{float:right;margin:15px 0;}
 #description{min-width:250px;min-height:50px;}
 #btnDangTin{margin-left:116px;}
@@ -81,3 +82,38 @@ img.icon-small{width:10px;margin:0 4px;}
 .news-detail .news-title{font-size:25px;color:#189b96;font-weight:600}
 .news-detail .info-small{font-size:12px;}
 .news-detail .content-preview{font-size:15px;}
+/*booking*/
+.booking{font-size:14px;border:1px solid #e2e2e2;width:73%;padding:10px;}
+.booking h2{color:#189b96;margin:10px 0;padding:3px 0;border-bottom:1px solid;}
+.booking p{margin:0;padding:0;}
+.booking input{box-sizing:border-box;}
+.booking .div-table{display:table;width:100%;}
+.booking .div-table-row{display:table-row}
+.booking .div-table-row .div-table-cell{display:table-cell; padding:5px;}
+.booking .div-table-row .div-table-cell span{font-weight:bold;}
+.hide{display:none;}
+.info-flight{margin-bottom:14px;}
+.info-flight .place-flight{background:#CEE7E4}
+.condition-price .div-table-row .div-table-cell:first-child{width:23%}
+.condition-price .div-table-row .div-table-cell:last-child{border-bottom:1px dashed #dcdcdc;}
+.info-baggage .div-table-row .div-table-cell .normal{padding-left:12px;font-weight:normal}
+.info-passenger .div-table-row .div-table-cell.col-1{width:11%}
+.info-passenger .div-table-row .div-table-cell.col-2{width:13%}
+.info-passenger .div-table-row .div-table-cell.col-4{width:35%}
+.info-passenger input{width:100%;text-transform:uppercase;}
+.info-passenger select.fullwitdth,.info-contact select.fullwitdth{width:100%;}
+.info-passenger .info-small,.info-contact .info-small{font-weight:normal;font-size:12px;font-style:italic;}
+.info-contact input{width:100%;}
+.info-contact .div-table-column{display:table-column;}
+.info-contact .div-table-row .div-table-cell.haft{width:50%;padding:0;}
+.info-contact .div-table-row .div-table-cell span{line-height:20px;}
+.booking textarea{width:100%;min-height:100px;max-width:100%;}
+.policy label{font-style:italic;}
+.policy label a{text-decoration:underline;}
+.priceDetail .detail{padding:10px;}
+.priceDetail .detail h4{margin:0;}
+.priceDetail .detail h4 span{border-bottom:1px solid;}
+.priceDetail .detail .box-content{border-bottom:1px dashed;padding-bottom:0;margin-bottom:10px;}
+.priceDetail .detail .box-content:last-child{border-bottom:0;}
+.priceDetail .detail .box-content.sumPrice p span:last-child{font-size:15px;font-weight:600;}
+.priceDetail .detail .box-content p span:last-child{float:right;}
