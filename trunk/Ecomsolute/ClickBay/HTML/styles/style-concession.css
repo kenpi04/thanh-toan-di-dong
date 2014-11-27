@@ -25,6 +25,7 @@ table tr td p,table tr th p{margin:0;}
 table tr th.active{background:#F2C127}
 table.none-border, table.none-border tr, table.none-border tr td{border:none;}
 table.none-border tr th:first-child{border-left:none;}
+hr.style-two{border:0;height:1px;background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));background-image:-moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));background-image:-ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));background-image:-o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); }
 .section table tbody tr:nth-child(odd){background:#eeeeee;}
 .section table.orange tbody tr:hover{background:#d0d959;}
 .section table tbody tr td a{cursor:pointer;}
@@ -82,6 +83,23 @@ img.icon-small{width:10px;margin:0 4px;}
 .news-detail .news-title{font-size:25px;color:#189b96;font-weight:600}
 .news-detail .info-small{font-size:12px;}
 .news-detail .content-preview{font-size:15px;}
+.news-detail .news-detail-bottom .title{font-weight:600;font-size:13px;}
+.news-detail .news-detail-bottom .title .normal{font-weight:normal;padding:8px 0;}
+.news-detail .news-detail-bottom .commentList{padding:10px;display:inline-block;}
+.news-detail .news-detail-bottom .commentList .commentDetail{display:inline-block;margin-bottom:6px;}
+.news-detail .news-detail-bottom .info-comment{width:100%;display:inline-block;color:#BEBCBC}
+.news-detail .news-detail-bottom .info-comment span{font-weight:600;line-height:29px;}
+.news-detail .news-detail-bottom .info-comment p{float:right;line-height:29px;position:relative;margin:0;}
+.news-detail .news-detail-bottom a{cursor:pointer;}
+.news-detail .news-detail-bottom .commentMain.sub{width:95%;float:right;}
+.news-detail .news-detail-bottom .commentMain.sub .comment-reply-box{width:100%;float:right;}
+.news-detail .news-detail-bottom .commentMain.sub .bordered-top{border-top:1px dashed #eee;padding-top:6px;}
+/*Comment*/
+.center hr.style-two{margin-bottom:-16px;}
+.comment-reply-box{width:95%;float:right;}
+.comment-reply-box #form-reply-comment div{margin-bottom:3px;}
+.comment-reply-box #form-reply-comment input{margin-right:6px;}
+.comment-reply-box #form-reply-comment textarea{width:100%;min-height:63px;max-width:100%;box-sizing:border-box;}
 /*booking*/
 .booking{font-size:14px;border:1px solid #e2e2e2;width:73%;padding:10px;}
 .booking h2{color:#189b96;margin:10px 0;padding:3px 0;border-bottom:1px solid;}
