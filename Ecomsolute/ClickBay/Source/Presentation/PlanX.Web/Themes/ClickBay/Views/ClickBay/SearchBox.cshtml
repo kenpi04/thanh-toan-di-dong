@@ -1,0 +1,80 @@
+﻿@model PlanX.Web.Models.ClickBay.SearchModel
+
+<form>
+
+    <div class="box-head">
+        <img src="@Url.Content("~/Themes/ClickBay/Content/images/mouse.png")">
+        <span class="search-text">TÌM VÉ MÁY BAY</span>
+        <span>
+            <input type="radio" name="Return" value="1"><label>Khứ hồi</label>
+            <input type="radio" name="Return" value="0"><label>Một chiều</label>
+        </span>
+    </div>
+    <div class="box-content">
+        <div class="col">
+            <label>Điểm đi</label><br>
+            <input id="fromPlace" type="text" class="textbox"><br><br>
+                <input type="hidden" name="FromId" />
+            <label>Ngày đi</label><br>
+            <input name="DepartDate" type="datetime" class="textbox date">
+        </div>
+        <div class="col">
+            <label>Điểm đến</label><br>
+            <input id="toPlace" type="text" class="textbox"><br><br>
+            <input type="hidden" name="ToId" />
+            <label>Ngày về</label><br>
+            <input name="Return Date" type="datetime" class="textbox date">
+        </div>
+        <div class="clear"></div>
+
+        <div class="box-footer">
+            <span>
+                <label>Người lớn</label><br>               
+                @Html.TextBoxFor(x => x.Adult, new {@class="textbox" })
+            </span>
+            <span>
+                <label>Trẻ em</label><br>
+                @Html.TextBoxFor(x => x.Child, new {@class = "textbox" })
+            </span>
+            <span>
+                <label>Trẻ sơ sinh</label><br>
+                @Html.TextBoxFor(x => x.Flant, new {@class = "textbox" })
+            </span>
+            <span>
+                <input type="submit" class="btn-search" value="Tìm chuyến bay">
+            </span>
+        </div>
+
+    </div>
+</form>
+<script type="text/javascript">
+    $(function () {
+        $("#dialog-form").dialog({
+            autoOpen: false,
+            height: 300,
+            width: 350,
+            modal: true,
+            buttons: {
+                "Create an account": addUser,
+                Cancel: function () {
+                    dialog.dialog("close");
+                }
+            },
+            close: function () {
+                form[0].reset();
+                allFields.removeClass("ui-state-error");
+            }
+        });
+        $("#fromPlace,#toPlace").click(function () {
+            $("#dialog-form").dialog("open");
+        })
+    })
+</script>
+<div id="dialog-form">
+    <ul>
+        @foreach(var i in Model.ListCitys)
+        {
+            <li>@i.Text</li>
+        }
+    </ul>
+</div>
