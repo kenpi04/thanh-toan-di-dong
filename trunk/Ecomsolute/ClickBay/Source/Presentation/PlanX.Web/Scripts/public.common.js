@@ -115,3 +115,6 @@ function htmlEncode(value) {
 function htmlDecode(value) {
     return $('<div/>').html(value).text();
 }
+$(document).ready(function () {
+    $("input.date").datepicker({ dateFormat: "dd-mm-yy" })
+})

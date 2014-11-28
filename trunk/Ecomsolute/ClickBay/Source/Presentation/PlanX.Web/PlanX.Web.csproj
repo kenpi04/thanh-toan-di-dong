@@ -1440,6 +1440,9 @@
     <Content Include="Views\News\NewsItem.cshtml" />
     <Content Include="Views\News\NewsItem.Mobile.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\ClickBay\Views\ClickBay\SearchBox.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

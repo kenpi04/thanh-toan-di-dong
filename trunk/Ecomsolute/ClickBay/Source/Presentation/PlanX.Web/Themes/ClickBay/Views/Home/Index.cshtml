@@ -6,48 +6,7 @@
     <div class="container">
         <div class="search-head">
             <div class="box-search" style="float: right; margin-top: 20px; box-shadow: 0px 4px 10px #000;">
-                <div class="box-head">
-                    <img src="@Url.Content("~/Themes/ClickBay/Content/images/mouse.png")">
-                    <span class="search-text">TÌM VÉ MÁY BAY</span>
-                    <span>
-                        <input type="radio" name="type"><label>Khứ hồi</label>
-                        <input type="radio" name="type"><label>Một chiều</label>
-                    </span>
-                </div>
-                <div class="box-content">
-                    <div class="col">
-                        <label>Điểm đi</label><br>
-                        <input type="text" class="textbox"><br><br>
-                        <label>Ngày đi</label><br>
-                        <input type="datetime" class="textbox date">
-                    </div>
-                    <div class="col">
-                        <label>Điểm đến</label><br>
-                        <input type="text" class="textbox"><br><br>
-                        <label>Ngày về</label><br>
-                        <input type="datetime" class="textbox date">
-                    </div>
-                    <div class="clear"></div>
-
-                    <div class="box-footer">
-                        <span>
-                            <label>Người lớn</label><br>
-                            <input type="text" class="textbox">
-                        </span>
-                        <span>
-                            <label>Trẻ em</label><br>
-                            <input type="text" class="textbox">
-                        </span>
-                        <span>
-                            <label>Trẻ sơ sinh</label><br>
-                            <input type="text" class="textbox">
-                        </span>
-                        <span>
-                            <input type="submit" class="btn-search" value="Tìm chuyến bay">
-                        </span>
-                    </div>
-
-                </div>
+             @Html.Action("SearchBox","ClickBay")
             </div>
         </div>
         <div class="clear"></div>

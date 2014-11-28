@@ -14,6 +14,16 @@ namespace PlanX.Web.Models.ClickBay
 
         public string ImgBrand { get; set; }
         public string BrandCode { get; set; }
-       
+
+
+        public string FlightNumber { get; set; }
+
+        public DateTime DepartTime { get; set; }
+
+        public DateTime LandingTime { get; set; }
+
+        public string FromAirport { get; set; }
+
+        public string ToAirport { get; set; }
     }
 }

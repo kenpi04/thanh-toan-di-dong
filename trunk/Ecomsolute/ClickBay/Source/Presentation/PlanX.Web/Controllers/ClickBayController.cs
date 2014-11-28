@@ -46,13 +46,26 @@ namespace PlanX.Web.Controllers
                 return new List<TicketModel>();
             return data.Select(x => new TicketModel
             {
-                //Id = x.Id,
-                //Price = x.Price,
+                Id = x.Id,
+                Price=x.Price,
+                FlightNumber=x.FlightNumer,
+                DepartTime=x.DepartTime,
+                LandingTime=x.LandingTime,
+                FromAirport=x.FromAirport,
+                ToAirport=x.ToAirport,
+               
 
+                //Price = x.Price,
                 //ToId = x.ToPlaceId,
                 //BrandCode = x.AirlineCode
             });
             
+        }
+        public ActionResult SearchBox()
+        {
+            var model = new SearchModel();
+            model.ListCitys = _clickBayService.GetListCity().Select(x => new SelectListItem { Value = x.Code, Text = x.Name }).ToList();
+            return View(model);
         }
 
 
