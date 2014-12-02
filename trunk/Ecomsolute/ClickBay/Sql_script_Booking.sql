@@ -1,3 +1,12 @@
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
 CREATE TABLE [dbo].[Booking](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[ContactName] [nvarchar](100) NOT NULL,
@@ -10,31 +19,32 @@ CREATE TABLE [dbo].[Booking](
 	[ContactBirthDate] [datetime] NULL,
 	[ContactRequestMore] [nvarchar](500) NULL,
 	[VoucherCode] [varchar](20) NULL,
-	[Brand] [varchar](50) NOT NULL,
+	[RoundTrip] [bit] NOT NULL,
+	[BookingInfoFlightToId] [int] NULL,
+	[BookingInfoFlightReturnId] [int] NULL,
 	[Adult] [smallint] NOT NULL,
 	[Child] [smallint] NOT NULL,
 	[Infant] [smallint] NOT NULL,
-	[RoundTrip] [bit] NOT NULL,
-	[DepartDate] [datetime] NOT NULL,
-	[ReturnDate] [datetime] NULL,
-	[FlightNumber] [varchar](20) NOT NULL,
-	[TicketPrice] [decimal](18, 2) NOT NULL,
-	[TicketType] [varchar](20) NULL,
-	[FromPlaceId] [int] NOT NULL,
-	[ToPlaceId] [int] NOT NULL,
-	[FromPlaceCode] [varchar](20) NOT NULL,
-	[ToPlaceCode] [varchar](20) NOT NULL,
-	[FareBasis] [varchar](50) NULL,
-	[ReturnFareBasis] [varchar](20) NULL,
 	[CurrencyType] [varchar](10) NULL,
+	[CurrentcyRate] [decimal](12, 2) NOT NULL,
 	[CallBackUrl] [nvarchar](500) NULL,
-	[PaymentMethodId] [smallint] NOT NULL,
 	[TotalAmount] [decimal](18, 2) NOT NULL,
-	[DiscountAmount] [decimal](18, 2) NOT NULL,
+	[TotalFeeAmount] [decimal](18, 2) NOT NULL,
+	[TotalTaxAmount] [decimal](18, 2) NOT NULL,
+	[TotalFeeOtherAmount] [decimal](18, 2) NOT NULL,
+	[TotalBaggageFeeAmount] [decimal](18, 2) NOT NULL,
+	[TotalDiscountAmount] [decimal](18, 2) NOT NULL,
 	[PaymentAmount] [decimal](18, 2) NOT NULL,
-	[IdBooking] [int] NOT NULL,
+	[BookingStatusId] [smallint] NOT NULL,
+	[PaymentStatusId] [smallint] NOT NULL,
+	[PaymentMethodId] [smallint] NOT NULL,
+	[ReasonCancel] [nvarchar](200) NULL,
+	[ContactStatusId] [smallint] NOT NULL,
+	[CustomerId] [int] NOT NULL,
+	[CustomerReceivedDate] [datetime] NULL,
+	[CustomerNote] [nvarchar](200) NULL,
 	[CreatedOn] [datetime] NOT NULL,
-	[UpdatedOn] [bit] NOT NULL,
+	[UpdatedOn] [datetime] NOT NULL,
 	[Deleted] [bit] NOT NULL,
  CONSTRAINT [PK_Booking] PRIMARY KEY CLUSTERED 
 (
@@ -47,6 +57,9 @@ GO
 SET ANSI_PADDING OFF
 GO
 
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_RoundTrip]  DEFAULT ((0)) FOR [RoundTrip]
+GO
+
 ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_Adult]  DEFAULT ((1)) FOR [Adult]
 GO
 
@@ -56,37 +69,57 @@ GO
 ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_Infant]  DEFAULT ((0)) FOR [Infant]
 GO
 
-ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_RoundTrip]  DEFAULT ((0)) FOR [RoundTrip]
-GO
-
-ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_TicketPrice]  DEFAULT ((0)) FOR [TicketPrice]
-GO
-
-ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_FromPlaceId]  DEFAULT ((0)) FOR [FromPlaceId]
-GO
-
-ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_ToPlaceId]  DEFAULT ((0)) FOR [ToPlaceId]
-GO
-
-ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_FromPlaceCode]  DEFAULT ('') FOR [FromPlaceCode]
-GO
-
-ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_ToPlaceCode]  DEFAULT ('') FOR [ToPlaceCode]
-GO
-
-ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_PaymentMethodId]  DEFAULT ((0)) FOR [PaymentMethodId]
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_CurrentcyRate]  DEFAULT ((1)) FOR [CurrentcyRate]
 GO
 
 ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_TotalAmount]  DEFAULT ((0)) FOR [TotalAmount]
 GO
 
-ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_DiscountAmount]  DEFAULT ((0)) FOR [DiscountAmount]
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_FeeAmount]  DEFAULT ((0)) FOR [TotalFeeAmount]
 GO
 
-ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_IdBooking]  DEFAULT ((0)) FOR [IdBooking]
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_TaxAmount]  DEFAULT ((0)) FOR [TotalTaxAmount]
+GO
+
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_TotalFeeOtherAmount]  DEFAULT ((0)) FOR [TotalFeeOtherAmount]
+GO
+
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_TotalBaggageFeeAmount]  DEFAULT ((0)) FOR [TotalBaggageFeeAmount]
+GO
+
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_DiscountAmount]  DEFAULT ((0)) FOR [TotalDiscountAmount]
+GO
+
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_TicketStatusId]  DEFAULT ((0)) FOR [BookingStatusId]
+GO
+
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_PaymentStatusId]  DEFAULT ((0)) FOR [PaymentStatusId]
+GO
+
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_PaymentMethodId]  DEFAULT ((0)) FOR [PaymentMethodId]
+GO
+
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_ContactStatusId]  DEFAULT ((0)) FOR [ContactStatusId]
+GO
+
+ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_CustomerId]  DEFAULT ((0)) FOR [CustomerId]
 GO
 
 ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [dbo].[Booking]  WITH CHECK ADD  CONSTRAINT [FK_Booking_BookingInfoFlight] FOREIGN KEY([BookingInfoFlightToId])
+REFERENCES [dbo].[BookingInfoFlight] ([Id])
+GO
+
+ALTER TABLE [dbo].[Booking] CHECK CONSTRAINT [FK_Booking_BookingInfoFlight]
+GO
+
+ALTER TABLE [dbo].[Booking]  WITH CHECK ADD  CONSTRAINT [FK_Booking_BookingInfoFlight1] FOREIGN KEY([BookingInfoFlightReturnId])
+REFERENCES [dbo].[BookingInfoFlight] ([Id])
+GO
+
+ALTER TABLE [dbo].[Booking] CHECK CONSTRAINT [FK_Booking_BookingInfoFlight1]
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ten nguoi lien lac' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'ContactName'
@@ -119,7 +152,13 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ma code giam gia' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'VoucherCode'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Hang hang khong' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'Brand'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Co phai khu hoi: 1: co; 0: khong' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'RoundTrip'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'id thong tin chuyen bay luot di' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'BookingInfoFlightToId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'id thong tin chuyen bay luot ve' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'BookingInfoFlightReturnId'
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So luong nguoi lon' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'Adult'
@@ -131,61 +170,58 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So luong em be' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'Infant'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Co phai khu hoi: 1: co; 0: khong' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'RoundTrip'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ngay di' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'DepartDate'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ngay ve' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'ReturnDate'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ma chuyen bay' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'FlightNumber'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Gia ve' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'TicketPrice'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Loai ve' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'TicketType'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Id ma noi di: ko ap dung cho VNA, Abacus' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'FromPlaceId'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Id ma noi den: ko ap dung cho VNA, Abacus' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'ToPlaceId'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ma noi di. Ap dung cho VNA,Abacus' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'FromPlaceCode'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ma noi den. Ap dung cho VNA,Abacus' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'ToPlaceCode'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Hang ghe luc di. Ap dung cho VNA' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'FareBasis'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Hang ghe luc ve. Ap dung cho VNA' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'ReturnFareBasis'
-GO
-
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ma tien te' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'CurrencyType'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ty gia' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'CurrentcyRate'
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Url tra ket qua ve web' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'CallBackUrl'
 GO
 
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Tong tien: SUM( TotalAmount_BookingInfoFlight)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'TotalAmount'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Tong phi = sum( TotalFeeAmount_BookingInfoFlight)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'TotalFeeAmount'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Tong Thue = Sum( TotalTaxAmount_BookingInfoFlight )' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'TotalTaxAmount'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Tong phi khac: SUM ( TotalFeeOther _ BookingInfoFlight )' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'TotalFeeOtherAmount'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Tong phi hanh ly cong them: SUM ( TotalBaggageFee  _ BookingInfoFlight )' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'TotalBaggageFeeAmount'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So tien giam gia' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'TotalDiscountAmount'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So tien phai tra = TotalAmount + TotalFeeAmount + TotalTaxAmount + TotalFeeOtherAmout + TotalBaggageFeeAmout - DiscountAmount' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'PaymentAmount'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Trang thai ve: 10-chua xu ly; 20-giu cho; 30-hoan thanh; 40-hoan ve; 50- da huy;(booking thuc va da dua ve cho khach; 40-huy;' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'BookingStatusId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Tinh trang thanh toan: 0-chua thanh toan; 10-da thanh toan;' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'PaymentStatusId'
+GO
+
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ma phuong thuc thanh toan: 1-cong thanh toan, 2-tien mat, 3-qua ATM' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'PaymentMethodId'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Tong tien' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'TotalAmount'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ly do huy ve khi TicketStatusId = 40' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'ReasonCancel'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So tien giam gia' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'DiscountAmount'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Tinh trang lien lac voi khach hang: 0-chua lien lac;10-da lien lac; 20-khong lien lac duoc;' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'ContactStatusId'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So tien phai tra = TotalAmount - DiscountAmount' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'PaymentAmount'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Id Customer  - ma nhan vien' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'CustomerId'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Id booking tra ve tu he thong API' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'IdBooking'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ngay nhan vien tiep nhan' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'CustomerReceivedDate'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Nhan vien ghi chu' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'CustomerNote'
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ngay tao' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'CreatedOn'
@@ -195,93 +231,6 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ngay cap nhat 
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'La da xoa' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'Deleted'
-GO
-
-
-CREATE TABLE [dbo].[BookingPassenger](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[BookingId] [int] NOT NULL,
-	[PassengerType] [smallint] NOT NULL,
-	[Gender] [varchar](10) NULL,
-	[Title] [varchar](10) NULL,
-	[FirstName] [nvarchar](20) NULL,
-	[LastName] [nvarchar](20) NULL,
-	[MiddleName] [nvarchar](20) NULL,
-	[MobileNumber] [nvarchar](20) NULL,
-	[Baggage] [int] NOT NULL,
-	[ReturnBaggage] [int] NOT NULL,
-	[BirthDay] [datetime] NULL,
-	[Email] [nvarchar](50) NULL,
-	[PassportNumber] [nvarchar](50) NULL,
-	[PassportExpired] [datetime] NULL,
- CONSTRAINT [PK_BookingPassenger] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-ALTER TABLE [dbo].[BookingPassenger] ADD  CONSTRAINT [DF_BookingPassenger_PassengerType]  DEFAULT ((0)) FOR [PassengerType]
-GO
-
-ALTER TABLE [dbo].[BookingPassenger] ADD  CONSTRAINT [DF_BookingPassenger_Baggage]  DEFAULT ((0)) FOR [Baggage]
-GO
-
-ALTER TABLE [dbo].[BookingPassenger] ADD  CONSTRAINT [DF_BookingPassenger_ReturnBaggage]  DEFAULT ((0)) FOR [ReturnBaggage]
-GO
-
-ALTER TABLE [dbo].[BookingPassenger]  WITH CHECK ADD  CONSTRAINT [FK_BookingPassenger_Booking] FOREIGN KEY([BookingId])
-REFERENCES [dbo].[Booking] ([Id])
-ON DELETE CASCADE
-GO
-
-ALTER TABLE [dbo].[BookingPassenger] CHECK CONSTRAINT [FK_BookingPassenger_Booking]
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Khoa ngoai Id booking ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'BookingId'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Loai hanh khach: 0-nguoi lon, 1-tre em; 2-em be' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'PassengerType'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Gioi tinh' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'Gender'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Quy danh' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'Title'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ten' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'FirstName'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ho' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'LastName'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ten lot' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'MiddleName'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'so dien thoai' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'MobileNumber'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So kg hanh ly khi di' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'Baggage'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So kg hanh ly khi ve' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'ReturnBaggage'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ngay sinh' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'BirthDay'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Email' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'Email'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So Passprort : ap dung Abacus' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'PassportNumber'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ngay het han Passprort : ap dung Abacus' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingPassenger', @level2type=N'COLUMN',@level2name=N'PassportExpired'
 GO
 
 
