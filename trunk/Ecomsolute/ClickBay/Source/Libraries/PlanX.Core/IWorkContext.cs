@@ -1,6 +1,7 @@
 ﻿using PlanX.Core.Domain.Customers;
 using PlanX.Core.Domain.Directory;
 using PlanX.Core.Domain.Localization;
+using System.Collections.Generic;
 //using planx.Core.Domain.Tax;
 //using planx.Core.Domain.Vendors;
 
@@ -41,5 +42,7 @@ namespace PlanX.Core
         /// Get or set value indicating whether we're in admin area
         /// </summary>
         bool IsAdmin { get; set; }
+
+        
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Nop.Core.Configuration;
+using PlanX.Core.Configuration;
 
-namespace Nop.Core.Domain.Payments
+namespace PlanX.Core.Domain.Payments
 {
     public class PaymentSettings : ISettings
     {
