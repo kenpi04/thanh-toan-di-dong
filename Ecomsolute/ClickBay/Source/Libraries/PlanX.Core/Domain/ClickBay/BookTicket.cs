@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlanX.Core.Domain.ClickBay
 {
- public   class BookTicket
+ public   class BookTicket:BaseEntity
     {
         /*
           "Brand": "JetStar",			//  kiểu chuỗi – hãng hàng không 
@@ -48,15 +48,25 @@ namespace PlanX.Core.Domain.ClickBay
       public string CurrencyType { get; set; }
       public string CallBackUrl { get; set; }
 
+      public Guid TicketGuid { get; set; }
+
+      public int CustomerId { get; set; }
+
+      public string Ip { get; set; }
+
+      public int PaymentStatus { get; set; }
+
       public virtual ICollection<BookingPassenger> BookingPasssenger
       {
           get { return _bookingPassenger ?? (_bookingPassenger = new List<BookingPassenger>()); }
           protected set { _bookingPassenger = value; }
       }
 
-        
-      
 
 
+
+
+
+      public DateTime CreatedOnUtc { get; set; }
     }
 }

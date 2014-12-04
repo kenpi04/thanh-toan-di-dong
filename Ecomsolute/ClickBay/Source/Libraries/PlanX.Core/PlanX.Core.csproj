@@ -89,14 +89,23 @@
   <ItemGroup>
     <Compile Include="ComponentModel\WriteLockDisposable.cs" />
     <Compile Include="Domain\Banner\Banner.cs" />
+    <Compile Include="Domain\ClickBay\Airline.cs" />
+    <Compile Include="Domain\ClickBay\AirlinesCondition.cs" />
     <Compile Include="Domain\ClickBay\Airport.cs" />
+    <Compile Include="Domain\ClickBay\ArilinesBaggageCondition.cs" />
+    <Compile Include="Domain\ClickBay\Booking.cs" />
+    <Compile Include="Domain\ClickBay\BookingInfoFlight.cs" />
     <Compile Include="Domain\ClickBay\BookingPassenger.cs" />
+    <Compile Include="Domain\ClickBay\BookingPriceDetail.cs" />
     <Compile Include="Domain\ClickBay\BookTicket.cs" />
+    <Compile Include="Domain\ClickBay\BookTicketNote.cs" />
     <Compile Include="Domain\ClickBay\FlightCity.cs" />
     <Compile Include="Domain\ClickBay\FlightCountry.cs" />
     <Compile Include="Domain\ClickBay\Ticket.cs" />
     <Compile Include="Domain\ClickBay\FlightDetailDto.cs" />
+    <Compile Include="Domain\ClickBay\TicketConcession.cs" />
     <Compile Include="Domain\ClickBay\TicketPriceDetailDto.cs" />
+    <Compile Include="Domain\ClickBay\TicketType.cs" />
     <Compile Include="Domain\Common\SearchTermReportLine.cs" />
     <Compile Include="Domain\Common\SearchTerm.cs" />
     <Compile Include="Domain\Customers\CustomerLoginResults.cs" />

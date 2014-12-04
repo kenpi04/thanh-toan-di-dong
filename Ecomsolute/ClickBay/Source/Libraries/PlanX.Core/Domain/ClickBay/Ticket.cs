@@ -19,17 +19,17 @@ namespace PlanX.Core.Domain.ClickBay
         ToAirportId	Int	Mã sân bay đến	2
         FromPlace	String	Nơi đi	Hồ Chí Minh
 
-      FromPlaceId	Int	Mã nơi đi	1
-ToPlace	String	Nơi đến	Hà Nội
-ToPlaceId	Int	Mã nơi đến	2
-Price	Decimal	Giá vé NET	1694000.00
-TotalPrice	Decimal	Tổng giá	1694000.00
-Stops	INT	Số chặng dừng	0 hay 1, 2 …
-Filter		Nối chăng abacus	
-FareBasis	String	Hạng ghế ng ồi	
-Details	FlightDetailDto (Navigation)	Danh sách các vé khác hạng	
-TicketPriceDetails	TicketPriceDetailDto (Navigation)	Chi tiết giá vé	
-TicketOptions	TicketOptionDto	Các giá vé khác	*/
+        FromPlaceId	Int	Mã nơi đi	1
+        ToPlace	String	Nơi đến	Hà Nội
+        ToPlaceId	Int	Mã nơi đến	2
+        Price	Decimal	Giá vé NET	1694000.00
+        TotalPrice	Decimal	Tổng giá	1694000.00
+        Stops	INT	Số chặng dừng	0 hay 1, 2 …
+        Filter		Nối chăng abacus	
+        FareBasis	String	Hạng ghế ng ồi	
+        Details	FlightDetailDto (Navigation)	Danh sách các vé khác hạng	
+        TicketPriceDetails	TicketPriceDetailDto (Navigation)	Chi tiết giá vé	
+        TicketOptions	TicketOptionDto	Các giá vé khác	*/
 
 
       private ICollection<TicketPriceDetailDto> _ticketDetails;
@@ -41,16 +41,18 @@ TicketOptions	TicketOptionDto	Các giá vé khác	*/
         public string Description { get; set; }
         public string Airline { get; set; }
         public string AirlineCode { get; set; }
-        public DateTime DateTime { get; set; }
+
+        public  DateTime DepartTime { get; set; }
         public DateTime  LandingTime { get; set; }
-        public TimeSpan FlightDuration { get; set; }
+        public String FlightDuration { get; set; }
         public string FromAirport { get; set; }
-        public int FromAirportId { get; set; }
+        public int? FromAirportId { get; set; }
         public string ToAirport { get; set; }
+        public int? ToAirportId { get; set; }
         public string FromPlace { get; set; }
-        public int FromPlaceId { get; set; }
+        public int? FromPlaceId { get; set; }
         public string ToPlace { get; set; }
-        public int ToPlaceId { get; set; }
+        public int? ToPlaceId { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
         public int Stops { get; set; }
