@@ -12,6 +12,7 @@ namespace PlanX.Data.Mapping.ClickBay
             this.HasRequired(x => x.Booking)
                 .WithMany()
                 .HasForeignKey(b => b.BookingId);
+            this.Ignore(x => x.PassengerType);
                 
         }
     }

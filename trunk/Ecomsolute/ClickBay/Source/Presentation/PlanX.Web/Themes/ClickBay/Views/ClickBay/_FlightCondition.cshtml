@@ -1,40 +1,16 @@
-﻿<article>
+﻿@model BookingModel
+<article>
     <h2>Điều Kiện Giá Vé</h2>
     <div class="div-table condition-price">
-        <div class="div-table-row">
-            <div class="div-table-cell"><span>Hoàn vé</span></div>
-            <div class="div-table-cell"><p>Trước ngày khởi hành: 300.000 VNĐ (Giai đoạn Tết Nguyên đán: 600.000 VNĐ). Từ ngày khởi hành: 600.000 VNĐ. Hoàn lại tiền vé ngay trong ngày (chỉ có tại ABAY)</p></div>
+        @foreach(var i in Model.BookingInfoConditions)
+        {
+           
+          <div class="div-table-row">
+            <div class="div-table-cell"><span>@i.ConditionType</span></div>
+            <div class="div-table-cell"><p>@i.ConditionDescription</p></div>
         </div>
-        <div class="div-table-row">
-            <div class="div-table-cell"><span>Đổi hành trình</span></div>
-            <div class="div-table-cell">
-                <p>
-                    Trước ngày khởi hành , phí :300.000/vé (Giai đoạn Tết Nguyên đán: 600.000 VNĐ).
-                    Trong và sau ngày khởi hành,phí :600.000/vé cộng chênh lệch giá vé.
-                </p>
-            </div>
-        </div>
-        <div class="div-table-row">
-            <div class="div-table-cell"><span>Đổi ngày giờ chuyến bay</span></div>
-            <div class="div-table-cell">
-                <p>
-                    Trước ngày khởi hành , phí :300.000/vé (Giai đoạn Tết Nguyên đán: 600.000 VNĐ).
-                    Trong và sau ngày khởi hành,phí :600.000/vé cộng chênh lệch giá vé.
-                </p>
-            </div>
-        </div>
-        <div class="div-table-row">
-            <div class="div-table-cell"><span>Thời hạn dùng tối đa</span></div>
-            <div class="div-table-cell">
-                <p>12 tháng</p>
-            </div>
-        </div>
-        <div class="div-table-row">
-            <div class="div-table-cell"><span>Điểm cộng dặm</span></div>
-            <div class="div-table-cell">
-                <p>Không được cộng</p>
-            </div>
-        </div>
+        }
+       
     </div>
 </article>
 
@@ -44,22 +20,21 @@
         <div class="div-table-row">
             <div class="div-table-cell"><span>Hành lý chiều đi</span></div><div class="div-table-cell"></div>
         </div>
+        @foreach(var i in Model.TicketInfo.AirlinesConditions)
+        { 
         <div class="div-table-row">
-            <div class="div-table-cell"><span class="normal">Hành lý xách tay</span></div><div class="div-table-cell">Mỗi hành khách được mang theo tối đa 7kg hành lý xách tay.</div>
+            <div class="div-table-cell"><span class="normal">@i.ConditionName</span></div><div class="div-table-cell">@i.ConditionDescription</div>
         </div>
-        <div class="div-table-row">
-            <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
-            <div class="div-table-cell">Mỗi hành khách được mang theo tối đa 20Kg hành lý ký gửi.</div>
-        </div>
+        }
+      
         <div class="div-table-row">
             <div class="div-table-cell"><span>Hành lý chiều về</span></div><div class="div-table-cell"></div>
         </div>
-        <div class="div-table-row">
-            <div class="div-table-cell"><span class="normal">Hành lý xách tay</span></div><div class="div-table-cell">Mỗi hành khách được mang theo tối đa 7kg hành lý xách tay.</div>
-        </div>
-        <div class="div-table-row">
-            <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
-            <div class="div-table-cell">Mỗi hành khách được mang theo tối đa 20Kg hành lý ký gửi.</div>
-        </div>
+        @foreach (var i in Model.TicketInfoReturn.AirlinesConditions)
+        {
+            <div class="div-table-row">
+                <div class="div-table-cell"><span class="normal">@i.ConditionName</span></div><div class="div-table-cell">@i.ConditionDescription</div>
+            </div>
+        }
     </div>
 </article>

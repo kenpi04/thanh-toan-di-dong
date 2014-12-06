@@ -101,6 +101,7 @@
     <Compile Include="Domain\ClickBay\BookTicketNote.cs" />
     <Compile Include="Domain\ClickBay\FlightCity.cs" />
     <Compile Include="Domain\ClickBay\FlightCountry.cs" />
+    <Compile Include="Domain\ClickBay\PasserType.cs" />
     <Compile Include="Domain\ClickBay\Ticket.cs" />
     <Compile Include="Domain\ClickBay\FlightDetailDto.cs" />
     <Compile Include="Domain\ClickBay\TicketConcession.cs" />

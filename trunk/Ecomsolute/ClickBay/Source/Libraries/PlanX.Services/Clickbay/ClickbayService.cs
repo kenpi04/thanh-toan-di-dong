@@ -42,7 +42,7 @@ namespace PlanX.Services.ClickBay
 	    }
 
       #region API
-      public async Task<IEnumerable<Ticket>> SearchTicket(string fromPlace, string toPlace, DateTime departDate ,
+      public IEnumerable<Ticket> SearchTicket(string fromPlace, string toPlace, DateTime departDate ,
           int Adult = 0, int child = 0, int Infant = 0,
           string FareBasis=null,
           bool roundTrip = false,  DateTime? returnDate = null,          
@@ -79,108 +79,85 @@ namespace PlanX.Services.ClickBay
                 
             };
 
-            string result = readFile("data_detail.txt");  //await GetData(url,false, param);
+            string result = GetData(url,false, param);
             if (result == null)
                 return null;
-            var data = Task.Factory.StartNew<ConvertDataModel>(() => JsonConvert.DeserializeObject<ConvertDataModel>(result)).Result;
-
-            return await Task.Factory.StartNew<IEnumerable<Ticket>>(() => JsonConvert.DeserializeObject<IEnumerable<Ticket>>(data.Value.ToString()));
+            return JsonConvert.DeserializeObject<IEnumerable<Ticket>>(result);
             
             
            
         }
 
-        public async Task<IEnumerable<Airport>> GetAirport()
+        public  IEnumerable<Airport> GetAirport()
         {
-            string result = await GetData(ClickBayContant.URL_GET_AIRPLACES);
+            string result =  GetData(ClickBayContant.URL_GET_AIRPLACES);
             if (result == null)
                 return null;
-            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<Dictionary<string, string>>(result))
-               .ContinueWith<IEnumerable<Airport>>(t =>
-               {
-                   return JsonConvert.DeserializeObject<IEnumerable<Airport>>(t.Result["values"]);
-
-               });
+            return JsonConvert.DeserializeObject<IEnumerable<Airport>>(result);
             
         }
 
-        public async Task<IEnumerable<FlightCity>> GetCity()
+        public IEnumerable<FlightCity> GetCity()
         {
-            string result = await GetData(ClickBayContant.URL_GET_CITYS);
+            string result =  GetData(ClickBayContant.URL_GET_CITYS);
             if (result == null)
                 return null;
-            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<Dictionary<string, string>>(result))
-              .ContinueWith<IEnumerable<FlightCity>>(t =>
-              {
-                  return JsonConvert.DeserializeObject<IEnumerable<FlightCity>>(t.Result["values"]);
-
-              });
+            return JsonConvert.DeserializeObject<IEnumerable<FlightCity>>(result);
         }
 
-        public async Task<IEnumerable<FlightCountry>> GetCountry()
+        public IEnumerable<FlightCountry> GetCountry()
         {
-            string result = await GetData(ClickBayContant.URL_GET_COUNTRIES);
+            string result =  GetData(ClickBayContant.URL_GET_COUNTRIES);
             if (result == null)
                 return null;
-            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<Dictionary<string, string>>(result))
-              .ContinueWith<IEnumerable<FlightCountry>>(t =>
-              {
-                  return JsonConvert.DeserializeObject<IEnumerable<FlightCountry>>(t.Result["values"]);
-
-              });
+            return JsonConvert.DeserializeObject<IEnumerable<FlightCountry>>(result);
         }
 
-        public async Task<Booking> BookTicket(Booking model)
+        public Booking BookTicket(Booking model)
         {
             var data = model.ToDictionary().Select(x=>new KeyValuePair<string,string>(x.Key,x.Value.ToString()));
-            string resultJson = await GetData(ClickBayContant.URL_BOOK,false,data);
-
-            return await Task.Factory.StartNew<Booking>(() => JsonConvert.DeserializeObject<Booking>(resultJson));
+            string result = GetData(ClickBayContant.URL_BOOK, false, data);
+            return JsonConvert.DeserializeObject<Booking>(result);
 
            
         }
      
-      private async Task<string>GetData(string url,bool isGET=true,IEnumerable<KeyValuePair<string,string>> para=null)
+      private string GetData(string url,bool isGET=true,IEnumerable<KeyValuePair<string,string>> para=null)
        {
-         
-          
-           string resultJson=string.Empty;
-         
-          HttpClientHandler handler=new HttpClientHandler();
-          handler.Credentials=new NetworkCredential(ClickBayContant.USERNAME,ClickBayContant.PASSWORD);
-         
-         HttpClient client=new HttpClient(handler);
-          HttpRequestMessage request=new HttpRequestMessage{
-          Method=isGET?HttpMethod.Get:HttpMethod.Post,
-          RequestUri=new Uri(url),
-         
-          };
-          String encoded = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(ClickBayContant.USERNAME+":"+ ClickBayContant.PASSWORD));
-          request.Headers.Add("Authorization", "Basic " + encoded);
-         
-          if(para!=null)
-          {
-              var data = new FormUrlEncodedContent(para);
-              request.Content = data;
-          }
-          var response= await client.GetAsync(new Uri(url));
-
-          if (response.IsSuccessStatusCode)
-          {
-              response.EnsureSuccessStatusCode();
-              return await response.Content.ReadAsStringAsync();
 
 
-          }
-          else
-              return null;
+           string resultJson = string.Empty;
+           HttpClientHandler handler = new HttpClientHandler();
+           //handler.Credentials = new NetworkCredential(ClickBayContant.USERNAME, ClickBayContant.PASSWORD);
+           HttpClient client = new HttpClient(handler);
+           String encoded = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(ClickBayContant.USERNAME + ":" + ClickBayContant.PASSWORD));
+           client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", encoded);
+         
+
+
+           var response = client.GetAsync(new Uri(ClickBayContant.URL_GET_AIRPLACES)).Result;
+
+           if (response.IsSuccessStatusCode)
+           {
+               response.EnsureSuccessStatusCode();
+               string result= response.Content.ReadAsStringAsync().Result;
+               if (result != null)
+               {
+                   var convertModel = JsonConvert.DeserializeObject<ConvertDataModel>(result);
+                   if (convertModel.Value != null)
+                       return convertModel.Value.ToString();
+               }
+
+
+           }          
+           return null;
           
 
   
           
 
       }
-
+     
       #endregion
 
       #region DataBase Service
@@ -261,33 +238,26 @@ namespace PlanX.Services.ClickBay
           _bookTicketRepository.Delete(book);
       }*/
 
-      public void InsertOrUpdateCity(FlightCity city)
+      public void InsertCity(FlightCity city)
       {
           if (city == null)
-              throw new ArgumentNullException("City is null");
-          if (city.Id > 0)
-              _flightCityRepository.Update(city);
-          else
+              throw new ArgumentNullException("City is null");         
               _flightCityRepository.Insert(city);
       }
-
-      public void InsertOrUpdateCountry(FlightCountry entity)
+     
+      public void InsertCountry(FlightCountry entity)
       {
           if (entity == null)
               throw new ArgumentNullException("Country is null");
-          if (entity.Id > 0)
-              _flightCountryRepository.Update(entity);
-          else
+          
               _flightCountryRepository.Insert(entity);
       }
 
-      public void InsertOrupdateAirport(Airport airport)
+      public void InsertAirport(Airport airport)
       {
          if(airport==null)
              throw new ArgumentNullException("Airport is null");
-         if(airport.Id>0)
-             _airportRepository.Update(airport);
-          else
+         
              _airportRepository.Insert(airport);
       }
 
@@ -304,12 +274,12 @@ namespace PlanX.Services.ClickBay
 
 
 
-      public string GetData()
+      public  string GetData()
       {
           string resultJson = string.Empty;
 
           HttpClientHandler handler = new HttpClientHandler();
-          handler.Credentials = new NetworkCredential(ClickBayContant., ClickBayContant.PASSWORD);
+          //handler.Credentials = new NetworkCredential(ClickBayContant.USERNAME, ClickBayContant.PASSWORD);
         
           HttpClient client = new HttpClient(handler);
          
@@ -318,17 +288,43 @@ namespace PlanX.Services.ClickBay
           //  request.Headers.Add("Authorization", "Basic " + encoded);
 
         
-          var response =  client.GetAsync(new Uri(ClickBayContant.)).Result;
+          var response = client.GetAsync(new Uri(ClickBayContant.URL_GET_AIRPLACES)).Result;
 
           if (response.IsSuccessStatusCode)
           {
               response.EnsureSuccessStatusCode();
-              return  response.Content.ReadAsStringAsync().Result;
+              return response.Content.ReadAsStringAsync().Result;
 
 
           }
           else
               return null;
+      }
+
+
+      public void UpdateCity(FlightCity city)
+      {
+          if (city == null)
+              throw new ArgumentNullException("City is null");
+          _flightCityRepository.Update(city);
+      }
+
+      public void UpdateCountry(FlightCountry entity)
+      {
+          if (entity == null)
+              throw new ArgumentNullException("Country is null");
+
+          _flightCountryRepository.Update(entity);
+      }
+
+    
+
+      public void UpdateAirport(Airport airport)
+      {
+          if (airport == null)
+              throw new ArgumentNullException("Airport is null");
+
+          _airportRepository.Update(airport);
       }
     }
 }

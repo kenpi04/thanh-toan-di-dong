@@ -32,6 +32,11 @@ namespace PlanX.Core.Domain.ClickBay
         public decimal BaggageFee { get; set; }
         public decimal ReturnBaggageFee { get; set; }
 
+        public virtual PasserType PasserType
+        {
+            get { return (PasserType)this.PassengerType; }
+            set { this.PassengerType = (short)value; }
+        }
         public virtual Booking Booking { get; set; }
     }
 }

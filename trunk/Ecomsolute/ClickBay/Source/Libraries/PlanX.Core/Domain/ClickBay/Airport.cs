@@ -17,6 +17,8 @@ namespace PlanX.Core.Domain.ClickBay
          */
         public string Code { get; set; }
         public string Name { get; set; }
+        public string EnglishName { get; set; }
+        public string CountryCode { get; set; }
         public int Order { get; set; }
 
     }

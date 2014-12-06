@@ -1,4 +1,9 @@
-﻿<article>
+﻿@model BookingModel
+
+
+@Ajax.BeginForm(new AjaxOptions {HttpMethod="POST",OnSuccess="postSuccess",Url=Url.Action("InsertBooking"),OnBegin="postBegin",OnFailure="postFail" })
+{
+<article>
     <h2>Thông Tin Hành Khách</h2>
     <div class="div-table info-passenger">
         <div class="div-table-row">
@@ -7,74 +12,45 @@
             <div class="div-table-cell col-3"><span>Họ và Tên <span class="info-small">( ví dụ: VO TAN DUNG )</span></span></div>
             <div class="div-table-cell col-4"><span>Ngày sinh <span class="info-small">( ví dụ: 30/01/1987 )</span></span></div>
         </div>
+        @{int count=0;}
+     @foreach(var i in Model.BookingPassers)
+     {
         <div class="div-table-row">
-            <div class="div-table-cell col-1">Người lớn</div>
-            <div class="div-table-cell col-2">
-                <select class="fullwitdth" id="selectQuyDanh" name="selectQuyDanh">
-                    <option>Ông</option>
-                    <option>Bà</option>
-                    <option>Anh</option>
-                    <option>Chị</option>
+            <div class="div-table-cell">
+                @{
+         count++;
+         string personTypeName = "Người lớn";
+         if (i.PersonType == 2)
+         {
+             personTypeName = "Trẻ em";
+         }
+         if (i.PersonType == 3)
+         { personTypeName = "Trẻ sơ sinh"; }
+            
+                
+                }
+                @personTypeName
+            </div>
+            <div class="div-table-cell">
+         
+                <select class="fullwitdth" name="BookingPassers[count]_PassserType">
+                    @foreach (var t in Model.PassengerTypes)
+                    {
+                        if (i.PersonType > 4 && int.Parse(t.Value) < 4)
+                        {
+                            continue;
+                        }
+                        <option value="@t.Value">@t.Text</option>
+                    }
                 </select>
             </div>
-            <div class="div-table-cell col-3"><div><input type="text" id="txtPassengerName" name="txtPassengerName"></div></div>
-            <div class="div-table-cell col-4"></div>
-        </div>
-        <div class="div-table-row">
-            <div class="div-table-cell">Người lớn</div>
+            <div class="div-table-cell"><input type="text" id="txtPassengerName_@i." name="BookingPassers[@count]"/></div>
             <div class="div-table-cell">
-                <select class="fullwitdth" id="selectQuyDanh" name="selectQuyDanh">
-                    <option>Ông</option>
-                    <option>Bà</option>
-                    <option>Anh</option>
-                    <option>Chị</option>
-                </select>
-            </div>
-            <div class="div-table-cell"><input type="text" id="txtPassengerName" name="txtPassengerName"></div>
-            <div class="div-table-cell"></div>
-        </div>
-        <div class="div-table-row">
-            <div class="div-table-cell">Trẻ em</div>
-            <div class="div-table-cell">
-                <select class="fullwitdth">
-                    <option>Trẻ em trai</option>
-                    <option>Trẻ em gái</option>
-                </select>
-            </div>
-            <div class="div-table-cell"><input type="text" id="txtPassengerName" name="txtPassengerName"></div>
-            <div class="div-table-cell">
-                <select>
-                    <option>1</option>
-                </select>
-                <select>
-                    <option>1</option>
-                </select>
-                <select>
-                    <option>2014</option>
-                </select>
+                @Html.DatePickerDropDowns("day", "month", "year");
+              
             </div>
         </div>
-        <div class="div-table-row">
-            <div class="div-table-cell">Trẻ sơ sinh</div>
-            <div class="div-table-cell">
-                <select class="fullwitdth">
-                    <option>Em bé trai</option>
-                    <option>Em bé gái</option>
-                </select>
-            </div>
-            <div class="div-table-cell"><input type="text" id="txtPassengerName" name="txtPassengerName"></div>
-            <div class="div-table-cell">
-                <select>
-                    <option>1</option>
-                </select>
-                <select>
-                    <option>1</option>
-                </select>
-                <select>
-                    <option>2014</option>
-                </select>
-            </div>
-        </div>
+     }
     </div>
 </article>
 
@@ -92,36 +68,40 @@
                 <div class="div-table-cell haft">
                     <div class="div-table-cell">
                         <span>Quý Danh</span>
-                        <select class="fullwitdth">
-                            <option>Ông</option>
-                            <option>Bà</option>
-                            <option>Anh</option>
-                            <option>Chị</option>
+                        <select class="fullwitdth" name="ContactPassengerType">
+                            @foreach (var t in Model.PassengerTypes)
+                            {
+                                if (int.Parse(t.Value) > 4)
+                                {
+                                    continue;
+                                }
+                                <option value="@t.Value">@t.Text</option>
+                            }
                         </select>
                     </div>
                     <div class="div-table-cell">
                         <span>Họ và Tên </span><span class="required">*</span><span class="info-small">  (Để chúng tôi liên lạc với quý khách)</span>
-                        <input type="text" id="txtContactName" name="txtContactName">
+                      @Html.TextBoxFor(x=>x.ContactName)
+                        @Html.RequiredHint()
+                       
                     </div>
                 </div>
                 <div class="div-table-cell">
                     <span>Quốc Gia</span>
-                    <select class="fullwitdth">
-                        <option>Viet Nam</option>
-                    </select>
+                   @Html.DropDownListFor(x => x.ContactCountryId, Model.Countries)
                 </div>
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell">
                     <div>
                         <span>Số điện thoại </span><span class="required">*</span>
-                        <input type="text" id="txtContactPhone" name="txtContactPhone">
+                       @Html.TextBoxFor(x=>x.ContactPhone)
                     </div>
                 </div>
                 <div class="div-table-cell">
                     <div>
                         <span>Thành phố</span>
-                        <input type="text" id="txtContactCityName" name="txtContactCityName">
+                        @Html.TextBoxFor(x=>x.ContactCityName)
                     </div>
                 </div>
             </div>
@@ -129,12 +109,12 @@
                 <div>
                     <div class="div-table-cell">
                         <span>Email</span><span class="info-small">(Để gửi thông tin vé, hành trình, thanh toán)</span>
-                        <input type="text" id="txtContactEmail" name="txtContactEmail">
+                      @Html.TextBoxFor(x=>x.ContactEmail)
                     </div>
                 </div>
                 <div class="div-table-cell">
                     <div>
-                        <span>Địa chỉ</span><input type="text" id="txtContactAddress" name="txtContactAddress">
+                        @Html.TextAreaFor(x=>x.ContactAddress)
                     </div>
                 </div>
             </div>
@@ -142,9 +122,7 @@
                 <div class="div-table-cell">
                     <div class="div-table">
                         <div class="div-table-row">
-                            <div class="div-table-cell"><span>Ngày</span><select class="fullwitdth"><option>1</option></select></div>
-                            <div class="div-table-cell"><span>Tháng</span><select class="fullwitdth"><option>1</option></select></div>
-                            <div class="div-table-cell"><span>Năm Sinh</span><select class="fullwitdth"><option>2014</option></select></div>
+                           @Html.DatePickerDropDowns("contactDay","contactMonth","contactyear")
                         </div>
                     </div>
                 </div>
@@ -163,7 +141,7 @@
     <h2>Yêu Cầu Đặt Biệt</h2>
     <div><p>Viết yêu cầu của bạn vào ô bên dưới (Tiếng Anh hoặc Tiếng Việt).</p></div>
     <div>
-        <textarea></textarea>
+        @Html.TextAreaFor(x=>x.CustomerNote)
     </div>
 </article>
 
@@ -171,3 +149,18 @@
     <p class="policy"><input type="checkbox" id="checkedPolicy" name="checkedPolicy"><label>Tôi đồng ý với các điều kiện và điều khoản của ClickBay.com.vn (được quy định <a href="/" target="_blank">tại đây</a>)</label></p>
     <p><input type="submit" class="btn-search" id="btnBooking" name="btnBooking" value="Đặt Vé và Tiếp Tục"></p>
 </article>
+}
+<script>
+    function postSuccess(d)
+    {
+        displayAjaxLoading(false);
+    }
+    function postBegin()
+    {
+        displayAjaxLoading(true);
+    }
+    function postFail()
+    {
+        displayAjaxLoading(false);
+    }
+</script>
