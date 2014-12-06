@@ -1,0 +1,124 @@
+﻿@model PlanX.Web.Models.ClickBay.SearchModel
+@{
+    Layout = "~/Views/Shared/_ColumnOne.cshtml";
+}
+<div class="wrapper-body">
+    <div class="wrapper-content inline">
+        <section class="section-top">
+            <div class="breadcrumb">
+                <p><span>Trang chủ</span><img src="styles/images/forward-icon.png" class="icon-small"><span>Tìm kiếm</span><img src="styles/images/forward-icon.png" class="icon-small"><span class="active">Chọn chuyến bay</span><img src="styles/images/forward-icon.png" class="icon-small"><span>Khách hàng</span><img src="styles/images/forward-icon.png" class="icon-small"><span>Thanh toán</span><img src="styles/images/forward-icon.png" class="icon-small"><span>Xác nhận</span></p>
+            </div>
+            <div class="info-filter">
+                <p>
+                    <span class="info-title-search">@Model.FromName</span><span>đi</span><span class="info-title-search">@Model.ToName</span><span style="color:#000">|</span>
+                  
+                     <span>Ngày</span><span class="info-title-search">@Model.DateFormat.</span>
+                </p>
+            </div>
+            <div class="info-passenger">
+                <p><span>Số lượng người lớn:</span><span>@Model.Adult</span><span>Số lượng trẻ em:</span><span>@Model.Child</span><span>Số lượng em bé:</span><span>@Model.Flant</span></p>
+            </div>
+        </section>
+        <section class="section-left-search section" id="table-data" style="width:75%">
+        </section>
+        <section class="section-right-search">
+            <article>
+                <aside>
+                    <div class="box-sort">
+                        <div class="title box-head">
+                            <span class="title-left">Sắp xếp</span>
+                        </div>
+                        <div class="box-content">
+                            <p><input type="radio" id="radioSort" name="radioSort"><span>Giá (thấp -&gt; cao)</span></p>
+                            <p><input type="radio" id="radioSort" name="radioSort"><span>Thời gian đi</span></p>
+                            <p><input type="radio" id="radioSort" name="radioSort"><span>Hãng hàng không</span></p>
+                        </div>
+                    </div>
+                </aside>
+                <aside>
+                    <div class="box-filter">
+                        <div class="title box-head">
+                            <span class="title-left">Lọc theo hãng hàng không</span>
+                        </div>
+                        <div class="box-content">
+                            <p><input type="checkbox" id="checkFlight" name="checkFlight" value="0"><span>VietNam Arilines</span></p>
+                            <p><input type="checkbox" id="checkFlight" name="checkFlight" value="1"><span>JetStart</span></p>
+                            <p><input type="checkbox" id="checkFlight" name="checkFlight" value="2"><span>Vietjet Air</span></p>
+                        </div>
+                    </div>
+                </aside>
+                <aside class="search-box-small">
+                    <div class="search-head">
+                        <div class="box-search">
+                            <div class="box-head">
+                                <img src="styles/images/mouse.png">
+                                <span class="search-text">TÌM VÉ MÁY BAY</span>
+                                <p>
+                                    <span>
+                                        <input type="radio" name="type" checked="checked"><label>Khứ hồi</label>
+                                        <input type="radio" name="type"><label>Một chiều</label>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="box-content">
+                                <div class="col">
+                                    <label>Điểm đi</label>
+                                    <input type="text" class="textbox">
+                                </div>
+                                <div class="col">
+                                    <label>Điểm đến</label>
+                                    <input type="text" class="textbox">
+                                </div>
+                                <div class="col">
+                                    <label>Ngày đi</label>
+                                    <input type="datetime" class="textbox date">
+                                </div>
+                                <div class="col">
+                                    <label>Ngày về</label>
+                                    <input type="datetime" class="textbox date">
+                                </div>
+                                <div class="clear"></div>
+                                <div class="box-footer center">
+                                    <span>
+                                        <label>Người lớn</label>
+                                        <input type="text" class="textbox center">
+                                    </span>
+                                    <span>
+                                        <label>Trẻ em</label><br>
+                                        <input type="text" class="textbox center">
+                                    </span>
+                                    <span>
+                                        <label>Trẻ sơ sinh</label><br>
+                                        <input type="text" class="textbox center">
+                                    </span>
+                                </div>
+                                <div class="center">
+                                    <input type="submit" class="btn-search" value="Tìm chuyến bay">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </article>
+        </section>
+        <input type="hidden" value="@Model.SessionId" id="sessionid" />
+        </div>
+    </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var data = {
+           // FromID:@(Model.FromId!=null?Model.FromId:""),
+            // ToId:@(Model.ToId!=null?Model.ToId:"")
+            DepartDate: "03/12/2014",
+            SessionId: $("#sessionid").val()
+
+        };
+        $.get("@Url.Action("TicketSearch")",data,function(d){
+            $("#table-data").html(d);
+        })
+    })
+</script>
+
+        
+
+

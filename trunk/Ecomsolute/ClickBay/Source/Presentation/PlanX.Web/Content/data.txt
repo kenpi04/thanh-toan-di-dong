@@ -1,0 +1,37 @@
+﻿{
+  "odata.metadata":"http://localhost:45865/oapi/Airline/$metadata#Flights","value":[
+    {
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T06:15:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1737,"LandingTime":"2014-06-15T08:20:00","FlightNumber":"BL 790","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+    },{
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T07:30:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1738,"LandingTime":"2014-06-15T09:35:00","FlightNumber":"BL 793","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+    }
+	,{
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T07:30:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1738,"LandingTime":"2014-06-15T09:35:00","FlightNumber":"BL 794","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+    }
+	,{
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T07:30:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1738,"LandingTime":"2014-06-15T09:35:00","FlightNumber":"BL 795","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+    }
+	,{
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T07:30:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1738,"LandingTime":"2014-06-15T09:35:00","FlightNumber":"BL 796","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+    }
+	,{
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T07:30:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1738,"LandingTime":"2014-06-15T09:35:00","FlightNumber":"BL 797","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+    }
+	,{
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T07:30:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1738,"LandingTime":"2014-06-15T09:35:00","FlightNumber":"BL 798","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+    }
+	,{
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T07:30:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1738,"LandingTime":"2014-06-15T09:35:00","FlightNumber":"BL 799","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+	  }
+	  
+	  ,{
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T07:30:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1738,"LandingTime":"2014-06-15T09:35:00","FlightNumber":"BL 800","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+    }
+	,{
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T07:30:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1738,"LandingTime":"2014-06-15T09:35:00","FlightNumber":"BL 801","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+    }
+	,{
+      "Airline":"JetStar","AirlineCode":"JetStar","DepartTime":"2014-06-15T07:30:00","Description":null,"FlightDuration":"PT2H5M","FromAirport":null,"FromAirportId":null,"FromPlace":"H\u1ed3 Ch\u00ed Minh","FromPlaceId":1,"Id":1738,"LandingTime":"2014-06-15T09:35:00","FlightNumber":"BL 802","Price":"1130000.00","Stops":0,"TicketType":"Starter","ToAirport":null,"ToAirportId":null,"ToPlace":"H\u00e0 N\u1ed9i","ToPlaceId":2,"TotalPrice":"1393000.00"
+    
+    }]
+}

@@ -11,6 +11,8 @@ using PlanX.Services.Directory;
 using PlanX.Services.Localization;
 using PlanX.Services.Seo;
 //using PlanX.Web.Models.Catalog;
+using PlanX.Web.Models.ClickBay;
+using PlanX.Core.Domain.ClickBay;
 using PlanX.Web.Models.Common;
 
 namespace PlanX.Web.Extensions
@@ -221,5 +223,37 @@ namespace PlanX.Web.Extensions
 
             return destination;
         }
+
+        //public static BookTicket ToEntity(this BookingModel model,BookTicket destination)
+        //{
+        //    if (model == null)
+        //        return destination;
+        //    model.Adult = destination.Adult;
+        //    model.Brand = destination.Brand;
+        //    model.CallBackUrl = destination.CallBackUrl;
+        //    model.Child = destination.Child;
+        //    model.CurrencyType = destination.CurrencyType;
+        //    model.DepartDate = destination.DepartDate;
+        //    model.FareBasis = destination.FareBasis;
+        //    model.FromPlaceId = destination.FromPlaceId;
+        //    model.ToPlaceId = destination.FromPlaceId;
+        //    model.FromPlace = destination.FromPlace;
+        //    model.ToPlace = destination.ToPlace;
+        //    model.TicketPrice = destination.TicketPrice;
+        //    model.TicketType = destination.TicketType;
+        //    model.RoundTrip = destination.RoundTrip;
+        //    model.ReturnDate = destination.ReturnDate;
+        //    model.ReturnFareBasis = destination.ReturnFareBasis;
+        //    model.Infant = destination.Infant;
+        //    return destination;
+        //}
+        // public static BookTicket ToEntity(this BookingModel model)
+        //{
+        //    if (model == null)
+        //        return null;
+
+        //    var entity = new BookTicket();
+        //    return ToEntity(model, entity);
+        //}
     }
 }

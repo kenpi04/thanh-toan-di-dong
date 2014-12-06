@@ -1,0 +1,11 @@
+﻿@model IDictionary<string,string>
+
+<div class="breadcrumb">
+    <p><span>Trang chủ</span><img src="styles/images/forward-icon.png" class="icon-small">
+    @foreach(var i in Model)
+    { 
+        <span>@i.Key</span><img src="styles/images/forward-icon.png" class="icon-small">
+    }
+    </p>
+
+</div>

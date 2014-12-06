@@ -7,6 +7,11 @@ namespace PlanX.Web.Models.ClickBay
 {
     public class TicketModel:BaseEntity
     {
+        public TicketModel()
+        {
+            AirlinesConditions = new List<AirlinesConditionModel>();
+            ArilinesBaggageConditions = new List<ArilinesBaggageCondition>();
+        }
         public string FromId { get; set; }
         public string ToId { get; set; }
         public DateTime DateBook { get; set; }
@@ -14,7 +19,6 @@ namespace PlanX.Web.Models.ClickBay
 
         public string ImgBrand { get; set; }
         public string BrandCode { get; set; }
-
 
         public string FlightNumber { get; set; }
 
@@ -25,5 +29,42 @@ namespace PlanX.Web.Models.ClickBay
         public string FromAirport { get; set; }
 
         public string ToAirport { get; set; }
+
+        public string  Currency { get; set; }
+
+        public string FromAirportCode { get; set; }
+
+        public string FromCountry { get; set; }
+
+        public string FromPlace { get; set; }
+
+        public string ToPlace { get; set; }
+
+        public string ToCountry { get; set; }
+
+        public string ToAirportCode { get; set; }
+
+        public string HangVe { get; set; }
+
+        public string AirlineName { get; set; }
+
+        public List<AirlinesConditionModel> AirlinesConditions { get; set; }
+
+        public List<ArilinesBaggageCondition> ArilinesBaggageConditions { get; set; }
+
+        #region Nestest class
+        public class AirlinesConditionModel
+        {
+            public string ConditionName { get; set; }
+            public string ConditionDescription { get; set; }
+        }
+        public class ArilinesBaggageCondition
+        {
+            public int Baggage { get; set; }
+            public decimal BaggageFee { get; set; }
+        }
+        #endregion
+
+        public string AirlineId { get; set; }
     }
 }

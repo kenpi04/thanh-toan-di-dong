@@ -1,0 +1,68 @@
+﻿@model PlanX.Web.Models.ClickBay.SearchModel
+@if(Model.Tickets.Count==0)
+{
+    <p>Không tìm thấy kết quả</p>
+}
+else{
+
+    <div class="bordered">
+        <table class="table none-border pointer main-background">
+            <thead>
+                <tr>
+                    <th><p>Chủ nhật</p><p>23-11-2014</p></th>
+                    <th><p>Thứ hai</p><p>24-11-2014</p></th>
+                    <th><p>Thứ ba</p><p>25-11-2014</p></th>
+                    <th class="active"><p>Thứ tư</p><p>26-11-2014</p></th>
+                    <th><p>Thứ năm</p><p>27-11-2014</p></th>
+                    <th><p>Thứ sáu</p><p>28-11-2014</p></th>
+                    <th><p>Thứ bảy</p><p>29-11-2014</p></th>
+                </tr>
+            </thead>
+        </table>
+        <table class="orange none-border" id="tblTicket">
+            <tbody>
+                @foreach(var item in Model.Tickets)
+                { 
+                <tr id="ticketChecked_@item.Id">
+                    <td>@item.BrandCode</td>
+                    <td>@item.FlightNumber</td>
+                    <td class="big-font" id="">@item.DepartTime.ToString("hh:mm") - @item.LandingTime.ToString("hh:mm")</td>
+                    <td class="big-font">@item.Price.ToString("#,##")</td>
+                    <td class="currency">@item.Currency</td>
+                    <td><a onclick="showDetail(@item.Id)">Chi tiết<img src="@Url.Content("~/Themes/ClickBay/content/images/plus-icon.png")" class="icon-small"></a>
+                    @Html.Partial("_TicketDetail",item)
+                    </td>
+                    <td><input type="radio"  name="ticketChecked" value="@item.Id"></td>
+                </tr>
+                }
+               
+            </tbody>
+        </table>
+        <input type="submit" value="Tiếp tục" class="default" id="btnContinue" name="btnContinue">
+    </div>
+ <input type="hidden" value="@Model.SessionId" id="sessionid" />
+  <script>
+      function showDetail(id)
+      {
+          var table=$("#tb-"+id);
+          if(table.is(":hidden"))
+              table.show();
+          else
+              table.hide();
+      }
+      function selectTicket()
+      {
+          var selectRadion=$("input[name=ticketChecked:checked]");
+          if(!selectRadion)
+              alert("Vui lòng chọn vé!");
+          else
+          {
+              displayAjaxLoading(true);
+              $.post("@Url.Action("SelectedTicket")", { id: selectRadion.val(), session: $("#sessionid").val() }, function (d) {
+                  window.location.href = d;
+                  displayAjaxLoading(false);
+              })
+          }
+      }
+  </script>
+}

@@ -1,0 +1,730 @@
+﻿{
+    "odata.metadata": "http://localhost:45865/oapi/Airline/$metadata#Flights",
+    "value": [
+        {
+            "TicketPriceDetails": [
+                {
+                    "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+                },
+                {
+                    "Code": "YR",
+                    "Description": "Phí Quản Trị Hệ Thống",
+                    "Id": 3972,
+                    "Price": "36364.00",
+                    "Quantity": 1,
+                    "Total": "36364.00"
+                },
+                {
+                    "Code": "AX",
+                    "Description": "Thuế sân bay",
+                    "Id": 3973,
+                    "Price": "60000.00",
+                    "Quantity": 1,
+                    "Total": "60000.00"
+                },
+                {
+                    "Code": "VAT",
+                    "Description": "VAT",
+                    "Id": 3974,
+                    "Price": "116636.00",
+                    "Quantity": 1,
+                    "Total": "116636.00"
+                },
+                {
+                    "Code": "EXP",
+                    "Description": "Phí xuất vé",
+                    "Id": 3975,
+                    "Price": "50000.00",
+                    "Quantity": 1,
+                    "Total": "50000.00"
+                }
+            ],
+            "Details": [
+                {
+                    "FlightDuration": "2 giờ 5 phút",
+                    "FlightNumber": "BL  790",
+                    "From": "6:15, 15/6/2014 - Thành phố Hồ Chí Minh",
+                    "Id": 1250,
+                    "To": "8:20, 15/6/2014 - Hà Nội"
+                }
+            ],
+            "Airline": "JetStar",
+            "AirlineCode": "JetStar",
+            "DepartTime": "2014-06-15T06:15:00",
+            "Description": null,
+            "FlightDuration": "PT2H5M",
+            "FromAirport": null,
+            "FromAirportId": null,
+            "FromPlace": "Hồ Chí Minh",
+            "FromPlaceId": 1,
+            "Id": 1737,
+            "LandingTime": "2014-06-15T08:20:00",
+            "FlightNumber": "BL 790",
+            "Price": "1130000.00",
+            "Stops": 0,
+            "TicketType": "Starter",
+            "ToAirport": null,
+            "ToAirportId": null,
+            "ToPlace": "Hà Nội",
+            "ToPlaceId": 2,
+            "TotalPrice": "1393000.00"
+        },
+		 {
+            "TicketPriceDetails": [
+                {
+                    "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+                },
+                {
+                    "Code": "YR",
+                    "Description": "Phí Quản Trị Hệ Thống",
+                    "Id": 3972,
+                    "Price": "36364.00",
+                    "Quantity": 1,
+                    "Total": "36364.00"
+                },
+                {
+                    "Code": "AX",
+                    "Description": "Thuế sân bay",
+                    "Id": 3973,
+                    "Price": "60000.00",
+                    "Quantity": 1,
+                    "Total": "60000.00"
+                },
+                {
+                    "Code": "VAT",
+                    "Description": "VAT",
+                    "Id": 3974,
+                    "Price": "116636.00",
+                    "Quantity": 1,
+                    "Total": "116636.00"
+                },
+                {
+                    "Code": "EXP",
+                    "Description": "Phí xuất vé",
+                    "Id": 3975,
+                    "Price": "50000.00",
+                    "Quantity": 1,
+                    "Total": "50000.00"
+                }
+            ],
+            "Details": [
+                {
+                    "FlightDuration": "2 giờ 5 phút",
+                    "FlightNumber": "BL  790",
+                    "From": "6:15, 15/6/2014 - Thành phố Hồ Chí Minh",
+                    "Id": 1250,
+                    "To": "8:20, 15/6/2014 - Hà Nội"
+                }
+            ],
+            "Airline": "JetStar",
+            "AirlineCode": "JetStar",
+            "DepartTime": "2014-06-15T06:15:00",
+            "Description": null,
+            "FlightDuration": "PT2H5M",
+            "FromAirport": null,
+            "FromAirportId": null,
+            "FromPlace": "Hồ Chí Minh",
+            "FromPlaceId": 1,
+            "Id": 1737,
+            "LandingTime": "2014-06-15T08:20:00",
+            "FlightNumber": "BL 790",
+            "Price": "1130000.00",
+            "Stops": 0,
+            "TicketType": "Starter",
+            "ToAirport": null,
+            "ToAirportId": null,
+            "ToPlace": "Hà Nội",
+            "ToPlaceId": 2,
+            "TotalPrice": "1393000.00"
+        },
+		 {
+            "TicketPriceDetails": [
+                {
+                    "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+                },
+                {
+                    "Code": "YR",
+                    "Description": "Phí Quản Trị Hệ Thống",
+                    "Id": 3972,
+                    "Price": "36364.00",
+                    "Quantity": 1,
+                    "Total": "36364.00"
+                },
+                {
+                    "Code": "AX",
+                    "Description": "Thuế sân bay",
+                    "Id": 3973,
+                    "Price": "60000.00",
+                    "Quantity": 1,
+                    "Total": "60000.00"
+                },
+                {
+                    "Code": "VAT",
+                    "Description": "VAT",
+                    "Id": 3974,
+                    "Price": "116636.00",
+                    "Quantity": 1,
+                    "Total": "116636.00"
+                },
+                {
+                    "Code": "EXP",
+                    "Description": "Phí xuất vé",
+                    "Id": 3975,
+                    "Price": "50000.00",
+                    "Quantity": 1,
+                    "Total": "50000.00"
+                }
+            ],
+            "Details": [
+                {
+                    "FlightDuration": "2 giờ 5 phút",
+                    "FlightNumber": "BL  790",
+                    "From": "6:15, 15/6/2014 - Thành phố Hồ Chí Minh",
+                    "Id": 1250,
+                    "To": "8:20, 15/6/2014 - Hà Nội"
+                }
+            ],
+            "Airline": "JetStar",
+            "AirlineCode": "JetStar",
+            "DepartTime": "2014-06-15T06:15:00",
+            "Description": null,
+            "FlightDuration": "PT2H5M",
+            "FromAirport": null,
+            "FromAirportId": null,
+            "FromPlace": "Hồ Chí Minh",
+            "FromPlaceId": 1,
+            "Id": 1737,
+            "LandingTime": "2014-06-15T08:20:00",
+            "FlightNumber": "BL 790",
+            "Price": "1130000.00",
+            "Stops": 0,
+            "TicketType": "Starter",
+            "ToAirport": null,
+            "ToAirportId": null,
+            "ToPlace": "Hà Nội",
+            "ToPlaceId": 2,
+            "TotalPrice": "1393000.00"
+        },
+		 {
+            "TicketPriceDetails": [
+                {
+                    "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+                },
+                {
+                    "Code": "YR",
+                    "Description": "Phí Quản Trị Hệ Thống",
+                    "Id": 3972,
+                    "Price": "36364.00",
+                    "Quantity": 1,
+                    "Total": "36364.00"
+                },
+                {
+                    "Code": "AX",
+                    "Description": "Thuế sân bay",
+                    "Id": 3973,
+                    "Price": "60000.00",
+                    "Quantity": 1,
+                    "Total": "60000.00"
+                },
+                {
+                    "Code": "VAT",
+                    "Description": "VAT",
+                    "Id": 3974,
+                    "Price": "116636.00",
+                    "Quantity": 1,
+                    "Total": "116636.00"
+                },
+                {
+                    "Code": "EXP",
+                    "Description": "Phí xuất vé",
+                    "Id": 3975,
+                    "Price": "50000.00",
+                    "Quantity": 1,
+                    "Total": "50000.00"
+                }
+            ],
+            "Details": [
+                {
+                    "FlightDuration": "2 giờ 5 phút",
+                    "FlightNumber": "BL  790",
+                    "From": "6:15, 15/6/2014 - Thành phố Hồ Chí Minh",
+                    "Id": 1250,
+                    "To": "8:20, 15/6/2014 - Hà Nội"
+                }
+            ],
+            "Airline": "JetStar",
+            "AirlineCode": "JetStar",
+            "DepartTime": "2014-06-15T06:15:00",
+            "Description": null,
+            "FlightDuration": "PT2H5M",
+            "FromAirport": null,
+            "FromAirportId": null,
+            "FromPlace": "Hồ Chí Minh",
+            "FromPlaceId": 1,
+            "Id": 1737,
+            "LandingTime": "2014-06-15T08:20:00",
+            "FlightNumber": "BL 790",
+            "Price": "1130000.00",
+            "Stops": 0,
+            "TicketType": "Starter",
+            "ToAirport": null,
+            "ToAirportId": null,
+            "ToPlace": "Hà Nội",
+            "ToPlaceId": 2,
+            "TotalPrice": "1393000.00"
+        },
+		 {
+            "TicketPriceDetails": [
+                {
+                    "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+                },
+                {
+                    "Code": "YR",
+                    "Description": "Phí Quản Trị Hệ Thống",
+                    "Id": 3972,
+                    "Price": "36364.00",
+                    "Quantity": 1,
+                    "Total": "36364.00"
+                },
+                {
+                    "Code": "AX",
+                    "Description": "Thuế sân bay",
+                    "Id": 3973,
+                    "Price": "60000.00",
+                    "Quantity": 1,
+                    "Total": "60000.00"
+                },
+                {
+                    "Code": "VAT",
+                    "Description": "VAT",
+                    "Id": 3974,
+                    "Price": "116636.00",
+                    "Quantity": 1,
+                    "Total": "116636.00"
+                },
+                {
+                    "Code": "EXP",
+                    "Description": "Phí xuất vé",
+                    "Id": 3975,
+                    "Price": "50000.00",
+                    "Quantity": 1,
+                    "Total": "50000.00"
+                }
+            ],
+            "Details": [
+                {
+                    "FlightDuration": "2 giờ 5 phút",
+                    "FlightNumber": "BL  790",
+                    "From": "6:15, 15/6/2014 - Thành phố Hồ Chí Minh",
+                    "Id": 1250,
+                    "To": "8:20, 15/6/2014 - Hà Nội"
+                }
+            ],
+            "Airline": "JetStar",
+            "AirlineCode": "JetStar",
+            "DepartTime": "2014-06-15T06:15:00",
+            "Description": null,
+            "FlightDuration": "PT2H5M",
+            "FromAirport": null,
+            "FromAirportId": null,
+            "FromPlace": "Hồ Chí Minh",
+            "FromPlaceId": 1,
+            "Id": 1737,
+            "LandingTime": "2014-06-15T08:20:00",
+            "FlightNumber": "BL 790",
+            "Price": "1130000.00",
+            "Stops": 0,
+            "TicketType": "Starter",
+            "ToAirport": null,
+            "ToAirportId": null,
+            "ToPlace": "Hà Nội",
+            "ToPlaceId": 2,
+            "TotalPrice": "1393000.00"
+        },
+		 {
+            "TicketPriceDetails": [
+                {
+                    "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+                },
+                {
+                    "Code": "YR",
+                    "Description": "Phí Quản Trị Hệ Thống",
+                    "Id": 3972,
+                    "Price": "36364.00",
+                    "Quantity": 1,
+                    "Total": "36364.00"
+                },
+                {
+                    "Code": "AX",
+                    "Description": "Thuế sân bay",
+                    "Id": 3973,
+                    "Price": "60000.00",
+                    "Quantity": 1,
+                    "Total": "60000.00"
+                },
+                {
+                    "Code": "VAT",
+                    "Description": "VAT",
+                    "Id": 3974,
+                    "Price": "116636.00",
+                    "Quantity": 1,
+                    "Total": "116636.00"
+                },
+                {
+                    "Code": "EXP",
+                    "Description": "Phí xuất vé",
+                    "Id": 3975,
+                    "Price": "50000.00",
+                    "Quantity": 1,
+                    "Total": "50000.00"
+                }
+            ],
+            "Details": [
+                {
+                    "FlightDuration": "2 giờ 5 phút",
+                    "FlightNumber": "BL  790",
+                    "From": "6:15, 15/6/2014 - Thành phố Hồ Chí Minh",
+                    "Id": 1250,
+                    "To": "8:20, 15/6/2014 - Hà Nội"
+                }
+            ],
+            "Airline": "JetStar",
+            "AirlineCode": "JetStar",
+            "DepartTime": "2014-06-15T06:15:00",
+            "Description": null,
+            "FlightDuration": "PT2H5M",
+            "FromAirport": null,
+            "FromAirportId": null,
+            "FromPlace": "Hồ Chí Minh",
+            "FromPlaceId": 1,
+            "Id": 1737,
+            "LandingTime": "2014-06-15T08:20:00",
+            "FlightNumber": "BL 790",
+            "Price": "1130000.00",
+            "Stops": 0,
+            "TicketType": "Starter",
+            "ToAirport": null,
+            "ToAirportId": null,
+            "ToPlace": "Hà Nội",
+            "ToPlaceId": 2,
+            "TotalPrice": "1393000.00"
+        }, {
+            "TicketPriceDetails": [
+                {
+                    "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+                },
+                {
+                    "Code": "YR",
+                    "Description": "Phí Quản Trị Hệ Thống",
+                    "Id": 3972,
+                    "Price": "36364.00",
+                    "Quantity": 1,
+                    "Total": "36364.00"
+                },
+                {
+                    "Code": "AX",
+                    "Description": "Thuế sân bay",
+                    "Id": 3973,
+                    "Price": "60000.00",
+                    "Quantity": 1,
+                    "Total": "60000.00"
+                },
+                {
+                    "Code": "VAT",
+                    "Description": "VAT",
+                    "Id": 3974,
+                    "Price": "116636.00",
+                    "Quantity": 1,
+                    "Total": "116636.00"
+                },
+                {
+                    "Code": "EXP",
+                    "Description": "Phí xuất vé",
+                    "Id": 3975,
+                    "Price": "50000.00",
+                    "Quantity": 1,
+                    "Total": "50000.00"
+                }
+            ],
+            "Details": [
+                {
+                    "FlightDuration": "2 giờ 5 phút",
+                    "FlightNumber": "BL  790",
+                    "From": "6:15, 15/6/2014 - Thành phố Hồ Chí Minh",
+                    "Id": 1250,
+                    "To": "8:20, 15/6/2014 - Hà Nội"
+                }
+            ],
+            "Airline": "JetStar",
+            "AirlineCode": "JetStar",
+            "DepartTime": "2014-06-15T06:15:00",
+            "Description": null,
+            "FlightDuration": "PT2H5M",
+            "FromAirport": null,
+            "FromAirportId": null,
+            "FromPlace": "Hồ Chí Minh",
+            "FromPlaceId": 1,
+            "Id": 1737,
+            "LandingTime": "2014-06-15T08:20:00",
+            "FlightNumber": "BL 790",
+            "Price": "1130000.00",
+            "Stops": 0,
+            "TicketType": "Starter",
+            "ToAirport": null,
+            "ToAirportId": null,
+            "ToPlace": "Hà Nội",
+            "ToPlaceId": 2,
+            "TotalPrice": "1393000.00"
+        }, {
+            "TicketPriceDetails": [
+                {
+                    "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+                },
+                {
+                    "Code": "YR",
+                    "Description": "Phí Quản Trị Hệ Thống",
+                    "Id": 3972,
+                    "Price": "36364.00",
+                    "Quantity": 1,
+                    "Total": "36364.00"
+                },
+                {
+                    "Code": "AX",
+                    "Description": "Thuế sân bay",
+                    "Id": 3973,
+                    "Price": "60000.00",
+                    "Quantity": 1,
+                    "Total": "60000.00"
+                },
+                {
+                    "Code": "VAT",
+                    "Description": "VAT",
+                    "Id": 3974,
+                    "Price": "116636.00",
+                    "Quantity": 1,
+                    "Total": "116636.00"
+                },
+                {
+                    "Code": "EXP",
+                    "Description": "Phí xuất vé",
+                    "Id": 3975,
+                    "Price": "50000.00",
+                    "Quantity": 1,
+                    "Total": "50000.00"
+                }
+            ],
+            "Details": [
+                {
+                    "FlightDuration": "2 giờ 5 phút",
+                    "FlightNumber": "BL  790",
+                    "From": "6:15, 15/6/2014 - Thành phố Hồ Chí Minh",
+                    "Id": 1250,
+                    "To": "8:20, 15/6/2014 - Hà Nội"
+                }
+            ],
+            "Airline": "JetStar",
+            "AirlineCode": "JetStar",
+            "DepartTime": "2014-06-15T06:15:00",
+            "Description": null,
+            "FlightDuration": "PT2H5M",
+            "FromAirport": null,
+            "FromAirportId": null,
+            "FromPlace": "Hồ Chí Minh",
+            "FromPlaceId": 1,
+            "Id": 1737,
+            "LandingTime": "2014-06-15T08:20:00",
+            "FlightNumber": "BL 790",
+            "Price": "1130000.00",
+            "Stops": 0,
+            "TicketType": "Starter",
+            "ToAirport": null,
+            "ToAirportId": null,
+            "ToPlace": "Hà Nội",
+            "ToPlaceId": 2,
+            "TotalPrice": "1393000.00"
+        }, {
+            "TicketPriceDetails": [
+                {
+                    "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+                },
+                {
+                    "Code": "YR",
+                    "Description": "Phí Quản Trị Hệ Thống",
+                    "Id": 3972,
+                    "Price": "36364.00",
+                    "Quantity": 1,
+                    "Total": "36364.00"
+                },
+                {
+                    "Code": "AX",
+                    "Description": "Thuế sân bay",
+                    "Id": 3973,
+                    "Price": "60000.00",
+                    "Quantity": 1,
+                    "Total": "60000.00"
+                },
+                {
+                    "Code": "VAT",
+                    "Description": "VAT",
+                    "Id": 3974,
+                    "Price": "116636.00",
+                    "Quantity": 1,
+                    "Total": "116636.00"
+                },
+                {
+                    "Code": "EXP",
+                    "Description": "Phí xuất vé",
+                    "Id": 3975,
+                    "Price": "50000.00",
+                    "Quantity": 1,
+                    "Total": "50000.00"
+                }
+            ],
+            "Details": [
+                {
+                    "FlightDuration": "2 giờ 5 phút",
+                    "FlightNumber": "BL  790",
+                    "From": "6:15, 15/6/2014 - Thành phố Hồ Chí Minh",
+                    "Id": 1250,
+                    "To": "8:20, 15/6/2014 - Hà Nội"
+                }
+            ],
+            "Airline": "JetStar",
+            "AirlineCode": "JetStar",
+            "DepartTime": "2014-06-15T06:15:00",
+            "Description": null,
+            "FlightDuration": "PT2H5M",
+            "FromAirport": null,
+            "FromAirportId": null,
+            "FromPlace": "Hồ Chí Minh",
+            "FromPlaceId": 1,
+            "Id": 1737,
+            "LandingTime": "2014-06-15T08:20:00",
+            "FlightNumber": "BL 790",
+            "Price": "1130000.00",
+            "Stops": 0,
+            "TicketType": "Starter",
+            "ToAirport": null,
+            "ToAirportId": null,
+            "ToPlace": "Hà Nội",
+            "ToPlaceId": 2,
+            "TotalPrice": "1393000.00"
+        }, {
+            "TicketPriceDetails": [
+                {
+                    "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+                },
+                {
+                    "Code": "YR",
+                    "Description": "Phí Quản Trị Hệ Thống",
+                    "Id": 3972,
+                    "Price": "36364.00",
+                    "Quantity": 1,
+                    "Total": "36364.00"
+                },
+                {
+                    "Code": "AX",
+                    "Description": "Thuế sân bay",
+                    "Id": 3973,
+                    "Price": "60000.00",
+                    "Quantity": 1,
+                    "Total": "60000.00"
+                },
+                {
+                    "Code": "VAT",
+                    "Description": "VAT",
+                    "Id": 3974,
+                    "Price": "116636.00",
+                    "Quantity": 1,
+                    "Total": "116636.00"
+                },
+                {
+                    "Code": "EXP",
+                    "Description": "Phí xuất vé",
+                    "Id": 3975,
+                    "Price": "50000.00",
+                    "Quantity": 1,
+                    "Total": "50000.00"
+                }
+            ],
+            "Details": [
+                {
+                    "FlightDuration": "2 giờ 5 phút",
+                    "FlightNumber": "BL  790",
+                    "From": "6:15, 15/6/2014 - Thành phố Hồ Chí Minh",
+                    "Id": 1250,
+                    "To": "8:20, 15/6/2014 - Hà Nội"
+                }
+            ],
+            "Airline": "JetStar",
+            "AirlineCode": "JetStar",
+            "DepartTime": "2014-06-15T06:15:00",
+            "Description": null,
+            "FlightDuration": "PT2H5M",
+            "FromAirport": null,
+            "FromAirportId": null,
+            "FromPlace": "Hồ Chí Minh",
+            "FromPlaceId": 1,
+            "Id": 1737,
+            "LandingTime": "2014-06-15T08:20:00",
+            "FlightNumber": "BL 790",
+            "Price": "1130000.00",
+            "Stops": 0,
+            "TicketType": "Starter",
+            "ToAirport": null,
+            "ToAirportId": null,
+            "ToPlace": "Hà Nội",
+            "ToPlaceId": 2,
+            "TotalPrice": "1393000.00"
+        }]
+}

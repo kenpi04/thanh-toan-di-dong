@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+}
+<div class="wrapper-body">
+    <div class="wrapper-content inline">
+        @if(IsSectionDefined("top"))
+        {<section class="section-top">
+             @RenderSection("top")
+            </section>
+           
+        }
+        <section class="section-left-search section booking">
+            @RenderBody()
+            </section>
+        <section class="section-right-search">
+            @if(IsSectionDefined("right"))
+            {
+                @RenderSection("right")
+            }
+            </section>
+</div>
+</div>
+
