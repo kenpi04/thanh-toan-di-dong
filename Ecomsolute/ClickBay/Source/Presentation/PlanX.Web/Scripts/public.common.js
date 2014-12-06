@@ -117,6 +117,7 @@ function htmlDecode(value) {
 }
 $(document).ready(function () {
     $("input.date").datepicker({ dateFormat: "dd-mm-yy" })
+  
 })
 function createCookie(name, value, days) {
     if (days) {
@@ -143,3 +144,4 @@ function readCookie(name) {
 function eraseCookie(name) {
     createCookie(name, "", -1);
 }
+

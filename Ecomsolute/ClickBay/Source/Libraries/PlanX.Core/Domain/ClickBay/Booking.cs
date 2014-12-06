@@ -56,6 +56,12 @@ namespace PlanX.Core.Domain.ClickBay
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime UpdatedOn { get; set; }
         public bool Deleted { get; set; }
+        public short ContactPassengerType { get; set; }
+
+        public virtual PasserType PasserType {
+            get { return (PasserType)ContactPassengerType; }
+            set { this.ContactPassengerType = (short)value; }
+        }
     
         public virtual BookingInfoFlight BookingInfoFlight { get; set; }
         public virtual BookingInfoFlight BookingInfoFlightReturn { get; set; }

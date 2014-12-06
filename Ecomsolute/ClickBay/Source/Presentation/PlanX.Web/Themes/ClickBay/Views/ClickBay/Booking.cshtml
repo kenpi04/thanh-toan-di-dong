@@ -1,4 +1,5 @@
-﻿@{
+﻿@model BookingModel
+@{
     Layout = "~/Views/Shared/_ColumnTwo.cshtml";
     ViewBag.Title = "Đặt vé";
 }
@@ -14,9 +15,9 @@
         })
 }
 
-@Html.Partial("_FlightDetail")
-@Html.Partial("_FlightCondition")
-@Html.Partial("_BookingForm")
+@Html.Partial("_FlightDetail",Model.TicketInfo)
+@Html.Partial("_FlightCondition",Model.TicketInfo)
+@Html.Partial("_BookingForm",Model)
 
 @section right
 {

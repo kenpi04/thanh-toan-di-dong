@@ -38,7 +38,7 @@ namespace PlanX.Web.Controllers
         [HttpGet]
         public ActionResult GetCountries()
         {
-            var data = _clickBayService.GetCountry().Result;
+            var data = _clickBayService.GetListCountry();
             return new JsonResult
             {
                 Data = data.Select(x => new { x.Code, x.Name, x.Id }).ToList(),
@@ -48,7 +48,7 @@ namespace PlanX.Web.Controllers
         [HttpGet]
         public ActionResult Getcity(int? countryId)
         {
-            var data = _clickBayService.GetCity().Result;
+            var data = _clickBayService.GetListCity();
             if (countryId.HasValue)
                 data = data.Where(x => x.CountryId == countryId.Value);
             return new JsonResult
@@ -101,7 +101,7 @@ namespace PlanX.Web.Controllers
                     source: model.Source != null ? model.Source.Aggregate((a, b) => a + "," + b) : null,
                     expendDetails: true
 
-                    ).Result;
+                    );
                 var ticket = PrepairingTicketModel(result);
                 DateTime dt = DateTime.Now;
                 model.SessionId = string.Format(SELECTED_TICKET_SESSION, model.FromId,                     
@@ -155,19 +155,20 @@ namespace PlanX.Web.Controllers
             if (ticket == null)
                 return Json("NOTOK");
           
-            Session[string.Format(SELECTED_TICKET_SESSION,_workContext.CurrentCustomer.Id)] = ticket.;
+            Session[string.Format(SELECTED_TICKET_SESSION,_workContext.CurrentCustomer.Id)] = ticket;
             return RedirectToAction("Booking");
         }
         #endregion
+        
         public string a()
         {
-            //var country = _clickBayService.GetCountry().Result;
-            //country.ToList().ForEach(x => _clickBayService.InsertOrUpdateCountry(x));
-            //var city = _clickBayService.GetCity().Result;
-            //city.ToList().ForEach(x => _clickBayService.InsertOrUpdateCity(x));
-            //var airport = _clickBayService.GetAirport().Result;
-            //airport.ToList().ForEach(x => _clickBayService.InsertOrupdateAirport(x));
-           string a=_clickBayService.GetData();
+           // var country = _clickBayService.GetCountry();
+          // country.ToList().ForEach(x => _clickBayService.InsertCountry(x));
+                var city = _clickBayService.GetCity();
+           city.ToList().ForEach(x => _clickBayService.UpdateCity(x));
+           // var airport = _clickBayService.GetAirport();
+            airport.ToList().ForEach(x => _clickBayService.InsertAirport(x));
+          // string a=_clickBayService.GetData();
             return a;
         }
         #endregion

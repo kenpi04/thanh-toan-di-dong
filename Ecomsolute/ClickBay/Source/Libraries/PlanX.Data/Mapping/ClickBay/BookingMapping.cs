@@ -14,6 +14,7 @@ namespace PlanX.Data.Mapping.ClickBay
           this.HasOptional(x => x.BookingInfoFlightReturn)
               .WithMany()
               .HasForeignKey(x => x.BookingInfoFlightReturnId);
+          this.Ignore(x => x.PasserType);
           
       }
     }

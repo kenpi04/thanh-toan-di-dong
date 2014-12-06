@@ -38,7 +38,7 @@ namespace PlanX.Services.ClickBay
         /// <param name="currentType">Loại tiền tệ</param>
         /// <param name="source"></param>
         /// <returns>Danh sách vé</returns>
-        Task<IEnumerable<Ticket>> SearchTicket(string fromPlace, string toPlace, DateTime departDate,
+        IEnumerable<Ticket> SearchTicket(string fromPlace, string toPlace, DateTime departDate,
     int Adult = 0, int child = 0, int Infant = 0,
     string FareBasis = null,
     bool roundTrip = false, DateTime? returnDate = null,
@@ -49,21 +49,21 @@ namespace PlanX.Services.ClickBay
         /// Lấy danh sách sân bay
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<Airport>> GetAirport();
+        IEnumerable<Airport> GetAirport();
 
         /// <summary>
         /// Get city
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<FlightCity>> GetCity();
+        IEnumerable<FlightCity> GetCity();
 
         /// <summary>
         /// Get country
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<FlightCountry>> GetCountry();
+        IEnumerable<FlightCountry> GetCountry();
 
-        Task<Booking> BookTicket(Booking model);
+        Booking BookTicket(Booking model);
         #endregion
 
         #region database Service
@@ -84,18 +84,20 @@ namespace PlanX.Services.ClickBay
 
         void DeleteBooking(Booking book);*/
 
-        void InsertOrUpdateCity(FlightCity city);
+        void InsertCity(FlightCity city);
+        void UpdateCity(FlightCity city);
 
-        void InsertOrUpdateCountry(FlightCountry entity);
+        void InsertCountry(FlightCountry entity);
+        void UpdateCountry(FlightCountry country);
 
-        void InsertOrupdateAirport(Airport airport);
-
+        void InsertAirport(Airport airport);
+        void UpdateAirport(Airport airport);
         //void InsertOrupdateAirline(Airline Airline);
 
         IList<AirlinesCondition> GetListAirlinesConditionByAirlineId(string airlineCode);
         IList<ArilinesBaggageCondition> GetListArilinesBaggageCondition(string airlineCode);
 
-        String GetData();
+        string GetData();
             
 
 

@@ -225,6 +225,7 @@
     <Compile Include="Infrastructure\BackwardCompatibility1XRouteProvider.cs" />
     <Compile Include="Infrastructure\RouteProvider.cs" />
     <Compile Include="Models\ClickBay\BookingModel.cs" />
+    <Compile Include="Models\ClickBay\BookingPasserModel.cs" />
     <Compile Include="Models\ClickBay\SearchModel.cs" />
     <Compile Include="Models\ClickBay\TicketModel.cs" />
     <Compile Include="Models\Common\AddressModel.cs" />
@@ -273,6 +274,8 @@
     <Compile Include="Models\Profile\ProfilePostsModel.cs" />
     <Compile Include="Models\Topics\TopicModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\ClickBay\BookingPasserValidator.cs" />
+    <Compile Include="Validators\ClickBay\BookingValidator.cs" />
     <Compile Include="Validators\Common\AddressValidator.cs" />
     <Compile Include="Validators\Install\InstallValidator.cs" />
     <Compile Include="Validators\Customer\PasswordRecoveryConfirmValidator.cs" />
