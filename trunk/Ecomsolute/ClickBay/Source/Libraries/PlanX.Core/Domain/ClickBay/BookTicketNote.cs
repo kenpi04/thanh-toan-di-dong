@@ -18,5 +18,7 @@ namespace PlanX.Core.Domain.ClickBay
         public Nullable<int> BookTicketId { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
+
+        public virtual Booking Booking { get; set; }
     }
 }

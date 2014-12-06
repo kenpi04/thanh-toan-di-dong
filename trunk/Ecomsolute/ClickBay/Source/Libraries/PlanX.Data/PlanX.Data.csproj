@@ -74,9 +74,17 @@
     <Compile Include="EfDataProviderManager.cs" />
     <Compile Include="Mapping\Banner\BannerMap.cs" />
     <Compile Include="Mapping\ClickBay\AirportMapping.cs" />
+    <Compile Include="Mapping\ClickBay\BookingInfoConditionMapping.cs" />
+    <Compile Include="Mapping\ClickBay\BookingInfoFlightMapping.cs" />
+    <Compile Include="Mapping\ClickBay\BookingMapping.cs" />
+    <Compile Include="Mapping\ClickBay\BookingPassengerMapping.cs" />
+    <Compile Include="Mapping\ClickBay\BookingPriceDetailMapping.cs" />
+    <Compile Include="Mapping\ClickBay\BookTicketNoteMapping.cs" />
     <Compile Include="Mapping\ClickBay\FlightCityMapping.cs" />
     <Compile Include="Mapping\ClickBay\FlightCountryMapping.cs" />
+    <Compile Include="Mapping\ClickBay\TicketConcessionMapping.cs" />
     <Compile Include="Mapping\ClickBay\TicketMapping.cs" />
+    <Compile Include="Mapping\ClickBay\TicketTypeMapping.cs" />
     <Compile Include="Mapping\Common\SearchTermMap.cs" />
     <Compile Include="Mapping\Common\GenericAttributeMap.cs" />
     <Compile Include="Mapping\News\NewsItemMap.cs" />

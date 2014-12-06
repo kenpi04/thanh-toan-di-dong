@@ -14,6 +14,7 @@ namespace PlanX.Data.Mapping.Customers
             this.Property(u => u.Email).HasMaxLength(1000);
 
             this.Ignore(u => u.PasswordFormat);
+            this.Ignore(u => u.CurrentBookingTicketId);
 
             this.HasMany(c => c.CustomerRoles)
                 .WithMany()

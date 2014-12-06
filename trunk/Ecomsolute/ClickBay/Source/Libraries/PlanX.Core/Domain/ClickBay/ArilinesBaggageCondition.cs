@@ -15,7 +15,7 @@ namespace PlanX.Core.Domain.ClickBay
     public partial class ArilinesBaggageCondition:BaseEntity
     {
      
-        public int AirlinesId { get; set; }
+        public string AirlinesId { get; set; }
         public int Baggage { get; set; }
         public decimal BaggageFee { get; set; }
         public int DisplayOrder { get; set; }

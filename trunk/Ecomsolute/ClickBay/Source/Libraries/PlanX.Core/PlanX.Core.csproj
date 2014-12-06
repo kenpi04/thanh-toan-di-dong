@@ -94,10 +94,10 @@
     <Compile Include="Domain\ClickBay\Airport.cs" />
     <Compile Include="Domain\ClickBay\ArilinesBaggageCondition.cs" />
     <Compile Include="Domain\ClickBay\Booking.cs" />
+    <Compile Include="Domain\ClickBay\BookingInfoCondition.cs" />
     <Compile Include="Domain\ClickBay\BookingInfoFlight.cs" />
     <Compile Include="Domain\ClickBay\BookingPassenger.cs" />
     <Compile Include="Domain\ClickBay\BookingPriceDetail.cs" />
-    <Compile Include="Domain\ClickBay\BookTicket.cs" />
     <Compile Include="Domain\ClickBay\BookTicketNote.cs" />
     <Compile Include="Domain\ClickBay\FlightCity.cs" />
     <Compile Include="Domain\ClickBay\FlightCountry.cs" />

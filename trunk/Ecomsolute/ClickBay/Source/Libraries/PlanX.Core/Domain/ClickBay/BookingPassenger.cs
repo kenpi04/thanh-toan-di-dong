@@ -31,5 +31,7 @@ namespace PlanX.Core.Domain.ClickBay
         public Nullable<System.DateTime> PassportExpired { get; set; }
         public decimal BaggageFee { get; set; }
         public decimal ReturnBaggageFee { get; set; }
+
+        public virtual Booking Booking { get; set; }
     }
 }

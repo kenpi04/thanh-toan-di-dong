@@ -14,7 +14,11 @@ namespace PlanX.Core.Domain.ClickBay
     
     public partial class Booking:BaseEntity
     {
-     
+
+        public Booking()
+        {
+            this.BookTicketNotes = new HashSet<BookTicketNote>();
+        }
         public string ContactName { get; set; }
         public string ContactGender { get; set; }
         public string ContactPhone { get; set; }
@@ -54,6 +58,7 @@ namespace PlanX.Core.Domain.ClickBay
         public bool Deleted { get; set; }
     
         public virtual BookingInfoFlight BookingInfoFlight { get; set; }
-        public virtual BookingInfoFlight BookingInfoFlight1 { get; set; }
+        public virtual BookingInfoFlight BookingInfoFlightReturn { get; set; }
+        public virtual ICollection<BookTicketNote> BookTicketNotes { get; set; }
     }
 }

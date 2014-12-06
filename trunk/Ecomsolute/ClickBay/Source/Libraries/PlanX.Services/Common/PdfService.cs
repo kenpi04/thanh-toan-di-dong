@@ -6,7 +6,7 @@ using System.Linq;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using PlanX.Core;
-using PlanX.Core.Domain.Catalog;
+//using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Common;
 using PlanX.Core.Domain.Directory;
 //using PlanX.Core.Domain.Orders;
