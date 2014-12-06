@@ -9,6 +9,7 @@ namespace PlanX.Services.ClickBay
 {
     public interface IClickBayService
     {
+        #region API 
         /*
          Adult	Int	Người lớn
  Child	Int	Trẻ em
@@ -62,14 +63,45 @@ namespace PlanX.Services.ClickBay
         /// <returns></returns>
         Task<IEnumerable<FlightCountry>> GetCountry();
 
-        Task<BookTicket> BookTicket(BookTicket model);
+        Task<Booking> BookTicket(Booking model);
+        #endregion
 
+        #region database Service
+
+        IEnumerable<FlightCity> GetListCity(int countryId = 0);
+
+        IEnumerable<FlightCity> GetListCountry();
+
+        IEnumerable<Airport> GetListAirport(int country = 0, int city = 0);
         FlightCity GetCityById(int id);
-
+        FlightCity GetcityByCode(string code);
         FlightCountry GetCountryById(int id);
 
-        BookTicket GetBookTicketById(int id);
+        Booking GetBookTicketById(int id);
         Ticket GetTicketById(int id);
+
+        /*void InsertOrUpdateBooking(Booking book);
+
+        void DeleteBooking(Booking book);*/
+
+        void InsertOrUpdateCity(FlightCity city);
+
+        void InsertOrUpdateCountry(FlightCountry entity);
+
+        void InsertOrupdateAirport(Airport airport);
+
+        //void InsertOrupdateAirline(Airline Airline);
+
+        IList<AirlinesCondition> GetListAirlinesConditionByAirlineId(string airlineCode);
+        IList<ArilinesBaggageCondition> GetListArilinesBaggageCondition(string airlineCode);
+
+        String GetData();
+            
+
+
+        #endregion
+
+
 
 
     }
