@@ -129,7 +129,10 @@
     <Compile Include="Clickbay\ClickbayContant.cs" />
     <Compile Include="Clickbay\ClickbayService.cs" />
     <Compile Include="Clickbay\IClickbayService.cs" />
+    <Compile Include="Clickbay\IOnePayServices.cs" />
     <Compile Include="Clickbay\ObjectToDictionaryHelper.cs" />
+    <Compile Include="Clickbay\OnePayServices.cs" />
+    <Compile Include="Clickbay\VPCRequest.cs" />
     <Compile Include="Cms\IWidgetService.cs" />
     <Compile Include="Cms\WidgetExtentions.cs" />
     <Compile Include="Cms\WidgetService.cs" />

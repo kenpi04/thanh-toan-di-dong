@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using PlanX.Core.Data;
-using PlanX.Core.Domain.Catalog;
+//using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Media;
 //using PlanX.Core.Domain.Orders;
 //using PlanX.Core.Domain.Payments;

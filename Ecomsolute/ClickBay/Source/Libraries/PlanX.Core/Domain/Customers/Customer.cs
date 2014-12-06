@@ -24,6 +24,7 @@ namespace PlanX.Core.Domain.Customers
         {
             this.CustomerGuid = Guid.NewGuid();
             this.PasswordFormat = PasswordFormat.Clear;
+            
         }
 
         /// <summary>
@@ -120,6 +121,8 @@ namespace PlanX.Core.Domain.Customers
         /// Gets or sets the date and time of last activity
         /// </summary>
         public DateTime LastActivityDateUtc { get; set; }
+
+        public int CurrentBookingTicketId { get; set; }
         
         #region Navigation properties
 

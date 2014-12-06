@@ -60,6 +60,7 @@ namespace PlanX.Services.Common
             this._stateProvinceService = stateProvinceService;
             this._eventPublisher = eventPublisher;
             this._addressSettings = addressSettings;
+            
         }
 
         #endregion

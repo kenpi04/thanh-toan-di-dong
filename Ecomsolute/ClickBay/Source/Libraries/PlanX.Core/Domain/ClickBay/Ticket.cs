@@ -46,13 +46,13 @@ namespace PlanX.Core.Domain.ClickBay
         public DateTime  LandingTime { get; set; }
         public String FlightDuration { get; set; }
         public string FromAirport { get; set; }
-        public int? FromAirportId { get; set; }
+        public int FromAirportId { get; set; }
         public string ToAirport { get; set; }
-        public int? ToAirportId { get; set; }
+        public int ToAirportId { get; set; }
         public string FromPlace { get; set; }
-        public int? FromPlaceId { get; set; }
+        public int FromPlaceId { get; set; }
         public string ToPlace { get; set; }
-        public int? ToPlaceId { get; set; }
+        public int ToPlaceId { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
         public int Stops { get; set; }

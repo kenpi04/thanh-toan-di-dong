@@ -17,8 +17,9 @@ namespace PlanX.Core.Domain.ClickBay
         public BookingInfoFlight()
         {
             this.Bookings = new HashSet<Booking>();
-            this.Bookings1 = new HashSet<Booking>();
+            this.ReturnBookings = new HashSet<Booking>();
             this.BookingPriceDetails = new HashSet<BookingPriceDetail>();
+            this.BookingInfoConditions = new HashSet<BookingInfoCondition>();
         }
     
        
@@ -48,7 +49,9 @@ namespace PlanX.Core.Domain.ClickBay
         public decimal DiscountAmount { get; set; }
     
         public virtual ICollection<Booking> Bookings { get; set; }
-        public virtual ICollection<Booking> Bookings1 { get; set; }
+        public virtual ICollection<Booking> ReturnBookings { get; set; }
         public virtual ICollection<BookingPriceDetail> BookingPriceDetails { get; set; }
+
+        public virtual ICollection<BookingInfoCondition> BookingInfoConditions { get; set; }
     }
 }

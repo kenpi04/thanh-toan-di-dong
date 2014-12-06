@@ -7,14 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PlanX.Web
+namespace PlanX.Core.Domain.ClickBay
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class TicketType
+    public partial class TicketType:BaseEntity
     {
-        public int Id { get; set; }
+
         public string TicketTypeName { get; set; }
     }
 }
