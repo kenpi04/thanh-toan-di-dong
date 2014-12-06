@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_ColumnTwo.cshtml";
+    ViewBag.Title = "Đặt vé";
+}
+
+@section top
+{
+        @Html.Partial("_BreadCrumb", new Dictionary<string, string> { 
+            {"Tìm kiếm",""},
+             {"Chọn chuyến bay",""},
+              {"Thanh toán",""},
+               {"Xác nhận",""},
+
+        })
+}
+
+@Html.Partial("_FlightDetail")
+@Html.Partial("_FlightCondition")
+@Html.Partial("_BookingForm")
+
+@section right
+{
+    @Html.Partial("BookingInfoDetail")
+}
+
+

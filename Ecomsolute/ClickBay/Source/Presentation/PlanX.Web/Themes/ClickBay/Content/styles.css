@@ -138,37 +138,47 @@ margin-right: 20px;}
 /*CSS anh dung*/
 img{max-width:100%;max-height:100%;}
 input,select{padding:6px;}
-input.default,a.default{min-width:90px;background:#189b96;padding:8px;color:#fff;border:0;font-size:14px;cursor:pointer}
+input.default,a.default{background:#189b96;padding:8px;color:#fff;border:0;font-size:14px;cursor:pointer;display:inline-block;}
 label.default{padding:8px;}
-input.textbox-default{}
-.wrapper-body{width:80%;margin:0 auto}
-.wrapper-content{margin:40px 0;}
-.title{display:inline-block;font-size:15px;color:#fff;background:#189b96;width:100%;}
+span.active{color:#F2C127;}
+.main-background{background:#189b96 !important; color:#fff;}
+.wrapper-body{width:90%;margin:0 auto;margin-bottom:20px;}
+.wrapper-content{margin:0 2%;}
+.title{display:inline-block;font-size:15px;color:#fff;background:#189b96;width:100%;padding:8px 0}
 .title-left{float:left;padding:8px;}
 .title-right{float:right;padding:8px;}
+.big-font{color:orange;font-size:20px;font-weight:600;margin-right:7px;width:19%;text-align:right;}
+.currency{width:7%}
 .postitem{cursor:pointer;color:#fff !important;}
-.TicketConcession .search input{padding:6px;}
-.TicketConcession .search{padding:10px 10px 10px 0px}
-.TicketConcession .search .default{min-width:90px;background:rgba(24, 155, 150, 1);padding:8px;color:#fff;border:0;font-size:14px;}
-
-.TicketConcession table{display:table;width:100%;background:#fff;border-collapse:collapse;border-spacing:0;border:1px solid #eaeaea;border-left:0;}
-.TicketConcession table tbody tr:hover{background:#c5f3ec !important;}
+.section .search input{padding:6px;}
+.section .search{padding:10px 10px 10px 0px}
+.section .search .default{min-width:90px;background:rgba(24, 155, 150, 1);padding:8px;color:#fff;border:0;font-size:14px;}
+.section table{display:table;width:100%;background:#fff;border-collapse:collapse;border-spacing:0;border:1px solid #eaeaea;border-left:0;}
+.section table.default tbody tr:hover{background:#c5f3ec !important;}
 table tr{display:table-row;vertical-align:inherit;border-color:inherit;}
 table th{border-left:1px #eaeaea solid; border-bottom:1px #eaeaea solid;}
 table tbody{display: table-row-group;vertical-align:inherit;border-color:inherit;}
 table tr td, table th{padding:8px;font-size:14px;line-height:14pt;vertical-align:top;border-left:1px #eaeaea solid;border-bottom:1px #eaeaea solid;}
-.TicketConcession table tbody tr:nth-child(odd){background:#eeeeee;}
-.TicketConcession table tbody tr td a{cursor:pointer;}
-.TicketConcession-left{float:left;width:69%;margin-right:1%}
-.TicketConcession-right{float:left;width:30%}
-.news{display:inline-block;}
+table tr td p,table tr th p{margin:0;}
+table tr th.active{background:#F2C127}
+table.none-border, table.none-border tr, table.none-border tr td{border:none;}
+table.none-border tr th:first-child{border-left:none;}
+.section table tbody tr:nth-child(odd){background:#eeeeee;}
+.section table.orange tbody tr:hover{background:#d0d959;}
+.section table tbody tr td a{cursor:pointer;}
+.bordered{border:1px #189b96 solid;}
+.pointer {cursor:pointer;}
+.section-left{float:left;width:69%;margin-right:1%}
+.section-right{float:left;width:30%}
+.section-left-search{float:left;width:75%;margin-right:1%}
+.section-right-search{float:left;width:24%}
+.section article{margin-bottom:20px;}
+.section-right article aside, .section-right-search article.news-box-small aside{border-bottom:1px solid #189b96;padding-bottom:15px;margin-bottom:10px;}
+.inline{display:inline-block;}
 .dangtin{margin-top:20px;}
 .div-group{margin-bottom:10px;}
 .div-group .field-name{padding:8px;float:left;width:100px}
 .div-group .box-radio{margin-left:112px;padding:5px 0;}
-#description{min-width:250px;min-height:50px;}
-#btnDangTin{margin-left:116px;}
-.TicketConcession-right article aside{border-bottom:1px solid #189b96;padding-bottom:15px;margin-bottom:10px;}
 .news-content-preview{font-size:14px;}
 .news-content-preview .news-title{color:#189b96;font-size:18px;font-weight:600;cursor:pointer;}
 .info-small{font-size:11px;color:#A9A5A5;}
@@ -176,6 +186,40 @@ table tr td, table th{padding:8px;font-size:14px;line-height:14pt;vertical-align
 .info-small p span{margin-right:10%;}
 .time-small{margin-left:0;}
 .news-content-preview .content-preview{text-align:justify;}
+img.icon-small{width:10px;margin:0 4px;}
+#btnContinue{float:right;margin:15px 0;}
+#description{min-width:250px;min-height:50px;}
+#btnDangTin{margin-left:116px;}
+/*search small*/
+.search-box-small .box-search{width:auto;height:auto; margin-top: 10px; box-shadow: 0px 4px 10px #000;padding:10px}
+.search-box-small .box-search .box-head{height:auto;}
+.search-box-small .box-search .box-head p{margin:0;}
+.search-box-small .box-search label{line-height:15px;}
+.search-box-small .box-search .box-content{padding-left:0;padding-top:15px}
+.search-box-small .box-search .box-content .col{float:none;width:auto;margin:0;padding:5px 30px 5px 10px}
+.search-box-small .box-search .box-content .col .textbox{padding-left:8px;width:100%;}
+.search-box-small .box-search .box-content .col span{width:30%;display:inline-block;margin-left:2%;}
+.box-filter,.box-sort{border:1px solid #189b96;margin-bottom:5px;}
+.box-filter .box-content,.box-sort .box-content{padding:10px 0;}
+.box-filter .box-content p,.box-sort .box-content p{margin:0 0 5px 5px;}
+.center{text-align:center;}
+.search-box-small .box-search .box-content .col .textbox.center{width:85%; padding-left:0;}
+.search-box-small .box-search .box-content .box-footer{margin-top:5px;float:none;padding-left:0;}
+.search-box-small .box-search .box-content .box-footer span{display:inline-block;width:30%;margin-right:0;float:none;}
+.info-filter p span{margin-right:7px;font-size:18px;color:#F2C127;}
+.info-filter .info-title-search{font-size:20px;color:#4C8EE5;font-weight:700;}
+.info-passenger p span{font-size:14px;margin-right:7px;}
+/*news*/
+.news,.news-detail{margin-right:6%;}
+.news article aside{margin-bottom:10px;padding-bottom:15px;border-bottom:1px solid #189b96;display:inline-block;}
+.news article aside .news-content-preview{float:left;width:68%;}
+.news article aside .info-small{display:block;}
+.news-image{width:30%;float:left;margin-right:2%;}
+.table{width:100%}
+/*news detail*/
+.news-detail .news-title{font-size:25px;color:#189b96;font-weight:600}
+.news-detail .info-small{font-size:12px;}
+.news-detail .content-preview{font-size:15px;}
 .boder-dashed{border-bottom:dashed 2px #189b96}
 .nv-title{color: #189b96;
 font-size: 14px;
@@ -204,3 +248,38 @@ font-size: 19px;}
 .please-wait{background:url('images/ajax_loader_small.gif') no-repeat;padding-left:20px;}
 
 
+/*booking*/
+.booking{font-size:14px;border:1px solid #e2e2e2;width:73%;padding:10px;}
+.booking h2{color:#189b96;margin:10px 0;padding:3px 0;border-bottom:1px solid;}
+.booking p{margin:0;padding:0;}
+.booking input{box-sizing:border-box;}
+.booking .div-table{display:table;width:100%;}
+.booking .div-table-row{display:table-row}
+.booking .div-table-row .div-table-cell{display:table-cell; padding:5px;}
+.booking .div-table-row .div-table-cell span{font-weight:bold;}
+.hide{display:none;}
+.info-flight{margin-bottom:14px;}
+.info-flight .place-flight{background:#CEE7E4}
+.condition-price .div-table-row .div-table-cell:first-child{width:23%}
+.condition-price .div-table-row .div-table-cell:last-child{border-bottom:1px dashed #dcdcdc;}
+.info-baggage .div-table-row .div-table-cell .normal{padding-left:12px;font-weight:normal}
+.info-passenger .div-table-row .div-table-cell.col-1{width:11%}
+.info-passenger .div-table-row .div-table-cell.col-2{width:13%}
+.info-passenger .div-table-row .div-table-cell.col-4{width:35%}
+.info-passenger input{width:100%;text-transform:uppercase;}
+.info-passenger select.fullwitdth,.info-contact select.fullwitdth{width:100%;}
+.info-passenger .info-small,.info-contact .info-small{font-weight:normal;font-size:12px;font-style:italic;}
+.info-contact input{width:100%;}
+.info-contact .div-table-column{display:table-column;}
+.info-contact .div-table-row .div-table-cell.haft{width:50%;padding:0;}
+.info-contact .div-table-row .div-table-cell span{line-height:20px;}
+.booking textarea{width:100%;min-height:100px;max-width:100%;}
+.policy label{font-style:italic;}
+.policy label a{text-decoration:underline;}
+.priceDetail .detail{padding:10px;}
+.priceDetail .detail h4{margin:0;}
+.priceDetail .detail h4 span{border-bottom:1px solid;}
+.priceDetail .detail .box-content{border-bottom:1px dashed;padding-bottom:0;margin-bottom:10px;}
+.priceDetail .detail .box-content:last-child{border-bottom:0;}
+.priceDetail .detail .box-content.sumPrice p span:last-child{font-size:15px;font-weight:600;}
+.priceDetail .detail .box-content p span:last-child{float:right;}

@@ -1,6 +1,6 @@
 ﻿@model PlanX.Web.Models.ClickBay.SearchModel
 
-<form>
+<form action="@Url.Action("Search")" method="get">
 
     <div class="box-head">
         <img src="@Url.Content("~/Themes/ClickBay/Content/images/mouse.png")">
@@ -55,15 +55,16 @@
             width: 350,
             modal: true,
             buttons: {
-                "Create an account": addUser,
+                
                 Cancel: function () {
-                    dialog.dialog("close");
+                    $("#dialog-form").dialog("close");
                 }
             },
             close: function () {
-                form[0].reset();
-                allFields.removeClass("ui-state-error");
-            }
+               /// form[0].reset();
+                //allFields.removeClass("ui-state-error");
+            },
+           
         });
         $("#fromPlace,#toPlace").click(function () {
             $("#dialog-form").dialog("open");
