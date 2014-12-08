@@ -283,3 +283,51 @@ font-size: 19px;}
 .priceDetail .detail .box-content:last-child{border-bottom:0;}
 .priceDetail .detail .box-content.sumPrice p span:last-child{font-size:15px;font-weight:600;}
 .priceDetail .detail .box-content p span:last-child{float:right;}
+
+
+/*BOX search*/
+.listCity td{vertical-align: top;}
+    .listCity ul{list-style: none;float: left;clear: both;}
+    .listCity ul li{float: left;clear: both;padding: 0 5px 0 0;width: 115px;}
+    .listCity ul li.title{font-weight: bold;font-size: 13px;padding: 5px 0 7px 0;color: #ff7b0f;text-transform: uppercase;}
+    .listCity ul li a{float: left;width: 106px;padding: 3px 5px;}
+    .listCity ul li a:hover{background: #ff7b0f;}
+    .listCity ul li a:hover *{color: #fff;}
+    .listCity ul li a:hover b{font-weight: bold;}
+    .listCity ul li a b{float: left;font-weight: normal;}
+    .listCity ul li a span{float: right;font-weight: bold;font-size: 10px;color: #999;display: none;}
+    .domestic-col{float: left;padding-right: 15px;font-size: 12px;}
+    .internation-city{float: left;width: 260px;}
+    .internation-city h3{font-size: 13px;padding: 5px 0;margin: 0;color: #ff7b0f;text-transform: uppercase;}
+    .internation-city p{font-size: 11px;color: #888;}
+    .internation-city input{height: 24px;width: 250px;border: 1px solid #ccc;padding: 2px 5px;margin: 7px 0;}
+    .select-date{padding-top: 10px;}
+    .select-date select{height: 26px;}
+    #dialog-form{position: absolute;
+z-index: 10;
+top: 342px;
+left: 802px;
+background: #fff;
+padding: 11px;
+line-height: 24px;
+box-shadow: 3px 0px 5px 2px #666;
+display:none
+    }
+    .default{
+        cursor: pointer;
+color: #fff !important;
+display: block;
+background: rgb(255, 87, 0);
+padding: 4px;
+font-size: 16px;
+border-radius: 5px;
+    }
+    #fromPlace,#toPlace{background: #fff;
+display: block;
+padding: 0 4px;
+height: 29px;
+line-height: 29px;
+width: 80%;
+border-radius: 5px;
+border: solid 1px #ddd;
+    }
