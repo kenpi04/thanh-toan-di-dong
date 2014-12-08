@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace PlanX.Core.Domain.ClickBay
 {
-    public class TicketType : BaseEntity
+    public class Place : BaseEntity
     {
 
-        public string TicketTypeName { get; set; }
+        public string PlaceName { get; set; }
 
     }
 }

@@ -19,15 +19,10 @@ namespace PlanX.Core.Domain.ClickBay
         public short PassengerType { get; set; }
         public short Quantity { get; set; }
         public string TicketType { get; set; }
-        public decimal PriceTicket { get; set; }
-        public decimal PriceCostTicket { get; set; }
-        public decimal FeeAmount { get; set; }
-        public decimal TaxAmount { get; set; }
-        public decimal FeeOtherAmount { get; set; }
+        public string CodeFee { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
-        public decimal TotalFee { get; set; }
-        public decimal TotalTax { get; set; }
-        public decimal TotalFeeOther { get; set; }
     
         public virtual BookingInfoFlight BookingInfoFlight { get; set; }
     }

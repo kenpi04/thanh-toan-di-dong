@@ -19,5 +19,6 @@ namespace PlanX.Core.Domain.ClickBay
         public string ConditionName { get; set; }
         public string ConditionDescription { get; set; }
         public int DisplayOrder { get; set; }
+        public string TicketType { get; set; }
     }
 }

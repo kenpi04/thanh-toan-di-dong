@@ -13,6 +13,7 @@ namespace PlanX.Core.Domain.ClickBay
         DepartTime	DateTime	Giờ cất cánh	2014-05-24T07:10:00
         LandingTime	DateTime	Giờ hạ cánh	2014-05-24T07:10:00
         FlightDuration	TimeSpan	Thời gian bay	PT2H5M
+        FlightDuration	TimeSpan	Thời gian bay	PT2H5M
         FromAirport	String	Sân bay đi	Tân Sân Nhất
         FromAirportId	Int	Mã sân bay đi	1
         ToAirport	String	Sân bay đến	Nội Bài
