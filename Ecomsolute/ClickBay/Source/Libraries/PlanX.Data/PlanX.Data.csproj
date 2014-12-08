@@ -83,7 +83,6 @@
     <Compile Include="Mapping\ClickBay\FlightCityMapping.cs" />
     <Compile Include="Mapping\ClickBay\FlightCountryMapping.cs" />
     <Compile Include="Mapping\ClickBay\TicketConcessionMapping.cs" />
-    <Compile Include="Mapping\ClickBay\TicketMapping.cs" />
     <Compile Include="Mapping\ClickBay\TicketTypeMapping.cs" />
     <Compile Include="Mapping\Common\SearchTermMap.cs" />
     <Compile Include="Mapping\Common\GenericAttributeMap.cs" />
