@@ -15,6 +15,6 @@ namespace PlanX.Core.Domain.ClickBay
             set { this.PassengerType = (short)value; }
         }
 
-        public virtual BookingInfoFlight BookingInfoFlight;
+        public virtual BookingInfoFlight BookingInfoFlight { get; set; }
     }
 }
