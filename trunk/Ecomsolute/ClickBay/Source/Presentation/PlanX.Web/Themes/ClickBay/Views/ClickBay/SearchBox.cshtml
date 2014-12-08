@@ -6,24 +6,28 @@
         <img src="@Url.Content("~/Themes/ClickBay/Content/images/mouse.png")">
         <span class="search-text">TÌM VÉ MÁY BAY</span>
         <span>
-            <input type="radio" name="Return" value="1"><label>Khứ hồi</label>
+            <input type="radio" name="Return" checked="checked" value="1"><label>Khứ hồi</label>
             <input type="radio" name="Return" value="0"><label>Một chiều</label>
+           
+            
         </span>
     </div>
     <div class="box-content">
         <div class="col">
             <label>Điểm đi</label><br>
-            <input id="fromPlace" type="text" class="textbox"><br><br>
-                <input type="hidden" name="FromId" />
+            <span id="fromPlace" class="textbox"></span><br><br>
+                <input type="hidden" id="FromId" name="FromId" />
             <label>Ngày đi</label><br>
-            <input name="DepartDate" type="datetime" class="textbox date">
+            <input id="From" name="DepartDate" type="text" class="textbox date">
         </div>
         <div class="col">
             <label>Điểm đến</label><br>
-            <input id="toPlace" type="text" class="textbox"><br><br>
-            <input type="hidden" name="ToId" />
-            <label>Ngày về</label><br>
-            <input name="Return Date" type="datetime" class="textbox date">
+            <span id="toPlace"  class="textbox"></span><br><br>
+            <input type="hidden" name="ToId" id="ToId"/>
+            <div id="return-div">
+                <label>Ngày về</label><br>
+                <input id="To" name="ReturnDate" type="text" class="textbox date">
+            </div>
         </div>
         <div class="clear"></div>
 
@@ -48,34 +52,150 @@
     </div>
 </form>
 <script type="text/javascript">
-    $(function () {
-        $("#dialog-form").dialog({
-            autoOpen: false,
-            height: 300,
-            width: 350,
-            modal: true,
-            buttons: {
-                
-                Cancel: function () {
-                    $("#dialog-form").dialog("close");
-                }
-            },
-            close: function () {
-               /// form[0].reset();
-                //allFields.removeClass("ui-state-error");
-            },
-           
-        });
-        $("#fromPlace,#toPlace").click(function () {
-            $("#dialog-form").dialog("open");
-        })
-    })
-</script>
-<div id="dialog-form">
-    <ul>
-        @foreach(var i in Model.ListCitys)
-        {
-            <li>@i.Text</li>
+
+    var CURRENT_TXT = null, ISSHOW;
+    $("input[name=Return]").change(function () {
+        if ($(this).val() == 1) {
+            $("#return-div").show()
         }
-    </ul>
+        else
+            $("#return-div").hide();
+    })
+    $("#From").datepicker({
+        defaultDate: "+1w",
+        dateFormat:"dd/mm/yy",
+        changeMonth: true,
+        numberOfMonths: 3,
+        onClose: function (selectedDate) {
+            if($("input[name=Return]:checked").val()==1)
+             $("#To").datepicker("option", "minDate", selectedDate);
+        }
+    });
+    $("#To").datepicker({
+        defaultDate: "+1w",
+        dateFormat: "dd/mm/yy",
+        changeMonth: true,
+        numberOfMonths: 3,
+        onClose: function (selectedDate) {
+            $("#From").datepicker("option", "maxDate", selectedDate);
+        }
+    });
+        $("#fromPlace,#toPlace").click(function () {
+            openPopup();
+            CURRENT_TXT = $(this).attr("id");
+        })
+
+    function openPopup()
+    {
+        $("#dialog-form").show();
+        ISSHOW = true;
+    }
+    //$('body').click(function (e) {
+    //    if (ISSHOW) {
+    //        if (e.target.className !== "dialog-form-contain") {
+
+    //            ISSHOW = false;
+    //            $(".dialog-form-contain").hide();
+    //        }
+    //    }
+    //})
+    $(function () {
+        $("a[airportcode]").click(function () {
+            var name = $(this).text();
+            var code = $(this).attr("airportcode");
+            selectedValue(name,code)
+        })
+        function selectedValue(name,code)
+        {
+           
+            if (CURRENT_TXT == "fromPlace") {
+                $("#fromPlace").html(name);
+                $("#FromId").val(code);
+
+            }
+            else {
+
+                $("#toPlace").html(name);
+                $("#ToId").val(code);
+
+            }
+            $("#dialog-form").hide();
+        }
+            $('#small-searchterms').autocomplete({
+                delay: 500,
+                minLength:2,
+                source: '@(Url.Action("GetCity"))',
+                select: function( event, ui ) {
+                      selectedValue(ui.item.Name, ui.item.Code);
+                    return false;
+                }
+            })
+                    .data("ui-autocomplete")._renderItem = function( ul, item ) {
+                        var t = item.Name;
+                        //html encode
+                        t = htmlEncode(t);
+                        return $("<li></li>")
+                        .data("item.autocomplete", item)
+                        .append("<a>"+t+ "</a>")
+                    .appendTo(ul);
+                    };
+        });
+
+</script>
+<div id="dialog-form" class="dialog-form-contain">
+   
+
+
+        <div class="domestic-col">
+            <ul>
+                <li class="title">Miền Bắc </li>
+                <li><a airportcode="HAN" href="#"><b>Hà Nội </b><span>(HAN)</span> </a></li>
+                <li><a airportcode="HPH" href="#"><b>Hải Phòng</b> <span>(HPH)</span> </a></li>
+                <li><a airportcode="DIN" href="#"><b>Điện Biên</b> <span>(DIN)</span> </a></li>
+            </ul>
+            <ul>
+                <li class="title">Miền Trung </li>
+                <li><a airportcode="THD" href="#"><b>Thanh Hóa</b> <span>(THD)</span> </a></li>
+                <li><a airportcode="VII" href="#"><b>Vinh</b> <span>(VII)</span> </a></li>
+                <li><a airportcode="HUI" href="#"><b>Huế</b> <span>(HUI)</span> </a></li>
+                <li><a airportcode="VDH" href="#"><b>Đồng Hới</b> <span>(VDH)</span> </a></li>
+                <li><a airportcode="DAD" href="#"><b>Đà Nẵng</b> <span>(DAD)</span> </a></li>
+                <li><a airportcode="TMK" href="#"><b>Tam Kỳ</b> <span>(VCL)</span> </a></li>
+                <li><a airportcode="PXU" href="#"><b>Pleiku</b> <span>(PXU)</span> </a></li>
+                <li><a airportcode="TBB" href="#"><b>Tuy Hòa</b> <span>(TBB)</span> </a></li>
+            </ul>
+        </div>
+        <div class="domestic-col">
+            <ul>
+                <li class="title">Miền Nam </li>
+                <li><a airportcode="SGN" href="#"><b>Hồ Chí Minh </b><span>(SGN)</span> </a></li>
+                <li><a airportcode="CXR" href="#"><b>Nha Trang</b> <span>(CXR)</span> </a></li>
+                <li><a airportcode="DLI" href="#"><b>Đà Lạt</b> <span>(DLI)</span> </a></li>
+                <li><a airportcode="PQC" href="#"><b>Phú Quốc</b> <span>(PQC)</span> </a></li>
+                <li><a airportcode="UIH" href="#"><b>Qui Nhơn</b> <span>(UIH)</span> </a></li>
+                <li><a airportcode="VCA" href="#"><b>Cần Thơ</b> <span>(VCA)</span> </a></li>
+                <li><a airportcode="VCS" href="#"><b>Côn Đảo</b> <span>(VCS)</span> </a></li>
+                <li><a airportcode="BMV" href="#"><b>Ban Mê Thuột</b> <span>(BMV)</span> </a></li>
+                <li><a airportcode="VKG" href="#"><b>Rạch Giá</b> <span>(VKG)</span> </a></li>
+                <li><a airportcode="CAH" href="#"><b>Cà Mau</b> <span>(CAH)</span> </a></li>
+            </ul>
+        </div>
+        <div class="internation-city">
+            <h3 style="font-weight: bold; font-size: 13px;">
+                Quốc tế
+            </h3>
+            <p>
+                <b style="color: black; font-weight: bold">
+                    Hãy nhập vào tên thành phố hoặc mã sân bay
+                </b>
+            </p>
+            <p class="error-departure" style="color: red;">
+                &nbsp;
+            </p>
+            <input id="small-searchterms" name="" type="text" autocomplete="off">
+            <p>
+               <input id="btncitySelect" class="default" value="Chọn" />
+            </p>
+        </div>
+   
 </div>

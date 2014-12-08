@@ -107,11 +107,15 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var data = {
-           // FromID:@(Model.FromId!=null?Model.FromId:""),
-            // ToId:@(Model.ToId!=null?Model.ToId:"")
-            DepartDate: "03/12/2014",
-            SessionId: $("#sessionid").val()
-
+            FromID:'@(Model.FromId!=null?Model.FromId:"")',
+            ToId:'@(Model.ToId!=null?Model.ToId:"")',
+            DepartDate: '@Model.DepartDate',
+            ReturnDate:'@Model.ReturnDate', 
+            Adult:@Model.Adult,
+            Child:@Model.Child,
+            Flant:@Model.Flant,
+            Return:'@Model.Return',            
+            SessionId: $("#sessionid").val(),
         };
         $.get("@Url.Action("TicketSearch")",data,function(d){
             $("#table-data").html(d);
