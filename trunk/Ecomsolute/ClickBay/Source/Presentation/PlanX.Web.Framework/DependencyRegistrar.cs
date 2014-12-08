@@ -37,7 +37,7 @@ using PlanX.Services.Localization;
 using PlanX.Services.Logging;
 using PlanX.Services.Media;
 using PlanX.Services.Messages;
-//using PlanX.Services.News;
+using PlanX.Services.News;
 //using PlanX.Services.Orders;
 //using PlanX.Services.Payments;
 //using PlanX.Services.Polls;
@@ -126,6 +126,7 @@ namespace PlanX.Web.Framework
             //store context
             builder.RegisterType<WebStoreContext>().As<IStoreContext>().InstancePerHttpRequest();
 
+            builder.RegisterType<CategoryNewsService>().As<ICategoryNewsService>().InstancePerHttpRequest();
             //services
             //builder.RegisterType<BackInStockSubscriptionService>().As<IBackInStockSubscriptionService>().InstancePerHttpRequest();
             //builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerHttpRequest();
@@ -151,7 +152,7 @@ namespace PlanX.Web.Framework
             //builder.RegisterType<AffiliateService>().As<IAffiliateService>().InstancePerHttpRequest();
             //builder.RegisterType<VendorService>().As<IVendorService>().InstancePerHttpRequest();
 
-            builder.RegisterType<ClickbayService>().As<IClickBayService>().InstancePerHttpRequest();
+            builder.RegisterType<ClickBayService>().As<IClickBayService>().InstancePerHttpRequest();
 
 
             builder.RegisterType<AddressService>().As<IAddressService>().InstancePerHttpRequest();
@@ -208,7 +209,7 @@ namespace PlanX.Web.Framework
 
             //builder.RegisterType<DownloadService>().As<IDownloadService>().InstancePerHttpRequest();
             builder.RegisterType<PictureService>().As<IPictureService>().InstancePerHttpRequest();
-
+            builder.RegisterType<TicketConcessionService>().As<ITicketConcessionService>().InstancePerHttpRequest();
             builder.RegisterType<MessageTemplateService>().As<IMessageTemplateService>().InstancePerHttpRequest();
             builder.RegisterType<QueuedEmailService>().As<IQueuedEmailService>().InstancePerHttpRequest();
             builder.RegisterType<NewsLetterSubscriptionService>().As<INewsLetterSubscriptionService>().InstancePerHttpRequest();
@@ -266,7 +267,7 @@ namespace PlanX.Web.Framework
             //builder.RegisterType<BlogService>().As<IBlogService>().InstancePerHttpRequest();
             builder.RegisterType<WidgetService>().As<IWidgetService>().InstancePerHttpRequest();
             builder.RegisterType<TopicService>().As<ITopicService>().InstancePerHttpRequest();
-            //builder.RegisterType<NewsService>().As<INewsService>().InstancePerHttpRequest();
+            builder.RegisterType<NewsService>().As<INewsService>().InstancePerHttpRequest();
 
             builder.RegisterType<DateTimeHelper>().As<IDateTimeHelper>().InstancePerHttpRequest();
             builder.RegisterType<SitemapGenerator>().As<ISitemapGenerator>().InstancePerHttpRequest();
