@@ -35,8 +35,8 @@ namespace PlanX.Core.Domain.ClickBay
         public short Adult { get; set; }
         public short Child { get; set; }
         public short Infant { get; set; }
-        public string CurrencyType { get; set; }
-        public decimal CurrentcyRate { get; set; }
+        public string CurrencyCode { get; set; }
+        public decimal CurrencyRate { get; set; }
         public string CallBackUrl { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal TotalFeeAmount { get; set; }
@@ -61,6 +61,22 @@ namespace PlanX.Core.Domain.ClickBay
         public virtual PasserType PasserType {
             get { return (PasserType)ContactPassengerType; }
             set { this.ContactPassengerType = (short)value; }
+        }
+
+        public virtual BookingStatus BookingStatus
+        {
+            get { return (BookingStatus)BookingStatusId; }
+            set { this.BookingStatusId = (short)value; }
+        }
+        public virtual PaymentStatus PaymentStatus
+        {
+            get { return (PaymentStatus)PaymentStatusId; }
+            set { this.PaymentStatusId = (short)value; }
+        }
+        public virtual ContactStatus ContactStatus
+        {
+            get { return (ContactStatus)ContactStatusId; }
+            set { this.ContactStatusId = (short)value; }
         }
     
         public virtual BookingInfoFlight BookingInfoFlight { get; set; }

@@ -20,10 +20,12 @@ namespace PlanX.Core.Domain.ClickBay
             this.ReturnBookings = new HashSet<Booking>();
             this.BookingPriceDetails = new HashSet<BookingPriceDetail>();
             this.BookingInfoConditions = new HashSet<BookingInfoCondition>();
+            this.BookingBaggages = new HashSet<BookingBaggage>();
         }
     
        
         public string Brand { get; set; }
+        public string BrandName { get; set; }
         public int AirlinesId { get; set; }
         public short Adult { get; set; }
         public short Child { get; set; }
@@ -32,6 +34,7 @@ namespace PlanX.Core.Domain.ClickBay
         public string PRNCode { get; set; }
         public Nullable<System.DateTime> DepartDateTime { get; set; }
         public Nullable<System.DateTime> ArrivalDateTime { get; set; }
+        public int FlightDuration { get; set; }
         public string TicketType { get; set; }
         public int FromPlaceId { get; set; }
         public int ToPlaceId { get; set; }
@@ -39,8 +42,10 @@ namespace PlanX.Core.Domain.ClickBay
         public string ToPlaceCode { get; set; }
         public string FromPlaceName { get; set; }
         public string ToPlaceName { get; set; }
+        public short Stops { get; set; }
         public string FareBasis { get; set; }
         public int IdBooking { get; set; }
+        public decimal TotalPriceNet { get; set; }
         public decimal TotalPrice { get; set; }
         public decimal TotalFee { get; set; }
         public decimal TotalTax { get; set; }
@@ -53,5 +58,6 @@ namespace PlanX.Core.Domain.ClickBay
         public virtual ICollection<BookingPriceDetail> BookingPriceDetails { get; set; }
 
         public virtual ICollection<BookingInfoCondition> BookingInfoConditions { get; set; }
+        public virtual ICollection<BookingBaggage> BookingBaggages { get; set; }
     }
 }
