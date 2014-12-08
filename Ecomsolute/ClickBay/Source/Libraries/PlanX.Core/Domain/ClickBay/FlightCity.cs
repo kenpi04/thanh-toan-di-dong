@@ -16,6 +16,8 @@ namespace PlanX.Core.Domain.ClickBay
   */
         public string Code { get; set; }
         public string Name { get; set; }
+
+        public string EnglishName { get; set; }
         public int CountryId { get; set; }
         public string JetStarCode { get; set; }
         public string VietJetAirCode { get; set; }
