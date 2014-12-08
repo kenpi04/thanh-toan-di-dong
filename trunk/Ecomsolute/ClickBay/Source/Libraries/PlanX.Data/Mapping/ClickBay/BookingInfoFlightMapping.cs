@@ -9,7 +9,6 @@ namespace PlanX.Data.Mapping.ClickBay
         {
             this.ToTable("BookingInfoFlight");
             this.HasKey(x => x.Id);
-            
         }
     }
 }
