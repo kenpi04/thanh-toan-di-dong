@@ -47,11 +47,129 @@ using PlanX.Services.Cms;
 //using PlanX.Services.Payments;
 //using PlanX.Services.Shipping;
 //using PlanX.Services.Tax;
+using PlanX.Core.Domain.ClickBay;
+using PlanX.Admin.Models.ClickBay;
 
 namespace PlanX.Admin
 {
     public static class MappingExtensions
     {
+        #region ClickBay
+
+        #region Booking
+        public static BookingModel ToModel(this Booking entity)
+        {
+            return Mapper.Map<Booking, BookingModel>(entity);
+        }
+
+        public static Booking ToEntity(this BookingModel model)
+        {
+            return Mapper.Map<BookingModel, Booking>(model);
+        }
+
+        public static Booking ToEntity(this BookingModel model, Booking destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+        #endregion
+        #region BookingInfoFlight
+        public static BookingInfoFlightModel ToModel(this BookingInfoFlight entity)
+        {
+            return Mapper.Map<BookingInfoFlight, BookingInfoFlightModel>(entity);
+        }
+
+        public static BookingInfoFlight ToEntity(this BookingInfoFlightModel model)
+        {
+            return Mapper.Map<BookingInfoFlightModel, BookingInfoFlight>(model);
+        }
+
+        public static BookingInfoFlight ToEntity(this BookingInfoFlightModel model, BookingInfoFlight destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+        #endregion
+        #region BookingPassenger
+        public static BookingPassengerModel ToModel(this BookingPassenger entity)
+        {
+            return Mapper.Map<BookingPassenger, BookingPassengerModel>(entity);
+        }
+
+        public static BookingPassenger ToEntity(this BookingPassengerModel model)
+        {
+            return Mapper.Map<BookingPassengerModel, BookingPassenger>(model);
+        }
+
+        public static BookingPassenger ToEntity(this BookingPassengerModel model, BookingPassenger destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+        #endregion
+        #region BookingPriceDetail
+        public static BookingPriceDetailModel ToModel(this BookingPriceDetail entity)
+        {
+            return Mapper.Map<BookingPriceDetail, BookingPriceDetailModel>(entity);
+        }
+
+        public static BookingPriceDetail ToEntity(this BookingPriceDetailModel model)
+        {
+            return Mapper.Map<BookingPriceDetailModel, BookingPriceDetail>(model);
+        }
+
+        public static BookingPriceDetail ToEntity(this BookingPriceDetailModel model, BookingPriceDetail destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+        #endregion
+        #region BookingBaggage
+        public static BookingBaggageModel ToModel(this BookingBaggage entity)
+        {
+            return Mapper.Map<BookingBaggage, BookingBaggageModel>(entity);
+        }
+
+        public static BookingBaggage ToEntity(this BookingBaggageModel model)
+        {
+            return Mapper.Map<BookingBaggageModel, BookingBaggage>(model);
+        }
+
+        public static BookingBaggage ToEntity(this BookingBaggageModel model, BookingBaggage destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+        #endregion
+        #region BookingInfoCondition
+        public static BookingInfoConditionModel ToModel(this BookingInfoCondition entity)
+        {
+            return Mapper.Map<BookingInfoCondition, BookingInfoConditionModel>(entity);
+        }
+
+        public static BookingInfoCondition ToEntity(this BookingInfoConditionModel model)
+        {
+            return Mapper.Map<BookingInfoConditionModel, BookingInfoCondition>(model);
+        }
+
+        public static BookingInfoCondition ToEntity(this BookingInfoConditionModel model, BookingInfoCondition destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+        #endregion
+        #region BookingTicketNote
+        public static BookTicketNoteModel ToModel(this BookTicketNote entity)
+        {
+            return Mapper.Map<BookTicketNote, BookTicketNoteModel>(entity);
+        }
+
+        public static BookTicketNote ToEntity(this BookTicketNoteModel model)
+        {
+            return Mapper.Map<BookTicketNoteModel, BookTicketNote>(model);
+        }
+
+        public static BookTicketNote ToEntity(this BookTicketNoteModel model, BookTicketNote destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+        #endregion
+        #endregion
+
         #region Category
 
         //public static CategoryModel ToModel(this Category entity)
@@ -780,18 +898,18 @@ namespace PlanX.Admin
         //}
 
 
-        //public static NewsSettingsModel ToModel(this NewsSettings entity)
-        //{
-        //    return Mapper.Map<NewsSettings, NewsSettingsModel>(entity);
-        //}
-        //public static NewsSettings ToEntity(this NewsSettingsModel model)
-        //{
-        //    return Mapper.Map<NewsSettingsModel, NewsSettings>(model);
-        //}
-        //public static NewsSettings ToEntity(this NewsSettingsModel model, NewsSettings destination)
-        //{
-        //    return Mapper.Map(model, destination);
-        //}
+        public static NewsSettingsModel ToModel(this NewsSettings entity)
+        {
+            return Mapper.Map<NewsSettings, NewsSettingsModel>(entity);
+        }
+        public static NewsSettings ToEntity(this NewsSettingsModel model)
+        {
+            return Mapper.Map<NewsSettingsModel, NewsSettings>(model);
+        }
+        public static NewsSettings ToEntity(this NewsSettingsModel model, NewsSettings destination)
+        {
+            return Mapper.Map(model, destination);
+        }
 
 
         //public static CatalogSettingsModel ToModel(this CatalogSettings entity)
@@ -966,6 +1084,25 @@ namespace PlanX.Admin
         //{
         //    return Mapper.Map(model, destination);
         //}
+        #endregion
+
+        #region newscate
+
+        public static CategoryNewsModel ToModel(this CategoryNews entity)
+        {
+            return Mapper.Map<CategoryNews, CategoryNewsModel>(entity);
+        }
+
+        public static CategoryNews ToEntity(this CategoryNewsModel model)
+        {
+            return Mapper.Map<CategoryNewsModel, CategoryNews>(model);
+        }
+
+        public static CategoryNews ToEntity(this CategoryNewsModel model, CategoryNews destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+
         #endregion
 
     }
