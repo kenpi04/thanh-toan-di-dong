@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using PlanX.Core.Data;
 using PlanX.Core;
 using System.IO;
+using System.Net.Http.Headers;
+
 
 namespace PlanX.Services.ClickBay
 {
@@ -63,23 +65,39 @@ namespace PlanX.Services.ClickBay
               url += "?$expand=" + querys.Aggregate((a, b) => a + "," + b);
 
           }
-            var param = new List<KeyValuePair<string, string>> { 
-            
-                new KeyValuePair<string,string>("Adult",Adult.ToString()),
-                new KeyValuePair<string,string>("Child",child.ToString()),
-                new KeyValuePair<string,string>("Infant",Infant.ToString()),
-                 new KeyValuePair<string,string>("FareBasis",FareBasis),
-                new KeyValuePair<string,string>("roundTrip",roundTrip.ToString()),
-                new KeyValuePair<string,string>("DepartDate",departDate.ToString("T00:00:00.000")),
-                new KeyValuePair<string,string>("ReturnDate",returnDate.HasValue?returnDate.Value.ToString("T00:00:00.000"):null),
-                new KeyValuePair<string,string>("FromPlace",fromPlace),
-               new KeyValuePair<string,string>("ToPlace",toPlace),
-                new KeyValuePair<string,string>("CurrencyType",CurrencyType),
-                new KeyValuePair<string,string>("Sources",source),
-                
-            };
+          var searchModel = new TicketSearch
+          {
+              Adult=Adult,
+              Child=child,
+              Infant=Infant,
+              FareBasis=FareBasis,
+              roundTrip=roundTrip,
+              DepartDate = departDate.ToString("T00:00:00.000"),
+              ReturnDate = returnDate.HasValue ? returnDate.Value.ToString("T00:00:00.000") : null,
+              FromPlace=fromPlace,
+              ToPlace=toPlace,
+              CurrencyType=CurrencyType,
+              Sources=source
 
-            string result = GetData(url,false, param);
+          };
+            //var param = new List<KeyValuePair<string, string>> { 
+            
+            //    new KeyValuePair<string,string>("Adult",Adult.ToString()),
+            //    new KeyValuePair<string,string>("Child",child.ToString()),
+            //    new KeyValuePair<string,string>("Infant",Infant.ToString()),
+            //     new KeyValuePair<string,string>("FareBasis",FareBasis),
+            //    new KeyValuePair<string,string>("roundTrip",roundTrip.ToString()),
+            //    new KeyValuePair<string,string>("DepartDate",departDate.ToString("T00:00:00.000")),
+            //    new KeyValuePair<string,string>("ReturnDate",returnDate.HasValue?returnDate.Value.ToString("T00:00:00.000"):null),
+            //    new KeyValuePair<string,string>("FromPlace",fromPlace),
+            //   new KeyValuePair<string,string>("ToPlace",toPlace),
+            //    new KeyValuePair<string,string>("CurrencyType",CurrencyType),
+            //    new KeyValuePair<string,string>("Sources",source),
+                
+            //};
+            string data = JsonConvert.SerializeObject(searchModel);
+
+            string result = GetData(url,false,null,data);
             if (result == null)
                 return null;
             return JsonConvert.DeserializeObject<IEnumerable<Ticket>>(result);
@@ -122,7 +140,7 @@ namespace PlanX.Services.ClickBay
            
         }
      
-      private string GetData(string url,bool isGET=true,IEnumerable<KeyValuePair<string,string>> para=null)
+      private string GetData(string url,bool isGET=true,IEnumerable<KeyValuePair<string,string>> para=null,string dataString=null)
        {
 
 
@@ -132,11 +150,24 @@ namespace PlanX.Services.ClickBay
            HttpClient client = new HttpClient(handler);
            String encoded = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(ClickBayContant.USERNAME + ":" + ClickBayContant.PASSWORD));
            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", encoded);
-         
+           HttpResponseMessage response;
+          if(isGET)
+            response = client.GetAsync(new Uri(url)).Result;
+          else
+          {
+              HttpContent data;
+              if (!string.IsNullOrWhiteSpace(dataString))
+              {
+                  client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));               
+                  data =  new StringContent(dataString, Encoding.UTF8, "application/json");
+              }
+              else
+                  data = new FormUrlEncodedContent(para);
+              //response=client.PostAsync(url,data).Result;
+              client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+               response = client.PostAsync(url, new StringContent(dataString, Encoding.UTF8, "application/json")).Result; 
 
-
-           var response = client.GetAsync(new Uri(ClickBayContant.URL_GET_AIRPLACES)).Result;
-
+          }
            if (response.IsSuccessStatusCode)
            {
                response.EnsureSuccessStatusCode();
@@ -157,7 +188,7 @@ namespace PlanX.Services.ClickBay
           
 
       }
-     
+  
       #endregion
 
       #region DataBase Service
@@ -181,11 +212,15 @@ namespace PlanX.Services.ClickBay
       {
           throw new NotImplementedException();
       }
-      public IEnumerable<FlightCity> GetListCity(int countryId = 0)
+      public IEnumerable<FlightCity> GetListCity(int countryId = 0,string name=null)
       {
           var q = _flightCityRepository.Table;
           if (countryId > 0)
               q = q.Where(x => x.CountryId == countryId);
+          if (!string.IsNullOrEmpty(name))
+          {
+              q = q.Where(x => x.EnglishName.Contains(name.ToLower()));
+          }
           return q.AsEnumerable();
       }
 
@@ -215,10 +250,7 @@ namespace PlanX.Services.ClickBay
           return File.ReadAllText(filePath, Encoding.UTF8).Trim();
       }
 
-      class ConvertDataModel
-      {
-          public object Value { get; set; }
-      }
+      
 
 
       /*
@@ -325,6 +357,34 @@ namespace PlanX.Services.ClickBay
               throw new ArgumentNullException("Airport is null");
 
           _airportRepository.Update(airport);
+      }
+      class ConvertDataModel
+      {
+          public object Value { get; set; }
+      }
+      class TicketSearch
+      {
+          public int Adult { get; set; }
+          public int Child { get; set; }
+
+          public int Infant { get; set; }
+
+          public string FareBasis { get; set; }
+
+          public bool roundTrip { get; set; }
+          public string DepartDate { get; set; }
+
+          public string ReturnDate { get; set; }
+
+          public string FromPlace { get; set; }
+
+          public string ToPlace { get; set; }
+
+          public string CurrencyType { get; set; }
+
+          public string Sources { get; set; }
+         
+
       }
     }
 }

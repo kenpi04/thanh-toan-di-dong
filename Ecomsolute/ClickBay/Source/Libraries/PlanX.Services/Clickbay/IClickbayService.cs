@@ -68,7 +68,7 @@ namespace PlanX.Services.ClickBay
 
         #region database Service
 
-        IEnumerable<FlightCity> GetListCity(int countryId = 0);
+        IEnumerable<FlightCity> GetListCity(int countryId = 0,string name=null);
 
         IEnumerable<FlightCity> GetListCountry();
 
