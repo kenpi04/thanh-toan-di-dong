@@ -16,6 +16,7 @@ using PlanX.Services.Customers;
 using PlanX.Services.Events;
 using PlanX.Services.Localization;
 using PlanX.Services.Stores;
+using PlanX.Core.Domain.News;
 
 namespace PlanX.Services.Messages
 {
@@ -1190,39 +1191,7 @@ namespace PlanX.Services.Messages
                 toEmail, toName);
         }
 
-        /// <summary>
-        /// Sends a news comment notification message to a store owner
-        /// </summary>
-        /// <param name="newsComment">News comment</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        public virtual int SendNewsCommentNotificationMessage(NewsComment newsComment, int languageId)
-        {
-            if (newsComment == null)
-                throw new ArgumentNullException("newsComment");
 
-            var store = _storeContext.CurrentStore;
-            languageId = EnsureLanguageIsActive(languageId, store.Id);
-
-            var messageTemplate = GetLocalizedActiveMessageTemplate("News.NewsComment", languageId, store.Id);
-            if (messageTemplate == null)
-                return 0;
-
-            //tokens
-            var tokens = new List<Token>();
-            _messageTokenProvider.AddStoreTokens(tokens, store);
-            _messageTokenProvider.AddNewsCommentTokens(tokens, newsComment);
-
-            //event notification
-            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
-
-            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
-            var toEmail = emailAccount.Email;
-            var toName = emailAccount.DisplayName;
-            return SendNotification(messageTemplate, emailAccount,
-                languageId, tokens,
-                toEmail, toName);
-        }
 
         /// <summary>
         /// Sends a 'Back in stock' notification message to a customer
@@ -1260,6 +1229,40 @@ namespace PlanX.Services.Messages
                 toEmail, toName);
         }
         */
+
+         //        <summary>
+         //Sends a news comment notification message to a store owner
+         //</summary>
+         //<param name="newsComment">News comment</param>
+         //<param name="languageId">Message language identifier</param>
+         //<returns>Queued email identifier</returns>
+        public virtual int SendNewsCommentNotificationMessage(NewsComment newsComment, int languageId)
+        {
+            if (newsComment == null)
+                throw new ArgumentNullException("newsComment");
+
+            var store = _storeContext.CurrentStore;
+            languageId = EnsureLanguageIsActive(languageId, store.Id);
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("News.NewsComment", languageId, store.Id);
+            if (messageTemplate == null)
+                return 0;
+
+           // tokens
+            var tokens = new List<Token>();
+            _messageTokenProvider.AddStoreTokens(tokens, store);
+            _messageTokenProvider.AddNewsCommentTokens(tokens, newsComment);
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
+            var toEmail = emailAccount.Email;
+            var toName = emailAccount.DisplayName;
+            return SendNotification(messageTemplate, emailAccount,
+                languageId, tokens,
+                toEmail, toName);
+        }
         #endregion
 
         #endregion

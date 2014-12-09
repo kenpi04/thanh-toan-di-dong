@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
-//using PlanX.Core.Domain.Catalog;
+using PlanX.Core.Domain.Catalog;
 //using PlanX.Core.Domain.Orders;
 //using PlanX.Core.Domain.Shipping;
 

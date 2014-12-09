@@ -3,6 +3,7 @@
 using PlanX.Core.Domain.Customers;
 //using PlanX.Core.Domain.Forums;
 using PlanX.Core.Domain.Messages;
+using PlanX.Core.Domain.News;
 //using PlanX.Core.Domain.News;
 //using PlanX.Core.Domain.Orders;
 //using PlanX.Core.Domain.Shipping;
@@ -290,13 +291,6 @@ namespace PlanX.Services.Messages
         /// <returns>Queued email identifier</returns>
         int SendBlogCommentNotificationMessage(BlogComment blogComment, int languageId);
 
-        /// <summary>
-        /// Sends a news comment notification message to a store owner
-        /// </summary>
-        /// <param name="newsComment">News comment</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        int SendNewsCommentNotificationMessage(NewsComment newsComment, int languageId);
 
         /// <summary>
         /// Sends a 'Back in stock' notification message to a customer
@@ -306,6 +300,15 @@ namespace PlanX.Services.Messages
         /// <returns>Queued email identifier</returns>
         int SendBackInStockNotification(BackInStockSubscription subscription, int languageId);
         */
+
+
+        /// <summary>
+        /// Sends a news comment notification message to a store owner
+        /// </summary>
+        /// <param name="newsComment">News comment</param>
+        /// <param name="languageId">Message language identifier</param>
+        /// <returns>Queued email identifier</returns>
+        int SendNewsCommentNotificationMessage(NewsComment newsComment, int languageId);
         #endregion
     }
 }

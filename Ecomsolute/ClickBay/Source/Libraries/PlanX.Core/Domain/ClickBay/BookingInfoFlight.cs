@@ -14,14 +14,13 @@ namespace PlanX.Core.Domain.ClickBay
     
     public partial class BookingInfoFlight:BaseEntity
     {
-        public BookingInfoFlight()
-        {
-            this.Bookings = new HashSet<Booking>();
-            this.ReturnBookings = new HashSet<Booking>();
-            this.BookingPriceDetails = new HashSet<BookingPriceDetail>();
-            this.BookingInfoConditions = new HashSet<BookingInfoCondition>();
-            this.BookingBaggages = new HashSet<BookingBaggage>();
-        }
+        //public BookingInfoFlight()
+        //{
+        //    this.Bookings = new HashSet<Booking>();
+        //    this.BookingPriceDetails = new HashSet<BookingPriceDetail>();
+        //    this.BookingInfoConditions = new HashSet<BookingInfoCondition>();
+        //    this.BookingBaggages = new HashSet<BookingBaggage>();
+        //}
     
        
         public string Brand { get; set; }
@@ -53,11 +52,30 @@ namespace PlanX.Core.Domain.ClickBay
         public decimal TotalFeeOther { get; set; }
         public decimal DiscountAmount { get; set; }
     
-        public virtual ICollection<Booking> Bookings { get; set; }
-        public virtual ICollection<Booking> ReturnBookings { get; set; }
-        public virtual ICollection<BookingPriceDetail> BookingPriceDetails { get; set; }
+        //private ICollection<Booking> _bookings { get; set; }
+        //public virtual ICollection<Booking> Bookings
+        //{
+        //    get { return _bookings ?? (_bookings = new List<Booking>()); }
+        //    protected set { _bookings = value; }
+        //}
+        private ICollection<BookingPriceDetail> _bookingPriceDetails { get; set; }
+        public virtual ICollection<BookingPriceDetail> BookingPriceDetails
+        {
+            get { return _bookingPriceDetails ?? (_bookingPriceDetails = new List<BookingPriceDetail>()); }
+            protected set { _bookingPriceDetails = value; }
+        }
 
-        public virtual ICollection<BookingInfoCondition> BookingInfoConditions { get; set; }
-        public virtual ICollection<BookingBaggage> BookingBaggages { get; set; }
+        private ICollection<BookingInfoCondition> _bookingInfoConditions { get; set; }
+        public virtual ICollection<BookingInfoCondition> BookingInfoConditions
+        {
+            get { return _bookingInfoConditions ?? (_bookingInfoConditions = new List<BookingInfoCondition>()); }
+            protected set { _bookingInfoConditions = value; }
+        }
+        private ICollection<BookingBaggage> _bookingBaggages { get; set; }
+        public virtual ICollection<BookingBaggage> BookingBaggages
+        {
+            get { return _bookingBaggages ?? (_bookingBaggages = new List<BookingBaggage>()); }
+            protected set { _bookingBaggages = value; }
+        }
     }
 }

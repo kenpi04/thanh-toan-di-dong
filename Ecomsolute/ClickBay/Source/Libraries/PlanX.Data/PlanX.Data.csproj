@@ -38,11 +38,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServerCompact">
       <HintPath>..\..\packages\EntityFramework.SqlServerCompact.6.0.1\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
@@ -74,6 +76,7 @@
     <Compile Include="EfDataProviderManager.cs" />
     <Compile Include="Mapping\Banner\BannerMap.cs" />
     <Compile Include="Mapping\ClickBay\AirportMapping.cs" />
+    <Compile Include="Mapping\ClickBay\BookingBaggageMapping.cs" />
     <Compile Include="Mapping\ClickBay\BookingInfoConditionMapping.cs" />
     <Compile Include="Mapping\ClickBay\BookingInfoFlightMapping.cs" />
     <Compile Include="Mapping\ClickBay\BookingMapping.cs" />
@@ -82,10 +85,14 @@
     <Compile Include="Mapping\ClickBay\BookTicketNoteMapping.cs" />
     <Compile Include="Mapping\ClickBay\FlightCityMapping.cs" />
     <Compile Include="Mapping\ClickBay\FlightCountryMapping.cs" />
+    <Compile Include="Mapping\ClickBay\PlaceMapping.cs" />
     <Compile Include="Mapping\ClickBay\TicketConcessionMapping.cs" />
     <Compile Include="Mapping\ClickBay\TicketTypeMapping.cs" />
     <Compile Include="Mapping\Common\SearchTermMap.cs" />
     <Compile Include="Mapping\Common\GenericAttributeMap.cs" />
+    <Compile Include="Mapping\News\CategoryNewsMap.cs" />
+    <Compile Include="Mapping\News\NewsCategoryNewsMap.cs" />
+    <Compile Include="Mapping\News\NewsCommentMap.cs" />
     <Compile Include="Mapping\News\NewsItemMap.cs" />
     <Compile Include="Mapping\Stores\StoreMappingMap.cs" />
     <Compile Include="Mapping\Stores\StoreMap.cs" />
@@ -129,6 +136,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
