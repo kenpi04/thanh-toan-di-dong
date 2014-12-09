@@ -50,6 +50,10 @@
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\ThanhToanDiDong\SourceCode\v01\Sankyo\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
@@ -94,14 +98,21 @@
     <Compile Include="Domain\ClickBay\Airport.cs" />
     <Compile Include="Domain\ClickBay\ArilinesBaggageCondition.cs" />
     <Compile Include="Domain\ClickBay\Booking.cs" />
+    <Compile Include="Domain\ClickBay\BookingBaggage.cs" />
     <Compile Include="Domain\ClickBay\BookingInfoCondition.cs" />
     <Compile Include="Domain\ClickBay\BookingInfoFlight.cs" />
     <Compile Include="Domain\ClickBay\BookingPassenger.cs" />
     <Compile Include="Domain\ClickBay\BookingPriceDetail.cs" />
+    <Compile Include="Domain\ClickBay\BookingStatus.cs" />
     <Compile Include="Domain\ClickBay\BookTicketNote.cs" />
+    <Compile Include="Domain\ClickBay\ContactStatus.cs" />
     <Compile Include="Domain\ClickBay\FlightCity.cs" />
     <Compile Include="Domain\ClickBay\FlightCountry.cs" />
+    <Compile Include="Domain\ClickBay\PassengerType.cs" />
     <Compile Include="Domain\ClickBay\PasserType.cs" />
+    <Compile Include="Domain\ClickBay\PaymentMethod.cs" />
+    <Compile Include="Domain\ClickBay\PaymentStatus.cs" />
+    <Compile Include="Domain\ClickBay\Place.cs" />
     <Compile Include="Domain\ClickBay\Ticket.cs" />
     <Compile Include="Domain\ClickBay\FlightDetailDto.cs" />
     <Compile Include="Domain\ClickBay\TicketConcession.cs" />
@@ -110,6 +121,8 @@
     <Compile Include="Domain\Common\SearchTermReportLine.cs" />
     <Compile Include="Domain\Common\SearchTerm.cs" />
     <Compile Include="Domain\Customers\CustomerLoginResults.cs" />
+    <Compile Include="Domain\News\CategoryNews.cs" />
+    <Compile Include="Domain\News\NewsCategoryNews.cs" />
     <Compile Include="Domain\News\NewsComment.cs" />
     <Compile Include="Domain\News\NewsItem.cs" />
     <Compile Include="Domain\News\NewsSettings.cs" />
