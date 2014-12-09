@@ -23,13 +23,13 @@ namespace PlanX.Admin.Models.ClickBay
         [NopResourceDisplayName("Admin.ClickBay.List.CustomerNameOrPhone")]
         public string CustomerNameOrPhone { get; set; }
 
-        [NopResourceDisplayName("Admin.ClickBay.List.OrderStatus")]
+        [NopResourceDisplayName("Admin.ClickBay.List.BookingStatusId")]
         public int BookingStatusId { get; set; }
 
-        [NopResourceDisplayName("Admin.ClickBay.List.PaymentStatus")]
+        [NopResourceDisplayName("Admin.ClickBay.List.CustomerId")]
         public int CustomerId { get; set; }
-        
-        [NopResourceDisplayName("Admin.ClickBay.List.GoDirectlyToNumber")]
+
+        [NopResourceDisplayName("Admin.ClickBay.List.BookingId")]
         public int BookingId { get; set; }
 
         public IList<SelectListItem> AvailableBookingStatuses { get; set; }

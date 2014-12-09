@@ -15,7 +15,7 @@ using PlanX.Core.Domain.Directory;
 //using PlanX.Core.Domain.Forums;
 using PlanX.Core.Domain.Localization;
 using PlanX.Core.Domain.Media;
-//using PlanX.Core.Domain.News;
+using PlanX.Core.Domain.News;
 //using PlanX.Core.Domain.Orders;
 using PlanX.Core.Domain.Security;
 using PlanX.Core.Domain.Seo;
@@ -40,6 +40,7 @@ using PlanX.Web.Framework.Localization;
 using PlanX.Web.Framework.Themes;
 using PlanX.Web.Framework.UI.Captcha;
 using Telerik.Web.Mvc;
+
 
 namespace PlanX.Admin.Controllers
 {
@@ -472,7 +473,7 @@ namespace PlanX.Admin.Controllers
         */
 
 
-        /*
+       
         public ActionResult News()
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
@@ -554,7 +555,7 @@ namespace PlanX.Admin.Controllers
             SuccessNotification(_localizationService.GetResource("Admin.Configuration.Updated"));
             return RedirectToAction("News");
         }
-        */
+        
 
 
         /*

@@ -1,7 +1,7 @@
-﻿using Nop.Web.Framework;
-using Nop.Web.Framework.Mvc;
+﻿using PlanX.Web.Framework;
+using PlanX.Web.Framework.Mvc;
 
-namespace Nop.Admin.Models.Settings
+namespace PlanX.Admin.Models.Settings
 {
     public partial class NewsSettingsModel : BaseNopModel
     {

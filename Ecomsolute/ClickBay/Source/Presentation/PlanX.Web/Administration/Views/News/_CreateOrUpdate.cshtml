@@ -7,6 +7,7 @@
 {
     x.Add().Text(T("Admin.ContentManagement.News.NewsItems.Info").Text).Content(TabInfo().ToHtmlString());
     x.Add().Text(T("Admin.Common.SEO").Text).Content(TabSeo().ToHtmlString());
+    x.Add().Text("News Category News").Content(TabMapping().ToHtmlString());
     x.Add().Text(T("Admin.ContentManagement.News.NewsItems.Stores").Text).Content(TabStores().ToHtmlString());
 
     //generate an event
@@ -34,6 +35,16 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.Title)
                 @Html.ValidationMessageFor(model => model.Title)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.PictureId):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.PictureId)
+                @Html.ValidationMessageFor(model => model.PictureId)
+                
             </td>
         </tr>
         <tr>
@@ -133,6 +144,63 @@
             </td>
         </tr>
     </table>
+}
+
+@helper TabMapping()
+{
+    if (Model.Id > 0)
+    {
+        if (Model.NumberOfAvailableCategories > 0)
+        {
+            @(Html.Telerik().Grid<NewsItemModel.CateNewsMapModel>()
+                    .Name("newscategories-grid")
+                       .DataKeys(keys =>
+                       {
+                           keys.Add(x => x.Id);
+                       })
+                       .DataBinding(dataBinding =>
+                       {
+                           dataBinding.Ajax()
+                               .Select("NewsCateList", "News", new { newsId = Model.Id })
+                               .Insert("NewsCateInsert", "News", new { newsId = Model.Id })
+                               .Update("NewsCateUpdate", "News")
+                               .Delete("NewsCateDelete", "News");
+                       })
+                       .Columns(columns =>
+                       {
+                           columns.Bound(x => x.NewsCate)
+                               .Width(500)
+                               .Centered();
+
+                           columns.Command(commands =>
+                           {
+                               commands.Edit();
+                               commands.Delete();
+                           })
+                           .Width(180);
+                       })
+                       .ToolBar(commands => commands.Insert())
+                       .ClientEvents(events => events.OnEdit("onNewsCategoryEdit"))
+                       .EnableCustomBinding(true))
+
+            <script type="text/javascript">
+                function onNewsCategoryEdit(e) {
+                    $(e.form).find('#Category').data('tDropDownList').select(function (dataItem) {
+                        return dataItem.Value == e.dataItem['CategoryNewsId'];
+                    });
+                }
+            </script>
+        }
+        else
+        {
+            @T("Admin.Catalog.News.Categories.NoCategoriesAvailable")
+        }
+    }
+    else
+    {
+        @T("Admin.Catalog.News.Categories.SaveBeforeEdit")
+    }
+
 }
 @helper TabStores()
 {

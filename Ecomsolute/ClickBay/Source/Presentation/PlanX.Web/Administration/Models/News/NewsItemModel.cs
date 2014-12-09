@@ -21,6 +21,10 @@ namespace PlanX.Admin.Models.News
         [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.Language")]
         public int LanguageId { get; set; }
 
+        [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.PictureId")]
+        [UIHint("Picture")]
+        public int PictureId { get; set; }
+
         [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.Language")]
         [AllowHtml]
         public string LanguageName { get; set; }
@@ -79,5 +83,45 @@ namespace PlanX.Admin.Models.News
 
         [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.CreatedOn")]
         public DateTime CreatedOn { get; set; }
+
+        public int NumberOfAvailableCategories { get; set; }
+
+
+        #region Nested classes
+
+        public partial class CategoryNewsMapModel : BaseNopEntityModel
+        {
+            [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.Category")]
+            [UIHint("NewsCate")]
+            public string Category { get; set; }
+
+            public int CategoryNewsId { get; set; }
+
+            public int NewsId { get; set; }
+
+            [NopResourceDisplayName("Admin.ContentManager.News.Categories.Fields.NewsTitle")]
+            public string NewsTitle { get; set; }
+        }
+
+        public partial class CateNewsMapModel : BaseNopEntityModel
+        {
+            [NopResourceDisplayName("Admin.ContentManagement.News.Categories.Fields.Category")]
+            [UIHint("NewsCate")]
+            public string NewsCate { get; set; }
+
+            public int CategoryId { get; set; }
+
+            public int NewsId { get; set; }
+
+            [NopResourceDisplayName("Admin.ContentManager.News.Categories.Fields.NewsTitle")]
+            public string NewsTitle { get; set; }
+        }
+
+
+        #endregion
+
+
+        [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.IsMainNew")]
+        public bool IsMainNews { get; set; }
     }
 }

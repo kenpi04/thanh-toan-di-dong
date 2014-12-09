@@ -17,10 +17,10 @@ using Telerik.Web.Mvc;
 
 namespace PlanX.Admin.Controllers
 {
-	[AdminAuthorize]
+    [AdminAuthorize]
     public partial class NewsController : BaseNopController
-	{
-		#region Fields
+    {
+        #region Fields
 
         private readonly INewsService _newsService;
         private readonly ILanguageService _languageService;
@@ -30,19 +30,22 @@ namespace PlanX.Admin.Controllers
         private readonly IUrlRecordService _urlRecordService;
         private readonly IStoreService _storeService;
         private readonly IStoreMappingService _storeMappingService;
-        
-		#endregion
+        private readonly ICategoryNewsService _cateNewsService;
 
-		#region Constructors
+        #endregion
 
-        public NewsController(INewsService newsService, 
+        #region Constructors
+
+        public NewsController(INewsService newsService,
             ILanguageService languageService,
             IDateTimeHelper dateTimeHelper,
             ILocalizationService localizationService,
             IPermissionService permissionService,
             IUrlRecordService urlRecordService,
-            IStoreService storeService, 
-            IStoreMappingService storeMappingService)
+            IStoreService storeService,
+            IStoreMappingService storeMappingService,
+            ICategoryNewsService cateNewsService
+            )
         {
             this._newsService = newsService;
             this._languageService = languageService;
@@ -52,9 +55,10 @@ namespace PlanX.Admin.Controllers
             this._urlRecordService = urlRecordService;
             this._storeService = storeService;
             this._storeMappingService = storeMappingService;
-		}
+            this._cateNewsService = cateNewsService;
+        }
 
-		#endregion 
+        #endregion
 
         #region Utilities
 
@@ -68,6 +72,7 @@ namespace PlanX.Admin.Controllers
                 .GetAllStores()
                 .Select(s => s.ToModel())
                 .ToList();
+            model.NumberOfAvailableCategories = _cateNewsService.GetAllCategories().Count();
             if (!excludeProperties)
             {
                 if (newsItem != null)
@@ -124,7 +129,8 @@ namespace PlanX.Admin.Controllers
             model.AvailableStores.Add(new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
             foreach (var s in _storeService.GetAllStores())
                 model.AvailableStores.Add(new SelectListItem() { Text = s.Name, Value = s.Id.ToString() });
-
+            var cates = _cateNewsService.GetAllCategories(false).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
+            ViewBag.ListCates = cates;
             return View(model);
         }
 
@@ -134,7 +140,7 @@ namespace PlanX.Admin.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
                 return AccessDeniedView();
 
-            var news = _newsService.GetAllNews(0, model.SearchStoreId, command.Page - 1, command.PageSize, true);
+            var news = _newsService.GetAllNews(0, model.SearchStoreId,  command.Page - 1, command.PageSize, true);
             var gridModel = new GridModel<NewsItemModel>
             {
                 Data = news.Select(x =>
@@ -184,11 +190,19 @@ namespace PlanX.Admin.Controllers
                 newsItem.StartDateUtc = model.StartDate;
                 newsItem.EndDateUtc = model.EndDate;
                 newsItem.CreatedOnUtc = DateTime.UtcNow;
+                newsItem.MetaDescription = model.MetaDescription;
+                newsItem.MetaKeywords = model.MetaKeywords;
+                newsItem.MetaTitle = model.MetaTitle;
+                if (string.IsNullOrEmpty(model.MetaDescription))
+                    newsItem.MetaDescription = model.Title;
+                if (string.IsNullOrEmpty(newsItem.MetaTitle))
+                    newsItem.MetaTitle = model.Title;
                 _newsService.InsertNews(newsItem);
-                
+
                 //search engine name
-                var seName = newsItem.ValidateSeName(model.SeName, model.Title, true);
-                _urlRecordService.SaveSlug(newsItem, seName, newsItem.LanguageId);
+                //search engine name
+                var seName = newsItem.ValidateSeName(model.SeName, model.Title.RemoveSign4VietnameseString(), true);
+                _urlRecordService.SaveSlug(newsItem, seName, 0);
 
                 //Stores
                 SaveStoreMappings(newsItem, model);
@@ -218,6 +232,13 @@ namespace PlanX.Admin.Controllers
             var model = newsItem.ToModel();
             model.StartDate = newsItem.StartDateUtc;
             model.EndDate = newsItem.EndDateUtc;
+            model.MetaDescription = newsItem.MetaDescription;
+            model.MetaKeywords = newsItem.MetaKeywords;
+            model.MetaTitle = model.MetaTitle;
+            if (string.IsNullOrEmpty(model.MetaDescription))
+                newsItem.MetaDescription = model.Title;
+            if (string.IsNullOrEmpty(newsItem.MetaTitle))
+                newsItem.MetaTitle = model.Title;
             //Store
             PrepareStoresMappingModel(model, newsItem, false);
             return View(model);
@@ -239,11 +260,14 @@ namespace PlanX.Admin.Controllers
                 newsItem = model.ToEntity(newsItem);
                 newsItem.StartDateUtc = model.StartDate;
                 newsItem.EndDateUtc = model.EndDate;
+                newsItem.MetaDescription = model.MetaDescription;
+                newsItem.MetaKeywords = model.MetaKeywords;
+                newsItem.MetaTitle = model.MetaTitle;
                 _newsService.UpdateNews(newsItem);
 
                 //search engine name
                 var seName = newsItem.ValidateSeName(model.SeName, model.Title, true);
-                _urlRecordService.SaveSlug(newsItem, seName, newsItem.LanguageId);
+                _urlRecordService.SaveSlug(newsItem, seName, 0);
 
                 //Stores
                 SaveStoreMappings(newsItem, model);
@@ -255,7 +279,7 @@ namespace PlanX.Admin.Controllers
                     //selected tab
                     SaveSelectedTabIndex();
 
-                    return RedirectToAction("Edit", new {id = newsItem.Id});
+                    return RedirectToAction("Edit", new { id = newsItem.Id });
                 }
                 else
                 {
@@ -289,16 +313,104 @@ namespace PlanX.Admin.Controllers
 
         #endregion
 
-        #region Comments
-/*
-        public ActionResult Comments(int? filterByNewsItemId)
+        #region News Category
+
+        [HttpPost, GridAction(EnableCustomBinding = true)]
+        public ActionResult NewsCateList(GridCommand command, int newsId)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
                 return AccessDeniedView();
 
-            ViewBag.FilterByNewsItemId = filterByNewsItemId;
-            return View();
+            var newsCategories = _cateNewsService.GetNewsCategoriesByNewsId(newsId, false);
+            var newsCategoriesModel = newsCategories
+                .Select(x =>
+                {
+                    return new NewsItemModel.CateNewsMapModel()
+                    {
+                        Id = x.Id,
+                        NewsCate = _cateNewsService.GetCategoryById(x.CategoryNewsId).GetCategoryBreadCrumb(_cateNewsService),
+                        NewsId = x.NewsId,
+                        CategoryId = x.CategoryNewsId,
+                    };
+                })
+                .ToList();
+
+            var model = new GridModel<NewsItemModel.CateNewsMapModel>
+            {
+                Data = newsCategoriesModel,
+                Total = newsCategoriesModel.Count
+            };
+
+            return new JsonResult
+            {
+                Data = model
+            };
         }
+
+        [GridAction(EnableCustomBinding = true)]
+        public ActionResult NewsCateInsert(GridCommand command, NewsItemModel.CateNewsMapModel model)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
+                return AccessDeniedView();
+
+            var newsCategory = new NewsCategoryNews()
+            {
+                NewsId = model.NewsId,
+                CategoryNewsId = Int32.Parse(model.NewsCate), //use Category property (not CategoryId) because appropriate property is stored in it
+
+            };
+
+            _cateNewsService.InsertNewsCategory(newsCategory);
+
+            return NewsCateList(command, model.NewsId);
+        }
+
+        [GridAction(EnableCustomBinding = true)]
+        public ActionResult NewsCateUpdate(GridCommand command, NewsItemModel.CateNewsMapModel model)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
+                return AccessDeniedView();
+
+            var newsCategory = _cateNewsService.GetNewsCategoryById(model.Id);
+            if (newsCategory == null)
+                throw new ArgumentException("No news category mapping found with the specified id");
+
+            //use Category property (not CategoryId) because appropriate property is stored in it
+            newsCategory.CategoryNewsId = Int32.Parse(model.NewsCate);
+
+            _cateNewsService.UpdateNewsCategory(newsCategory);
+
+            return NewsCateList(command, newsCategory.NewsId);
+        }
+
+        [GridAction(EnableCustomBinding = true)]
+        public ActionResult NewsCateDelete(int id, GridCommand command)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
+                return AccessDeniedView();
+
+            var newsCategory = _cateNewsService.GetNewsCategoryById(id);
+            if (newsCategory == null)
+                throw new ArgumentException("No news category mapping found with the specified id");
+
+            var newsId = newsCategory.NewsId;
+            _cateNewsService.DeleteNewsCategory(newsCategory);
+
+            return NewsCateList(command, newsId);
+        }
+
+        #endregion
+
+        //#region Comments
+
+        //public ActionResult Comments(int? filterByNewsItemId)
+        //{
+        //    if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
+        //        return AccessDeniedView();
+
+        //    ViewBag.FilterByNewsItemId = filterByNewsItemId;
+        //    return View();
+        //}
 
         //[HttpPost, GridAction(EnableCustomBinding = true)]
         //public ActionResult Comments(int? filterByNewsItemId, GridCommand command)
@@ -343,26 +455,26 @@ namespace PlanX.Admin.Controllers
         //    };
         //}
 
-        [GridAction(EnableCustomBinding = true)]
-        public ActionResult CommentDelete(int? filterByNewsItemId, int id, GridCommand command)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
-                return AccessDeniedView();
+        //[GridAction(EnableCustomBinding = true)]
+        //public ActionResult CommentDelete(int? filterByNewsItemId, int id, GridCommand command)
+        //{
+        //    if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
+        //        return AccessDeniedView();
 
-            var comment = _newsService.GetNewsCommentById(id);
-            if (comment == null)
-                throw new ArgumentException("No comment found with the specified id");
+        //    var comment = _newsService.GetNewsCommentById(id);
+        //    if (comment == null)
+        //        throw new ArgumentException("No comment found with the specified id");
 
-            var newsItem = comment.NewsItem;
-            _newsService.DeleteNewsComment(comment);
-            //update totals
-            newsItem.CommentCount = newsItem.NewsComments.Count;
-            _newsService.UpdateNews(newsItem);
+        //    var newsItem = comment.NewsItem;
+        //    _newsService.DeleteNewsComment(comment);
+        //    //update totals
+        //    newsItem.CommentCount = newsItem.NewsComments.Count;
+        //    _newsService.UpdateNews(newsItem);
 
-            return Comments(filterByNewsItemId, command);
-        }
-        */
+        //    return Comments(filterByNewsItemId, command);
+        //}
 
-        #endregion
+
+        //#endregion
     }
 }
