@@ -1,0 +1,184 @@
+﻿@model TicketConcessionListModel
+@using PlanX.Web.Models.ClickBay;
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+<script>
+    $(function () {
+        //$(".datepicker").datepicker();
+        //$(".timepicker").timepicker();
+
+        $('#DepartDateSearch').datepicker({
+            'format': 'yyyy-m-d',
+            'autoclose': true
+        });
+
+        var availableTags = @(Html.Raw(Json.Encode(Model.listPlace)));
+        var availableType = @(Html.Raw(Json.Encode(Model.listType)));
+
+        $("#TicketTypeSearch").autocomplete({
+            source: availableType,
+            minLength: 0
+        }).focus(function () {
+            if (this.value == "") {
+                $(this).autocomplete("search");
+            }
+        });
+
+        $("#FromPlaceSearch").autocomplete({
+            source: availableTags,
+            minLength: 0
+        }).focus(function () {
+            if (this.value == "") {
+                $(this).autocomplete("search");
+            }
+        });
+
+        $("#ToPlaceSearch").autocomplete({
+            source: availableTags,
+            minLength: 0
+        }).focus(function () {
+            if (this.value == "") {
+                $(this).autocomplete("search");
+            }
+        });
+
+
+    });
+
+    // initialize input widgets first
+
+</script>
+<div class="wrapper-body">
+    <div class="wrapper-content inline">
+        <section class="section-top">
+            <div class="breadcrumb">
+                <p><span>Trang chủ</span><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" /><span class="active">Nhượng vé máy bay</span></p>
+            </div>
+        </section>
+        <section class="section">
+            <div class="title">
+                <span class="title-left">Nhượng Vé Máy Bay</span>
+                <span class="title-right"><a class="postitem" name="postitem" href="@Url.Action("TicketConcessionPost", "TicketConcession")">Đăng tin nhượng vé</a></span>
+            </div>
+        </section>
+        <section class="section">
+            <div class="search">
+            @using (Html.BeginForm())
+                {
+                @Html.TextBoxFor(model => model.TicketTypeSearch, new { @placeholder = "Loại vé" })
+                @Html.TextBoxFor(model => model.PassengerNameSearch, new { @placeholder = "Tên khách hàng" })
+                @Html.TextBoxFor(model => model.FromPlaceSearch, new { @placeholder = "Điểm đi" })
+                @Html.TextBoxFor(model => model.ToPlaceSearch, new { @placeholder = "Điểm đến" })
+                @Html.TextBoxFor(model => model.DepartDateSearch, new { @placeholder = "Ngày bay" })
+                <input type="submit" class="default" value="Tìm vé" name="searchTicket" id="searchTicket" />
+            }
+            </div>
+        </section>
+        <section class="section">
+            <div>
+                <table class="table default">
+                    <thead>
+                        <tr>
+                            <th>Loại vé</th>
+                            <th>Tên hành khách</th>
+                            <th>Chặng bay</th>
+                            <th>Ngày đi</th>
+                            <th>Giá vé</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.listItem )
+                        {
+                            <tr>
+                                <td>@item.TicketType</td>
+                                <td>@item.PassengerName</td>
+                                <td>@item.FromPlace - @item.ToPlace</td>
+                                <td>@string.Format("{0} {1}h{2}'", item.DepartDate.ToString("dd/MM/yyyy"), item.DepartDate.Hour.ToString(),item.DepartDate.Minute.ToString())</td>
+                                <td>@string.Format("{0} {1}",item.TicketPrice.ToString("0,#"),item.CurrencyCode)</td>
+                                <td><span onclick="ShowDetail(@item.Id)" style="cursor:pointer">Chi tiết</span></td>
+                            </tr>
+                            <tr id="@item.Id" class="detail" style="display:none">
+                                <td>
+                                    Email : @item.ContactEmail
+                                </td>
+                                <td>
+                                    Tên liên hệ : @item.ContactName
+                                </td>
+                                <td>
+                                    Địa thoại :@item.ContactPhone
+                                </td>
+                                <td colspan="3">
+                                    Ghi chú : @item.Description
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+<script>
+    function ShowDetail(id)
+    {
+        $("#" + id).toggle();
+    }
+</script>
+<style>
+    .table default th {
+        background: #189b96;
+        color: white;
+    }
+
+    form input {
+       width:200px;
+       margin-right:10px;
+    }
+
+    .section table {
+        display: table;
+        width: 100%;
+        background: #fff;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 1px solid #eaeaea;
+        border-left: 0;
+        margin-top: 20px;
+    }
+
+    table tr {
+        display: table-row;
+        vertical-align: inherit;
+        border-color: inherit;
+    }
+
+    .section table.default tbody tr:hover {
+        background: #c5f3ec !important;
+    }
+
+    table tr td, table th {
+        padding: 8px;
+        font-size: 14px;
+        line-height: 14pt;
+        vertical-align: top;
+        border-left: 1px #eaeaea solid;
+        border-bottom: 1px #eaeaea solid;
+    }
+
+    table tr td, table th {
+        padding: 8px;
+        font-size: 14px;
+        line-height: 14pt;
+        vertical-align: top;
+        border-left: 1px #eaeaea solid;
+        border-bottom: 1px #eaeaea solid;
+    }
+
+    .section table tbody tr:nth-child(odd) {
+        background: #eeeeee;
+    }
+</style>

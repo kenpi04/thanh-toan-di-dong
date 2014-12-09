@@ -1,0 +1,380 @@
+﻿@model TicketConcessionPostModel
+@using PlanX.Web.Models.ClickBay;
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<script src="~/Scripts/jquery.timepicker.js"></script>
+<script src="http://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js?ver=4.0.1"></script>
+<link href="http://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css?ver=4.0.1" rel="stylesheet" />
+@{
+    ViewBag.Title = T("TicketConcessionPost");
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    var place = "";
+    if (Model.listPlace.Count > 0) { 
+    foreach (var item in Model.listPlace)
+    {
+        place = place + "'" + item + "',";
+    }
+    place = place.Substring(1, place.Length - 3);
+    }
+}
+@*<script type="text/javascript" src="~/Scripts/vcomplete.js"></script>*@
+<script>
+    $(function () {
+        //$(".datepicker").datepicker();
+        //$(".timepicker").timepicker();
+        $('.timepicker').timepicker({
+            'showDuration': true,
+            'timeFormat': 'H:i'
+        });
+
+        $('.datepicker').datepicker({
+            'format': 'yyyy-m-d',
+            'autoclose': true
+        });
+
+        var availableTags = @(Html.Raw(Json.Encode(Model.listPlace)));
+        $("#FromPlace").autocomplete({
+            source: availableTags,
+            minLength: 0
+        }).focus(function () {
+            if (this.value == "") {
+                $(this).autocomplete("search");
+            }
+        });
+
+        $("#ToPlace").autocomplete({
+            source: availableTags,
+            minLength: 0
+        }).focus(function () {
+            if (this.value == "") {
+                $(this).autocomplete("search");
+            }
+        });
+
+
+    });
+
+    // initialize input widgets first
+
+</script>
+
+<div class="wrapper-body">
+    <div class="wrapper-content inline">
+        <section class="section-top">
+            <div class="breadcrumb">
+                <p><span>Trang chủ</span><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" /><span class="active">Đăng tin nhượng vé máy bay</span></p>
+            </div>
+        </section>
+        <section class="section-left">
+            <div class="title">
+                <span class="title-left">Đăng Tin Nhượng Vé Máy Bay</span>
+            </div>
+            <div class="dangtin">
+                @using (Html.BeginForm())
+                {
+                    <div class="div-group">
+                        <div class="field-name">
+                            <label>Loại vé</label>
+                        </div>
+                        <select id="ticketType-cbb">
+                            @foreach (var item in Model.listType)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                            <option value="0">Loại khác</option>
+                        </select>
+                        @Html.TextBoxFor(model => model.TicketType, new { @style = "display:none", @placeholder = "Nhập tên loại khác" })
+                    </div>
+                    <div class="div-group">
+                        <div class="box-radio">
+                            @Html.RadioButton("RoundTrip", "false", true, new { id = "onetrip" })
+                            <label class="forcheckbox" for="onetrip">Một chiều</label>
+                            @Html.RadioButton("RoundTrip", "true", false, new { id = "twotrip" })
+                            <label class="forcheckbox" for="twotrip">Khứ hồi</label>
+                        </div>
+                    </div>
+                    <div class="div-group">
+                        <div class="field-name">
+                            <label>Tên hành khách</label>
+                        </div>
+                        @Html.TextBoxFor(model => model.PassengerName, new { @placeholder = "Tên hành khách" })
+                        @Html.ValidationMessageFor(model => model.PassengerName)
+
+                    </div>
+                    <div class="div-group" id="Rename" style="display:none">
+                        <div class="box-radio">
+                            @Html.RadioButton("IsRename", "true", false, new { id = "yes" })
+                            <label class="forcheckbox" for="yes">Có thể đổi </label>
+                            @Html.RadioButton("IsRename", "false", true, new { id = "no" })
+                            <label class="forcheckbox" for="no">Không thể đổi</label>
+                        </div>
+                    </div>
+                    <div class="div-group">
+                        <div class="field-name">
+                            <label>Nơi đi</label>
+                        </div>
+                        @Html.TextBoxFor(model => model.FromPlace, new { @placeholder = "Điểm đi" })
+                        @Html.ValidationMessageFor(model => model.FromPlace)
+                        <div class="vcomplete" style="display: none;"></div>
+                    </div>
+                    <div class="div-group">
+                        <div class="field-name">
+                            <label>Nơi đến</label>
+                        </div>
+                        @Html.TextBoxFor(model => model.ToPlace, new { @placeholder = "Điểm đến" })
+                        @Html.ValidationMessageFor(model => model.ToPlace)
+                    </div>
+                    <div class="div-group">
+                        <div class="field-name">
+                            <label>Ngày đi</label>
+                        </div>
+                        @Html.TextBoxFor(model => model.DepartDate, new { @class = "datepicker", @readonly = "true" })
+                        @Html.TextBoxFor(model => model.TimeDepartDate, new { @class = "timepicker" })
+                        @Html.ValidationMessageFor(model => model.DepartDate)
+                    </div>
+                    <div class="div-group" id="ReturnDate-div" style="display:none">
+                        <div class="field-name">
+                            <label>Ngày về</label>
+                        </div>
+                        @Html.TextBoxFor(model => model.ReturnDate, new { @class = "datepicker", @readonly = "true" })
+                        @Html.TextBoxFor(model => model.TimeReturnDate, new { @class = "timepicker" })
+                        @Html.ValidationMessageFor(model => model.ReturnDate)
+                    </div>
+                    <div class="div-group">
+                        <div class="field-name">
+                            <label>Giá vé</label>
+                        </div>
+                        @Html.TextBoxFor(model => model.TicketPrice, new { @placeholder = "Giá vé" })
+                        @Html.ValidationMessageFor(model => model.TicketPrice)
+
+                        <select id="currencyCode">
+                            <option value="VND">VNĐ</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                        </select>
+                    </div>
+                    <div class="div-group" style="display:none">
+
+                        <div class="box-radio">
+                            @Html.RadioButton("clickBayHepler", true, true, new { id = "clickBayHepler-flase" })
+                            <label class="forcheckbox" for="onetrip">Không đồng ý giao dịch qua ClickBay</label><br />
+                            @Html.RadioButton("clickBayHepler", false, false, new { id = "clickBayHepler-true" })
+                            <label class="forcheckbox" for="twotrip">Đồng ý giao dịch qua ClickBay</label>
+                        </div>
+
+                    </div>
+                    <div class="div-group">
+                        <div class="field-name">
+                            <label>Tên người liên hệ</label>
+                        </div>
+
+                        @Html.TextBoxFor(model => model.ContactName, new { @placeholder = "Tên người liên hệ" })
+                        @Html.ValidationMessageFor(model => model.ContactName)
+                    </div>
+                    <div class="div-group">
+                        <div class="field-name">
+                            <label>Số điện thoại</label>
+                        </div>
+
+                        @Html.TextBoxFor(model => model.ContactPhone, new { @placeholder = "Số điện thoại" })
+                        @Html.ValidationMessageFor(model => model.ContactPhone)
+                    </div>
+                    <div class="div-group">
+                        <div class="field-name">
+                            <label>Email</label>
+                        </div>
+                        @Html.TextBoxFor(model => model.ContactEmail, new { @placeholder = "Email" })
+                        @Html.ValidationMessageFor(model => model.ContactEmail)
+                    </div>
+                    <div class="div-group">
+                        <div class="field-name">
+                            <label>Ghi chú</label>
+                        </div>
+                        @Html.TextAreaFor(model => model.Description, new { @placeholder = "Ghi chú" })
+                        @Html.ValidationMessageFor(model => model.Description)
+
+                    </div>
+                    @*<div class="captcha-box">
+                            @Html.Raw(Html.GenerateCaptcha())
+                        </div>*@
+                    @Html.HiddenFor(model => model.CurrencyCode)
+                    @Html.HiddenFor(model => model.RoundTrip)
+                    @Html.HiddenFor(model => model.IsRename)
+                    @Html.HiddenFor(model => model.IsHelper)
+                    <input type="submit" class="default" value="Đăng tin" name="btnDangTin" id="btnDangTin" />
+                }
+            </div>
+        </section>
+        <section class="section-right">
+            <article>
+                <aside>
+                    <div class="news-content-preview">
+                        <div class="news-title"><a>[DEAL] Tặng bạn 500.000 đồng đặt phòng khách sạn tháng 9, 10</a></div>
+                        <div class="info-small">
+                            <p><span class="time-small">24/09/2014</span><span>Rẻ quá</span><span>25 Comment</span></p>
+                        </div>
+                        <div class="content-preview">
+                            <p>Hi các bạn, chắc hẳn bạn đã quen với HotelQuickly qua Tặng bạn 500.000 đồng đặt phòng khách sạn tháng 8. Hôm nay, ứng dụng đặt phòng HotelQuickly tiếp tục gửi tặng bạn đọc mã voucher 500.000 đồng cho tháng 9, 10.Lần này, HQ đã có thêm tính năng mới đó là: Đặt phòng ...</p>
+                        </div>
+                        <div><a class="default">Chi tiết</a></div>
+                    </div>
+                </aside>
+                <aside>
+                    <div class="news-content-preview">
+                        <div class="news-title"><a>Vietnam Airlines tung vé Tết giá cực tốt</a></div>
+                        <div class="info-small">
+                            <p><span class="time-small">24/09/2014</span><span>Rẻ quá</span><span>25 Comment</span></p>
+                        </div>
+                        <div class="content-preview">
+                            <p>Chiều tối nay (14-10), Vietnam Airlines lặng lẽ mở bán vé máy bay tết 2015 hạng L. Đây được coi là giá vé cực tốt và gần như là hạng thấp nhất dành cho dịp Tết, các bạn có nhu cầu bay thì đặt sớm nhé.Tin tức vé máy bay Tết của các hãng Jetstar, VietJetAir và ...</p>
+                        </div>
+                        <div><a class="default">Chi tiết</a></div>
+                    </div>
+                </aside>
+                <aside>
+                    <div class="news-content-preview">
+                        <div class="news-title"><a>Bản tin hàng không tháng 10/2014</a></div>
+                        <div class="info-small">
+                            <p><span class="time-small">24/09/2014</span><span>Rẻ quá</span><span>25 Comment</span></p>
+                        </div>
+                        <div class="content-preview">
+                            <p>Chào các bạn, bản tin hàng không tháng 10 ra hơi chậm vì dạo này Hiếu hơi bận 1 chút. Hiếu sẽ lại tóm tắt dạng bản tin hàng không tổng hợp, bao gồm tình hình hàng không nói chung và các thay đổi của từng hãng nói riêng. Bà con theo dõi và ủng hộ giống ...</p>
+                        </div>
+                        <div><a class="default">Chi tiết</a></div>
+                    </div>
+                </aside>
+            </article>
+        </section>
+    </div>
+</div>
+<script type="text/javascript">
+    function CompletePage()
+    {
+        if($("#ticketType-cbb").val()=='0')
+            {$("#TicketType").slideDown();}
+    }
+    CompletePage();
+
+    $(document).ready(function () {
+        $("#ticketType-cbb").change(function () {
+            if ($(this).val() == '0')
+                $("#TicketType").slideDown();
+            else { $("#TicketType").slideUp(); }
+        });
+        $("input[name='RoundTrip']").change(function () {
+            if ($(this).val() == 'true')
+                $("#ReturnDate-div").slideDown();
+            else { $("#ReturnDate-div").slideUp(); }
+        });
+
+        $("#PassengerName").change(function () {
+            if ($(this).val() != "")
+                $("#Rename").slideDown();
+            else { $("#Rename").slideUp(); }
+        });
+
+        $("#btnDangTin").click(function () {
+
+            if ($("#ticketType-cbb").val() != '0')
+                $("#TicketType").val($("#ticketType-cbb").val());
+
+            $("#IsHelper").val($("input[name='clickBayHepler']").val());
+            $("#RoundTrip").val($("input[name='RoundTrip']").val());
+            $("#IsRename").val($("input[name='IsRename']").val());
+            $("#CurrencyCode").val($("#currencyCode").val());
+            return true;
+        });
+
+    })
+
+    jQuery(document).ready(function () {
+        jQuery('#DepartDate').qtip({
+            content: {
+                text: 'Chọn chính xác ngày giờ bay'
+            },
+            position: {
+                at: 'right center',
+                my: 'left center'
+            }
+        });
+        jQuery('#ReturnDate').qtip({
+            content: {
+                text: 'Chọn chính xác ngày giờ bay'
+            },
+            position: {
+                at: 'right center',
+                my: 'left center'
+            }
+        });
+        jQuery('#TicketPrice').qtip({
+            content: {
+                text: 'Bỏ trống nếu giá có thể thỏa thuận'
+            },
+            position: {
+                at: 'right center',
+                my: 'left center'
+            }
+        });
+        jQuery('#PassengerName').qtip({
+            content: {
+                text: 'Gõ tên và nhấn dấu phẩy để thêm nhiều tên hành khách'
+            },
+            position: {
+                at: 'right center',
+                my: 'left center'
+            }
+        });
+    });
+</script>
+
+<style>
+    .section-left {
+        float: left;
+        margin-right: 1%;
+        width: 69%;
+    }
+
+    .section-right {
+        float: left;
+        width: 30%;
+    }
+
+    .title-left {
+        float: left;
+        padding: 8px;
+        width: 100%;
+    }
+
+    .div-group .box-radio {
+        margin-left: 112px;
+        padding: 5px 0;
+    }
+
+    #Description {
+        min-height: 50px;
+        max-width: 250px;
+    }
+
+    .div-group .field-name {
+        padding: 8px;
+        float: left;
+        width: 120px;
+    }
+
+    .div-group .box-radio {
+        margin-left: 130px;
+        padding: 5px 0;
+    }
+
+    input#clickBayHepler-true {
+        margin: 15px 5px;
+    }
+
+    form#dangtin {
+        padding: 0px 0px 20px 0px;
+    }
+
+    .ui-autocomplete {
+        height: 200px;
+        overflow-y: scroll;
+    }
+</style>
