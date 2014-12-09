@@ -15,7 +15,7 @@ namespace PlanX.Data.Mapping.News
                 .HasForeignKey(pc => pc.CategoryNewsId).WillCascadeOnDelete(true); ;
 
             this.HasRequired(pc => pc.NewsItem)
-                .WithMany(p => p.NewsCategoriesMap)
+                .WithMany(p => p.NewsCategoriesMaps)
                 .HasForeignKey(pc => pc.NewsId).WillCascadeOnDelete(true); ;
         }
     }
