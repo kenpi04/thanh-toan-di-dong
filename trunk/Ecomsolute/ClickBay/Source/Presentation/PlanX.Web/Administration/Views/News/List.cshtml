@@ -1,7 +1,7 @@
 ﻿@model NewsItemListModel
 @using Telerik.Web.Mvc.UI
 @{
-    var gridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+    var gridPageSize = EngineContext.Current.Resolve<PlanX.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
 
     //page title
     ViewBag.Title = T("Admin.ContentManagement.News.NewsItems").Text;

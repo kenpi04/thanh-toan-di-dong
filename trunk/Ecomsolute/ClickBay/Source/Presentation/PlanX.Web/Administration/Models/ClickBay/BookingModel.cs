@@ -50,27 +50,13 @@ namespace PlanX.Admin.Models.ClickBay
         public bool Deleted { get; set; }
         public short ContactPassengerType { get; set; }
 
-        public virtual PasserType PasserType {
-            get { return (PasserType)ContactPassengerType; }
-            set { this.ContactPassengerType = (short)value; }
-        }
+        public string PasserType { get; set; }
 
-        public virtual BookingStatus BookingStatus
-        {
-            get { return (BookingStatus)BookingStatusId; }
-            set { this.BookingStatusId = (short)value; }
-        }
-        public virtual PaymentStatus PaymentStatus
-        {
-            get { return (PaymentStatus)PaymentStatusId; }
-            set { this.PaymentStatusId = (short)value; }
-        }
-        public virtual ContactStatus ContactStatus
-        {
-            get { return (ContactStatus)ContactStatusId; }
-            set { this.ContactStatusId = (short)value; }
-        }
-    
+        public string BookingStatus { get; set; }
+        
+        public string PaymentStatus{get;set;}
+        public string ContactStatus{get;set;}
+        
         public virtual BookingInfoFlightModel BookingInfoFlightModel { get; set; }
         public virtual BookingInfoFlightModel BookingInfoFlightReturnModel { get; set; }
         public virtual List<BookTicketNoteModel> BookTicketNotesModel { get; set; }

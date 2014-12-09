@@ -8,6 +8,6 @@ namespace PlanX.Admin.Models.ClickBay
         public string Description { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
 
-        public virtual BookingModel BookingModel { get; set; }
+        //public virtual BookingModel BookingModel { get; set; }
     }
 }

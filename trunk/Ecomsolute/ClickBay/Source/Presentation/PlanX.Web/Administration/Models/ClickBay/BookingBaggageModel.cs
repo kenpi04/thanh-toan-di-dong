@@ -20,6 +20,6 @@ namespace PlanX.Admin.Models.ClickBay
             set { this.PassengerType = (short)value; }
         }
 
-        public BookingInfoFlightModel BookingInfoFlightModel { get; set; }
+        //public BookingInfoFlightModel BookingInfoFlightModel { get; set; }
     }
 }

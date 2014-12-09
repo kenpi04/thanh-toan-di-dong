@@ -28,6 +28,6 @@ namespace PlanX.Admin.Models.ClickBay
             get { return (PasserType)this.PassengerType; }
             set { this.PassengerType = (short)value; }
         }
-        public virtual BookingModel BookingModel { get; set; }
+        //public virtual BookingModel BookingModel { get; set; }
     }
 }

@@ -14,6 +14,6 @@ namespace PlanX.Admin.Models.ClickBay
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
 
-        public virtual BookingInfoFlightModel BookingInfoFlightModel { get; set; }
+        //public virtual BookingInfoFlightModel BookingInfoFlightModel { get; set; }
     }
 }
