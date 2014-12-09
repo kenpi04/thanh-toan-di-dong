@@ -8,6 +8,7 @@ using PlanX.Core.Domain.Messages;
 //using PlanX.Core.Domain.Orders;
 //using PlanX.Core.Domain.Shipping;
 using PlanX.Core.Domain.Stores;
+using PlanX.Core.Domain.News;
 
 namespace PlanX.Services.Messages
 {
@@ -35,7 +36,7 @@ namespace PlanX.Services.Messages
 
         //void AddBlogCommentTokens(IList<Token> tokens, BlogComment blogComment);
 
-        //void AddNewsCommentTokens(IList<Token> tokens, NewsComment newsComment);
+        void AddNewsCommentTokens(IList<Token> tokens, NewsComment newsComment);
 
         //void AddProductTokens(IList<Token> tokens, Product product, int languageId);
 

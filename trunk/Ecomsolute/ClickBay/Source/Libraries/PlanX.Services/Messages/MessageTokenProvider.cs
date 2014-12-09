@@ -28,6 +28,7 @@ using PlanX.Services.Media;
 //using PlanX.Services.Orders;
 //using PlanX.Services.Payments;
 using PlanX.Services.Seo;
+using PlanX.Core.Domain.News;
 
 namespace PlanX.Services.Messages
 {
@@ -656,13 +657,7 @@ namespace PlanX.Services.Messages
             _eventPublisher.EntityTokensAdded(blogComment, tokens);
         }
 
-        public virtual void AddNewsCommentTokens(IList<Token> tokens, NewsComment newsComment)
-        {
-            tokens.Add(new Token("NewsComment.NewsTitle", newsComment.NewsItem.Title));
-
-            //event notification
-            _eventPublisher.EntityTokensAdded(newsComment, tokens);
-        }
+       
 
         public virtual void AddProductTokens(IList<Token> tokens, Product product, int languageId)
         {
@@ -737,6 +732,15 @@ namespace PlanX.Services.Messages
             _eventPublisher.EntityTokensAdded(subscription, tokens);
         }
         */
+
+        public virtual void AddNewsCommentTokens(IList<Token> tokens, NewsComment newsComment)
+        {
+            tokens.Add(new Token("NewsComment.NewsTitle", newsComment.NewsItem.Title));
+
+            //event notification
+            _eventPublisher.EntityTokensAdded(newsComment, tokens);
+        }
+
         /// <summary>
         /// Gets list of allowed (supported) message tokens for campaigns
         /// </summary>

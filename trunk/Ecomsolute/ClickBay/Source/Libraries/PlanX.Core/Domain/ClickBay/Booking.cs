@@ -15,10 +15,10 @@ namespace PlanX.Core.Domain.ClickBay
     public partial class Booking:BaseEntity
     {
 
-        public Booking()
-        {
-            this.BookTicketNotes = new HashSet<BookTicketNote>();
-        }
+        //public Booking()
+        //{
+            //this.BookTicketNotes = new HashSet<BookTicketNote>();
+        //}
         public string ContactName { get; set; }
         public string ContactGender { get; set; }
         public string ContactPhone { get; set; }
@@ -30,8 +30,8 @@ namespace PlanX.Core.Domain.ClickBay
         public string ContactRequestMore { get; set; }
         public string VoucherCode { get; set; }
         public bool RoundTrip { get; set; }
-        public Nullable<int> BookingInfoFlightToId { get; set; }
-        public Nullable<int> BookingInfoFlightReturnId { get; set; }
+        public int BookingInfoFlightToId { get; set; }
+        public int? BookingInfoFlightReturnId { get; set; }
         public short Adult { get; set; }
         public short Child { get; set; }
         public short Infant { get; set; }
@@ -81,6 +81,11 @@ namespace PlanX.Core.Domain.ClickBay
     
         public virtual BookingInfoFlight BookingInfoFlight { get; set; }
         public virtual BookingInfoFlight BookingInfoFlightReturn { get; set; }
-        public virtual ICollection<BookTicketNote> BookTicketNotes { get; set; }
+        private ICollection<BookTicketNote> _bookTicketNotes { get; set; }   
+        public virtual ICollection<BookTicketNote> BookTicketNotes
+        {
+            get { return _bookTicketNotes ?? (_bookTicketNotes = new List<BookTicketNote>()); }
+            protected set { _bookTicketNotes = value; }
+        }
     }
 }
