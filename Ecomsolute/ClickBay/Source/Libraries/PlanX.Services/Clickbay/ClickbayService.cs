@@ -169,9 +169,9 @@ namespace PlanX.Services.ClickBay
                 if (result != null)
                 {                    
                     //convert dang bi sai?
-                    //var convertModel = JsonConvert.DeserializeObject<ConvertDataModel>(result);
-                    //if (convertModel.Value != null)
-                    return result;//convertModel.Value.ToString();
+                    var convertModel = JsonConvert.DeserializeObject<ConvertDataModel>(result);
+                    if (convertModel.Value != null)
+                    return convertModel.Value.ToString();
                 }
             }
             return null;
