@@ -16,6 +16,8 @@ namespace PlanX.Core.Domain.News
         /// </summary>
         public int LanguageId { get; set; }
 
+        public int PictureId { get; set; }
+
         /// <summary>
         /// Gets or sets the news title
         /// </summary>
@@ -98,5 +100,7 @@ namespace PlanX.Core.Domain.News
         /// Gets or sets the language
         /// </summary>
         public virtual Language Language { get; set; }
+
+        public ICollection<NewsCategoryNews> NewsCategoriesMap { get; set; }
     }
 }
