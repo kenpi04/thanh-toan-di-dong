@@ -101,6 +101,11 @@ namespace PlanX.Core.Domain.News
         /// </summary>
         public virtual Language Language { get; set; }
 
-        public ICollection<NewsCategoryNews> NewsCategoriesMap { get; set; }
+        public ICollection<NewsCategoryNews> _newsCategoriesMap;
+        public virtual ICollection<NewsCategoryNews> NewsCategoriesMaps
+        {
+            get { return _newsCategoriesMap ?? (_newsCategoriesMap = new List<NewsCategoryNews>()); }
+            protected set { _newsCategoriesMap = value; }
+        }
     }
 }
