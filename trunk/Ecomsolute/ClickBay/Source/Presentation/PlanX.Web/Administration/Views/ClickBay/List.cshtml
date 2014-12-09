@@ -1,0 +1,228 @@
+﻿@model PlanX.Admin.Models.ClickBay.BookingListModel
+@using Telerik.Web.Mvc.UI
+
+@{
+    var gridPageSize = EngineContext.Current.Resolve<PlanX.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+    //page title
+    ViewBag.Title = "Danh sách phiếu đặt vé";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-sales.png")" alt="" />
+            "Danh sách phiếu đặt vé"
+        </div>
+    </div>
+    <table style="width:100%">
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.CreateDate):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.CreateDate)
+            </td>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.CustomerId):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.CustomerId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.BookingStatusId):
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("BookingStatusId", Model.AvailableBookingStatuses)
+            </td>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.CustomerNameOrPhone):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.CustomerNameOrPhone)
+            </td>
+        </tr>        
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.BookingId):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.BookingId)                
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="button" id="btnSearch" class="t-button" value="@T("Admin.Common.Search")" />
+            </td>
+        </tr>
+    </table>
+    <p>
+    </p>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<PlanX.Admin.Models.ClickBay.BookingModel>()
+                        .Name("orders-grid")
+                        //.ClientEvents(events => events
+                        //    .OnDataBinding("onDataBinding")
+                        //    .OnDataBound("onDataBound"))
+                        //    .OnComplete("onComplete"))
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.Id);
+                            columns.Bound(x => x.ContactName);
+                            columns.Bound(x => x.ContactPhone);
+                            columns.Bound(x => x.ContactEmail);
+                            columns.Bound(x => x.CreatedOn);
+                            columns.Bound(x => x.BookingStatus);
+                            columns.Bound(x => x.PaymentStatus);
+                            
+                                columns.Bound(x => x.TotalAmount);                                       
+                            
+                            columns.Bound(x => x.Id)
+                                .Template(x => Html.ActionLink(T("Admin.Common.View").Text, "Edit", new { id = x.Id }))
+                                .ClientTemplate("<a href=\"Edit/<#= Id #>\">" + T("Admin.Common.View").Text + "</a>")
+                                .Width(50)
+                                .Centered()
+                                .Title(T("Admin.Common.View").Text);
+                        })
+                        .Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                        .DataBinding(dataBinding => dataBinding.Ajax().Select("BookingList", "ClickBay"))
+                        .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+
+    var selectedIds = [];
+    var reportAggregates = "";
+
+    $(document).ready(function () {
+
+        //search button
+        $('#btnSearch').click(function () {
+            //search
+            var grid = $('#orders-grid').data('tGrid');
+            grid.currentPage = 1; //new search. Set page size to 1
+            grid.ajaxRequest();
+            //clear selected checkboxes
+            //$('.checkboxGroups').attr('checked', false).change();
+            //selectedIds = [];
+            return false;
+        });
+
+        //"Print packaging slips (selected)" button
+        @*$('#pdf-invoice-selected').click(function (e) {
+                e.preventDefault();
+                //redirect to required URL
+                setLocation('@(Url.Action("PdfInvoiceSelected", "Order"))?selectedIds=' + selectedIds.join(","));
+                return false;
+            });*@
+
+        @*$("#@Html.FieldIdFor(model => model.CustomerEmail)").keydown(function (event) {
+            if (event.keyCode == 13) {
+                $("#btnSearch").click();
+                return false;
+            }
+        });*@
+
+        //"Export Excel selected" button
+        @*$('#exportexcel-selected').click(function (e) {
+                e.preventDefault();
+                //redirect to required URL
+                setLocation('@(Url.Action("ExportExcelSelected", "Order"))?selectedIds=' + selectedIds.join(","));
+                return false;
+            });*@
+
+        //"Export XML selected" button
+        @*$('#exportxml-selected').click(function (e) {
+                e.preventDefault();
+                //redirect to required URL
+                setLocation('@(Url.Action("ExportXmlSelected", "Order"))?selectedIds=' + selectedIds.join(","));
+                return false;
+            });*@
+
+
+        //$('#mastercheckbox').click(function () {
+        //    $('.checkboxGroups').attr('checked', $(this).is(':checked')).change();
+        //});
+
+        //wire up checkboxes.
+        //$('#orders-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function (e) {
+        //    var $check = $(this);
+        //    if ($check.is(":checked") == true) {
+        //        var checked = jQuery.inArray($check.val(), selectedIds);
+        //        if (checked == -1) {
+        //            //add id to selectedIds.
+        //            selectedIds.push($check.val());
+        //        }
+        //    }
+        //    else {
+        //        var checked = jQuery.inArray($check.val(), selectedIds);
+        //        if (checked > -1) {
+        //            //remove id from selectedIds.
+        //            selectedIds = $.grep(selectedIds, function (item, index) {
+        //                return item != $check.val();
+        //            });
+        //        }
+        //    }
+        //    updateMasterCheckbox();
+        //});
+    });
+
+    function onDataBinding(e) {
+        var searchModel = {
+            FromDate: $('#@Html.FieldIdFor(model => model.CreateDate)').val(),
+            ToDate: $('#@Html.FieldIdFor(model => model.CreateDate)').val(),
+            CustomerId: $('#@Html.FieldIdFor(model => model.CustomerId)').val(),
+            BookingStatusId: $('#@Html.FieldIdFor(model => model.BookingStatusId)').val(),
+            CustomerNameOrPhone: $('#@Html.FieldIdFor(model => model.CustomerNameOrPhone)').val(),
+            };
+        e.data = searchModel;
+    }
+
+    //function onDataBound(e) {
+
+    //    $('#orders-grid input[type=checkbox][id!=mastercheckbox]').each(function () {
+    //        var currentId = $(this).val();
+    //        var checked = jQuery.inArray(currentId, selectedIds);
+    //        //set checked based on if current checkbox's value is in selectedIds.
+    //        $(this).attr('checked', checked > -1);
+    //    });
+
+    //    updateMasterCheckbox();
+
+    //    reportLoaded(e);
+    //}
+
+    //function onComplete(e) {
+    //    var result = e.response;
+    //    if (result) {
+    //        reportAggregates = e.response["aggregates"];
+    //    }
+    //}
+
+    //function reportLoaded(e) {
+    //    if (reportAggregates != "") {
+    //        updateAggregates(reportAggregates);
+    //    }
+    //}
+    //function updateAggregates(aggs) {
+    //    for (var key in aggs) {
+    //        $('#aggregator-profit-block').text(aggs['aggregatorprofit']);
+    //        $('#aggregator-shipping-block').text(aggs['aggregatorshipping']);
+    //        $('#aggregator-tax-block').text(aggs['aggregatortax']);
+    //        $('#aggregator-total-block').text(aggs['aggregatortotal']);
+    //    }
+    //}
+
+    //function updateMasterCheckbox() {
+    //    var numChkBoxes = $('#orders-grid input[type=checkbox][id!=mastercheckbox]').length;
+    //    var numChkBoxesChecked = $('#orders-grid input[type=checkbox][checked][id!=mastercheckbox]').length;
+    //    $('#mastercheckbox').attr('checked', numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
+    //}
+    </script>
+
+}
