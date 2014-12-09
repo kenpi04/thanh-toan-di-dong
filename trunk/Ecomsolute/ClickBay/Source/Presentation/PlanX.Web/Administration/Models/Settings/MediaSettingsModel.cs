@@ -51,5 +51,9 @@ namespace PlanX.Admin.Models.Settings
         [NopResourceDisplayName("Admin.Configuration.Settings.Media.MaximumImageSize")]
         public int MaximumImageSize { get; set; }
         public bool MaximumImageSize_OverrideForStore { get; set; }
+
+        [NopResourceDisplayName("Admin.Configuration.Settings.Media.NewsThumbPictureSize")]
+        public int NewsThumbPictureSize { get; set; }
+        public bool NewsThumbPictureSize_OverrideForStore { get; set; }
     }
 }
