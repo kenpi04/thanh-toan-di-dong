@@ -163,6 +163,15 @@ namespace PlanX.Web.Framework.Seo
                             data.Values["SeName"] = urlRecord.Slug;
                         }
                         break;
+                    case "categorynews":
+                        {
+                            data.Values["controller"] = "News";
+                            data.Values["action"] = "List";
+                            data.Values["CateId"] = urlRecord.EntityId;
+                            data.Values["SeName"] = urlRecord.Slug;
+
+                        }
+                        break;
                     case "blogpost":
                         {
                             data.Values["controller"] = "Blog";
