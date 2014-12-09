@@ -1,7 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
-using Nop.Core.Domain.News;
+using PlanX.Core.Domain.News;
 
-namespace Nop.Data.Mapping.News
+namespace PlanX.Data.Mapping.News
 {
     public partial class NewsCommentMap : EntityTypeConfiguration<NewsComment>
     {
