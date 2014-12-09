@@ -20,6 +20,7 @@ namespace PlanX.Services.News
        // private readonly IRepository<NewsComment> _newsCommentRepository;
         private readonly IRepository<StoreMapping> _storeMappingRepository;
         private readonly IEventPublisher _eventPublisher;
+        private readonly IRepository<NewsCategoryNews> _newsCategoryNews;
 
         #endregion
 
@@ -28,12 +29,14 @@ namespace PlanX.Services.News
         public NewsService(IRepository<NewsItem> newsItemRepository, 
           //  IRepository<NewsComment> newsCommentRepository,
             IRepository<StoreMapping> storeMappingRepository,
-            IEventPublisher eventPublisher)
+            IEventPublisher eventPublisher,
+            IRepository<NewsCategoryNews> newsCategoryNews)
         {
             this._newsItemRepository = newsItemRepository;
           //  this._newsCommentRepository = newsCommentRepository;
             this._storeMappingRepository = storeMappingRepository;
             this._eventPublisher = eventPublisher;
+            this._newsCategoryNews = newsCategoryNews;
         }
 
         #endregion
@@ -78,17 +81,24 @@ namespace PlanX.Services.News
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>News items</returns>
         public virtual IPagedList<NewsItem> GetAllNews(int languageId, int storeId,
-            int pageIndex, int pageSize, bool showHidden = false)
+            int pageIndex, int pageSize, bool showHidden = false, int cateId =0)
         {
             var query = _newsItemRepository.Table;
             if (languageId > 0)
                 query = query.Where(n => languageId == n.LanguageId);
             if (!showHidden)
             {
-                var utcNow = DateTime.UtcNow;
+                var utcNow = DateTime.Now;
                 query = query.Where(n => n.Published);
                 query = query.Where(n => !n.StartDateUtc.HasValue || n.StartDateUtc <= utcNow);
                 query = query.Where(n => !n.EndDateUtc.HasValue || n.EndDateUtc >= utcNow);
+            }
+            if (cateId > 0)
+            {
+                query = from a in query
+                        join cn in _newsCategoryNews.Table on a.Id equals cn.NewsId
+                        where cn.CategoryNewsId == cateId
+                        select a;
             }
             query = query.OrderByDescending(n => n.CreatedOnUtc);
 

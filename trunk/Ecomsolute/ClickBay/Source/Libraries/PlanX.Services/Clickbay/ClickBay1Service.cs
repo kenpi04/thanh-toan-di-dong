@@ -1,20 +1,15 @@
-﻿using PlanX.Core.Data;
+﻿using PlanX.Core;
+using PlanX.Core.Data;
 using PlanX.Core.Domain.ClickBay;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PlanX.Services.Clickbay
+namespace PlanX.Services.ClickBay
 {
     public partial class ClickBayService
     {
-        private readonly IRepository<Booking> _bookingRepository;
-        private readonly IRepository<BookingInfoFlight> _bookingInfoFlightRepository;
-        private readonly IRepository<BookingBaggage> _bookingBaggageRepository;
-        private readonly IRepository<BookingPassenger> _bookingPassengerRepository;
-        private readonly IRepository<BookingPriceDetail> _bookingPriceDetailRepository;
-        private readonly IRepository<BookingInfoCondition> _bookingInfoConditionRepository;
-        private readonly IRepository<BookTicketNote> _bookTicketNoteRepository;
+        
         //private readonly IWebHelper _webHelper;
 
         #region Booking
@@ -23,14 +18,14 @@ namespace PlanX.Services.Clickbay
             if (booking == null)
                 throw new ArgumentNullException("Booking is null");
 
-            _bookingRepository.Insert(booking);
+            _BookingRepository.Insert(booking);
         }
         public virtual void UpdateBooking(Booking booking)
         {
             if (booking == null)
                 throw new ArgumentNullException("Booking is null");
 
-            _bookingRepository.Update(booking);
+            _BookingRepository.Update(booking);
         }
         public virtual void DeletedBooking(Booking booking)
         {
@@ -38,17 +33,17 @@ namespace PlanX.Services.Clickbay
                 throw new ArgumentNullException("Booking is null");
 
             booking.Deleted = true;
-            _bookingRepository.Update(booking);
+            _BookingRepository.Update(booking);
         }
         public virtual Booking GetBookingById(int bookingId)
         {
             if (bookingId <= 0)
                 return null;
-            return _bookingRepository.GetById(bookingId);
+            return _BookingRepository.GetById(bookingId);
         }
-        public virtual IList<Booking> GetAllBooking(DateTime? fromDate, DateTime? toDate, int? bookingStatusId, int? paymentStatusId, int? contactStatusId, int customerId=0, string contactNameOrPhone="")
+        public virtual IPagedList<Booking> GetAllBooking(DateTime? fromDate, DateTime? toDate, int? bookingStatusId, int? paymentStatusId, int? contactStatusId, int customerId = 0, string contactNameOrPhone = "", int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            var query = _bookingRepository.Table;
+            var query = _BookingRepository.Table;
             query = query.Where(x=>!x.Deleted);
             if(fromDate.HasValue)
                 query=query.Where(x=>x.CreatedOn>fromDate.Value);
@@ -64,8 +59,9 @@ namespace PlanX.Services.Clickbay
                 query = query.Where(x => x.ContactName.Contains(contactNameOrPhone) || x.ContactPhone.Contains(contactNameOrPhone));
             if (customerId != 0)
                 query = query.Where(x => x.CustomerId == customerId);
+            query = query.OrderBy(x=>x.ContactStatusId).ThenBy(x=>x.CreatedOn);
 
-            return query.ToList();
+            return new PagedList<Booking>(query, pageIndex, pageSize);
         }
         #endregion
 
