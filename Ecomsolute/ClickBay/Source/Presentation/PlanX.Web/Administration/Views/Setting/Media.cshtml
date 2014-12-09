@@ -136,5 +136,15 @@
                 @Html.ValidationMessageFor(model => model.MaximumImageSize)
             </td>
         </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.NewsThumbPictureSize_OverrideForStore, model => model.NewsThumbPictureSize, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.NewsThumbPictureSize):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.NewsThumbPictureSize)
+                @Html.ValidationMessageFor(model => model.NewsThumbPictureSize)
+            </td>
+        </tr>
     </table>
 }
