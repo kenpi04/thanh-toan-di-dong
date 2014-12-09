@@ -142,6 +142,8 @@
     <Compile Include="Controllers\ActivityLogController.cs" />
     <Compile Include="Controllers\BaseNopController.cs" />
     <Compile Include="Controllers\CampaignController.cs" />
+    <Compile Include="Controllers\CategoryNewsController.cs" />
+    <Compile Include="Controllers\ClickBayController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
@@ -173,6 +175,14 @@
     <Compile Include="MappingExtensions.cs" />
     <Compile Include="Infrastructure\AdminStartupTask.cs" />
     <Compile Include="Infrastructure\AutoMapperStartupTask.cs" />
+    <Compile Include="Models\ClickBay\BookingBaggageModel.cs" />
+    <Compile Include="Models\ClickBay\BookingInfoConditionModel.cs" />
+    <Compile Include="Models\ClickBay\BookingInfoFlightModel.cs" />
+    <Compile Include="Models\ClickBay\BookingListModel.cs" />
+    <Compile Include="Models\ClickBay\BookingModel.cs" />
+    <Compile Include="Models\ClickBay\BookingPassengerModel.cs" />
+    <Compile Include="Models\ClickBay\BookingPriceDetailModel.cs" />
+    <Compile Include="Models\ClickBay\BookTicketNoteModel.cs" />
     <Compile Include="Models\Cms\RenderWidgetModel.cs" />
     <Compile Include="Models\Common\LanguageSelectorModel.cs" />
     <Compile Include="Models\Common\SearchTermReportLineModel.cs" />
@@ -186,6 +196,7 @@
     <Compile Include="Models\Messages\MessageTemplateListModel.cs" />
     <Compile Include="Models\News\NewsItemListModel.cs" />
     <Compile Include="Models\News\NewsItemModel.cs" />
+    <Compile Include="Models\Settings\NewsSettingsModel.cs" />
     <Compile Include="Models\Settings\StoreScopeConfigurationModel.cs" />
     <Compile Include="Models\Stores\StoreModel.cs" />
     <Compile Include="Models\ExternalAuthentication\AuthenticationMethodModel.cs" />
@@ -224,6 +235,7 @@
     <Compile Include="Models\Cms\WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\Common\AddressValidator.cs" />
+    <Compile Include="Validators\News\CategoryNewsValidator.cs" />
     <Compile Include="Validators\News\NewsItemValidator.cs" />
     <Compile Include="Validators\Stores\StoreValidator.cs" />
     <Compile Include="Validators\Tasks\ScheduleTaskValidator.cs" />
@@ -241,6 +253,8 @@
     <Compile Include="Validators\Messages\QueuedEmailValidator.cs" />
     <Compile Include="Validators\Localization\LanguageResourceValidator.cs" />
     <Compile Include="Validators\Localization\LanguageValidator.cs" />
+    <Compile Include="Models\News\CategoryNewsListModel.cs" />
+    <Compile Include="Models\News\CategoryNewsModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\farbtastic\farbtastic.css" />
@@ -609,6 +623,20 @@
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\List.cshtml" />
     <Content Include="Views\News\_CreateOrUpdate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\News\EditorTemplates\NewsCate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CategoryNews\Create.cshtml" />
+    <Content Include="Views\CategoryNews\Edit.cshtml" />
+    <Content Include="Views\CategoryNews\List.cshtml" />
+    <Content Include="Views\CategoryNews\Tree.cshtml" />
+    <Content Include="Views\CategoryNews\_CreateOrUpdate.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\ClickBay\List.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
