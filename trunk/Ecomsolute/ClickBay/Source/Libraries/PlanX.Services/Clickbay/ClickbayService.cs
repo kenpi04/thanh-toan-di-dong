@@ -15,7 +15,7 @@ using System.Net.Http.Headers;
 
 namespace PlanX.Services.ClickBay
 {
-    public class ClickBayService : IClickBayService
+    public partial class ClickBayService : IClickBayService
     {
         private readonly IRepository<Booking> _BookingRepository;
         private readonly IRepository<FlightCountry> _flightCountryRepository;
@@ -24,6 +24,13 @@ namespace PlanX.Services.ClickBay
         private readonly IRepository<AirlinesCondition> _airlinesConditionRepository;
         private readonly IRepository<ArilinesBaggageCondition> _airlineBaggageConditionRepository;
         private readonly IWebHelper _webHelper;
+        //private readonly IRepository<Booking> _bookingRepository;
+        private readonly IRepository<BookingInfoFlight> _bookingInfoFlightRepository;
+        private readonly IRepository<BookingBaggage> _bookingBaggageRepository;
+        private readonly IRepository<BookingPassenger> _bookingPassengerRepository;
+        private readonly IRepository<BookingPriceDetail> _bookingPriceDetailRepository;
+        private readonly IRepository<BookingInfoCondition> _bookingInfoConditionRepository;
+        private readonly IRepository<BookTicketNote> _bookTicketNoteRepository;
 
         public ClickBayService(IRepository<Booking> BookingRepository,
             IRepository<FlightCountry> flightCountryRepository,
@@ -31,7 +38,13 @@ namespace PlanX.Services.ClickBay
             IRepository<Airport> _airportRepository,
             IRepository<AirlinesCondition> airlinesConditionRepository,
             IRepository<ArilinesBaggageCondition> airlineBaggageConditionRepository,
-            IWebHelper webHelper
+            IWebHelper webHelper,
+            IRepository<BookingBaggage> bookingBaggageRepository,
+            IRepository<BookingPassenger> bookingPassengerRepository,
+            IRepository<BookingPriceDetail> bookingPriceDetailRepository,
+            IRepository<BookingInfoCondition> bookingInfoConditionRepository,
+            IRepository<BookTicketNote> bookTicketNoteRepository
+
             )
         {
             this._BookingRepository = BookingRepository;
@@ -40,7 +53,12 @@ namespace PlanX.Services.ClickBay
             this._airportRepository = _airportRepository;
             this._airlineBaggageConditionRepository = airlineBaggageConditionRepository;
             this._airlinesConditionRepository = airlinesConditionRepository;
-            _webHelper = webHelper;
+            this._webHelper = webHelper;
+            this._bookingBaggageRepository = bookingBaggageRepository;
+            this._bookingPassengerRepository = bookingPassengerRepository;
+            this._bookingPriceDetailRepository = bookingPriceDetailRepository;
+            this._bookingInfoConditionRepository = bookingInfoConditionRepository;
+            this._bookTicketNoteRepository = bookTicketNoteRepository;
         }
 
         #region API
