@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using FluentValidation.Attributes;
 using PlanX.Web.Framework.Mvc;
 using PlanX.Web.Validators.News;
+using PlanX.Core.Domain.Media;
+using PlanX.Web.Models.Media;
 
 namespace PlanX.Web.Models.News
 {
@@ -13,6 +15,7 @@ namespace PlanX.Web.Models.News
         {
             Comments = new List<NewsCommentModel>();
             AddNewComment = new AddNewsCommentModel();
+            Picture = new PictureModel();
         }
 
         public string MetaKeywords { get; set; }
@@ -26,6 +29,8 @@ namespace PlanX.Web.Models.News
         public bool AllowComments { get; set; }
         public int NumberOfComments { get; set; }
         public DateTime CreatedOn { get; set; }
+
+        public PictureModel Picture { get; set; }
 
         public IList<NewsCommentModel> Comments { get; set; }
         public AddNewsCommentModel AddNewComment { get; set; }

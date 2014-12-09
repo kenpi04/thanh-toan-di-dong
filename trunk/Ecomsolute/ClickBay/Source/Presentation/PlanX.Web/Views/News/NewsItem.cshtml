@@ -8,105 +8,87 @@
     Html.AddMetaDescriptionParts(Model.MetaDescription);
     Html.AddMetaKeywordParts(Model.MetaKeywords);
 }
-<div class="page news-item-page">
-    <div class="page-title">
-        <h1>@Model.Title</h1>
-    </div>
-    <div class="page-body">
-        <div class="news-date">
-            @Model.CreatedOn.ToString("D")
-        </div>
-        @Html.Widget("newsitem_page_before_body")
-        <div class="news-body">
-            @Html.Raw(Model.Full)
-        </div>
-        @Html.Widget("newsitem_page_before_comments")
-        @if (Model.AllowComments)
-        {
-            <div class="fieldset new-comment">
-                <div class="title">
-                    <strong>@T("News.Comments.LeaveYourComment")</strong>
-                </div>
-                <div class="notifications">
-                    <div class="message-error">@Html.ValidationSummary(true)</div>
-                    @{
-            var result = TempData["nop.news.addcomment.result"] as string;
-                    }
-                    @if (!String.IsNullOrEmpty(result))
-                    {
-                        <div class="result">@result</div>
-                    }
-                </div>
-                @using (Html.BeginForm())
-                {
-                    <div class="form-fields">
-                        <div class="inputs">
-                            @Html.LabelFor(model => model.AddNewComment.CommentTitle, new {}, ":")
-                            @Html.TextBoxFor(model => model.AddNewComment.CommentTitle, new { @class = "comment-title" })
-                            @Html.ValidationMessageFor(model => model.AddNewComment.CommentTitle)
-                        </div>
-                        <div class="inputs">
-                            @Html.LabelFor(model => model.AddNewComment.CommentText, new {}, ":")
-                            @Html.TextAreaFor(model => model.AddNewComment.CommentText, new { @class = "comment-text" })
-                            @Html.ValidationMessageFor(model => model.AddNewComment.CommentText)
-                        </div>
-                        @if (Model.AddNewComment.DisplayCaptcha)
-                        {
-                            <div class="captcha-box">
-                                @Html.Raw(Html.GenerateCaptcha())
-                            </div>
-                        }
-                    </div>
-                    <div class="buttons">
-                        <input type="submit" name="add-comment" class="button-1 news-item-add-comment-button" value="@T("News.Comments.SubmitButton")" />
-                    </div>
-                }
+<div class="wrapper-body">
+    <div class="wrapper-content inline">
+        <section class="section-top">
+            <div class="breadcrumb">
+                <p>
+                    <a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a>
+                    <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" />
+                    <a href="@Url.RouteUrl("NewsArchive")">@T("News")</a>
+                    <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" />
+                    <span class="active">@Model.Title</span>
+                </p>
             </div>
-                if (Model.Comments.Count > 0)
-                {
-            <div class="comment-list">
-                <div class="title">
-                    <strong>@T("News.Comments")</strong>
-                </div>
-                @foreach (var comment in Model.Comments)
-                {
-                    <div class="news-comment">
-                        <div class="comment-info">
-                            <div class="user-info">
-                                @if (comment.AllowViewingProfiles)
-                                {
-                                    <a href="@Url.RouteUrl("CustomerProfile", new { id = comment.CustomerId })" class="username">@(comment.CustomerName)</a>
-                                }
-                                else
-                                {
-                                    <span class="username">@(comment.CustomerName)</span>
-                                }
-                                <div class="avatar">
-                                    @if (!String.IsNullOrEmpty(comment.CustomerAvatarUrl))
-                                    {
-                                        <img src="@(comment.CustomerAvatarUrl)" class="avatar-img" title="avatar" alt="avatar" />
-                                    }
+        </section>
+        <section class="section-left news-detail">
+            <div class="news-title"><h1>@Model.Title</h1></div>
+            <div class="info-small">
+                <p><span class="time-small">@Model.CreatedOn.ToString("D")</span><span>Rẻ quá</span><span>@Model.Comments.Count Comment</span></p>
+            </div>
+            <div class="content-preview">
+                <p>
+                    @Html.Raw(Model.Full)
+                </p>
+            </div>
+        </section>
+        <section class="section-right-search section">
+            <article>
+                <aside class="search-box-small">
+                    <div class="search-head">
+                        <div class="box-search">
+                            <div class="box-head">
+                                <img src="~/Themes/ClickBay/Content/images/mouse.png" />
+                                <span class="search-text">TÌM VÉ MÁY BAY</span>
+                                <p>
+                                    <span>
+                                        <input type="radio" name="type" checked="checked" /><label>Khứ hồi</label>
+                                        <input type="radio" name="type" /><label>Một chiều</label>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="box-content">
+                                <div class="col">
+                                    <label>Điểm đi</label>
+                                    <input type="text" class="textbox" />
+                                </div>
+                                <div class="col">
+                                    <label>Điểm đến</label>
+                                    <input type="text" class="textbox" />
+                                </div>
+                                <div class="col">
+                                    <label>Ngày đi</label>
+                                    <input type="datetime" class="textbox date" />
+                                </div>
+                                <div class="col">
+                                    <label>Ngày về</label>
+                                    <input type="datetime" class="textbox date" />
+                                </div>
+                                <div class="clear"></div>
+                                <div class="box-footer center">
+                                    <span>
+                                        <label>Người lớn</label>
+                                        <input type="text" class="textbox center" />
+                                    </span>
+                                    <span>
+                                        <label>Trẻ em</label><br />
+                                        <input type="text" class="textbox center" />
+                                    </span>
+                                    <span>
+                                        <label>Trẻ sơ sinh</label><br />
+                                        <input type="text" class="textbox center" />
+                                    </span>
+                                </div>
+                                <div class="center">
+                                    <input type="submit" class="btn-search" value="Tìm chuyến bay" />
                                 </div>
                             </div>
                         </div>
-                        <div class="comment-content">
-                            <div class="comment-time">
-                                <label>@T("News.Comments.CreatedOn"):</label>
-                                <span class="stat-value">@comment.CreatedOn.ToString("g")</span>
-                            </div>
-                            <div class="comment-title">
-                                <strong class="comment-text">@comment.CommentTitle</strong>
-                            </div>
-                            <div class="comment-body">
-                                <p class="comment-text">@Html.Raw(PlanX.Core.Html.HtmlHelper.FormatText(comment.CommentText, false, true, false, false, false, false))</p>
-                            </div>
-                        </div>
-                        @Html.Widget("newsitem_page_inside_comment")
                     </div>
-                }
-            </div>
-                }
-        }
-        @Html.Widget("newsitem_page_after_comments")
+                </aside>
+            </article>
+            @Html.Action("HomePageNews", "News")
+        </section>
     </div>
 </div>
+
