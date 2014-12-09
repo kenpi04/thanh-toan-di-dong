@@ -32,7 +32,7 @@ namespace PlanX.Services.News
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>News items</returns>
         IPagedList<NewsItem> GetAllNews(int languageId, int storeId,
-            int pageIndex, int pageSize, bool showHidden = false);
+            int pageIndex, int pageSize, bool showHidden = false, int cateId = 0);
 
         /// <summary>
         /// Inserts a news item

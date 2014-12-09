@@ -77,6 +77,7 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -127,11 +128,15 @@
     <Compile Include="Banner\BannerService.cs" />
     <Compile Include="Banner\IBannerService.cs" />
     <Compile Include="Caching\ClearCacheTask.cs" />
+    <Compile Include="Clickbay\ClickBay1Service.cs" />
     <Compile Include="Clickbay\ClickbayContant.cs" />
     <Compile Include="Clickbay\ClickbayService.cs" />
+    <Compile Include="Clickbay\IClickbayService1.cs" />
     <Compile Include="Clickbay\IClickbayService.cs" />
     <Compile Include="Clickbay\IOnePayServices.cs" />
+    <Compile Include="Clickbay\ITicketConcessionService.cs" />
     <Compile Include="Clickbay\ObjectToDictionaryHelper.cs" />
+    <Compile Include="Clickbay\TicketConcessionService.cs" />
     <Compile Include="Clickbay\VPCRequest.cs" />
     <Compile Include="Cms\IWidgetService.cs" />
     <Compile Include="Cms\WidgetExtentions.cs" />
@@ -158,6 +163,9 @@
     <Compile Include="Customers\ICustomerReportService.cs" />
     <Compile Include="Customers\CustomerReportService.cs" />
     <Compile Include="Customers\DeleteGuestsTask.cs" />
+    <Compile Include="News\CategoryNewsExtension.cs" />
+    <Compile Include="News\CategoryNewsService.cs" />
+    <Compile Include="News\ICategoryNewsService.cs" />
     <Compile Include="News\INewsService.cs" />
     <Compile Include="News\NewsService.cs" />
     <Compile Include="Stores\IStoreMappingService.cs" />

@@ -7,7 +7,7 @@ using PlanX.Core.Domain.ClickBay;
 
 namespace PlanX.Services.ClickBay
 {
-    public interface IClickBayService
+    public partial interface IClickBayService
     {
         #region API 
         /*
