@@ -35,6 +35,10 @@ namespace PlanX.Web.Infrastructure
                             "{SeName}",
                             new { controller = "News", action = "NewsItem" },
                             new[] { "PlanX.Web.Controllers" });
+            routes.MapLocalizedRoute("CateNews",
+                      "{SeName}",
+                      new { controller = "News", action = "List" },
+                      new[] { "Nop.Web.Controllers" });
 
             routes.MapLocalizedRoute("BlogPost",
                             "{SeName}",

@@ -17,10 +17,14 @@ namespace PlanX.Web.Infrastructure
             
             //ticket concession
             routes.MapLocalizedRoute("TicketConcession",
-                            "nhuong-ve",
-                            new { controller = "TicketConcession", action = "Index" },
+                            "dang-ki-nhuong-ve",
+                            new { controller = "TicketConcession", action = "TicketConcessionPost" },
                             new[] { "PlanX.Web.Controllers" });
 
+            routes.MapLocalizedRoute("TicketConcessionList",
+                           "nhuong-ve",
+                           new { controller = "TicketConcession", action = "List" },
+                           new[] { "PlanX.Web.Controllers" });
             //install
             //routes.MapRoute("Installation",
             //                "install",
@@ -554,10 +558,10 @@ namespace PlanX.Web.Infrastructure
             //                new[] { "PlanX.Web.Controllers" });
 
             //news
-            //routes.MapLocalizedRoute("NewsArchive",
-            //                "news",
-            //                new { controller = "News", action = "List" },
-            //                new[] { "PlanX.Web.Controllers" });
+            routes.MapLocalizedRoute("NewsArchive",
+                            "tin-tuc",
+                            new { controller = "News", action = "List" },
+                            new[] { "PlanX.Web.Controllers" });
             //routes.MapLocalizedRoute("NewsRSS",
             //                "news/rss/{languageId}",
             //                new { controller = "News", action = "ListRss" },

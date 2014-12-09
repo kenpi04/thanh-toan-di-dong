@@ -7,35 +7,94 @@
     //title
     Html.AddTitleParts(T("PageTitle.NewsArchive").Text);
 }
-<div class="page news-list-page">
-    <div class="page-title">
-        <a href="@Url.RouteUrl("NewsRSS", new { languageId = Model.WorkingLanguageId })" class="link-rss" title="@T("News.RSS.Hint")">@T("News.RSS")</a>
-        <h1>@T("News")</h1>
-    </div>
-    <div class="page-body">
+<div class="wrapper-body">
+    <div class="wrapper-content inline">
+        <section class="section-top">
+            <div class="breadcrumb">
+                <p>
+                    <a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" />
+                    <span class="active">@T("News")</span>
+                </p>
+            </div>
+        </section>
         @Html.Widget("newslist_page_before_items")
-        <div class="news-items">
-            @foreach (var item in Model.NewsItems)
-            {
-                <div class="item">
-                    <div class="news-head">
-                        <a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">
-                            @item.Title</a> <span class="news-date">-
-                            @item.CreatedOn.ToString("D")
-                            </span>
+        <section class="section-left news">
+            <article>
+                @foreach (var item in Model.NewsItems)
+                {
+                    <aside>
+                        <div class="news-image" id="@item.Id"><img src="@item.Picture.ImageUrl" title="@item.Title" onload="imageResize(@item.Id)"/></div>
+                        <div class="news-content-preview">
+                            <div class="news-title"><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
+                            <div class="info-small">
+                                <p><span class="time-small">@item.CreatedOn.ToString("D")</span><span>Rẻ quá</span><span>25 Comment</span></p>
+                            </div>
+                            <div class="content-preview"><p>@Html.Raw(item.Short)></p></div>
+                            <div><a class="default" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">Chi tiết</a></div>
+                        </div>
+                    </aside>
+                }
+            </article>
+            <div class="pager">
+                @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+            </div>
+            @Html.Widget("newslist_page_after_items")
+        </section>
+        <section class="section-right-search">
+            <article>
+                <aside class="search-box-small">
+                    <div class="search-head">
+                        <div class="box-search">
+                            <div class="box-head">
+                                <img src="~/Themes/ClickBay/Content/images/mouse.png" />
+                                <span class="search-text">TÌM VÉ MÁY BAY</span>
+                                <p>
+                                    <span>
+                                        <input type="radio" name="type" checked="checked" /><label>Khứ hồi</label>
+                                        <input type="radio" name="type" /><label>Một chiều</label>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="box-content">
+                                <div class="col">
+                                    <label>Điểm đi</label>
+                                    <input type="text" class="textbox" />
+                                </div>
+                                <div class="col">
+                                    <label>Điểm đến</label>
+                                    <input type="text" class="textbox" />
+                                </div>
+                                <div class="col">
+                                    <label>Ngày đi</label>
+                                    <input type="datetime" class="textbox date" />
+                                </div>
+                                <div class="col">
+                                    <label>Ngày về</label>
+                                    <input type="datetime" class="textbox date" />
+                                </div>
+                                <div class="clear"></div>
+                                <div class="box-footer center">
+                                    <span>
+                                        <label>Người lớn</label>
+                                        <input type="text" class="textbox center" />
+                                    </span>
+                                    <span>
+                                        <label>Trẻ em</label><br />
+                                        <input type="text" class="textbox center" />
+                                    </span>
+                                    <span>
+                                        <label>Trẻ sơ sinh</label><br />
+                                        <input type="text" class="textbox center" />
+                                    </span>
+                                </div>
+                                <div class="center">
+                                    <input type="submit" class="btn-search" value="Tìm chuyến bay" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="news-details">
-                        @Html.Raw(item.Short)
-                    </div>
-                    <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" class="read-more">
-                        @T("News.MoreInfo")</a>
-                    @Html.Widget("newslist_page_inside_item")
-                </div>
-            }
-        </div>
-        <div class="pager">
-            @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
-        </div>
-        @Html.Widget("newslist_page_after_items")
+                </aside>
+            </article>
+        </section>
     </div>
 </div>

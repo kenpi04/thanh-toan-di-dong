@@ -384,6 +384,7 @@ namespace PlanX.Web.Infrastructure.Cache
         /// </remarks>
         public const string MANUFACTURER_PICTURE_MODEL_KEY = "PlanX.pres.manufacturer.picture-{0}-{1}-{2}-{3}-{4}-{5}";
         public const string MANUFACTURER_PICTURE_PATTERN_KEY = "PlanX.pres.manufacturer.picture";
+        public const string NEWSITEM_PICTURE_MODEL_KEY = "PlanX.pres.newsitem.picture-{0}-{1}-{2}-{3}-{4}-{5}";
 
         /// <summary>
         /// Key for cart picture caching
@@ -444,7 +445,9 @@ namespace PlanX.Web.Infrastructure.Cache
         /// {1} : current store ID
         /// </remarks>
         public const string HOMEPAGE_NEWSMODEL_KEY = "PlanX.pres.news.homepage-{0}-{1}";
+        public const string NEWNEWS_NEWSMODEL_KEY = "PlanX.pres.news.new-{0}-{1}";
         public const string NEWS_PATTERN_KEY = "PlanX.pres.news.";
+
         
         /// <summary>
         /// Key for states by country id
