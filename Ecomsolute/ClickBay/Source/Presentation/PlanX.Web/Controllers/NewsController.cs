@@ -25,6 +25,7 @@ using PlanX.Web.Framework.Security;
 using PlanX.Web.Framework.UI.Captcha;
 using PlanX.Web.Infrastructure.Cache;
 using PlanX.Web.Models.News;
+using PlanX.Web.Models.Media;
 
 namespace PlanX.Web.Controllers
 {
@@ -110,32 +111,32 @@ namespace PlanX.Web.Controllers
             model.CreatedOn = _dateTimeHelper.ConvertToUserTime(newsItem.CreatedOnUtc, DateTimeKind.Utc);
             model.NumberOfComments = newsItem.CommentCount;
             model.AddNewComment.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage;
-            //if (prepareComments)
-            //{
-            //    var newsComments = newsItem.NewsComments.OrderBy(pr => pr.CreatedOnUtc);
-            //    foreach (var nc in newsComments)
-            //    {
-            //        var commentModel = new NewsCommentModel()
-            //        {
-            //            Id = nc.Id,
-            //            CustomerId = nc.CustomerId,
-            //            CustomerName = nc.Customer.FormatUserName(),
-            //            CommentTitle = nc.CommentTitle,
-            //            CommentText = nc.CommentText,
-            //            CreatedOn = _dateTimeHelper.ConvertToUserTime(nc.CreatedOnUtc, DateTimeKind.Utc),
-            //            AllowViewingProfiles = _customerSettings.AllowViewingProfiles && nc.Customer != null && !nc.Customer.IsGuest(),
-            //        };
-            //        if (_customerSettings.AllowCustomersToUploadAvatars)
-            //        {
-            //            commentModel.CustomerAvatarUrl = _pictureService.GetPictureUrl(
-            //                nc.Customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId), 
-            //                _mediaSettings.AvatarPictureSize, 
-            //                _customerSettings.DefaultAvatarEnabled,
-            //                defaultPictureType:PictureType.Avatar);
-            //        }
-            //        model.Comments.Add(commentModel);
-            //    }
-            //}
+            if (prepareComments)
+            {
+                var newsComments = newsItem.NewsComments.OrderBy(pr => pr.CreatedOnUtc);
+                foreach (var nc in newsComments)
+                {
+                    var commentModel = new NewsCommentModel()
+                    {
+                        Id = nc.Id,
+                        CustomerId = nc.CustomerId,
+                        CustomerName = nc.Customer.FormatUserName(),
+                        CommentTitle = nc.CommentTitle,
+                        CommentText = nc.CommentText,
+                        CreatedOn = _dateTimeHelper.ConvertToUserTime(nc.CreatedOnUtc, DateTimeKind.Utc),
+                        AllowViewingProfiles = _customerSettings.AllowViewingProfiles && nc.Customer != null && !nc.Customer.IsGuest(),
+                    };
+                    if (_customerSettings.AllowCustomersToUploadAvatars)
+                    {
+                        commentModel.CustomerAvatarUrl = _pictureService.GetPictureUrl(
+                            nc.Customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                            _mediaSettings.AvatarPictureSize,
+                            _customerSettings.DefaultAvatarEnabled,
+                            defaultPictureType: PictureType.Avatar);
+                    }
+                    model.Comments.Add(commentModel);
+                }
+            }
         }
         
         #endregion
@@ -174,6 +175,7 @@ namespace PlanX.Web.Controllers
             return PartialView(model);
         }
 
+   
         public ActionResult List(NewsPagingFilteringModel command)
         {
             if (!_newsSettings.Enabled)
@@ -186,21 +188,38 @@ namespace PlanX.Web.Controllers
             if (command.PageNumber <= 0) command.PageNumber = 1;
 
             var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id,
-                command.PageNumber - 1, command.PageSize);
+                command.PageNumber - 1, command.PageSize, cateId: command.CateId);
             model.PagingFilteringContext.LoadPagedList(newsItems);
 
-            model.NewsItems = newsItems
-                .Select(x =>
+            foreach (var item in newsItems)
+            {
+                var newsModel = new NewsItemModel();
+                PrepareNewsItemModel(newsModel, item, false);
+
+                int pictureSize = _mediaSettings.DefaultImageQuality;
+                var newsItemPictureCacheKey = string.Format(ModelCacheEventConsumer.NEWSITEM_PICTURE_MODEL_KEY, item.Id, pictureSize, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id);
+                newsModel.Picture = _cacheManager.Get(newsItemPictureCacheKey, () =>
                 {
-                    var newsModel = new NewsItemModel();
-                    PrepareNewsItemModel(newsModel, x, false);
-                    return newsModel;
-                })
-                .ToList();
+                    var picture = _pictureService.GetPictureById(item.PictureId);
+                    var pictureModel = new PictureModel()
+                    {
+                        FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
+                        ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize),
+                        Title = string.Format(_localizationService.GetResource("Media.newsItem.ImageLinkTitleFormat"), item.Title),
+                        AlternateText = string.Format(_localizationService.GetResource("Media.newsItem.ImageAlternateTextFormat"), item.Title)
+                    };
+                    return pictureModel;
+                });
+                model.NewsItems.Add(newsModel);
+            }
+
+
+
 
             return View(model);
         }
 
+        /*
         public ActionResult ListRss(int languageId)
         {
             var feed = new SyndicationFeed(
@@ -223,7 +242,7 @@ namespace PlanX.Web.Controllers
             feed.Items = items;
             return new RssActionResult() { Feed = feed };
         }
-
+        */
         public ActionResult NewsItem(int newsItemId)
         {
             if (!_newsSettings.Enabled)
@@ -244,7 +263,7 @@ namespace PlanX.Web.Controllers
             return View(model);
         }
 
-        /*[HttpPost, ActionName("NewsItem")]
+        [HttpPost, ActionName("NewsItem")]
         [FormValueRequired("add-comment")]
         [CaptchaValidator]
         public ActionResult NewsCommentAdd(int newsItemId, NewsItemModel model, bool captchaValid)
@@ -301,7 +320,8 @@ namespace PlanX.Web.Controllers
             PrepareNewsItemModel(model, newsItem, true);
             return View(model);
         }
-        */
+        
+        /*
         [ChildActionOnly]
         public ActionResult RssHeaderLink()
         {
@@ -313,7 +333,7 @@ namespace PlanX.Web.Controllers
 
             return Content(link);
         }
-
+        */
         #endregion
     }
 }
