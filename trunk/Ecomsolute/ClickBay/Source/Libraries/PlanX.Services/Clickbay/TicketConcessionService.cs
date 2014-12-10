@@ -51,15 +51,16 @@ namespace PlanX.Services.ClickBay
         /// Deletes a TicketConcession
         /// </summary>
         /// <param name="TicketConcession">TicketConcession item</param>
-        public virtual void DeleteTicketConcession(TicketConcession TicketConcession)
+        public virtual void DeleteTicketConcession(TicketConcession ticketConcession)
         {
-            if (TicketConcession == null)
+            if (ticketConcession == null)
                 throw new ArgumentNullException("TicketConcession");
 
-            _ticketConcessionRepository.Delete(TicketConcession);
+            ticketConcession.Deleted = true;
+            _ticketConcessionRepository.Update(ticketConcession);
             
             //event notification
-            _eventPublisher.EntityDeleted(TicketConcession);
+            _eventPublisher.EntityDeleted(ticketConcession);
         }
 
         /// <summary>
@@ -71,16 +72,20 @@ namespace PlanX.Services.ClickBay
         {
             if (TicketConcessionId == 0)
                 return null;
-
-            return _ticketConcessionRepository.GetById(TicketConcessionId);
+            var query = from tic in _ticketConcessionRepository.Table
+                        where (!tic.Deleted) && tic.Id == TicketConcessionId
+                        select tic;
+            return query.FirstOrDefault();
         }
 
 
         public virtual IPagedList<TicketConcession> GetAllTicketConcession(int pageIndex, int pageSize)
         {
-            var query = _ticketConcessionRepository.Table;
-            query = query.OrderByDescending(n => n.CreatedOnUtc);
-
+            var query = from tic in _ticketConcessionRepository.Table
+                        where (!tic.Deleted)
+                        orderby tic.CreatedOnUtc descending
+                        select tic;
+            
             var TicketConcession = new PagedList<TicketConcession>(query, pageIndex, pageSize);
             return TicketConcession;
         }
@@ -181,7 +186,13 @@ namespace PlanX.Services.ClickBay
         public virtual List<string> GetAllTicketType()
         {
             var query = _ticketTypeRepository.Table;
-            return query.Select(x=>x.TicketTypeName).ToList();
+            return query.OrderBy(x => x.TicketTypeName).Select(x => x.TicketTypeName).ToList();
+        }
+
+        public virtual List<TicketType> GetAllType()
+        {
+            var query = _ticketTypeRepository.Table;
+            return query.ToList();
         }
 
         /// <summary>
@@ -246,11 +257,16 @@ namespace PlanX.Services.ClickBay
             return _placeRepository.GetById(PlaceId);
         }
 
+        public virtual List<Place> GetAllPlaceToAdmin()
+        {
+            var query = _placeRepository.Table;
+            return query.ToList();
+        }
 
         public virtual List<string> GetAllPlace()
         {
             var query = _placeRepository.Table;
-            return query.Select(x=>x.PlaceName).ToList();
+            return query.OrderBy(x => x.PlaceName).Select(x => x.PlaceName).ToList();
         }
 
         /// <summary>
