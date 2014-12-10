@@ -1,0 +1,160 @@
+﻿@model PlanX.Admin.Models.TicketConcession.TicketConcessionModel
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+
+@{
+    //page title
+    ViewBag.Title = T("Admin.ContentManagement.News.NewsItems.EditNewsItemDetails").Text;
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-content.png")" alt="" />
+            Sửa nhượng vé - @Model.Id @Html.ActionLink("(" + T("Admin.ContentManagement.News.NewsItems.BackToList") + ")", "List")
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button save" value="@T("Admin.Common.Save")" />
+            <input type="submit" name="save-continue" class="t-button save" value="@T("Admin.Common.SaveContinue")" />
+            <span id="ticketconcession-delete" class="t-button">@T("Admin.Common.Delete")</span>
+        </div>
+    </div>
+                     @Html.HiddenFor(model => model.CurrencyCode)
+                    @Html.HiddenFor(model => model.IsHelper)
+    
+     <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                Loại vé:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.TicketType)
+                @Html.ValidationMessageFor(model => model.TicketType)
+            </td>
+        </tr>
+         <tr>
+             <td class="adminTitle">
+                 
+             </td>
+             <td class="adminData">
+                @Html.EditorFor(model => model.RoundTrip) Khứ hồi
+             </td>
+         </tr>
+        <tr>
+            <td class="adminTitle">
+                Tên hành khách:
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.PassengerName)
+                @Html.ValidationMessageFor(model => model.PassengerName)
+            </td>
+        </tr>
+         <tr>
+             <td class="adminTitle">
+             </td>
+             <td class="adminData">
+                 @Html.EditorFor(model => model.IsRename ) Có thể đổi tên
+             </td>
+         </tr>
+         <tr>
+             <td class="adminTitle">
+                 Nơi đi:
+             </td>
+             <td class="adminData">
+                 @Html.EditorFor(model => model.FromPlace)
+                 @Html.ValidationMessageFor(model => model.FromPlace)
+             </td>
+         </tr>
+         <tr>
+             <td class="adminTitle">
+                 Nơi đến:
+             </td>
+             <td class="adminData">
+                 @Html.EditorFor(model => model.ToPlace)
+                 @Html.ValidationMessageFor(model => model.ToPlace)
+             </td>
+         </tr>
+         <tr>
+             <td class="adminTitle">
+                 Ngày đi:
+             </td>
+             <td class="adminData">
+                 @Html.EditorFor(model => model.DepartDate)
+                 @Html.ValidationMessageFor(model => model.DepartDate)
+             </td>
+         </tr>
+         <tr>
+             <td class="adminTitle">
+                 Ngày về:
+             </td>
+             <td class="adminData">
+                 @Html.EditorFor(model => model.ReturnDate)
+                 @Html.ValidationMessageFor(model => model.ReturnDate)
+             </td>
+         </tr>
+         <tr>
+             <td class="adminTitle">
+                 Giá vé:
+             </td>
+             <td class="adminData">
+                 @Html.EditorFor(model => model.TicketPrice)
+                 <select id="currencyCode">
+                     <option value="VND">VNĐ</option>
+                     <option value="USD">USD</option>
+                     <option value="EUR">EUR</option>
+                 </select>
+                 @Html.ValidationMessageFor(model => model.TicketPrice)
+             </td>
+         </tr>
+         <tr>
+             <td class="adminTitle">
+                 Tên người liên hệ:
+             </td>
+             <td class="adminData">
+                 @Html.EditorFor(model => model.ContactName)
+                 @Html.ValidationMessageFor(model => model.ContactName)
+             </td>
+         </tr>
+         <tr>
+             <td class="adminTitle">
+                 Số điện thoại:
+             </td>
+             <td class="adminData">
+                 @Html.EditorFor(model => model.ContactPhone)
+                 @Html.ValidationMessageFor(model => model.ContactPhone)
+             </td>
+         </tr>
+         <tr>
+             <td class="adminTitle">
+                 Email:
+             </td>
+             <td class="adminData">
+                 @Html.EditorFor(model => model.ContactEmail)
+                 @Html.ValidationMessageFor(model => model.ContactEmail)
+             </td>
+         </tr>
+         <tr>
+             <td class="adminTitle">
+                 Ghi chú:
+             </td>
+             <td class="adminData">
+                 @Html.EditorFor(model => model.Description)
+                 @Html.ValidationMessageFor(model => model.ContactEmail)
+             </td>
+         </tr>
+    </table>
+}
+@Html.DeleteConfirmation("ticketconcession-delete")
+<script>
+    $(document).ready(function () {
+        $("#currencyCode").val($("#CurrencyCode").val());
+       
+        $(".save").click(function () {
+            $("#IsHelper").val(false);
+            $("#CurrencyCode").val($("#currencyCode").val());
+            return true;
+        });
+       
+
+    })
+    </script>
