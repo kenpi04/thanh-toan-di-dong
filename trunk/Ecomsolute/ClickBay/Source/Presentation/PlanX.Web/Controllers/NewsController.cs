@@ -45,7 +45,8 @@ namespace PlanX.Web.Controllers
         private readonly ICacheManager _cacheManager;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly IStoreMappingService _storeMappingService;
-
+        private readonly ICategoryNewsService _categoryNewsService;
+        
         private readonly MediaSettings _mediaSettings;
         private readonly NewsSettings _newsSettings;
         private readonly LocalizationSettings _localizationSettings;
@@ -63,6 +64,7 @@ namespace PlanX.Web.Controllers
             IWorkflowMessageService workflowMessageService, IWebHelper webHelper,
             ICacheManager cacheManager, ICustomerActivityService customerActivityService,
             IStoreMappingService storeMappingService,
+            ICategoryNewsService categoryNewsService,
             MediaSettings mediaSettings, NewsSettings newsSettings,
             LocalizationSettings localizationSettings, CustomerSettings customerSettings,
             CaptchaSettings captchaSettings)
@@ -78,6 +80,7 @@ namespace PlanX.Web.Controllers
             this._cacheManager = cacheManager;
             this._customerActivityService = customerActivityService;
             this._storeMappingService = storeMappingService;
+            this._categoryNewsService = categoryNewsService;
 
             this._mediaSettings = mediaSettings;
             this._newsSettings = newsSettings;
@@ -108,9 +111,21 @@ namespace PlanX.Web.Controllers
             model.Short = newsItem.Short;
             model.Full = newsItem.Full;
             model.AllowComments = newsItem.AllowComments;
-            model.CreatedOn = _dateTimeHelper.ConvertToUserTime(newsItem.CreatedOnUtc, DateTimeKind.Utc);
+            model.CreatedOn = newsItem.CreatedOnUtc;
             model.NumberOfComments = newsItem.CommentCount;
             model.AddNewComment.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage;
+            
+            var categoryMap = newsItem.NewsCategoriesMaps.FirstOrDefault();            
+            if(categoryMap != null)
+            {
+                var categoryNews = _categoryNewsService.GetCategoryById(categoryMap.CategoryNewsId);
+                if (categoryNews != null && !categoryNews.Deleted)
+                { 
+                    model.Category = categoryNews.Name;
+                    model.CategorySeName = categoryNews.GetSeName();
+                }
+            }
+
             if (prepareComments)
             {
                 var newsComments = newsItem.NewsComments.OrderBy(pr => pr.CreatedOnUtc);
@@ -151,7 +166,7 @@ namespace PlanX.Web.Controllers
             var cacheKey = string.Format(ModelCacheEventConsumer.HOMEPAGE_NEWSMODEL_KEY, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id);
             var cachedModel = _cacheManager.Get(cacheKey, () =>
             {
-                var newsItems = _newsService.GetAllNews(_workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id, 0, _newsSettings.MainPageNewsCount);
+                var newsItems = _newsService.GetAllNews(0, 0, 0, _newsSettings.MainPageNewsCount);
                 return new HomePageNewsItemsModel()
                 {
                     WorkingLanguageId = _workContext.WorkingLanguage.Id,
@@ -191,12 +206,26 @@ namespace PlanX.Web.Controllers
                 command.PageNumber - 1, command.PageSize, cateId: command.CateId);
             model.PagingFilteringContext.LoadPagedList(newsItems);
 
+            if(command.CateId>0)
+            {
+                var cateNews = _categoryNewsService.GetCategoryById(command.CateId);
+                if (cateNews != null && !cateNews.Deleted)
+                {
+                    model.CurrentCategoryId = cateNews.Id;
+                    model.CurrentCategoryName = cateNews.Name;
+                    model.CurrentCategorySeName = cateNews.GetSeName();
+                    model.MetaTitle = cateNews.MetaTitle;
+                    model.MetaKeyWords = cateNews.MetaKeywords;
+                    model.MetaDescription = cateNews.MetaDescription;
+                }
+            }
+
             foreach (var item in newsItems)
             {
                 var newsModel = new NewsItemModel();
                 PrepareNewsItemModel(newsModel, item, false);
 
-                int pictureSize = _mediaSettings.DefaultImageQuality;
+                int pictureSize = _mediaSettings.NewsThumbPictureSize;
                 var newsItemPictureCacheKey = string.Format(ModelCacheEventConsumer.NEWSITEM_PICTURE_MODEL_KEY, item.Id, pictureSize, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id);
                 newsModel.Picture = _cacheManager.Get(newsItemPictureCacheKey, () =>
                 {
@@ -205,15 +234,13 @@ namespace PlanX.Web.Controllers
                     {
                         FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
                         ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize),
-                        Title = string.Format(_localizationService.GetResource("Media.newsItem.ImageLinkTitleFormat"), item.Title),
-                        AlternateText = string.Format(_localizationService.GetResource("Media.newsItem.ImageAlternateTextFormat"), item.Title)
+                        Title = item.Title,
+                        AlternateText = item.Title
                     };
                     return pictureModel;
                 });
                 model.NewsItems.Add(newsModel);
             }
-
-
 
 
             return View(model);
@@ -251,8 +278,8 @@ namespace PlanX.Web.Controllers
             var newsItem = _newsService.GetNewsById(newsItemId);
             if (newsItem == null || 
                 !newsItem.Published ||
-                (newsItem.StartDateUtc.HasValue && newsItem.StartDateUtc.Value >= DateTime.UtcNow) ||
-                (newsItem.EndDateUtc.HasValue && newsItem.EndDateUtc.Value <= DateTime.UtcNow) ||
+                (newsItem.StartDateUtc.HasValue && newsItem.StartDateUtc.Value >= DateTime.Now) ||
+                (newsItem.EndDateUtc.HasValue && newsItem.EndDateUtc.Value <= DateTime.Now) ||
                 //Store mapping
                 !_storeMappingService.Authorize(newsItem))
                 return RedirectToRoute("HomePage");
