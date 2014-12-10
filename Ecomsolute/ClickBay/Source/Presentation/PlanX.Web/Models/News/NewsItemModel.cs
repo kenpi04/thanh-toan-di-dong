@@ -5,6 +5,7 @@ using PlanX.Web.Framework.Mvc;
 using PlanX.Web.Validators.News;
 using PlanX.Core.Domain.Media;
 using PlanX.Web.Models.Media;
+using PlanX.Core.Domain.News;
 
 namespace PlanX.Web.Models.News
 {
@@ -34,5 +35,10 @@ namespace PlanX.Web.Models.News
 
         public IList<NewsCommentModel> Comments { get; set; }
         public AddNewsCommentModel AddNewComment { get; set; }
+
+        public string Category { get; set; }
+
+        public string CategorySeName { get; set; }
+
     }
 }

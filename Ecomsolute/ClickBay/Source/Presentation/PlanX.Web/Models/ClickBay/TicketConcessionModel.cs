@@ -15,7 +15,7 @@ namespace PlanX.Web.Models.ClickBay
             ReturnDate = new DateTime();
         }
 
-        
+        public bool IsRename { get; set; }
         public string TicketType { get; set; }
 
         public bool RoundTrip { get; set; }
@@ -30,9 +30,7 @@ namespace PlanX.Web.Models.ClickBay
 
         public DateTime ReturnDate { get; set; }
 
-        public decimal TicketPrice { get; set; }
-
-        public string CurrencyCode { get; set; }
+        public string TicketPrice { get; set; }
 
         public bool IsHelper { get; set; }
 
@@ -50,7 +48,7 @@ namespace PlanX.Web.Models.ClickBay
 
         public int Id { get; set; }
     }
-     public class TicketConcessionListModel
+    public class TicketConcessionListModel
      {     
 
          public TicketConcessionListModel()
@@ -77,7 +75,11 @@ namespace PlanX.Web.Models.ClickBay
         public string TicketTypeSearch { get; set; }
 
         public string DepartDateSearch { get; set; }
+
+        public int Total { get; set; }
+
+        public int PageSize { get; set; }
+
+        public int Page { get; set; }
      }
-
-
 }
