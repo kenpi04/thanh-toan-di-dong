@@ -55,6 +55,7 @@ using PlanX.Web.Framework.Themes;
 using PlanX.Web.Framework.UI;
 using PlanX.Web.Framework.UI.Editor;
 using PlanX.Services.ClickBay;
+using PLanX.Services.Directory;
 namespace PlanX.Web.Framework
 {
     public class DependencyRegistrar : IDependencyRegistrar
@@ -268,6 +269,7 @@ namespace PlanX.Web.Framework
             builder.RegisterType<WidgetService>().As<IWidgetService>().InstancePerHttpRequest();
             builder.RegisterType<TopicService>().As<ITopicService>().InstancePerHttpRequest();
             builder.RegisterType<NewsService>().As<INewsService>().InstancePerHttpRequest();
+            builder.RegisterType<BannerService>().As<IBannerService>().InstancePerHttpRequest();
 
             builder.RegisterType<DateTimeHelper>().As<IDateTimeHelper>().InstancePerHttpRequest();
             builder.RegisterType<SitemapGenerator>().As<ISitemapGenerator>().InstancePerHttpRequest();
