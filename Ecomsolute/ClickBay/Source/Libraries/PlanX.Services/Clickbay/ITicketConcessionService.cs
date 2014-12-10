@@ -26,6 +26,10 @@ namespace PlanX.Services.ClickBay
 
          List<string> GetAllTicketType();
 
+         List<Place> GetAllPlaceToAdmin();
+
+         List<TicketType> GetAllType();
+
         void InsertTicketType(TicketType TicketType);
 
         void UpdateTicketType(TicketType TicketType);
