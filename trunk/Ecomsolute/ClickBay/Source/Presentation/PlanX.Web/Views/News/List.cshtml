@@ -5,15 +5,17 @@
     Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
 
     //title
-    Html.AddTitleParts(T("PageTitle.NewsArchive").Text);
+    Html.AddTitleParts(Model.CurrentCategoryName);    
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeyWords);
 }
 <div class="wrapper-body">
     <div class="wrapper-content inline">
         <section class="section-top">
             <div class="breadcrumb">
                 <p>
-                    <a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" />
-                    <span class="active">@T("News")</span>
+                    <a href="@Url.RouteUrl("Homepage")">Trang chủ</a><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" />
+                    <span class="active">@Model.CurrentCategoryName</span>
                 </p>
             </div>
         </section>
@@ -23,13 +25,13 @@
                 @foreach (var item in Model.NewsItems)
                 {
                     <aside>
-                        <div class="news-image" id="@item.Id"><img src="@item.Picture.ImageUrl" title="@item.Title" onload="imageResize(@item.Id)"/></div>
+                        <div class="news-image" id="@item.Id"><img src="@item.Picture.ImageUrl" title="@item.Title" alt="@item.Title" onload="imageResize(@item.Id)"/></div>
                         <div class="news-content-preview">
-                            <div class="news-title"><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
+                            <div><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
                             <div class="info-small">
-                                <p><span class="time-small">@item.CreatedOn.ToString("D")</span><span>Rẻ quá</span><span>25 Comment</span></p>
+                                <p><span class="time-small">@item.CreatedOn.ToString("dd/MM/yyyy")</span><span>@Model.CurrentCategoryName</span>@*<span>25 Comment</span>*@</p>
                             </div>
-                            <div class="content-preview"><p>@Html.Raw(item.Short)></p></div>
+                            <div class="content-preview"><p>@Html.Raw(item.Short)</p></div>
                             <div><a class="default" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">Chi tiết</a></div>
                         </div>
                     </aside>

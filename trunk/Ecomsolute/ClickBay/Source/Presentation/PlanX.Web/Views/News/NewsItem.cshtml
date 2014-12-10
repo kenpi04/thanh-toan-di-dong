@@ -13,9 +13,9 @@
         <section class="section-top">
             <div class="breadcrumb">
                 <p>
-                    <a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a>
+                    <a href="@Url.RouteUrl("Homepage")">Trang chủ</a>
                     <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" />
-                    <a href="@Url.RouteUrl("NewsArchive")">@T("News")</a>
+                    <a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategorySeName })">@Model.Category</a>
                     <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" />
                     <span class="active">@Model.Title</span>
                 </p>
@@ -24,7 +24,7 @@
         <section class="section-left news-detail">
             <div class="news-title"><h1>@Model.Title</h1></div>
             <div class="info-small">
-                <p><span class="time-small">@Model.CreatedOn.ToString("D")</span><span>Rẻ quá</span><span>@Model.Comments.Count Comment</span></p>
+                <p><span class="time-small">@Model.CreatedOn.ToString("dd/MM/yyyy")</span><span>@Model.Category</span><span>@Model.Comments.Count Comment</span></p>
             </div>
             <div class="content-preview">
                 <p>
