@@ -2,32 +2,20 @@
 @using PlanX.Web.Models.News;
 @if (Model.NewsItems.Count > 0)
 {
-    <div class="news-list-homepage">
-        <div class="title">
-            <strong>@T("News")</strong>
-        </div>
-        <div class="news-items">
-            @foreach (var item in Model.NewsItems)
-            {
-                <div class="item">
-                    <div class="news-head">
-                        <a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">
-                            @item.Title</a> <span class="news-date">-
-                                            @item.CreatedOn.ToString("D")
-                            </span>
+    <div class="title"><span class="title-left">Tin mới</span></div>
+    <article class="news-box-small">
+        @foreach (var item in Model.NewsItems)
+        {
+            <aside>
+                <div class="news-content-preview">
+                    <div class="news-title"><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
+                    <div class="info-small">
+                        <p><span class="time-small">@item.CreatedOn.ToString("dd/MM/yyyy")</span><a class="info-small" href="@Url.RouteUrl("CateNews", new { SeName= item.CategorySeName })"><span>@item.CategoryName</span></a><span>@item.Comments.Count Comment</span></p>
                     </div>
-                    <div class="news-details">
-                        @Html.Raw(item.Short)
-                    </div>
-                    <a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" class="read-more">
-                        @T("News.MoreInfo")</a>
+                    <div class="content-preview"><p>@Html.Raw(item.Short)</p></div>
+                    <div><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" class="default">Chi tiết</a></div>
                 </div>
-            }
-            <div class="view-all">
-                <a href="@Url.RouteUrl("NewsArchive")">
-                    @T("News.ViewAll")</a>
-            </div>
-        </div>
-    </div>
-
+            </aside>
+        }
+    </article>
 }
