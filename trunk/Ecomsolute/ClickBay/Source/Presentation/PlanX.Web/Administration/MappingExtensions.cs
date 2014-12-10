@@ -22,6 +22,7 @@ using PlanX.Admin.Models.Stores;
 //using PlanX.Admin.Models.Tax;
 //using PlanX.Admin.Models.Templates;
 using PlanX.Admin.Models.Topics;
+using PlanX.Core.Domain.Banner;
 //using PlanX.Core.Domain.Blogs;
 //using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Common;
@@ -1104,6 +1105,26 @@ namespace PlanX.Admin
         }
 
         #endregion
+
+        #region Banner
+
+        public static BannerModel ToModel(this Banner entity)
+        {
+            return Mapper.Map<Banner, BannerModel>(entity);
+        }
+
+        public static Banner ToEntity(this BannerModel model)
+        {
+            return Mapper.Map<BannerModel, Banner>(model);
+        }
+
+        public static Banner ToEntity(this BannerModel model, Banner destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+
+        #endregion
+      
 
     }
 }
