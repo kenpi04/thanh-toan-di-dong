@@ -22,6 +22,7 @@ using PlanX.Admin.Models.Stores;
 //using PlanX.Admin.Models.Tax;
 //using PlanX.Admin.Models.Templates;
 using PlanX.Admin.Models.Topics;
+using PlanX.Core.Domain.Banner;
 //using PlanX.Core.Domain.Blogs;
 //using PlanX.Core.Domain.Catalog;
 using PlanX.Core.Domain.Common;
@@ -888,6 +889,13 @@ namespace PlanX.Admin.Infrastructure
             Mapper.CreateMap<AddressSettings, CustomerUserSettingsModel.AddressSettingsModel>()
                 .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
             Mapper.CreateMap<CustomerUserSettingsModel.AddressSettingsModel, AddressSettings>();
+
+            //Banner
+            Mapper.CreateMap<Banner, BannerModel>()
+                .ForMember(dest => dest.DisplayOrder, mo => mo.MapFrom(src => src.DisplayOrder))
+                ;
+
+            Mapper.CreateMap<BannerModel, Banner>();
 
             /*
             //category template

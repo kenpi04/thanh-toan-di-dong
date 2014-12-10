@@ -140,6 +140,7 @@
   <ItemGroup>
     <Compile Include="AdminAreaRegistration.cs" />
     <Compile Include="Controllers\ActivityLogController.cs" />
+    <Compile Include="Controllers\BannerController.cs" />
     <Compile Include="Controllers\BaseNopController.cs" />
     <Compile Include="Controllers\CampaignController.cs" />
     <Compile Include="Controllers\CategoryNewsController.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Controllers\ImageBrowserController.cs" />
     <Compile Include="Controllers\ExternalAuthenticationController.cs" />
     <Compile Include="Controllers\NetAdvImageController.cs" />
+    <Compile Include="Controllers\TicketConcessionController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Controllers\OnlineCustomerController.cs" />
     <Compile Include="Controllers\PluginController.cs" />
@@ -191,6 +193,8 @@
     <Compile Include="Models\Common\MaintenanceModel.cs" />
     <Compile Include="Models\Common\SystemWarningModel.cs" />
     <Compile Include="Models\Common\SystemInfoModel.cs" />
+    <Compile Include="Models\Directory\BannerListModel.cs" />
+    <Compile Include="Models\Directory\BannerModel.cs" />
     <Compile Include="Models\Home\DashboardModel.cs" />
     <Compile Include="Models\Customers\OnlineCustomerModel.cs" />
     <Compile Include="Models\Messages\MessageTemplateListModel.cs" />
@@ -216,6 +220,8 @@
     <Compile Include="Models\Settings\CustomerUserSettingsModel.cs" />
     <Compile Include="Models\Settings\MediaSettingsModel.cs" />
     <Compile Include="Models\Tasks\ScheduleTaskModel.cs" />
+    <Compile Include="Models\TicketConcession\TicketConcessionModel.cs" />
+    <Compile Include="Models\TicketConcession\TicketType.cs" />
     <Compile Include="Models\Topics\TopicListModel.cs" />
     <Compile Include="Models\Topics\TopicModel.cs" />
     <Compile Include="Models\Messages\MessageTemplateModel.cs" />
@@ -243,6 +249,7 @@
     <Compile Include="Validators\Messages\CampaignValidator.cs" />
     <Compile Include="Validators\Plugins\PluginValidator.cs" />
     <Compile Include="Validators\Settings\SettingValidator.cs" />
+    <Compile Include="Validators\TicketConcession\TicketConcessionValidator.cs" />
     <Compile Include="Validators\Topics\TopicValidator.cs" />
     <Compile Include="Validators\Messages\MessageTemplateValidator.cs" />
     <Compile Include="Validators\Messages\EmailAccountValidator.cs" />
@@ -637,6 +644,18 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Views\ClickBay\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Banner\Create.cshtml" />
+    <Content Include="Views\Banner\Edit.cshtml" />
+    <Content Include="Views\Banner\List.cshtml" />
+    <Content Include="Views\Banner\_CreateOrUpdate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\TicketConcession\Edit.cshtml" />
+    <Content Include="Views\TicketConcession\IndexPlace.cshtml" />
+    <Content Include="Views\TicketConcession\IndexType.cshtml" />
+    <Content Include="Views\TicketConcession\List.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
