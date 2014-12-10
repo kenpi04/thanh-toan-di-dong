@@ -897,6 +897,7 @@
     <Content Include="Themes\ClickBay\Content\images\top-menu-triangle.png" />
     <Content Include="Themes\ClickBay\Content\images\twiter.png" />
     <Content Include="Themes\ClickBay\Content\styles.css" />
+    <Content Include="Themes\ClickBay\Content\stylesMore.css" />
     <Content Include="Themes\ClickBay\Content\styles.rtl.css" />
     <Content Include="Themes\ClickBay\preview.jpg" />
     <Content Include="Themes\DefaultClean\Content\images\free-shipping.png" />
@@ -1335,6 +1336,9 @@
     <Content Include="Themes\ClickBay\Views\ClickBay\BookingInfoDetail.cshtml" />
     <Content Include="Themes\ClickBay\Views\Shared\_BreadCrumb.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\_BookingForm.cshtml" />
+    <Content Include="Views\TicketConcession\Index.cshtml" />
+    <Content Include="Views\TicketConcession\List.cshtml" />
+    <Content Include="Views\TicketConcession\TicketConcessionPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\Thumbs\" />
