@@ -98,7 +98,7 @@
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
@@ -641,7 +641,9 @@
     <Content Include="Views\CategoryNews\Tree.cshtml" />
     <Content Include="Views\CategoryNews\_CreateOrUpdate.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\ClickBay\Edit.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ClickBay\List.cshtml" />
   </ItemGroup>
@@ -656,6 +658,21 @@
     <Content Include="Views\TicketConcession\IndexPlace.cshtml" />
     <Content Include="Views\TicketConcession\IndexType.cshtml" />
     <Content Include="Views\TicketConcession\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\_BookingDetailsInfo.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\_BookingDetailsFlightTo.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\_BookingDetailsFlightReturn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\_BookingDetailsCondition.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\_BookingDetailsNotes.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
