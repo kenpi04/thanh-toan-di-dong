@@ -11,15 +11,11 @@ namespace PlanX.Admin.Models.ClickBay
     {
         public int BookingInfoFlightId { get; set; }
         public short PassengerType { get; set; }
+        public string PassengerTypeName { get; set; }
         public int Baggage { get; set; }
         public decimal BaggageFee { get; set; }
         public string Description { get; set; }
-        public virtual PassengerType PassengerTypeEnum
-        {
-            get { return (PassengerType)this.PassengerType; }
-            set { this.PassengerType = (short)value; }
-        }
-
+        
         //public BookingInfoFlightModel BookingInfoFlightModel { get; set; }
     }
 }

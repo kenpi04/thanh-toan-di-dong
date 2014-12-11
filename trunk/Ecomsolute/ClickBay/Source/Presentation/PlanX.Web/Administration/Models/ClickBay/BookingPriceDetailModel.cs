@@ -7,6 +7,7 @@ namespace PlanX.Admin.Models.ClickBay
     {
         public int BookingInfoFlightId { get; set; }
         public short PassengerType { get; set; }
+        public string PassengerTypeName { get; set; }
         public short Quantity { get; set; }
         public string TicketType { get; set; }
         public string CodeFee { get; set; }
