@@ -78,7 +78,7 @@ namespace PlanX.Core.Domain.ClickBay
             get { return (ContactStatus)ContactStatusId; }
             set { this.ContactStatusId = (short)value; }
         }
-    
+
         public virtual BookingInfoFlight BookingInfoFlight { get; set; }
         public virtual BookingInfoFlight BookingInfoFlightReturn { get; set; }
         private ICollection<BookTicketNote> _bookTicketNotes { get; set; }   
@@ -86,6 +86,12 @@ namespace PlanX.Core.Domain.ClickBay
         {
             get { return _bookTicketNotes ?? (_bookTicketNotes = new List<BookTicketNote>()); }
             protected set { _bookTicketNotes = value; }
+        }
+        private ICollection<BookingPassenger> _bookingPassenger { get; set; }
+        public virtual ICollection<BookingPassenger> BookingPassengers
+        {
+            get { return _bookingPassenger ?? (_bookingPassenger = new List<BookingPassenger>()); }
+            protected set { _bookingPassenger = value; }
         }
     }
 }

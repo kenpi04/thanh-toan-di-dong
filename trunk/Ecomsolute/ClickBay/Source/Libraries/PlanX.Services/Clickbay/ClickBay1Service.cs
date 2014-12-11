@@ -41,26 +41,31 @@ namespace PlanX.Services.ClickBay
                 return null;
             return _BookingRepository.GetById(bookingId);
         }
-        public virtual IPagedList<Booking> GetAllBooking(DateTime? fromDate, DateTime? toDate, int? bookingStatusId, int? paymentStatusId, int? contactStatusId, int customerId = 0, string contactNameOrPhone = "", int pageIndex = 0, int pageSize = int.MaxValue)
+        public virtual IPagedList<Booking> GetAllBooking(DateTime? fromDate, DateTime? toDate, int? bookingStatusId, int? paymentStatusId, int? contactStatusId, int customerId = 0, string contactNameOrPhone = "", int pageIndex = 0, int pageSize = int.MaxValue, int id=0)
         {
             var query = _BookingRepository.Table;
+            
             query = query.Where(x=>!x.Deleted);
-            if(fromDate.HasValue)
-                query=query.Where(x=>x.CreatedOn>fromDate.Value);
-            if (toDate.HasValue)
-                query = query.Where(x=>x.CreatedOn<toDate.Value);
-            if (bookingStatusId.HasValue)
-                query = query.Where(x=>x.BookingStatusId==bookingStatusId);
-            if (paymentStatusId.HasValue)
-                query = query.Where(x => x.PaymentStatusId == paymentStatusId);
-            if (contactStatusId.HasValue)
-                query = query.Where(x => x.ContactStatusId == contactStatusId);
-            if (!String.IsNullOrEmpty(contactNameOrPhone))
-                query = query.Where(x => x.ContactName.Contains(contactNameOrPhone) || x.ContactPhone.Contains(contactNameOrPhone));
-            if (customerId != 0)
-                query = query.Where(x => x.CustomerId == customerId);
-            query = query.OrderBy(x=>x.ContactStatusId).ThenBy(x=>x.CreatedOn);
-
+            if (id > 0)
+                query = query.Where(x => x.Id == id);
+            else
+            {
+                if (fromDate.HasValue)
+                    query = query.Where(x => x.CreatedOn > fromDate.Value);
+                if (toDate.HasValue)
+                    query = query.Where(x => x.CreatedOn < toDate.Value);
+                if (bookingStatusId.HasValue && bookingStatusId.Value > 0)
+                    query = query.Where(x => x.BookingStatusId == bookingStatusId);
+                if (paymentStatusId.HasValue)
+                    query = query.Where(x => x.PaymentStatusId == paymentStatusId);
+                if (contactStatusId.HasValue)
+                    query = query.Where(x => x.ContactStatusId == contactStatusId);
+                if (!String.IsNullOrEmpty(contactNameOrPhone))
+                    query = query.Where(x => x.ContactName.Contains(contactNameOrPhone) || x.ContactPhone.Contains(contactNameOrPhone));
+                if (customerId != 0)
+                    query = query.Where(x => x.CustomerId == customerId);
+                query = query.OrderBy(x => x.ContactStatusId).ThenBy(x => x.CreatedOn);
+            }
             return new PagedList<Booking>(query, pageIndex, pageSize);
         }
         #endregion
@@ -120,6 +125,34 @@ namespace PlanX.Services.ClickBay
 
             _bookingPassengerRepository.Insert(bookingPassenger);
         }
+        public virtual void UpdateBookingPassenger(BookingPassenger bookingPassenger)
+        {
+            if (bookingPassenger == null)
+                throw new ArgumentNullException("BookingPassenger is null");
+
+            _bookingPassengerRepository.Update(bookingPassenger);
+        }
+        public virtual BookingPassenger GetAllBookingPassengerById(int id)
+        {
+            if (id == 0)
+                return null;
+            return  _bookingPassengerRepository.GetById(id);
+            
+        }
+        public virtual IList<BookingPassenger> GetAllBookingPassengerByBookingId(int bookingId)
+        {
+            if (bookingId == 0)
+                return null;
+
+            var query = from pas in _bookingPassengerRepository.Table
+                        where pas.BookingId == bookingId
+                        select pas;
+            
+            if (query == null)
+                return null;
+            return query.ToList();
+        }
+
         #endregion
 
         #region Booing Price detail
@@ -140,6 +173,28 @@ namespace PlanX.Services.ClickBay
 
             _bookTicketNoteRepository.Insert(ticketNote);
         }
+        
+        public virtual BookTicketNote GetBookTicketNoteById(int id)
+        {
+            return _bookTicketNoteRepository.GetById(id);
+        }
+        public virtual IList<BookTicketNote> GetAllBookTicketNoteByBokingId(int bookingId)
+        {
+            var query = from bn in _bookTicketNoteRepository.Table
+                        where bn.BookTicketId == bookingId
+                        select bn;
+
+            if (query == null)
+                return null;
+            return query.ToList();
+        }
+        public virtual void DeletedBookTicketNote(BookTicketNote bookTicketNote)
+        {
+            if (bookTicketNote == null)
+                throw new ArgumentNullException("bookTicketNote is null");
+            _bookTicketNoteRepository.Delete(bookTicketNote);
+        }
+
         #endregion
     }
 }

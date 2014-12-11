@@ -10,7 +10,7 @@ namespace PlanX.Data.Mapping.ClickBay
             this.ToTable("BookingPassenger");
             this.HasKey(x => x.Id);
             this.HasRequired(x => x.Booking)
-                .WithMany()
+                .WithMany(b=>b.BookingPassengers)
                 .HasForeignKey(b => b.BookingId);
 
             this.Ignore(x => x.PasserType);
