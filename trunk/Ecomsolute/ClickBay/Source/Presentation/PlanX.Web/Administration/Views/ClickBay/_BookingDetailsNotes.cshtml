@@ -1,0 +1,73 @@
+﻿@model BookingModel
+@using Telerik.Web.Mvc.UI;
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<BookTicketNoteModel>().Name("ordernotes-grid")
+            .DataKeys(keys =>
+            {
+                keys.Add(x => x.Id).RouteKey("bookingNoteId");
+                keys.Add(x => x.BookTicketId).RouteKey("bookingId");
+            })        
+            .Columns(columns =>
+            {
+                columns.Bound(x => x.CreateDate).Title("Ngày tạo").Format("{0:dd/MM/yyyy HH:mm:ss}").Width(220);
+                columns.Bound(x => x.Description).Title("Ghi chú");
+                columns.Command(commands =>
+                {
+                    commands.Delete().Text(T("Admin.Common.Delete").Text);
+                }).Width(180).Title(T("Admin.Common.Delete").Text);
+            })
+            .DataBinding(binding =>
+            {
+                binding.Ajax().Select("BookingNotesSelect", "ClickBay", new { bookingId = Model.Id })
+                    .Delete("BookingNoteDelete", "ClickBay");
+            })
+            .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>
+<p>
+    <strong>
+        Thêm ghi chú
+    </strong>
+</p>
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            <label>Ghi chú</label>
+        </td>
+        <td class="adminData">
+            <textarea name="txtMessageNote" id="txtMessageNote" style="min-width:380px;min-height:70px;"></textarea>
+        </td>
+    </tr>    
+    <tr>
+        <td colspan="2" align="left">
+            <input type="button" id="addOrderNote" class="t-button" value="Thêm" />
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#addOrderNote').click(function () {
+            var bookingNoteMessage = $("#txtMessageNote").val();                
+                $('#addOrderNote').attr('disabled', true);
+                $.ajax({
+                    cache:false,
+                    type: "POST",
+                    url: "@(Url.Action("BookingNoteAdd", "ClickBay"))",
+                    data: { "message": bookingNoteMessage, "bookingId": @Model.Id },
+                    success: function (data) {
+                        var ordernotesGrid = $("#ordernotes-grid");
+                        ordernotesGrid.data('tGrid').ajaxRequest();
+                        $('#addOrderNote').attr('disabled', false);
+                    },
+                    error:function (xhr, ajaxOptions, thrownError){
+                        alert('Failed to add booking note.');
+                        $('#addOrderNote').attr('disabled', false);
+                    }
+                });
+            });
+        });
+</script>
