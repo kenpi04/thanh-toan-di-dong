@@ -9,6 +9,9 @@ namespace PlanX.Data.Mapping.ClickBay
         {
             this.ToTable("BookingPriceDetail");
             this.HasKey(x => x.Id);
+
+            this.Ignore(x=>x.PassengerTypes);
+
             this.HasRequired(x => x.BookingInfoFlight)
                 .WithMany(x => x.BookingPriceDetails)
                 .HasForeignKey(x => x.BookingInfoFlightId);

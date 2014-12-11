@@ -38,13 +38,13 @@ namespace PlanX.Services.ClickBay
             IRepository<Airport> _airportRepository,
             IRepository<AirlinesCondition> airlinesConditionRepository,
             IRepository<ArilinesBaggageCondition> airlineBaggageConditionRepository,
-            IWebHelper webHelper,
+            IWebHelper webHelper,            
             IRepository<BookingBaggage> bookingBaggageRepository,
             IRepository<BookingPassenger> bookingPassengerRepository,
             IRepository<BookingPriceDetail> bookingPriceDetailRepository,
             IRepository<BookingInfoCondition> bookingInfoConditionRepository,
-            IRepository<BookTicketNote> bookTicketNoteRepository
-
+            IRepository<BookTicketNote> bookTicketNoteRepository,
+            IRepository<BookingInfoFlight> bookingInfoFlightRepository
             )
         {
             this._BookingRepository = BookingRepository;
@@ -59,6 +59,7 @@ namespace PlanX.Services.ClickBay
             this._bookingPriceDetailRepository = bookingPriceDetailRepository;
             this._bookingInfoConditionRepository = bookingInfoConditionRepository;
             this._bookTicketNoteRepository = bookTicketNoteRepository;
+            this._bookingInfoFlightRepository = bookingInfoFlightRepository;
         }
 
         #region API

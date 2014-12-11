@@ -25,5 +25,10 @@ namespace PlanX.Core.Domain.ClickBay
         public decimal TotalPrice { get; set; }
     
         public virtual BookingInfoFlight BookingInfoFlight { get; set; }
+        public PassengerType PassengerTypes
+        {
+            get { return (PassengerType)(this.PassengerType); }
+            set { this.PassengerType = (short)value; }
+        }
     }
 }

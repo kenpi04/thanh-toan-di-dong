@@ -11,7 +11,7 @@ namespace PlanX.Data.Mapping.ClickBay
             this.HasKey(x => x.Id);
 
             this.HasRequired(x => x.BookingInfoFlight)
-                .WithMany()
+                .WithMany(p => p.BookingBaggages)
                 .HasForeignKey(b => b.BookingInfoFlightId);
 
             this.Ignore(x=>x.PassengerTypeEnum);
