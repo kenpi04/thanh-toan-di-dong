@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Xml;
 
 namespace PlanX.Core.Domain.ClickBay
 {
@@ -41,6 +42,8 @@ namespace PlanX.Core.Domain.ClickBay
         /// <summary>
         /// Mã chuyến bay	VJ8662
         /// </summary>
+        /// 
+        TimeSpan _flightDuration;
         public string Id { get; set; }
         public string FlightNumer { get; set; }
         public string Description { get; set; }
@@ -49,7 +52,11 @@ namespace PlanX.Core.Domain.ClickBay
 
         public DateTime DepartTime { get; set; }
         public DateTime LandingTime { get; set; }
-        public String FlightDuration { get; set; }
+        public TimeSpan FlightDuration {
+            get { return _flightDuration; }
+            set { _flightDuration = XmlConvert.ToTimeSpan(value.ToString()); }
+        
+        }
         public string FromAirport { get; set; }
         public int FromAirportId { get; set; }
         public string ToAirport { get; set; }
@@ -60,7 +67,7 @@ namespace PlanX.Core.Domain.ClickBay
         public int ToPlaceId { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
-        public int Stops { get; set; }
+        public short Stops { get; set; }
         public string Filter { get; set; }
         public string FareBasis { get; set; }
         public string TicketType { get; set; }

@@ -33,7 +33,7 @@ namespace PlanX.Core.Domain.ClickBay
         public string PRNCode { get; set; }
         public Nullable<System.DateTime> DepartDateTime { get; set; }
         public Nullable<System.DateTime> ArrivalDateTime { get; set; }
-        public int FlightDuration { get; set; }
+        public double FlightDuration { get; set; }
         public string TicketType { get; set; }
         public int FromPlaceId { get; set; }
         public int ToPlaceId { get; set; }
