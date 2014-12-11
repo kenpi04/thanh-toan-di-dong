@@ -94,9 +94,11 @@ namespace PlanX.Services.ClickBay
         void UpdateAirport(Airport airport);
         //void InsertOrupdateAirline(Airline Airline);
 
-        IList<AirlinesCondition> GetListAirlinesConditionByAirlineId(string airlineCode);
-        IList<ArilinesBaggageCondition> GetListArilinesBaggageCondition(string airlineCode);
+        IList<AirlinesCondition> GetListAirlinesConditionByAirlineId(int airlineId);
+        IList<ArilinesBaggageCondition> GetListArilinesBaggageCondition(int airlineId);
+        IList<Airline> GetListAirline();
 
+        Airline GetAirlineById(int id);
         string GetData();
             
 
