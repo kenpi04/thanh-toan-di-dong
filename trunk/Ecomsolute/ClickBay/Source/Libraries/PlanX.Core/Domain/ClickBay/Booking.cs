@@ -58,6 +58,9 @@ namespace PlanX.Core.Domain.ClickBay
         public bool Deleted { get; set; }
         public short ContactPassengerType { get; set; }
 
+        public bool IsInvoid { get; set; }
+        public string TicketId { get; set; }
+
         public virtual PasserType PasserType {
             get { return (PasserType)ContactPassengerType; }
             set { this.ContactPassengerType = (short)value; }

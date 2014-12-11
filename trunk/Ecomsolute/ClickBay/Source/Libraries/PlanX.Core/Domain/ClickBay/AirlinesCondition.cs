@@ -15,10 +15,10 @@ namespace PlanX.Core.Domain.ClickBay
     public partial class AirlinesCondition:BaseEntity
     {
        
-        public string AirlinesId { get; set; }
+        public int AirlinesId { get; set; }
         public string ConditionName { get; set; }
         public string ConditionDescription { get; set; }
         public int DisplayOrder { get; set; }
-        public string TicketType { get; set; }
+     //   public string TicketType { get; set; }
     }
 }
