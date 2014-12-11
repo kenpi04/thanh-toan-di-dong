@@ -2,11 +2,11 @@
 
 namespace PlanX.Admin.Models.ClickBay
 {
-    public class BookTicketNoteModel
+    public class BookTicketNoteModel : PlanX.Web.Framework.Mvc.BaseNopEntityModel
     {
-        public Nullable<int> BookTicketId { get; set; }
+        public int BookTicketId { get; set; }
         public string Description { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
 
         //public virtual BookingModel BookingModel { get; set; }
     }

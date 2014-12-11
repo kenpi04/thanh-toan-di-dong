@@ -8,8 +8,8 @@ namespace PlanX.Admin.Models.ClickBay
     {
          public BookingInfoFlightModel()
         {
-            this.BookingsModel = new List<BookingModel>();
-            this.ReturnBookingsModel = new List<BookingModel>();
+            //this.BookingsModel = new List<BookingModel>();
+            //this.ReturnBookingsModel = new List<BookingModel>();
             this.BookingPriceDetailsModel = new List<BookingPriceDetailModel>();
             this.BookingInfoConditionsModel = new List<BookingInfoConditionModel>();
             this.BookingBaggagesModel = new List<BookingBaggageModel>();
@@ -45,8 +45,8 @@ namespace PlanX.Admin.Models.ClickBay
         public decimal TotalFeeOther { get; set; }
         public decimal DiscountAmount { get; set; }
     
-        public List<BookingModel> BookingsModel { get; set; }
-        public List<BookingModel> ReturnBookingsModel { get; set; }
+        //public List<BookingModel> BookingsModel { get; set; }
+        //public List<BookingModel> ReturnBookingsModel { get; set; }
         public List<BookingPriceDetailModel> BookingPriceDetailsModel { get; set; }
         public List<BookingInfoConditionModel> BookingInfoConditionsModel { get; set; }
         public List<BookingBaggageModel> BookingBaggagesModel { get; set; }
