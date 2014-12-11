@@ -61,79 +61,80 @@ namespace PlanX.Admin.Infrastructure
         {
             //TODO remove 'CreatedOnUtc' ignore mappings because now presentation layer models have 'CreatedOn' property and core entities have 'CreatedOnUtc' property (distinct names)
             #region ClickBay
-            //#region Booking
-            //Mapper.CreateMap<BookingModel, Booking>()
-            //   .ForMember(dest => dest.CreatedOn, mo => mo.Ignore())
-            //   .ForMember(dest => dest.UpdatedOn, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingStatus, mo => mo.Ignore())
-            //   .ForMember(dest => dest.PaymentStatus, mo => mo.Ignore())
-            //   .ForMember(dest => dest.ContactStatus, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingInfoFlight, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingInfoFlightReturn, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookTicketNotes, mo => mo.Ignore());
+            #region Booking
+            Mapper.CreateMap<BookingModel, Booking>()
+               //.ForMember(dest => dest.CreatedOn, mo => mo.Ignore())
+               //.ForMember(dest => dest.UpdatedOn, mo => mo.Ignore())
+               .ForMember(dest => dest.BookingStatus, mo => mo.Ignore())
+               .ForMember(dest => dest.PaymentStatus, mo => mo.Ignore())
+               .ForMember(dest => dest.ContactStatus, mo => mo.Ignore())
+               .ForMember(dest => dest.BookingInfoFlight, mo => mo.Ignore())
+               .ForMember(dest => dest.BookingInfoFlightReturn, mo => mo.Ignore())
+               .ForMember(dest => dest.BookTicketNotes, mo => mo.Ignore());
 
-            //Mapper.CreateMap<Booking, BookingModel>()
-            //   .ForMember(dest => dest.CreatedOn, mo => mo.Ignore())
-            //   .ForMember(dest => dest.UpdatedOn, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingStatus, mo => mo.Ignore())
-            //   .ForMember(dest => dest.PaymentStatus, mo => mo.Ignore())
-            //   .ForMember(dest => dest.ContactStatus, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingInfoFlightModel, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingInfoFlightReturnModel, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookTicketNotesModel, mo => mo.Ignore());
-            //#endregion
-            //#region BookingInfoFlight
-            //Mapper.CreateMap<BookingInfoFlightModel, BookingInfoFlight>()
-            //   .ForMember(dest => dest.BookingBaggages, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingInfoConditions, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingPriceDetails, mo => mo.Ignore())
-            //   .ForMember(dest => dest.Bookings, mo => mo.Ignore());
+            Mapper.CreateMap<Booking, BookingModel>()
+               //.ForMember(dest => dest.CreatedOn, mo => mo.Ignore())
+               //.ForMember(dest => dest.UpdatedOn, mo => mo.Ignore())
+               .ForMember(dest=> dest.ContactCountryName, mo=>mo.Ignore())
+               .ForMember(dest => dest.FromPlace, mo => mo.Ignore())
+               .ForMember(dest => dest.ToPlace, mo => mo.Ignore())
+               .ForMember(dest => dest.ToDate, mo => mo.Ignore())
+               .ForMember(dest => dest.ReturnDate, mo => mo.Ignore())
+               .ForMember(dest => dest.BookingStatus, mo => mo.Ignore())
+               .ForMember(dest => dest.PaymentStatus, mo => mo.Ignore())
+               .ForMember(dest => dest.PaymentMethod, mo => mo.Ignore())
+               .ForMember(dest => dest.ContactStatus, mo => mo.Ignore())
+               .ForMember(dest => dest.BookingInfoFlightModel, mo => mo.Ignore())
+               .ForMember(dest => dest.BookingInfoFlightReturnModel, mo => mo.Ignore())
+               .ForMember(dest => dest.BookTicketNotesModel, mo => mo.Ignore());
+            #endregion
+            #region BookingInfoFlight
+            Mapper.CreateMap<BookingInfoFlightModel, BookingInfoFlight>()
+               .ForMember(dest => dest.BookingBaggages, mo => mo.Ignore())
+               .ForMember(dest => dest.BookingInfoConditions, mo => mo.Ignore())
+               .ForMember(dest => dest.BookingPriceDetails, mo => mo.Ignore());
 
-            //Mapper.CreateMap<BookingInfoFlight, BookingInfoFlightModel>()
-            //   .ForMember(dest => dest.BookingBaggagesModel, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingInfoConditionsModel, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingPriceDetailsModel, mo => mo.Ignore())
-            //   .ForMember(dest => dest.BookingsModel, mo => mo.Ignore());
-            //#endregion
-            //#region BookingInfoCondition
-            //Mapper.CreateMap<BookingInfoConditionModel, BookingInfoCondition>()
-            //   .ForMember(dest => dest.BookingInfoFlight, mo => mo.Ignore());
+            Mapper.CreateMap<BookingInfoFlight, BookingInfoFlightModel>()
+               .ForMember(dest => dest.BookingBaggagesModel, mo => mo.Ignore())
+               .ForMember(dest => dest.BookingInfoConditionsModel, mo => mo.Ignore())
+               .ForMember(dest => dest.BookingPriceDetailsModel, mo => mo.Ignore());
+               
+            #endregion
+            #region BookingInfoCondition
+            Mapper.CreateMap<BookingInfoConditionModel, BookingInfoCondition>()
+               .ForMember(dest => dest.BookingInfoFlight, mo => mo.Ignore());
 
-            //Mapper.CreateMap<BookingInfoCondition, BookingInfoConditionModel>()
-            //   .ForMember(dest => dest.BookingInfoFlightModel, mo => mo.Ignore());
-            //#endregion
-            //#region BookingBaggage
-            //Mapper.CreateMap<BookingBaggageModel, BookingBaggage>()
-            //   .ForMember(dest => dest.BookingInfoFlight, mo => mo.Ignore());
+            Mapper.CreateMap<BookingInfoCondition, BookingInfoConditionModel>();
+            #endregion
+            #region BookingBaggage
+            Mapper.CreateMap<BookingBaggageModel, BookingBaggage>()
+               .ForMember(dest => dest.BookingInfoFlight, mo => mo.Ignore());
 
-            //Mapper.CreateMap<BookingBaggage, BookingBaggageModel>()
-            //   .ForMember(dest => dest.BookingInfoFlightModel, mo => mo.Ignore());
-            //#endregion
-            //#region BookingPriceDetail
-            //Mapper.CreateMap<BookingPriceDetailModel, BookingPriceDetail>()
-            //   .ForMember(dest => dest.BookingInfoFlight, mo => mo.Ignore());
+            Mapper.CreateMap<BookingBaggage, BookingBaggageModel>();
+            #endregion
+            #region BookingPriceDetail
+            Mapper.CreateMap<BookingPriceDetailModel, BookingPriceDetail>()
+               .ForMember(dest => dest.BookingInfoFlight, mo => mo.Ignore())
+               .ForMember(dest => dest.PassengerTypes, mo => mo.Ignore());
 
-            //Mapper.CreateMap<BookingPriceDetail, BookingPriceDetailModel>()
-            //   .ForMember(dest => dest.BookingInfoFlightModel, mo => mo.Ignore());
-            //#endregion
-            //#region BookingPassenger
-            //Mapper.CreateMap<BookingPassengerModel, BookingPassenger>()
-            //    .ForMember(dest => dest.Booking, mo => mo.Ignore())
-            //    .ForMember(dest => dest.PasserType, mo => mo.Ignore());
+            Mapper.CreateMap<BookingPriceDetail, BookingPriceDetailModel>()
+                .ForMember(dest => dest.PassengerTypeName, mo => mo.Ignore());
+            #endregion
+            #region BookingPassenger
+            Mapper.CreateMap<BookingPassengerModel, BookingPassenger>()
+                .ForMember(dest => dest.Booking, mo => mo.Ignore())
+                .ForMember(dest => dest.PasserType, mo => mo.Ignore());
 
-            //Mapper.CreateMap<BookingPassenger, BookingPassengerModel>()
-            //    .ForMember(dest => dest.BookingModel, mo => mo.Ignore())
-            //    .ForMember(dest => dest.PasserType, mo => mo.Ignore());
-            //#endregion
-            //#region BookTicketNote
-            //Mapper.CreateMap<BookTicketNoteModel, BookTicketNote>()
-            //    .ForMember(dest => dest.Booking, mo => mo.Ignore())
-            //    .ForMember(dest => dest.CreateDate, mo => mo.Ignore());
+            Mapper.CreateMap<BookingPassenger, BookingPassengerModel>()
+                .ForMember(dest => dest.PasserType, mo => mo.Ignore());
+            #endregion
+            #region BookTicketNote
+            Mapper.CreateMap<BookTicketNoteModel, BookTicketNote>()
+                .ForMember(dest => dest.Booking, mo => mo.Ignore());
+                
 
-            //Mapper.CreateMap<BookTicketNote, BookTicketNoteModel>()
-            //   .ForMember(dest => dest.BookingModel, mo => mo.Ignore())
-            //    .ForMember(dest => dest.CreateDate, mo => mo.Ignore());
-            //#endregion
+            Mapper.CreateMap<BookTicketNote, BookTicketNoteModel>();                
+            #endregion
 
             #endregion
 
