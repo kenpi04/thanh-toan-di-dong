@@ -1,0 +1,85 @@
+﻿@model BookingModel
+@using Telerik.Web.Mvc.UI;
+@{
+    //page title
+    ViewBag.Title = "Chi tiêt phiếu đặt vé";
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "order-form" }))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-sales.png")" alt="" />
+            @T("Admin.Orders.EditOrderDetails") - @Model.Id @Html.ActionLink("(" + T("Admin.Common.BackToList") + ")", "List")
+        </div>
+        <div class="options">
+            <input type="submit" id="btnRefreshPage" name="btnRefreshPage" style="display: none" />
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#btnRefreshPage').click(function () {
+                        //refresh page
+                        location.reload();
+                    });
+                });
+            </script>
+        </div>
+    </div>
+
+    @Html.ValidationSummary(false)
+
+    @Html.Telerik().TabStrip().Name("order-edit").Items(x =>
+{
+    x.Add().Text("Thông tin đặt vé").Content(TabInfo().ToHtmlString());
+    x.Add().Text("Chuyến bay đi").Content(TabFlightToInfo().ToHtmlString());
+    x.Add().Text("Chuyến bay về").Content(TabFlightReturnInfo().ToHtmlString());
+    x.Add().Text("Điều kiện vé").Content(TabConditionsInfo().ToHtmlString());
+    x.Add().Text("Ghi chú").Content(TabBookingNotes().ToHtmlString());
+
+    //generate an event
+    EngineContext.Current.Resolve<IEventPublisher>().Publish(new AdminTabStripCreated(x, "order-edit"));
+}).ClientEvents(events => events.OnSelect("telerik_on_tab_select")).SetSelectedTabIndex(GetSelectedTabIndex())
+
+    @*save selected tab index*@
+    <input type="hidden" id="selected-tab-index" name="selected-tab-index" value="@(GetSelectedTabIndex())">
+
+}
+@Html.DeleteConfirmation("order-delete")
+@helper TabInfo()
+{
+    @Html.Partial("_BookingDetailsInfo", Model)
+}
+@helper TabFlightToInfo()
+{
+    @Html.Partial("_BookingDetailsFlightTo", Model)
+}
+@helper TabFlightReturnInfo()
+{
+    @Html.Partial("_BookingDetailsFlightReturn", Model)
+}
+@helper TabConditionsInfo()
+{
+    @Html.Partial("_BookingDetailsCondition", Model)
+}
+@helper TabBookingNotes()
+{
+    @Html.Partial("_BookingDetailsNotes", Model)
+}
+<style>
+    table {
+        width: 100%;
+    }
+
+        table.adminContent {
+            font-size: 14px;
+        }
+
+    td.title {
+        padding: 4px 10px;
+        background: #d2d2d2;
+        font-weight: 700;
+    }
+    .bold600{font-weight:600;}
+    .textLeft{text-align:left !important;}
+    table.adminPrice{font-size:14px;border-collapse:collapse;line-height:25px;border-left:1px solid #d2d2d2; border-top:1px solid #d2d2d2;width:500px;}
+    table.adminPrice td{border-right:1px solid #d2d2d2;border-bottom:1px solid #d2d2d2;padding:4px 10px;text-align:right;}
+    
+</style>

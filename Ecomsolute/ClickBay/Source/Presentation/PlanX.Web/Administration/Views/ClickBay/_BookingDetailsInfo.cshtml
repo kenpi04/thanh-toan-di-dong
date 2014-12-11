@@ -1,0 +1,233 @@
+﻿@model BookingModel
+@{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            toggleChangeBookingStatus(false);
+            toggleChangeContactStatus(false);
+        });
+
+        function toggleChangeBookingStatus(editmode) {
+            if (editmode) {
+                $('#pnlChangeBookingStatus').show();
+                $('#btnChangeBookingStatus').hide();
+            } else {
+                $('#pnlChangeBookingStatus').hide();
+                $('#btnChangeBookingStatus').show();
+            }
+        }
+        function toggleChangeContactStatus(editmode) {
+            if (editmode) {
+                $('#pnlChangeContactStatus').show();
+                $('#btnChangeContactStatus').hide();
+            } else {
+                $('#pnlChangeContactStatus').hide();
+                $('#btnChangeContactStatus').show();
+            }
+        }
+    </script>
+}
+<table style="width:100%">
+    <tbody>
+        <tr>
+            <td style="vertical-align:top">
+                <table class="adminContent">
+                    <tr>
+                        <td class="adminTitle bold600">
+                            @Html.NopLabelFor(model => model.BookingStatus):
+                        </td>
+                        <td class="adminData">
+                            <strong>
+                                @Model.BookingStatus
+                            </strong>&nbsp;                            
+                            <input type="submit" name="btnChangeBookingStatus" value="Thay đổi" onclick="toggleChangeBookingStatus(true);return false;" id="btnChangeBookingStatus" class="adminButton" />
+                            <div id="pnlChangeBookingStatus">
+                                @Html.DropDownListFor(model => model.BookingStatusId, ((PlanX.Core.Domain.ClickBay.BookingStatus)Model.BookingStatusId).ToSelectList())
+                                <input type="submit" name="btnSaveBookingStatus" value="@T("Admin.Common.Save")" id="btnSaveBookingStatus" class="adminButton" onclick="return confirm('@T("Admin.Common.AreYouSure")');" />
+                                <input type="submit" name="btnCancelBookingStatus" value="@T("Admin.Common.Cancel")" onclick="toggleChangeBookingStatus(false);return false;" id="btnCancelBookingStatus" class="adminButton" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            ID:
+                        </td>
+                        <td class="adminData">
+                            @Model.Id
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            Loại chuyến bay:
+                        </td>
+                        <td class="adminData">
+                            @(Model.RoundTrip ? "Khứ hồi" : "Một chiều")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            Số lượng hành khách:
+                        </td>
+                        <td class="adminData">
+                            @(Model.Adult == 0 ? "" : string.Format("{0} người lớn", Model.Adult)) @(Model.Child == 0 ? "" : string.Format(" | {0} trẻ em", Model.Child)) @(Model.Infant == 0 ? "" : string.Format("  | {0} trẻ sơ sinh", Model.Infant))
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            Nơi đi: @Model.FromPlace
+                        </td>
+                        <td class="adminData bold600">
+                            Nơi đến: @Model.ToPlace
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            Ngày đi: @(Model.ToDate != null ? Model.ToDate.Value.ToString("dd-MM-yyyy") : "")
+                        </td>
+                        <td class="adminData">
+                            Ngày về: @(Model.ReturnDate != null ? Model.ReturnDate.Value.ToString("dd-MM-yyyy") : "")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="title">
+                            Thanh toán
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            Tình trạng thanh toán:
+                        </td>
+                        <td class="adminData bold600">
+                            @Model.PaymentStatus
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            Tổng giá:
+                        </td>
+                        <td class="adminData">
+                            @Model.TotalAmount
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            Tổng thuế & phí:
+                        </td>
+                        <td class="adminData">
+                            @(Model.TotalFeeAmount + Model.TotalTaxAmount + Model.TotalFeeOtherAmount)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            Tổng phí hành lý:
+                        </td>
+                        <td class="adminData">
+                            @Model.TotalBaggageFeeAmount
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            Tổng giảm giá:
+                        </td>
+                        <td class="adminData">
+                            @Model.TotalDiscountAmount
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="adminTitle bold600">
+                            Tổng cộng:
+                        </td>
+                        <td class="adminData bold600">
+                            @(Model.TotalAmount + Model.TotalFeeAmount + Model.TotalTaxAmount + Model.TotalFeeOtherAmount - Model.TotalDiscountAmount)  @Model.CurrencyCode
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="vertical-align:top">
+                <table class="adminContent">
+                    <tbody>
+                        <tr>
+                            <td colspan="3" class="title">
+                                Thông tin hành khách
+                            </td>
+                        </tr>
+                        @foreach (var pass in Model.BookingPassengerModel)
+                        {
+                            <tr>
+                                <td class="adminTitle bold600">
+                                    @if (pass.PassengerType == 0)
+                                    {<text>Người lớn(Từ 12 tuổi):</text>}
+                                    else if (pass.PassengerType == 1)
+                                    {<text>Trẻ em(Từ 2 -> 11 tuổi):</text>}
+                                    else if (pass.PassengerType == 2)
+                                    {<text>Trẻ sơ sinh(Dưới 2 tuổi):</text>}
+                                </td>
+                                <td>
+                                    @string.Format("{0}, {1} {2} {3}", pass.Title, pass.LastName, pass.MiddleName, pass.FirstName)
+                                </td>
+                                <td>
+                                    @if (pass.PassengerType != 0)
+                                    {
+                                        @("Ngày sinh: "+ pass.BirthDay.Value.ToString("dd-MM-yyyy"))
+                                    }
+                                </td>
+                            </tr>
+                        }                        
+                        <tr>
+                            <td colspan="3" class="title">Thông tin liên hệ</td>
+                        </tr>
+                        <tr>
+                            <td class="adminTitle bold600">Tên liên hệ: </td>
+                            <td colspan="2">@Model.ContactName</td>
+                        </tr>
+                        <tr>
+                            <td class="adminTitle bold600">Điện thoại liên hệ: </td>
+                            <td colspan="2">@Model.ContactPhone</td>
+                        </tr>
+                        <tr>
+                            <td class="adminTitle bold600">Email: </td>
+                            <td colspan="2">@Model.ContactEmail</td>
+                        </tr>
+                        <tr>
+                            <td class="adminTitle bold600">Địa chỉ: </td>
+                            <td colspan="2">@string.Format("{0}, {1}, {2}", Model.ContactAddress, Model.ContactCityName, Model.ContactCountryName)</td>
+                        </tr>
+                        <tr>
+                            <td class="adminTitle bold600">Yêu cầu đặc biệt: </td>
+                            <td colspan="2">@Model.ContactRequestMore</td>
+                        </tr>
+                        <tr class="adminSeparator">
+                            <td><hr></td>
+                        </tr>
+                        <tr>
+                            <td class="adminTitle bold600">Tình trạng liên hệ: </td>
+                            <td colspan="2">@Model.ContactStatus &nbsp;
+                                <input type="submit" name="btnChangeContactStatus" value="Thay đổi" onclick="toggleChangeContactStatus(true);return false;" id="btnChangeContactStatus" class="adminButton" />
+                                <div id="pnlChangeContactStatus">
+                                    @Html.DropDownListFor(model => model.ContactStatusId, ((PlanX.Core.Domain.ClickBay.ContactStatus)Model.ContactStatusId).ToSelectList())
+                                    <input type="submit" name="btnSaveContactStatus" value="@T("Admin.Common.Save")" id="btnSaveContactStatus" class="adminButton" onclick="return confirm('@T("Admin.Common.AreYouSure")');" />
+                                    <input type="submit" name="btnCancelContactStatus" value="@T("Admin.Common.Cancel")" onclick="toggleChangeContactStatus(false);return false;" id="btnCancelContactStatus" class="adminButton" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="adminTitle bold600">Nhân viên: </td>
+                            <td colspan="2">@Model.CustomerName @(Model.CustomerId != 0? "("+Model.CustomerId.ToString()+")":"")</td>
+                        </tr>
+                        <tr>
+                            <td class="adminTitle bold600">Ngày nhận: </td>
+                            <td colspan="2">@(Model.CustomerReceivedDate != null ? Model.CustomerReceivedDate.Value.ToString("dd-MM-yyyy HH:mm:ss") : "")</td>
+                        </tr>
+                        <tr>
+                            <td class="adminTitle bold600">Ngày đặt vé: </td>
+                            <td colspan="2">@Model.CreatedOn.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                        </tr>
+                        <tr>
+                            <td class="adminTitle bold600">Ngày cập nhật: </td>
+                            <td colspan="2">@Model.UpdatedOn.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

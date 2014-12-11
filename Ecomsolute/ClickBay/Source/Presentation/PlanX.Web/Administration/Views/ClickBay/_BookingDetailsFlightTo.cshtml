@@ -1,0 +1,137 @@
+﻿@model BookingModel
+@{
+    var codeFees = new List<KeyValuePair<string, string>>();
+    string departTime="", departDate="", landingTime="", landingDate="";
+    if (Model.BookingInfoFlightModel != null)
+    {
+        codeFees = Model.BookingInfoFlightModel.BookingPriceDetailsModel.Select(x => new { x.CodeFee, x.Description }).Distinct().ToList().Select(d =>
+        {
+            return new KeyValuePair<string, string>(d.CodeFee, d.Description);
+        }).ToList();
+
+        if (Model.BookingInfoFlightModel.DepartDateTime.HasValue)
+        {
+            departDate = Model.BookingInfoFlightModel.DepartDateTime.Value.ToString("dd-MM-yyyy");
+            departTime = Model.BookingInfoFlightModel.DepartDateTime.Value.ToString("HH:mm");
+        }
+        if (Model.BookingInfoFlightModel.ArrivalDateTime.HasValue)
+        {
+            landingDate = Model.BookingInfoFlightModel.ArrivalDateTime.Value.ToString("dd-MM-yyyy");
+            landingTime = Model.BookingInfoFlightModel.ArrivalDateTime.Value.ToString("HH:mm");
+        }
+    }
+}
+@if (Model.BookingInfoFlightModel != null)
+{
+    <table class="adminContent">
+        <tbody>
+            <tr>
+                <td class="adminTitle bold600">
+                    Hãng hàng không:
+                </td>
+                <td>@Model.BookingInfoFlightModel.BrandName (@Model.BookingInfoFlightModel.FlightNumber)</td>
+            </tr>
+            <tr>
+                <td class="adminTitle" style="width:235px"><span class="bold600">Nơi đi:</span> @Model.BookingInfoFlightModel.FromPlaceName</td>
+                <td><span class="bold600">Nơi đến:</span> @Model.BookingInfoFlightModel.ToPlaceName</td>
+            </tr>
+            <tr>
+                <td><span class="bold600">Thời gian đi:</span><span style="padding:0 10px;">@departTime</span><span>@departDate</span></td>
+                <td><span class="bold600">Thời gian đến:</span><span style="padding:0 10px;">@landingTime</span><span>@landingDate</span></td>
+            </tr>
+            <tr>
+                <td class="bold600">Số lượng hành khách:</td>
+                <td>@(Model.BookingInfoFlightModel.Adult == 0 ? "" : string.Format("{0} người lớn", Model.BookingInfoFlightModel.Adult)) @(Model.BookingInfoFlightModel.Child == 0 ? "" : string.Format(" | {0} trẻ em", Model.BookingInfoFlightModel.Child)) @(Model.BookingInfoFlightModel.Infant == 0 ? "" : string.Format("  | {0} trẻ sơ sinh", Model.BookingInfoFlightModel.Infant))</td>
+            </tr>
+            <tr>
+                <td><span class="bold600">Loại vé:</span> @Model.BookingInfoFlightModel.TicketType</td>
+            </tr>
+            <tr>
+                <td colspan="2"><span class="bold600">PRN Code:</span> <input type="text" name="txtPRNCode" id="txtPRNCode" value="@Model.BookingInfoFlightModel.PRNCode" /><input type="submit" name="btnPRNCode" value="Cập nhật" class="adminButton"/></td>
+            </tr>
+            <tr>
+                <td><span class="bold600">Id booking:</span> </td>
+            </tr>
+            <tr class="adminSeparator"><td colspan="2"></td></tr>
+            <tr>
+                <td colspan="2">
+                    <table class="adminPrice">
+                        <tbody>
+                            @foreach (var codeFee in codeFees)
+                            {
+                                <tr>
+                                    <td colspan="4" class="bold600 textLeft">
+                                        @codeFee.Value (@codeFee.Key)
+                                    </td>
+                                </tr>
+                                foreach (var price in Model.BookingInfoFlightModel.BookingPriceDetailsModel.Where(x => x.CodeFee == codeFee.Key).ToList())
+                                {
+                                    <tr>
+                                        <td class="textLeft">
+                                            @price.PassengerTypeName
+                                        </td>
+                                        <td>
+                                            @price.Quantity
+                                        </td>
+                                        <td>
+                                            @price.Price.ToString("#,0")
+                                        </td>
+                                        <td>
+                                            @price.TotalPrice.ToString("#,0")
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            <tr>
+                                <td colspan="4" class="bold600 textLeft">Phí hành lý lượt đi</td>
+                            </tr>
+                            @foreach (var bag in Model.BookingInfoFlightModel.BookingBaggagesModel)
+                            {
+                                <tr>
+                                    <td class="textLeft">
+                                        @bag.PassengerTypeName
+                                    </td>
+                                    <td>
+                                        @bag.Baggage @(string.IsNullOrEmpty(bag.Description) ? "" : "(" + bag.Description + ")")
+                                    </td>
+                                    <td>
+                                        @bag.BaggageFee.ToString("#,0")
+                                    </td>
+                                    <td>
+                                        @bag.BaggageFee.ToString("#,0")
+                                    </td>
+                                </tr>}
+                            <tr>
+                                <td colspan="3" class="bold600">TỔNG CỘNG (@Model.CurrencyCode)</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="bold600 textRight">Tổng giá: </td>
+                                <td class="bold600">@Model.BookingInfoFlightModel.TotalPrice.ToString("#,0")</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="bold600 textRight">Tổng phí & thuế: </td>
+                                <td class="bold600">@((Model.BookingInfoFlightModel.TotalFee + Model.BookingInfoFlightModel.TotalTax + Model.BookingInfoFlightModel.TotalFeeOther).ToString("#,0"))</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="bold600 textRight">Tổng phí hành lý: </td>
+                                <td class="bold600">@Model.BookingInfoFlightModel.TotalBaggageFee.ToString("#,0")</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="bold600 textRight">Giảm giá: </td>
+                                <td class="bold600">@((-Model.BookingInfoFlightModel.DiscountAmount).ToString("#,0"))</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="bold600 textRight">Còn lại: </td>
+                                <td class="bold600">@((Model.BookingInfoFlightModel.TotalPrice + Model.BookingInfoFlightModel.TotalFee + Model.BookingInfoFlightModel.TotalTax + Model.BookingInfoFlightModel.TotalFeeOther - Model.BookingInfoFlightModel.DiscountAmount).ToString("#,0"))</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>}
+else
+{
+    <span>Không có dữ liệu chuyến bay</span>
+}

@@ -43,13 +43,13 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.CustomerNameOrPhone)
             </td>
-        </tr>        
+        </tr>
         <tr>
             <td class="adminTitle">
                 @Html.NopLabelFor(model => model.BookingId):
             </td>
             <td class="adminData">
-                @Html.EditorFor(model => Model.BookingId)                
+                @Html.EditorFor(model => Model.BookingId)
             </td>
         </tr>
         <tr>
@@ -65,10 +65,10 @@
             <td>
                 @(Html.Telerik().Grid<PlanX.Admin.Models.ClickBay.BookingModel>()
                         .Name("orders-grid")
-                        //.ClientEvents(events => events
-                        //    .OnDataBinding("onDataBinding")
-                        //    .OnDataBound("onDataBound"))
-                        //    .OnComplete("onComplete"))
+        .ClientEvents(events => events
+            .OnDataBinding("onDataBinding"))
+        //    .OnDataBound("onDataBound"))
+        //    .OnComplete("onComplete"))
                         .Columns(columns =>
                         {
                             columns.Bound(x => x.Id);
@@ -78,9 +78,7 @@
                             columns.Bound(x => x.CreatedOn);
                             columns.Bound(x => x.BookingStatus);
                             columns.Bound(x => x.PaymentStatus);
-                            
-                                columns.Bound(x => x.TotalAmount);                                       
-                            
+                            columns.Bound(x => x.TotalAmount);
                             columns.Bound(x => x.Id)
                                 .Template(x => Html.ActionLink(T("Admin.Common.View").Text, "Edit", new { id = x.Id }))
                                 .ClientTemplate("<a href=\"Edit/<#= Id #>\">" + T("Admin.Common.View").Text + "</a>")
@@ -96,48 +94,48 @@
     </table>
     <script type="text/javascript">
 
-    var selectedIds = [];
-    var reportAggregates = "";
+        var selectedIds = [];
+        var reportAggregates = "";
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        //search button
-        $('#btnSearch').click(function () {
-            //search
-            var grid = $('#orders-grid').data('tGrid');
-            grid.currentPage = 1; //new search. Set page size to 1
-            grid.ajaxRequest();
-            //clear selected checkboxes
-            //$('.checkboxGroups').attr('checked', false).change();
-            //selectedIds = [];
-            return false;
-        });
+            //search button
+            $('#btnSearch').click(function () {
+                //search
+                var grid = $('#orders-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+                //clear selected checkboxes
+                //$('.checkboxGroups').attr('checked', false).change();
+                //selectedIds = [];
+                return false;
+            });
 
-        //"Print packaging slips (selected)" button
-        @*$('#pdf-invoice-selected').click(function (e) {
+            //"Print packaging slips (selected)" button
+            @*$('#pdf-invoice-selected').click(function (e) {
                 e.preventDefault();
                 //redirect to required URL
                 setLocation('@(Url.Action("PdfInvoiceSelected", "Order"))?selectedIds=' + selectedIds.join(","));
                 return false;
             });*@
 
-        @*$("#@Html.FieldIdFor(model => model.CustomerEmail)").keydown(function (event) {
+            @*$("#@Html.FieldIdFor(model => model.CustomerEmail)").keydown(function (event) {
             if (event.keyCode == 13) {
                 $("#btnSearch").click();
                 return false;
             }
         });*@
 
-        //"Export Excel selected" button
-        @*$('#exportexcel-selected').click(function (e) {
+            //"Export Excel selected" button
+            @*$('#exportexcel-selected').click(function (e) {
                 e.preventDefault();
                 //redirect to required URL
                 setLocation('@(Url.Action("ExportExcelSelected", "Order"))?selectedIds=' + selectedIds.join(","));
                 return false;
             });*@
 
-        //"Export XML selected" button
-        @*$('#exportxml-selected').click(function (e) {
+            //"Export XML selected" button
+            @*$('#exportxml-selected').click(function (e) {
                 e.preventDefault();
                 //redirect to required URL
                 setLocation('@(Url.Action("ExportXmlSelected", "Order"))?selectedIds=' + selectedIds.join(","));
@@ -145,84 +143,84 @@
             });*@
 
 
-        //$('#mastercheckbox').click(function () {
-        //    $('.checkboxGroups').attr('checked', $(this).is(':checked')).change();
-        //});
+            //$('#mastercheckbox').click(function () {
+            //    $('.checkboxGroups').attr('checked', $(this).is(':checked')).change();
+            //});
 
-        //wire up checkboxes.
-        //$('#orders-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function (e) {
-        //    var $check = $(this);
-        //    if ($check.is(":checked") == true) {
-        //        var checked = jQuery.inArray($check.val(), selectedIds);
-        //        if (checked == -1) {
-        //            //add id to selectedIds.
-        //            selectedIds.push($check.val());
-        //        }
-        //    }
-        //    else {
-        //        var checked = jQuery.inArray($check.val(), selectedIds);
-        //        if (checked > -1) {
-        //            //remove id from selectedIds.
-        //            selectedIds = $.grep(selectedIds, function (item, index) {
-        //                return item != $check.val();
-        //            });
-        //        }
-        //    }
-        //    updateMasterCheckbox();
-        //});
-    });
+            //wire up checkboxes.
+            //$('#orders-grid').on('change', 'input[type=checkbox][id!=mastercheckbox]', function (e) {
+            //    var $check = $(this);
+            //    if ($check.is(":checked") == true) {
+            //        var checked = jQuery.inArray($check.val(), selectedIds);
+            //        if (checked == -1) {
+            //            //add id to selectedIds.
+            //            selectedIds.push($check.val());
+            //        }
+            //    }
+            //    else {
+            //        var checked = jQuery.inArray($check.val(), selectedIds);
+            //        if (checked > -1) {
+            //            //remove id from selectedIds.
+            //            selectedIds = $.grep(selectedIds, function (item, index) {
+            //                return item != $check.val();
+            //            });
+            //        }
+            //    }
+            //    updateMasterCheckbox();
+            //});
+        });
 
-    function onDataBinding(e) {
-        var searchModel = {
-            FromDate: $('#@Html.FieldIdFor(model => model.CreateDate)').val(),
-            ToDate: $('#@Html.FieldIdFor(model => model.CreateDate)').val(),
-            CustomerId: $('#@Html.FieldIdFor(model => model.CustomerId)').val(),
-            BookingStatusId: $('#@Html.FieldIdFor(model => model.BookingStatusId)').val(),
-            CustomerNameOrPhone: $('#@Html.FieldIdFor(model => model.CustomerNameOrPhone)').val(),
+        function onDataBinding(e) {
+            var searchModel = {
+                FromDate: $('#@Html.FieldIdFor(model => model.CreateDate)').val(),
+                ToDate: $('#@Html.FieldIdFor(model => model.CreateDate)').val(),
+                CustomerId: $('#@Html.FieldIdFor(model => model.CustomerId)').val(),
+                BookingStatusId: $('#@Html.FieldIdFor(model => model.BookingStatusId)').val(),
+                CustomerNameOrPhone: $('#@Html.FieldIdFor(model => model.CustomerNameOrPhone)').val(),
             };
-        e.data = searchModel;
-    }
+            e.data = searchModel;
+        }
 
-    //function onDataBound(e) {
+        //function onDataBound(e) {
 
-    //    $('#orders-grid input[type=checkbox][id!=mastercheckbox]').each(function () {
-    //        var currentId = $(this).val();
-    //        var checked = jQuery.inArray(currentId, selectedIds);
-    //        //set checked based on if current checkbox's value is in selectedIds.
-    //        $(this).attr('checked', checked > -1);
-    //    });
+        //    $('#orders-grid input[type=checkbox][id!=mastercheckbox]').each(function () {
+        //        var currentId = $(this).val();
+        //        var checked = jQuery.inArray(currentId, selectedIds);
+        //        //set checked based on if current checkbox's value is in selectedIds.
+        //        $(this).attr('checked', checked > -1);
+        //    });
 
-    //    updateMasterCheckbox();
+        //    updateMasterCheckbox();
 
-    //    reportLoaded(e);
-    //}
+        //    reportLoaded(e);
+        //}
 
-    //function onComplete(e) {
-    //    var result = e.response;
-    //    if (result) {
-    //        reportAggregates = e.response["aggregates"];
-    //    }
-    //}
+        //function onComplete(e) {
+        //    var result = e.response;
+        //    if (result) {
+        //        reportAggregates = e.response["aggregates"];
+        //    }
+        //}
 
-    //function reportLoaded(e) {
-    //    if (reportAggregates != "") {
-    //        updateAggregates(reportAggregates);
-    //    }
-    //}
-    //function updateAggregates(aggs) {
-    //    for (var key in aggs) {
-    //        $('#aggregator-profit-block').text(aggs['aggregatorprofit']);
-    //        $('#aggregator-shipping-block').text(aggs['aggregatorshipping']);
-    //        $('#aggregator-tax-block').text(aggs['aggregatortax']);
-    //        $('#aggregator-total-block').text(aggs['aggregatortotal']);
-    //    }
-    //}
+        //function reportLoaded(e) {
+        //    if (reportAggregates != "") {
+        //        updateAggregates(reportAggregates);
+        //    }
+        //}
+        //function updateAggregates(aggs) {
+        //    for (var key in aggs) {
+        //        $('#aggregator-profit-block').text(aggs['aggregatorprofit']);
+        //        $('#aggregator-shipping-block').text(aggs['aggregatorshipping']);
+        //        $('#aggregator-tax-block').text(aggs['aggregatortax']);
+        //        $('#aggregator-total-block').text(aggs['aggregatortotal']);
+        //    }
+        //}
 
-    //function updateMasterCheckbox() {
-    //    var numChkBoxes = $('#orders-grid input[type=checkbox][id!=mastercheckbox]').length;
-    //    var numChkBoxesChecked = $('#orders-grid input[type=checkbox][checked][id!=mastercheckbox]').length;
-    //    $('#mastercheckbox').attr('checked', numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
-    //}
+        //function updateMasterCheckbox() {
+        //    var numChkBoxes = $('#orders-grid input[type=checkbox][id!=mastercheckbox]').length;
+        //    var numChkBoxesChecked = $('#orders-grid input[type=checkbox][checked][id!=mastercheckbox]').length;
+        //    $('#mastercheckbox').attr('checked', numChkBoxes == numChkBoxesChecked && numChkBoxes > 0);
+        //}
     </script>
 
 }

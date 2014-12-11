@@ -1,0 +1,40 @@
+﻿@model BookingModel
+
+@if (Model.BookingInfoFlightModel != null)
+{
+    <table class="adminPrice">
+        <tbody>
+            <tr>
+                <td class="title textLeft" colspan="2">
+                    Điều kiện chiều đi
+                </td>
+            </tr>
+            @foreach (var condition in Model.BookingInfoFlightModel.BookingInfoConditionsModel)
+            {
+                <tr>
+                    <td class="adminTitle textLeft">@condition.ConditionType</td>
+                    <td class="textLeft">@condition.ConditionDescription</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@if (Model.BookingInfoFlightReturnModel != null)
+{
+    <table class="adminPrice">
+        <tbody>
+            <tr>
+                <td class="title textLeft" colspan="2">
+                    Điều kiện chiều về
+                </td>
+            </tr>
+            @foreach (var condition in Model.BookingInfoFlightReturnModel.BookingInfoConditionsModel)
+            {
+                <tr>
+                    <td class="adminTitle textLeft">@condition.ConditionType</td>
+                    <td class="textLeft">@condition.ConditionDescription</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
