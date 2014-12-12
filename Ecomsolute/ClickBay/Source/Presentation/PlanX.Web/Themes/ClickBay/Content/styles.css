@@ -15,10 +15,6 @@ hr{display:block;height:1px;border:0;border-top:1px solid #cccccc;margin:1em 0;p
 input,select{vertical-align:middle;}
 /* END RESET CSS (html5doctor.com) */
 
-
-
-
-
 /* OTHER RESET STYLESHEET (HTML GENERAL) */
 body{font-family:arial,verdana,helvetica,sans-serif;font-size:13px;background: #fff;color:#5C5B5B;line-height:normal;}
 a{color:#5C5B5B;text-decoration:none;font-weight:normal;}
@@ -32,7 +28,6 @@ legend{font-weight:bold;line-height:20px;font-size:16px;}
 input[type="text"],input[type="password"]{border:1px solid #eee;}
 input[type="text"]:disabled{background:none repeat scroll 0 0 #FFF;}
 
-
 /**Clickbay css*/
 a {text-decoration:none }
 a:hover {text-decoration:none }
@@ -44,13 +39,14 @@ p {padding:0;line-height:1.5em }
 .logo{float:left}
 .formsearch{float:right;width:260px}
 .clear{clear:both}
-.container{width:90%;margin:0 auto}
+.container ,.wrapper-body{width:90%;margin:0 auto}
+.container .search-head{width:100%;float:right}
 #menu{height:45px;background:#189b96}
 #menu li{float:left;padding: 14px 20px;margin-right: 20px;}
 #menu li:hover{background:#66cccc}
 #menu li:last-child{float:right;padding: 11px;}
 #menu li:last-child:hover{background:none}
-#menu li a{color:#fff;font-size:14px}
+#menu li a{color:#fff;font-size:15px}
 .hotline{color: #fff;font-size: 20px;}
 .form-search-box {
     background: #f3f3f3;
@@ -132,21 +128,26 @@ height:300px
 .ht li{padding:10px 5px 10px 0}
 .ht li b{font-size:20px;margin-right:10px}
 .col2{width:840px;margin:0 auto}
-.col2 .box {float: left;
-margin-right: 20px;}
+.col2 .box {float: left;margin-right: 20px;}
 
 /*CSS anh dung*/
 img{max-width:100%;max-height:100%;}
 input,select{padding:6px;}
+input.default,a.default{min-width:90px;background:#189b96;padding:6px;color:#fff;border:0;font-size:14px;cursor:pointer}
 input.default,a.default{background:#189b96;padding:8px;color:#fff;border:0;font-size:14px;cursor:pointer;display:inline-block;}
 label.default{padding:8px;}
+input.textbox-default{}
+/*.wrapper-body{width:90%;margin:0 auto}*/
+.wrapper-content{margin:40px 0;}
+.wrapper-content.inline{margin:0 2%;}
+.title{display:inline-block;font-size:15px;color:#fff;background:#189b96;width:100%;}
 span.active{color:#F2C127;}
 .main-background{background:#189b96 !important; color:#fff;}
 .wrapper-body{width:90%;margin:0 auto;margin-bottom:20px;}
 .wrapper-content{margin:0 2%;}
 .title{display:inline-block;font-size:15px;color:#fff;background:#189b96;width:100%;padding:8px 0}
-.title-left{float:left;padding:8px;}
-.title-right{float:right;padding:8px;}
+.title-left{float:left;padding:0 8px;}
+.title-right{float:right;padding:0 8px;}
 .big-font{color:orange;font-size:20px;font-weight:600;margin-right:7px;width:19%;text-align:right;}
 .currency{width:7%}
 .postitem{cursor:pointer;color:#fff !important;}
@@ -214,21 +215,15 @@ img.icon-small{width:10px;margin:0 4px;}
 .news article aside{margin-bottom:10px;padding-bottom:15px;border-bottom:1px solid #189b96;display:inline-block;}
 .news article aside .news-content-preview{float:left;width:68%;}
 .news article aside .info-small{display:block;}
-.news-image{width:30%;float:left;margin-right:2%;}
+.news-image{width:30%;float:left;margin-right:2%;height:177px;overflow:hidden;}
 .table{width:100%}
 /*news detail*/
 .news-detail .news-title{font-size:25px;color:#189b96;font-weight:600}
 .news-detail .info-small{font-size:12px;}
 .news-detail .content-preview{font-size:15px;}
 .boder-dashed{border-bottom:dashed 2px #189b96}
-.nv-title{color: #189b96;
-font-size: 14px;
-text-transform: uppercase;
-font-weight: bold;
-margin-bottom: -9px;
-background: #fff;
-/* float: left; */
-width: 339px;}
+.nv-title{color: #189b96;font-size: 14px;text-transform: uppercase;font-weight: bold;margin-bottom: -9px;background: #fff;/* float: left; */width: 339px;}
+/*.postitem{cursor: pointer;color: #fff !important;}*/
 .postitem{cursor: pointer;
 color: #fff !important;
 float: right;
@@ -240,13 +235,13 @@ border-radius: 5px;}
 .t{text-align: center;
 color: #189b96;
 font-size: 19px;}
-
+.section .search{padding:10px 10px 10px 0px}
+.section .search form input{border-color:#999999;margin-right:3px;width:auto}
 
 /* AJAX LOADING INDICATOR */
 .ajax-loading-block-window{position:fixed;top:50%;left:50%;width:128px;height:128px;overflow:hidden;z-index:1104;}
 .ajax-loading-block-window .loading-image{position:absolute;top:0;left:0;width:128px;height:128px;background-image:url('images/ajax_loader_large.gif');}
 .please-wait{background:url('images/ajax_loader_small.gif') no-repeat;padding-left:20px;}
-
 
 /*booking*/
 .booking{font-size:14px;border:1px solid #e2e2e2;width:73%;padding:10px;}
@@ -284,26 +279,25 @@ font-size: 19px;}
 .priceDetail .detail .box-content.sumPrice p span:last-child{font-size:15px;font-weight:600;}
 .priceDetail .detail .box-content p span:last-child{float:right;}
 
-
 /*BOX search*/
 .listCity td{vertical-align: top;}
-    .listCity ul{list-style: none;float: left;clear: both;}
-    .listCity ul li{float: left;clear: both;padding: 0 5px 0 0;width: 115px;}
-    .listCity ul li.title{font-weight: bold;font-size: 13px;padding: 5px 0 7px 0;color: #ff7b0f;text-transform: uppercase;}
-    .listCity ul li a{float: left;width: 106px;padding: 3px 5px;}
-    .listCity ul li a:hover{background: #ff7b0f;}
-    .listCity ul li a:hover *{color: #fff;}
-    .listCity ul li a:hover b{font-weight: bold;}
-    .listCity ul li a b{float: left;font-weight: normal;}
-    .listCity ul li a span{float: right;font-weight: bold;font-size: 10px;color: #999;display: none;}
-    .domestic-col{float: left;padding-right: 15px;font-size: 12px;}
-    .internation-city{float: left;width: 260px;}
-    .internation-city h3{font-size: 13px;padding: 5px 0;margin: 0;color: #ff7b0f;text-transform: uppercase;}
-    .internation-city p{font-size: 11px;color: #888;}
-    .internation-city input{height: 24px;width: 250px;border: 1px solid #ccc;padding: 2px 5px;margin: 7px 0;}
-    .select-date{padding-top: 10px;}
-    .select-date select{height: 26px;}
-    #dialog-form{position: absolute;
+.listCity ul{list-style: none;float: left;clear: both;}
+.listCity ul li{float: left;clear: both;padding: 0 5px 0 0;width: 115px;}
+.listCity ul li.title{font-weight: bold;font-size: 13px;padding: 5px 0 7px 0;color: #ff7b0f;text-transform: uppercase;}
+.listCity ul li a{float: left;width: 106px;padding: 3px 5px;}
+.listCity ul li a:hover{background: #ff7b0f;}
+.listCity ul li a:hover *{color: #fff;}
+.listCity ul li a:hover b{font-weight: bold;}
+.listCity ul li a b{float: left;font-weight: normal;}
+.listCity ul li a span{float: right;font-weight: bold;font-size: 10px;color: #999;display: none;}
+.domestic-col{float: left;padding-right: 15px;font-size: 12px;}
+.internation-city{float: left;width: 260px;}
+.internation-city h3{font-size: 13px;padding: 5px 0;margin: 0;color: #ff7b0f;text-transform: uppercase;}
+.internation-city p{font-size: 11px;color: #888;}
+.internation-city input{height: 24px;width: 250px;border: 1px solid #ccc;padding: 2px 5px;margin: 7px 0;}
+.select-date{padding-top: 10px;}
+.select-date select{height: 26px;}
+#dialog-form{position: absolute;
 z-index: 10;
 top: 342px;
 left: 802px;
@@ -331,3 +325,36 @@ width: 80%;
 border-radius: 5px;
 border: solid 1px #ddd;
     }
+
+/*News*/
+.section-right-search {float: right;width: 24%;margin-bottom: 20px;}
+.news-image img {width: 100%;}
+.search-box-small .box-search {width: auto;height: auto;margin-top: 10px;box-shadow: 0px 4px 10px #000;padding: 10px;}
+.search-box-small .box-search .box-content {padding-left: 0;padding-top: 15px;}
+.search-box-small .box-search .box-content .col .textbox {padding-left: 8px;width: 100%;}
+.search-box-small .box-search .box-content .col {float: none;width: auto;margin: 0;padding: 5px 30px 5px 10px;}
+span.active{color: #F2C127;}
+.news-detail .news-title { font-size: 25px; color: #189b96; font-weight: 600; }
+.ui-timepicker-wrapper {overflow-y: auto;height: 150px;width: 6.5em;background: #fff;border: 1px solid #ddd;-webkit-box-shadow:0 5px 10px rgba(0,0,0,0.2);-moz-box-shadow:0 5px 10px rgba(0,0,0,0.2);box-shadow:0 5px 10px rgba(0,0,0,0.2);outline: none;z-index: 10001;margin: 0;}
+.ui-timepicker-wrapper.ui-timepicker-with-duration {width: 13em;}
+.ui-timepicker-wrapper.ui-timepicker-with-duration.ui-timepicker-step-30,
+.ui-timepicker-wrapper.ui-timepicker-with-duration.ui-timepicker-step-60 {width: 11em;}
+.ui-timepicker-list {	margin: 0;	padding: 0;	list-style: none;}
+.ui-timepicker-duration {	margin-left: 5px; color: #888;}
+.ui-timepicker-list:hover .ui-timepicker-duration {	color: #888;}
+.ui-timepicker-list li {	padding: 3px 0 3px 5px;	cursor: pointer;	white-space: nowrap;	color: #000;	list-style: none;	margin: 0;}
+.ui-timepicker-list:hover .ui-timepicker-selected {	background: #fff; color: #000;}
+li.ui-timepicker-selected,
+.ui-timepicker-list li:hover,
+.ui-timepicker-list .ui-timepicker-selected:hover {	background: #1980EC; color: #fff;}
+li.ui-timepicker-selected .ui-timepicker-duration,
+.ui-timepicker-list li:hover .ui-timepicker-duration {	color: #ccc;}
+.ui-timepicker-list li.ui-timepicker-disabled,
+.ui-timepicker-list li.ui-timepicker-disabled:hover,
+.ui-timepicker-list li.ui-timepicker-selected.ui-timepicker-disabled {	color: #888;	cursor: default;}
+.ui-timepicker-list li.ui-timepicker-disabled:hover,
+.ui-timepicker-list li.ui-timepicker-selected.ui-timepicker-disabled {	background: #f2f2f2;}
+.dangtin input[type="text"],input[type="password"]{width:220px}
+.dangtin input[name="RoundTrip"] {    margin-top:-1px;}
+.timepicker {    width:100px !important;}
+.datepicker {    width:100px !important;}
