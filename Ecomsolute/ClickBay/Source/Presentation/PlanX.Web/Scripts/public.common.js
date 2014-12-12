@@ -3,6 +3,44 @@
 */
 
 
+function imageResize(id) {
+    var margin = '';
+    var marginValue;
+    var contW, contH, img, imgW, imgH, ratio, ratioDiv;
+    var path = $("#" + id);
+    // variables: get width & height of div view
+    contW = path.width();
+    contH = path.height();
+    ratioDiv = (contW / contH).toFixed(2);
+    //get width & height real Image
+    img = path.find("img");
+    imgW = img.width();
+    imgH = img.height();
+    ratio = (imgW / imgH).toFixed(2);
+    //
+    if (ratio == ratioDiv)//w = h
+    {
+        imgH = contH; imgW = contW;
+    }
+
+    if (ratioDiv > ratio) {
+        imgW = contW;
+        imgH = (imgW / ratio).toFixed(2);
+        margin = 'margin-top';
+        marginValue = ((contH - imgH) / 2).toFixed(2);
+    }
+    else if (ratioDiv < ratio) {
+        imgH = contH;
+        imgW = (contH * ratio).toFixed(2);
+        margin = 'margin-left';
+        marginValue = ((contW - imgW) / 2).toFixed(2);
+    }
+    if (imgW != 0 || imgH != 0) {
+        img.css("width", imgW + "px ");
+        img.css("height", imgH + "px ");
+        img.css(margin, marginValue + "px ");
+    }
+}
 
 function OpenWindow(query, w, h, scroll) {
     var l = (screen.width - w) / 2;
@@ -55,7 +93,7 @@ function displayPopupNotification(message, messagetype, modal) {
     container.html(htmlcode);
 
     var isModal = (modal ? true : false);
-    container.dialog({modal:isModal});
+    container.dialog({ modal: isModal });
 }
 
 
@@ -91,10 +129,9 @@ function displayBarNotification(message, messagetype, timeout) {
     $('#bar-notification').append(htmlcode)
         .addClass(cssclass)
         .fadeIn('slow')
-        .mouseenter(function ()
-            {
-                clearTimeout(barNotificationTimeout);
-            });
+        .mouseenter(function () {
+            clearTimeout(barNotificationTimeout);
+        });
 
     $('#bar-notification .close').unbind('click').click(function () {
         $('#bar-notification').fadeOut('slow');
@@ -116,8 +153,8 @@ function htmlDecode(value) {
     return $('<div/>').html(value).text();
 }
 $(document).ready(function () {
-   
-  
+
+
 })
 function createCookie(name, value, days) {
     if (days) {
