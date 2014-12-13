@@ -31,6 +31,7 @@ namespace PlanX.Services.ClickBay
         private readonly IRepository<BookingPriceDetail> _bookingPriceDetailRepository;
         private readonly IRepository<BookingInfoCondition> _bookingInfoConditionRepository;
         private readonly IRepository<BookTicketNote> _bookTicketNoteRepository;
+        private readonly IRepository<Airline> _airlineRepository;
 
         public ClickBayService(IRepository<Booking> BookingRepository,
             IRepository<FlightCountry> flightCountryRepository,
@@ -44,6 +45,7 @@ namespace PlanX.Services.ClickBay
             IRepository<BookingPriceDetail> bookingPriceDetailRepository,
             IRepository<BookingInfoCondition> bookingInfoConditionRepository,
             IRepository<BookTicketNote> bookTicketNoteRepository,
+             IRepository<Airline> airlineRepository,
             IRepository<BookingInfoFlight> bookingInfoFlightRepository
             )
         {
@@ -59,6 +61,7 @@ namespace PlanX.Services.ClickBay
             this._bookingPriceDetailRepository = bookingPriceDetailRepository;
             this._bookingInfoConditionRepository = bookingInfoConditionRepository;
             this._bookTicketNoteRepository = bookTicketNoteRepository;
+            this._airlineRepository = airlineRepository;
             this._bookingInfoFlightRepository = bookingInfoFlightRepository;
         }
 
@@ -119,7 +122,8 @@ namespace PlanX.Services.ClickBay
             //};
             string data = JsonConvert.SerializeObject(searchModel);
 
-            string result = GetData(url, false, null, data);
+           // string result = GetData(url, false, null, data);
+            string result = readFile("data_detail.txt");
             if (string.IsNullOrEmpty(result))
                 return null;
             return JsonConvert.DeserializeObject<IEnumerable<Ticket>>(result);
@@ -231,9 +235,9 @@ namespace PlanX.Services.ClickBay
             return q.AsEnumerable();
         }
 
-        public IEnumerable<FlightCity> GetListCountry()
+        public IEnumerable<FlightCountry> GetListCountry()
         {
-            return _flightCityRepository.Table;
+            return _flightCountryRepository.Table;
         }
 
         public IEnumerable<Airport> GetListAirport(int country = 0, int city = 0)
@@ -301,14 +305,20 @@ namespace PlanX.Services.ClickBay
         }
 
 
-        public IList<AirlinesCondition> GetListAirlinesConditionByAirlineId(string airlineCode)
+        public IList<AirlinesCondition> GetListAirlinesConditionByAirlineId(int airlineId)
         {
-            return _airlinesConditionRepository.Table.Where(x => x.AirlinesId == airlineCode).OrderBy(x => x.DisplayOrder).ToList();
+            return _airlinesConditionRepository.Table.Where(x => x.AirlinesId == airlineId).OrderBy(x => x.DisplayOrder).ToList();
         }
 
-        public IList<ArilinesBaggageCondition> GetListArilinesBaggageCondition(string airlineCode)
+        public IList<ArilinesBaggageCondition> GetListArilinesBaggageCondition(int airlineId)
         {
-            return _airlineBaggageConditionRepository.Table.Where(x => x.AirlinesId == airlineCode).OrderBy(x => x.DisplayOrder).ToList();
+            return _airlineBaggageConditionRepository.Table.Where(x => x.AirlinesId == airlineId).OrderBy(x => x.DisplayOrder).ToList();
+
+
+        }
+        public IList<Airline>GetListAirline()
+        {
+            return _airlineRepository.Table.ToList();
         }
 
 
@@ -364,6 +374,10 @@ namespace PlanX.Services.ClickBay
                 throw new ArgumentNullException("Airport is null");
 
             _airportRepository.Update(airport);
+        }
+        public   Airline GetAirlineById(int id)
+        {
+            return _airlineRepository.GetById(id);
         }
         class ConvertDataModel
         {
