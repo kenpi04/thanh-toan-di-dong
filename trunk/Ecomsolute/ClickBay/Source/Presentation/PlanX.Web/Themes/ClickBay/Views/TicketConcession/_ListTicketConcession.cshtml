@@ -1,0 +1,53 @@
+﻿@model List<TicketConcessionModel>
+@{ 
+    var i = 0;
+}
+@if (Model.Count > 0)
+{
+    <div class="section" id="top">
+        <div>
+            <table class="table">
+                <thead>
+                    <tr style="color:#fff;background:#189b96;">
+                        <th>Loại vé</th>
+                        <th>Tên hành khách</th>
+                        <th>Chặng bay</th>
+                        <th>Ngày đi</th>
+                        <th>Giá vé</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="item">
+                            <td>@item.TicketType</td>
+                            <td class="center">
+                                @item.PassengerName @if (item.IsRename)
+                                {
+                                    <text> <br />(Có thể đổi)</text>
+                                }
+                            </td>
+                            <td class="center">
+                                @item.FromPlace - @item.ToPlace @if (item.RoundTrip)
+                                {
+                                    <text> <br />(Khứ hồi)</text>
+                                }
+                            </td>
+                            <td class="center">
+                                @string.Format("{0} {1}h{2}'", item.DepartDate.ToString("dd/MM/yyyy"), item.DepartDate.Hour.ToString(), item.DepartDate.Minute.ToString())
+                                @if (item.RoundTrip)
+                                {
+                                    <br /><text>@string.Format("{0} {1}h{2}'", item.ReturnDate.ToString("dd/MM/yyyy"), item.ReturnDate.Hour.ToString(), item.ReturnDate.Minute.ToString())</text>
+                                }
+                            </td>
+                            <td class="bold right">@item.TicketPrice</td>
+                            <td class="center"><a href="@Url.RouteUrl("TicketConcessionList")@(string.Format("?PassengerNameSearch={0}&FromPlaceSearch={1}&ToPlaceSearch={2}&TicketTypeSearch={3}&DepartDateSearch={4}", item.PassengerName, item.FromPlace, item.ToPlace, item.TicketType, item.DepartDate.ToString("MM/dd/yyyy")))">Chi tiết</a></td>
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+            <div><a class="ticket-xem-them" href="@Url.RouteUrl("TicketConcessionList")">Xem thêm</a></div>
+        </div>
+    </div>
+}
