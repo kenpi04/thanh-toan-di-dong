@@ -1,7 +1,14 @@
 ﻿/*
 ** nopCommerce custom js functions
 */
-
+$(document).ready(function (e) {
+    $(".load-ajax").each(function (index, item) {
+        var url = $(item).data("url");
+        if (url && url.length > 0) {
+            $(item).html("<div class=loading-img></div>").load(url);
+        }
+    });
+})
 
 function imageResize(id) {
     var margin = '';
