@@ -52,15 +52,21 @@ namespace PlanX.Core.Domain.ClickBay
 
         public DateTime DepartTime { get; set; }
         public DateTime LandingTime { get; set; }
-        public TimeSpan FlightDuration {
-            get { return _flightDuration; }
-            set { _flightDuration = XmlConvert.ToTimeSpan(value.ToString()); }
-        
+        public string FlightDuration
+        {
+            get;
+            set;
+
+        }
+        [JsonIgnore]
+        public TimeSpan FlightDurationTime {
+            get { return XmlConvert.ToTimeSpan(this.FlightDuration); }
+            set {_flightDuration=value; }
         }
         public string FromAirport { get; set; }
-        public int FromAirportId { get; set; }
+       // public int FromAirportId { get; set; }
         public string ToAirport { get; set; }
-        public int ToAirportId { get; set; }
+       // public int ToAirportId { get; set; }
         public string FromPlace { get; set; }
         public int FromPlaceId { get; set; }
         public string ToPlace { get; set; }
@@ -73,6 +79,7 @@ namespace PlanX.Core.Domain.ClickBay
         public string TicketType { get; set; }
         public string Source { get; set; }
         public string SourceGroup { get; set; }
+        
         
         [JsonIgnore]
         public ICollection<TicketPriceDetailDto> TicketPriceDetailDto

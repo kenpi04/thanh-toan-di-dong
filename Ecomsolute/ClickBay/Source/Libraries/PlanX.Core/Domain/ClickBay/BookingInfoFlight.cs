@@ -24,7 +24,7 @@ namespace PlanX.Core.Domain.ClickBay
     
        
         public string Brand { get; set; }
-        public string BrandName { get; set; }
+        
         public int AirlinesId { get; set; }
         public short Adult { get; set; }
         public short Child { get; set; }
