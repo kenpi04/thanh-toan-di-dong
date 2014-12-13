@@ -27,17 +27,17 @@ namespace PlanX.Services.ClickBay
 
         #region Ctor
 
-        public TicketConcessionService(IRepository<TicketConcession> TicketConcessionRepository, 
+        public TicketConcessionService(IRepository<TicketConcession> TicketConcessionRepository,
             IRepository<TicketType> ticketTypeRepository,
             IRepository<Place> placeRepository,
-        
+
             IRepository<StoreMapping> storeMappingRepository,
             IEventPublisher eventPublisher)
         {
             this._ticketConcessionRepository = TicketConcessionRepository;
             this._ticketTypeRepository = ticketTypeRepository;
             this._placeRepository = placeRepository;
-         
+
             this._storeMappingRepository = storeMappingRepository;
             this._eventPublisher = eventPublisher;
         }
@@ -58,7 +58,7 @@ namespace PlanX.Services.ClickBay
 
             ticketConcession.Deleted = true;
             _ticketConcessionRepository.Update(ticketConcession);
-            
+
             //event notification
             _eventPublisher.EntityDeleted(ticketConcession);
         }
@@ -85,20 +85,14 @@ namespace PlanX.Services.ClickBay
                         where (!tic.Deleted)
                         orderby tic.CreatedOnUtc descending
                         select tic;
-            
+
             var TicketConcession = new PagedList<TicketConcession>(query, pageIndex, pageSize);
             return TicketConcession;
         }
 
         public virtual IPagedList<TicketConcession> SearchTicketConcession(int pageIndex, int pageSize, string PassengerNameSearch = "", string FromPlaceSearch = "", string ToPlaceSearch = "", string TicketTypeSearch = "", string DepartDateSearch = "")
         {
-            DateTime _departDateStart;
-            DateTime? _departDateEnd = null;
-            if(DateTime.TryParse(DepartDateSearch, out _departDateStart))
-            { 
-                DateTime.TryParse(DepartDateSearch, out _departDateStart);
-                _departDateEnd = _departDateStart.AddDays(1);
-            }
+            DateTime _departDateStart;            
 
             var query = from tic in _ticketConcessionRepository.Table
                         where (!tic.Deleted)
@@ -111,8 +105,15 @@ namespace PlanX.Services.ClickBay
                 query = query.Where(x => x.ToPlace.ToLower().Contains(ToPlaceSearch.ToLower()));
             if (!string.IsNullOrEmpty(TicketTypeSearch))
                 query = query.Where(x => x.TicketType.ToLower().Contains(TicketTypeSearch.ToLower()));
-            if (!string.IsNullOrEmpty(DepartDateSearch))
-                query = query.Where(x => x.DepartDate > _departDateStart && (!_departDateEnd.HasValue || (x.DepartDate < _departDateEnd.Value)));
+
+            if (DateTime.TryParse(DepartDateSearch, out _departDateStart))
+            {
+                DateTime? _departDateEnd = null;
+                _departDateEnd = _departDateStart.AddDays(1);
+
+                query = query.Where(x => x.DepartDate > _departDateStart && (_departDateEnd.HasValue || x.DepartDate < _departDateEnd.Value));
+            }
+
             query = query.OrderByDescending(t => t.DepartDate);
                 
 
@@ -145,12 +146,12 @@ namespace PlanX.Services.ClickBay
                 throw new ArgumentNullException("TicketConcession");
 
             _ticketConcessionRepository.Update(TicketConcession);
-            
+
             //event notification
             _eventPublisher.EntityUpdated(TicketConcession);
         }
-        
-   
+
+
         #endregion
 
         #region TicketType
