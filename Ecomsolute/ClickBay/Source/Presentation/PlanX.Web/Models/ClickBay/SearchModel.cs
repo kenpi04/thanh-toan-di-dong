@@ -12,6 +12,7 @@ namespace PlanX.Web.Models.ClickBay
 	{
             ListCitys=new List<SelectListItem>();
             Tickets = new List<TicketModel>();
+            Source = new List<string>();
 	}
         public IList<SelectListItem> ListCitys { get; set; }
         public string FromId { get; set; }
@@ -22,6 +23,8 @@ namespace PlanX.Web.Models.ClickBay
         public string ToName { get; set; }
        
         public string DepartDate { get; set; }
+
+        
         public string ReturnDate { get; set; }
 
         public string DateFormat { get; set; }
@@ -34,6 +37,8 @@ namespace PlanX.Web.Models.ClickBay
         public List<string> Source { get; set; }
 
         public string SessionId { get; set; }
+        public int Sort { get; set; }
+        public DateTime SearchDate { get; set; }
 
         public bool Compare(SearchModel model)
         {
@@ -41,5 +46,11 @@ namespace PlanX.Web.Models.ClickBay
                 && this.Flant == model.Flant && this.FromId == model.FromId
                 && this.DepartDate == model.DepartDate&&this.ReturnDate==model.ReturnDate;
         }
+    }
+    public enum Sort
+    {
+        Price=1,
+        Date=2,
+        Brand=3
     }
 }

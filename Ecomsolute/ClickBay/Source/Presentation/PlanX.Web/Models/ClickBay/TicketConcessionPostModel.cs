@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace PlanX.Web.Models.ClickBay
 {
-    [Validator(typeof(TicketConcessionPostValidator))]
+   // [Validator(typeof(TicketConcessionPostValidator))]
     public class TicketConcessionPostModel
     {
         public TicketConcessionPostModel()

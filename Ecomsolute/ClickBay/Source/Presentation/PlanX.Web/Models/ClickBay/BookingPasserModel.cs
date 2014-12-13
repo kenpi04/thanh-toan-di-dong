@@ -16,8 +16,7 @@ namespace PlanX.Web.Models.ClickBay
         public string LastName { get; set; }
         public string MiddleName { get; set; }
 
-        public int PersonType { get; set; }
-
+      
         public int PassserType { get; set; }
         public DateTime? BirthDay { get; set; }
     }
