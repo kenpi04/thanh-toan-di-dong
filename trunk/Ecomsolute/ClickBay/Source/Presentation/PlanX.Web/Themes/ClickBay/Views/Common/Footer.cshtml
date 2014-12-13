@@ -4,8 +4,6 @@
 <footer class="footer">
     <div class="container">
         <div class="block">
-
-
             <img src="@Url.Content("~/Themes/ClickBay/Content/images/logo-small.png")">
             <span>www.clickbay.com.vn</span>
         </div>
@@ -21,7 +19,7 @@
                 Website:clickbay.com.vn
             </p>
         </div>
-        <div class="block">
+        <div class="block support">
             <div class="block-title">
                 Hổ trợ khách hàng
             </div>
@@ -38,8 +36,12 @@
                 Kết nối với chúng tôi
             </div>
             <p>Chúng tôi sẽ gửi cho bạn khuyến mãi mới nhất</p>
-            <form>
-                <input class="input-email" type="email" placeholder="Nhập email của bạn" name="email"><input class="btn-send" type="submit">
+            <form name="frm-newsletter-email" id="frm-newsletter-email" ajax="true">
+                <p>
+                    <input class="input-email" type="email" placeholder="Nhập email của bạn" name="email" id="email" data-val="true" data-val-required="Bạn chưa nhập email" data-val-email="Email không đúng">
+                    <input class="btn-send" type="submit" name="btn-newsletter-email" id="btn-newsletter-email">
+                </p>
+                @Html.ValidationMessage("email")
             </form>
             <p style="text-align:center">
 
@@ -50,3 +52,26 @@
         </div>
     </div>
 </footer>
+<script>
+    $("#frm-newsletter-email[ajax=true]").submit(function (e) {
+        e.preventDefault();
+
+        var form_data = $(this).serialize();
+        $.ajax({
+            url: '@Url.RouteUrl("SubscribeNewsletter")',
+            type: 'POST',
+            data: form_data,
+            cache: false,
+            success: function (result) {
+                $("input[id=email]").val("");
+                $("#frm-newsletter-email").find(".field-validation-valid").append(result.Result);
+            }
+        });
+
+        
+        //var span = $("#frm-newsletter-email").find(".field-validation-valid");
+        //$("Gửi email thành công").appendTo("span")
+        
+        //return false;
+    })
+</script>
