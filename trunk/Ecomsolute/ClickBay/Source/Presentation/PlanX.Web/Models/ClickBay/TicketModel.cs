@@ -7,9 +7,19 @@ namespace PlanX.Web.Models.ClickBay
 {
     public class TicketModel
     {
+        public TicketModel()
+        {
+            ArilinesBaggageConditions = new List<ArilinesBaggageCondition>();
+            AirlinesConditions = new List<AirlinesConditionModel>();
+            BookingFlightPriceModels = new List<BookingFlightPriceModel>();
+        }
         public string Id { get; set; }
-        public string FromId { get; set; }
-        public string ToId { get; set; }
+
+       public int Index { get; set; }
+        public string FromCode { get; set; }
+        public int FromId { get; set; }
+        public int ToId { get; set; }
+        public string ToCode { get; set; }
         public DateTime DateBook { get; set; }
         public decimal Price { get; set; }
 
@@ -24,7 +34,7 @@ namespace PlanX.Web.Models.ClickBay
 
         public DateTime LandingTime { get; set; }
 
-        public string FlightDuration { get; set; }
+        public double FlightDuration { get; set; }
 
         public string FromAirport { get; set; }
 
@@ -50,11 +60,18 @@ namespace PlanX.Web.Models.ClickBay
 
        
 
-        public string AirlineId { get; set; }
+        public string AirlineCode { get; set; }
 
         public string TicketType { get; set; }
+
+        public int AirlineId { get; set; }
+       public  short Adult { get; set; }
+        public short Child { get; set; }
+        public short Infant { get; set; }
         public List<ArilinesBaggageCondition> ArilinesBaggageConditions { get; set; }
         public List<AirlinesConditionModel> AirlinesConditions { get; set; }
+
+        public List<BookingFlightPriceModel> BookingFlightPriceModels { get; set; }
         public class ArilinesBaggageCondition
         {
             public int Baggage { get; set; }
@@ -65,5 +82,23 @@ namespace PlanX.Web.Models.ClickBay
             public string ConditionName { get; set; }
             public string ConditionDescription { get; set; }
         }
+       public class BookingFlightPriceModel
+       {
+           /*
+            *   "Code": "NET",
+                    "Description": "Giá vé",
+                    "Id": 3971,
+                    "Price": "1130000.00",
+                    "Quantity": 1,
+                    "Total": "1130000.00"
+            */
+           public string Code { get; set; }
+           public decimal Price { get; set; }
+           public string Description { get; set; }
+           public short Quantity { get; set; }
+          
+       }
+
+        public short Stops { get; set; }
     }
 }
