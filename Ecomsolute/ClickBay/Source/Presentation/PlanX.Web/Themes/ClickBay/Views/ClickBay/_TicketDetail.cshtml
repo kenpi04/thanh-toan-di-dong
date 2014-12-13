@@ -1,70 +1,44 @@
 ﻿@model TicketModel
-<table width="100%" cellspacing="0" cellpadding="0" style="display:none" id="tb-@Model.Id">
-    <tbody class="view-detail-flight">
+<h2>Thông Tin Chuyến Bay</h2>
+<div class="info-flight">
+   
+    <div class="div-table-row">
+        <div class="div-table-cell">Ngày đi:</div>
+        <div class="div-table-cell"><span>@Model.DepartTime.ToString("dd-MM-yyyy")</span></div>
+        @if (Model.ReturnDate.HasValue)
+        {
+            <div class="div-table-cell">Ngày về:</div>
+            <div class="div-table-cell">
+                <span>
 
-        <tr>
-            <td valign="top">
-                <p>
-                    Từ <b>@Model.FromPlace</b>, @Model.FromCountry
-                </p>
-                <p>
-                    Sân bay
-                    : <b>@Model.FromAirport </b>(@Model.FromAirportCode)<br>
-                </p>
-                <p>
-                    <!---->
-                    <b>@Model.DepartTime.ToString("hh:mm")</b>, @Model.DepartTime.ToString("dd/MM/yyyy")
-                </p>
-            </td>
-            <td valign="top">
-                <p>
-                    tới <b>@Model.ToPlace</b>, @Model.ToCountry
-                </p>
-                <p>
-                    Sân Bay
-                    : <b>@Model.ToAirport</b> (@Model.ToAirportCode)
-                </p>
-                <p>
-                    <!---->
-                    <b>19:15</b>, 05/12/2014
-                </p>
-            </td>
-            <td style="">
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <!-- <tr>
-                                <td colspan="2" style=" text-align:center;">
-                                    Tổng thời gian : <b>{Duration}</b>
-                                </td>
-                            </tr>-->
-                    <tbody>
-                        <tr>
-                            <td style="text-align: right;">
-                                <img align="absmiddle" src="/Images/Icon/Flight/Airline/AirlineLogo/smBL.gif">
-                            </td>
-                            <td style="line-height: 18px; padding: 0;">
-                                @Model.AirlineName <br>(<b>@Model.FlightNumber</b>)
-                                <br>
-                                <span style="display: {TicketClassDisplay}">
-                                    Loại vé
-                                    : <b>@Model.HangVe</b>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td style="line-height: 18px; padding: 0;"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-        <tr></tr>
-        <tr>
-            <td colspan="3" style="text-align: right;display:none">
-                <a style="background: #2286B7; color: #fff; font-weight: bold; padding: 2px 7px" href="/Abay/Detail/FareRuleFlightDomestic.aspx?ticketClass=L&amp;airline=BL&amp;airport=HAN" class="lightview rightmost view-rule" data-lightview-type="iframe" data-lightview-options="width: 650, height:600">
-                    Xem Điều Kiện Vé
-                </a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                    @Model.ReturnDate.Value.ToString("dd-MM-yyyy")
+
+                </span>
+            </div>
+        }
+    </div>
+</div>
+<div class="info-flight div-table">
+    <div class="div-table-row place-flight">
+        <div class="div-table-cell"><img></div>
+        <div class="div-table-cell">Khởi hành từ <span>@Model.FromPlace, @Model.FromCountry</span></div>
+        <div class="div-table-cell"></div>
+        <div class="div-table-cell">Thời gian bay: <span>@Model.FlightDuration</span></div>
+    </div>
+    <div class="div-table-row">
+        <div class="div-table-cell"><img></div>
+        <div class="div-table-cell">Từ <span>@Model.FromPlace (@Model.FromId)</span></div>
+        <div class="div-table-cell">tới: <span>@Model.ToPlace (@Model.ToId)</span></div>
+        <div class="div-table-cell">@Model.AirlineName <span>(@Model.FlightNumber)</span></div>
+    </div>
+    <div class="div-table-row">
+        <div class="div-table-cell"></div>
+        <div class="div-table-cell"><span>@Model.DepartTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
+        <div class="div-table-cell"><span>@Model.LandingTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
+        @if(Model.TicketType!=null)
+        { 
+        <div class="div-table-cell">Loại vé: <span>@Model.TicketType</span></div>
+        }
+    </div>
+   
+</div>

@@ -18,7 +18,7 @@
             <span id="fromPlace" class="textbox"></span><br><br>
                 <input type="hidden" id="FromId" name="FromId" />
             <label>Ngày đi</label><br>
-            <input id="From" name="DepartDate" type="text" class="textbox date">
+            <input id="From" name="DepartDate" type="text" class="textbox">
         </div>
         <div class="col">
             <label>Điểm đến</label><br>
@@ -26,7 +26,7 @@
             <input type="hidden" name="ToId" id="ToId"/>
             <div id="return-div">
                 <label>Ngày về</label><br>
-                <input id="To" name="ReturnDate" type="text" class="textbox date">
+                <input id="To" name="ReturnDate" type="text" class="textbox">
             </div>
         </div>
         <div class="clear"></div>
@@ -63,7 +63,8 @@
     })
     $("#From").datepicker({
         defaultDate: "+1w",
-        dateFormat:"dd/mm/yy",
+        dateFormat: "dd/mm/yy",
+        minDate:new Date(),
         changeMonth: true,
         numberOfMonths: 3,
         onClose: function (selectedDate) {

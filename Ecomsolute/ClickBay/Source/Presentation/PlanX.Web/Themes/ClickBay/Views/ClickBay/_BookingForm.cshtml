@@ -1,7 +1,7 @@
 ﻿@model BookingModel
 
 
-@Ajax.BeginForm(new AjaxOptions {HttpMethod="POST",OnSuccess="postSuccess",Url=Url.Action("InsertBooking"),OnBegin="postBegin",OnFailure="postFail" })
+@using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "POST", OnSuccess = "postSuccess", Url = Url.Action("InsertBooking"), OnBegin = "postBegin", OnFailure = "postFail" }))
 {
 <article>
     <h2>Thông Tin Hành Khách</h2>
@@ -12,19 +12,19 @@
             <div class="div-table-cell col-3"><span>Họ và Tên <span class="info-small">( ví dụ: VO TAN DUNG )</span></span></div>
             <div class="div-table-cell col-4"><span>Ngày sinh <span class="info-small">( ví dụ: 30/01/1987 )</span></span></div>
         </div>
-        @{int count=0;}
-     @foreach(var i in Model.BookingPassers)
+        @{int count = 0;}
+     @foreach (var i in Model.BookingPassers)
      {
         <div class="div-table-row">
             <div class="div-table-cell">
                 @{
-         count++;
+        
          string personTypeName = "Người lớn";
-         if (i.PersonType == 2)
+         if (i.PassserType == 2)
          {
              personTypeName = "Trẻ em";
          }
-         if (i.PersonType == 3)
+         if (i.PassserType == 3)
          { personTypeName = "Trẻ sơ sinh"; }
             
                 
@@ -32,11 +32,11 @@
                 @personTypeName
             </div>
             <div class="div-table-cell">
-         
-                <select class="fullwitdth" name="BookingPassers[count]_PassserType">
+               
+                <select class="fullwitdth" name="BookingPassers[@count]_PassserType">
                     @foreach (var t in Model.PassengerTypes)
                     {
-                        if (i.PersonType > 4 && int.Parse(t.Value) < 4)
+                        if (i.PassserType > 4 && int.Parse(t.Value) < 4)
                         {
                             continue;
                         }
@@ -44,12 +44,15 @@
                     }
                 </select>
             </div>
-            <div class="div-table-cell"><input type="text" id="txtPassengerName_@i." name="BookingPassers[@count]"/></div>
+            <div class="div-table-cell"><input type="text" id="BookingPassers_@(count)__FirstName" name="BookingPassers[@count].FirstName" /></div>
+           
             <div class="div-table-cell">
                 @Html.DatePickerDropDowns("day", "month", "year");
+                @Html.HiddenFor(x => x.BookingPassers[count].BirthDay);
               
             </div>
         </div>
+         count++;
      }
     </div>
 </article>
@@ -81,13 +84,13 @@
                     </div>
                     <div class="div-table-cell">
                         <span>Họ và Tên </span><span class="required">*</span><span class="info-small">  (Để chúng tôi liên lạc với quý khách)</span>
-                      @Html.TextBoxFor(x=>x.ContactName)
-                        @Html.RequiredHint()
+                      @Html.TextBoxFor(x => x.ContactName)
+                      
                        
                     </div>
                 </div>
                 <div class="div-table-cell">
-                    <span>Quốc Gia</span>
+                    <span>Quốc Gia</span><br />
                    @Html.DropDownListFor(x => x.ContactCountryId, Model.Countries)
                 </div>
             </div>
@@ -95,13 +98,13 @@
                 <div class="div-table-cell">
                     <div>
                         <span>Số điện thoại </span><span class="required">*</span>
-                       @Html.TextBoxFor(x=>x.ContactPhone)
+                       @Html.TextBoxFor(x => x.ContactPhone)
                     </div>
                 </div>
                 <div class="div-table-cell">
                     <div>
                         <span>Thành phố</span>
-                        @Html.TextBoxFor(x=>x.ContactCityName)
+                        @Html.TextBoxFor(x => x.ContactCityName)
                     </div>
                 </div>
             </div>
@@ -109,20 +112,21 @@
                 <div>
                     <div class="div-table-cell">
                         <span>Email</span><span class="info-small">(Để gửi thông tin vé, hành trình, thanh toán)</span>
-                      @Html.TextBoxFor(x=>x.ContactEmail)
+                      @Html.TextBoxFor(x => x.ContactEmail)
                     </div>
                 </div>
                 <div class="div-table-cell">
                     <div>
-                        @Html.TextAreaFor(x=>x.ContactAddress)
+                        @Html.TextAreaFor(x => x.ContactAddress)
                     </div>
                 </div>
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell">
                     <div class="div-table">
-                        <div class="div-table-row">
-                           @Html.DatePickerDropDowns("contactDay","contactMonth","contactyear")
+                        <div class="div-table-row birthday">
+                            <span>Ngày sinh</span><br />
+                           @Html.DatePickerDropDowns("contactDay", "contactMonth", "contactyear")
                         </div>
                     </div>
                 </div>
@@ -132,7 +136,7 @@
     </aside>
     <div>
         <p><input type="checkbox" id="checkedInvoid" name="checkedInvoid"><label>Tôi muốn xuất hóa đơn</label></p>
-        <p><input type="checkbox" checked="checked" id="checkedNewsletter" name="checkedNewsletter"><label>Tôi muốn nhận được thông tin về chương trình khuyến mãi, tin tức</label></p>
+        <p><input type="checkbox" checked="checked" id="checkedNewsletter" name="NewLetterAccept"><label>Tôi muốn nhận được thông tin về chương trình khuyến mãi, tin tức</label></p>
     </div>
 </article>
 
@@ -141,7 +145,7 @@
     <h2>Yêu Cầu Đặt Biệt</h2>
     <div><p>Viết yêu cầu của bạn vào ô bên dưới (Tiếng Anh hoặc Tiếng Việt).</p></div>
     <div>
-        @Html.TextAreaFor(x=>x.CustomerNote)
+        @Html.TextAreaFor(x => x.CustomerNote)
     </div>
 </article>
 
@@ -154,6 +158,10 @@
     function postSuccess(d)
     {
         displayAjaxLoading(false);
+        if (d.error == "")
+            window.location.href = d.url;
+        else
+            displayBarNotification(d.error, "error", 3000);
     }
     function postBegin()
     {

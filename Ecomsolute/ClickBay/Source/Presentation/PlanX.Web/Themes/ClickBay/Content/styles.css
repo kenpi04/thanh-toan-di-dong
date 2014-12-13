@@ -316,6 +316,10 @@ line-height: 29px;
 width: 80%;
 border-radius: 5px;
 border: solid 1px #ddd;
+<<<<<<< .mine
+    }
+    .section table.orange tbody tr[show]:hover{background:none}
+    .birthday select{margin-right:10px}=======
     }
 
 /*News*/
@@ -471,4 +475,4 @@ div#pages {float: right;padding: 10px 0;}
         box-shadow: none;
         font-weight: bold;
         cursor: default;
-    }
+    }>>>>>>> .r630

@@ -41,7 +41,7 @@
             <div class="div-table-cell"><span>@Model.TicketInfo.LandingTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
             <div class="div-table-cell">Loại vé: <span>@Model.TicketInfo.TicketType</span></div>
         </div>
-        @if(Model.TicketInfoReturn!=null)
+        @if(Model.TicketInfoReturn.Id!=null)
         {
            <div class="div-table-row place-flight">
             <div class="div-table-cell"><img></div>
