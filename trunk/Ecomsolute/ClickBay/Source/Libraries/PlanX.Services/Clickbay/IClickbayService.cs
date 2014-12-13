@@ -70,7 +70,7 @@ namespace PlanX.Services.ClickBay
 
         IEnumerable<FlightCity> GetListCity(int countryId = 0,string name=null);
 
-        IEnumerable<FlightCity> GetListCountry();
+        IEnumerable<FlightCountry> GetListCountry();
 
         IEnumerable<Airport> GetListAirport(int country = 0, int city = 0);
         FlightCity GetCityById(int id);
