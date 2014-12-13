@@ -36,7 +36,7 @@
     <div class="sologan">CHẤT LƯỢNG DỊCH VỤ LÀ YẾU TỐ SỐNG CÒN</div>
     <div class="col2">
         <div class="box">
-            <div class="box-h">
+            <div class="box-h boder-dashed">
                 <div class="box-t">
                     <img src="@Url.Content("~/Themes/ClickBay/Content/images/mouse.png")">
                     MỚI CLICK CHỜ BAY
@@ -115,14 +115,11 @@
                             </span>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
         <div class="box">
-            <div class="box-h">
+            <div class="box-h boder-dashed">
                 <div class="box-t">
                     <img src="@Url.Content("~/Themes/ClickBay/Content/images/mouse.png")">
                     ĐẶT VÉ NHANH 24/24
@@ -161,81 +158,14 @@
             <div class="nv-title">Nhượng vé - Clickbay cùng bạn tiết kiệm</div>
         </section>
         <section class="TicketConcession">
-            <p class="" style="
-    text-align: center;
-    color: #189b96;
-    font-size: 19px;
-">
-                Bạn đã mua vé nhưng không thể bay
-
+            <p class="center">
+                <span class="home-title">Bạn đã mua vé nhưng không thể bay</span>
                 <a class="postitem" name="postitem">Đăng tin nhượng vé</a>
             </p>
         </section>
 
         <section class="TicketConcession">
-            <div>
-                <table class="table striped bordered hovered">
-                    <thead>
-                        <tr>
-                            <th>Loại vé</th>
-                            <th>Tên hành khách</th>
-                            <th>Chặng bay</th>
-                            <th>Ngày đi</th>
-                            <th>Giá vé</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Jetstar thường</td>
-                            <td>Do NGHI DI (có thể đổi tên)</td>
-                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
-                            <td>07/02/2015</td>
-                            <td>1.000.000 VNĐ</td>
-                            <td><a>Chi tiết</a></td>
-                        </tr>
-                        <tr>
-                            <td>Jetstar thường</td>
-                            <td>Do NGHI DI (có thể đổi tên)</td>
-                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
-                            <td>07/02/2015</td>
-                            <td>1.000.000 VNĐ</td>
-                            <td><a>Chi tiết</a></td>
-                        </tr>
-                        <tr>
-                            <td>Jetstar thường</td>
-                            <td>Do NGHI DI (có thể đổi tên)</td>
-                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
-                            <td>07/02/2015</td>
-                            <td>1.000.000 VNĐ</td>
-                            <td><a>Chi tiết</a></td>
-                        </tr>
-                        <tr>
-                            <td>Jetstar thường</td>
-                            <td>Do NGHI DI (có thể đổi tên)</td>
-                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
-                            <td>07/02/2015</td>
-                            <td>1.000.000 VNĐ</td>
-                            <td><a>Chi tiết</a></td>
-                        </tr>
-                        <tr>
-                            <td>Jetstar thường</td>
-                            <td>Do NGHI DI (có thể đổi tên)</td>
-                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
-                            <td>07/02/2015</td>
-                            <td>1.000.000 VNĐ</td>
-                            <td><a>Chi tiết</a></td>
-                        </tr>
-                        <tr>
-                            <td>Jetstar thường</td>
-                            <td>Do NGHI DI (có thể đổi tên)</td>
-                            <td>Tp.Hồ Chí Minh - Hải Phòng</td>
-                            <td>07/02/2015</td>
-                            <td>1.000.000 VNĐ</td>
-                            <td><a>Chi tiết</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="load-ajax" data-url="@Url.Action("List", "TicketConcession", new { PageSize = 5, Page=1 })">
             </div>
         </section>
     </div>

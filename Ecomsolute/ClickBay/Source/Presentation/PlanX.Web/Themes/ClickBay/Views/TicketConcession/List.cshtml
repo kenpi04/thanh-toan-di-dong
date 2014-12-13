@@ -1,0 +1,167 @@
+﻿@model TicketConcessionListModel
+@using PlanX.Web.Models.ClickBay;
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<script src="~/Scripts/jquery.simplePagination.js"></script>
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    var i = 0;
+}
+<div class="wrapper-body">
+    <div class="wrapper-content">
+        <section class="section-top">
+            <div class="breadcrumb">
+                <p><a href="@Url.RouteUrl("HomePage")"><span>Trang chủ</span></a><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" /><span class="active">Nhượng vé máy bay</span></p>
+            </div>
+        </section>
+        <section class="section">
+            <div class="title">
+                <span class="title-left">Nhượng Vé Máy Bay</span>
+                <span class="title-right"><a class="postitem" name="postitem" href="@Url.Action("TicketConcessionPost", "TicketConcession")">Đăng tin nhượng vé</a></span>
+            </div>
+        </section>
+        <section class="section">
+            <div class="search">
+                @using (Html.BeginForm("List","TicketConcession",FormMethod.Get))
+                {
+                    @Html.HiddenFor(x => x.Page)
+                    @Html.HiddenFor(x => x.PageSize)
+                    @Html.TextBoxFor(model => model.TicketTypeSearch, new { @placeholder = "Loại vé" })
+                    @Html.TextBoxFor(model => model.PassengerNameSearch, new { @placeholder = "Tên khách hàng" })
+                    @Html.TextBoxFor(model => model.FromPlaceSearch, new { @placeholder = "Điểm đi" })
+                    @Html.TextBoxFor(model => model.ToPlaceSearch, new { @placeholder = "Điểm đến" })
+                    @Html.TextBoxFor(model => model.DepartDateSearch, new { @placeholder = "Ngày bay" })
+                    <input type="submit" class="default" value="Tìm vé" name="searchTicket" id="searchTicket" />
+                }
+            </div>
+        </section>
+        <section class="section">
+            <div class="ticketconcesstable" id="top">
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr style="color:#fff;background:#189b96;">
+                                <th>Loại vé</th>
+                                <th>Tên hành khách</th>
+                                <th>Chặng bay</th>
+                                <th>Ngày đi</th>
+                                <th>Giá vé</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.listItem)
+                            {
+                                i++;
+                                var oll = (i % 2 == 0) ? "oll" : " ";
+                                <tr class="item @oll">
+                                    <td>@item.TicketType</td>
+                                    <td class="center">
+                                        @item.PassengerName @if (item.IsRename)
+                                        {
+                                            <text> <br />(Có thể đổi)</text>
+                                        }
+                                    </td>
+                                    <td class="center">
+                                        @item.FromPlace - @item.ToPlace @if (item.RoundTrip)
+                                        {
+                                            <text> <br />(Khứ hồi)</text>
+                                        }
+                                    </td>
+                                    <td class="center">
+                                        @string.Format("{0} {1}h{2}'", item.DepartDate.ToString("dd/MM/yyyy"), item.DepartDate.Hour.ToString(), item.DepartDate.Minute.ToString())
+                                    @if (item.RoundTrip)
+                                    {
+                                        <br /><text>@string.Format("{0} {1}h{2}'", item.ReturnDate.ToString("dd/MM/yyyy"), item.ReturnDate.Hour.ToString(), item.ReturnDate.Minute.ToString())</text>
+                                    }
+                                </td>
+                                <td class="bold right">@item.TicketPrice</td>
+                                <td class="center"><span onclick="ShowDetail(@item.Id)" style="cursor:pointer">Chi tiết</span></td>
+                            </tr>
+                                <tr id="@item.Id" class="detail-ticket-@item.Id detail-ticket" style="display:none">
+                                    <td colspan="6">
+                                        Email :<b> @item.ContactEmail</b> | Tên liên hệ :<b> @item.ContactName</b> | Địa thoại :<b>@item.ContactPhone</b> | Ghi chú :<b> @item.Description</b>
+                                    </td>                                    
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div id="pages"></div>
+        </section>
+    </div>
+</div>
+<script>
+    function ShowDetail(id)
+    {
+        if( $(".detail-ticket-" + id).css('display') == 'none')
+        {
+            $(".detail-ticket").hide();
+            $(".detail-ticket-" + id).show();
+        }
+        else
+        {
+            $(".detail-ticket-" + id).hide();
+        }
+    }
+
+    $(function() {
+        if(@Model.Page != 1)
+        {
+            document.getElementById( 'top' ).scrollIntoView();
+        }
+        $('#pages').pagination({
+            items: @Model.Total,
+            itemsOnPage:  @Model.PageSize,
+            displayedPages:5,
+            currentPage:@Model.Page,
+            cssStyle: 'light-theme'
+        });
+    });
+
+    function GetData(pageindex)
+    {
+        $('#Page').val(pageindex);
+        $("#searchTicket").click();
+
+    }
+
+    $(function () {
+        $('#DepartDateSearch').datepicker({
+            'format': 'yyyy-m-d',
+            'autoclose': true
+        });
+
+        var availableTags = @(Html.Raw(Json.Encode(Model.listPlace)));
+        var availableType = @(Html.Raw(Json.Encode(Model.listType)));
+
+        $("#TicketTypeSearch").autocomplete({
+            source: availableType,
+            minLength: 0
+        }).focus(function () {
+            if (this.value == "") {
+                $(this).autocomplete("search");
+            }
+        });
+
+        $("#FromPlaceSearch").autocomplete({
+            source: availableTags,
+            minLength: 0
+        }).focus(function () {
+            if (this.value == "") {
+                $(this).autocomplete("search");
+            }
+        });
+
+        $("#ToPlaceSearch").autocomplete({
+            source: availableTags,
+            minLength: 0
+        }).focus(function () {
+            if (this.value == "") {
+                $(this).autocomplete("search");
+            }
+        });
+    });
+</script>
