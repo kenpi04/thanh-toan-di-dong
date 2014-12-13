@@ -1,7 +1,3 @@
-USE [ClickBay]
-GO
-
-/****** Object:  Table [dbo].[BookingPassenger]    Script Date: 02/12/2014 5:36:56 CH ******/
 SET ANSI_NULLS ON
 GO
 

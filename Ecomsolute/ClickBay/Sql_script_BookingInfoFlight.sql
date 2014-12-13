@@ -33,6 +33,11 @@ CREATE TABLE [dbo].[BookingInfoFlight](
 	[TotalBaggageFee] [decimal](18, 2) NOT NULL,
 	[TotalFeeOther] [decimal](18, 2) NOT NULL,
 	[DiscountAmount] [decimal](18, 2) NOT NULL,
+	[BrandName] [nvarchar](100) NULL,
+	[RoundTrip] [bit] NULL,
+	[FlightDuration] [int] NULL,
+	[Stops] [smallint] NOT NULL,
+	[TotalPriceNet] [decimal](18, 2) NOT NULL,
  CONSTRAINT [PK_BookingInfoFlight] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -63,6 +68,15 @@ ALTER TABLE [dbo].[BookingInfoFlight] ADD  CONSTRAINT [DF_BookingInfoFlight_Tota
 GO
 
 ALTER TABLE [dbo].[BookingInfoFlight] ADD  CONSTRAINT [DF_BookingInfoFlight_DiscountAmount]  DEFAULT ((0)) FOR [DiscountAmount]
+GO
+
+ALTER TABLE [dbo].[BookingInfoFlight] ADD  CONSTRAINT [DF_BookingInfoFlight_RoundTrip]  DEFAULT ((0)) FOR [RoundTrip]
+GO
+
+ALTER TABLE [dbo].[BookingInfoFlight] ADD  CONSTRAINT [DF_BookingInfoFlight_Stops]  DEFAULT ((0)) FOR [Stops]
+GO
+
+ALTER TABLE [dbo].[BookingInfoFlight] ADD  CONSTRAINT [DF_BookingInfoFlight_TotalPriceNet]  DEFAULT ((0)) FOR [TotalPriceNet]
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'hang hang khong' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'BookingInfoFlight', @level2type=N'COLUMN',@level2name=N'Brand'

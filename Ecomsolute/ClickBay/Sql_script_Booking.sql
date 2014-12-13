@@ -25,8 +25,6 @@ CREATE TABLE [dbo].[Booking](
 	[Adult] [smallint] NOT NULL,
 	[Child] [smallint] NOT NULL,
 	[Infant] [smallint] NOT NULL,
-	[CurrencyType] [varchar](10) NULL,
-	[CurrentcyRate] [decimal](12, 2) NOT NULL,
 	[CallBackUrl] [nvarchar](500) NULL,
 	[TotalAmount] [decimal](18, 2) NOT NULL,
 	[TotalFeeAmount] [decimal](18, 2) NOT NULL,
@@ -46,6 +44,9 @@ CREATE TABLE [dbo].[Booking](
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedOn] [datetime] NOT NULL,
 	[Deleted] [bit] NOT NULL,
+	[ContactPassengerType] [smallint] NOT NULL,
+	[CurrencyCode] [varchar](10) NULL,
+	[CurrencyRate] [decimal](12, 2) NOT NULL,
  CONSTRAINT [PK_Booking] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -67,9 +68,6 @@ ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_Child]  DEFAULT ((0)) FOR
 GO
 
 ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_Infant]  DEFAULT ((0)) FOR [Infant]
-GO
-
-ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_CurrentcyRate]  DEFAULT ((1)) FOR [CurrentcyRate]
 GO
 
 ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_TotalAmount]  DEFAULT ((0)) FOR [TotalAmount]
@@ -106,6 +104,12 @@ ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Booking_CustomerId]  DEFAULT ((0
 GO
 
 ALTER TABLE [dbo].[Booking] ADD  CONSTRAINT [DF_Ticket_Deleted]  DEFAULT ((0)) FOR [Deleted]
+GO
+
+ALTER TABLE [dbo].[Booking] ADD  DEFAULT ((0)) FOR [ContactPassengerType]
+GO
+
+ALTER TABLE [dbo].[Booking] ADD  DEFAULT ((0)) FOR [CurrencyRate]
 GO
 
 ALTER TABLE [dbo].[Booking]  WITH CHECK ADD  CONSTRAINT [FK_Booking_BookingInfoFlight] FOREIGN KEY([BookingInfoFlightToId])
@@ -168,12 +172,6 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So luong tre e
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'So luong em be' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'Infant'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ma tien te' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'CurrencyType'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ty gia' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'CurrentcyRate'
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Url tra ket qua ve web' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Booking', @level2type=N'COLUMN',@level2name=N'CallBackUrl'
