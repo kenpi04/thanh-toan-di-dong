@@ -27,7 +27,7 @@ fieldset{margin:0px 0px 15px;border:1px solid #c9c9c9;padding:15px;}
 legend{font-weight:bold;line-height:20px;font-size:16px;}
 input[type="text"],input[type="password"]{border:1px solid #eee;}
 input[type="text"]:disabled{background:none repeat scroll 0 0 #FFF;}
-
+.color-white{color:#fff;}
 /**Clickbay css*/
 a {text-decoration:none }
 a:hover {text-decoration:none }
@@ -64,18 +64,10 @@ width: 173px;}
 .content{min-height:400px}
 .footer{background:#189b96;height:175px;color:#fff;padding-top:20px}
 .footer .block{float:left;width:24%;margin-right:10px}
-.footer .block .block-title{font-size: 16px;
-text-transform: uppercase;
-font-weight: bold;}
-.btn-send{background: #ff0000;
-color: #fff;
-border: none;
-padding: 10px;
-margin-left: 10px;
-border-radius: 5px;}
-.input-email{padding: 8px 4px;
-border-radius: 5px;
-border: solid 1px #ddd;}
+.footer .block .block-title{font-size: 16px;text-transform: uppercase;font-weight: bold;}
+.footer .support ul li a{line-height:25px;color:#fff}
+.btn-send{background: #ff0000;color: #fff;border: none;padding: 10px;margin-left: 10px;border-radius: 5px;}
+.input-email{padding: 8px 4px;border-radius: 5px;border: solid 1px #ddd;}
 .head{background:url(images/slide2.jpg);width:100%;height:400px}
 .box-search .box-head{border-bottom:dashed 1px;line-height: 40px;}
 .box-search{width:530px;height:300px;background:#f3f3f3;border-radius:5px;box-shadow: -2px 0px 8px 1px #999;}
@@ -164,7 +156,7 @@ table tr td p,table tr th p{margin:0;}
 table tr th.active{background:#F2C127}
 table.none-border, table.none-border tr, table.none-border tr td{border:none;}
 table.none-border tr th:first-child{border-left:none;}
-.section table tbody tr:nth-child(odd){background:#eeeeee;}
+/*.section table tbody tr:nth-child(2n+1){background:#eeeeee;}*/
 .section table.orange tbody tr:hover{background:#d0d959;}
 .section table tbody tr td a{cursor:pointer;}
 .bordered{border:1px #189b96 solid;}
@@ -358,3 +350,125 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .dangtin input[name="RoundTrip"] {    margin-top:-1px;}
 .timepicker {    width:100px !important;}
 .datepicker {    width:100px !important;}
+
+/*Ticket cocession*/
+.right{text-align:right;}
+.left{text-align:left;}
+.bold{font-weight:600}
+div#pages {float: right;padding: 10px 0;}
+    .item:hover, .item.oll:hover {
+        background: #C5F3EC;
+    }
+    .note {
+        width: 46% !important;
+    }
+
+    .detail-ticket {
+        background: rgb(242, 255, 158);
+    }
+
+    table th {
+        border-left: 1px #eaeaea solid;
+        border-bottom: 1px #eaeaea solid;
+    }
+
+    .section table.orange tbody tr:hover {
+        background: #d0d959;
+    }
+
+    .section table tbody tr td a {
+        cursor: pointer;
+    }
+
+        table tr td p, table tr th p {
+            margin: 0;
+        }
+
+    table tr th.active {
+        background: #F2C127;
+    }
+
+    table.none-border, table.none-border tr, table.none-border tr td {
+        border: none;
+    }
+
+        table.none-border tr th:first-child {
+            border-left: none;
+        }
+
+    hr.style-two {
+        border: 0;
+        height: 1px;
+        background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+        background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+        background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+        background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    }
+
+    .detail-btn {
+        width: 116px !important;
+    }
+
+    .item.oll {
+        background: #eee;
+    }
+
+
+    ul.simple-pagination {
+        list-style: none;
+    }
+
+    .simple-pagination {
+        display: block;
+        overflow: hidden;
+        padding: 0 5px 5px 0;
+        margin: 0;
+    }
+
+        .simple-pagination ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .simple-pagination li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            float: left;
+        }
+
+    .light-theme a, .light-theme span {
+        float: left;
+        color: #666;
+        font-size: 14px;
+        line-height: 24px;
+        font-weight: normal;
+        text-align: center;
+        border: 1px solid #BBB;
+        min-width: 14px;
+        padding: 5px 10px;
+        margin: 0 5px 0 0;
+    }
+
+        .light-theme a:hover {
+            text-decoration: none;
+            background: #efefef;
+        }
+
+    .light-theme .current {
+        background: #666;
+        color: #FFF;
+        border-color: #444;
+        box-shadow: none;
+        cursor: default;
+    }
+
+    .light-theme .ellipse {
+        background: none;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        font-weight: bold;
+        cursor: default;
+    }
