@@ -103,6 +103,8 @@ namespace PlanX.Web.Controllers
             {
                 model.listItem.Add(PrepareTicketConcessionModel(item));
             }
+            if (Request.IsAjaxRequest())
+                return View("_ListTicketConcession", model.listItem);
             return View(model);
         }
 
