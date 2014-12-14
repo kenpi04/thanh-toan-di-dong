@@ -1333,7 +1333,7 @@
     <Content Include="Themes\ClickBay\Views\ClickBay\Booking.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\_FlightDetail.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\_FlightCondition.cshtml" />
-    <Content Include="Themes\ClickBay\Views\ClickBay\BookingInfoDetail.cshtml" />
+    <Content Include="Themes\ClickBay\Views\ClickBay\BookingInfoPriceDetail.cshtml" />
     <Content Include="Themes\ClickBay\Views\Shared\_BreadCrumb.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\_BookingForm.cshtml" />
     <Content Include="Views\TicketConcession\Index.cshtml" />
