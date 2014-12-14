@@ -25,6 +25,14 @@ namespace PlanX.Web.Infrastructure
                            "nhuong-ve",
                            new { controller = "TicketConcession", action = "List" },
                            new[] { "PlanX.Web.Controllers" });
+            routes.MapLocalizedRoute("Search",
+               "tim-ve",
+               new { controller = "ClickBay", action = "Search" },
+               new[] { "PlanX.Web.Controllers" });
+            routes.MapLocalizedRoute("Booking",
+               "dat-ve",
+               new { controller = "ClickBay", action = "Booking" },
+               new[] { "PlanX.Web.Controllers" });
             //install
             //routes.MapRoute("Installation",
             //                "install",
