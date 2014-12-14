@@ -130,6 +130,7 @@
                         <div class="div-table-row birthday">
                             <span>Ngày sinh</span><br />
                            @Html.DatePickerDropDowns("contactday", "contactmonth", "contactyear")
+                            @Html.HiddenFor(x=>x.ContactBirthDate)
                            
                         </div>
                     </div>
@@ -153,14 +154,14 @@
     </div>
 </article>
     
-    <article>
+ <article>
                             <!--Yeu cau dac biet-->
                             <h2>Phương thức thanh toán</h2>
                             <div><p>Vui lòng chọn phương thức thanh toán</p></div>
 
                                 <div class="div-table-row">
                                     <div class="div-table-cell col-1">
-                                        <input type="radio" name="PaymentMethodId" value="1" /><label>Thanh toán khi giao vé tận nhà</label>
+                                        <input type="radio" name="PaymentMethodId" value="1" checked="checked" /><label>Thanh toán khi giao vé tận nhà</label>
                                         </div>
                                     <div class="div-table-cell col-2">
                                         <input type="radio" name="PaymentMethodId" value="2" /><label>Thanh toán qua chuyển khoản ATM</label>
@@ -168,6 +169,9 @@
                                     </div>
                                     <div class="div-table-cell col-3">
                                         <input type="radio" name="PaymentMethodId" value="3"><label>Thanh toán qua OnePay</label>
+                                    </div>
+                                    <div class="div-table-cell col-3">
+                                        <input type="radio" name="PaymentMethodId" value="4"><label>Thanh toán tại văn phòng clickbay</label>
                                     </div>
                                 
                                 
@@ -205,9 +209,9 @@
     function getBirthDate()
     {
         $('.birthday').each(function () {
-            var moth = $(this).find('select[name^=month]'),
-              date = $(this).find('select[name^=day]'),
-           y = $(this).find('select[name^=year]');
+            var moth = $(this).find('select[name^=month]').val(),
+              date = $(this).find('select[name^=day]').val(),
+           y = $(this).find('select[name^=year]').val();
             var a = getDate(date, moth, y);
             if (!a)
                 $(this).find("input").val(a);
@@ -215,13 +219,9 @@
     }
     function getDate(date,moth,year)
     {
-        var d = $('select[name=' + date + ']').val(),
-            m = $('select[name=' + moth + ']').val(),
-            y = $('select[name=' + year + ']').val();
-        if (d == '0' || m == '0' || y == '0')
+        if (date == '0' || moth == '0' || year == '0')
             return null;
-        return d + '/' + m + '/' + y;
-
+        return date + '/' + moth + '/' + year;
     }
 
 </script>
