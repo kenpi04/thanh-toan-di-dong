@@ -100,5 +100,7 @@ namespace PlanX.Web.Models.ClickBay
        }
 
         public short Stops { get; set; }
+
+        public string FlightDurationString { get; set; }
     }
 }
