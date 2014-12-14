@@ -33,7 +33,7 @@
             </div>
             <div class="div-table-cell">
                
-                <select class="fullwitdth" name="BookingPassers[@count]_PassserType">
+                <select class="fullwitdth" name="BookingPassers[@count].PassserType">
                     @foreach (var t in Model.PassengerTypes)
                     {
                         if (i.PassserType > 4 && int.Parse(t.Value) < 4)
@@ -44,13 +44,16 @@
                     }
                 </select>
             </div>
-            <div class="div-table-cell"><input type="text" id="BookingPassers_@(count)__FirstName" name="BookingPassers[@count].FirstName" /></div>
-           
-            <div class="div-table-cell">
-                @Html.DatePickerDropDowns("day", "month", "year");
-                @Html.HiddenFor(x => x.BookingPassers[count].BirthDay);
-              
-            </div>
+            <div class="div-table-cell">@Html.TextBoxFor(x=>x.BookingPassers[count].FirstName)</div>
+          @if (i.PassserType > 4)
+{
+    <div class="div-table-cell birthday">
+        @Html.DatePickerDropDowns("day", "month", "year")
+        @Html.HiddenFor(x => x.BookingPassers[count].BirthDay)
+
+
+    </div>
+}
         </div>
          count++;
      }
@@ -117,7 +120,7 @@
                 </div>
                 <div class="div-table-cell">
                     <div>
-                        @Html.TextAreaFor(x => x.ContactAddress)
+                        <span>Địa chỉ</span>@Html.TextBoxFor(x=>x.ContactAddress)
                     </div>
                 </div>
             </div>
@@ -126,7 +129,8 @@
                     <div class="div-table">
                         <div class="div-table-row birthday">
                             <span>Ngày sinh</span><br />
-                           @Html.DatePickerDropDowns("contactDay", "contactMonth", "contactyear")
+                           @Html.DatePickerDropDowns("contactday", "contactmonth", "contactyear")
+                           
                         </div>
                     </div>
                 </div>
@@ -148,6 +152,27 @@
         @Html.TextAreaFor(x => x.CustomerNote)
     </div>
 </article>
+    
+    <article>
+                            <!--Yeu cau dac biet-->
+                            <h2>Phương thức thanh toán</h2>
+                            <div><p>Vui lòng chọn phương thức thanh toán</p></div>
+
+                                <div class="div-table-row">
+                                    <div class="div-table-cell col-1">
+                                        <input type="radio" name="PaymentMethodId" value="1" /><label>Thanh toán khi giao vé tận nhà</label>
+                                        </div>
+                                    <div class="div-table-cell col-2">
+                                        <input type="radio" name="PaymentMethodId" value="2" /><label>Thanh toán qua chuyển khoản ATM</label>
+                                       
+                                    </div>
+                                    <div class="div-table-cell col-3">
+                                        <input type="radio" name="PaymentMethodId" value="3"><label>Thanh toán qua OnePay</label>
+                                    </div>
+                                
+                                
+                            </div>
+                        </article>
 
 <article>
     <p class="policy"><input type="checkbox" id="checkedPolicy" name="checkedPolicy"><label>Tôi đồng ý với các điều kiện và điều khoản của ClickBay.com.vn (được quy định <a href="/" target="_blank">tại đây</a>)</label></p>
@@ -165,10 +190,38 @@
     }
     function postBegin()
     {
+        if (!$("#checkedPolicy").is(":checked"))
+        {
+            displayBarNotification("Vui lòng chọn đồng ý điều khoản", "info", 3000);
+            return;
+        }
+        getBirthDate();
         displayAjaxLoading(true);
     }
     function postFail()
     {
         displayAjaxLoading(false);
     }
+    function getBirthDate()
+    {
+        $('.birthday').each(function () {
+            var moth = $(this).find('select[name^=month]'),
+              date = $(this).find('select[name^=day]'),
+           y = $(this).find('select[name^=year]');
+            var a = getDate(date, moth, y);
+            if (!a)
+                $(this).find("input").val(a);
+        })
+    }
+    function getDate(date,moth,year)
+    {
+        var d = $('select[name=' + date + ']').val(),
+            m = $('select[name=' + moth + ']').val(),
+            y = $('select[name=' + year + ']').val();
+        if (d == '0' || m == '0' || y == '0')
+            return null;
+        return d + '/' + m + '/' + y;
+
+    }
+
 </script>
