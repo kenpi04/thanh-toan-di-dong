@@ -229,7 +229,13 @@ namespace PlanX.Web.Controllers
             }
                 return View(model);
         }
-
+        public ActionResult BookingInfoPriceDetail()
+        {
+           var selectedTicket=Session[string.Format(SELECTED_TICKET_SESSION, _workContext.CurrentCustomer.Id)]as TicketModel;
+           if (selectedTicket == null)
+               return Content("");
+           return View(selectedTicket);
+        }
         private BookingInfoFlight PreparingBookingInfoFlight(TicketModel selectedTicket)
         {
             var   bookingInfo = new BookingInfoFlight
@@ -359,12 +365,13 @@ namespace PlanX.Web.Controllers
                PaymentMethodId=(short)model.PaymentMethodId              
 
             };
-            if (bookingFlightReturn.Id != 0)
-                bookingModel.BookingInfoFlightReturnId = bookingFlightReturn.Id;
+           
+              
             if (model.ContactBirthDate != null)
                 bookingModel.ContactBirthDate = DateTime.ParseExact(model.ContactBirthDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
            if(bookingFlightReturn!=null)
            {
+               bookingModel.BookingInfoFlightReturnId = bookingFlightReturn.Id;
 
                 bookingModel.TotalFeeAmount += bookingFlightReturn.TotalPrice;
                bookingModel.TotalFeeOtherAmount += bookingFlightReturn.TotalFeeOther;
