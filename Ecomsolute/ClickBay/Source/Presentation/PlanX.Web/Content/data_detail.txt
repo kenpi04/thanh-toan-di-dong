@@ -1,6 +1,4 @@
-﻿{
-    "odata.metadata": "http://localhost:45865/oapi/Airline/$metadata#Flights",
-    "value": [
+﻿ [
         {
             "TicketPriceDetails": [
                 {
@@ -727,4 +725,4 @@
             "ToPlaceId": 2,
             "TotalPrice": "1393000.00"
         }]
-}
+

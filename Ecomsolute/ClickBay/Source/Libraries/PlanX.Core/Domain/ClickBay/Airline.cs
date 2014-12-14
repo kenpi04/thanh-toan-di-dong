@@ -16,5 +16,17 @@ namespace PlanX.Core.Domain.ClickBay
     {
        
         public string AirlinesName { get; set; }
+        private ICollection<AirlinesCondition> _airlinesCondition { get; set; }
+        public virtual ICollection<AirlinesCondition> AirlinesConditions
+        {
+            get { return _airlinesCondition ?? (_airlinesCondition = new List<AirlinesCondition>()); }
+            protected set { _airlinesCondition = value; }
+        }
+        private ICollection<ArilinesBaggageCondition> _airlinesBaggageCondition { get; set; }
+        public virtual ICollection<ArilinesBaggageCondition> ArilinesBaggageConditions
+        {
+            get { return _airlinesBaggageCondition ?? (_airlinesBaggageCondition = new List<ArilinesBaggageCondition>()); }
+            protected set { _airlinesBaggageCondition = value; }
+        }
     }
 }

@@ -98,7 +98,7 @@ namespace PlanX.Services.ClickBay
             //searchModel.FareBasis = FareBasis,
             searchModel.RoundTrip = roundTrip;
             searchModel.DepartDate = departDate.ToString("yyyy-MM-ddT00:00:00.000");//2015-01-15T00:00:00.000
-            searchModel.ReturnDate = returnDate.Value.ToString("yyyy-MM-ddT00:00:00.000");
+            searchModel.ReturnDate =returnDate.HasValue? returnDate.Value.ToString("yyyy-MM-ddT00:00:00.000"):null;
             searchModel.FromPlace = fromPlace;
             searchModel.ToPlace = toPlace;
             searchModel.CurrencyType = CurrencyType;

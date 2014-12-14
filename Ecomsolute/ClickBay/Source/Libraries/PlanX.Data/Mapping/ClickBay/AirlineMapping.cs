@@ -9,6 +9,8 @@ namespace PlanX.Data.Mapping.ClickBay
        {
            this.ToTable("Airlines");
            this.HasKey(x => x.Id);
+           this.HasMany(x => x.AirlinesConditions).WithRequired().HasForeignKey(x => x.AirlinesId);
+           this.HasMany(x => x.ArilinesBaggageConditions).WithRequired().HasForeignKey(X => X.AirlinesId);
        }
     }
 }
