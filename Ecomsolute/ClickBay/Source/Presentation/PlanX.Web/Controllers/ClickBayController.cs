@@ -406,7 +406,7 @@ namespace PlanX.Web.Controllers
 
                 });
             }
-            Session[string.Format(SUCCESS_BOOKING_SESSION, _workContext.CurrentCustomer.Id)] = bookingFlight.Id ;
+            Session[string.Format(SUCCESS_BOOKING_SESSION, _workContext.CurrentCustomer.Id)] = bookingModel.Id ;
 
             return new JsonResult
             {
@@ -421,75 +421,37 @@ namespace PlanX.Web.Controllers
         }
         public ActionResult BookingSuccess()
         {
-            
-           
 
-            var bookingId = Session[string.Format(SUCCESS_BOOKING_SESSION, _workContext.CurrentCustomer.Id)];
-
-            if(bookingId==null)
-                throw new NopException("BookingId +("+bookingId+")+ is null");
-            var booking = _clickBayService.GetBookingById((int)bookingId);
-            if (booking == null)
-                throw new NopException("Booking is null id (" + bookingId + ")");
-            var model = new BookingModel
-            {
-                Adult=booking.Adult,
-                Child=booking.Child,
-                Infant=booking.Infant,
-                
-            };
-            model.TicketInfo = new TicketModel
-            {
-                FromPlace = booking.BookingInfoFlight.FromPlaceName,
-                FromCode = booking.BookingInfoFlight.FromPlaceCode,
-                ToPlace = booking.BookingInfoFlight.ToPlaceName,
-                ToCode = booking.BookingInfoFlight.ToPlaceCode,
-                FlightDurationString = getFlightDuration((decimal)booking.BookingInfoFlight.FlightDuration),
-                BrandCode = booking.BookingInfoFlight.Brand,
-                FlightNumber = booking.BookingInfoFlight.FlightNumber,
-                DepartTime = booking.BookingInfoFlight.DepartDateTime.Value,
-                LandingTime = booking.BookingInfoFlight.ArrivalDateTime.Value,
-                Price = booking.BookingInfoFlight.TotalPrice,
-                BookingFlightPriceModels = booking.BookingInfoFlight.BookingPriceDetails.Select(x => new TicketModel.BookingFlightPriceModel
-                {
-
-                    Price = x.Price,
-                    Code = x.CodeFee,
-                    Description = x.Description,
-                    Quantity = x.Quantity
-                }).ToList(),
-                AirlineName = _clickBayService.GetAirlineById(booking.BookingInfoFlight.AirlinesId).AirlinesName,
-                AirlinesConditions = booking.BookingInfoFlight.BookingInfoConditions.Select(x => new TicketModel.AirlinesConditionModel
-                {
-                    ConditionDescription = x.ConditionDescription,
-                    ConditionName = x.ConditionType
-                }).ToList(),
-                ArilinesBaggageConditions = booking.BookingInfoFlight.BookingBaggages.Select(x => new TicketModel.ArilinesBaggageCondition { 
-                    Baggage=x.Baggage,
-                    BaggageFee=x.BaggageFee
-                
-                }).ToList()
-
-
-
-
-            };
-            if(booking.BookingInfoFlightReturnId!=0)
+            try
             {
 
-                model.TicketInfoReturn = new TicketModel
+                var bookingId = Session[string.Format(SUCCESS_BOOKING_SESSION, _workContext.CurrentCustomer.Id)];
+
+                if (bookingId == null)
+                    throw new NopException("BookingId +(" + bookingId + ")+ is null");
+                var booking = _clickBayService.GetBookingById((int)bookingId);
+                if (booking == null)
+                    throw new NopException("Booking is null id (" + bookingId + ")");
+                var model = new BookingModel
                 {
-                    FromPlace = booking.BookingInfoFlightReturn.FromPlaceName,
-                    FromCode = booking.BookingInfoFlightReturn.FromPlaceCode,
-                    ToPlace = booking.BookingInfoFlightReturn.ToPlaceName,
-                    ToCode = booking.BookingInfoFlightReturn.ToPlaceCode,
-                    FlightDurationString = getFlightDuration((decimal)booking.BookingInfoFlightReturn.FlightDuration),
-                    BrandCode = booking.BookingInfoFlightReturn.Brand,
-                    FlightNumber = booking.BookingInfoFlightReturn.FlightNumber,
-                    DepartTime = booking.BookingInfoFlightReturn.DepartDateTime.Value,
-                    LandingTime = booking.BookingInfoFlightReturn.ArrivalDateTime.Value,
-                    Price = booking.BookingInfoFlightReturn.TotalPrice,
-                    BookingFlightPriceModels = booking.BookingInfoFlightReturn.BookingPriceDetails.Select(x => new TicketModel.BookingFlightPriceModel
+                    Adult = booking.Adult,
+                    Child = booking.Child,
+                    Infant = booking.Infant,
+
+                };
+                model.TicketInfo = new TicketModel
+                {
+                    FromPlace = booking.BookingInfoFlight.FromPlaceName,
+                    FromCode = booking.BookingInfoFlight.FromPlaceCode,
+                    ToPlace = booking.BookingInfoFlight.ToPlaceName,
+                    ToCode = booking.BookingInfoFlight.ToPlaceCode,
+                    FlightDurationString = getFlightDuration((decimal)booking.BookingInfoFlight.FlightDuration),
+                    BrandCode = booking.BookingInfoFlight.Brand,
+                    FlightNumber = booking.BookingInfoFlight.FlightNumber,
+                    DepartTime = booking.BookingInfoFlight.DepartDateTime.Value,
+                    LandingTime = booking.BookingInfoFlight.ArrivalDateTime.Value,
+                    Price = booking.BookingInfoFlight.TotalPrice,
+                    BookingFlightPriceModels = booking.BookingInfoFlight.BookingPriceDetails.Select(x => new TicketModel.BookingFlightPriceModel
                     {
 
                         Price = x.Price,
@@ -514,10 +476,55 @@ namespace PlanX.Web.Controllers
 
 
                 };
+                if (booking.BookingInfoFlightReturnId != 0)
+                {
+
+                    model.TicketInfoReturn = new TicketModel
+                    {
+                        FromPlace = booking.BookingInfoFlightReturn.FromPlaceName,
+                        FromCode = booking.BookingInfoFlightReturn.FromPlaceCode,
+                        ToPlace = booking.BookingInfoFlightReturn.ToPlaceName,
+                        ToCode = booking.BookingInfoFlightReturn.ToPlaceCode,
+                        FlightDurationString = getFlightDuration((decimal)booking.BookingInfoFlightReturn.FlightDuration),
+                        BrandCode = booking.BookingInfoFlightReturn.Brand,
+                        FlightNumber = booking.BookingInfoFlightReturn.FlightNumber,
+                        DepartTime = booking.BookingInfoFlightReturn.DepartDateTime.Value,
+                        LandingTime = booking.BookingInfoFlightReturn.ArrivalDateTime.Value,
+                        Price = booking.BookingInfoFlightReturn.TotalPrice,
+                        BookingFlightPriceModels = booking.BookingInfoFlightReturn.BookingPriceDetails.Select(x => new TicketModel.BookingFlightPriceModel
+                        {
+
+                            Price = x.Price,
+                            Code = x.CodeFee,
+                            Description = x.Description,
+                            Quantity = x.Quantity
+                        }).ToList(),
+                        AirlineName = _clickBayService.GetAirlineById(booking.BookingInfoFlight.AirlinesId).AirlinesName,
+                        AirlinesConditions = booking.BookingInfoFlight.BookingInfoConditions.Select(x => new TicketModel.AirlinesConditionModel
+                        {
+                            ConditionDescription = x.ConditionDescription,
+                            ConditionName = x.ConditionType
+                        }).ToList(),
+                        ArilinesBaggageConditions = booking.BookingInfoFlight.BookingBaggages.Select(x => new TicketModel.ArilinesBaggageCondition
+                        {
+                            Baggage = x.Baggage,
+                            BaggageFee = x.BaggageFee
+
+                        }).ToList()
+
+
+
+
+                    };
+                }
+                return View(model);
             }
-            
+            catch
+            {
+                return RedirectToRoute("HomePage");
+            }
            
-            return View(model);
+          
 
         }
         public ActionResult SelectedTicket(int index, string session, short adult, short child, short iflant)

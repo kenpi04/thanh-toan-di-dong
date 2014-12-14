@@ -1339,6 +1339,10 @@
     <Content Include="Views\TicketConcession\Index.cshtml" />
     <Content Include="Views\TicketConcession\List.cshtml" />
     <Content Include="Views\TicketConcession\TicketConcessionPost.cshtml" />
+    <Content Include="Themes\ClickBay\Views\ClickBay\_SearchBoxSmall.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Themes\ClickBay\Views\ClickBay\BookingSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\Thumbs\" />
