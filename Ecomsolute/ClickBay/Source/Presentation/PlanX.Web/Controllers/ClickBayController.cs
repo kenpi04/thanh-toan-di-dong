@@ -349,7 +349,7 @@ namespace PlanX.Web.Controllers
                ContactStatusId=(int)ContactStatus.ChuaLienLac,
                CreatedOn=DateTime.UtcNow,
                BookingInfoFlightToId=bookingFlight.Id,
-               BookingInfoFlightReturnId=bookingFlightReturn!=null?bookingFlightReturn.Id:0,
+               
                
                TotalBaggageFeeAmount = bookingFlight.TotalBaggageFee,
                 
@@ -359,6 +359,8 @@ namespace PlanX.Web.Controllers
                PaymentMethodId=(short)model.PaymentMethodId              
 
             };
+            if (bookingFlightReturn.Id != 0)
+                bookingModel.BookingInfoFlightReturnId = bookingFlightReturn.Id;
             if (model.ContactBirthDate != null)
                 bookingModel.ContactBirthDate = DateTime.ParseExact(model.ContactBirthDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
            if(bookingFlightReturn!=null)
