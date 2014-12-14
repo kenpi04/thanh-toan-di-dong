@@ -21,6 +21,7 @@ namespace PlanX.Web.Models.ClickBay
             PassengerTypes = new List<SelectListItem>();
             Countries = new List<SelectListItem>();
             BookingInfoConditions = new List<BookingInfoConditionModel>();
+           
         }
         public string ContactName { get; set; }
         public string ContactGender { get; set; }
@@ -29,8 +30,9 @@ namespace PlanX.Web.Models.ClickBay
         public string ContactAddress { get; set; }
         public int ContactCountryId { get; set; }
         public string ContactCityName { get; set; }
-        public DateTime? ContactBirthDate { get; set; }
+        public string ContactBirthDate { get; set; }
         public bool NewLetterAccept { get; set; }
+        public int PaymentMethodId { get; set; }
 
         public bool IsInvoid { get; set; }    
         public short Adult { get; set; }

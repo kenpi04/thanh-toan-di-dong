@@ -18,6 +18,6 @@ namespace PlanX.Web.Models.ClickBay
 
       
         public int PassserType { get; set; }
-        public DateTime? BirthDay { get; set; }
+        public string BirthDay { get; set; }
     }
 }
