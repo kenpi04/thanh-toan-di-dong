@@ -81,7 +81,7 @@ else{
               displayAjaxLoading(true);
               $.post("@Url.Action("SelectedTicket")", { index: selectRadion.val(), session: $("#sessionid").val(),adult:@Model.Adult,child:@Model.Child,iflant:@Model.Flant }, function (d) {
                   if (d == "OK")
-                      window.location.href = '@Url.Action("Booking")';
+                      window.location.href = '@Url.RouteUrl("Booking")';
                   displayAjaxLoading(false);
               }).error(function () {
                   alert("Loi sever");
