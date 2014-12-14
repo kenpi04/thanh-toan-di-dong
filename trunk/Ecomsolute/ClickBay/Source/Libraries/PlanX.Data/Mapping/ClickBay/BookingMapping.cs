@@ -12,7 +12,7 @@ namespace PlanX.Data.Mapping.ClickBay
                 .WithMany()
                 .HasForeignKey(x => x.BookingInfoFlightToId).WillCascadeOnDelete(false);
             this.HasOptional(x => x.BookingInfoFlightReturn)
-                .WithMany()
+               .WithMany()
                 .HasForeignKey(x => x.BookingInfoFlightReturnId).WillCascadeOnDelete(false);
 
             this.Ignore(x => x.PasserType);
