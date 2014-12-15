@@ -15,7 +15,7 @@ namespace PlanX.Web.Models.ClickBay
         }
         public string Id { get; set; }
 
-       public int Index { get; set; }
+        public int Index { get; set; }
         public string FromCode { get; set; }
         public int FromId { get; set; }
         public int ToId { get; set; }
@@ -40,7 +40,7 @@ namespace PlanX.Web.Models.ClickBay
 
         public string ToAirport { get; set; }
 
-        public string  Currency { get; set; }
+        public string Currency { get; set; }
 
         public string FromAirportCode { get; set; }
 
@@ -58,48 +58,54 @@ namespace PlanX.Web.Models.ClickBay
 
         public string AirlineName { get; set; }
 
-       
+
 
         public string AirlineCode { get; set; }
 
         public string TicketType { get; set; }
 
         public int AirlineId { get; set; }
-       public  short Adult { get; set; }
-        public short Child { get; set; }
-        public short Infant { get; set; }
+        public Int16 Adult { get; set; }
+        public Int16 Child { get; set; }
+        public Int16 Infant { get; set; }
         public List<ArilinesBaggageCondition> ArilinesBaggageConditions { get; set; }
         public List<AirlinesConditionModel> AirlinesConditions { get; set; }
 
         public List<BookingFlightPriceModel> BookingFlightPriceModels { get; set; }
         public class ArilinesBaggageCondition
         {
+            public int Id { get; set; }
             public int Baggage { get; set; }
             public decimal BaggageFee { get; set; }
+            public int DisplayOrder { get; set; }
+            public bool IsHandLuggage { get; set; }
+            public bool IsFree { get; set; }
+            public string Description { get; set; }
         }
         public class AirlinesConditionModel
         {
             public string ConditionName { get; set; }
             public string ConditionDescription { get; set; }
         }
-       public class BookingFlightPriceModel
-       {
-           /*
-            *   "Code": "NET",
-                    "Description": "Giá vé",
-                    "Id": 3971,
-                    "Price": "1130000.00",
-                    "Quantity": 1,
-                    "Total": "1130000.00"
-            */
-           public string Code { get; set; }
-           public decimal Price { get; set; }
-           public string Description { get; set; }
-           public short Quantity { get; set; }
-          
-       }
+        public class BookingFlightPriceModel
+        {
+            /*
+             *   "Code": "NET",
+                     "Description": "Giá vé",
+                     "Id": 3971,
+                     "Price": "1130000.00",
+                     "Quantity": 1,
+                     "Total": "1130000.00"
+             */
+            public string Code { get; set; }
+            public decimal Price { get; set; }
+            public string Description { get; set; }
+            public Int16 Quantity { get; set; }
+            public decimal Total { get; set; }
 
-        public short Stops { get; set; }
+        }
+
+        public Int16 Stops { get; set; }
 
         public string FlightDurationString { get; set; }
     }
