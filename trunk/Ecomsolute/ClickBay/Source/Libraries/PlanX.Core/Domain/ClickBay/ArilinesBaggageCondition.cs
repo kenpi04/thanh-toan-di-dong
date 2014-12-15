@@ -14,10 +14,31 @@ namespace PlanX.Core.Domain.ClickBay
     
     public partial class ArilinesBaggageCondition:BaseEntity
     {
-     
+        /// <summary>
+        /// Id Airlines
+        /// </summary>
         public int AirlinesId { get; set; }
+        /// <summary>
+        /// So kg hanh ly
+        /// </summary>
         public int Baggage { get; set; }
+        /// <summary>
+        /// Phi cong them
+        /// </summary>
         public decimal BaggageFee { get; set; }
         public int DisplayOrder { get; set; }
+        /// <summary>
+        /// La hanh ly xach tay
+        /// </summary>
+        public bool IsHandLuggage { get; set; }
+        public bool Deleted { get; set; }
+        /// <summary>
+        /// La mien phi
+        /// </summary>
+        public bool IsFree { get; set; }
+        /// <summary>
+        /// Mo ta
+        /// </summary>
+        public string Description { get; set; }
     }
 }
