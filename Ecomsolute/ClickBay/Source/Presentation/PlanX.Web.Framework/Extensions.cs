@@ -277,6 +277,73 @@ namespace PlanX.Web.Framework
             return result;
         }
 
+        public static string RelativeFormatVietNam(this DateTime source, string defaultFormat)
+        {
+            string result = "";
+
+            var ts = new TimeSpan(DateTime.Now.Ticks - source.Ticks);
+            double delta = ts.TotalSeconds;
+
+            if (delta > 0)
+            {
+                if (delta < 60) // 60 (seconds)
+                {
+                    result = ts.Seconds == 1 ? "một giây trước" : ts.Seconds + " giây trước";
+                }
+                else if (delta < 120) //2 (minutes) * 60 (seconds)
+                {
+                    result = "một phút trước";
+                }
+                else if (delta < 2700) // 45 (minutes) * 60 (seconds)
+                {
+                    result = ts.Minutes + " phút trước";
+                }
+                else if (delta < 5400) // 90 (minutes) * 60 (seconds)
+                {
+                    result = "một giờ trước";
+                }
+                else if (delta < 86400) // 24 (hours) * 60 (minutes) * 60 (seconds)
+                {
+                    int hours = ts.Hours;
+                    if (hours == 1)
+                        hours = 2;
+                    result = hours + " giờ trước";
+                }
+                else if (delta < 172800) // 48 (hours) * 60 (minutes) * 60 (seconds)
+                {
+                    result = "hôm qua";
+                }
+                else if (delta < 2592000) // 30 (days) * 24 (hours) * 60 (minutes) * 60 (seconds)
+                {
+                    result = ts.Days + " ngày trước";
+                }
+                else if (delta < 31104000) // 12 (months) * 30 (days) * 24 (hours) * 60 (minutes) * 60 (seconds)
+                {
+                    int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
+                    result = months <= 1 ? "một tháng trước" : months + " tháng trước";
+                }
+                else
+                {
+                    int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
+                    result = years <= 1 ? "một năm trước" : years + " năm trước";
+                }
+            }
+            else
+            {
+                DateTime tmp1 = source;
+                //default formatting
+                if (!String.IsNullOrEmpty(defaultFormat))
+                {
+                    result = tmp1.ToString(defaultFormat);
+                }
+                else
+                {
+                    result = tmp1.ToString();
+                }
+            }
+            return result;
+        }
+
         public static string RemoveSign4VietnameseString(this string str)
         {
             //Tiến hành thay thế , lọc bỏ dấu cho chuỗi
