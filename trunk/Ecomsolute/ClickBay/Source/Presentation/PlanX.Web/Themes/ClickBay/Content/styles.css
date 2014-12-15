@@ -162,7 +162,7 @@ table.none-border tr th:first-child{border-left:none;}
 .pointer {cursor:pointer;}
 .section-left{float:left;width:69%;margin-right:1%}
 .section-right{float:left;width:30%}
-.section-left-search{float:left;width:75%;margin-right:1%}
+.section-left-search{float:left;width:98%;margin-right:1%}
 .section-right-search{float:left;width:24%}
 .section article{margin-bottom:20px;}
 .section-right article aside, .section-right-search article.news-box-small aside{border-bottom:1px solid #189b96;padding-bottom:15px;margin-bottom:10px;}

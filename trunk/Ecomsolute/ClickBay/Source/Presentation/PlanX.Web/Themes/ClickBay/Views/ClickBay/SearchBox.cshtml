@@ -6,8 +6,8 @@
         <img src="@Url.Content("~/Themes/ClickBay/Content/images/mouse.png")">
         <span class="search-text">TÌM VÉ MÁY BAY</span>
         <span>
-            <input type="radio" name="Return" checked="checked" value="1"><label>Khứ hồi</label>
-            <input type="radio" name="Return" value="0"><label>Một chiều</label>
+            <input type="radio" name="Return" checked="checked" value="true"><label>Khứ hồi</label>
+            <input type="radio" name="Return" value="false"><label>Một chiều</label>
            
             
         </span>
@@ -112,6 +112,7 @@
             if (CURRENT_TXT == "fromPlace") {
                 $("#fromPlace").html(name);
                 $("#FromId").val(code);
+                $("#toPlace").trigger('click');
 
             }
             else {

@@ -54,12 +54,7 @@
 
 <article>
     <h2>Thông Tin Người Liên Hệ</h2>
-    <div>
-        <p>
-            Vui lòng điền đây đủ thông tin, nhân viên ClickBay sẽ liên lạc với khách hàng qua địa chỉ này để hoàn tất thủ tục đặt vé.
-            <br><span class="required">( * )</span> Các trường bắt buộc phải nhập.
-        </p>
-    </div>
+   
     <aside>
         <div class="div-table info-contact">
             <div class="div-table-row">
@@ -104,6 +99,8 @@
                     </div>
                 </div>
             </div>
+            @if(Model.ContactBirthDate!=null)
+            { 
             <div class="div-table-row">
                 <div class="div-table-cell">
                     <div class="div-table">
@@ -116,11 +113,13 @@
                 </div>
                 <div class="div-table-cell"></div>
             </div>
+            }
         </div>
     </aside>
    
 </article>
-
+@if(Model.CustomerNote!=null)
+{ 
 <article>
     <!--Yeu cau dac biet-->
     <h2>Yêu Cầu Đặt Biệt</h2>    
@@ -128,6 +127,7 @@
         @Html.DisplayTextFor(x => x.CustomerNote)
     </div>
 </article>
+}
 
 <article>
     <!--Yeu cau dac biet-->

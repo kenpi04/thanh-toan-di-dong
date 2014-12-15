@@ -229,10 +229,12 @@
     <Compile Include="Infrastructure\RouteProvider.cs" />
     <Compile Include="Models\ClickBay\BookingModel.cs" />
     <Compile Include="Models\ClickBay\BookingPasserModel.cs" />
+    <Compile Include="Models\ClickBay\BookingRecentModel.cs" />
     <Compile Include="Models\ClickBay\SearchModel.cs" />
     <Compile Include="Models\ClickBay\TicketConcessionModel.cs" />
     <Compile Include="Models\ClickBay\TicketConcessionPostModel.cs" />
     <Compile Include="Models\ClickBay\TicketModel.cs" />
+    <Compile Include="Models\ClickBay\TicketSessionModel.cs" />
     <Compile Include="Models\Common\AddressModel.cs" />
     <Compile Include="Models\Common\AdminHeaderLinksModel.cs" />
     <Compile Include="Models\Common\FooterModel.cs" />
@@ -1343,6 +1345,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Themes\ClickBay\Views\ClickBay\BookingSuccess.cshtml" />
+    <Content Include="Themes\ClickBay\Views\ClickBay\Search.cshtml" />
+    <Content Include="Themes\ClickBay\Views\ClickBay\_BookingPrice.cshtml" />
+    <Content Include="Themes\ClickBay\Views\ClickBay\_FlightBaggageCondition.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\Thumbs\" />

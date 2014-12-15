@@ -38,7 +38,7 @@ else{
                     <td><a onclick="showDetail(@item.Index,@Model.Return)">Chi tiết<img src="@Url.Content("~/Themes/ClickBay/content/images/plus-icon.png")" class="icon-small"></a>
                   
                     </td>
-                    <td ><input type="radio" name="@(Model.Return?"ticketChecked-return":ticketChecked")"  name="ticketChecked" value="@item.Index"></td>
+                    <td ><input type="radio" name="@(Model.Return?"ticketChecked-return":"ticketChecked")" value="@item.Index"></td>
                 </tr>
                     <tr id="detail_@item.Index" style="display:none">
                        
@@ -47,84 +47,8 @@ else{
                
             </tbody>
         </table>
-        <input type="button" value="Tiếp tục" class="default" id="btnContinue" onclick="selectTicket()" name="btnContinue">
+       
     </div>
- <input type="hidden" value="@Model.SessionId" id="@(Model.Return?"sessionid-return":sessionid")" />
-  <script>
-      function showDetail(id,return)
-      {
-          var table = $("#detail_" + id);
-        
-          if (!table.attr('show')) {
-             
-             var sessionId="";
-             if(!return)
-            sessionId= $("#sessionid").val();
-else
-sessionId=$("#sessionid-return").val();
-              $.get("@Url.Action("GetTicketDetail")", { sessionId:sessionId, index: id }, function (d) {
-                  table.html("<td colspan='7'>"+d+"</td>");
-                  table.show('slow');
-                  table.attr('show', '1');
-              });
-          }
-          else {
-              if (table.is(":hidden"))
-                  table.show('slow');
-              else
-                  table.hide('slow');
-          }
-         
-      }
-      function selectTicket()
-      {
+ <input type="hidden" value="@Model.SessionId" id="@(Model.Return?"sessionid-return":"sessionid")" />
 
-         var  sessionId= $("#sessionid").val();
-
-          var selectRadion=$("input[name=ticketChecked]:checked");
-          var selectedRadioReturn=$("input[name=ticketChecked-retrun]:checked");
-          if(selectRadion.length==0)
-              alert("Vui lòng chọn vé!");
-          @if(@Model.Return)
-          {
-            <text>
-
-              else if(selectedRadioReturn.length==0)
-            {
-          alert("Vui lòng chọn vé lượt về!");
-              }
-            </text>
-          }
-          else
-          {
-            var data= { 
-            index: selectRadion.val(),
-            sess session:sessionId,
-            adult:@Model.Adult,
-            child:@Model.Child,
-            iflant:@Model.Flant 
-            };
-            @if(Model.Return)
-            {
-
-            <text>
-              data.indexReturn=selectedRadioReturn.val();
-              data.sessionReturn=$("#sessionid-return").val();
-
-            </text>
-            }
-
-
-              displayAjaxLoading(true);
-              $.post("@Url.Action("SelectedTicket")",data, function (d) {
-                  if (d == "OK")
-                      window.location.href = '@Url.RouteUrl("Booking")';
-                  displayAjaxLoading(false);
-              }).error(function () {
-                  alert("Loi sever");
-                  displayAjaxLoading(false);
-              })
-          }
-      }
-  </script>
 }
