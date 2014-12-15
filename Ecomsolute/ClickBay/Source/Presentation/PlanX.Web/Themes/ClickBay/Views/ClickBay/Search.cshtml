@@ -19,9 +19,33 @@
             <div class="info-passenger">
                 <p><span>Số lượng người lớn:</span><span>@Model.Adult</span><span>Số lượng trẻ em:</span><span>@Model.Child</span><span>Số lượng em bé:</span><span>@Model.Flant</span></p>
             </div>
+
+            @if(Model.Return)
+            {
+                
+            }
         </section>
         <section class="section-left-search section" id="table-data" style="width:75%">
         </section>
+        @if(Model.Return)
+        { 
+         <section class="section-top">
+         
+            <div class="info-filter">
+                <p>
+                    <span class="info-title-search">@Model.ToName</span><span>đi</span><span class="info-title-search">@Model.FromName</span><span style="color:#000">|</span>
+                  
+                     <span>Ngày</span><span class="info-title-search">@Model.ReturnDate </span>
+                </p>
+            </div>
+            <div class="info-passenger">
+                <p><span>Số lượng người lớn:</span><span>@Model.Adult</span><span>Số lượng trẻ em:</span><span>@Model.Child</span><span>Số lượng em bé:</span><span>@Model.Flant</span></p>
+            </div>
+
+        </section>
+        <section class="section-left-search section" id="table-data-return" style="width:75%">
+        </section>
+        }
         <section class="section-right-search">
             <article>
                 <aside>
@@ -68,7 +92,7 @@
         var selectedSource=[];
         $("input[name=checkFlight]:checked").each(function(i,e){
                 selectedSource.push($(this).val())
-        });
+        });            
         var data = {
             FromID:'@(Model.FromId!=null?Model.FromId:"")',
             ToId:'@(Model.ToId!=null?Model.ToId:"")',
@@ -79,17 +103,40 @@
             Flant:@Model.Flant,
             Sort:$("input[name=radioSort]:checked").val(),
             Source:selectedSource,
-            SessionId: $("#sessionid").val()
+            SessionId: $("#sessionid").val()??""
            
         };
-    displayAjaxLoading(true);
-    $.get("@Url.Action("TicketSearch")",data,function(d){
-        $("#table-data").html(d);
-        displayAjaxLoading(false)
-    }).error(function(){
-        alert("Lỗi kết nối! vui lòng thử lại");
-        displayAjaxLoading(false);
-    })
+        displayAjaxLoading(true);
+        $.get("@Url.Action("TicketSearch")",data,function(d){
+            $("#table-data").html(d);
+            displayAjaxLoading(false)
+        }).error(function(){
+            alert("Lỗi kết nối! vui lòng thử lại");
+            displayAjaxLoading(false);
+        })
+        @if(Model.Return)
+                {<text>
+                     var data = {
+                    FromID:'@(Model.ToId != null ? Model.ToId : "")',
+                    ToId:'@(Model.FromId != null ? Model.FromId : "")',
+                    DepartDate: '@Model.ReturnDate',
+                    Adult:@Model.Adult,
+                    Child:@Model.Child,
+                    Flant:@Model.Flant,
+                    Sort:$("input[name=radioSort]:checked").val(),
+                    Source:selectedSource,
+                    SessionId: $("#sessionid-return").val()?""
+           
+                };
+                displayAjaxLoading(true);
+                $.get("@Url.Action("TicketSearch")",data,function(d){
+                    $("#table-data").html(d);
+                    displayAjaxLoading(false)
+                }).error(function(){
+                    alert("Lỗi kết nối! vui lòng thử lại");
+                    displayAjaxLoading(false);
+                })</text>
+        }
     }
 </script>
 
