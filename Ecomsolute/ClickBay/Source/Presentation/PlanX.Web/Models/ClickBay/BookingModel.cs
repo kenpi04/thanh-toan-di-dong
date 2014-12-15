@@ -35,26 +35,26 @@ namespace PlanX.Web.Models.ClickBay
         public int PaymentMethodId { get; set; }
 
         public bool IsInvoid { get; set; }    
-        public short Adult { get; set; }
-        public short Child { get; set; }
-        public short Infant { get; set; }
+        public Int16 Adult { get; set; }
+        public Int16 Child { get; set; }
+        public Int16 Infant { get; set; }
 
         public string CustomerNote { get; set; }
+
+        public decimal DiscountAmount { get; set; }
         
         public TicketModel TicketInfo { get; set; }
         public TicketModel TicketInfoReturn { get; set; }
 
         public List<BookingPasserModel> BookingPassers { get; set; }
-        public short ContactPassengerType { get; set; }
+        public Int16 ContactPassengerType { get; set; }
 
         public List<SelectListItem> PassengerTypes { get; set; }
 
         public List<SelectListItem> Countries { get; set; }
-
+        public int CountryId { get; set; }
       
         public List<BookingInfoConditionModel> BookingInfoConditions { get; set; }
-
-      
 
         #region Nestest class
     
