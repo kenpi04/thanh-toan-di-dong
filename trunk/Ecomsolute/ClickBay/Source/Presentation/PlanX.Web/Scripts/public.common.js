@@ -8,6 +8,23 @@ $(document).ready(function (e) {
             $(item).html("<div class=loading-img></div>").load(url);
         }
     });
+
+    $("#frm-newsletter-email[ajax=true]").submit(function (e) {
+        e.preventDefault();
+        var action = $(this).attr("data-url");
+        var form_data = $(this).serialize();
+        $.ajax({
+            url: action,
+            type: 'POST',
+            data: form_data,
+            cache: false,
+            success: function (result) {
+                $("input[id=email]").val("");
+                $("#frm-newsletter-email").find(".field-validation-valid").append(result.Result);
+            }
+        });
+    })
+
 })
 
 function imageResize(id) {
