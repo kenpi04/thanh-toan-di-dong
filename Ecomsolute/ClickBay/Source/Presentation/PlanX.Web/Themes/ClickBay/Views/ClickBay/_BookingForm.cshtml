@@ -190,13 +190,13 @@
         if (d.error == "")
             window.location.href = d.url;
         else
-            displayBarNotification(d.error, "error", 3000);
+            alert(d.error);
     }
     function postBegin()
     {
         if (!$("#checkedPolicy").is(":checked"))
         {
-            displayBarNotification("Vui lòng chọn đồng ý điều khoản", "info", 3000);
+            alert("Vui lòng chọn đồng ý điều khoản");
             return;
         }
         getBirthDate();

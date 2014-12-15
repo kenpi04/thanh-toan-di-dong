@@ -10,18 +10,18 @@
     <div class="info-flight">
         <div class="div-table-row">
             <div class="div-table-cell">Chuyến bay: </div>
-            <div class="div-table-cell"><span>@(Model.TicketInfo.ReturnDate.HasValue ? "Khứ hồi" : "Một chiều")</span></div>
+            <div class="div-table-cell"><span>@(Model.TicketInfoReturn!=null ? "Khứ hồi" : "Một chiều")</span></div>
             <div class="div-table-cell">Số lượng hành khách: </div>
             <div class="div-table-cell"><span>@soLuongHanhKhach</span></div>
         </div>
         <div class="div-table-row">
             <div class="div-table-cell">Ngày đi:</div>
             <div class="div-table-cell"><span>@Model.TicketInfo.DepartTime.ToString("dd-MM-yyyy")</span></div>
-           @if(Model.TicketInfo.ReturnDate.HasValue)
+           @if(Model.TicketInfoReturn!=null)
                 {
             <div class="div-table-cell">Ngày về:</div>
             <div class="div-table-cell"><span>
-                    @Model.TicketInfo.ReturnDate.Value.ToString("dd-MM-yyyy")
+                    @Model.TicketInfoReturn.DepartTime.ToString("dd-MM-yyyy")
                 </span></div>
            }
         </div>
@@ -45,7 +45,7 @@
             <div class="div-table-cell"><span>@Model.TicketInfo.LandingTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
             <div class="div-table-cell">Loại vé: <span>@Model.TicketInfo.TicketType</span></div>
         </div>
-        @if(Model.TicketInfoReturn.Id!=null)
+        @if(Model.TicketInfoReturn!=null)
         {
            <div class="div-table-row place-flight">
             <div class="div-table-cell"><img></div>
