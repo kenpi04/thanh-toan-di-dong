@@ -129,7 +129,7 @@ namespace PlanX.Web.Controllers
                     model.FromId, model.ToId,
                     datePart, model.Adult,
                     model.Child, model.Flant,
-                    returnDate: returnDate,
+                    returnDate: null,
                     source: model.Source.Count > 0 ? model.Source.Aggregate((a, b) => a + "," + b) : null,
                     expendDetails: true,
                     roundTrip: returnDate.HasValue
@@ -527,7 +527,8 @@ namespace PlanX.Web.Controllers
           
 
         }
-        public ActionResult SelectedTicket(int index, string session, short adult, short child, short iflant)
+        public ActionResult SelectedTicket(int index, string session,int indexReturn,string sessionReturn,
+            short adult, short child, short iflant)
         {
             if (Session[session] == null)
                 return Json("NOTOK");
