@@ -70,24 +70,20 @@ namespace PlanX.Web.Controllers
             return View(model);
         }
 
-        //public ActionResult List()
-        //{
-        //    var model = new TicketConcessionListModel();
-        //    var lst = _ticketConcessionService.GetAllTicketConcession(0, 20);
-        //    model.Total = lst.TotalCount;
-        //    model.Page = 1;
-        //    model.PageSize = 20;
-        //    model.listType = _ticketConcessionService.GetAllTicketType().ToList();
-        //    model.listPlace = _ticketConcessionService.GetAllPlace().ToList();
+        public ActionResult HomeTicketConcession(TicketConcessionListModel model, string returnView)
+        {
+            if (model.PageSize == 0) model.PageSize = 10;
+            if (model.Page <= 0) model.Page = 1;
+            var listItem = _ticketConcessionService.SearchTicketConcession(model.Page - 1, model.PageSize, model.PassengerNameSearch, model.FromPlaceSearch, model.ToPlaceSearch, model.TicketTypeSearch, model.DepartDateSearch);
 
-        //    foreach (var item in lst)
-        //    {
-        //        model.listItem.Add(PrepareTicketConcessionModel(item));
-        //    }
-        //    return View(model);
-        //}
-
-        //[HttpPost]
+            foreach (var item in listItem)
+            {
+                model.listItem.Add(PrepareTicketConcessionModel(item));
+            }
+            if (!string.IsNullOrEmpty(returnView))
+                return View(returnView, model.listItem);
+            return View(model.listItem);
+        }
         public ActionResult List(TicketConcessionListModel model)
         {
             if (model.PageSize == 0) model.PageSize = 10;
