@@ -35,9 +35,9 @@ namespace PlanX.Core.Domain.ClickBay
    TicketPriceDetails	TicketPriceDetailDto (Navigation)	Chi tiết giá vé	
    TicketOptions	TicketOptionDto	Các giá vé khác	*/
 
-        [JsonIgnore]
+        [JsonProperty("TicketPriceDetails")]
         private ICollection<TicketPriceDetailDto> _ticketDetails;
-        [JsonIgnore]
+        [JsonProperty("Details")]
         private ICollection<FlightDetailDto> _flightDetailDto;
         /// <summary>
         /// Mã chuyến bay	VJ8662
@@ -45,7 +45,7 @@ namespace PlanX.Core.Domain.ClickBay
         /// 
         TimeSpan _flightDuration;
         public string Id { get; set; }
-        public string FlightNumer { get; set; }
+        public string FlightNumber { get; set; }
         public string Description { get; set; }
         public string Airline { get; set; }
         public string AirlineCode { get; set; }
