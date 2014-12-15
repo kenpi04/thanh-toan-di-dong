@@ -1,12 +1,18 @@
 ﻿@model BookingModel
+@{
+    string soLuongHanhKhach = "";
+    if (Model.Adult > 0) {soLuongHanhKhach = Model.Adult.ToString() + " người lớn";}
+    if (Model.Child > 0) { soLuongHanhKhach = Model.Child.ToString() + " trẻ em"; }
+    if (Model.Infant > 0) { soLuongHanhKhach = Model.Infant.ToString() + " em bé"; }
+}           
 <article>
     <h2>Thông Tin Chuyến Bay</h2>
     <div class="info-flight">
         <div class="div-table-row">
             <div class="div-table-cell">Chuyến bay: </div>
-            <div class="div-table-cell"><span>Khứ hồi</span></div>
+            <div class="div-table-cell"><span>@(Model.TicketInfo.ReturnDate.HasValue ? "Khứ hồi" : "Một chiều")</span></div>
             <div class="div-table-cell">Số lượng hành khách: </div>
-            <div class="div-table-cell"><span>@Model.Adult người lớn, @Model.Child trẻ em, @Model.Infant em bé</span></div>
+            <div class="div-table-cell"><span>@soLuongHanhKhach</span></div>
         </div>
         <div class="div-table-row">
             <div class="div-table-cell">Ngày đi:</div>
@@ -15,9 +21,7 @@
                 {
             <div class="div-table-cell">Ngày về:</div>
             <div class="div-table-cell"><span>
-            
                     @Model.TicketInfo.ReturnDate.Value.ToString("dd-MM-yyyy")
-               
                 </span></div>
            }
         </div>
@@ -33,12 +37,12 @@
             <div class="div-table-cell"><img></div>
             <div class="div-table-cell">Từ <span>@Model.TicketInfo.FromPlace (@Model.TicketInfo.FromCode)</span></div>
             <div class="div-table-cell">tới: <span>@Model.TicketInfo.ToPlace (@Model.TicketInfo.ToCode)</span></div>
-            <div class="div-table-cell">@Model.TicketInfo.AirlineName <span>(@Model.TicketInfo.BrandCode)</span></div>
+            <div class="div-table-cell">@Model.TicketInfo.AirlineName <span>(@Model.TicketInfo.FlightNumber)</span></div>
         </div>
         <div class="div-table-row">
             <div class="div-table-cell"></div>
-            <div class="div-table-cell"><span>@Model.TicketInfo.DepartTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
-            <div class="div-table-cell"><span>@Model.TicketInfo.LandingTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
+            <div class="div-table-cell"><span>@Model.TicketInfo.DepartTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
+            <div class="div-table-cell"><span>@Model.TicketInfo.LandingTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
             <div class="div-table-cell">Loại vé: <span>@Model.TicketInfo.TicketType</span></div>
         </div>
         @if(Model.TicketInfoReturn.Id!=null)
