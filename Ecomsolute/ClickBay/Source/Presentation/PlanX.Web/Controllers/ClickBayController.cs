@@ -289,18 +289,18 @@ namespace PlanX.Web.Controllers
                 Value = ((int)v).ToString()
             }).ToList();
 
-            var listPrice = selectedTicket.Ticket.BookingFlightPriceModels;
+            var listPrice = new List<TicketModel.BookingFlightPriceModel>();
 
-            #region Ticket            
+            #region Ticket
             model.TicketInfo = PrepareSelectedTicket(selectedTicket.Ticket);
-            listPrice = selectedTicket.Ticket.BookingFlightPriceModels;
+            listPrice.AddRange(selectedTicket.Ticket.BookingFlightPriceModels);
             #endregion
 
             #region ticket return
             if (selectedTicket.TicketReturn != null)
             {
                 model.TicketInfoReturn = PrepareSelectedTicket(selectedTicket.TicketReturn);
-                listPrice.AddRange(selectedTicket.TicketReturn.BookingFlightPriceModels);
+                listPrice.InsertRange(0,selectedTicket.TicketReturn.BookingFlightPriceModels);
             }
             #endregion
 
