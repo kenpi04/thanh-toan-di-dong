@@ -39,7 +39,7 @@ p {padding:0;line-height:1.5em }
 .logo{float:left}
 .formsearch{float:right;width:260px}
 .clear{clear:both}
-.container ,.wrapper-body{width:90%;margin:0 auto}
+.container ,.wrapper-body,.center-2{width:90%;margin:0 auto}
 .container .search-head{width:100%;float:right}
 #menu{height:45px;background:#189b96}
 #menu li{float:left;padding: 14px 20px;margin-right: 20px;}
@@ -62,7 +62,7 @@ border:none;
 width: 173px;}
 .share{text-align:right}
 .content{min-height:400px}
-.footer{background:#189b96;height:175px;color:#fff;padding-top:20px}
+.footer{background:#189b96;color:#fff;padding:30px 0;display:inline-block;width:100%;}
 .footer .block{float:left;width:24%;margin-right:10px}
 .footer .block .block-title{font-size: 16px;text-transform: uppercase;font-weight: bold;}
 .footer .support ul li a{line-height:25px;color:#fff}
@@ -94,7 +94,7 @@ margin-top: 15px;
 padding: 10px 50px;background:#f3f3f3;margin-top:10px;border-radius:5px}
 .bl .name{color:#189b96;font-size:16px;text-transform:uppercase;font-weight:bold}
 .bl .price{color:red;font-weight:bold}
-.sologan{color:#189b96;font-size:16px;font-weight:bold;text-align:center;width:100%;margin:20px 0}
+.sologan{color:#189b96;font-size:2em;font-family:'Lucida Grande', 'Lucida Sans', Arial, sans-serif;text-align:center;width:100%;margin:20px 0}
 .box{width:400px}
 .box-h .box-t{font-size: 16px;
 color: #189b96;
@@ -124,14 +124,12 @@ height:300px
 /*CSS anh dung*/
 img{max-width:100%;max-height:100%;}
 input,select{padding:6px;}
-input.default,a.default{min-width:90px;background:#189b96;padding:6px;color:#fff;border:0;font-size:14px;cursor:pointer}
 input.default,a.default{background:#189b96;padding:8px;color:#fff;border:0;font-size:14px;cursor:pointer;display:inline-block;}
 label.default{padding:8px;}
 input.textbox-default{}
 /*.wrapper-body{width:90%;margin:0 auto}*/
 .wrapper-content{margin:40px 0;}
 .wrapper-content.inline{margin:0 2%;}
-.title{display:inline-block;font-size:15px;color:#fff;background:#189b96;width:100%;}
 .home-title{color:#189b96;font-family:initial;font-size:24px;line-height:27px;}
 span.active{color:#F2C127;}
 .main-background{background:#189b96 !important; color:#fff;}
@@ -347,7 +345,7 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .ui-timepicker-list li.ui-timepicker-selected.ui-timepicker-disabled {	color: #888;	cursor: default;}
 .ui-timepicker-list li.ui-timepicker-disabled:hover,
 .ui-timepicker-list li.ui-timepicker-selected.ui-timepicker-disabled {	background: #f2f2f2;}
-.dangtin input[type="text"],input[type="password"]{width:220px}
+.dangtin input[type="text"]{width:220px}
 .dangtin input[name="RoundTrip"] {    margin-top:-1px;}
 .timepicker {    width:100px !important;}
 .datepicker {    width:100px !important;}
@@ -468,11 +466,13 @@ div#pages {float: right;padding: 10px 0;}
         box-shadow: none;
         font-weight: bold;
         cursor: default;
-<<<<<<< .mine
     }
     .input-validation-error{border:solid 1px #d41212}
-=======
-    }
 .ticket-xem-them {float:right;padding:10px;text-decoration:underline;}
 .TicketConcession{margin:20px 0;}
->>>>>>> .r642
+/*login*/
+.page-body {margin-top:20px;}
+.form-fields{padding:20px;border:1px solid #ddd;}
+.form-fields .inputs {margin:8px 0;}
+.form-fields label[for=Email]{padding-right:32px;}
+.form-fields label[for=Password]{padding-right:8px;}
