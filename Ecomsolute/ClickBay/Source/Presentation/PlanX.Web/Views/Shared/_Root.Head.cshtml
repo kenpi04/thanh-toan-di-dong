@@ -2,8 +2,8 @@
 @using PlanX.Core.Domain.Common;
 @using PlanX.Core.Infrastructure;
 @{
-    var displayMiniProfiler = CommonHelper.GetTrustLevel() >= AspNetHostingPermissionLevel.High &&
-        EngineContext.Current.Resolve<PlanX.Core.Domain.StoreInformationSettings>().DisplayMiniProfilerInPublicStore;
+    //var displayMiniProfiler = CommonHelper.GetTrustLevel() >= AspNetHostingPermissionLevel.High &&
+    //    EngineContext.Current.Resolve<PlanX.Core.Domain.StoreInformationSettings>().DisplayMiniProfilerInPublicStore;
 
     //resources
     Html.AppendCssFileParts("~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.0.custom.min.css");
@@ -42,12 +42,10 @@
     @*@Html.Action("RssHeaderLink", "Blog")*@
     @*Favicon - upload favicon.ico file to the root directory*@
     @Html.Action("Favicon", "Common")
-    @if (displayMiniProfiler)
+    @*@if (displayMiniProfiler)
     {
         @StackExchange.Profiling.MiniProfiler.RenderIncludes()
-    }
-    <!--Powered by nopCommerce - http://www.nopCommerce.com-->
-    <!--Copyright (c) 2008-2013-->
+    }*@
 </head>
 <body>
     @RenderBody()
