@@ -35,7 +35,7 @@ else{
                     <td class="big-font" id="">@item.DepartTime.ToString("hh:mm") - @item.LandingTime.ToString("hh:mm")</td>
                     <td class="big-font">@item.Price.ToString("#,##")</td>
                     <td class="currency">@item.Currency</td>
-                    <td><a onclick="showDetail(@item.Index,@Model.Return)">Chi tiết<img src="@Url.Content("~/Themes/ClickBay/content/images/plus-icon.png")" class="icon-small"></a>
+                    <td><a onclick="showDetail(@item.Index,@(Model.Return?"true":"false"))">Chi tiết<img src="@Url.Content("~/Themes/ClickBay/content/images/plus-icon.png")" class="icon-small"></a>
                   
                     </td>
                     <td ><input type="radio" name="@(Model.Return?"ticketChecked-return":"ticketChecked")" value="@item.Index"></td>

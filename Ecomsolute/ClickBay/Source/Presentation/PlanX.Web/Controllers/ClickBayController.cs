@@ -110,7 +110,7 @@ namespace PlanX.Web.Controllers
         public ActionResult TicketSearch(SearchModel model)
         {
 
-            model.Tickets = new List<TicketModel>();
+            model.Tickets = new List<TicketModel>();           
             if (model.SessionId != null)
                 model.Tickets = Session[model.SessionId] as List<TicketModel>;
 
@@ -172,6 +172,7 @@ namespace PlanX.Web.Controllers
             var ticket = (Session[sessionId] as List<TicketModel>).FirstOrDefault(x => x.Index == index);
             if (ticket == null)
                 return Content("");
+            ticket = PrepareSelectedTicket(ticket);
 
             //bo sung: get Price & Condition
             return PartialView("_TicketDetail", ticket);
@@ -184,13 +185,13 @@ namespace PlanX.Web.Controllers
                 return null;
 
             var ticket = selectedTicket;
-
+          
             ticket.AirlinesConditions = _clickBayService.GetListAirlinesConditionByAirlineId(ticket.AirlineId).Select(x => new TicketModel.AirlinesConditionModel
             {
                 ConditionDescription = x.ConditionDescription,
                 ConditionName = x.ConditionName
             }).ToList();
-
+            
             ticket.ArilinesBaggageConditions = _clickBayService.GetListArilinesBaggageCondition(ticket.AirlineId).Select(x => new TicketModel.ArilinesBaggageCondition
             {
                 Baggage = x.Baggage,
