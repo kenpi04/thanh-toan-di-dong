@@ -844,7 +844,7 @@ namespace PlanX.Web.Controllers
                     ToPlace = x.ToPlace,
                     BrandCode = x.AirlineCode,
                     AirlineName = x.Airline,
-                    HangVe = x.FareBasis,
+                    FareBasis = x.FareBasis,
                     AirlineCode = x.AirlineCode,
                     Index = i,
                     Stops = x.Stops,
