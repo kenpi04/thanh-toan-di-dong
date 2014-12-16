@@ -1,10 +1,9 @@
 ﻿@model BookingModel
 @{
-    var listPriceNet = Model.TicketInfo.BookingFlightPriceModels.Where(x => x.Code=="NET").OrderBy(x => x.Price).ToList();
-    var listFee = Model.TicketInfo.BookingFlightPriceModels.Where(x => x.Code != "NET" && x.Code!="DIS").Select(x => new { x.Code, x.Description, x.Price, x.Quantity }).OrderBy(x => x.Price).ToList();
-    var totalPrice = Model.TicketInfo.BookingFlightPriceModels.Where(x => x.Code != "DIS").Sum(x => (x.Price * x.Quantity));
-    string currencyCode = string.IsNullOrEmpty(Model.TicketInfo.Currency) ? "VND" : Model.TicketInfo.Currency;
-    var totalDiscount = Model.TicketInfo.BookingFlightPriceModels.Where(x => x.Code == "DIS").Sum(x=> x.Total);
+    var listPriceNet = Model.TotalPriceForPassengerTypes.Where(x => x.Code=="NET").OrderBy(x => x.Price).ToList();
+    var listFee = Model.TotalPriceForPassengerTypes.Where(x => x.Code != "NET" && x.Code!="DIS").OrderBy(x => x.Price).ToList();
+    var totalPrice = Model.TotalPriceForPassengerTypes.Where(x => x.Code != "DIS").Sum(x => (x.Price));
+    string currencyCode = string.IsNullOrEmpty(Model.TicketInfo.Currency) ? "VND" : Model.TicketInfo.Currency;    
 }
 <input type="hidden" value="@currencyCode" id="currencyCode" name="currencyCode">
 <article>
@@ -18,25 +17,25 @@
                 <div class="box-content">
                     @foreach (var pr in listPriceNet)
                     {
-                        <p><span>@pr.Description</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
+                        <p><span>@T(pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
                     }
                 </div>
                 <h4><span>Thuế và phí</span></h4>
                 <div class="box-content">
                     @foreach (var pr in listFee)
                     {
-                        <p><span>@pr.Description</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
+                        <p><span>@T(pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
                     }
                 </div>
                 <div class="box-content sumPrice">
                     <p><span>Tổng giá</span><span id="sumprice-totalprice">@totalPrice.ToString("0,#") @currencyCode</span></p>
                     <p><span>Hành lý thêm</span> <span id="sumprice-totalbaggagefee" data-price="0">0 @currencyCode</span></p>
-                    @if(totalDiscount > 0) { 
-                    <p><span>Giảm giá</span> <span id="sumprice-totaldiscountamount">- @totalDiscount.ToString("0,#") @currencyCode</span></p>
+                    @if(Model.DiscountAmount > 0) { 
+                    <p><span>Giảm giá</span> <span id="sumprice-totaldiscountamount">- @Model.DiscountAmount.ToString("0,#") @currencyCode</span></p>
                     }
                 </div>
                 <div class="box-content sumPrice">
-                    <p><span>TỔNG</span> <span id="sumprice-totalfinaly" data-price="@(totalPrice-totalDiscount)">@((totalPrice-totalDiscount).ToString("0,#")) @currencyCode</span></p>
+                    <p><span>TỔNG</span> <span id="sumprice-totalfinaly" data-price="@(totalPrice-Model.DiscountAmount)">@((totalPrice-Model.DiscountAmount).ToString("0,#")) @currencyCode</span></p>
                 </div>
             </div>
         </div>

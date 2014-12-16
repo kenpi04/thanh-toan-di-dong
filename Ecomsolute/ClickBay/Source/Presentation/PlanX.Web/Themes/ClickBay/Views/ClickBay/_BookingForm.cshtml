@@ -1,83 +1,38 @@
 ﻿@model BookingModel
 
-
 @using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "POST", OnSuccess = "postSuccess", Url = Url.Action("InsertBooking"), OnBegin = "postBegin", OnFailure = "postFail" }))
 {
-<article>
-    <h2>Thông Tin Hành Khách</h2>
-    <div class="div-table info-passenger">
-        <div class="div-table-row">
-            <div class="div-table-cell col-1"><span>Hành khách</span></div>
-            <div class="div-table-cell col-2"><span>Quý danh</span></div>
-            <div class="div-table-cell col-3"><span>Họ và Tên <span class="info-small">( ví dụ: VO TAN DUNG )</span></span></div>
-            <div class="div-table-cell col-4"><span>Ngày sinh <span class="info-small">( ví dụ: 30/01/1987 )</span></span></div>
-        </div>
-        @{int count = 0;}
-     @foreach (var i in Model.BookingPassers)
-     {
-        <div class="div-table-row">
-            <div class="div-table-cell">
-                @{
-        
-         string personTypeName = "Người lớn";
-         if (i.PassserType == 2)
-         {
-             personTypeName = "Trẻ em";
-         }
-         if (i.PassserType == 3)
-         { personTypeName = "Trẻ sơ sinh"; }
-            
-                
-                }
-                @personTypeName
-            </div>
-            <div class="div-table-cell">
-               
-                <select class="fullwitdth" name="BookingPassers[@count].PassserType">
-                    @foreach (var t in Model.PassengerTypes)
-                    {
-                        if (i.PassserType > 4 && int.Parse(t.Value) < 4)
-                        {
-                            continue;
-                        }
-                        <option value="@t.Value">@t.Text</option>
-                    }
-                </select>
-            </div>
-            <div class="div-table-cell">@Html.TextBoxFor(x=>x.BookingPassers[count].FirstName)</div>
-          @if (i.PassserType > 4)
-{
-    <div class="div-table-cell birthday">
-        @Html.DatePickerDropDowns("day", "month", "year")
-        @Html.HiddenFor(x => x.BookingPassers[count].BirthDay)
-
-
-    </div>
-}
-        </div>
-         count++;
-     }
-    </div>
-</article>
-
-<article>
-    <h2>Thông Tin Người Liên Hệ</h2>
-    <div>
-        <p>
-            Vui lòng điền đây đủ thông tin, nhân viên ClickBay sẽ liên lạc với khách hàng qua địa chỉ này để hoàn tất thủ tục đặt vé.
-            <br><span class="required">( * )</span> Các trường bắt buộc phải nhập.
-        </p>
-    </div>
-    <aside>
-        <div class="div-table info-contact">
+    @Html.Partial("_FlightBaggageCondition", Model)
+    <article>
+        <h2>Thông Tin Hành Khách</h2>
+        <div class="div-table info-passenger">
             <div class="div-table-row">
-                <div class="div-table-cell haft">
+                <div class="div-table-cell col-1"><span>Hành khách</span></div>
+                <div class="div-table-cell col-2"><span>Quý danh</span></div>
+                <div class="div-table-cell col-3"><span>Họ và Tên <span class="info-small">( ví dụ: VO TAN DUNG )</span></span></div>
+                <div class="div-table-cell col-4"><span>Ngày sinh <span class="info-small">( ví dụ: 30/01/1987 )</span></span></div>
+            </div>
+            @{int count = 0;}
+            @foreach (var i in Model.BookingPassers)
+            {
+                <div class="div-table-row">
+                    <div class="div-table-cell">                        
+                        @{
+                string personTypeName = "Người lớn";
+                if (i.PassserType == 2)
+                {
+                    personTypeName = "Trẻ em";
+                }
+                if (i.PassserType == 3)
+                { personTypeName = "Trẻ sơ sinh"; }
+                        }
+                        @personTypeName
+                    </div>
                     <div class="div-table-cell">
-                        <span>Quý Danh</span>
-                        <select class="fullwitdth" name="ContactPassengerType">
+                        <select class="fullwitdth" name="BookingPassers[@count].PassserType">
                             @foreach (var t in Model.PassengerTypes)
                             {
-                                if (int.Parse(t.Value) > 4)
+                                if (i.PassserType > 4 && int.Parse(t.Value) < 4)
                                 {
                                     continue;
                                 }
@@ -85,129 +40,154 @@
                             }
                         </select>
                     </div>
+                    <div class="div-table-cell">@Html.TextBoxFor(x => x.BookingPassers[count].FirstName)</div>
+                    @if (i.PassserType > 4)
+                    {
+                        <div class="div-table-cell birthday">
+                            @Html.DatePickerDropDowns("day", "month", "year")
+                            @Html.HiddenFor(x => x.BookingPassers[count].BirthDay)
+                        </div>
+                    }
+                </div>
+                    count++;
+            }
+        </div>
+    </article>
+    <article>
+        <h2>Thông Tin Người Liên Hệ</h2>
+        <div>
+            <p>
+                Vui lòng điền đây đủ thông tin, nhân viên ClickBay sẽ liên lạc với khách hàng qua địa chỉ này để hoàn tất thủ tục đặt vé.
+                <br><span class="required">( * )</span> Các trường bắt buộc phải nhập.
+            </p>
+        </div>
+        <aside>
+            <div class="div-table info-contact">
+                <div class="div-table-row">
+                    <div class="div-table-cell haft">
+                        <div class="div-table-cell">
+                            <span>Quý Danh</span>
+                            <select class="fullwitdth" name="ContactPassengerType">
+                                @foreach (var t in Model.PassengerTypes)
+                                {
+                                    if (int.Parse(t.Value) > 4)
+                                    {
+                                        continue;
+                                    }
+                                    <option value="@t.Value">@t.Text</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="div-table-cell">
+                            <span>Họ và Tên </span><span class="required">*</span><span class="info-small">  (Để chúng tôi liên lạc với quý khách)</span>
+                            @Html.TextBoxFor(x => x.ContactName)
+                        </div>
+                    </div>
                     <div class="div-table-cell">
-                        <span>Họ và Tên </span><span class="required">*</span><span class="info-small">  (Để chúng tôi liên lạc với quý khách)</span>
-                      @Html.TextBoxFor(x => x.ContactName)
-                      
-                       
+                        <span>Quốc Gia</span><br />
+                        @Html.DropDownListFor(x => x.ContactCountryId, Model.Countries)
                     </div>
                 </div>
-                <div class="div-table-cell">
-                    <span>Quốc Gia</span><br />
-                   @Html.DropDownListFor(x => x.ContactCountryId, Model.Countries)
-                </div>
-            </div>
-            <div class="div-table-row">
-                <div class="div-table-cell">
-                    <div>
-                        <span>Số điện thoại </span><span class="required">*</span>
-                       @Html.TextBoxFor(x => x.ContactPhone)
-                    </div>
-                </div>
-                <div class="div-table-cell">
-                    <div>
-                        <span>Thành phố</span>
-                        @Html.TextBoxFor(x => x.ContactCityName)
-                    </div>
-                </div>
-            </div>
-            <div class="div-table-row">
-                <div>
+                <div class="div-table-row">
                     <div class="div-table-cell">
-                        <span>Email</span><span class="info-small">(Để gửi thông tin vé, hành trình, thanh toán)</span>
-                      @Html.TextBoxFor(x => x.ContactEmail)
+                        <div>
+                            <span>Số điện thoại </span><span class="required">*</span>
+                            @Html.TextBoxFor(x => x.ContactPhone)
+                        </div>
                     </div>
-                </div>
-                <div class="div-table-cell">
-                    <div>
-                        <span>Địa chỉ</span>@Html.TextBoxFor(x=>x.ContactAddress)
-                    </div>
-                </div>
-            </div>
-            <div class="div-table-row">
-                <div class="div-table-cell">
-                    <div class="div-table">
-                        <div class="div-table-row birthday">
-                            <span>Ngày sinh</span><br />
-                           @Html.DatePickerDropDowns("contactday", "contactmonth", "contactyear")
-                            @Html.HiddenFor(x=>x.ContactBirthDate)
-                           
+                    <div class="div-table-cell">
+                        <div>
+                            <span>Thành phố</span>
+                            @Html.TextBoxFor(x => x.ContactCityName)
                         </div>
                     </div>
                 </div>
-                <div class="div-table-cell"></div>
+                <div class="div-table-row">
+                    <div>
+                        <div class="div-table-cell">
+                            <span>Email</span><span class="info-small">(Để gửi thông tin vé, hành trình, thanh toán)</span>
+                            @Html.TextBoxFor(x => x.ContactEmail)
+                        </div>
+                    </div>
+                    <div class="div-table-cell">
+                        <div>
+                            <span>Địa chỉ</span>@Html.TextBoxFor(x => x.ContactAddress)
+                        </div>
+                    </div>
+                </div>
+                <div class="div-table-row">
+                    <div class="div-table-cell">
+                        <div class="div-table">
+                            <div class="div-table-row birthday">
+                                <span>Ngày sinh</span><br />
+                                @Html.DatePickerDropDowns("contactday", "contactmonth", "contactyear")
+                                @Html.HiddenFor(x => x.ContactBirthDate)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div-table-cell"></div>
+                </div>
+            </div>
+        </aside>
+        <div>
+            <p><input type="checkbox" id="checkedInvoid" name="checkedInvoid"><label>Tôi muốn xuất hóa đơn</label></p>
+            <p><input type="checkbox" checked="checked" id="checkedNewsletter" name="NewLetterAccept"><label>Tôi muốn nhận được thông tin về chương trình khuyến mãi, tin tức</label></p>
+        </div>
+    </article>
+
+    <article>
+        <!--Yeu cau dac biet-->
+        <h2>Yêu Cầu Đặt Biệt</h2>
+        <div><p>Viết yêu cầu của bạn vào ô bên dưới (Tiếng Anh hoặc Tiếng Việt).</p></div>
+        <div>
+            @Html.TextAreaFor(x => x.CustomerNote)
+        </div>
+    </article>
+
+    <article>
+        <!--Yeu cau dac biet-->
+        <h2>Phương thức thanh toán</h2>
+        <div><p>Vui lòng chọn phương thức thanh toán</p></div>
+        <div class="div-table-row">
+            <div class="div-table-cell col-1">
+                <input type="radio" name="PaymentMethodId" value="1" checked="checked" /><label>Thanh toán khi giao vé tận nhà</label>
+            </div>
+            <div class="div-table-cell col-2">
+                <input type="radio" name="PaymentMethodId" value="2" /><label>Thanh toán qua chuyển khoản ATM</label>
+            </div>
+            <div class="div-table-cell col-3">
+                <input type="radio" name="PaymentMethodId" value="3"><label>Thanh toán qua OnePay</label>
+            </div>
+            <div class="div-table-cell col-3">
+                <input type="radio" name="PaymentMethodId" value="4"><label>Thanh toán tại văn phòng clickbay</label>
             </div>
         </div>
-    </aside>
-    <div>
-        <p><input type="checkbox" id="checkedInvoid" name="checkedInvoid"><label>Tôi muốn xuất hóa đơn</label></p>
-        <p><input type="checkbox" checked="checked" id="checkedNewsletter" name="NewLetterAccept"><label>Tôi muốn nhận được thông tin về chương trình khuyến mãi, tin tức</label></p>
-    </div>
-</article>
-
-<article>
-    <!--Yeu cau dac biet-->
-    <h2>Yêu Cầu Đặt Biệt</h2>
-    <div><p>Viết yêu cầu của bạn vào ô bên dưới (Tiếng Anh hoặc Tiếng Việt).</p></div>
-    <div>
-        @Html.TextAreaFor(x => x.CustomerNote)
-    </div>
-</article>
-    
- <article>
-                            <!--Yeu cau dac biet-->
-                            <h2>Phương thức thanh toán</h2>
-                            <div><p>Vui lòng chọn phương thức thanh toán</p></div>
-
-                                <div class="div-table-row">
-                                    <div class="div-table-cell col-1">
-                                        <input type="radio" name="PaymentMethodId" value="1" checked="checked" /><label>Thanh toán khi giao vé tận nhà</label>
-                                        </div>
-                                    <div class="div-table-cell col-2">
-                                        <input type="radio" name="PaymentMethodId" value="2" /><label>Thanh toán qua chuyển khoản ATM</label>
-                                       
-                                    </div>
-                                    <div class="div-table-cell col-3">
-                                        <input type="radio" name="PaymentMethodId" value="3"><label>Thanh toán qua OnePay</label>
-                                    </div>
-                                    <div class="div-table-cell col-3">
-                                        <input type="radio" name="PaymentMethodId" value="4"><label>Thanh toán tại văn phòng clickbay</label>
-                                    </div>
-                                
-                                
-                            </div>
-                        </article>
-
-<article>
-    <p class="policy"><input type="checkbox" id="checkedPolicy" name="checkedPolicy"><label>Tôi đồng ý với các điều kiện và điều khoản của ClickBay.com.vn (được quy định <a href="/" target="_blank">tại đây</a>)</label></p>
-    <p><input type="submit" class="btn-search" id="btnBooking" name="btnBooking" value="Đặt Vé và Tiếp Tục"></p>
-</article>
+    </article>
+    <article>
+        <p class="policy"><input type="checkbox" id="checkedPolicy" name="checkedPolicy"><label>Tôi đồng ý với các điều kiện và điều khoản của ClickBay.com.vn (được quy định <a href="/" target="_blank">tại đây</a>)</label></p>
+        <p><input type="submit" class="btn-search" id="btnBooking" name="btnBooking" value="Đặt Vé và Tiếp Tục"></p>
+    </article>
 }
 <script>
-    function postSuccess(d)
-    {
+    function postSuccess(d) {
         displayAjaxLoading(false);
         if (d.error == "")
             window.location.href = d.url;
         else
             alert(d.error);
     }
-    function postBegin()
-    {
-        if (!$("#checkedPolicy").is(":checked"))
-        {
-            alert("Vui lòng chọn đồng ý điều khoản");
+    function postBegin() {
+        if (!$("#checkedPolicy").is(":checked")) {
+            alert("Bạn chưa đồng ý với điều khoản của ClickBay.com.vn");
             return;
         }
         getBirthDate();
         displayAjaxLoading(true);
     }
-    function postFail()
-    {
+    function postFail() {
         displayAjaxLoading(false);
     }
-    function getBirthDate()
-    {
+    function getBirthDate() {
         $('.birthday').each(function () {
             var moth = $(this).find('select[name^=month]').val(),
               date = $(this).find('select[name^=day]').val(),
@@ -217,8 +197,7 @@
                 $(this).find("input").val(a);
         })
     }
-    function getDate(date,moth,year)
-    {
+    function getDate(date, moth, year) {
         if (date == '0' || moth == '0' || year == '0')
             return null;
         return date + '/' + moth + '/' + year;

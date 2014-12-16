@@ -9,40 +9,43 @@
 }
 <article>
     <h2>Điều Kiện Giá Vé</h2>
-    @if(!showOne)
-    {<div><p>Điều kiện chiều đi</p></div>}
-    <div class="div-table condition-price">
-        @if (Model.TicketInfo.AirlinesConditions.Count > 0) { 
-        foreach(var i in Model.TicketInfo.AirlinesConditions)
-        {
-          <div class="div-table-row">
-            <div class="div-table-cell"><span>@i.ConditionName</span></div>
-            <div class="div-table-cell"><p>@i.ConditionDescription</p></div>
-        </div>
-        }
-        }
-        else
-        {
-            <div><p>@T("booking.baggage.infonotfound")</p></div>
-        }        
-    </div>
-    @if(!showOne)
-    {<div><p>Điều kiện chiều về</p></div>
-    <div class="div-table condition-price">
-        @if (Model.TicketInfoReturn.AirlinesConditions.Count > 0)
-        {
-            foreach (var i in Model.TicketInfoReturn.AirlinesConditions)
+    <div class="div-table info-baggage">
+        @if (!showOne)
+        {<div class="div-table-row"><div class="div-table-cell"><span>Điều kiện chiều đi</span></div><div class="div-table-cell"></div></div>}
+        <div class="div-table condition-price">
+            @if (Model.TicketInfo.AirlinesConditions.Count > 0)
             {
-                <div class="div-table-row">
-                    <div class="div-table-cell"><span>@i.ConditionName</span></div>
-                    <div class="div-table-cell"><p>@i.ConditionDescription</p></div>
-                </div>
+                foreach (var i in Model.TicketInfo.AirlinesConditions)
+                {
+                    <div class="div-table-row">
+                        <div class="div-table-cell"><span class="normal">@i.ConditionName</span></div>
+                        <div class="div-table-cell"><p>@i.ConditionDescription</p></div>
+                    </div>
+                }
             }
-        }
-        else
-        {
-            <div><p>@T("booking.baggage.infonotfound")</p></div>
+            else
+            {
+                <div><p>@T("booking.baggage.infonotfound")</p></div>
+            }
+        </div>
+        @if (!showOne)
+        {<div class="div-table-row"><div class="div-table-cell"><span>Điều kiện chiều về</span></div></div>
+            <div class="div-table condition-price">
+                @if (Model.TicketInfoReturn.AirlinesConditions.Count > 0)
+                {
+                    foreach (var i in Model.TicketInfoReturn.AirlinesConditions)
+                    {
+                        <div class="div-table-row">
+                            <div class="div-table-cell"><span class="normal">@i.ConditionName</span></div>
+                            <div class="div-table-cell"><p>@i.ConditionDescription</p></div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div><p>@T("booking.baggage.infonotfound")</p></div>
+                }
+            </div>
         }
     </div>
-    }
 </article>
