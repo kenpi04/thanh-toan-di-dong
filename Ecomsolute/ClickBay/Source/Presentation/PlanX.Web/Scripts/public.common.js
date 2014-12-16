@@ -27,6 +27,15 @@ $(document).ready(function (e) {
 
 })
 
+function FormatString(yourNumber) {
+    //Seperates the components of the number
+    var n = yourNumber.toString().split(".");
+    //Comma-fies the first part
+    n[0] = n[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    //Combines the two sections
+    return n.join(".");
+}
+
 function imageResize(id) {
     var margin = '';
     var marginValue;
