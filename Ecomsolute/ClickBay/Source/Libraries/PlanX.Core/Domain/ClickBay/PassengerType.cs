@@ -3,8 +3,8 @@ namespace PlanX.Core.Domain.ClickBay
 {
     public enum PassengerType
     {
-        NguoiLon=0,
-        TreEm=1,
-        TreSoSinh=2
+        ADT= 0,
+        CHD=1,
+        INF=2
     }
 }

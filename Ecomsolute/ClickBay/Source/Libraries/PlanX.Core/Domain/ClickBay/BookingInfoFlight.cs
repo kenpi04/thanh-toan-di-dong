@@ -24,7 +24,7 @@ namespace PlanX.Core.Domain.ClickBay
     
        
         public string Brand { get; set; }
-        
+        public string BrandName { get; set; }
         public int AirlinesId { get; set; }
         public short Adult { get; set; }
         public short Child { get; set; }
@@ -51,7 +51,7 @@ namespace PlanX.Core.Domain.ClickBay
         public decimal TotalBaggageFee { get; set; }
         public decimal TotalFeeOther { get; set; }
         public decimal DiscountAmount { get; set; }
-    
+        
         //private ICollection<Booking> _bookings { get; set; }
         //public virtual ICollection<Booking> Bookings
         //{

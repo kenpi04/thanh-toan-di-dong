@@ -71,7 +71,7 @@ namespace PlanX.Services.ClickBay
             string FareBasis = null,
             bool roundTrip = false, DateTime? returnDate = null,
             string CurrencyType = "VND", string source = null, bool expendDetails = false,
-            bool expendTicketPriceDetails = false, bool expandOption = false
+            bool expendTicketPriceDetails = false, bool expandOption = false, bool priceSummaries = false
             )
         {
             string url = ClickBayContant.URL_SEARCH;
@@ -84,11 +84,11 @@ namespace PlanX.Services.ClickBay
                     querys.Add("TicketPriceDetails");
                 if (expandOption)
                     querys.Add("TicketOptions");
+                if (expandOption)
+                    querys.Add("PriceSummaries");
                 url += "?$expand=" + querys.Aggregate((a, b) => a + "," + b);
 
             }
-
-
 
             var searchModel = new TicketSearch();
 

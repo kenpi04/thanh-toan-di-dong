@@ -9,6 +9,9 @@ namespace PlanX.Core.Domain.ClickBay
         public int Baggage { get; set; }
         public decimal BaggageFee { get; set; }
         public string Description { get; set; }
+        public bool IsHandLuggage { get; set; }
+        public bool IsFree { get; set; }
+
         public virtual PassengerType PassengerTypeEnum 
         {
             get { return (PassengerType)this.PassengerType; }

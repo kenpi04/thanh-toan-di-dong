@@ -1,9 +1,6 @@
-﻿using System;
+﻿using PlanX.Core.Domain.ClickBay;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PlanX.Core.Domain.ClickBay;
 
 namespace PlanX.Services.ClickBay
 {
@@ -43,7 +40,7 @@ namespace PlanX.Services.ClickBay
     string FareBasis = null,
     bool roundTrip = false, DateTime? returnDate = null,
     string CasyncurrencyType = "VND", string source = null, bool expendDetails = false,
-    bool expendTicketPriceDetails = false, bool expandOption = false
+    bool expendTicketPriceDetails = false, bool expandOption = false, bool priceSummaries = false
     );
         /// <summary>
         /// Lấy danh sách sân bay
