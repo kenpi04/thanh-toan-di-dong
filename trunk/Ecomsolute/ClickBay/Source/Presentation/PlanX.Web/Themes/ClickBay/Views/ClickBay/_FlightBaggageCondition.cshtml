@@ -5,6 +5,7 @@
         <div class="div-table-row">
             <div class="div-table-cell"><span>Hành lý chiều đi</span></div><div class="div-table-cell"></div>
         </div>
+        @Html.HiddenFor(model => model.TicketInfoBaggages)
         @if (Model.TicketInfo.ArilinesBaggageConditions.Count > 0)
         {
             foreach (var i in Model.TicketInfo.ArilinesBaggageConditions.Where(x=>x.IsFree).ToList())
@@ -18,14 +19,19 @@
                 <div class="div-table-row">
                     <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
                     <div class="div-table-cell">
-                        <select id="select-id-ticketinfo" name="select-id-ticketinfo">
-                            @foreach (var f in Model.TicketInfo.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
-                            {
-                                <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")">@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0.#"))</option>}
-                        </select>
+                        @for(var j = 0; j < Model.BookingPassers.Count;j++) {
+                        <p>
+                            <span>Hành khách @(j+1): </span>
+                            <select id="select-id-ticketinfo" name="select-id-ticketinfo" onchange="BaggageChange()">
+                                @foreach (var f in Model.TicketInfo.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
+                                {
+                                    <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")" selected="@(f.BaggageFee==0?"selected":"")">@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0.#"))</option>
+                                }
+                            </select>
+                        </p>
+                        }
                     </div>
                 </div>
-                
             }
         }
         else
@@ -38,31 +44,105 @@
             <div class="div-table-row">
                 <div class="div-table-cell"><span>Hành lý chiều về</span></div><div class="div-table-cell"></div>
             </div>
+            @Html.HiddenFor(model => model.TicketInfoReturnBaggages)
             if (Model.TicketInfoReturn.ArilinesBaggageConditions.Count > 0)
             {
-                foreach (var i in Model.TicketInfoReturn.ArilinesBaggageConditions)
+                foreach (var i in Model.TicketInfoReturn.ArilinesBaggageConditions.Where(x => x.IsFree).ToList())
                 {
                     <div class="div-table-row">
-                        <div class="div-table-cell"><span class="normal">@i.Description</span></div><div class="div-table-cell">@i.Description</div>
+                        <div class="div-table-cell"><span class="normal">@(i.IsHandLuggage ? "Hành lý xách tay" : "Hành lý ký gửi")</span></div><div class="div-table-cell">@i.Description</div>
+                    </div>
+                }
+                if (Model.TicketInfoReturn.ArilinesBaggageConditions.Any(x => !x.IsHandLuggage && !x.IsFree))
+                {
+                    <div class="div-table-row">
+                        <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
+                        <div class="div-table-cell">
+                            @for (var j = 0; j < Model.BookingPassers.Count; j++)
+                            {
+                                <p>
+                                    <span>Hành khách @(j + 1): </span>
+                                    <select id="select-id-ticketinforeturn" name="select-id-ticketinforeturn" onchange="BaggageChange()" >
+                                        @foreach (var f in Model.TicketInfoReturn.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
+                                        {
+                                            <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")" selected="@(f.BaggageFee==0?"selected":"")" >@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0.#"))</option>
+                                        }
+                                    </select>
+                                </p>
+                            }
+                        </div>
                     </div>
                 }
             }
             else
-            { <div><p>@T("booking.baggage.infonotfound")</p></div>}
+            {
+                <div><p>@T("booking.baggage.infonotfound")</p></div>
+            }
         }
         
     </div>
 </article>
 <script>
-    $("select[name=select-id-ticketinfo]").change(function (e) {
-        var select = $("#select-id-ticketinfo option:selected").attr("data-price");
-        var bagaageOld = $("#sumprice-totalbaggagefee").attr("data-price");
-        $("#sumprice-totalbaggagefee").attr("data-price", select + ' ' + $("#currencyCode").val());
-        var total = $("#sumprice-totalfinaly");
-        var totalPrice = total.attr("data-price");
-        totalPrice = totalPrice - bagaageOld + select;
-        total.attr("data-price", total);
-        total.contents().remove();
-        total.append(parseInt(totalPrice) + ' ' +$("#currencyCode").val());
+    $(document).ready(function () {
+        BaggageChange();
     });
+    
+        function BaggageChange()
+        {
+            var totalBaggage = 0;
+            var id = '';
+            var idreturn = '';
+            $("select[id=select-id-ticketinfo] option:selected").each(function (f) {
+                totalBaggage = totalBaggage + parseFloat($(this).attr("data-price"));
+                id = id + ',' + $(this).val();
+            });
+            $("#@Html.IdFor(x=>x.TicketInfoBaggages)").val(id);
+
+            $("select[id=select-id-ticketinforeturn] option:selected").each(function (f) {
+                totalBaggage = totalBaggage + parseFloat($(this).attr("data-price"));
+                idreturn = idreturn + ',' + $(this).val();
+            });
+            $("#@Html.IdFor(x=>x.TicketInfoReturnBaggages)").val(idreturn);
+
+            var spanTotalBagaggaFee = $("#sumprice-totalbaggagefee");
+            spanTotalBagaggaFee.attr("data-price", totalBaggage);
+            spanTotalBagaggaFee.contents().remove();
+            spanTotalBagaggaFee.append(FormatString(totalBaggage) + ' ' + $("#currencyCode").val());
+
+            var total = $("#sumprice-totalfinaly");
+            var totalPrice = parseFloat(total.attr("data-price"));
+            totalPrice = totalPrice + totalBaggage;
+            total.contents().remove();
+            total.append(FormatString(totalPrice) + ' ' + $("#currencyCode").val());
+        }
+
+        @*$("#select-id-ticketinforeturn").change(function (e) {
+        var totalBaggage = 0;
+        var id = '';
+        var idreturn = '';
+        $("select[id=select-id-ticketinfo] option:selected").each(function (f) {
+            totalBaggage = totalBaggage + parseFloat($(this).attr("data-price"));
+            var id = id + ',' + $(this).val();
+        });
+        $("#@Html.IdFor(x=>x.TicketInfoBaggages)").val(id);
+
+        $("select[id=select-id-ticketinforeturn] option:selected").each(function (f) {
+            totalBaggage = totalBaggage + parseFloat($(this).attr("data-price"));
+            var idreturn = idreturn + ',' + $(this).val();
+        });
+        $("#@Html.IdFor(x=>x.TicketInfoReturnBaggages)").val(idreturn);
+
+        var spanTotalBagaggaFee = $("#sumprice-totalbaggagefee");
+        spanTotalBagaggaFee.attr("data-price", totalBaggage);
+        spanTotalBagaggaFee.contents().remove();
+        spanTotalBagaggaFee.append(FormatString(totalBaggage) + ' ' + $("#currencyCode").val());
+
+        var total = $("#sumprice-totalfinaly");
+        var totalPrice = parseFloat(total.attr("data-price"));
+        totalPrice = totalPrice + totalBaggage;
+        total.contents().remove();
+        total.append(FormatString(totalPrice) + ' ' + $("#currencyCode").val());
+
+
+    });*@
 </script>
