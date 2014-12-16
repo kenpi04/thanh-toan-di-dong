@@ -35,14 +35,13 @@ namespace PlanX.Core.Domain.ClickBay
    TicketPriceDetails	TicketPriceDetailDto (Navigation)	Chi tiết giá vé	
    TicketOptions	TicketOptionDto	Các giá vé khác	*/
 
-        [JsonProperty("TicketPriceDetails")]
+        [JsonProperty("PriceSummaries")]
         private ICollection<TicketPriceDetailDto> _ticketDetails;
         [JsonProperty("Details")]
         private ICollection<FlightDetailDto> _flightDetailDto;
-        /// <summary>
-        /// Mã chuyến bay	VJ8662
-        /// </summary>
-        /// 
+        //[JsonProperty("PriceSummaries")]
+        //private ICollection<TicketPriceDetailDto> _ticketPriceSummaries;
+        
         TimeSpan _flightDuration;
         public string Id { get; set; }
         public string FlightNumber { get; set; }
@@ -64,9 +63,7 @@ namespace PlanX.Core.Domain.ClickBay
             set {_flightDuration=value; }
         }
         public string FromAirport { get; set; }
-       // public int FromAirportId { get; set; }
         public string ToAirport { get; set; }
-       // public int ToAirportId { get; set; }
         public string FromPlace { get; set; }
         public int FromPlaceId { get; set; }
         public string ToPlace { get; set; }
@@ -84,11 +81,10 @@ namespace PlanX.Core.Domain.ClickBay
         [JsonIgnore]
         public ICollection<TicketPriceDetailDto> TicketPriceDetailDto
         {
-
             get { return _ticketDetails ?? (_ticketDetails = new List<TicketPriceDetailDto>()); }
             protected set { _ticketDetails = value; }
-
         }
+
         [JsonIgnore]
         public ICollection<FlightDetailDto> FlightDetailDto
         {
@@ -96,8 +92,11 @@ namespace PlanX.Core.Domain.ClickBay
             protected set { _flightDetailDto = value; }
         }
 
-
-
-
+        //[JsonIgnore]
+        //public ICollection<TicketPriceDetailDto> TicketPriceSummaries
+        //{
+        //    get { return _ticketPriceSummaries ?? (_ticketPriceSummaries = new List<TicketPriceDetailDto>()); }
+        //    protected set { _ticketPriceSummaries = value; }
+        //}
     }
 }

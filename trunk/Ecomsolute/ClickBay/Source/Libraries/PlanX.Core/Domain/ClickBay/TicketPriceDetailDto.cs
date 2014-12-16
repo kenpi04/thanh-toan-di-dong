@@ -1,24 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace PlanX.Core.Domain.ClickBay
 {
-  public  class TicketPriceDetailDto:BaseEntity
+    public class TicketPriceDetailDto : BaseEntity
     {
-        /*"Code": "NET",
-                      "Description": "Giá vé",
-                      "Id": 3971,
-                      "Price": "1130000.00",
-                      "Quantity": 1,
-                      "Total": "1130000.00"
+        /*Code:    "PassengerType" : "ADT",
+                  "Description" : "Giá vé người lớn",
+                  "Code" : "NET",
+                  "Quantity" : 1,
+                  "Price" : 895000.0000,
+                  "Total" : 895000.0000
         */
+
+        [JsonProperty("PassengerType")]
+        public string PassengerType { get; set; }
+
+        [JsonProperty("Code")]
         public string Code { get; set; }
+
+        [JsonProperty("Price")]
         public decimal Price { get; set; }
-        public short Quantity { get; set; }
+
+        [JsonProperty("Quantity")]
+        public System.Int16 Quantity { get; set; }
+
+        [JsonProperty("Total")]
         public decimal Total { get; set; }
+
+        [JsonProperty("Description")]
         public string Description { get; set; }
 
     }
