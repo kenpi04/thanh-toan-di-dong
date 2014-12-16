@@ -54,7 +54,7 @@ namespace PlanX.Web.Models.ClickBay
 
         public string ToAirportCode { get; set; }
 
-        public string HangVe { get; set; }
+        public string FareBasis { get; set; }
 
         public string AirlineName { get; set; }
 
@@ -67,7 +67,7 @@ namespace PlanX.Web.Models.ClickBay
         public int AirlineId { get; set; }
         public Int16 Adult { get; set; }
         public Int16 Child { get; set; }
-        public Int16 Infant { get; set; }
+        public Int16 Infant { get; set; }        
         public List<ArilinesBaggageCondition> ArilinesBaggageConditions { get; set; }
         public List<AirlinesConditionModel> AirlinesConditions { get; set; }
 
@@ -89,14 +89,15 @@ namespace PlanX.Web.Models.ClickBay
         }
         public class BookingFlightPriceModel
         {
-            /*
-             *   "Code": "NET",
-                     "Description": "Giá vé",
-                     "Id": 3971,
-                     "Price": "1130000.00",
-                     "Quantity": 1,
-                     "Total": "1130000.00"
-             */
+            /*Code:    "PassengerType" : "ADT",
+                   "Description" : "Giá vé người lớn",
+                   "Code" : "NET",
+                   "Quantity" : 1,
+                   "Price" : 895000.0000,
+                   "Total" : 895000.0000
+            */
+
+            public string PassengerType { get; set; }
             public string Code { get; set; }
             public decimal Price { get; set; }
             public string Description { get; set; }
