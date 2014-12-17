@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_ColumnOneFull.cshtml";
+    Layout = "~/Views/Shared/_ColumnOne.cshtml";
 }
 
 <div class="head">
@@ -35,27 +35,30 @@
 <div class="container">
     <div class="sologan">Chất lượng là yếu tố sống còn của Clickbay.com.vn</div>
     <div class="col2">
-        @*<div class="load-ajax" data-url="@Url.Action("BookingRecent", "ClickBay", new { numberBooking = 5 })"></div>*@
-        <div class="box" style="width:100%">
+        <div class="load-ajax" data-url="@Url.Action("BookingRecent", "ClickBay", new { numberBooking = 5 })"></div>
+        <div class="box">
             <div class="box-h boder-dashed">
                 <div class="box-t">
                     <img src="@Url.Content("~/Themes/ClickBay/Content/images/mouse.png")">
                     ĐẶT VÉ NHANH 24/24
                 </div>
             </div>
-            <div class="box-c" style="font-size:20px;">
-                <p class="green-text" style="font-size:18px;font-style:italic">Quý khách có thể mua vé máy bay bằng nhiều hình thức sau</p>
+            <div class="box-c">
+                <p class="green-text">Quý khách có thể mua vé máy bay bằng nhiều hình thức sau</p>
+
                 <ul class="ht">
                     <li>
                         <b>1.</b>Trực tiếp trên clickbay.com.vn nhanh nhất và tiện nhất
                     </li>
                     <li>
                         <b>2.</b>Qua chát:<br>
-                        <span style="padding:0 100px;line-height:33px;">Nội địa:</span><br>
-                        <span style="padding:0 100px;line-height:33px;">Quốc tế:</span>
+                        Nội địa:<br>
+                        Quốc tế:
+
                     </li>
                     <li>
-                        <b>3.</b>Gọi điện thoại cho clickbay.com.vn <strong style="color:red"><span style="padding:0 8px;">0939.448.124</span>|<span style="padding:0 8px;">0987446152</span></strong>
+                        <b>3.</b>Gọi điện thoại cho clickbay.com.vn <strong style="color:red">0939.448.124|0987446152</strong>
+
                     </li>
                     <li>
                         <b>4.</b>Đến trực tiếp văn phòng clickbay tại Sài Gòn <a>Xem bản đồ</a>
@@ -66,6 +69,6 @@
         <div class="clear"></div>
     </div>
 </div>
-@*<div class="load-ajax" data-url="@Url.Action("HomeTicketConcession", "TicketConcession", new { Page = 1, PageSize = 5 })"></div>*@
+<div class="load-ajax" data-url="@Url.Action("HomeTicketConcession", "TicketConcession", new { Page = 1, PageSize = 5 })"></div>
 
 
