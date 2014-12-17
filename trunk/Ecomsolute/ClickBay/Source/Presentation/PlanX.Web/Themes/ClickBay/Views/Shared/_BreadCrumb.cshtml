@@ -3,7 +3,7 @@
     <p><span>Trang chủ</span>
     @foreach (var i in Model)
     {
-        <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span>@i.Key</span>
+        <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span class="@i.Value">@i.Key</span>
     }
     </p>
 </div>

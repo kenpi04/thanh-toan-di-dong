@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.Head.cshtml";
+}
+<div id="wrapper">
+    @Html.Partial("_HeaderFull")    
+    <div class="content">
+        @RenderBody()
+    </div>
+    <div class="clear"></div>
+    @Html.Partial("_Footer")
+</div>
