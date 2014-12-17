@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PlanX.Core;
+using PlanX.Core.Domain.ClickBay;
 namespace PlanX.Web.Models.ClickBay
 {
     public class TicketModel
@@ -104,6 +105,18 @@ namespace PlanX.Web.Models.ClickBay
             public Int16 Quantity { get; set; }
             public decimal Total { get; set; }
 
+            public PassengerType? PassengerTypeEnum
+            {
+                get
+                {
+                    PassengerType pas;
+                    if (Enum.TryParse(this.PassengerType, out pas))
+                    {
+                        return pas;
+                    }
+                    return null;
+                }
+            }
         }
 
         public Int16 Stops { get; set; }
