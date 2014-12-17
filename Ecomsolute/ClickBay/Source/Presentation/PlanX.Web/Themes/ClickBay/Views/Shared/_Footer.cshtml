@@ -1,0 +1,53 @@
+﻿<footer class="footer">
+    <div class="container">
+        <div>
+            <ul>
+                <li>&copy; @DateTime.Now.Year ClickBay.com.vn</li>
+                <li>Thông tin liên hệ</li>
+                <li>Hỗ trợ khách hàng</li>
+                <li>Liên hệ</li>
+            </ul>
+        </div>
+        @*<p>
+            <span>&copy; @DateTime.Now.Year ClickBay.com.vn</span>
+            <span><a>Thông tin liên hệ</a></span>
+            <span><a>Hỗ trợ khách hàng</a></span>
+            <span><a href="@Url.RouteUrl("HomePage")">Liên hệ</a></span>
+        </p>*@
+    </div>
+</footer>
+<style>
+    footer.footer {
+        padding: 0;background:#7EB8B6;
+    }
+
+    footer p {
+        margin: 0;
+        padding: 10px 0;
+        padding-right:20px;
+        font-family:"Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
+    }
+
+        footer p span {
+            padding: 0 10px;
+            border-left:1px solid;
+        }
+        footer p span:first-child{border-left:none;}
+
+    footer .container {
+        width: 100%;
+        text-align: right;
+    }
+
+
+        footer .container a {
+            cursor: pointer;
+            color: #ffffff;
+        }
+        footer .container a:hover{text-decoration:underline;}
+
+        footer ul{width:100%;display:inline-block; list-style:none;}
+            footer ul li {float:right;list-style:none;
+            }
+            footer ul li a{}
+</style>
