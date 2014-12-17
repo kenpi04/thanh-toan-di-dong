@@ -55,7 +55,6 @@ using PlanX.Web.Framework.Themes;
 using PlanX.Web.Framework.UI;
 using PlanX.Web.Framework.UI.Editor;
 using PlanX.Services.ClickBay;
-using PLanX.Services.Directory;
 namespace PlanX.Web.Framework
 {
     public class DependencyRegistrar : IDependencyRegistrar
