@@ -13,7 +13,6 @@ using PlanX.Core.Domain.Common;
 using PlanX.Services.Logging;
 using PlanX.Core.Domain.Directory;
 using PlanX.Services.Media;
-using PLanX.Services.Directory;
 using PlanX.Core.Domain.Banner;
 
 namespace PlanX.Admin.Controllers
