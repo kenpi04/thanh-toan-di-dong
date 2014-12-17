@@ -27,6 +27,12 @@ $(document).ready(function (e) {
 
 })
 
+function BackToPage()
+{
+    parent.history.back();
+    return false;
+}
+
 function FormatString(yourNumber) {
     //Seperates the components of the number
     var n = yourNumber.toString().split(".");
