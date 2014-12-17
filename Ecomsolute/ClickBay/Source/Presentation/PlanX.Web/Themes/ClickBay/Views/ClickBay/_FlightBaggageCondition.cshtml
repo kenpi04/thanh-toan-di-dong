@@ -25,7 +25,7 @@
                             <select id="select-id-ticketinfo" name="select-id-ticketinfo" onchange="BaggageChange()">
                                 @foreach (var f in Model.TicketInfo.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
                                 {
-                                    <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")" selected="@(f.BaggageFee==0?"selected":"")">@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0.#"))</option>
+                                    <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")" @(f.BaggageFee == 0 ? "selected=selected" : "")>@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0,#"))</option>
                                 }
                             </select>
                         </p>
@@ -65,7 +65,7 @@
                                     <select id="select-id-ticketinforeturn" name="select-id-ticketinforeturn" onchange="BaggageChange()" >
                                         @foreach (var f in Model.TicketInfoReturn.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
                                         {
-                                            <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")" selected="@(f.BaggageFee==0?"selected":"")" >@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0.#"))</option>
+                                            <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")" @(f.BaggageFee == 0 ? "selected=selected" : "") >@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0,#"))</option>
                                         }
                                     </select>
                                 </p>
@@ -79,7 +79,6 @@
                 <div><p>@T("booking.baggage.infonotfound")</p></div>
             }
         }
-        
     </div>
 </article>
 <script>
@@ -115,34 +114,4 @@
             total.contents().remove();
             total.append(FormatString(totalPrice) + ' ' + $("#currencyCode").val());
         }
-
-        @*$("#select-id-ticketinforeturn").change(function (e) {
-        var totalBaggage = 0;
-        var id = '';
-        var idreturn = '';
-        $("select[id=select-id-ticketinfo] option:selected").each(function (f) {
-            totalBaggage = totalBaggage + parseFloat($(this).attr("data-price"));
-            var id = id + ',' + $(this).val();
-        });
-        $("#@Html.IdFor(x=>x.TicketInfoBaggages)").val(id);
-
-        $("select[id=select-id-ticketinforeturn] option:selected").each(function (f) {
-            totalBaggage = totalBaggage + parseFloat($(this).attr("data-price"));
-            var idreturn = idreturn + ',' + $(this).val();
-        });
-        $("#@Html.IdFor(x=>x.TicketInfoReturnBaggages)").val(idreturn);
-
-        var spanTotalBagaggaFee = $("#sumprice-totalbaggagefee");
-        spanTotalBagaggaFee.attr("data-price", totalBaggage);
-        spanTotalBagaggaFee.contents().remove();
-        spanTotalBagaggaFee.append(FormatString(totalBaggage) + ' ' + $("#currencyCode").val());
-
-        var total = $("#sumprice-totalfinaly");
-        var totalPrice = parseFloat(total.attr("data-price"));
-        totalPrice = totalPrice + totalBaggage;
-        total.contents().remove();
-        total.append(FormatString(totalPrice) + ' ' + $("#currencyCode").val());
-
-
-    });*@
 </script>
