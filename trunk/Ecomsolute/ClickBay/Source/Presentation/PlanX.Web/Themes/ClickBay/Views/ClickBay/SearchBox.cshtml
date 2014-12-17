@@ -8,21 +8,19 @@
         <span>
             <input type="radio" name="Return" checked="checked" value="true"><label>Khứ hồi</label>
             <input type="radio" name="Return" value="false"><label>Một chiều</label>
-           
-            
         </span>
     </div>
     <div class="box-content">
         <div class="col">
             <label>Điểm đi</label><br>
-            <span id="fromPlace" class="textbox"></span><br><br>
+            <span id="fromPlace" class="textbox"></span><br>
                 <input type="hidden" id="FromId" name="FromId" />
             <label>Ngày đi</label><br>
             <input id="From" name="DepartDate" type="text" class="textbox">
         </div>
         <div class="col">
             <label>Điểm đến</label><br>
-            <span id="toPlace"  class="textbox"></span><br><br>
+            <span id="toPlace"  class="textbox"></span><br>
             <input type="hidden" name="ToId" id="ToId"/>
             <div id="return-div">
                 <label>Ngày về</label><br>
@@ -33,16 +31,22 @@
 
         <div class="box-footer">
             <span>
-                <label>Người lớn</label><br>               
-                @Html.TextBoxFor(x => x.Adult, new {@class="textbox" })
+                <label>Người lớn</label><br>
+                @Html.TextBoxFor(x => x.Adult, new {@class="textbox center", Value=1 })
+                <br /><label class="font-small">từ 12 tuổi</label>
             </span>
             <span>
-                <label>Trẻ em</label><br>
-                @Html.TextBoxFor(x => x.Child, new {@class = "textbox" })
+                <label>Trẻ em</label>
+                <br />
+                @Html.TextBoxFor(x => x.Child, new {@class = "textbox center" })
+                <br />
+                <label class="font-small">từ 2 đến 11 tuổi</label>
             </span>
             <span>
-                <label>Trẻ sơ sinh</label><br>
-                @Html.TextBoxFor(x => x.Flant, new {@class = "textbox" })
+                <label>Trẻ sơ sinh</label><br />
+                @Html.TextBoxFor(x => x.Flant, new {@class = "textbox center" })
+                <br>
+                <label class="font-small">dưới 2 tuổi</label>
             </span>
             <span>
                 <input type="submit" class="btn-search" value="Tìm chuyến bay">

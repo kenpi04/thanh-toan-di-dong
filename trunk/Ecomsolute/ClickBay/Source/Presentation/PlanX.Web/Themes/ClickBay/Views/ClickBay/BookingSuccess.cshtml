@@ -2,6 +2,15 @@
 @{
     ViewBag.Title = "Đặt vé thành công";
     Layout = "~/Views/Shared/_ColumnTwo.cshtml";
+    var j = 0; var r = 0;
+    var listPriceNet = Model.TotalPriceForPassengerTypes.Where(x => x.Code == "NET").OrderBy(x => x.Price).ToList();
+    var listFee = Model.TotalPriceForPassengerTypes.Where(x => x.Code != "NET" && x.Code != "DIS").OrderBy(x => x.Price).ToList();
+    var totalPrice = Model.TotalPriceForPassengerTypes.Where(x => x.Code != "DIS").Sum(x => (x.Price));
+    string currencyCode = string.IsNullOrEmpty(Model.TicketInfo.Currency) ? "VND" : Model.TicketInfo.Currency;
+    var totalBaggageFee = Model.TicketInfo.ArilinesBaggageConditions.Sum(x => x.BaggageFee);
+    if (Model.TicketInfoReturn != null) { 
+        totalBaggageFee += Model.TicketInfoReturn.ArilinesBaggageConditions.Sum(x => x.BaggageFee);
+    }
 }
 
 @section top
@@ -9,8 +18,7 @@
     @Html.Partial("_BreadCrumb", new Dictionary<string, string> {
             {"Tìm kiếm",""},
              {"Chọn chuyến bay",""},
-              {"Thanh toán",""},
-               {"Xác nhận",""},
+              {"Hoàn thành","active"}              
 
         })
 }
@@ -19,83 +27,137 @@
 @Html.Partial("_FlightCondition", Model)
 
 <article>
-    <h2>Thông Tin Hành Khách</h2>
-    <div class="div-table info-passenger">
+    <h2>Thông Tin Hành Lý</h2>
+    <div class="div-table info-baggage">
         <div class="div-table-row">
-            <div class="div-table-cell col-1"><span>Hành khách</span></div>
-            <div class="div-table-cell col-2"><span>Quý danh</span></div>
-            <div class="div-table-cell col-3"><span>Họ và Tên <span class="info-small">( ví dụ: VO TAN DUNG )</span></span></div>
-            <div class="div-table-cell col-4"><span>Ngày sinh <span class="info-small">( ví dụ: 30/01/1987 )</span></span></div>
+            <div class="div-table-cell"><span>Hành lý chiều đi</span></div><div class="div-table-cell"></div>
         </div>
-        @{int count = 0;}
-        @foreach (var i in Model.BookingPassers)
+        @if (Model.TicketInfo.ArilinesBaggageConditions.Count > 0)
+        {
+            foreach (var i in Model.TicketInfo.ArilinesBaggageConditions.Where(x => x.IsFree).ToList())
+            {
+                <div class="div-table-row">
+                    <div class="div-table-cell"><span class="normal">@(i.IsHandLuggage ? "Hành lý xách tay" : "Hành lý ký gửi")</span></div><div class="div-table-cell">@i.Description</div>
+                </div>
+            }
+            if (Model.TicketInfo.ArilinesBaggageConditions.Any(x => !x.IsHandLuggage && !x.IsFree))
+            {
+                <div class="div-table-row">
+                    <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
+                    <div class="div-table-cell">
+                    @foreach (var f in Model.TicketInfo.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
+                    {
+                        j++;
+                            <p>
+                                <span>Hành khách @j: </span>@f.Description
+                            </p>}
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div><p>@T("booking.baggage.infonotfound")</p></div>
+        }
+
+        @if (Model.TicketInfoReturn != null)
         {
             <div class="div-table-row">
-
-                <div class="div-table-cell">
-
-                    <label>@T("pasertype."+(((PlanX.Core.Domain.ClickBay.PasserType)i.PassserType).ToString()))</label>
-                </div>
-                <div class="div-table-cell">@Html.DisplayTextFor(x => x.BookingPassers[count].FirstName)</div>
-                @if (i.PassserType > 4)
+                <div class="div-table-cell"><span>Hành lý chiều về</span></div><div class="div-table-cell"></div>
+            </div>
+            @Html.HiddenFor(model => model.TicketInfoReturnBaggages)
+            if (Model.TicketInfoReturn.ArilinesBaggageConditions.Count > 0)
+            {
+                foreach (var i in Model.TicketInfoReturn.ArilinesBaggageConditions.Where(x => x.IsFree).ToList())
                 {
-                    <div class="div-table-cell birthday">
-                       
-                        @Html.DisplayTextFor(x=>x.BookingPassers[count].BirthDay)
-
-
+                    <div class="div-table-row">
+                        <div class="div-table-cell"><span class="normal">@(i.IsHandLuggage ? "Hành lý xách tay" : "Hành lý ký gửi")</span></div><div class="div-table-cell">@i.Description</div>
                     </div>
                 }
-            </div>
-                count++;
+                if (Model.TicketInfoReturn.ArilinesBaggageConditions.Any(x => !x.IsHandLuggage && !x.IsFree))
+                {
+                    <div class="div-table-row">
+                        <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
+                        <div class="div-table-cell">
+                            @foreach (var f in Model.TicketInfoReturn.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).ToList())
+                            {
+                                r++;
+                                <p>
+                                    <span>Hành khách @r: </span>@f.Description
+                                </p>}
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div><p>@T("booking.baggage.infonotfound")</p></div>
+            }
         }
     </div>
 </article>
-
 <article>
-    <h2>Thông Tin Người Liên Hệ</h2>
-   
+    <h2>Thông Tin Hành Khách</h2>
+    <div class="div-table info-passenger">
+        <div class="div-table-row">            
+            <div class="div-table-cell"><span>Quý danh</span></div>
+            <div class="div-table-cell"><span>Họ và Tên </span></div>
+            <div class="div-table-cell"><span>Ngày sinh</span></div>
+        </div>
+        @foreach (var i in Model.BookingPassers)
+        {
+            <div class="div-table-row">
+                <div class="div-table-cell">
+                    <label>@T("pasertype."+(((PlanX.Core.Domain.ClickBay.PasserType)i.PassserType).ToString()))</label>
+                </div>
+                <div class="div-table-cell"><span>@(string.Format("{0} {1} {2}",i.LastName, i.MiddleName, i.FirstName))</span></div>
+                <div class="div-table-cell birthday">
+                    <span>@(i.PassserType>4?i.BirthDay:"")</span>
+                </div>
+            </div>
+        }
+    </div>
+</article>
+<article>
+    <h2>Thông Tin Người Liên Hệ</h2>   
     <aside>
         <div class="div-table info-contact">
             <div class="div-table-row">
                 <div class="div-table-cell haft">
                     <div class="div-table-cell">
-                        <span>Quý Danh</span>
+                        <span>Quý Danh: </span>
                         <label>@T("pasertype." + (((PlanX.Core.Domain.ClickBay.PasserType)Model.ContactPassengerType).ToString()))</label>
                     </div>
                     <div class="div-table-cell">
-                        <span>Họ và Tên </span>
+                        <span>Họ và Tên: </span>
                         @Html.DisplayTextFor(x => x.ContactName)
-
-
                     </div>
-                </div>
-                
+                </div>                
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell">
                     <div>
-                        <span>Số điện thoại </span>
+                        <span>Số điện thoại: </span>
                         @Html.DisplayTextFor(x => x.ContactPhone)
                     </div>
                 </div>
                 <div class="div-table-cell">
                     <div>
-                        <span>Thành phố</span>
-                        @Html.DisplayTextFor(x => x.ContactCityName)
+                        <span>Thành phố: </span>
+                        @Html.DisplayTextFor(x => x.ContactCityName) , @Html.DisplayTextFor(x=> x.ContactCountryName)
                     </div>
                 </div>
             </div>
             <div class="div-table-row">
                 <div>
                     <div class="div-table-cell">
-                        <span>Email</span>
+                        <span>Email: </span>
                         @Html.DisplayTextFor(x => x.ContactEmail)
                     </div>
                 </div>
                 <div class="div-table-cell">
                     <div>
-                        <span>Địa chỉ</span>@Html.DisplayTextFor(x => x.ContactAddress)
+                        <span>Địa chỉ: </span>@Html.DisplayTextFor(x => x.ContactAddress)
                     </div>
                 </div>
             </div>
@@ -105,9 +167,8 @@
                 <div class="div-table-cell">
                     <div class="div-table">
                         <div class="div-table-row birthday">
-                            <span>Ngày sinh</span><br />
-                          @Html.DisplayTextFor(x=>x.ContactBirthDate)
-
+                            <span>Ngày sinh: </span><br />
+                            @Html.DisplayTextFor(x=>x.ContactBirthDate)
                         </div>
                     </div>
                 </div>
@@ -130,10 +191,8 @@
 }
 
 <article>
-    <!--Yeu cau dac biet-->
+    <!--Phuong thuc thanh toan-->
     <h2>Phương thức thanh toán</h2>
-   
-
     <div class="div-table-row">
        @if(Model.PaymentMethodId==1)
        {
@@ -151,9 +210,43 @@
        {
            @("Thanh toán tại văn phòng clickbay")
        }
-       
-
-
     </div>
 </article>
-
+@section right{
+<article>
+    <aside>
+        <div class="box-sort priceDetail">
+            <div class="title box-head">
+                <span class="title-left" style="width:100%">Chi Tiết Giá</span>
+            </div>
+            <div class="detail">
+                <h4><span>Giá cơ bản</span></h4>
+                <div class="box-content">
+                    @foreach (var pr in listPriceNet)
+                    {
+                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
+                    }
+                </div>
+                <h4><span>Thuế và phí</span></h4>
+                <div class="box-content">
+                    @foreach (var pr in listFee)
+                    {
+                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
+                    }
+                </div>
+                <div class="box-content sumPrice">
+                    <p><span>Tổng giá</span><span id="sumprice-totalprice">@totalPrice.ToString("0,#") @currencyCode</span></p>
+                    <p><span>Hành lý thêm</span> <span id="sumprice-totalbaggagefee" data-price="0">@totalBaggageFee.ToString("0,#") @currencyCode</span></p>
+                    @if (Model.DiscountAmount > 0)
+                    {
+                        <p><span>Giảm giá</span> <span id="sumprice-totaldiscountamount">- @Model.DiscountAmount.ToString("0,#") @currencyCode</span></p>
+                    }
+                </div>
+                <div class="box-content sumPrice">
+                    <p><span>TỔNG</span> <span id="sumprice-totalfinaly" data-price="@(totalPrice-Model.DiscountAmount)">@((totalPrice - Model.DiscountAmount + totalBaggageFee).ToString("0,#")) @currencyCode</span></p>
+                </div>
+            </div>
+        </div>
+    </aside>    
+</article>
+}

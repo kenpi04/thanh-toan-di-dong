@@ -1,30 +1,30 @@
 ﻿@model BookingModel
 @{
-    var listPriceNet = Model.TotalPriceForPassengerTypes.Where(x => x.Code=="NET").OrderBy(x => x.Price).ToList();
-    var listFee = Model.TotalPriceForPassengerTypes.Where(x => x.Code != "NET" && x.Code!="DIS").OrderBy(x => x.Price).ToList();
+    var listPriceNet = Model.TotalPriceForPassengerTypes.Where(x => x.Code=="NET").OrderBy(x => x.PassengerType).ToList();
+    var listFee = Model.TotalPriceForPassengerTypes.Where(x => x.Code != "NET" && x.Code!="DIS").OrderBy(x => x.PassengerType).ToList();
     var totalPrice = Model.TotalPriceForPassengerTypes.Where(x => x.Code != "DIS").Sum(x => (x.Price));
-    string currencyCode = string.IsNullOrEmpty(Model.TicketInfo.Currency) ? "VND" : Model.TicketInfo.Currency;    
+    string currencyCode = string.IsNullOrEmpty(Model.TicketInfo.Currency) ? "VND" : Model.TicketInfo.Currency;
 }
 <input type="hidden" value="@currencyCode" id="currencyCode" name="currencyCode">
 <article>
     <aside>
         <div class="box-sort priceDetail">
             <div class="title box-head">
-                <span class="title-left">Chi Tiết Giá</span>
+                <span class="title-left" style="width:100%">Chi Tiết Giá</span>
             </div>
             <div class="detail">
                 <h4><span>Giá cơ bản</span></h4>
                 <div class="box-content">
                     @foreach (var pr in listPriceNet)
                     {
-                        <p><span>@T(pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
+                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
                     }
                 </div>
                 <h4><span>Thuế và phí</span></h4>
                 <div class="box-content">
                     @foreach (var pr in listFee)
                     {
-                        <p><span>@T(pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
+                        <p><span>@T("PasserType."+pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
                     }
                 </div>
                 <div class="box-content sumPrice">
@@ -42,7 +42,7 @@
     </aside>
     <aside>
         <div>
-            <a class="default">Quay về trang kết quả</a>
+            <a name="backSite" onclick="BackToPage()" class="default">Quay về trang kết quả</a>
         </div>
     </aside>
     <aside>
