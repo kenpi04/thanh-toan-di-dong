@@ -114,13 +114,13 @@
             SessionId: $("#sessionid").val()
            
         };
-        displayAjaxLoading(true);
+        $("#table-data").html("<img src='~/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")
         $.get("@Url.Action("TicketSearch")",data,function(d){
             $("#table-data").html(d);
             displayAjaxLoading(false)
         }).error(function(){
             alert("Lỗi kết nối! vui lòng thử lại");
-            displayAjaxLoading(false);
+           // displayAjaxLoading(false);
         })
         @if(Model.Return)
                 {<text>
@@ -138,10 +138,10 @@
 
            
                 };
-                displayAjaxLoading(true);
+                  $("#table-data-return").html("<img src='~/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")
                 $.get("@Url.Action("TicketSearch")",data,function(d){
                     $("#table-data-return").html(d);
-                    displayAjaxLoading(false)
+                   // displayAjaxLoading(false)
                 }).error(function(){
                     alert("Lỗi kết nối! vui lòng thử lại");
                     displayAjaxLoading(false);
