@@ -476,3 +476,4 @@ div#pages {float: right;padding: 10px 0;}
 .form-fields .inputs {margin:8px 0;}
 .form-fields label[for=Email]{padding-right:32px;}
 .form-fields label[for=Password]{padding-right:8px;}
+.active-detail{background: #d0d959}
