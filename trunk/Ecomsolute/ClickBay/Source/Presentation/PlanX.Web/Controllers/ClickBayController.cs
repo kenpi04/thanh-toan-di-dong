@@ -117,30 +117,35 @@ namespace PlanX.Web.Controllers
 
         public ActionResult TicketSearch(SearchModel model)
         {
-
-            model.Tickets = new List<TicketModel>();           
+            DateTime datePart = DateTime.ParseExact(model.DepartDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            model.SearchDate = datePart;
+            DateTime? returnDate = null;
+            if (model.ReturnDate != null)
+                returnDate = DateTime.ParseExact(model.ReturnDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            model.Tickets = new List<TicketModel>();
+            var sources = new List<string>();
+            if(!string.IsNullOrWhiteSpace(model.Source))
+            {
+                sources = model.Source.Split(',').ToList();
+            }
             if (model.SessionId != null)
                 model.Tickets = Session[model.SessionId] as List<TicketModel>;
 
             if (model.Tickets != null && model.Tickets.Count > 0)
             {
-                if (model.Source.Count > 0)
-                    model.Tickets = model.Tickets.Where(x => model.Source.Contains(x.AirlineName)).ToList();
+                if (sources.Count > 0)
+                    model.Tickets = model.Tickets.Where(x => sources.Contains(x.AirlineName)).ToList();
             }
             else
             {
-                DateTime datePart = DateTime.ParseExact(model.DepartDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                model.SearchDate = datePart;
-                DateTime? returnDate = null;
-                if (model.ReturnDate != null)
-                    returnDate = DateTime.ParseExact(model.ReturnDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+               
 
                 var result = _clickBayService.SearchTicket(
                     model.FromId, model.ToId,
                     datePart, model.Adult,
                     model.Child, model.Flant,
                     returnDate: null,
-                    source: model.Source.Count > 0 ? model.Source.Aggregate((a, b) => a + "," + b) : null,
+                    source: sources.Count > 0 ? sources.Aggregate((a, b) => a + "," + b) : null,
                     expendDetails: true,
                     expendTicketPriceDetails: false,
                     priceSummaries: true,
@@ -159,7 +164,7 @@ namespace PlanX.Web.Controllers
             }
             if (model.Sort == (int)Sort.Price)
             {
-                model.Tickets = model.Tickets.OrderByDescending(x => x.Price).ToList();
+                model.Tickets = model.Tickets.OrderBy(x => x.Price).ToList();
             }
             else
                 if (model.Sort == (int)Sort.Date)

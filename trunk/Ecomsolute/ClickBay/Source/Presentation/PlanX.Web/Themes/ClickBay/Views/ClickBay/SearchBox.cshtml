@@ -112,6 +112,11 @@
         })
         function selectedValue(name,code)
         {
+            if ($("#ToId").val() == $("#FromId"))
+            {
+                alert("Điểm đến phải khác điểm đi");
+                return;
+            }
            
             if (CURRENT_TXT == "fromPlace") {
                 $("#fromPlace").html(name);
