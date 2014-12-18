@@ -179,7 +179,7 @@
     function postBegin() {
         if (!$("#checkedPolicy").is(":checked")) {
             alert("Bạn chưa đồng ý với điều khoản của ClickBay.com.vn");
-            return;
+            return false;
         }
         getBirthDate();
         displayAjaxLoading(true);
