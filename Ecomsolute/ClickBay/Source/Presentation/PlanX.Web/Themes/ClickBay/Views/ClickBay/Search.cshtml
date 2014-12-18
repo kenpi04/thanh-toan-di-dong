@@ -10,7 +10,7 @@
                 <p><span>Trang chủ</span><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span>Tìm kiếm</span><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span class="active">Chọn chuyến bay</span><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span>Khách hàng</span><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span>Thanh toán</span><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span>Xác nhận</span></p>
             </div>
         </section>
-        <div style="width:880px;float:left">
+        <div style="width:825px;float:left">
             <section class="section">
                 <div class="info-filter">
                     <p>
@@ -151,6 +151,7 @@
     function showDetail(id,isReturn)
     {
         var table = $("#detail_" + id);
+
         
         if (!table.attr('show')) {
              
@@ -163,14 +164,18 @@
                 table.html("<td colspan='7'>"+d+"</td>");
                 table.show('slow');
                 table.attr('show', '1');
+                $("#ticketChecked_"+id).addClass('active-detail');
             });
+
     }
     else {
+     $("#ticketChecked_"+id).removeClass('active-detail');
               if (table.is(":hidden"))
-    table.show('slow');
-    else
-                  table.hide('slow');
-    }
+                    table.show('slow');
+        else
+             table.hide('slow');
+
+        }
          
     }
     function selectTicket()
