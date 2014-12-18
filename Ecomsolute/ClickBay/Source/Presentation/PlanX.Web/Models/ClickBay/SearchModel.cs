@@ -12,7 +12,6 @@ namespace PlanX.Web.Models.ClickBay
 	{
             ListCitys=new List<SelectListItem>();
             Tickets = new List<TicketModel>();
-            Source = new List<string>();
 	}
         public IList<SelectListItem> ListCitys { get; set; }
         public string FromId { get; set; }
@@ -34,7 +33,7 @@ namespace PlanX.Web.Models.ClickBay
         public bool Return { get; set; }
         public IList<TicketModel> Tickets { get; set; }
 
-        public List<string> Source { get; set; }
+        public string Source { get; set; }
 
         public string SessionId { get; set; }
         public int Sort { get; set; }

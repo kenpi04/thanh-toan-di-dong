@@ -88,15 +88,18 @@
 <script type="text/javascript">
     $(document).ready(function () {
         search();
+        $("input[name=checkFlight]").change(function(){
+            search();
+        });
         $("input[name=radioSort]").click(function(){
             search();
         })
     })
     function search()
     {
-        var selectedSource=[];
+        var selectedSource='';
         $("input[name=checkFlight]:checked").each(function(i,e){
-                selectedSource.push($(this).val())
+            selectedSource+=$(this).val()+',';
         });            
         var data = {
             FromID:'@(Model.FromId!=null?Model.FromId:"")',
@@ -107,7 +110,7 @@
             Child:@Model.Child,
             Flant:@Model.Flant,
             Sort:$("input[name=radioSort]:checked").val(),
-            Source:selectedSource,
+            Source:selectedSource.trim(),
             SessionId: $("#sessionid").val()
            
         };
