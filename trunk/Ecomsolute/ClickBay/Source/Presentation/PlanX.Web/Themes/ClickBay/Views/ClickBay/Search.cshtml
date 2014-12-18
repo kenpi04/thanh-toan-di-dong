@@ -95,16 +95,26 @@
             search();
         })
     })
+    function searchByDate(date)
+    {
+        searchPost(date);
+    }
     function search()
     {
+        searchPost(null);
+    }
+    function searchPost(date)
+    {
         var selectedSource='';
+        if(!date)
+            date='@Model.DepartDate';
         $("input[name=checkFlight]:checked").each(function(i,e){
             selectedSource+=$(this).val()+',';
         });            
         var data = {
             FromID:'@(Model.FromId!=null?Model.FromId:"")',
             ToId:'@(Model.ToId!=null?Model.ToId:"")',
-            DepartDate: '@Model.DepartDate',
+            DepartDate: date,
             ReturnDate:'@Model.ReturnDate', 
             Adult:@Model.Adult,
             Child:@Model.Child,
