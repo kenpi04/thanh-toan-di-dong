@@ -1,4 +1,4 @@
-﻿@model PlanX.Web.Models.ClickBay.SearchModel
+@model PlanX.Web.Models.ClickBay.SearchModel
 @if(Model.Tickets.Count==0)
 {
     <p>Không tìm thấy kết quả</p>
@@ -12,7 +12,7 @@ else{
                     @{
                         DateTime startDate=Model.SearchDate.AddDays(-3);
                          
-                        for (int i = 0; i < 6;i++ )
+                        for (int i = 0; i <= 6;i++ )
                         {
                             var date = startDate.AddDays(i);
                         <th @(i==3?"class=active":"")><p>@date.DayOfWeek.ToString()</p><p>@date.ToString("dd-MM-yyyy")</p></th>
