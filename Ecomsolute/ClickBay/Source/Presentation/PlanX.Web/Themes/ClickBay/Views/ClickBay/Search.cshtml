@@ -117,10 +117,11 @@
         $("#table-data").html("<img src='~/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")
         $.get("@Url.Action("TicketSearch")",data,function(d){
             $("#table-data").html(d);
-            displayAjaxLoading(false)
+           // displayAjaxLoading(false)
         }).error(function(){
             alert("Lỗi kết nối! vui lòng thử lại");
            // displayAjaxLoading(false);
+            $("#table-data").html("")
         })
         @if(Model.Return)
                 {<text>
@@ -144,7 +145,8 @@
                    // displayAjaxLoading(false)
                 }).error(function(){
                     alert("Lỗi kết nối! vui lòng thử lại");
-                    displayAjaxLoading(false);
+                  //  displayAjaxLoading(false);
+                   $("#table-data").html("")
                 })</text>
         }
     }
