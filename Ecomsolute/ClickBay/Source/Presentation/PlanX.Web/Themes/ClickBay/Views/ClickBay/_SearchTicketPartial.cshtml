@@ -1,4 +1,5 @@
-@model PlanX.Web.Models.ClickBay.SearchModel
+﻿@model PlanX.Web.Models.ClickBay.SearchModel
+@{var culture = new System.Globalization.CultureInfo("vi-VN");}
 @if(Model.Tickets.Count==0)
 {
     <p>Không tìm thấy kết quả</p>
@@ -11,16 +12,11 @@ else{
                 <tr>
                     @{
                         DateTime startDate=Model.SearchDate.AddDays(-3);
-                         var culture = new System.Globalization.CultureInfo("vi-VN");
-                       
                         for (int i = 0; i <= 6;i++ )
                         {
                             var date = startDate.AddDays(i);
                              var day = culture.DateTimeFormat.GetDayName(date.DayOfWeek);
-                        <th @(i==3?"class=active":"") onclick='searchByDate("@date.ToString("dd/MM/yyyy")")><p>@day</p><p>@date.ToString("dd-MM-yyyy")</p></th>
-                         
-                    
-                          
+                        <th @(i==3?"class=active":"") onclick='searchByDate("@date.ToString("dd/MM/yyyy")")'><p>@day</p><p>@date.ToString("dd-MM-yyyy")</p></th>
                         }
                     }
                     
