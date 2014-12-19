@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_ColumnOneFull.cshtml";
 }
-
+<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
 <div class="head">
     <div class="container">
         <div class="search-head">
@@ -11,16 +11,11 @@
                 </div>
             </div>
             <div>
-                <div class="top">
-                    @*<div class="logo">
-                        <div>
-                            <img src="@Url.Content("~/Themes/ClickBay/Content/images/logo-2.png")">
-                        </div>
-                    </div>*@
+                <div class="top">                    
                     <div class="col2">
                         <div class="box" style="width:100%">
                             <div class="box-h boder-dashed">
-                                <div class="box-t">                                    
+                                <div class="box-t">
                                     ĐẶT VÉ NHANH 24/24
                                 </div>
                             </div>
@@ -32,12 +27,54 @@
                                             <b>1.</b>Trực tiếp trên ClickBay.com.vn nhanh nhất và tiện nhất
                                         </li>
                                         <li>
-                                            <b>2.</b>Qua chát:<br>
-                                            <span style="padding:0 100px;line-height:33px;">Nội địa:</span><br>
-                                            <span style="padding:0 100px;line-height:33px;">Quốc tế:</span>
+                                            <b>2.</b>Qua chat (Nội địa & Quốc tế):<br>
+                                            <div class="chat-box">
+                                                <div class="chat-box-yahoo">
+                                                    Yahoo:
+                                                    <div class="chat-box-yahoo-box">
+                                                        <a href="ymsgr:sendIM?thanhphu86">
+                                                            <img src="http://opi.yahoo.com/online?u=thanhphu86&t=17" />
+                                                        </a>
+                                                        <p>thanhphu86</p>
+                                                    </div>
+                                                    <div class="chat-box-yahoo-box">
+                                                        <a href="ymsgr:sendIM?diemmypkpro">
+                                                            <img src="http://opi.yahoo.com/online?u=diemmypkpro&t=17" />
+                                                        </a>
+                                                        <p>diemmypkpro</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chat-box">
+                                                <div style="display:table-row">
+                                                    Skype:
+                                                    <div id="SkypeButton_Call_thanhphu86_1" class="chat-skype">
+                                                        <script type="text/javascript">
+                                                            Skype.ui({
+                                                                "name": "chat",
+                                                                "element": "SkypeButton_Call_thanhphu86_1",
+                                                                "participants": ["thanhphu86"],
+                                                                "imageSize": 24
+                                                            });
+                                                        </script>
+                                                        <p>thanhphu86</p>
+                                                    </div>
+                                                    <div id="SkypeButton_Call_diemmypkpro_1" class="chat-skype">
+                                                        <script type="text/javascript">
+                                                            Skype.ui({
+                                                                "name": "chat",
+                                                                "element": "SkypeButton_Call_diemmypkpro_1",
+                                                                "participants": ["diemmypkpro"],
+                                                                "imageSize": 24
+                                                            });
+                                                        </script>
+                                                        <p>diemmypkpro</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </li>
                                         <li>
-                                            <b>3.</b>Gọi cho ClickBay.com.vn<strong style="color:#f00000;font-size:18px;"><span style="padding:0 8px;">0989 448 449</span>-<span style="padding:0 8px;">08 6268 56562</span></strong>
+                                            <b>3.</b>Gọi cho ClickBay.com.vn<strong style="color:#f00000;font-size:18px;"><span style="padding:0 8px;">0989 448 449</span>-<span style="padding:0 8px;">08 6268 5656</span></strong>
                                         </li>
                                         <li>
                                             <b>4.</b>Đến trực tiếp văn phòng ClickBay tại Sài Gòn ( <a href="@Url.RouteUrl("ContactUs")" style="color:#000;font-size:13px;text-decoration:underline;">xem bản đồ</a> )
@@ -51,11 +88,12 @@
                 </div>
             </div>
             <div class="box-search" style="float: right; margin-top: 20px; box-shadow: 0px 4px 10px #000;">
-             @Html.Action("SearchBox","ClickBay")
+                @Html.Action("SearchBox", "ClickBay")
             </div>
         </div>
     </div>
     @*<div class="container">
-        <div class="sologan">" Chất lượng là yếu tố sống còn của ClickBay.com.vn "</div>
-    </div>*@
+            <div class="sologan">" Chất lượng là yếu tố sống còn của ClickBay.com.vn "</div>
+        </div>*@
 </div>
+
