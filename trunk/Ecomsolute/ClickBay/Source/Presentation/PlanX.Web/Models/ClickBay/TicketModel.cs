@@ -71,8 +71,8 @@ namespace PlanX.Web.Models.ClickBay
         public Int16 Infant { get; set; }        
         public List<ArilinesBaggageCondition> ArilinesBaggageConditions { get; set; }
         public List<AirlinesConditionModel> AirlinesConditions { get; set; }
-
         public List<BookingFlightPriceModel> BookingFlightPriceModels { get; set; }
+        public List<TotalPriceShow> TotalPriceShows { get; set; }
         public class ArilinesBaggageCondition
         {
             public int Id { get; set; }
@@ -122,5 +122,15 @@ namespace PlanX.Web.Models.ClickBay
         public Int16 Stops { get; set; }
 
         public string FlightDurationString { get; set; }
+
+        public class TotalPriceShow 
+        {
+            public string PassengerType { get; set; }
+            public decimal Price { get; set; }
+            public Int16 Quantity { get; set; }
+            public decimal TaxAndFee { get; set; }
+            public decimal DiscountAmount { get; set; }
+        }
+        
     }
 }
