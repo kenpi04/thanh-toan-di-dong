@@ -1,38 +1,15 @@
 ﻿<header class="header">
-    @*<div class="container">
-        <div class="top">
-            <div class="logo">
-                <img src="@Url.Content("~/Themes/ClickBay/Content/images/logo.png")">
-            </div>
-            <div class="formsearch">
-                <p class="share">
-
-                    <img src="@Url.Content("~/Themes/ClickBay/Content/images/facebook.png")">
-                    <img src="@Url.Content("~/Themes/ClickBay/Content/images/google.png")">
-                    <img src="@Url.Content("~/Themes/ClickBay/Content/images/link.png")">
-                </p>
-                <div class="form-search-box">
-                    <input type="text" name="keyword" placeholder="Tìm kiếm">
-                </div>
-            </div>
-        </div>
-        <div class="clear"></div>
-    </div>*@
     <nav id="menu">
         <div class="container">
             <ul>
-                <li><a href="/">Trang chủ</a></li>
-                <li><a href="/">Vé nội địa</a></li>
-                <li><a href="/">Vé quốc tế</a></li>
-                <li><a href="/">Khuyến mãi</a></li>
-                <li><a href="/">Dịch vụ khác</a></li>
-                <li><a href="/">Tin tức</a></li>
-                <li><a href="/">Liên hệ</a></li>
-                <li>
-                    <span class="hotline">
-                        Hotline 0939.448.124
-                    </span>
-                </li>
+                <li><a href="@Url.RouteUrl("HomePage")">Trang chủ</a></li>
+                <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "ve-noi-dia" })">Vé nội địa</a></li>
+                <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "ve-quoc-te" })">Vé quốc tế</a></li>
+                <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "khuyen-mai" })">Khuyến mãi</a></li>
+                <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "dich-vu-khac" })">Dịch vụ khác</a></li>
+                <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "tin-tuc" })">Tin tức</a></li>
+                <li><a href="@Url.RouteUrl("ContactUs")">Liên hệ</a></li>
+                <li><span class="hotline">Hotline 0989 448 449</span></li>
             </ul>
         </div>
     </nav>

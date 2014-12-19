@@ -5,7 +5,6 @@
     <p>Không tìm thấy kết quả</p>
 }
 else{
-
     <div class="bordered">
         <table class="table none-border pointer main-background">
             <thead>
@@ -18,8 +17,7 @@ else{
                              var day = culture.DateTimeFormat.GetDayName(date.DayOfWeek);
                         <th @(i==3?"class=active":"") onclick='searchByDate("@date.ToString("dd/MM/yyyy")")'><p>@day</p><p>@date.ToString("dd-MM-yyyy")</p></th>
                         }
-                    }
-                    
+                    }                    
                 </tr>
             </thead>
         </table>
@@ -33,20 +31,14 @@ else{
                     <td class="big-font" id="">@item.DepartTime.ToString("hh:mm") - @item.LandingTime.ToString("hh:mm")</td>
                     <td class="big-font">@item.Price.ToString("#,##")</td>
                     <td class="currency">@item.Currency</td>
-                    <td><a onclick="showDetail(@item.Index,@(Model.Return?"true":"false"))">Chi tiết<img src="@Url.Content("~/Themes/ClickBay/content/images/plus-icon.png")" class="icon-small"></a>
-                  
+                    <td><a onclick="showDetail(@item.Index,@(Model.Return?"true":"false"))">Chi tiết<img src="@Url.Content("~/Themes/ClickBay/content/images/plus-icon.png")" class="icon-small"></a>                  
                     </td>
-                    <td ><input type="radio" name="@(Model.Return?"ticketChecked-return":"ticketChecked")" value="@item.Index"></td>
+                    <td ><input onclick="ticketChecked(@item.Index,@(Model.Return?"true":"false"))" type="radio" name="@(Model.Return?"ticketChecked-return":"ticketChecked")" value="@item.Index"></td>
                 </tr>
-                    <tr id="detail_@item.Index" style="display:none">
-                       
-                    </tr>
-                }
-               
+                    <tr id="detail_@item.Index" style="display:none"></tr>
+                }               
             </tbody>
-        </table>
-       
+        </table>       
     </div>
  <input type="hidden" value="@Model.SessionId" id="@(Model.Return?"sessionid-return":"sessionid")" />
-
 }
