@@ -134,12 +134,10 @@ namespace PlanX.Web.Controllers
             if (model.Tickets != null && model.Tickets.Count > 0)
             {
                 if (sources.Count > 0)
-                    model.Tickets = model.Tickets.Where(x => sources.Contains(x.AirlineName)).ToList();
+                    model.Tickets = model.Tickets.Where(x => sources.Contains(x.AirlineName)).OrderBy(x=> x.Price).ToList();
             }
             else
-            {
-               
-
+            {             
                 var result = _clickBayService.SearchTicket(
                     model.FromId, model.ToId,
                     datePart, model.Adult,
@@ -151,15 +149,15 @@ namespace PlanX.Web.Controllers
                     priceSummaries: true,
                     roundTrip: false
                     );
-                var ticket = PrepairingTicketModel(result, true);
-
+                var ticket = PrepairingTicketModel(result, true, model.Adult, model.Child, model.Flant);
+                
                 DateTime dt = DateTime.Now;
                 model.SessionId = string.Format(SESSION_SEARCH_NAME, model.FromId,
                     model.ToId, datePart.ToString("ddMMyyyy"),
                     returnDate.HasValue ? returnDate.Value.ToString("ddMMyyyy") : "",
                     model.Adult, model.Child, model.Flant);
 
-                Session[model.SessionId] = model.Tickets = ticket.ToList();
+                Session[model.SessionId] = model.Tickets = ticket.OrderBy(x=> x.Price).ToList();
 
             }
             if (model.Sort == (int)Sort.Price)
@@ -186,11 +184,59 @@ namespace PlanX.Web.Controllers
             if (ticket == null)
                 return Content("");
             ticket = PrepareSelectedTicket(ticket);
-
+            ticket.TotalPriceShows = GetTotalPriceShow(ticket);
             //bo sung: get Price & Condition
             return PartialView("_TicketDetail", ticket);
         }
         #endregion
+
+        private List<TicketModel.TotalPriceShow> GetTotalPriceShow(TicketModel ticket)
+        {
+            if (ticket.BookingFlightPriceModels != null && ticket.BookingFlightPriceModels.Count > 0)
+            {
+                var TotalPriceShows = new List<TicketModel.TotalPriceShow>();
+                if (ticket.Adult > 0)
+                {
+                    var adt = ticket.BookingFlightPriceModels.Where(x => x.PassengerType == PassengerType.ADT.ToString()).ToList();
+                    TotalPriceShows.Add(new TicketModel.TotalPriceShow
+                    {
+                        PassengerType = PassengerType.ADT.ToString(),
+                        Price = adt.Where(a => a.Code == "NET").Sum(b => b.Price),
+                        Quantity = ticket.Adult,
+                        TaxAndFee = adt.Where(a => a.Code != "NET" && a.Code != "DIS").Sum(b => b.Price),
+                        DiscountAmount = adt.Where(a => a.Code == "DIS").Sum(b => b.Price),
+                    });
+                }
+                if (ticket.Child > 0)
+                {
+                    var adt = ticket.BookingFlightPriceModels.Where(x => x.PassengerType == PassengerType.CHD.ToString()).ToList();
+                    TotalPriceShows.Add(new TicketModel.TotalPriceShow
+                    {
+                        PassengerType = PassengerType.CHD.ToString(),
+                        Price = adt.Where(a => a.Code == "NET").Sum(b => b.Price),
+                        Quantity = ticket.Adult,
+                        TaxAndFee = adt.Where(a => a.Code != "NET" && a.Code != "DIS").Sum(b => b.Price),
+                        DiscountAmount = adt.Where(a => a.Code == "DIS").Sum(b => b.Price),
+                        //Total = adt.Where(a => a.Code == "NET").Sum(b => b.Price),
+                    });
+                }
+                if (ticket.Infant > 0)
+                {
+                    var adt = ticket.BookingFlightPriceModels.Where(x => x.PassengerType == PassengerType.INF.ToString()).ToList();
+                    TotalPriceShows.Add(new TicketModel.TotalPriceShow
+                    {
+                        PassengerType = PassengerType.INF.ToString(),
+                        Price = adt.Where(a => a.Code == "NET").Sum(b => b.Price),
+                        Quantity = ticket.Adult,
+                        TaxAndFee = adt.Where(a => a.Code != "NET" && a.Code != "DIS").Sum(b => b.Price),
+                        DiscountAmount = adt.Where(a => a.Code == "DIS").Sum(b => b.Price),
+                        //Total = adt.Where(a => a.Code == "NET").Sum(b => b.Price),
+                    });
+                }
+                return TotalPriceShows;
+            }
+            return null;
+        }
 
         private TicketModel PrepareSelectedTicket(TicketModel selectedTicket)
         {
@@ -198,18 +244,7 @@ namespace PlanX.Web.Controllers
                 return null;
 
             var ticket = selectedTicket;
-          
-            //ticket.AirlinesConditions = _clickBayService.GetListAirlinesConditionByAirlineId(ticket.AirlineId).Select(x => new TicketModel.AirlinesConditionModel
-            //{
-            //    ConditionDescription = x.ConditionDescription,
-            //    ConditionName = x.ConditionName
-            //}).ToList();
-            
-            //ticket.ArilinesBaggageConditions = _clickBayService.GetListArilinesBaggageCondition(ticket.AirlineId).Select(x => new TicketModel.ArilinesBaggageCondition
-            //{
-            //    Baggage = x.Baggage,
-            //    BaggageFee = x.BaggageFee
-            //}).ToList();
+        
             //phi cong them cua he thong - tinh theo moi luot di://chua chuyen sang setting
             decimal PricePlus = 0;
             if (decimal.TryParse(_localizationService.GetResource("booking.price.clickbay.amount"), out PricePlus))
@@ -860,12 +895,14 @@ namespace PlanX.Web.Controllers
         private string getFlightDuration(decimal number)
         {
             int h = (int)(number % 60);
+            if(h==0)
+                return string.Format("{0} phút", Convert.ToInt32(number));
             decimal m = number % 60;
             //decimal h = Math.Round(number, 0);
             //decimal m = Math.Round(number, 2) - h;
             return string.Format("{0} giờ {1} phút", h, m);
         }
-        private IEnumerable<TicketModel> PrepairingTicketModel(IEnumerable<Ticket> data, bool preparingPrice = false)
+        private IEnumerable<TicketModel> PrepairingTicketModel(IEnumerable<Ticket> data, bool preparingPrice = false, int adult = 0, int child =0, int infant = 0)
         {
             if (data == null)
                 return new List<TicketModel>();
@@ -878,6 +915,9 @@ namespace PlanX.Web.Controllers
                 {
                     Id = x.Id,
                     Price = x.Price,
+                    Adult = (short)adult,
+                    Child = (short)child,
+                    Infant = (short)infant,
                     FlightNumber = x.FlightNumber,
                     DepartTime = x.DepartTime,
                     LandingTime = x.LandingTime,
@@ -933,6 +973,7 @@ namespace PlanX.Web.Controllers
 
                 if (item.AirlineCode == "VietJetAir")
                     item.AirlineId = 3;
+                
                 return item;
             }
 
@@ -1009,7 +1050,7 @@ namespace PlanX.Web.Controllers
                     datePart, model.Adult,
                     model.Child, model.Flant,
                     returnDate: null,
-                    source: model.Source.Count > 0 ? model.Source.Aggregate((a, b) => a + "," + b) : null,
+                    //source: Source.Count > 0 ? model.Source.Aggregate((a, b) => a + "," + b) : null,
                     expendDetails: true,
                     expendTicketPriceDetails: false,
                     priceSummaries: true,
