@@ -36,7 +36,7 @@ p {padding:0;line-height:1.5em }
 .wrapper{width:100%;background:#fff}
 .header{}
 .top{}
-.logo{float:left}
+.logo{float:left;max-width:180px;}
 .formsearch{float:right;width:260px}
 .clear{clear:both}
 .container ,.wrapper-body,.center-2{width:90%;margin:0 auto}
@@ -78,7 +78,7 @@ width: 173px;}
 .box-search  label{font-weight:bold}
 .box-search .box-content{padding-left: 39px;
 padding-top: 26px;}
-.box-footer{margin-top: 33px;float: left;padding-left: 11px}
+.box-footer{margin-top: 15px;float: left;padding-left: 11px}
 .box-footer span{display:block;width:100px;margin-right:10px;float:left}
 .btn-search{
 border: none;
@@ -160,7 +160,7 @@ table.none-border tr th:first-child{border-left:none;}
 .pointer {cursor:pointer;}
 .section-left{float:left;width:69%;margin-right:1%}
 .section-right{float:left;width:30%}
-.section-left-search{float:left;width:98%;margin-right:1%}
+.section-left-search{float:left;width:100%;}
 .section-right-search{float:left;width:24%}
 .section article{margin-bottom:20px;}
 .section-right article aside, .section-right-search article.news-box-small aside{border-bottom:1px solid #189b96;padding-bottom:15px;margin-bottom:10px;}
@@ -211,6 +211,7 @@ img.icon-small{width:10px;margin:0 4px;}
 .news-detail .info-small{font-size:12px;}
 .news-detail .content-preview{font-size:15px;}
 .boder-dashed{border-bottom:dashed 1px #189b96}
+.boder-dashed-top{border-top:dashed 1px #189b96}
 .nv-title{color: #189b96;font-size: 16px;text-transform: uppercase;margin-bottom: -10px;background: #fff;width: 380px;}
 /*.postitem{cursor: pointer;color: #fff !important;}*/
 .postitem{cursor: pointer;

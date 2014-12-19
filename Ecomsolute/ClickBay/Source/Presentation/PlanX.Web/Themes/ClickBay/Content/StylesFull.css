@@ -1,0 +1,63 @@
+﻿body{font-family:"Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;background:rgba(133, 200, 198, 0.04)}
+.head{background:none;}
+#menu{height:auto;display:inline-block;width:100%;}
+#menu li{padding:8px 0;margin-right:0;}
+#menu li:hover{background:none;}
+#menu li a{color:#E2DFDF;text-transform:uppercase;font-size:13px;padding:0 16px;}
+#menu li a:hover{color:#ffffff;font-weight:400;}
+#menu li:last-child{padding:8px 0;}
+.hotline{font-size:15px;text-transform:uppercase;font-weight:700;font-family:sans-serif,monospace;}
+.active{color:#ffa615;}
+.top{float:left;}
+.search-head .logo{float:none;}
+.search-head .logo > div{width:238px}
+.col2{max-width:515px;display:inline-block;float:left;}
+.box-h .box-t{margin-bottom:0;background:none;width:auto;}
+.box-c{font-size:15px;padding:0 0 0 20px;background:none;}
+.ht li{padding:3px 0;font-size:18px;}
+.ht li b{font-size:16px;}
+.green-text{font-size:18px;font-style:italic;margin:0;}
+/*First Style*/
+    footer.footer {
+        padding: 0;
+        position:fixed;
+        bottom:0;
+    }
+
+    footer {
+        margin: 0;
+        padding: 10px 0;
+        padding-right:20px;
+        font-family:"Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
+    }
+
+        footer.footer .container ul li span {
+            padding: 0 15px;
+            border-left:1px solid;
+        }
+        footer.footer .container ul li:last-child span{border-left:none;}
+
+    footer .container {
+        width: 100%;
+        text-align: right;
+    }
+
+
+        footer .container a {
+            cursor: pointer;
+            color: #ffffff;
+        }
+        footer .container a:hover{text-decoration:underline;}
+
+        footer ul{width:100%;display:inline-block; list-style:none;}
+            footer ul li {float:right;list-style:none;padding:8px 0px;
+            }
+            footer ul li a{}
+.chat-skype{display:table-cell;width:110px;text-align:center}
+.chat-skype img{vertical-align:0!important;margin:0!important;margin-bottom:-5px!important;}
+.chat-box p{margin:0;font-size:13px!important;}
+.chat-box{padding-left:205px;padding-top:10px;}
+.chat-box-yahoo{display:table-row;}
+.chat-box-yahoo img{width:36px;}
+.chat-box-yahoo .chat-box-yahoo-first{display:table-cell;width:110px;text-align:center;font-size:13px;}
+.chat-box-yahoo .chat-box-yahoo-box{display:table-cell;width:110px;text-align:center;font-size:13px;}
