@@ -283,7 +283,7 @@ font-size: 19px;}
 .listCity ul li a:hover b{font-weight: bold;}
 .listCity ul li a b{float: left;font-weight: normal;}
 .listCity ul li a span{float: right;font-weight: bold;font-size: 10px;color: #999;display: none;}
-.domestic-col{float: left;padding-right: 15px;font-size: 12px;min-width:15px;}
+.domestic-col{float: left;padding-right: 35px;font-size: 12px;min-width:15px;}
 .domestic-col .title{padding:0;padding-left:8px;}
 .domestic-col a:hover{cursor:pointer;text-decoration:underline;}
 .internation-city{float: left;width: 260px;}
@@ -294,8 +294,13 @@ font-size: 19px;}
 .select-date select{height: 26px;}
 #dialog-form{position: absolute;
 z-index: 10;
+<<<<<<< .mine
+top: 251px;
+left: 802px;
+=======
 top: 285px;
 left: 802px; /*863px*/
+>>>>>>> .r720
 background: #fff;
 padding: 11px;
 line-height: 24px;
@@ -439,6 +444,32 @@ article.successfull .info-successfull{border:none;margin:0;}
 .guide h4{font-size:15px;font-weight:500;}
 .guide a h4:hover{text-decoration:underline;}
 .guide .hotline{color:red;}
+.search-roundtrip{float:right;margin-right:48px;}
+#spinfo,#ctinfo{
+    width: 300px;
+
+position: absolute;
+ bottom: 36px;
+background: #fff;
+ display: none; 
+padding: 8px;
+border: solid 1px #ccc;
+box-shadow: 1px 1px 8px #ccc;
+}
+#spinfo{line-height: 20px;
+right: 2%;
+height: 98px;
+padding-left: 32px;
+width: 164px;
+}
+#ctinfo{
+    height: 127px;
+    right:3%
+}
+.map-dialog .ui-dialog-titlebar{
+    background:#189b96;
+    border:none
+}
 .search-roundtrip{float:right;margin-right:48px;}
 .box-50{width:50%;padding:7px;box-sizing:border-box;}
 
