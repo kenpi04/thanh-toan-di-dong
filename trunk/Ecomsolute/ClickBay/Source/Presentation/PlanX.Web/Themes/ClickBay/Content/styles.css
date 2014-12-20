@@ -17,7 +17,8 @@ input,select,textarea{box-sizing:border-box;}
 /* END RESET CSS (html5doctor.com) */
 
 /* OTHER RESET STYLESHEET (HTML GENERAL) */
-body{font-family:arial,verdana,helvetica,sans-serif;font-size:13px;background: #fff;color:#5C5B5B;line-height:normal;}
+body{font-family:"Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
+     font-size:13px;background: #fff;color:#5C5B5B;line-height:normal;}
 a{color:#5C5B5B;text-decoration:none;font-weight:normal;}
 a:hover{color:#B80709;text-decoration:underline;}
 h1,h2,h3,h4,h5,h6{font-family:arial,helvetica,sans-serif;}
@@ -43,7 +44,7 @@ p {padding:0;line-height:1.5em }
 .container ,.wrapper-body,.center-2{width:90%;margin:0 auto}
 .container .search-head{width:100%;float:right}
 #menu{height:45px;background:#189b96}
-#menu li{float:left;padding: 14px 20px;margin-right: 20px;}
+#menu li{float:left;padding: 13px 20px;margin-right: 20px;}
 #menu li:hover{background:#66cccc}
 #menu li:last-child{float:right;padding: 11px;}
 #menu li:last-child:hover{background:none}
@@ -101,9 +102,9 @@ padding: 10px 50px;background:#f3f3f3;margin-top:10px;border-radius:5px}
 color: #189b96;
 margin-bottom: -10px;
 background: #fff;
-width: 238px;}
+width: 165px;}
 .box-c{background: #f3f3f3;
-padding: 10px 0px 10px 30px;
+padding: 10px 15px 10px 30px;
 margin-top: 20px;
 height:300px
 }
@@ -119,8 +120,9 @@ height:300px
 .green-text{color:green;font-size:14px}
 .ht li{padding:10px 5px 10px 0}
 .ht li b{font-size:20px;margin-right:10px}
-.col2{width:840px;margin:0 auto}
-.col2 .box {float: left;margin-right: 20px;}
+/*.col2{width:840px;margin:0 auto}*/
+.col2{width:100%;margin:0 auto;margin-bottom:20px;margin-top:20px;}
+.col2 .box {float: left;}
 
 /*CSS anh dung*/
 img{max-width:100%;max-height:100%;}
@@ -292,12 +294,14 @@ font-size: 19px;}
 .select-date select{height: 26px;}
 #dialog-form{position: absolute;
 z-index: 10;
-top: 342px;
-left: 802px;
+top: 285px;
+left: 802px; /*863px*/
 background: #fff;
 padding: 11px;
 line-height: 24px;
-box-shadow: 3px 0px 5px 2px #666;
+border:1px solid #ccc;
+border-radius:5px;
+/*box-shadow: 3px 0px 5px 2px #666;*/
 display:none
     }
     .default{
@@ -436,3 +440,21 @@ article.successfull .info-successfull{border:none;margin:0;}
 .guide a h4:hover{text-decoration:underline;}
 .guide .hotline{color:red;}
 .search-roundtrip{float:right;margin-right:48px;}
+.box-50{width:50%;padding:7px;box-sizing:border-box;}
+
+/**/
+.home .box-h .box-t{margin-bottom:0;background:none;width:auto;}
+.home .box-c{font-size:15px;padding:0 0 0 20px;background:none;}
+.home .ht li, .payment .ht li{padding:6px 0;font-size:16px;}
+.home .ht li b{font-size:16px;}
+.home p{margin:3px 26px;}
+.home .green-text,.payment .green-text{font-size:18px;font-style:italic;margin:0;}
+.home .chat-skype{display:table-cell;width:74px;text-align:center}
+.home .chat-skype img{vertical-align:0!important;margin:0!important;margin-bottom:-5px!important;width:53px;}
+.home .chat-box p{margin:0;font-size:13px!important;}
+.home .chat-box{padding-left:90px;padding-top:10px;}
+.home .chat-box-yahoo{display:table-row;}
+.home .chat-box-yahoo img{width:30px;}
+.home .chat-box-yahoo .chat-box-yahoo-first{display:table-cell;width:110px;text-align:center;font-size:13px;}
+.home .chat-box-yahoo .chat-box-yahoo-box{display:table-cell;width:63px;text-align:center;font-size:13px;}
+.payment .box-h .box-t{width:256px;}
