@@ -42,6 +42,13 @@ namespace PlanX.Services.ClickBay
     string CasyncurrencyType = "VND", string source = null, bool expendDetails = false,
     bool expendTicketPriceDetails = false, bool expandOption = false, bool priceSummaries = false
     );
+        string SearchTicketJson(string fromPlace, string toPlace, DateTime departDate,
+           int Adult = 0, int child = 0, int Infant = 0,
+           string FareBasis = null,
+           bool roundTrip = false, DateTime? returnDate = null,
+           string CurrencyType = "VND", string source = null, bool expendDetails = false,
+           bool expendTicketPriceDetails = false, bool expandOption = false, bool priceSummaries = false
+           );
         /// <summary>
         /// Lấy danh sách sân bay
         /// </summary>

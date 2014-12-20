@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace PlanX.Core.Domain.ClickBay
 {
@@ -30,5 +31,17 @@ namespace PlanX.Core.Domain.ClickBay
         [JsonProperty("Description")]
         public string Description { get; set; }
 
+        [JsonIgnore]
+        public PassengerType? PassengerTypeEnum {
+            get
+            {
+                PassengerType pas;
+                if (Enum.TryParse(this.PassengerType, out pas))
+                {
+                    return pas;
+                }
+                return null;
+            }
+        }
     }
 }

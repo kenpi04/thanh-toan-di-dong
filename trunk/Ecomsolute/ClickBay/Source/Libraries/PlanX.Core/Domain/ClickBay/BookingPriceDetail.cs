@@ -16,7 +16,7 @@ namespace PlanX.Core.Domain.ClickBay
     {
        
         public int BookingInfoFlightId { get; set; }
-        public short PassengerType { get; set; }
+        public string PassengerType { get; set; }
         public short Quantity { get; set; }
         public string TicketType { get; set; }
         public string CodeFee { get; set; }
@@ -27,8 +27,8 @@ namespace PlanX.Core.Domain.ClickBay
         public virtual BookingInfoFlight BookingInfoFlight { get; set; }
         public PassengerType PassengerTypes
         {
-            get { return (PassengerType)(this.PassengerType); }
-            set { this.PassengerType = (short)value; }
+            get { return (PassengerType)System.Enum.Parse(typeof(PassengerType),this.PassengerType); }
+            set { this.PassengerType = value.ToString(); }
         }
     }
 }

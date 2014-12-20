@@ -3,15 +3,13 @@ using PlanX.Core.Data;
 using PlanX.Core.Domain.ClickBay;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace PlanX.Services.ClickBay
 {
     public partial class ClickBayService
     {
-        
-        //private readonly IWebHelper _webHelper;
-
         #region Booking
         public virtual void InsertBooking(Booking booking)
         {
@@ -41,6 +39,16 @@ namespace PlanX.Services.ClickBay
                 return null;
             return _BookingRepository.GetById(bookingId);
         }
+        public virtual Booking GetBookingByTickedId(string ticketId)
+        {
+            if (string.IsNullOrEmpty(ticketId))
+                return null;
+            var query = from b in _BookingRepository.Table
+                        where b.TicketId == ticketId
+                        select b;
+
+            return query.FirstOrDefault();
+        }
         public virtual IPagedList<Booking> GetAllBooking(DateTime? fromDate, DateTime? toDate, int? bookingStatusId, int? paymentStatusId, int? contactStatusId, int customerId = 0, string contactNameOrPhone = "", int pageIndex = 0, int pageSize = int.MaxValue, int id=0)
         {
             var query = _BookingRepository.Table;
@@ -68,6 +76,23 @@ namespace PlanX.Services.ClickBay
             }
             return new PagedList<Booking>(query, pageIndex, pageSize);
         }
+
+        public virtual string GetTicketId(int bookingId)
+        {
+            if (bookingId == 0)
+                return "";
+
+            string ticketId = "";
+            SqlParameter pTicketId = new SqlParameter("ticketId", System.Data.SqlDbType.NVarChar, 20);
+            pTicketId.Direction = System.Data.ParameterDirection.Output;
+
+            var excute = _dbContext.ExecuteSqlCommand("execute [GetTickedId] @bookingId,  @ticketId output", false, null,
+                    new SqlParameter("bookingId", bookingId),
+                    pTicketId);
+
+            return ticketId = pTicketId.Value == DBNull.Value ? "" : pTicketId.Value.ToString(); ;
+        }
+
         #endregion
 
         #region Booking Info Flight

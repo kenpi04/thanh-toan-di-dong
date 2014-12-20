@@ -3,7 +3,7 @@ using PlanX.Core.Domain.Banner;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PLanX.Services.Directory
+namespace PlanX.Services.Directory
 {
     public partial interface IBannerService
     {
