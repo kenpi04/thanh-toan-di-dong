@@ -59,9 +59,9 @@
                             <span class="title-left">Lọc theo hãng hàng không</span>
                         </div>
                         <div class="box-content">
-                            <p><input type="checkbox" name="checkFlight" value="VietnamAirlines"><span>VietNam Arilines</span></p>
-                            <p><input type="checkbox" name="checkFlight" value="JetStar"><span>JetStart</span></p>
-                            <p><input type="checkbox" name="checkFlight" value="VietJetAir"><span>Vietjet Air</span></p>
+                            <p class="airline"><input type="checkbox" name="checkFlight" value="VietnamAirlines"><span>VietNam Airlines</span><img src="/Themes/ClickBay/Content/images/VietnamAirlines.gif"></p>
+                            <p class="airline"><input type="checkbox" name="checkFlight" value="JetStar"><span>JetStart</span><img src="/Themes/ClickBay/Content/images/JetStar.gif"></p>
+                            <p class="airline"><input type="checkbox" name="checkFlight" value="VietJetAir"><span>Vietjet Air</span><img src="/Themes/ClickBay/Content/images/VietJetAir.gif"></p>
                         </div>
                     </div>
                 </aside>
@@ -160,19 +160,19 @@
                 table.show('slow');
                 table.attr('show', '1');                
             });
-            $("#ticketChecked_"+id).find("img").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
+            $("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
     }
     else {
             
             if (table.is(":hidden"))
             {
                 table.show('slow');
-                $("#ticketChecked_"+id).find("img").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
+                $("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
             }
             else
             {
                 table.hide('slow');
-                $("#ticketChecked_"+id).find("img").first().attr("src","/Themes/ClickBay/content/images/plus-icon.png");
+                $("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/plus-icon.png");
             }
         }
          
