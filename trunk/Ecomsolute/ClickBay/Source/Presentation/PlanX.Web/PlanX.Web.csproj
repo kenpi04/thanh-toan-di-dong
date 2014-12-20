@@ -850,6 +850,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\public.common.mobile.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Scripts\search.js" />
     <Content Include="Themes\ClickBay\Content\ie6.css" />
     <Content Include="Themes\ClickBay\Content\ie7.css" />
     <Content Include="Themes\ClickBay\Content\images\ajax_loader_large.gif" />
@@ -1348,6 +1349,7 @@
     <Content Include="Themes\ClickBay\Views\ClickBay\Search.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\_BookingPrice.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\_FlightBaggageCondition.cshtml" />
+    <Content Include="Themes\ClickBay\Views\ClickBay\Map.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\Thumbs\" />

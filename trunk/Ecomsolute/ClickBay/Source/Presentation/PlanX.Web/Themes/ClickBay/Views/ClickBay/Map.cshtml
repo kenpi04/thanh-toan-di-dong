@@ -1,0 +1,45 @@
+﻿<script>
+    loadScript();
+    function showAddress() {
+        var diachi = "41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh";
+        var content = "Tên liên hệ:Công ty TNHH PK Pro <br> Số điện thoại:(08) 6268 5656 <br> Email: thanhphu@pkprovn.com <br> Địa chỉ :41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh";
+        geocoder = new google.maps.Geocoder();
+        var myOptions = {
+
+            zoom: 14,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        var info = new google.maps.InfoWindow({ content: content });
+        geocoder.geocode({ 'address': diachi }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
+                center = results[0].geometry.location;
+                map.setCenter(center);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: center
+                });
+                google.maps.event.addListener(marker, "click", function ()
+                { info.open(map, marker); });
+            } else {
+            }
+        });
+
+        infowindow = new google.maps.InfoWindow(
+        {
+            size: new google.maps.Size(150, 50)
+        });
+    }
+    function loadScript() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&' + 'callback=showAddress';
+        document.body.appendChild(script);
+    }
+
+</script>
+<div id="map_canvas" style="width:600px;height:500px">
+    
+</div>

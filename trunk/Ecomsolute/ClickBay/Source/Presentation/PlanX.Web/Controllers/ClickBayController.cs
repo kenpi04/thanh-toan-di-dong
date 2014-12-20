@@ -1075,6 +1075,10 @@ namespace PlanX.Web.Controllers
           // string a=_clickBayService.GetData();
             return "a";
         }*/
+        public ActionResult Map()
+        {
+            return View();
+        }
 
     }
 
