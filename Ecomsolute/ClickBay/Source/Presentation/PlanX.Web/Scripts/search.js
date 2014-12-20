@@ -1,17 +1,39 @@
-﻿var CURRENT_TXT = null, ISSHOW = false;
+﻿//set language vietnam
+$.datepicker.regional["vi-VN"] =
+	{
+	    closeText: "Đóng",
+	    prevText: "Trước",
+	    nextText: "Sau",
+	    currentText: "Hôm nay",
+	    monthNames: ["Tháng một", "Tháng hai", "Tháng ba", "Tháng tư", "Tháng năm", "Tháng sáu", "Tháng bảy", "Tháng tám", "Tháng chín", "Tháng mười", "Tháng mười một", "Tháng mười hai"],
+	    monthNamesShort: ["Một", "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười một", "Mười hai"],
+	    dayNames: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
+	    dayNamesShort: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
+	    dayNamesMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+	    weekHeader: "Tuần",
+	    dateFormat: "dd/mm/yy",
+	    firstDay: 1,
+	    isRTL: false,
+	    showMonthAfterYear: false,
+	    yearSuffix: ""
+	};
+$.datepicker.setDefaults($.datepicker.regional["vi-VN"]);
+
+
+var CURRENT_TXT = null, ISSHOW = false;
 $("input[name=Return]").change(function () {
     if ($(this).val() == 'true') {
-        $("#return-div").show()
+        $("#return-div").show('slow')
     }
     else
-        $("#return-div").hide();
+        $("#return-div").hide('slow');
 })
 $("#From").datepicker({
     defaultDate: "+1w",
     dateFormat: "dd/mm/yy",
     minDate: new Date(),
-    changeMonth: true,
-    numberOfMonths: 3,
+    changeMonth: false,
+    numberOfMonths: 1,
     onClose: function (selectedDate) {
         if ($("input[name=Return]:checked").val() == 'true')
             $("#To").datepicker("option", "minDate", selectedDate);
@@ -20,38 +42,51 @@ $("#From").datepicker({
 $("#To").datepicker({
     defaultDate: "+1w",
     dateFormat: "dd/mm/yy",
-    changeMonth: true,
-    numberOfMonths: 3,
+    changeMonth: false,
+    numberOfMonths: 1,
     onClose: function (selectedDate) {
         $("#From").datepicker("option", "maxDate", selectedDate);
     }
 });
-$("#fromPlace,#toPlace").click(function () {
-    openPopup();
+$("#fromPlace,#toPlace").click(function () {    
+    openPopup($(this).attr("id"));
     CURRENT_TXT = $(this).attr("id");
 })
-function openPopup() {
-
-    $("#dialog-form").show();
+function openPopup(name) {
+    $("#title-text-id").contents().remove();
+    if (name != 'toPlace')
+    {        
+        $("#title-text-id").append("Chọn điểm đi");
+        $("#dialog-form").css("left", "801px");
+    }
+    else {
+        $("#title-text-id").append("Chọn điểm đến");
+        $("#dialog-form").css("left", "724px");
+    }
+    $("#dialog-form").show('slow');
 
 }
-function openPopup(top) {
+//function openPopup(top) {
 
-    $("#dialog-form").css({ top: top }).show();
+//    $("#dialog-form").css({ top: top }).show();
 
 
-}
+//}
 $("#frmSearch").submit(function () {
     if ($("#From").val() == "") {
-        alert("Vui lòng chọn ngày đi");
+        alert("Vui lòng chọn ngày đi.");
         return false;
     } else
         if ($("input[name=Return]:checked").val() == 'true' && $("#To").val() == "") {
-            alert("Vui lòng chọn ngày về");
+            alert("Vui lòng chọn ngày về.");
             return false;
         }
-        else if ($("Adult").val() == "0" || $("Child").val() == "0") {
-            alert("Vui lòng chọn số lượng người đi");
+        else if ($("#Adult").val() == "0" && $("#Child").val() == "0") {
+            alert("Vui lòng chọn số lượng người đi.");
+            return false;
+        }
+        else if ($("#FromId").val() == $("#ToId").val()) {
+            alert("Nơi đi và nơi đến phải khác nhau.");
             return false;
         }
     return true;
@@ -60,13 +95,11 @@ $(document).on('click', function (e) {
     if (!$(event.target).closest('#dialog-form').length && event.target.id != 'toPlace' && event.target.id != 'fromPlace') {
         if ($('#dialog-form').is(":visible")) {
             hidePopup();
-
         }
     }
 })
 function hidePopup() {
-    $('#dialog-form').hide()
-
+    $('#dialog-form').hide('slow');
 }
 
 
@@ -77,10 +110,10 @@ $(function () {
         selectedValue(name, code)
     })
     function selectedValue(name, code) {
-        if ($("#ToId").val() == $("#FromId").val()) {
-            alert("Điểm đến phải khác điểm đi");
-            return;
-        }
+        //if ($("#ToId").val() == $("#FromId").val()) {
+        //    alert("Điểm đến phải khác điểm đi");
+        //    return;
+        //}
 
         if (CURRENT_TXT == "fromPlace") {
             $("#fromPlace").html(name);
