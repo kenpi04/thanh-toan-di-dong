@@ -11,7 +11,7 @@ using PlanX.Core.Data;
 using PlanX.Core;
 using System.IO;
 using System.Net.Http.Headers;
-
+using PlanX.Data;
 
 namespace PlanX.Services.ClickBay
 {
@@ -32,6 +32,7 @@ namespace PlanX.Services.ClickBay
         private readonly IRepository<BookingInfoCondition> _bookingInfoConditionRepository;
         private readonly IRepository<BookTicketNote> _bookTicketNoteRepository;
         private readonly IRepository<Airline> _airlineRepository;
+        private readonly IDbContext _dbContext;
 
         public ClickBayService(IRepository<Booking> BookingRepository,
             IRepository<FlightCountry> flightCountryRepository,
@@ -45,8 +46,9 @@ namespace PlanX.Services.ClickBay
             IRepository<BookingPriceDetail> bookingPriceDetailRepository,
             IRepository<BookingInfoCondition> bookingInfoConditionRepository,
             IRepository<BookTicketNote> bookTicketNoteRepository,
-             IRepository<Airline> airlineRepository,
-            IRepository<BookingInfoFlight> bookingInfoFlightRepository
+            IRepository<Airline> airlineRepository,
+            IRepository<BookingInfoFlight> bookingInfoFlightRepository,
+            IDbContext dbContext
             )
         {
             this._BookingRepository = BookingRepository;
@@ -63,6 +65,7 @@ namespace PlanX.Services.ClickBay
             this._bookTicketNoteRepository = bookTicketNoteRepository;
             this._airlineRepository = airlineRepository;
             this._bookingInfoFlightRepository = bookingInfoFlightRepository;
+            this._dbContext = dbContext;
         }
 
         #region API
@@ -75,7 +78,7 @@ namespace PlanX.Services.ClickBay
             )
         {
             string url = ClickBayContant.URL_SEARCH;
-            if (expendDetails || expendTicketPriceDetails || expandOption)
+            if (expendDetails || expendTicketPriceDetails || expandOption || priceSummaries)
             {
                 List<string> querys = new List<string>();
                 if (expendDetails)
@@ -84,7 +87,7 @@ namespace PlanX.Services.ClickBay
                     querys.Add("TicketPriceDetails");
                 if (expandOption)
                     querys.Add("TicketOptions");
-                if (expandOption)
+                if (priceSummaries)
                     querys.Add("PriceSummaries");
                 url += "?$expand=" + querys.Aggregate((a, b) => a + "," + b);
 
@@ -95,38 +98,63 @@ namespace PlanX.Services.ClickBay
             searchModel.Adult = Adult;
             searchModel.Child = child;
             searchModel.Infant = Infant;
-            //searchModel.FareBasis = FareBasis,
-            searchModel.RoundTrip = roundTrip;
-            searchModel.DepartDate = departDate.ToString("yyyy-MM-ddT00:00:00.000");//2015-01-15T00:00:00.000
-            searchModel.ReturnDate =returnDate.HasValue? returnDate.Value.ToString("yyyy-MM-ddT00:00:00.000"):null;
+            searchModel.RoundTrip = false;
+            searchModel.DepartDate = departDate.ToString("yyyy-MM-ddT00:00:00");//2015-01-15T00:00:00.000
+            searchModel.ReturnDate = departDate.ToString("yyyy-MM-ddT00:00:00"); ;//returnDate.HasValue? returnDate.Value.ToString("yyyy-MM-ddT00:00:00.000"):null;
             searchModel.FromPlace = fromPlace;
             searchModel.ToPlace = toPlace;
-            searchModel.CurrencyType = CurrencyType;
+            searchModel.CurrencyType = "VND";
             searchModel.Sources = string.IsNullOrEmpty(source) ? "VietJetAir,VietnamAirlines,JetStar" : source;
 
-
-            //var param = new List<KeyValuePair<string, string>> { 
-
-            //    new KeyValuePair<string,string>("Adult",Adult.ToString()),
-            //    new KeyValuePair<string,string>("Child",child.ToString()),
-            //    new KeyValuePair<string,string>("Infant",Infant.ToString()),
-            //     new KeyValuePair<string,string>("FareBasis",FareBasis),
-            //    new KeyValuePair<string,string>("roundTrip",roundTrip.ToString()),
-            //    new KeyValuePair<string,string>("DepartDate",departDate.ToString("T00:00:00.000")),
-            //    new KeyValuePair<string,string>("ReturnDate",returnDate.HasValue?returnDate.Value.ToString("T00:00:00.000"):null),
-            //    new KeyValuePair<string,string>("FromPlace",fromPlace),
-            //   new KeyValuePair<string,string>("ToPlace",toPlace),
-            //    new KeyValuePair<string,string>("CurrencyType",CurrencyType),
-            //    new KeyValuePair<string,string>("Sources",source),
-
-            //};
             string data = JsonConvert.SerializeObject(searchModel);
 
-           // string result = GetData(url, false, null, data);
-            string result = readFile("data_detail.txt");
+            string result = GetData(url, false, null, data);
+            //string result = readFile("data_detail.txt");
             if (string.IsNullOrEmpty(result))
                 return new List<Ticket>();
             return JsonConvert.DeserializeObject<IEnumerable<Ticket>>(result);
+        }
+
+        public string SearchTicketJson(string fromPlace, string toPlace, DateTime departDate,
+            int Adult = 0, int child = 0, int Infant = 0,
+            string FareBasis = null,
+            bool roundTrip = false, DateTime? returnDate = null,
+            string CurrencyType = "VND", string source = null, bool expendDetails = false,
+            bool expendTicketPriceDetails = false, bool expandOption = false, bool priceSummaries = false
+            )
+        {
+            string url = ClickBayContant.URL_SEARCH;
+            if (expendDetails || expendTicketPriceDetails || expandOption || priceSummaries)
+            {
+                List<string> querys = new List<string>();
+                if (expendDetails)
+                    querys.Add("Details");
+                if (expendTicketPriceDetails)
+                    querys.Add("TicketPriceDetails");
+                if (expandOption)
+                    querys.Add("TicketOptions");
+                if (priceSummaries)
+                    querys.Add("PriceSummaries");
+                url += "?$expand=" + querys.Aggregate((a, b) => a + "," + b);
+
+            }
+
+            var searchModel = new TicketSearch();
+
+            searchModel.Adult = Adult;
+            searchModel.Child = child;
+            searchModel.Infant = Infant;
+            searchModel.RoundTrip = false;
+            searchModel.DepartDate = departDate.ToString("yyyy-MM-ddT00:00:00");//2015-01-15T00:00:00.000
+            searchModel.ReturnDate = departDate.ToString("yyyy-MM-ddT00:00:00");
+            searchModel.FromPlace = fromPlace;
+            searchModel.ToPlace = toPlace;
+            searchModel.CurrencyType = "VND";//CurrencyType;
+            searchModel.Sources = string.IsNullOrEmpty(source) ? "VietJetAir,JetStar,VietnamAirlines" : source;
+            string data = JsonConvert.SerializeObject(searchModel);
+
+            string result = GetData1(url, false, null, data);
+            return result;
         }
 
         public IEnumerable<Airport> GetAirport()
@@ -200,6 +228,66 @@ namespace PlanX.Services.ClickBay
             return null;
         }
 
+        private string GetData1(string url, bool isGET = true, IEnumerable<KeyValuePair<string, string>> para = null, string dataString = null)
+        {
+            bool error= false;
+            var result = GetResponseString(out error, url, isGET, para, dataString);
+            if (!error && !string.IsNullOrEmpty(result))
+            {
+                try
+                {
+                    var convertModel = JsonConvert.DeserializeObject<ConvertDataModel>(result);
+                    return result;
+                }
+                catch (Exception ex) { return ex.ToString(); }
+            }
+            else return result;
+        }
+
+        private string GetResponseString(out bool error, string url, bool isGET = true, IEnumerable<KeyValuePair<string, string>> para = null, string dataString = null)
+        {
+            error = false;
+            try
+            {
+                string resultJson = string.Empty;
+                //HttpClientHandler handler = new HttpClientHandler();
+                //handler.Credentials = new NetworkCredential(ClickBayContant.USERNAME, ClickBayContant.PASSWORD);
+                HttpClient client = new HttpClient();
+                String encoded = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(ClickBayContant.USERNAME + ":" + ClickBayContant.PASSWORD));
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", encoded);
+                HttpResponseMessage response;
+                if (isGET)
+                    response = client.GetAsync(new Uri(url)).Result;
+                else
+                {
+                    HttpContent data;
+                    if (!string.IsNullOrWhiteSpace(dataString))
+                    {
+                        //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        data = new StringContent(dataString, Encoding.UTF8, "application/json");
+                    }
+                    else { data = new FormUrlEncodedContent(para); }
+
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    response = client.PostAsync(url, data).Result;
+                }
+                response.EnsureSuccessStatusCode();
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    if (result != null)
+                    {
+                        //convert dang bi sai?
+                        //var convertModel = JsonConvert.DeserializeObject<ConvertDataModel>(result);
+                        //if (convertModel.Value != null)
+                        //    return convertModel.Value.ToString();
+                        return result;
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex) { error = true; return ex.ToString(); }
+        }
         #endregion
 
         #region DataBase Service
@@ -248,9 +336,6 @@ namespace PlanX.Services.ClickBay
         #endregion
 
 
-
-
-
         public FlightCity GetcityByCode(string code)
         {
             return _flightCityRepository.Table.FirstOrDefault(x => x.Code.Equals(code));
@@ -260,26 +345,6 @@ namespace PlanX.Services.ClickBay
             string filePath = Path.Combine(_webHelper.MapPath("~/content/"), fileName);
             return File.ReadAllText(filePath, Encoding.UTF8).Trim();
         }
-
-
-
-
-        /*
-        public void InsertOrUpdateBooking(Booking book)
-        {
-            if (book == null)
-                throw new ArgumentNullException("Book is Null");
-            if (book.Id > 0)
-                _bookTicketRepository.Update(book);
-            else
-                _bookTicketRepository.Insert(book);
-
-        }
-
-        public void DeleteBooking(BookTicket book)
-        {
-            _bookTicketRepository.Delete(book);
-        }*/
 
         public void InsertCity(FlightCity city)
         {
@@ -321,8 +386,6 @@ namespace PlanX.Services.ClickBay
             return _airlineRepository.Table.ToList();
         }
 
-
-
         public string GetData()
         {
             string resultJson = string.Empty;
@@ -350,7 +413,6 @@ namespace PlanX.Services.ClickBay
                 return null;
         }
 
-
         public void UpdateCity(FlightCity city)
         {
             if (city == null)
@@ -366,8 +428,6 @@ namespace PlanX.Services.ClickBay
             _flightCountryRepository.Update(entity);
         }
 
-
-
         public void UpdateAirport(Airport airport)
         {
             if (airport == null)
@@ -379,6 +439,7 @@ namespace PlanX.Services.ClickBay
         {
             return _airlineRepository.GetById(id);
         }
+        
         class ConvertDataModel
         {
             public object Value { get; set; }
@@ -410,114 +471,5 @@ namespace PlanX.Services.ClickBay
 
 
         }
-
-
-
-
-
-
-        //string jsonResult = "";
-        //string jsonParameter = "";
-        //void GetRequestStreamCallback(IAsyncResult callbackResult)
-        //{
-        //    HttpWebRequest myRequest = (HttpWebRequest)callbackResult.AsyncState;
-        //    Stream postStream = myRequest.EndGetRequestStream(callbackResult);
-        //    //string postData = "";
-        //    //string postData = "{\"RoundTrip\": false,"
-        //    //                + "\"FromPlace\": \"SGN\","
-        //    //                + "\"ToPlace\": \"HAN\","
-        //    //                + "\"DepartDate\": \"2015-01-15T00:00:00.000\","
-        //    //                + "\"ReturnDate\": \"2015-01-15T00:00:00.000\","
-        //    //                + "\"CurrencyType\": \"VND\","
-        //    //                + "\"Adult\": 1,"
-        //    //                + "\"Child\": 0,"
-        //    //                + "\"Infant\": 0,"
-        //    //                + "\"Sources\": \"VietJetAir,VietnamAirlines,JetStar\""
-        //    //                + "}";
-        //    //string postData = "{ \"Brand\": \"JetStar\", \"Adult\": 1, \"Child\": 0, \"Infant\":0, \"RoundTrip\": false, \"DepartDate\": \"2014-07-09T00:00:00\", \"ReturnDate\": \"2014-07-09T00:00:00\", \"FlightNumber\": \"BL 790\", \"TicketPrice\": \"1100000\", \"FromPlaceId\": 1, \"ToPlaceId\": 2, \"CurrencyType\": \"VND\", \"BookingPassengers\": [ { \"PassengerType\": 0, \"Gender\": 1, \"Title\": \"MR\", \"FirstName\":\"Khoa\" , \"LastName\":\"Le\", \"MobileNumber\": \"09193939393\", \"Baggage\": 20, \"BirthDay\": \"1988-01-01T00:00:00\", \"Email\": \"khoale@abc.com\" } ] }";
-        //    byte[] byteArray = Encoding.UTF8.GetBytes(this.jsonParameter);
-        //    postStream.Write(byteArray, 0, byteArray.Length);
-        //    postStream.Close();
-        //    myRequest.BeginGetResponse(new AsyncCallback(GetResponsetStreamCallback), myRequest);
-        //}
-        //void GetResponsetStreamCallback(IAsyncResult callbackResult)
-        //{
-        //    try
-        //    {
-        //        HttpWebRequest request = (HttpWebRequest)callbackResult.AsyncState;
-        //        HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(callbackResult);
-        //        string responseString = "";
-        //        Stream streamResponse = response.GetResponseStream();
-        //        StreamReader reader = new StreamReader(streamResponse);
-        //        responseString = reader.ReadToEnd();
-        //        streamResponse.Close();
-        //        reader.Close();
-        //        response.Close();
-        //        jsonResult = responseString;
-
-        //        //JavaScriptSerializer jss = new JavaScriptSerializer();
-        //        //var obj = JsonConvert.DeserializeObject<dynamic>(result);// jss.Deserialize<dynamic>(result);
-
-
-        //        ////chuyen doi du lieu
-        //        //MyType item = new MyType();
-        //        //bool a = true;
-        //        //int i = 0;
-        //        //while (a)
-        //        //{
-        //        //    TicketPriceDetails tic = new TicketPriceDetails();
-        //        //    try
-        //        //    {
-        //        //        tic.Code = obj["value"][0]["TicketPriceDetails"][i]["Code"].ToString();
-        //        //        item.ListticketPriceDetails.Add(tic);
-        //        //        i++;
-        //        //    }
-        //        //    catch
-        //        //    {
-        //        //        a = false;
-        //        //    }
-        //        //}
-
-        //        //item.AirlineCode = obj["value"][0]["AirlineCode"].ToString();
-        //        //namanamnamam = item;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //    }
-        //}
-        //void SearchFlight(string url, string jsonParameter)
-        //{
-        //    this.jsonParameter = jsonParameter;
-        //    //Please replace your webservice url here                                              
-        //    string AuthServiceUri = url;
-        //    HttpWebRequest spAuthReq = HttpWebRequest.Create(AuthServiceUri) as HttpWebRequest;
-        //    spAuthReq.ContentType = "application/json";
-
-        //    String username = ClickBayContant.USERNAME;
-        //    String password =ClickBayContant.PASSWORD;
-        //    String encoded = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(username + ":" + password));
-        //    spAuthReq.Headers.Add("Authorization", "Basic " + encoded);
-
-        //    spAuthReq.Method = "POST";
-        //    spAuthReq.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), spAuthReq);
-
-        //    //bool a = true;
-        //    //int i = 0;
-        //    //string namdaica = "";
-        //    //while (a)
-        //    //{
-        //    //    try
-        //    //    {
-        //    //        namdaica += namanamnamam.ListticketPriceDetails[i].Code + " ";
-        //    //        i++;
-        //    //    }
-        //    //    catch
-        //    //    {
-        //    //        a = false;
-        //    //    }
-        //    //}
-
-        //    //Literala.Text = namdaica;
-        //}
     }
 }

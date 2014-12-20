@@ -11,7 +11,9 @@ namespace PlanX.Services.ClickBay
         void UpdateBooking(Booking booking);
         void DeletedBooking(Booking booking);
         Booking GetBookingById(int bookingId);
+        Booking GetBookingByTickedId(string ticketId);
         IPagedList<Booking> GetAllBooking(DateTime? fromDate, DateTime? toDate, int? bookingStatusId, int? paymentStatusId, int? contactStatusId, int customerId = 0, string contactNameOrPhone = "", int pageIndex = 0, int pageSize = int.MaxValue, int id=0);
+        string GetTicketId(int bookingId);
         void InsertBookingInfoFlight(BookingInfoFlight bookingInfoFlight);
         void UpdateBookingInfoFlight(BookingInfoFlight bookingInfoFlight);
         BookingInfoFlight GetBookingInfoFightById(int infoFlightId);
