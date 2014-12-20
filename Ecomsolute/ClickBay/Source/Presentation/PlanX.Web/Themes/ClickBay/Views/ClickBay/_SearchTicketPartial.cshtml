@@ -26,7 +26,7 @@ else{
                 @foreach(var item in Model.Tickets)
                 { 
                 <tr id="ticketChecked_@item.Index">
-                    <td>@item.BrandCode</td>
+                    <td><img src="@Url.Content("~/Themes/ClickBay/Content/images/"+item.BrandCode+".gif")" /></td> 
                     <td>@item.FlightNumber</td>
                     <td class="big-font" id="">@item.DepartTime.ToString("hh:mm") - @item.LandingTime.ToString("hh:mm")</td>
                     <td class="big-font">@item.Price.ToString("#,##")</td>
