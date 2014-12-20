@@ -18,17 +18,18 @@
             {
                 <div class="div-table-row">
                     <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
-                    <div class="div-table-cell">
-                        @for(var j = 0; j < Model.BookingPassers.Count;j++) {
-                        <p>
-                            <span>Hành khách @(j+1): </span>
-                            <select id="select-id-ticketinfo" name="select-id-ticketinfo" onchange="BaggageChange()">
-                                @foreach (var f in Model.TicketInfo.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
-                                {
-                                    <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")" @(f.BaggageFee == 0 ? "selected=selected" : "")>@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0,#"))</option>
-                                }
-                            </select>
-                        </p>
+                    <div class="div-table-cell select-id-ticketinfo">
+                        @for (var j = 0; j < Model.BookingPassers.Count; j++)
+                        {
+                            <p>
+                                <span>Hành khách @(j + 1): </span>
+                                <select id="select-id-ticketinfo" name="select-id-ticketinfo" onchange="BaggageChange()">
+                                    @foreach (var f in Model.TicketInfo.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
+                                    {
+                                        <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")" @(f.BaggageFee == 0 ? "selected=selected" : "")>@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0,#"))</option>
+                                    }
+                                </select>
+                            </p>
                         }
                     </div>
                 </div>
@@ -57,15 +58,15 @@
                 {
                     <div class="div-table-row">
                         <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
-                        <div class="div-table-cell">
+                        <div class="div-table-cell select-id-ticketinfo">
                             @for (var j = 0; j < Model.BookingPassers.Count; j++)
                             {
                                 <p>
                                     <span>Hành khách @(j + 1): </span>
-                                    <select id="select-id-ticketinforeturn" name="select-id-ticketinforeturn" onchange="BaggageChange()" >
+                                    <select id="select-id-ticketinforeturn" name="select-id-ticketinforeturn" onchange="BaggageChange()">
                                         @foreach (var f in Model.TicketInfoReturn.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
                                         {
-                                            <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")" @(f.BaggageFee == 0 ? "selected=selected" : "") >@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0,#"))</option>
+                                            <option value="@f.Id" data-price="@f.BaggageFee.ToString("0.#")" @(f.BaggageFee == 0 ? "selected=selected" : "")>@string.Format(f.Description, f.Baggage, f.BaggageFee.ToString("0,#"))</option>
                                         }
                                     </select>
                                 </p>

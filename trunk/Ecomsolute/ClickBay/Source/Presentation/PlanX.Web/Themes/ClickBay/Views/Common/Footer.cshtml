@@ -5,7 +5,7 @@
     <div class="container">
         <div class="wrapper-content">
             <div class="block">
-                <img src="@Url.Content("~/Themes/ClickBay/Content/images/logo-small.png")">
+                <img class="logo-background" src="@Url.Content("~/Themes/ClickBay/Content/images/logo-2.png")">
                 <span>www.clickbay.com.vn</span>
             </div>
             <div class="block">
@@ -13,23 +13,23 @@
                     Thông tin liên hệ
                 </div>
                 <p>
-                    <b>Công ty TNHH PK Pro</b>
-                    Địa chỉ: 114/12/18a ,Đường số 6,KP6 Quận BT,TPHCM<br>
-                    Điện thoại:093.448.124<br>
-                    Email:duyvu@clickbay.com.vn<br>
-                    Website:clickbay.com.vn
+                    <b>Công ty TNHH PK Pro</b><br />
+                    Địa chỉ: 41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh<br>
+                    Điện thoại:(08) 6268 5656 | Fax: (08) 6268 7676<br>
+                    Email: thanhphu@pkprovn.com<br>
+                    Website: clickbay.com.vn
                 </p>
             </div>
             <div class="block support">
                 <div class="block-title">
-                    Hổ trợ khách hàng
+                    Hỗ trợ khách hàng
                 </div>
                 <ul>
-                    <li><a>Hướng dẫn thanh toán</a></li>
-                    <li><a>Thông tin chuyển khoản</a></li>
-                    <li><a>Hướng dẫn đặt vé</a></li>
-                    <li><a>Câu hỏi thường gặp</a></li>
-                    <li><a>Hổ trợ khách hàng</a></li>
+                    <li><a href="@Url.RouteUrl("Topic", new { SystemName = "huong-dan-thanh-toan" })">Hướng dẫn thanh toán</a></li>
+                    <li><a href="@Url.RouteUrl("ContactUs")">Thông tin chuyển khoản</a></li>
+                    <li><a href="@Url.RouteUrl("Topic", new { SystemName = "huong-dan-dat-ve" })">Hướng dẫn đặt vé</a></li>
+                    <li><a href="@Url.RouteUrl("Topic", new { SystemName = "cau-hoi-thuong-gap" })">Câu hỏi thường gặp</a></li>
+                    <li><a href="@Url.RouteUrl("ContactUs")">Hổ trợ khách hàng</a></li>
                 </ul>
             </div>
             <div class="block">

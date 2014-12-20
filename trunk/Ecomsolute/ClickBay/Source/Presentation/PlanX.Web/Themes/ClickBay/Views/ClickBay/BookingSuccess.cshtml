@@ -3,9 +3,8 @@
     ViewBag.Title = "Đặt vé thành công";
     Layout = "~/Views/Shared/_ColumnTwo.cshtml";
     var j = 0; var r = 0;
-    var listPriceNet = Model.TotalPriceForPassengerTypes.Where(x => x.Code == "NET").OrderBy(x => x.Price).ToList();
-    var listFee = Model.TotalPriceForPassengerTypes.Where(x => x.Code != "NET" && x.Code != "DIS").OrderBy(x => x.Price).ToList();
-    var totalPrice = Model.TotalPriceForPassengerTypes.Where(x => x.Code != "DIS").Sum(x => (x.Price));
+    var totalDiscount = Model.TotalPriceShows.Sum(x => x.DiscountAmount);
+    var totalPrice = Model.TotalPriceShows.Sum(x => (x.Price + x.TaxAndFee) * x.Quantity);
     string currencyCode = string.IsNullOrEmpty(Model.TicketInfo.Currency) ? "VND" : Model.TicketInfo.Currency;
     var totalBaggageFee = Model.TicketInfo.ArilinesBaggageConditions.Sum(x => x.BaggageFee);
     if (Model.TicketInfoReturn != null) { 
@@ -15,14 +14,12 @@
 
 @section top
 {
-    @Html.Partial("_BreadCrumb", new Dictionary<string, string> {
-            {"Tìm kiếm",""},
-             {"Chọn chuyến bay",""},
-              {"Hoàn thành","active"}              
-
-        })
+    @Html.Partial("_BreadCrumb", new Dictionary<string, string> { { "Tìm kiếm", "" }, { "Chọn chuyến bay", "" }, { "Khách hàng", "" }, { "Hoàn thành", "active" }, })
 }
-
+<article class="successfull">
+    <h2 class="info-successfull">@T("booking.success.info")</h2>
+    <div class="info-successfull-note"><span>@T("booking.success.note")</span><span class="ticket-id">@Model.TicketId</span></div>
+</article>
 @Html.Partial("_FlightDetail", Model)
 @Html.Partial("_FlightCondition", Model)
 
@@ -108,11 +105,11 @@
         {
             <div class="div-table-row">
                 <div class="div-table-cell">
-                    <label>@T("pasertype."+(((PlanX.Core.Domain.ClickBay.PasserType)i.PassserType).ToString()))</label>
+                    <label>@T("PasserType." + (((PlanX.Core.Domain.ClickBay.PasserType)i.PassserType).ToString()))</label>
                 </div>
-                <div class="div-table-cell"><span>@(string.Format("{0} {1} {2}",i.LastName, i.MiddleName, i.FirstName))</span></div>
+                <div class="div-table-cell uppercase"><label>@(string.Format("{0} {1} {2}",i.LastName, i.MiddleName, i.FirstName))</label></div>
                 <div class="div-table-cell birthday">
-                    <span>@(i.PassserType>4?i.BirthDay:"")</span>
+                    <label>@(i.PassserType>4?i.BirthDay:"")</label>
                 </div>
             </div>
         }
@@ -126,7 +123,7 @@
                 <div class="div-table-cell haft">
                     <div class="div-table-cell">
                         <span>Quý Danh: </span>
-                        <label>@T("pasertype." + (((PlanX.Core.Domain.ClickBay.PasserType)Model.ContactPassengerType).ToString()))</label>
+                        <label>@T("PasserType." + (((PlanX.Core.Domain.ClickBay.PasserType)Model.ContactPassengerType).ToString()))</label>
                     </div>
                     <div class="div-table-cell">
                         <span>Họ và Tên: </span>
@@ -160,21 +157,17 @@
                         <span>Địa chỉ: </span>@Html.DisplayTextFor(x => x.ContactAddress)
                     </div>
                 </div>
-            </div>
-            @if(Model.ContactBirthDate!=null)
-            { 
+            </div>            
             <div class="div-table-row">
                 <div class="div-table-cell">
                     <div class="div-table">
                         <div class="div-table-row birthday">
-                            <span>Ngày sinh: </span><br />
-                            @Html.DisplayTextFor(x=>x.ContactBirthDate)
+                            <span>Ngày sinh: </span>@Html.DisplayTextFor(x=>x.ContactBirthDate)
                         </div>
                     </div>
                 </div>
                 <div class="div-table-cell"></div>
             </div>
-            }
         </div>
     </aside>
    
@@ -222,28 +215,28 @@
             <div class="detail">
                 <h4><span>Giá cơ bản</span></h4>
                 <div class="box-content">
-                    @foreach (var pr in listPriceNet)
+                    @foreach (var pr in Model.TotalPriceShows)
                     {
                         <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
                     }
                 </div>
                 <h4><span>Thuế và phí</span></h4>
                 <div class="box-content">
-                    @foreach (var pr in listFee)
+                    @foreach (var pr in Model.TotalPriceShows)
                     {
-                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
+                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.TaxAndFee.ToString("0,#") @currencyCode</span></p>
                     }
                 </div>
                 <div class="box-content sumPrice">
                     <p><span>Tổng giá</span><span id="sumprice-totalprice">@totalPrice.ToString("0,#") @currencyCode</span></p>
-                    <p><span>Hành lý thêm</span> <span id="sumprice-totalbaggagefee" data-price="0">@totalBaggageFee.ToString("0,#") @currencyCode</span></p>
-                    @if (Model.DiscountAmount > 0)
+                    <p><span>Hành lý thêm</span> <span id="sumprice-totalbaggagefee" data-price="0">@totalBaggageFee.ToString("0") @currencyCode</span></p>
+                    @if (totalDiscount > 0)
                     {
-                        <p><span>Giảm giá</span> <span id="sumprice-totaldiscountamount">- @Model.DiscountAmount.ToString("0,#") @currencyCode</span></p>
+                        <p><span>Giảm giá</span> <span id="sumprice-totaldiscountamount">- @totalDiscount.ToString("0,#") @currencyCode</span></p>
                     }
                 </div>
                 <div class="box-content sumPrice">
-                    <p><span>TỔNG</span> <span id="sumprice-totalfinaly" data-price="@(totalPrice-Model.DiscountAmount)">@((totalPrice - Model.DiscountAmount + totalBaggageFee).ToString("0,#")) @currencyCode</span></p>
+                    <p><span>TỔNG</span> <span id="sumprice-totalfinaly" data-price="@(totalPrice-totalDiscount)">@((totalPrice - totalDiscount + totalBaggageFee).ToString("0,#")) @currencyCode</span></p>
                 </div>
             </div>
         </div>

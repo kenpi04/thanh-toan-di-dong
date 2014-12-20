@@ -5,13 +5,7 @@
 <div class="wrapper-body">
     <div class="wrapper-content inline">
         <section class="section-top">
-            <div class="breadcrumb">
-                <p><span>Trang chủ</span>
-                <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span>Tìm kiếm</span>
-                <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span class="active">Chọn chuyến bay</span>
-                <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span>Khách hàng</span>                
-                <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small"><span>Hoàn thành</span></p>
-            </div>
+            @Html.Partial("_BreadCrumb", new Dictionary<string, string> {{"Tìm kiếm",""},{"Chọn chuyến bay","active"},{"Khách hàng",""},{"Hoàn thành",""}})
         </section>
         <div style="width:825px;float:left">
             <section class="section">
