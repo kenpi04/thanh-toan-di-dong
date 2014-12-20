@@ -27,6 +27,7 @@ namespace PlanX.Web.Models.ClickBay
         public string ReturnDate { get; set; }
 
         public string DateFormat { get; set; }
+        
         public int Adult { get; set; }
         public int Child { get; set; }
         public int Flant { get; set; }

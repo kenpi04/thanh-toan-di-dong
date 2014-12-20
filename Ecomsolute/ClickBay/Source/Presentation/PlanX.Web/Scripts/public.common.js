@@ -24,6 +24,12 @@ $(document).ready(function (e) {
             }
         });
     })
+    $("input.isnumber").keypress(function () {
+        if (isNaN($(this).val())) {
+            // Filter non-digits from input value.
+            $(this).val("0");
+        }
+    })
 
 })
 
