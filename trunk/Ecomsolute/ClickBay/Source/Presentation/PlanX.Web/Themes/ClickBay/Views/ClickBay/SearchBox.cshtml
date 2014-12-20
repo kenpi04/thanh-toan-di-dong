@@ -1,11 +1,9 @@
 ﻿@model PlanX.Web.Models.ClickBay.SearchModel
 
 <form action="@Url.RouteUrl("Search")" method="get">
-
     <div class="box-head">
-        <img src="@Url.Content("~/Themes/ClickBay/Content/images/mouse.png")">
         <span class="search-text">TÌM VÉ MÁY BAY</span>
-        <span>
+        <span class="search-roundtrip">
             <input type="radio" name="Return" checked="checked" value="true"><label>Khứ hồi</label>
             <input type="radio" name="Return" value="false"><label>Một chiều</label>
         </span>
@@ -14,14 +12,14 @@
         <div class="col">
             <label>Điểm đi</label><br>
             <span id="fromPlace" class="textbox"></span><br>
-                <input type="hidden" id="FromId" name="FromId" />
+            <input type="hidden" id="FromId" name="FromId" />
             <label>Ngày đi</label><br>
             <input id="From" name="DepartDate" type="text" class="textbox">
         </div>
         <div class="col">
             <label>Điểm đến</label><br>
-            <span id="toPlace"  class="textbox"></span><br>
-            <input type="hidden" name="ToId" id="ToId"/>
+            <span id="toPlace" class="textbox"></span><br>
+            <input type="hidden" name="ToId" id="ToId" />
             <div id="return-div">
                 <label>Ngày về</label><br>
                 <input id="To" name="ReturnDate" type="text" class="textbox">
@@ -32,19 +30,19 @@
         <div class="box-footer">
             <span>
                 <label>Người lớn</label><br>
-                @Html.TextBoxFor(x => x.Adult, new {@class="textbox center", Value=1 })
+                @Html.TextBoxFor(x => x.Adult, new { @class = "textbox center", Value = 1 })
                 <br /><label class="font-small">từ 12 tuổi</label>
             </span>
             <span>
                 <label>Trẻ em</label>
                 <br />
-                @Html.TextBoxFor(x => x.Child, new {@class = "textbox center" })
+                @Html.TextBoxFor(x => x.Child, new { @class = "textbox center" })
                 <br />
                 <label class="font-small">từ 2 đến 11 tuổi</label>
             </span>
             <span>
                 <label>Trẻ sơ sinh</label><br />
-                @Html.TextBoxFor(x => x.Flant, new {@class = "textbox center" })
+                @Html.TextBoxFor(x => x.Flant, new { @class = "textbox center" })
                 <br>
                 <label class="font-small">dưới 2 tuổi</label>
             </span>
@@ -68,12 +66,12 @@
     $("#From").datepicker({
         defaultDate: "+1w",
         dateFormat: "dd/mm/yy",
-        minDate:new Date(),
+        minDate: new Date(),
         changeMonth: true,
         numberOfMonths: 3,
         onClose: function (selectedDate) {
-            if($("input[name=Return]:checked").val()==1)
-             $("#To").datepicker("option", "minDate", selectedDate);
+            if ($("input[name=Return]:checked").val() == 1)
+                $("#To").datepicker("option", "minDate", selectedDate);
         }
     });
     $("#To").datepicker({
@@ -85,13 +83,12 @@
             $("#From").datepicker("option", "maxDate", selectedDate);
         }
     });
-        $("#fromPlace,#toPlace").click(function () {
-            openPopup();
-            CURRENT_TXT = $(this).attr("id");
-        })
+    $("#fromPlace,#toPlace").click(function () {
+        openPopup();
+        CURRENT_TXT = $(this).attr("id");
+    })
 
-    function openPopup()
-    {
+    function openPopup() {
         $("#dialog-form").show();
         ISSHOW = true;
     }
@@ -108,16 +105,14 @@
         $("a[airportcode]").click(function () {
             var name = $(this).text();
             var code = $(this).attr("airportcode");
-            selectedValue(name,code)
+            selectedValue(name, code)
         })
-        function selectedValue(name,code)
-        {
-            if ($("#ToId").val() == $("#FromId"))
-            {
+        function selectedValue(name, code) {
+            if ($("#ToId").val() == $("#FromId")) {
                 alert("Điểm đến phải khác điểm đi");
                 return;
             }
-           
+
             if (CURRENT_TXT == "fromPlace") {
                 $("#fromPlace").html(name);
                 $("#FromId").val(code);
@@ -132,66 +127,65 @@
             }
             $("#dialog-form").hide();
         }
-            $('#small-searchterms').autocomplete({
-                delay: 500,
-                minLength:2,
-                source: '@(Url.Action("GetCity"))',
-                select: function( event, ui ) {
-                      selectedValue(ui.item.Name, ui.item.Code);
-                    return false;
-                }
-            })
-                    .data("ui-autocomplete")._renderItem = function( ul, item ) {
-                        var t = item.Name;
-                        //html encode
-                        t = htmlEncode(t);
-                        return $("<li></li>")
-                        .data("item.autocomplete", item)
-                        .append("<a>"+t+ "</a>")
-                    .appendTo(ul);
-                    };
-        });
+        $('#small-searchterms').autocomplete({
+            delay: 500,
+            minLength: 2,
+            source: '@(Url.Action("GetCity"))',
+            select: function (event, ui) {
+                selectedValue(ui.item.Name, ui.item.Code);
+                return false;
+            }
+        })
+                .data("ui-autocomplete")._renderItem = function (ul, item) {
+                    var t = item.Name;
+                    //html encode
+                    t = htmlEncode(t);
+                    return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<a>" + t + "</a>")
+                .appendTo(ul);
+                };
+    });
 
 </script>
 <div id="dialog-form" class="dialog-form-contain">
-   
-
-
-        <div class="domestic-col">
-            <ul>
-                <li class="title">Miền Bắc </li>
-                <li><a airportcode="HAN" ><b>Hà Nội </b><span>(HAN)</span> </a></li>
-                <li><a airportcode="HPH" ><b>Hải Phòng</b> <span>(HPH)</span> </a></li>
-                <li><a airportcode="DIN" ><b>Điện Biên</b> <span>(DIN)</span> </a></li>
-            </ul>
-            <ul>
-                <li class="title">Miền Trung </li>
-                <li><a airportcode="THD" ><b>Thanh Hóa</b> <span>(THD)</span> </a></li>
-                <li><a airportcode="VII" ><b>Vinh</b> <span>(VII)</span> </a></li>
-                <li><a airportcode="HUI" ><b>Huế</b> <span>(HUI)</span> </a></li>
-                <li><a airportcode="VDH" ><b>Đồng Hới</b> <span>(VDH)</span> </a></li>
-                <li><a airportcode="DAD" ><b>Đà Nẵng</b> <span>(DAD)</span> </a></li>
-                <li><a airportcode="TMK" href="#"><b>Tam Kỳ</b> <span>(VCL)</span> </a></li>
-                <li><a airportcode="PXU" href="#"><b>Pleiku</b> <span>(PXU)</span> </a></li>
-                <li><a airportcode="TBB" href="#"><b>Tuy Hòa</b> <span>(TBB)</span> </a></li>
-            </ul>
-        </div>
-        <div class="domestic-col">
-            <ul>
-                <li class="title">Miền Nam </li>
-                <li><a airportcode="SGN" ><b>Hồ Chí Minh </b><span>(SGN)</span> </a></li>
-                <li><a airportcode="CXR" ><b>Nha Trang</b> <span>(CXR)</span> </a></li>
-                <li><a airportcode="DLI" href="#"><b>Đà Lạt</b> <span>(DLI)</span> </a></li>
-                <li><a airportcode="PQC" href="#"><b>Phú Quốc</b> <span>(PQC)</span> </a></li>
-                <li><a airportcode="UIH" href="#"><b>Qui Nhơn</b> <span>(UIH)</span> </a></li>
-                <li><a airportcode="VCA" href="#"><b>Cần Thơ</b> <span>(VCA)</span> </a></li>
-                <li><a airportcode="VCS" href="#"><b>Côn Đảo</b> <span>(VCS)</span> </a></li>
-                <li><a airportcode="BMV" href="#"><b>Ban Mê Thuột</b> <span>(BMV)</span> </a></li>
-                <li><a airportcode="VKG" href="#"><b>Rạch Giá</b> <span>(VKG)</span> </a></li>
-                <li><a airportcode="CAH" href="#"><b>Cà Mau</b> <span>(CAH)</span> </a></li>
-            </ul>
-        </div>
-        <div class="internation-city">
+    <div class="domestic-col">
+        <ul>
+            <li class="title">Miền Bắc </li>
+            <li><a airportcode="HAN"><b>Hà Nội </b><span>(HAN)</span> </a></li>
+            <li><a airportcode="HPH"><b>Hải Phòng</b> <span>(HPH)</span> </a></li>
+            <li><a airportcode="DIN"><b>Điện Biên</b> <span>(DIN)</span> </a></li>
+        </ul>
+    </div>
+    <div class="domestic-col">
+        <ul>
+            <li class="title">Miền Trung </li>
+            <li><a airportcode="THD"><b>Thanh Hóa</b> <span>(THD)</span> </a></li>
+            <li><a airportcode="VII"><b>Vinh</b> <span>(VII)</span> </a></li>
+            <li><a airportcode="HUI"><b>Huế</b> <span>(HUI)</span> </a></li>
+            <li><a airportcode="VDH"><b>Đồng Hới</b> <span>(VDH)</span> </a></li>
+            <li><a airportcode="DAD"><b>Đà Nẵng</b> <span>(DAD)</span> </a></li>
+            <li><a airportcode="TMK"><b>Tam Kỳ</b> <span>(VCL)</span> </a></li>
+            <li><a airportcode="PXU"><b>Pleiku</b> <span>(PXU)</span> </a></li>
+            <li><a airportcode="TBB"><b>Tuy Hòa</b> <span>(TBB)</span> </a></li>
+        </ul>
+    </div>
+    <div class="domestic-col">
+        <ul>
+            <li class="title">Miền Nam </li>
+            <li><a airportcode="SGN"><b>Hồ Chí Minh </b><span>(SGN)</span> </a></li>
+            <li><a airportcode="CXR"><b>Nha Trang</b> <span>(CXR)</span> </a></li>
+            <li><a airportcode="DLI"><b>Đà Lạt</b> <span>(DLI)</span> </a></li>
+            <li><a airportcode="PQC"><b>Phú Quốc</b> <span>(PQC)</span> </a></li>
+            <li><a airportcode="UIH"><b>Qui Nhơn</b> <span>(UIH)</span> </a></li>
+            <li><a airportcode="VCA"><b>Cần Thơ</b> <span>(VCA)</span> </a></li>
+            <li><a airportcode="VCS"><b>Côn Đảo</b> <span>(VCS)</span> </a></li>
+            <li><a airportcode="BMV"><b>Ban Mê Thuột</b> <span>(BMV)</span> </a></li>
+            <li><a airportcode="VKG"><b>Rạch Giá</b> <span>(VKG)</span> </a></li>
+            <li><a airportcode="CAH"><b>Cà Mau</b> <span>(CAH)</span> </a></li>
+        </ul>
+    </div>
+    @*<div class="internation-city">
             <h3 style="font-weight: bold; font-size: 13px;">
                 Quốc tế
             </h3>
@@ -207,6 +201,6 @@
             <p>
                <input id="btncitySelect" class="default" value="Chọn" />
             </p>
-        </div>
-   
+        </div>*@
+
 </div>

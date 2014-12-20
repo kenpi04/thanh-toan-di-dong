@@ -75,7 +75,7 @@ width: 173px;}
 .col{float:left;width:230px;padding-left:10px}
 .col label{font-weight:bold}
 .textbox{padding:8px 2px;width:80%;border-radius:5px;border:solid 1px #ddd}
-.search-text{color:#189b96;font-size:16px;font-weight:bold}
+.search-text{color:#189b96;font-size:16px;font-weight:bold;padding-left:40px;}
 .box-search  label{font-weight:bold}
 .box-search .box-content{padding-left: 39px;
 padding-top: 26px;}
@@ -281,7 +281,9 @@ font-size: 19px;}
 .listCity ul li a:hover b{font-weight: bold;}
 .listCity ul li a b{float: left;font-weight: normal;}
 .listCity ul li a span{float: right;font-weight: bold;font-size: 10px;color: #999;display: none;}
-.domestic-col{float: left;padding-right: 15px;font-size: 12px;}
+.domestic-col{float: left;padding-right: 15px;font-size: 12px;min-width:15px;}
+.domestic-col .title{padding:0;padding-left:8px;}
+.domestic-col a:hover{cursor:pointer;text-decoration:underline;}
 .internation-city{float: left;width: 260px;}
 .internation-city h3{font-size: 13px;padding: 5px 0;margin: 0;color: #ff7b0f;text-transform: uppercase;}
 .internation-city p{font-size: 11px;color: #888;}
@@ -433,3 +435,4 @@ article.successfull .info-successfull{border:none;margin:0;}
 .guide h4{font-size:15px;font-weight:500;}
 .guide a h4:hover{text-decoration:underline;}
 .guide .hotline{color:red;}
+.search-roundtrip{float:right;margin-right:48px;}
