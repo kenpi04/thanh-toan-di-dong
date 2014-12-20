@@ -1,5 +1,7 @@
 ﻿@model BookingModel
-
+@{
+    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("vi-VN");
+}
 @using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "POST", OnSuccess = "postSuccess", Url = Url.Action("InsertBooking"), OnBegin = "postBegin", OnFailure = "postFail" }))
 {
     @Html.Partial("_FlightBaggageCondition", Model)
@@ -18,33 +20,46 @@
                 <div class="div-table-row">
                     <div class="div-table-cell">                        
                         @{
-                string personTypeName = "Người lớn";
-                if (i.PassserType == 2)
-                {
-                    personTypeName = "Trẻ em";
-                }
-                if (i.PassserType == 3)
-                { personTypeName = "Trẻ sơ sinh"; }
+                            string personTypeName = "Người lớn";
+                            if (i.PassserType == 2)
+                            {
+                                personTypeName = "Trẻ em";
+                            }
+                            if (i.PassserType == 3)
+                            { personTypeName = "Trẻ sơ sinh"; }
                         }
                         @personTypeName
                     </div>
                     <div class="div-table-cell">
                         <select class="fullwitdth" name="BookingPassers[@count].PassserType">
-                            @foreach (var t in Model.PassengerTypes)
+                            @if (i.PassserType == 1)
                             {
-                                if (i.PassserType > 4 && int.Parse(t.Value) < 4)
-                                {
-                                    continue;
-                                }
+                                foreach (var t in Model.PassengerTypes.Where(x=> Convert.ToInt32(x.Value)<5).ToList())
+                                {                                
                                 <option value="@t.Value">@t.Text</option>
+                                }
+                            }
+                            else if (i.PassserType == 2)
+                            {
+                                foreach (var t in Model.PassengerTypes.Where(x => Convert.ToInt32(x.Value) >4 && Convert.ToInt32(x.Value) < 7).ToList())
+                                {
+                                    <option value="@t.Value">@t.Text</option>
+                                }
+                            }
+                            else if (i.PassserType == 3)
+                            {
+                                foreach (var t in Model.PassengerTypes.Where(x => Convert.ToInt32(x.Value) > 6).ToList())
+                                {
+                                    <option value="@t.Value">@t.Text</option>
+                                }
                             }
                         </select>
                     </div>
                     <div class="div-table-cell">@Html.TextBoxFor(x => x.BookingPassers[count].FirstName)</div>
-                    @if (i.PassserType > 4)
+                    @if (i.PassserType > 1)
                     {
                         <div class="div-table-cell birthday">
-                            @Html.DatePickerDropDowns("day", "month", "year")
+                            @Html.DatePickerDropDowns("day", "month", "year", localizeLabels:true)
                             @Html.HiddenFor(x => x.BookingPassers[count].BirthDay)
                         </div>
                     }
@@ -97,7 +112,7 @@
                     </div>
                     <div class="div-table-cell">
                         <div>
-                            <span>Thành phố</span>
+                            <span>Thành phố</span><span class="required">*</span>
                             @Html.TextBoxFor(x => x.ContactCityName)
                         </div>
                     </div>
@@ -105,13 +120,13 @@
                 <div class="div-table-row">
                     <div>
                         <div class="div-table-cell">
-                            <span>Email</span><span class="info-small">(Để gửi thông tin vé, hành trình, thanh toán)</span>
+                            <span>Email</span><span class="required">*</span><span class="info-small">(Để gửi thông tin vé, hành trình, thanh toán)</span>
                             @Html.TextBoxFor(x => x.ContactEmail)
                         </div>
                     </div>
                     <div class="div-table-cell">
                         <div>
-                            <span>Địa chỉ</span>@Html.TextBoxFor(x => x.ContactAddress)
+                            <span>Địa chỉ</span><span class="required">*</span>@Html.TextBoxFor(x => x.ContactAddress)
                         </div>
                     </div>
                 </div>
@@ -119,8 +134,8 @@
                     <div class="div-table-cell">
                         <div class="div-table">
                             <div class="div-table-row birthday">
-                                <span>Ngày sinh</span><br />
-                                @Html.DatePickerDropDowns("contactday", "contactmonth", "contactyear")
+                                <span>Ngày sinh</span><span class="required">*</span><br />
+                                @Html.DatePickerDropDowns("dayContact", "monthContact", "yearContact")
                                 @Html.HiddenFor(x => x.ContactBirthDate)
                             </div>
                         </div>
@@ -164,7 +179,7 @@
         </div>
     </article>
     <article>
-        <p class="policy"><input type="checkbox" id="checkedPolicy" name="checkedPolicy"><label>Tôi đồng ý với các điều kiện và điều khoản của ClickBay.com.vn (được quy định <a href="/" target="_blank">tại đây</a>)</label></p>
+        <p class="policy"><input type="checkbox" id="checkedPolicy" name="checkedPolicy"><label>Tôi đồng ý với các điều kiện và điều khoản của ClickBay.com.vn (được quy định <a href="@Url.RouteUrl("Topic", new { SystemName = "PrivacyInfo" })" target="_blank">tại đây</a>)</label></p>
         <p><input type="submit" class="btn-search" id="btnBooking" name="btnBooking" value="Đặt Vé và Tiếp Tục"></p>
     </article>
 }
@@ -181,7 +196,11 @@
             alert("Bạn chưa đồng ý với điều khoản của ClickBay.com.vn");
             return false;
         }
-        getBirthDate();
+        if (getBirthDate()==false)
+        {
+            alert("Lỗi ngày tháng");
+            return false;
+        }
         displayAjaxLoading(true);
     }
     function postFail() {
@@ -189,18 +208,36 @@
     }
     function getBirthDate() {
         $('.birthday').each(function () {
-            var moth = $(this).find('select[name^=month]').val(),
-              date = $(this).find('select[name^=day]').val(),
-           y = $(this).find('select[name^=year]').val();
-            var a = getDate(date, moth, y);
-            if (!a)
-                $(this).find("input").val(a);
+            if($(this).find("input").val() == "")
+                return false;
+            return true;
+           // var moth = $(this).find('select[name^=month]').val(),
+           //   date = $(this).find('select[name^=day]').val(),
+           //y = $(this).find('select[name^=year]').val();
+           // var a = getDate(date, moth, y);            
+           // if (a != null)
+           // { $(this).find("input").val(a); }
+           // else { return false;}
         })
     }
+
+    $("select[name^=day],select[name^=month],select[name^=year]").change(function () {
+        var parent = $(this).parent();
+         var m = parent.find('select[name^=month]').val(),
+             d = parent.find('select[name^=day]').val(),
+             y = parent.find('select[name^=year]').val();
+         
+        var a = getDate(d,m,y);
+        if (a != null) {
+            parent.find("input").val(a);}
+        else{parent.find("input").val("");}
+        
+    })        
+
     function getDate(date, moth, year) {
         if (date == '0' || moth == '0' || year == '0')
             return null;
-        return date + '/' + moth + '/' + year;
+        return DateFull(date) + '/' + DateFull(moth) + '/' + year;
     }
-
+        
 </script>

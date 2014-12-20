@@ -3,15 +3,9 @@
     Layout = "~/Views/Shared/_ColumnTwo.cshtml";
     ViewBag.Title = "Đặt vé";
 }
-
 @section top
 {
-        @Html.Partial("_BreadCrumb", new Dictionary<string, string> { 
-            {"Tìm kiếm",""},
-             {"Chọn chuyến bay","acitve"},
-              {"Hoàn thành",""},              
-
-        })
+        @Html.Partial("_BreadCrumb", new Dictionary<string, string> { { "Tìm kiếm", "" }, { "Chọn chuyến bay", "" }, { "Khách hàng", "active" }, { "Hoàn thành", "" }, })
 }
 
 @Html.Partial("_FlightDetail",Model)
@@ -21,7 +15,6 @@
 @section right
 {
 @Html.Partial("_BookingPrice", Model)
-    @*@Html.Action("BookingInfoPriceDetail")*@
 }
 
 
