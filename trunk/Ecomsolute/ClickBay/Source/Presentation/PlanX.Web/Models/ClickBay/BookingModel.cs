@@ -42,6 +42,8 @@ namespace PlanX.Web.Models.ClickBay
 
         public string CustomerNote { get; set; }
 
+        public string TicketId { get; set; }
+
         public decimal DiscountAmount { get; set; }
 
         public string TicketInfoBaggages { get; set; }
@@ -50,7 +52,6 @@ namespace PlanX.Web.Models.ClickBay
         public TicketModel TicketInfoReturn { get; set; }
 
         public List<BookingPasserModel> BookingPassers { get; set; }
-        
 
         public List<SelectListItem> PassengerTypes { get; set; }
 
@@ -60,6 +61,8 @@ namespace PlanX.Web.Models.ClickBay
         public List<BookingInfoConditionModel> BookingInfoConditions { get; set; }
 
         public List<TotalPriceForPassengerType> TotalPriceForPassengerTypes { get; set; }
+
+        public List<TicketModel.TotalPriceShow> TotalPriceShows { get; set; }
 
         #region Nestest class
     
@@ -77,12 +80,5 @@ namespace PlanX.Web.Models.ClickBay
            public decimal Price { get; set; }
        }
         #endregion
-       
-      
-        
-       
-       
     }
-
-    
 }
