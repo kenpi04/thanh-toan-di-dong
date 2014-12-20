@@ -33,6 +33,13 @@ function BackToPage()
     return false;
 }
 
+function DateFull(day) {
+    if (day == '00') return '0';
+    if (day.length == 1)
+        return '0' + day;
+    return day;
+}
+
 function FormatString(yourNumber) {
     //Seperates the components of the number
     var n = yourNumber.toString().split(".");
