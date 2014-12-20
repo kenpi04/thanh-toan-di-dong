@@ -242,6 +242,8 @@ namespace PlanX.Web.Controllers
         }
         private List<TicketModel.TotalPriceShow> GetTotalPriceShow(TicketModel ticket)
         {
+            if (ticket == null)
+                return null;
             if (ticket.BookingFlightPriceModels != null && ticket.BookingFlightPriceModels.Count > 0)
             {
                 var TotalPriceShows = new List<TicketModel.TotalPriceShow>();
@@ -805,7 +807,7 @@ namespace PlanX.Web.Controllers
             model.TicketInfo = PrepareTicketModel(booking.BookingInfoFlight);
             listPrice.AddRange(GetTotalPriceShow(model.TicketInfo));
             
-            if (booking.BookingInfoFlightReturnId.HasValue || booking.BookingInfoFlightReturnId != 0)
+            if (booking.BookingInfoFlightReturnId.HasValue && booking.BookingInfoFlightReturnId.HasValue && booking.BookingInfoFlightReturnId.Value != 0)
             {
                 model.TicketInfoReturn = PrepareTicketModel(booking.BookingInfoFlightReturn);
                 listPrice.AddRange(GetTotalPriceShow(model.TicketInfoReturn));
