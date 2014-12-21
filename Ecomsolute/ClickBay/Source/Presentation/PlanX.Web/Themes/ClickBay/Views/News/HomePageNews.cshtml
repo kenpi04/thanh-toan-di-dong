@@ -4,15 +4,15 @@
 {
     <div class="wrapper-body">
         <div class="wrapper-content">
-            <section class="TicketConcession boder-dashed news-home">
-                <div class="nv-title">Tin khuyến mãi</div>
+            <section class="box-line">
+                <div class="nv-title">Tin khuyến mãi</div><div class="line"><p class="boder-dashed line"></p></div>
             </section>            
             <section class="TicketConcession news-home">
                 @foreach (var item in Model.NewsItems)
                 {
                     <aside>
                         <div class="box-inside">
-                            <div class="news-image" id="@item.Id"><img src="@item.Picture.ImageUrl" title="@item.Title" alt="@item.Title" onload="imageResize(@item.Id)" /></div>
+                            <div class="news-image" id="@item.Id"><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })"><img src="@item.Picture.ImageUrl" title="@item.Title" alt="@item.Title" onload="imageResize(@item.Id)" /></a></div>
                             <div class="news-content-preview">
                                 <div><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
                                 <div class="info-small">
