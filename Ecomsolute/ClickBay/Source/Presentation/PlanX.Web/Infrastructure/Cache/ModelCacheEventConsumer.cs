@@ -446,6 +446,7 @@ namespace PlanX.Web.Infrastructure.Cache
         /// </remarks>
         public const string HOMEPAGE_NEWSMODEL_KEY = "PlanX.pres.news.homepage-{0}-{1}";
         public const string NEWNEWS_NEWSMODEL_KEY = "PlanX.pres.news.new-{0}-{1}";
+        public const string RELATEDNEWS_NEWSMODEL_KEY = "PlanX.pres.news.related-{0}-{1}";
         public const string NEWS_PATTERN_KEY = "PlanX.pres.news.";
 
         
