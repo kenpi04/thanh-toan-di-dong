@@ -49,11 +49,11 @@
 }
 @helper TabFlightToInfo()
 {
-    @Html.Partial("_BookingDetailsFlightTo", Model)
+    @Html.Partial("_BookingDetailsFlightTo", Model.BookingInfoFlightModel)
 }
 @helper TabFlightReturnInfo()
 {
-    @Html.Partial("_BookingDetailsFlightReturn", Model)
+    @Html.Partial("_BookingDetailsFlightTo", Model.BookingInfoFlightReturnModel)
 }
 @helper TabConditionsInfo()
 {

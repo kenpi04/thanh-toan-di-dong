@@ -167,7 +167,7 @@
                                 <td>
                                     @if (pass.PassengerType != 0)
                                     {
-                                        @("Ngày sinh: "+ pass.BirthDay.Value.ToString("dd-MM-yyyy"))
+                                        @("Ngày sinh: "+ (pass.BirthDay.HasValue? pass.BirthDay.Value.ToString("dd-MM-yyyy"):""))
                                     }
                                 </td>
                             </tr>
