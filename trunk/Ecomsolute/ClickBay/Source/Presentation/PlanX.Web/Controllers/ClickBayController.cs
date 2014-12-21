@@ -152,9 +152,9 @@ namespace PlanX.Web.Controllers
             model.SearchDate = datePart;
 
             DateTime? returnDate = null;
-            if (model.Return)
+            if (model.Return&&!string.IsNullOrWhiteSpace(model.ReturnDate))
             {
-                returnDate = DateTime.ParseExact(model.DepartDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                returnDate = DateTime.ParseExact(model.ReturnDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             }
 
             if (datePart < DateTime.Now.Date)
