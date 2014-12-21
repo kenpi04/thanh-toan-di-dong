@@ -34,60 +34,9 @@
         </section>
         <section class="section-right-search section">
             <article>
-                <aside class="search-box-small">
-                    <div class="search-head">
-                        <div class="box-search">
-                            <div class="box-head">
-                                <img src="~/Themes/ClickBay/Content/images/mouse.png" />
-                                <span class="search-text">TÌM VÉ MÁY BAY</span>
-                                <p>
-                                    <span>
-                                        <input type="radio" name="type" checked="checked" /><label>Khứ hồi</label>
-                                        <input type="radio" name="type" /><label>Một chiều</label>
-                                    </span>
-                                </p>
-                            </div>
-                            <div class="box-content">
-                                <div class="col">
-                                    <label>Điểm đi</label>
-                                    <input type="text" class="textbox" />
-                                </div>
-                                <div class="col">
-                                    <label>Điểm đến</label>
-                                    <input type="text" class="textbox" />
-                                </div>
-                                <div class="col">
-                                    <label>Ngày đi</label>
-                                    <input type="datetime" class="textbox date" />
-                                </div>
-                                <div class="col">
-                                    <label>Ngày về</label>
-                                    <input type="datetime" class="textbox date" />
-                                </div>
-                                <div class="clear"></div>
-                                <div class="box-footer center">
-                                    <span>
-                                        <label>Người lớn</label>
-                                        <input type="text" class="textbox center" />
-                                    </span>
-                                    <span>
-                                        <label>Trẻ em</label><br />
-                                        <input type="text" class="textbox center" />
-                                    </span>
-                                    <span>
-                                        <label>Trẻ sơ sinh</label><br />
-                                        <input type="text" class="textbox center" />
-                                    </span>
-                                </div>
-                                <div class="center">
-                                    <input type="submit" class="btn-search" value="Tìm chuyến bay" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
+                @Html.Action("SearchBox", "ClickBay", new { isSmall = true })
             </article>
-            @Html.Action("HomePageNews", "News")
+            <div class="load-ajax" data-url="@Url.Action("NewsRelated", "News", new { newsItemId = Model.Id, pageSize = 5, categoryId = 0 })"></div>            
         </section>
     </div>
 </div>

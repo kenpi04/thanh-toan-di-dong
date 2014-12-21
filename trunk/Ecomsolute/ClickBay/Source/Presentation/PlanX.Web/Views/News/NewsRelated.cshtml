@@ -1,0 +1,21 @@
+﻿@model HomePageNewsItemsModel
+@using PlanX.Web.Models.News;
+@if (Model.NewsItems.Count > 0)
+{
+    <div class="title"><span class="title-left">Tin mới</span></div>
+    <article class="news-box-small">
+        @foreach (var item in Model.NewsItems)
+        {
+            <aside>
+                <div class="news-content-preview">
+                    <div class="news-title"><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
+                    <div class="info-small">
+                        <p><span class="time-small">@item.CreatedOn.ToString("dd/MM/yyyy")</span><a class="info-small" href="@Url.RouteUrl("CateNews", new { SeName= item.CategorySeName })"><span>@item.Category</span></a><span>@item.Comments.Count Comment</span></p>
+                    </div>
+                    <div class="content-preview"><p>@Html.Raw(item.Short)</p></div>
+                    <div><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" class="default">Chi tiết</a></div>
+                </div>
+            </aside>
+        }
+    </article>
+}
