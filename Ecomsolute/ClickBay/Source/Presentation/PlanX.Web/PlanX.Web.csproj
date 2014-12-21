@@ -1350,6 +1350,7 @@
     <Content Include="Themes\ClickBay\Views\ClickBay\_BookingPrice.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\_FlightBaggageCondition.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\Map.cshtml" />
+    <Content Include="Themes\ClickBay\Views\Home\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\Thumbs\" />
