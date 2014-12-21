@@ -427,6 +427,7 @@ ul.simple-pagination {list-style: none;}
     .input-validation-error{border:solid 1px #d41212}
 .ticket-xem-them {float:right;padding:10px;text-decoration:underline;}
 .TicketConcession{margin:20px 0;}
+.TicketConcession .readmore{display:inline-block;width:100%;}
 /*login*/
 .page-body {margin-top:20px;}
 .form-fields{padding:20px;border:1px solid #ddd;}
@@ -494,3 +495,11 @@ width: 164px;
 .payment .box-h .box-t{width:256px;}
 .box-filter .box-content p.airline img{float:right;max-width:44px;}
 .font-small{font-weight:normal!important;font-size:12px;}
+.news-home{display:inline-block;width:100%;margin:0;}
+.news-home .nv-title{width:131px;}
+.news-home aside{float:left;width:20%;padding:4px;box-sizing:border-box;margin-bottom:10px;height:255px;}
+.news-home aside .box-inside{box-shadow:1px 3px 5px 0 #ddd;padding:6px;box-sizing:border-box;overflow:hidden;height:100%;}
+.news-home .news-image{width:100%;float:none;box-sizing:border-box;margin:0;}
+.news-home .news-content-preview .news-title{font-size:14px;font-weight:500;}
+.news-home .news-content-preview .news-title:hover{text-decoration:underline;color:#A2C3C1}
+.news-home .news-image img{margin:0!important;}
