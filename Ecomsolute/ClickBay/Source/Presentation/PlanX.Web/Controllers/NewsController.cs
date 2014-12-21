@@ -94,7 +94,7 @@ namespace PlanX.Web.Controllers
         #region Utilities
 
         [NonAction]
-        protected void PrepareNewsItemModel(NewsItemModel model, NewsItem newsItem, bool prepareComments)
+        protected void PrepareNewsItemModel(NewsItemModel model, NewsItem newsItem, bool prepareComments, bool preparePicture = false)
         {
             if (newsItem == null)
                 throw new ArgumentNullException("newsItem");
@@ -152,13 +152,32 @@ namespace PlanX.Web.Controllers
                     model.Comments.Add(commentModel);
                 }
             }
+
+            if(preparePicture)
+            {
+                int pictureSize = _mediaSettings.NewsThumbPictureSize;
+                var newsItemPictureCacheKey = string.Format(ModelCacheEventConsumer.NEWSITEM_PICTURE_MODEL_KEY, newsItem.Id, pictureSize, true, _workContext.WorkingLanguage.Id, false, 0);
+                model.Picture = _cacheManager.Get(newsItemPictureCacheKey, () =>
+                {
+                    var picture = _pictureService.GetPictureById(newsItem.PictureId);
+                    var pictureModel = new PictureModel()
+                    {
+                        FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
+                        ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize),
+                        Title = newsItem.Title,
+                        AlternateText = newsItem.Title
+                    };
+                    return pictureModel;
+                });
+            }
+
         }
         
         #endregion
 
         #region Methods
 
-        public ActionResult HomePageNews()
+        public ActionResult HomePageNews(string viewName)
         {
             if (!_newsSettings.Enabled || !_newsSettings.ShowNewsOnMainPage)
                 return Content("");
@@ -172,12 +191,11 @@ namespace PlanX.Web.Controllers
                     WorkingLanguageId = _workContext.WorkingLanguage.Id,
                     NewsItems = newsItems
                         .Select(x =>
-                                    {
-                                        var newsModel = new NewsItemModel();
-                                        PrepareNewsItemModel(newsModel, x, false);
-                                        return newsModel;
-                                    })
-                        .ToList()
+                        {
+                            var newsModel = new NewsItemModel();
+                            PrepareNewsItemModel(newsModel, x, false,true);
+                            return newsModel;
+                        }).ToList()
                 };
             });
 
@@ -187,6 +205,10 @@ namespace PlanX.Web.Controllers
             var model = (HomePageNewsItemsModel)cachedModel.Clone();
             foreach (var newsItemModel in model.NewsItems)
                 newsItemModel.Comments.Clear();
+
+            if (!string.IsNullOrEmpty(viewName))
+                return PartialView(viewName);
+
             return PartialView(model);
         }
 
