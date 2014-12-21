@@ -111,4 +111,12 @@
         </div>*@
 
 </div>
+<script>
+    $("#fromPlace,#toPlace").click(function () {
+        openPopup($(this).attr("id"));
+        var pos = $("#fromPlace").position();
+        $("#dialog-form").css("left", pos.left + "px");
+        CURRENT_TXT = $(this).attr("id");
+    })
+</script>
 
