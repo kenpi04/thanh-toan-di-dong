@@ -48,20 +48,17 @@ $("#To").datepicker({
         $("#From").datepicker("option", "maxDate", selectedDate);
     }
 });
-$("#fromPlace,#toPlace").click(function () {    
-    openPopup($(this).attr("id"));
-    CURRENT_TXT = $(this).attr("id");
-})
+
 function openPopup(name) {
     $("#title-text-id").contents().remove();
     if (name != 'toPlace')
     {        
         $("#title-text-id").append("Chọn điểm đi");
-        $("#dialog-form").css("left", "801px");
+      
     }
     else {
         $("#title-text-id").append("Chọn điểm đến");
-        $("#dialog-form").css("left", "724px");
+      
     }
     $("#dialog-form").show('slow');
 
