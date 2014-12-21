@@ -1,0 +1,30 @@
+﻿@model HomePageNewsItemsModel
+@using PlanX.Web.Models.News;
+@if (Model.NewsItems.Count > 0)
+{
+    <div class="wrapper-body">
+        <div class="wrapper-content">
+            <section class="TicketConcession boder-dashed news-home">
+                <div class="nv-title">Tin khuyến mãi</div>
+            </section>            
+            <section class="TicketConcession news-home">
+                @foreach (var item in Model.NewsItems)
+                {
+                    <aside>
+                        <div class="box-inside">
+                            <div class="news-image" id="@item.Id"><img src="@item.Picture.ImageUrl" title="@item.Title" alt="@item.Title" onload="imageResize(@item.Id)" /></div>
+                            <div class="news-content-preview">
+                                <div><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
+                                <div class="info-small">
+                                    @*<p><span class="time-small">@item.CreatedOn.ToString("dd/MM/yyyy")</span><span>@item.CurrentCategoryName</span>@*<span>25 Comment</span></p>*@
+                                </div>
+                                @*<div class="content-preview"><p>@Html.Raw(item.Short)</p></div>*@
+                                @*<div><a class="default" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">Chi tiết</a></div>*@
+                            </div>
+                        </div>
+                    </aside>
+                }
+            </section>
+        </div>
+    </div>
+}
