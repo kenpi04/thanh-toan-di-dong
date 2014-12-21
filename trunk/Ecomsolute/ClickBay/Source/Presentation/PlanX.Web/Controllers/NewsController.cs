@@ -312,6 +312,49 @@ namespace PlanX.Web.Controllers
             return View(model);
         }
 
+        public ActionResult NewsRelated(int newsItemId, string viewName, int? pageSize, int categoryId=0)
+        {
+            if (!_newsSettings.Enabled || newsItemId==0)
+                return Content("");
+
+            if (categoryId == 0)
+            {
+                var newsItem = _newsService.GetNewsById(newsItemId);
+                var category = newsItem.NewsCategoriesMaps.FirstOrDefault();
+                if (category != null)
+                    categoryId = category.CategoryNews.Id;
+            }
+
+            var cacheKey = string.Format(ModelCacheEventConsumer.RELATEDNEWS_NEWSMODEL_KEY, newsItemId, categoryId);
+            var cachedModel = _cacheManager.Get(cacheKey, () =>
+            {
+                var newsItems = _newsService.GetAllNews(0, 0, 0, (pageSize.HasValue ? pageSize.Value : _newsSettings.NewsArchivePageSize), false, categoryId);
+                return new HomePageNewsItemsModel()
+                {
+                    WorkingLanguageId = _workContext.WorkingLanguage.Id,
+                    NewsItems = newsItems
+                        .Select(x =>
+                        {
+                            var newsModel = new NewsItemModel();
+                            PrepareNewsItemModel(newsModel, x, false, false);
+                            return newsModel;
+                        }).ToList()
+                };
+            });
+
+            //"Comments" property of "NewsItemModel" object depends on the current customer.
+            //Furthermore, we just don't need it for home page news. So let's reset it.
+            //But first we need to clone the cached model (the updated one should not be cached)
+            var model = cachedModel;
+            //foreach (var newsItemModel in model.NewsItems)
+            //    newsItemModel.Comments.Clear();
+
+            if (!string.IsNullOrEmpty(viewName))
+                return PartialView(viewName);
+
+            return PartialView(model);
+        }
+
         [HttpPost, ActionName("NewsItem")]
         [FormValueRequired("add-comment")]
         [CaptchaValidator]
