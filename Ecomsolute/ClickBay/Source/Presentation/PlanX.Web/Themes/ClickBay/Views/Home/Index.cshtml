@@ -5,7 +5,7 @@
 <div class="head">
     <div class="container">
         <div class="search-head">
-            <div class="box-search" style="float: right; margin-top: 20px; box-shadow: 0px 4px 10px #000;">
+            <div class="box-search" style="float: right; margin-top: 47px; box-shadow: 0px 4px 10px #000;">
              @Html.Action("SearchBox","ClickBay")
             </div>
         </div>
@@ -37,11 +37,9 @@
     <div class="col2">
         @*<div class="load-ajax" data-url="@Url.Action("BookingRecent", "ClickBay", new { numberBooking = 5 })"></div>*@
         <div class="box box-50">
-            <div class="box-h boder-dashed">
-                <div class="box-t">
-                    ĐẶT VÉ NHANH 24/24
-                </div>
-            </div>                
+            <section class="box-line">
+                <div class="nv-title">ĐẶT VÉ NHANH 24/24</div><div class="line"><p class="boder-dashed line"></p></div>
+            </section>              
             <div class="box-c home">
                 <div>
                     <p class="green-text">Quý khách có thể mua vé máy bay bằng nhiều hình thức sau:</p>
@@ -126,35 +124,34 @@
                             <b>3.</b>Gọi cho ClickBay.com.vn<strong style="color:#f00000;font-size:18px;"><span style="padding:0 8px;">0989 448 449</span>-<span style="padding:0 8px;">08 6268 5656</span></strong>
                         </li>
                         <li>
-                            <b>4.</b>Đến trực tiếp văn phòng ClickBay tại Sài Gòn ( <a onclick="showMap()"  style="cursor:pointer;color:#000;font-size:13px;text-decoration:underline;">xem bản đồ</a> )
+                            <b>4.</b>Đến trực tiếp văn phòng ClickBay tại Sài Gòn. ( <a onclick="showMap()"  style="cursor:pointer;color:#000;font-size:13px;text-decoration:underline;">xem bản đồ</a> )
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="box box-50 payment">
-            <div class="box-h boder-dashed">
-                <div class="box-t">
-                    CÁC PHƯƠNG THỨC THANH TOÁN
-                </div>
-            </div>
+            <section class="box-line">
+                <div class="nv-title">CÁC PHƯƠNG THỨC THANH TOÁN</div><div class="line"><p class="boder-dashed line"></p></div>
+            </section>
             <div class="box-c home">
                 <p class="green-text">Các hình thức thanh toán:</p>
                 <ul class="ht">
-                    <li>
-                        <b>1.</b>Tại văn phòng công ty:<br />
-                        <p>ĐC: 41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh.</p>
+                    <li class="tt-van-phong">
+                        <strong>Tại văn phòng công ty</strong>
+                        <p>Sau khi đặt hàng thành công, Quý khách vui lòng qua văn phòng Likebay để thanh toán và nhận vé.</p>
+                        <p>Đ/c: 41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh. ( <a class="showmap" onclick="showMap()">bản đồ</a> )</p>
                     </li>
-                    <li>
-                        <b>2.</b>Tại nhà:<br><p>ClickBay sẽ giao vé và thu tiền tận nhà giúp bạn.</p>
+                    <li class="tt-tai-nha">
+                        <strong>Tại nhà:</strong><p>Nhân viên ClickBay sẽ giao vé và thu tiền tại nhà theo địa chỉ của Quý khách cung cấp.</p>
                     </li>
-                    <li>
-                        <b>3.</b>Qua chuyển khoản ATM <br />
-                        @*<p>Số tài khoản:...</p>*@
+                    <li class="tt-chuyen-khoan">
+                        <strong>Qua chuyển khoản ATM</strong>
+                        <p>Quý khách có thể thanh toán cho chúng tôi bằng cách chuyển khoản trực tiếp tại ngân hàng, chuyển qua thẻ ATM, hoặc qua Internet banking.</p>
                     </li>
-                    <li>
+                    @*<li>
                         <b>4.</b>Thanh toán Online: Qua cổng thanh toán OnePay.
-                    </li>
+                    </li>*@
                 </ul>
             </div>
         </div>
