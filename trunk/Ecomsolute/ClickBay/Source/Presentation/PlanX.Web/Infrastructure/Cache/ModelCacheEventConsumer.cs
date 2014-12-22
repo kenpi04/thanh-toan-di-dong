@@ -272,6 +272,9 @@ namespace PlanX.Web.Infrastructure.Cache
         public const string PRODUCT_SPECS_MODEL_KEY = "PlanX.pres.product.specs-{0}-{1}";
         public const string PRODUCT_SPECS_PATTERN_KEY = "PlanX.pres.product.specs";
 
+        public const string BANNER_MODEL_KEY = "Nop.pres.banner.all-{0}-{1}-{2}-{3}";
+        public const string BANNER_PATTERN_KEY = "Nop.pres.banner.";
+
         /// <summary>
         /// Key for TopicModel caching
         /// </summary>
