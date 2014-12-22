@@ -87,13 +87,13 @@
                     @Html.Widget("admin_header_middle")
                     <div class="links">
                         @Html.ActionLink(T("Admin.Header.PublicStore").Text, "Index", "Home", new { area = "" }, null)
-                        @if (canManageMaintenance)
+                        @*@if (canManageMaintenance)
                         {
                             <span class="separator">|</span>
                             @Html.ActionLink(T("Admin.Header.ClearCache").Text, "ClearCache", "Common")
                             <span class="separator">|</span>
                             @Html.ActionLink(T("Admin.Header.RestartApplication").Text, "RestartApplication", "Common", null, new { id = "restart-application" })
-                        }
+                        }*@
                     </div>
                     <div class="login-info">
                         @if (currentCustomer != null && currentCustomer.IsRegistered())
