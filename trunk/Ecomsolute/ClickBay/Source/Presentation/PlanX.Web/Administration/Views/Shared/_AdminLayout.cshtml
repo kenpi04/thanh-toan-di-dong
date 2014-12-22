@@ -8,7 +8,7 @@
 @{
     var currentCustomer = this.WorkContext.CurrentCustomer;
     var usernamesEnabled = EngineContext.Current.Resolve<CustomerSettings>().UsernamesEnabled;
-    var currentVersion = NopVersion.CurrentVersion;
+    //var currentVersion = NopVersion.CurrentVersion;
 
     var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl &&
         !EngineContext.Current.Resolve<LocalizationSettings>().IgnoreRtlPropertyForAdminArea;
@@ -103,7 +103,7 @@
                         }
                     </div>
                     <div class="version">
-                        <span>nopCommerce @currentVersion</span>
+                        <span>Hỗ trợ kỹ thuật: </span><span class="member">Duy (0939.448.124) </span><span class="member"> Dũng (0902.482.664)</span>
                     </div>
                     @Html.Widget("admin_header_after")
                 </div>
