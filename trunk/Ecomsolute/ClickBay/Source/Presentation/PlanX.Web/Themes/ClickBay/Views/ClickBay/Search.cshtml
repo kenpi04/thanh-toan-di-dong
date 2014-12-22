@@ -111,41 +111,42 @@
            
         };
         $("#table-data").html("<img src='/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")
-        $.get("@Url.Action("TicketSearch")",data,function(d){
+        $.get("@Url.Action("TicketSearchGo")",data,function(d){
             $("#table-data").html(d);
             // displayAjaxLoading(false)
-             @if(Model.Return)
-            {<text>
-                 var data = {
-                     FromID:'@(Model.ToId != null ? Model.ToId : "")',
-                     ToId:'@(Model.FromId != null ? Model.FromId : "")',
-                     DepartDate: '@Model.ReturnDate',
-                     ReturnDate:'@Model.ReturnDate',
-                     Adult:@Model.Adult,
-                     Child:@Model.Child,
-                     Flant:@Model.Flant,
-                     Sort:$("input[name=radioSort]:checked").val(),
-                     Source:selectedSource,
-                     SessionId: $("#sessionid-return").val(),
-                     Return:true
-
-           
-                 };
-                $("#table-data-return").html("<img src='~/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")
-                $.get("@Url.Action("TicketSearch")",data,function(d){
-                    $("#table-data-return").html(d);
-                    // displayAjaxLoading(false)
-                }).error(function(){
-                    alert("Lỗi kết nối! vui lòng thử lại");
-                    //  displayAjaxLoading(false);
-                    $("#table-data").html("")
-                })</text>
-            }
+            
         }).error(function(){
             alert("Lỗi kết nối! vui lòng thử lại");
            // displayAjaxLoading(false);
             $("#table-data").html("")
         })
+         @if(Model.Return)
+         {<text>
+              var data = {
+                  FromID:'@(Model.ToId != null ? Model.ToId : "")',
+                  ToId:'@(Model.FromId != null ? Model.FromId : "")',
+                  DepartDate: '@Model.ReturnDate',
+                  ReturnDate:'@Model.ReturnDate',
+                  Adult:@Model.Adult,
+                  Child:@Model.Child,
+                  Flant:@Model.Flant,
+                  Sort:$("input[name=radioSort]:checked").val(),
+                  Source:selectedSource,
+                  SessionId: $("#sessionid-return").val(),
+                  Return:true
+
+           
+              };
+             $("#table-data-return").html("<img src='~/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")
+             $.get("@Url.Action("TicketSearchReturn")",data,function(d){
+                 $("#table-data-return").html(d);
+                 // displayAjaxLoading(false)
+             }).error(function(){
+                 alert("Lỗi kết nối! vui lòng thử lại");
+                 //  displayAjaxLoading(false);
+                 $("#table-data").html("")
+             })</text>
+         }
        
     }
     function showDetail(id,isReturn)
