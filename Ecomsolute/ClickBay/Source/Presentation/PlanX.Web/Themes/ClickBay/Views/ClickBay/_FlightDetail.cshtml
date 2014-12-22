@@ -28,13 +28,13 @@
     </div>
     <div class="info-flight div-table">
         <div class="div-table-row place-flight">
-            <div class="div-table-cell"><img></div>
+            <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/"+Model.TicketInfo.BrandCode+".gif")" /></div>
             <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfo.FromPlace, @Model.TicketInfo.FromCountry</span></div>
             <div class="div-table-cell"></div>
             <div class="div-table-cell">Thời gian bay: <span>@Model.TicketInfo.FlightDurationString</span></div>
         </div>
         <div class="div-table-row">
-            <div class="div-table-cell"><img></div>
+            <div class="div-table-cell"></div>
             <div class="div-table-cell">Từ <span>@Model.TicketInfo.FromPlace (@Model.TicketInfo.FromCode)</span></div>
             <div class="div-table-cell">tới: <span>@Model.TicketInfo.ToPlace (@Model.TicketInfo.ToCode)</span></div>
             <div class="div-table-cell">@Model.TicketInfo.AirlineName <span>(@Model.TicketInfo.FlightNumber)</span></div>
@@ -48,13 +48,13 @@
         @if(Model.TicketInfoReturn!=null)
         {
            <div class="div-table-row place-flight">
-            <div class="div-table-cell"><img></div>
+            <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/" + Model.TicketInfo.BrandCode + ".gif")" /></div>
             <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfoReturn.FromPlace, @Model.TicketInfoReturn.FromCountry</span></div>
             <div class="div-table-cell"></div>
             <div class="div-table-cell">Thời gian bay: <span>@Model.TicketInfoReturn.FlightDurationString</span></div>
         </div>
         <div class="div-table-row">
-            <div class="div-table-cell"><img></div>
+            <div class="div-table-cell"></div>
             <div class="div-table-cell">Từ <span>@Model.TicketInfoReturn.FromPlace (@Model.TicketInfoReturn.FromCode)</span></div>
             <div class="div-table-cell">tới: <span>@Model.TicketInfoReturn.ToPlace (@Model.TicketInfoReturn.ToCode)</span></div>
             <div class="div-table-cell">@Model.TicketInfoReturn.AirlineName <span>(@Model.TicketInfoReturn.FlightNumber)</span></div>
