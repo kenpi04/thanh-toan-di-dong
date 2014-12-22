@@ -70,8 +70,8 @@ label{padding-left:3px;}
 .master-wrapper-page{}
 .master-wrapper-content{}
 /* MASTER HEADER */
-.header{height:70px;width:100%;background:url(images/admin-header-bg.gif) repeat-x;position:relative;}
-.header .logo{background:url(images/logo.gif);display:block;width:340px;height:70px;text-decoration:none;}
+.header{height:70px;width:100%;background:#181717;position:relative;}
+.header .logo{background:url(images/logo.png);display:block;width:340px;height:70px;text-decoration:none;}
 .header .languageselector{position:absolute;right:400px;top:7px;text-align:right;}
 .header .links{position:absolute;right:10px;top:7px;text-align:right;}
 a img{border:0;}
