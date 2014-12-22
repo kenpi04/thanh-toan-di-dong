@@ -272,7 +272,7 @@ namespace PlanX.Web.Infrastructure
 
             //contact us
             routes.MapLocalizedRoute("ContactUs",
-                            "contactus",
+                            "lien-he",
                             new { controller = "Common", action = "ContactUs" },
                             new[] { "PlanX.Web.Controllers" });
 
