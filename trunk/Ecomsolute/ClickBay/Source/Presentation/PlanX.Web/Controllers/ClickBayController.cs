@@ -24,6 +24,8 @@ namespace PlanX.Web.Controllers
         private const string SESSION_SEARCH_NAME = "{0}-{1}-{2}-{3}-{4}-{5}-{6}";
         private const string VIETNAM_CITY_CACHE = "VietNam_City_Cache";
         private const string COUNTRIES_CACHE = "COUNTRIES_CACHE";
+        private const string CODE_FEE_SYSTEM = "CLY";
+        private const string CODE_DIS_SYSTEM = "DIS";
         #endregion
 
         #region Fields
@@ -32,14 +34,15 @@ namespace PlanX.Web.Controllers
         private readonly ICacheManager _cacheManager;
         private readonly ILocalizationService _localizationService;
         private readonly INewsLetterSubscriptionService _NewsLetterSubscriptionService;
-
+        private readonly IWorkflowMessageService _workflowMessageService;
         #endregion
 
         #region Ctor
         public ClickBayController(IClickBayService clickBayService, IWorkContext workContext,
             ILocalizationService localizationService,
             ICacheManager cacheManager,
-            INewsLetterSubscriptionService NewsLetterSubscriptionService
+            INewsLetterSubscriptionService NewsLetterSubscriptionService,
+            IWorkflowMessageService workflowMessageService
             )
         {
             this._NewsLetterSubscriptionService = NewsLetterSubscriptionService;
@@ -47,6 +50,7 @@ namespace PlanX.Web.Controllers
             this._workContext = workContext;
             this._cacheManager = cacheManager;
             this._localizationService = localizationService;
+            this._workflowMessageService = workflowMessageService;
         }
         #endregion
 
@@ -144,12 +148,15 @@ namespace PlanX.Web.Controllers
             return View(model);
 
         }
+
+        
         public ActionResult TicketSearchGo(SearchModel model)
         {
             model = TicketSearch(model);
             return PartialView("_SearchTicketPartial", model);
         }
 
+        
         public ActionResult TicketSearchReturn(SearchModel model)
         {
             model = TicketSearch(model);
@@ -278,7 +285,7 @@ namespace PlanX.Web.Controllers
                     {
                         PassengerType = PassengerType.CHD.ToString(),
                         Price = adt.Where(a => a.Code == "NET").Sum(b => b.Price),
-                        Quantity = ticket.Adult,
+                        Quantity = ticket.Child,
                         TaxAndFee = adt.Where(a => a.Code != "NET" && a.Code != "DIS").Sum(b => b.Price),
                         DiscountAmount = adt.Where(a => a.Code == "DIS").Sum(b => b.Price),
                     });
@@ -290,7 +297,7 @@ namespace PlanX.Web.Controllers
                     {
                         PassengerType = PassengerType.INF.ToString(),
                         Price = adt.Where(a => a.Code == "NET").Sum(b => b.Price),
-                        Quantity = ticket.Adult,
+                        Quantity = ticket.Infant,
                         TaxAndFee = adt.Where(a => a.Code != "NET" && a.Code != "DIS").Sum(b => b.Price),
                         DiscountAmount = adt.Where(a => a.Code == "DIS").Sum(b => b.Price),
                     });
@@ -301,6 +308,53 @@ namespace PlanX.Web.Controllers
         }
         #endregion
 
+        [NonAction]
+        private List<TicketModel.BookingFlightPriceModel> GetBookingPricePlus(short adult, short child, short infant, decimal price, string codeFee, string description)
+        {
+            if((adult==0&&child==0&&infant==0)||price==0)
+                return null;
+
+            var list = new List<TicketModel.BookingFlightPriceModel>();
+            int i=0;
+            if (adult > 0) i++;
+            if (child>0) i++;
+            if (infant>0) i++;
+
+            short quantity = 0;
+            string passengerString="";
+
+            for (var j = 0; j < i;j++)
+            {
+                if(j==0)
+                {
+                    quantity = adult;
+                    passengerString = PassengerType.ADT.ToString();
+                }else if(j==1)
+                {
+                    quantity = child;
+                    passengerString = PassengerType.CHD.ToString();
+                }
+                else if(j==2)
+                {
+                    quantity = infant;
+                    passengerString = PassengerType.INF.ToString();
+                }
+
+                list.Add(new TicketModel.BookingFlightPriceModel()
+                {
+                    Code = codeFee,
+                    Description = description,
+                    Price = price,
+                    Quantity = quantity,
+                    Total = price * quantity,
+                    PassengerType = passengerString
+                });
+            }
+            return list;
+                
+        }
+
+        [NonAction]
         private TicketModel PrepareSelectedTicket(TicketModel selectedTicket)
         {
             if (selectedTicket == null)
@@ -309,57 +363,39 @@ namespace PlanX.Web.Controllers
             var ticket = selectedTicket;
 
             //phi cong them cua he thong - tinh theo moi luot di://chua chuyen sang setting
-            decimal PricePlus = 0;
-            if (decimal.TryParse(_localizationService.GetResource("booking.price.clickbay.amount"), out PricePlus))
+            decimal PricePlusFerPassenger = 0;
+            if (decimal.TryParse(_localizationService.GetResource("booking.price.clickbay.amount"), out PricePlusFerPassenger))
             {
-                if (PricePlus > 0)
+                if (PricePlusFerPassenger > 0)
                 {
-                    var fee = ticket.BookingFlightPriceModels.Where(x => x.Code == "CLICKBAY").FirstOrDefault();
+                    //remove all fee old
+                    var fee = ticket.BookingFlightPriceModels.Where(x => x.Code == CODE_FEE_SYSTEM).FirstOrDefault();
                     if (fee != null)
                     {
-                        fee.Price = PricePlus;
-                        fee.Total = PricePlus;
+                        ticket.BookingFlightPriceModels.RemoveAll(x=> x.Code==CODE_FEE_SYSTEM);
                     }
-                    else
-                    {
-                        ticket.BookingFlightPriceModels.Add(new TicketModel.BookingFlightPriceModel()
-                        {
-                            Code = "CLICKBAY",
-                            Description = _localizationService.GetResource("booking.price.clickbay.description"),
-                            Price = PricePlus,
-                            Quantity = 1,
-                            Total = PricePlus,
-                            PassengerType = PassengerType.ADT.ToString()
-                        });
-                    }
+                    //add new fee
+                    var feeNew = GetBookingPricePlus(ticket.Adult, ticket.Child, ticket.Infant, PricePlusFerPassenger, CODE_FEE_SYSTEM, _localizationService.GetResource("booking.price.clickbay.description"));
+                    ticket.BookingFlightPriceModels.AddRange(feeNew);
                 }
             }
             //giam gia cua he thong - cho moi hanh khach//chua chuyen sang setting
-            //decimal DiscountAmount = 0;
-            //if (decimal.TryParse(_localizationService.GetResource("booking.price.discount.amount"), out DiscountAmount))
-            //{
-            //    if (DiscountAmount > 0)
-            //    {
-            //        var discount = ticket.BookingFlightPriceModels.Where(x => x.Code == "DIS").FirstOrDefault();
-            //        if (discount != null)
-            //        {
-            //            discount.Price = DiscountAmount;
-            //            discount.Total = DiscountAmount;
-            //        }
-            //        else
-            //        {
-            //            ticket.BookingFlightPriceModels.Add(new TicketModel.BookingFlightPriceModel()
-            //            {
-            //                Code = "DIS",
-            //                Description = _localizationService.GetResource("booking.price.discount.description"),
-            //                Price = DiscountAmount,
-            //                Quantity = 1,
-            //                Total = DiscountAmount,
-            //                PassengerType = PassengerType.ADT.ToString()
-            //            });
-            //        }
-            //    }
-            //}
+            decimal discountAmount = 0;
+            if (decimal.TryParse(_localizationService.GetResource("booking.price.discount.amount"), out discountAmount))
+            {
+                if (discountAmount > 0)
+                {
+                    //remove all discount old
+                    var dis = ticket.BookingFlightPriceModels.Where(x => x.Code == CODE_DIS_SYSTEM).FirstOrDefault();
+                    if (dis != null)
+                    {
+                        ticket.BookingFlightPriceModels.RemoveAll(x => x.Code == CODE_DIS_SYSTEM);
+                    }
+                    //add new discount
+                    var discountNews = GetBookingPricePlus(ticket.Adult, ticket.Child, ticket.Infant, discountAmount, CODE_DIS_SYSTEM, _localizationService.GetResource("booking.price.discount.description"));
+                    ticket.BookingFlightPriceModels.AddRange(discountNews);
+                }
+            }
 
             //dieu kien ve
             ticket.AirlinesConditions = _clickBayService.GetListAirlinesConditionByAirlineId(ticket.AirlineId).Where(x => !x.Deleted).OrderBy(x => x.DisplayOrder).Select(x => new TicketModel.AirlinesConditionModel()
@@ -405,7 +441,7 @@ namespace PlanX.Web.Controllers
 
             var listPrice = new List<TicketModel.TotalPriceShow>();
             #region Ticket
-            model.TicketInfo = PrepareSelectedTicket(selectedTicket.Ticket);            
+            model.TicketInfo = PrepareSelectedTicket(selectedTicket.Ticket);
             listPrice.AddRange(GetTotalPriceShow(model.TicketInfo));
             #endregion
 
@@ -478,6 +514,8 @@ namespace PlanX.Web.Controllers
 
         private BookingInfoFlight PreparingBookingInfoFlight(TicketModel selectedTicket, BookingModel bookingModel, bool isFlightTo)
         {
+            //booking info
+            #region
             var bookingInfo = new BookingInfoFlight
             {
                 Adult = selectedTicket.Adult,
@@ -507,15 +545,11 @@ namespace PlanX.Web.Controllers
             {
                 selectedTicket.AirlineName = airline.AirlinesName;
                 bookingInfo.BrandName = airline.AirlinesName;
-            }
-
-            bookingInfo.TotalPriceNet = selectedTicket.BookingFlightPriceModels.Where(x => x.Code == "NET").Sum(x => x.Total);
-            bookingInfo.TotalFee = selectedTicket.BookingFlightPriceModels.Where(x => x.Code != "NET" && x.Code != "DIS").Sum(x => x.Total);
-            bookingInfo.DiscountAmount = selectedTicket.BookingFlightPriceModels.Where(x => x.Code == "DIS").Sum(x => x.Total);
-            bookingInfo.TotalPrice = bookingInfo.TotalPriceNet;
+            }            
             _clickBayService.InsertBookingInfoFlight(bookingInfo);
-
+            #endregion
             //price
+            #region
             selectedTicket.BookingFlightPriceModels.ForEach(x =>
             {
                 var bpd = new BookingPriceDetail
@@ -532,8 +566,10 @@ namespace PlanX.Web.Controllers
                 _clickBayService.InsertBookingPriceDetail(bpd);
 
             });
-
-            //baggages: gom: free + user chon hanh ly mang ky gui them;
+            #endregion
+            //baggages: 
+            #region
+            //gom: free + user chon hanh ly mang ky gui them;
             selectedTicket.ArilinesBaggageConditions.Where(x => x.IsFree).ToList().ForEach(x =>
             {
                 var bb = new BookingBaggage
@@ -576,7 +612,7 @@ namespace PlanX.Web.Controllers
                              {
                                  Baggage = item.Baggage,
                                  BaggageFee = item.BaggageFee,
-                                 Description = string.Format(item.Description, item.Baggage.ToString("0,#"), item.BaggageFee.ToString("0,#")),
+                                 Description = string.Format(item.Description, item.Baggage.ToString("0"), item.BaggageFee.ToString("0")),
                                  IsFree = item.IsFree,
                                  IsHandLuggage = item.IsHandLuggage,
                                  BookingInfoFlightId = bookingInfo.Id
@@ -585,8 +621,9 @@ namespace PlanX.Web.Controllers
                     }
                 }
             }
-
+            #endregion
             //conditions
+            #region
             selectedTicket.AirlinesConditions.ForEach(x =>
             {
                 var bic = new BookingInfoCondition
@@ -597,7 +634,7 @@ namespace PlanX.Web.Controllers
                 };
                 _clickBayService.InsertBookingInfoCondition(bic);
             });
-
+            #endregion
             return bookingInfo;
         }
 
@@ -622,7 +659,7 @@ namespace PlanX.Web.Controllers
             }
 
             //booking
-            var bookingModel = new Booking
+            var booking = new Booking
             {
                 Adult = selectedTicket.Ticket.Adult,
                 Child = selectedTicket.Ticket.Child,
@@ -650,34 +687,58 @@ namespace PlanX.Web.Controllers
                 CurrencyRate = 1,
             };
             if (model.ContactBirthDate != null)
-                bookingModel.ContactBirthDate = DateTime.ParseExact(model.ContactBirthDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
+                booking.ContactBirthDate = DateTime.ParseExact(model.ContactBirthDate, "dd/MM/yyyy", CultureInfo.CurrentCulture);
 
-            //Amount:
-            //tong gia
-            bookingModel.TotalAmount += bookingFlight.TotalPrice;
+            //Update Total:
+            #region
+            bookingFlight.TotalPriceNet = bookingFlight.BookingPriceDetails.Where(x => x.CodeFee == "NET").Sum(x => x.TotalPrice);
+            bookingFlight.TotalFee = bookingFlight.BookingPriceDetails.Where(x => x.CodeFee != "NET" && x.CodeFee != CODE_DIS_SYSTEM).Sum(x => x.TotalPrice);
+            bookingFlight.DiscountAmount = bookingFlight.BookingPriceDetails.Where(x => x.CodeFee == CODE_DIS_SYSTEM).Sum(x => x.TotalPrice);
+            bookingFlight.TotalPrice = bookingFlight.TotalPriceNet;
+            bookingFlight.TotalBaggageFee = bookingFlight.BookingBaggages.Where(x => !x.IsFree).Sum(x=>x.BaggageFee);
+            if(bookingFlightReturn != null)
+            {
+                bookingFlightReturn.TotalPriceNet = bookingFlightReturn.BookingPriceDetails.Where(x => x.CodeFee == "NET").Sum(x => x.TotalPrice);
+                bookingFlightReturn.TotalFee = bookingFlightReturn.BookingPriceDetails.Where(x => x.CodeFee != "NET" && x.CodeFee != CODE_DIS_SYSTEM).Sum(x => x.TotalPrice);
+                bookingFlightReturn.DiscountAmount = bookingFlightReturn.BookingPriceDetails.Where(x => x.CodeFee == CODE_DIS_SYSTEM).Sum(x => x.TotalPrice);
+                bookingFlightReturn.TotalPrice = bookingFlightReturn.TotalPriceNet;
+                bookingFlightReturn.TotalBaggageFee = bookingFlightReturn.BookingBaggages.Where(x => !x.IsFree).Sum(x => x.BaggageFee);
+            }
+
+
+            //tong gia of booking
+            booking.TotalAmount += bookingFlight.TotalPrice;
             //tong phi+ thue
-            bookingModel.TotalFeeAmount += bookingFlight.TotalFee;
+            booking.TotalFeeAmount += bookingFlight.TotalFee;
             //tong giam gia
-            bookingModel.TotalDiscountAmount += bookingFlight.DiscountAmount;
+            booking.TotalDiscountAmount += bookingFlight.DiscountAmount;
             //tong phi hanh ly
-            bookingModel.TotalBaggageFeeAmount += bookingFlight.TotalBaggageFee;
+            booking.TotalBaggageFeeAmount += bookingFlight.TotalBaggageFee;
 
             if (bookingFlightReturn != null)
             {
-                bookingModel.BookingInfoFlightReturnId = bookingFlightReturn.Id;
+                booking.BookingInfoFlightReturnId = bookingFlightReturn.Id;
                 //tong gia
-                bookingModel.TotalAmount += bookingFlightReturn.TotalPrice;
+                booking.TotalAmount += bookingFlightReturn.TotalPrice;
                 //tong phi+ thue
-                bookingModel.TotalFeeAmount += bookingFlightReturn.TotalFee;
+                booking.TotalFeeAmount += bookingFlightReturn.TotalFee;
                 //tong giam gia
-                bookingModel.TotalDiscountAmount += bookingFlightReturn.DiscountAmount;
+                booking.TotalDiscountAmount += bookingFlightReturn.DiscountAmount;
                 //tong phi hanh ly
-                bookingModel.TotalBaggageFeeAmount += bookingFlightReturn.TotalBaggageFee;
+                booking.TotalBaggageFeeAmount += bookingFlightReturn.TotalBaggageFee;
             }
-            
-            _clickBayService.InsertBooking(bookingModel);
+            #endregion
+            _clickBayService.InsertBooking(booking);
+            //update total fight
+            _clickBayService.UpdateBookingInfoFlight(bookingFlight);
+            if(bookingFlightReturn!=null)
+            {
+                _clickBayService.UpdateBookingInfoFlight(bookingFlightReturn);
+            }
+
 
             //passenger
+            #region
             model.BookingPassers.ForEach(x =>
             {
                 var bp = new BookingPassenger
@@ -686,14 +747,15 @@ namespace PlanX.Web.Controllers
                     LastName = x.LastName,
                     MiddleName = x.MiddleName,
                     PassengerType = (short)x.PassserType,
-                    BookingId = bookingModel.Id
+                    BookingId = booking.Id
                 };
                 if (x.BirthDay != null)
                     bp.BirthDay = DateTime.ParseExact(x.BirthDay, "dd/MM/yyyy", CultureInfo.CurrentCulture);
                 _clickBayService.InsertBookingPassenger(bp);
             });
-
+            #endregion
             //newsletter
+            #region
             if (model.NewLetterAccept)
             {
                 _NewsLetterSubscriptionService.InsertNewsLetterSubscription(new Core.Domain.Messages.NewsLetterSubscription
@@ -704,16 +766,22 @@ namespace PlanX.Web.Controllers
                     NewsLetterSubscriptionGuid = new Guid()
                 });
             }
-            Session[string.Format(SUCCESS_BOOKING_SESSION, _workContext.CurrentCustomer.Id)] = bookingModel.Id;
+            #endregion
+            //send mail for customer & admin
+            #region
+            _workflowMessageService.SendCustomerBookingSuccessfullMessage(booking);
+            #endregion
 
-            _clickBayService.GetTicketId(bookingModel.Id);
+            Session[string.Format(SUCCESS_BOOKING_SESSION, _workContext.CurrentCustomer.Id)] = booking.Id;
+            //update TicketId
+            _clickBayService.GetTicketId(booking.Id);
             #endregion
 
             return new JsonResult
             {
                 Data = new
                 {
-                    url = Url.Action("BookingSuccess", new { bookingId=bookingModel.Id }),
+                    url = Url.Action("BookingSuccess", new { bookingId=booking.Id }),
                     error = "",
                 }
             };
@@ -888,25 +956,6 @@ namespace PlanX.Web.Controllers
             if (Session[session] == null)
                 return null;
             var ticket = (Session[session] as List<TicketModel>).FirstOrDefault(x => x.Index == index);
-            //var airline = _clickBayService.GetAirlineById(ticket.AirlineId);
-            //dieu kien ve: phu thuoc vao hang hang khong & loai ve
-            ///where ticketType
-            //ticket.AirlinesConditions = airline.AirlinesConditions.Where(x => !x.Deleted /*&& x.TicketType==ticket.TicketType*/).Select(x => new TicketModel.AirlinesConditionModel
-            //{
-            //    ConditionDescription = x.ConditionDescription,
-            //    ConditionName = x.ConditionName
-            //}).ToList();
-            //baggage
-            //ticket.ArilinesBaggageConditions = airline.ArilinesBaggageConditions.Where(x => !x.Deleted).Select(x => new TicketModel.ArilinesBaggageCondition
-            //{
-            //    Id = x.Id,
-            //    Baggage = x.Baggage,
-            //    BaggageFee = x.BaggageFee,
-            //    IsFree = x.IsFree,
-            //    IsHandLuggage = x.IsHandLuggage,
-            //    DisplayOrder = x.DisplayOrder,
-            //    Description = x.Description
-            //}).ToList();
             return ticket;
         }
 
