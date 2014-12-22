@@ -48,7 +48,7 @@
         @if(Model.TicketInfoReturn!=null)
         {
            <div class="div-table-row place-flight">
-            <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/" + Model.TicketInfo.BrandCode + ".gif")" /></div>
+            <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/" + Model.TicketInfoReturn.BrandCode + ".gif")" /></div>
             <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfoReturn.FromPlace, @Model.TicketInfoReturn.FromCountry</span></div>
             <div class="div-table-cell"></div>
             <div class="div-table-cell">Thời gian bay: <span>@Model.TicketInfoReturn.FlightDurationString</span></div>
