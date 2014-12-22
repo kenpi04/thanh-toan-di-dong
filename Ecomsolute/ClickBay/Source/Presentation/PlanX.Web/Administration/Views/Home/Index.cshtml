@@ -1,4 +1,4 @@
-﻿@*@model DashboardModel
+﻿@*@model DashboardModel*@
 @{
     //page title
     ViewBag.Title = T("Admin.Dashboard").Text;
@@ -17,8 +17,6 @@
                     @T("Admin.Dashboard.StoreStatistics")
                 </div>
             </div>
-            @if (!Model.IsLoggedInAsVendor)
-            {
                 <table class="stats">
                     <tbody>
                         <tr>
@@ -26,14 +24,11 @@
                                 <div class="statisticsTitle">
                                     @T("Admin.SalesReport.Average")
                                 </div>
-                                @Html.Action("OrderAverageReport", "Order")
+                                @*@Html.Action("OrderAverageReport", "Order")*@
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            }
-            @if (!Model.IsLoggedInAsVendor)
-            {
                 <table class="stats">
                     <tbody>
                         <tr>
@@ -41,25 +36,24 @@
                                 <div class="statisticsTitle">
                                     @T("Admin.SalesReport.Incomplete")
                                 </div>
-                                @Html.Action("OrderIncompleteReport", "Order")
+                                @*@Html.Action("OrderIncompleteReport", "Order")*@
                             </td>
-                            <td class="customerstatistics">
+                            @*<td class="customerstatistics">
                                 <div class="statisticsTitle">
                                     @T("Admin.Customers.Reports.RegisteredCustomers")
                                 </div>
                                 @Html.Action("ReportRegisteredCustomers", "Customer")
-                            </td>
-                            <td class="search-term-statistics">
+                            </td>*@
+                            @*<td class="search-term-statistics">
                                 <div class="statisticsTitle">
                                     @T("Admin.SearchTermReport")
                                 </div>
                                 @Html.Action("PopularSearchTermsReport", "Common")
-                            </td>
+                            </td>*@
                         </tr>
                     </tbody>
                 </table>
-            }
-            <table class="stats">
+            @*<table class="stats">
                 <tr>
                     <td class="bestsellers">
                         <div class="statisticsTitle">
@@ -74,14 +68,8 @@
                         @Html.Action("BestsellersBriefReportByAmount", "Order")
                     </td>
                 </tr>
-            </table>
-        </td>
-        @if (!Model.IsLoggedInAsVendor)
-        {
-            <td class="rightcol">
-                @Html.Action("NopCommerceNews", "Home")
-            </td>
-        }
+            </table>*@
+        </td>     
     </tr>
     @Html.Widget("admin_dashboard_bottom")
-</table>*@
+</table>
