@@ -144,8 +144,20 @@ namespace PlanX.Web.Controllers
             return View(model);
 
         }
+        public ActionResult TicketSearchGo(SearchModel model)
+        {
+            model = TicketSearch(model);
+            return PartialView("_SearchTicketPartial", model);
+        }
 
-        public ActionResult TicketSearch(SearchModel model)
+        public ActionResult TicketSearchReturn(SearchModel model)
+        {
+            model = TicketSearch(model);
+            return PartialView("_SearchTicketPartial", model);
+        }
+
+
+        private SearchModel TicketSearch(SearchModel model)
         {
             //checked parameter is valid
             DateTime datePart = DateTime.ParseExact(model.DepartDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -226,7 +238,7 @@ namespace PlanX.Web.Controllers
                 {
                     model.Tickets = model.Tickets.OrderByDescending(x => x.AirlineName).ToList();
                 }
-            return PartialView("_SearchTicketPartial", model);
+            return  model;
         }
         [HttpGet]
         public ActionResult GetTicketDetail(string sessionId, int index)
