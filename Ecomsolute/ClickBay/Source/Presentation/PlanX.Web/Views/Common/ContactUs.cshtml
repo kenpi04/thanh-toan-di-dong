@@ -6,62 +6,125 @@
     //title
     Html.AddTitleParts(T("PageTitle.ContactUs").Text);
 }
-<div class="page contact-page">
-    <div class="page-title">
-        <h1>@T("PageTitle.ContactUs")</h1>
-    </div>
-    @Html.Action("TopicBlock", "Topic", new { systemName = "ContactUs" })
-    <div class="page-body">
-        @Html.Widget("contactus_top")
-        @if (Model.SuccessfullySent)
-        {
-            <div class="result">
-                @Model.Result
-            </div>        
-        }
-        else
-        {
-            using (Html.BeginForm())
-            {
-            <div class="message-error">
-                @Html.ValidationSummary(true)
+<div class="wrapper-body">
+    <div class="wrapper-content contact-page">
+        <div class="box-50">
+            <div class="page-title">
+                <h1>@T("PageTitle.ContactUs")</h1>
             </div>
-            <div class="form-fields">
-                <div class="inputs-left">
-                    <div class="inputs">
-                        @Html.LabelFor(model => model.FullName)
-                        <div class="input-box">
-                            @Html.TextBoxFor(model => model.FullName, new { @class = "fullname", placeholder = T("ContactUs.FullName.Hint") })
-                        </div>
-                        @Html.ValidationMessageFor(model => model.FullName)
+            <div>
+                <p class="contact-address">
+                    Địa chỉ: 41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh<br>
+                    Điện thoại: (08) 6268 5656 | Fax: (08) 6268 7676<br>
+                    Email: clickbay@pkprovn.com<br>
+                    Website: clickbay.com.vn
+                </p>
+            </div>
+            <div class="page-title">Liên hệ</div>
+            <div>
+                @Html.Widget("contactus_top")
+                @if (Model.SuccessfullySent)
+                {
+                    <div class="result">
+                        @Model.Result
                     </div>
-                    <div class="inputs">
-                        @Html.LabelFor(model => model.Email)
-                        <div class="input-box">
-                            @Html.TextBoxFor(model => model.Email, new { @class = "email", placeholder = T("ContactUs.Email.Hint") })
-                        </div>
-                        @Html.ValidationMessageFor(model => model.Email)
-                    </div>
-                    @if (Model.DisplayCaptcha)
+                }
+                else
+                {
+                    using (Html.BeginForm())
                     {
-                        <div class="captcha-box">
-                            @Html.Raw(Html.GenerateCaptcha())
+                        <div class="message-error">
+                            @Html.ValidationSummary(true)
+                        </div>
+                        <div class="form-fields">
+                            <div class="inputs-left">
+                                <div class="inputs">
+                                    @Html.LabelFor(model => model.FullName)
+                                    <div class="input-box">
+                                        @Html.TextBoxFor(model => model.FullName, new { @class = "fullname", placeholder = T("ContactUs.FullName.Hint") })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.FullName)
+                                </div>
+                                <div class="inputs">
+                                    @Html.LabelFor(model => model.Email)
+                                    <div class="input-box">
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "email", placeholder = T("ContactUs.Email.Hint") })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </div>
+                                @if (Model.DisplayCaptcha)
+                                {
+                                    <div class="captcha-box">
+                                        @Html.Raw(Html.GenerateCaptcha())
+                                    </div>
+                                }
+                            </div>
+                            <div class="inputs-right inputs">
+                                @Html.LabelFor(model => model.Enquiry)
+                                <div class="input-box">
+                                    @Html.TextAreaFor(model => model.Enquiry, new { @class = "enquiry", placeholder = T("ContactUs.Enquiry.Hint") })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Enquiry)
+                            </div>
+                        </div>
+                        <div class="buttons">
+                            <input type="submit" name="send-email" class="default" value="Gửi" />
                         </div>
                     }
-                </div>
-                <div class="inputs-right inputs">
-                    @Html.LabelFor(model => model.Enquiry)
-                    <div class="input-box">
-                        @Html.TextAreaFor(model => model.Enquiry, new { @class = "enquiry", placeholder = T("ContactUs.Enquiry.Hint") })
-                    </div>
-                    @Html.ValidationMessageFor(model => model.Enquiry)
-                </div>
+                }
+                @Html.Widget("contactus_bottom")
             </div>
-            <div class="buttons">
-                <input type="submit" name="send-email" class="button-1 contact-us-button" value="@T("ContactUs.Button")" />
+        </div>
+        <div class="box-50">            
+            <div id="map_canvas" style="width:600px;height:393px">
+
             </div>
-            }
-        }
-        @Html.Widget("contactus_bottom")
+        </div>      
+        
+        @*@Html.Action("TopicBlock", "Topic", new { systemName = "ContactUs" })*@
+        
     </div>
 </div>
+<script>
+    loadScript();
+    function showAddress() {
+        var diachi = "41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh";
+        var content = "<strong>Công ty TNHH PK Pro</strong> <br> Số điện thoại:(08) 6268 5656 <br> Email: clickbay@pkprovn.com <br> Địa chỉ :41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh";
+        geocoder = new google.maps.Geocoder();
+        var myOptions = {
+
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        var info = new google.maps.InfoWindow({ content: content });
+        geocoder.geocode({ 'address': diachi }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
+                center = results[0].geometry.location;
+                map.setCenter(center);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: center
+                });
+                google.maps.event.addListener(marker, "click", function ()
+                { info.open(map, marker); });
+                info.open(map, marker);
+            } else {
+            }
+        });
+
+        infowindow = new google.maps.InfoWindow(
+        {
+            size: new google.maps.Size(150, 50)
+        });
+    }
+    function loadScript() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places&' + 'callback=showAddress';
+        document.body.appendChild(script);
+    }
+
+</script>
