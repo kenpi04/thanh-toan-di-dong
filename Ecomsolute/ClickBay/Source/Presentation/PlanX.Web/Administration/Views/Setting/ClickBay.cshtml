@@ -1,0 +1,42 @@
+﻿@model ClickBaySettingsModel
+@{
+    //page title
+    ViewBag.Title = T("Admin.Configuration.Settings.ClickBay").Text;
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-configuration.png")" alt="" />
+            @T("Admin.Configuration.Settings.ClickBay")
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
+        </div>
+    </div>
+    @Html.Action("StoreScopeConfiguration", "Setting")
+    @Html.ValidationSummary(false)
+
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.PricePlusPerPassenger_OverrideForStore, model => model.PricePlusPerPassenger, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.PricePlusPerPassenger):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.PricePlusPerPassenger)
+                @Html.ValidationMessageFor(model => model.PricePlusPerPassenger)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.OverrideStoreCheckboxFor(model => model.DiscountPerPassenger_OverrideForStore, model => model.DiscountPerPassenger, Model.ActiveStoreScopeConfiguration)
+                @Html.NopLabelFor(model => model.DiscountPerPassenger):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.DiscountPerPassenger)
+                @Html.ValidationMessageFor(model => model.DiscountPerPassenger)
+            </td>
+        </tr>
+    </table>
+}
