@@ -15,7 +15,9 @@ namespace PlanX.Admin.Models.ClickBay
         public int Baggage { get; set; }
         public decimal BaggageFee { get; set; }
         public string Description { get; set; }
-        
+
+        public bool IsFree { get; set; }
+        public bool IsHandLuggage { get; set; }
         //public BookingInfoFlightModel BookingInfoFlightModel { get; set; }
     }
 }

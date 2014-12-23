@@ -177,6 +177,7 @@
     <Compile Include="MappingExtensions.cs" />
     <Compile Include="Infrastructure\AdminStartupTask.cs" />
     <Compile Include="Infrastructure\AutoMapperStartupTask.cs" />
+    <Compile Include="Models\ClickBay\BookingAverageReportLineSummaryModel.cs" />
     <Compile Include="Models\ClickBay\BookingBaggageModel.cs" />
     <Compile Include="Models\ClickBay\BookingInfoConditionModel.cs" />
     <Compile Include="Models\ClickBay\BookingInfoFlightModel.cs" />
@@ -673,6 +674,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ClickBay\_BookingDetailsNotes.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\BookingAverageReport.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\ListReport.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

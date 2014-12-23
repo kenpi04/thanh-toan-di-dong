@@ -157,3 +157,10 @@ body .t-button{font-weight:400;color:inherit!important;text-decoration:none;}
 .customer-info-tab .gender{display:inline-block;}
 
 ul.t-header{background:none;border:none;}
+.booking-status{color:#ffffff;border-radius:5px;display:block;width:105px;}
+.status-50{background:#565656;}
+.status-10{background:#F27208;}
+.status-20{background:#082EF2;}
+.status-30{background:#74CF01;}
+.t-grid table tbody{font-size:14px;}
+.t-grid table td{height:30px;}

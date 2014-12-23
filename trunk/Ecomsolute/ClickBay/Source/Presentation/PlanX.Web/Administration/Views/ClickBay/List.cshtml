@@ -46,10 +46,18 @@
         </tr>
         <tr>
             <td class="adminTitle">
-                @Html.NopLabelFor(model => model.BookingId):
+                @Html.NopLabelFor(model => model.TicketId):
             </td>
             <td class="adminData">
-                @Html.EditorFor(model => Model.BookingId)
+                @Html.EditorFor(model => Model.TicketId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.PRNCode):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.PRNCode)
             </td>
         </tr>
         <tr>
@@ -71,7 +79,7 @@
         //    .OnComplete("onComplete"))
                         .Columns(columns =>
                         {
-                            columns.Bound(x => x.Id);
+                            columns.Bound(x => x.TicketId);
                             columns.Bound(x => x.ContactName);
                             columns.Bound(x => x.ContactPhone);
                             columns.Bound(x => x.ContactEmail);
@@ -177,6 +185,8 @@
                 CustomerId: $('#@Html.FieldIdFor(model => model.CustomerId)').val(),
                 BookingStatusId: $('#@Html.FieldIdFor(model => model.BookingStatusId)').val(),
                 CustomerNameOrPhone: $('#@Html.FieldIdFor(model => model.CustomerNameOrPhone)').val(),
+                TicketId: $('#@Html.FieldIdFor(model => model.TicketId)').val(),
+                PRNCode: $('#@Html.FieldIdFor(model => model.PRNCode)').val(),
             };
             e.data = searchModel;
         }

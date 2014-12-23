@@ -20,6 +20,7 @@
             landingTime = Model.ArrivalDateTime.Value.ToString("HH:mm");
         }
     }
+    var i = 0;
 }
 @if (Model != null)
 {
@@ -60,22 +61,22 @@
                             @foreach (var codeFee in codeFees)
                             {
                                 <tr>
-                                    <td colspan="4" class="bold600 textLeft">
+                                    <td colspan="3" class="bold600 textLeft">
                                         @codeFee.Value (@codeFee.Key)
                                     </td>
                                 </tr>
                                 foreach (var price in Model.BookingPriceDetailsModel.Where(x => x.CodeFee == codeFee.Key).ToList())
                                 {
                                     <tr>
-                                        <td class="textLeft">
-                                            @price.PassengerTypeName
+                                        <td class="textLeft" style="min-width:100px;padding-left:30px;">
+                                            @T("passertype." + price.PassengerType)
                                         </td>
                                         <td>
-                                            @price.Quantity
+                                            @price.Quantity x @price.Price.ToString("#,0")
                                         </td>
-                                        <td>
+                                        @*<td>
                                             @price.Price.ToString("#,0")
-                                        </td>
+                                        </td>*@
                                         <td>
                                             @price.TotalPrice.ToString("#,0")
                                         </td>
@@ -83,47 +84,48 @@
                                 }
                             }
                             <tr>
-                                <td colspan="4" class="bold600 textLeft">Phí hành lý</td>
+                                <td colspan="3" class="bold600 textLeft">Phí hành lý</td>
                             </tr>
-                            @foreach (var bag in Model.BookingBaggagesModel)
+                            @foreach (var bag in Model.BookingBaggagesModel.Where(x=> !x.IsFree).ToList())
                             {
+                                i++;
                                 <tr>
-                                    <td class="textLeft">
-                                        @bag.PassengerTypeName
+                                    <td class="textLeft" style="padding-left:30px;">
+                                        Hành khách @i.ToString()
                                     </td>
                                     <td>
-                                        @bag.Baggage @(string.IsNullOrEmpty(bag.Description) ? "" : "(" + bag.Description + ")")
+                                        @bag.Baggage.ToString("#,0") kg (@bag.BaggageFee.ToString("#,0") vnd)
                                     </td>
-                                    <td>
-                                        @bag.BaggageFee.ToString("#,0")
-                                    </td>
+                                    @*<td>
+                                        
+                                    </td>*@
                                     <td>
                                         @bag.BaggageFee.ToString("#,0")
                                     </td>
                                 </tr>}
                             <tr>
-                                <td colspan="3" class="bold600">TỔNG CỘNG (VND)</td>
+                                <td colspan="2" class="bold600">Tổng (vnd)</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td colspan="3" class="bold600 textRight">Tổng giá: </td>
+                                <td colspan="2" class="bold600 textRight">Tổng giá: </td>
                                 <td class="bold600">@Model.TotalPrice.ToString("#,0")</td>
                             </tr>
                             <tr>
-                                <td colspan="3" class="bold600 textRight">Tổng phí & thuế: </td>
+                                <td colspan="2" class="bold600 textRight">Tổng phí & thuế: </td>
                                 <td class="bold600">@((Model.TotalFee + Model.TotalTax + Model.TotalFeeOther).ToString("#,0"))</td>
                             </tr>
                             <tr>
-                                <td colspan="3" class="bold600 textRight">Tổng phí hành lý: </td>
+                                <td colspan="2" class="bold600 textRight">Tổng phí hành lý: </td>
                                 <td class="bold600">@Model.TotalBaggageFee.ToString("#,0")</td>
                             </tr>
                             <tr>
-                                <td colspan="3" class="bold600 textRight">Giảm giá: </td>
+                                <td colspan="2" class="bold600 textRight">Giảm giá: </td>
                                 <td class="bold600">@((Model.DiscountAmount).ToString("#,0"))</td>
                             </tr>
                             <tr>
-                                <td colspan="3" class="bold600 textRight">Còn lại: </td>
-                                <td class="bold600">@((Model.TotalPrice + Model.TotalFee + Model.TotalTax + Model.TotalFeeOther - Model.DiscountAmount).ToString("#,0"))</td>
+                                <td colspan="2" class="bold600 textRight">Tổng cộng: </td>
+                                <td class="bold600">@((Model.TotalPrice + Model.TotalFee + Model.TotalTax + Model.TotalFeeOther + Model.TotalBaggageFee - Model.DiscountAmount).ToString("#,0"))</td>
                             </tr>
                         </tbody>
                     </table>

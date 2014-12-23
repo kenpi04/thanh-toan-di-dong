@@ -66,7 +66,8 @@ namespace PlanX.Admin.Models.ClickBay
         
         public string PaymentStatus{get;set;}
         public string ContactStatus{get;set;}
-        
+
+        public string TicketId { get; set; }
         public BookingInfoFlightModel BookingInfoFlightModel { get; set; }
         public BookingInfoFlightModel BookingInfoFlightReturnModel { get; set; }
         public List<BookTicketNoteModel> BookTicketNotesModel { get; set; }
