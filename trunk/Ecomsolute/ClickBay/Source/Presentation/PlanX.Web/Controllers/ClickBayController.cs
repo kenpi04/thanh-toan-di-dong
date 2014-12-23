@@ -35,6 +35,7 @@ namespace PlanX.Web.Controllers
         private readonly ILocalizationService _localizationService;
         private readonly INewsLetterSubscriptionService _NewsLetterSubscriptionService;
         private readonly IWorkflowMessageService _workflowMessageService;
+        private readonly ClickBaySettings _clickBaySettings;
         #endregion
 
         #region Ctor
@@ -42,7 +43,8 @@ namespace PlanX.Web.Controllers
             ILocalizationService localizationService,
             ICacheManager cacheManager,
             INewsLetterSubscriptionService NewsLetterSubscriptionService,
-            IWorkflowMessageService workflowMessageService
+            IWorkflowMessageService workflowMessageService,
+            ClickBaySettings clickBaySettings
             )
         {
             this._NewsLetterSubscriptionService = NewsLetterSubscriptionService;
@@ -51,6 +53,7 @@ namespace PlanX.Web.Controllers
             this._cacheManager = cacheManager;
             this._localizationService = localizationService;
             this._workflowMessageService = workflowMessageService;
+            this._clickBaySettings = clickBaySettings;
         }
         #endregion
 
@@ -363,9 +366,10 @@ namespace PlanX.Web.Controllers
             var ticket = selectedTicket;
 
             //phi cong them cua he thong - tinh theo moi luot di://chua chuyen sang setting
-            decimal PricePlusFerPassenger = 0;
-            if (decimal.TryParse(_localizationService.GetResource("booking.price.clickbay.amount"), out PricePlusFerPassenger))
-            {
+            decimal PricePlusFerPassenger = _clickBaySettings.PricePlusPerPassenger;
+            //_localizationService.GetResource("booking.price.clickbay.amount")
+            //if (decimal.TryParse(_clickBaySettings.PricePlusPerPassenger, out PricePlusFerPassenger))
+            //{
                 if (PricePlusFerPassenger > 0)
                 {
                     //remove all fee old
@@ -378,11 +382,11 @@ namespace PlanX.Web.Controllers
                     var feeNew = GetBookingPricePlus(ticket.Adult, ticket.Child, ticket.Infant, PricePlusFerPassenger, CODE_FEE_SYSTEM, _localizationService.GetResource("booking.price.clickbay.description"));
                     ticket.BookingFlightPriceModels.AddRange(feeNew);
                 }
-            }
+            //}
             //giam gia cua he thong - cho moi hanh khach//chua chuyen sang setting
-            decimal discountAmount = 0;
-            if (decimal.TryParse(_localizationService.GetResource("booking.price.discount.amount"), out discountAmount))
-            {
+            decimal discountAmount = _clickBaySettings.DiscountPerPassenger;
+            //if (decimal.TryParse(_localizationService.GetResource("booking.price.discount.amount"), out discountAmount))
+            //{
                 if (discountAmount > 0)
                 {
                     //remove all discount old
@@ -395,7 +399,7 @@ namespace PlanX.Web.Controllers
                     var discountNews = GetBookingPricePlus(ticket.Adult, ticket.Child, ticket.Infant, discountAmount, CODE_DIS_SYSTEM, _localizationService.GetResource("booking.price.discount.description"));
                     ticket.BookingFlightPriceModels.AddRange(discountNews);
                 }
-            }
+            //}
 
             //dieu kien ve
             ticket.AirlinesConditions = _clickBayService.GetListAirlinesConditionByAirlineId(ticket.AirlineId).Where(x => !x.Deleted).OrderBy(x => x.DisplayOrder).Select(x => new TicketModel.AirlinesConditionModel()
