@@ -627,8 +627,15 @@ namespace PlanX.Admin.Infrastructure
                 .ForMember(dest => dest.Locales, mo => mo.Ignore())
                 .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
             Mapper.CreateMap<StoreModel, Store>();
+
+            Mapper.CreateMap<ClickBaySettings, ClickBaySettingsModel>()
+               .ForMember(dest => dest.ActiveStoreScopeConfiguration, mo => mo.Ignore())
+               .ForMember(dest => dest.DiscountPerPassenger_OverrideForStore, mo => mo.Ignore())
+               .ForMember(dest => dest.PricePlusPerPassenger_OverrideForStore, mo => mo.Ignore());
+            Mapper.CreateMap<ClickBaySettingsModel, ClickBaySettings>();
             /*
             //Settings
+            
             Mapper.CreateMap<TaxSettings, TaxSettingsModel>()
                 .ForMember(dest => dest.DefaultTaxAddress, mo => mo.Ignore())
                 .ForMember(dest => dest.TaxDisplayTypeValues, mo => mo.Ignore())
