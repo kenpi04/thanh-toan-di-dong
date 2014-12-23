@@ -40,6 +40,7 @@ using PlanX.Web.Framework.Localization;
 using PlanX.Web.Framework.Themes;
 using PlanX.Web.Framework.UI.Captcha;
 using Telerik.Web.Mvc;
+using PlanX.Core.Domain.ClickBay;
 
 
 namespace PlanX.Admin.Controllers
@@ -472,7 +473,56 @@ namespace PlanX.Admin.Controllers
         }
         */
 
+        public ActionResult ClickBay()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
+                return AccessDeniedView();
 
+            //load settings for a chosen store scope
+            var storeScope = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
+            var clickBaySettings = _settingService.LoadSetting<ClickBaySettings>(storeScope);
+            var model = clickBaySettings.ToModel();
+            model.ActiveStoreScopeConfiguration = storeScope;
+            if (storeScope > 0)
+            {
+                model.PricePlusPerPassenger_OverrideForStore = _settingService.SettingExists(clickBaySettings, x => x.PricePlusPerPassenger, storeScope);
+                model.DiscountPerPassenger_OverrideForStore = _settingService.SettingExists(clickBaySettings, x => x.DiscountPerPassenger, storeScope);                
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult ClickBay(ClickBaySettingsModel model)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
+                return AccessDeniedView();
+
+            //load settings for a chosen store scope
+            var storeScope = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
+            var clickBaySettings = _settingService.LoadSetting<ClickBaySettings>(storeScope);
+            clickBaySettings = model.ToEntity(clickBaySettings);
+
+            // We do not clear cache after each setting update.
+            // * This behavior can increase performance because cached settings will not be cleared 
+            // * and loaded from database after each update
+            if (model.PricePlusPerPassenger_OverrideForStore || storeScope == 0)
+                _settingService.SaveSetting(clickBaySettings, x => x.PricePlusPerPassenger, storeScope, false);
+            else if (storeScope > 0)
+                _settingService.DeleteSetting(clickBaySettings, x => x.PricePlusPerPassenger, storeScope);
+
+            if (model.DiscountPerPassenger_OverrideForStore || storeScope == 0)
+                _settingService.SaveSetting(clickBaySettings, x => x.DiscountPerPassenger, storeScope, false);
+            else if (storeScope > 0)
+                _settingService.DeleteSetting(clickBaySettings, x => x.DiscountPerPassenger, storeScope);
+
+            //now clear settings cache
+            _settingService.ClearCache();
+
+            //activity log
+            _customerActivityService.InsertActivity("EditSettings", _localizationService.GetResource("ActivityLog.EditSettings"));
+
+            SuccessNotification(_localizationService.GetResource("Admin.Configuration.Updated"));
+            return RedirectToAction("ClickBay");
+        }
        
         public ActionResult News()
         {
