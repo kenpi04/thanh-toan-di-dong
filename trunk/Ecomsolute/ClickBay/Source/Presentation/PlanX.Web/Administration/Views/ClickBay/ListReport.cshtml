@@ -1,0 +1,38 @@
+﻿@model PlanX.Admin.Models.ClickBay.BookingListModel
+@using Telerik.Web.Mvc.UI
+
+@{
+    var gridPageSize = EngineContext.Current.Resolve<PlanX.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+}
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid<PlanX.Admin.Models.ClickBay.BookingModel>()
+                        .Name("orders-grid")
+        
+                        .Columns(columns =>
+                        {
+                            //columns.Bound(x => x.Id);
+                            columns.Bound(x => x.BookingStatus)
+                                .Width(150)
+                                .Centered()
+                                .ClientTemplate("<span class=\"booking-status status-<#= BookingStatusId #>\"\">" + "<#= BookingStatus #>" + "</span>");
+                            columns.Bound(x => x.ContactName);
+                            columns.Bound(x => x.ContactPhone);
+                            //columns.Bound(x => x.ContactEmail);
+                            columns.Bound(x => x.CreatedOn);                            
+                            columns.Bound(x => x.PaymentStatus);
+                            columns.Bound(x => x.TotalAmount).Format("{0:#,0}");
+                            columns.Bound(x => x.Id)
+                                .Template(x => Html.ActionLink(T("Admin.Common.View").Text, "Edit", new { id = x.Id }))
+                                .ClientTemplate("<a href=\"Admin/ClickBay/Edit/<#= Id #>\">" + T("Admin.Common.View").Text + "</a>")
+                                .Width(50)
+                                .Centered()
+                                .Title(T("Admin.Common.View").Text);
+                        })
+                        .Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                                .DataBinding(dataBinding => dataBinding.Ajax().Select("BookingListReport", "ClickBay"))
+                        .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>

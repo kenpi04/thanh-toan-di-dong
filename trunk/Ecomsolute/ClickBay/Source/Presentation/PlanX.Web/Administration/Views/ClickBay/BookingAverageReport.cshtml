@@ -1,0 +1,21 @@
+﻿@model IList<BookingAverageReportLineSummaryModel>
+@using Telerik.Web.Mvc.UI
+<table class="adminContent">
+    <tr>
+        <td>
+            @(Html.Telerik().Grid(Model)
+                .Name("average-order-report-grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(x => x.BookingStatus);
+                    columns.Bound(x => x.SumTodayBookings);
+                    columns.Bound(x => x.SumThisWeekBookings);
+                    columns.Bound(x => x.SumThisMonthBookings);
+                    columns.Bound(x => x.SumThisYearBookings);
+                    columns.Bound(x => x.SumAllTimeBookings);
+                })
+                .DataBinding(dataBinding => dataBinding.Ajax().Select("BookingrAverageReportList", "ClickBay"))
+                .EnableCustomBinding(true))
+        </td>
+    </tr>
+</table>
