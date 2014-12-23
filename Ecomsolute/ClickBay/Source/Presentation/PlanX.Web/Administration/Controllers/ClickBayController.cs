@@ -47,7 +47,8 @@ namespace PlanX.Admin.Controllers
         }
 
         #endregion
-        // GET: ClickBay
+
+        #region Booking
         public ActionResult Index()
         {
             return RedirectToAction("List");
@@ -78,7 +79,7 @@ namespace PlanX.Admin.Controllers
             var bookings = _clickBayService.GetAllBooking(fromDate: model.CreateDate,
                 toDate: model.CreateDate, bookingStatusId: model.BookingStatusId, paymentStatusId: null,
                 contactStatusId: null, customerId: model.CustomerId,
-                contactNameOrPhone: model.CustomerNameOrPhone, pageIndex: command.Page - 1, pageSize: command.PageSize, id: model.BookingId, pRNCode: model.PRNCode, ticketId:model.TicketId);
+                contactNameOrPhone: model.CustomerNameOrPhone, pageIndex: command.Page - 1, pageSize: command.PageSize, id: model.BookingId, pRNCode: model.PRNCode, ticketId: model.TicketId);
 
             var gridModel = new GridModel<BookingModel>
             {
@@ -119,7 +120,7 @@ namespace PlanX.Admin.Controllers
 
             var model = new BookingModel();
             model = PrepareBookingDetailsModel(booking);
-            
+
             return View(model);
         }
 
@@ -275,6 +276,8 @@ namespace PlanX.Admin.Controllers
             return null;
         }
 
+        #endregion
+
         #region Notes
         [HttpPost, GridAction(EnableCustomBinding = true)]
         public ActionResult BookingNotesSelect(int bookingId, GridCommand command)
@@ -288,7 +291,7 @@ namespace PlanX.Admin.Controllers
 
             //booking notes
             var bookingNoteModels = booking.BookTicketNotes.Select(x => { return x.ToModel(); }).ToList();
-            
+
 
             var model = new GridModel<BookTicketNoteModel>
             {
@@ -320,7 +323,7 @@ namespace PlanX.Admin.Controllers
                 CreateDate = DateTime.Now
             };
             _clickBayService.InsertBookTicketNote(bookingNote);
-            
+
             return Json(new { Result = true }, JsonRequestBehavior.AllowGet);
         }
 
@@ -358,8 +361,8 @@ namespace PlanX.Admin.Controllers
                 return new BookingAverageReportLineSummaryModel()
                 {
                     BookingStatus = x.BookingStatus.GetLocalizedEnum(_localizationService, _workContext),
-                    SumTodayBookings= x.SumTodayBookings.ToString("#,0"),
-                    SumThisWeekBookings= x.SumThisWeekBookings.ToString("#,0"),
+                    SumTodayBookings = x.SumTodayBookings.ToString("#,0"),
+                    SumThisWeekBookings = x.SumThisWeekBookings.ToString("#,0"),
                     SumThisMonthBookings = x.SumThisMonthBookings.ToString("#,0"),
                     SumThisYearBookings = x.SumThisYearBookings.ToString("#,0"),
                     SumAllTimeBookings = x.SumAllTimeBookings.ToString("#,0"),
@@ -374,7 +377,7 @@ namespace PlanX.Admin.Controllers
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
                 return Content("");
-            
+
             var model = GetBookingAverageReportModel();
 
             return PartialView(model);
@@ -402,7 +405,7 @@ namespace PlanX.Admin.Controllers
         public ActionResult ListReport()
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return Content("");            
+                return Content("");
             return PartialView();
         }
 
@@ -444,6 +447,302 @@ namespace PlanX.Admin.Controllers
             };
         }
 
+        #endregion
+
+        #region Airline Baggage Condition
+
+        public ActionResult AirlineBaggageConditionList()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var model = new SearchConditionsModel();
+
+            model.Airlines = _clickBayService.GetListAirline().Select(x => new SelectListItem { Text = x.AirlinesName, Value = x.Id.ToString() }).ToList();
+            model.Airlines.Insert(0, new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+
+            return View(model);
+        }
+
+        [GridAction(EnableCustomBinding = true)]
+        [HttpPost]
+        public ActionResult AirlineBaggageConditionList1(GridCommand command, SearchConditionsModel searchModel)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var conditions = _clickBayService.GetListArilinesBaggageCondition(searchModel.AirlineId);
+
+            var gridModel = new GridModel<ArilinesBaggageConditionModel>
+            {
+                Data = conditions.Select(x =>
+                {
+                    return new ArilinesBaggageConditionModel()
+                    {
+                        Id = x.Id,
+                        AirlinesId = x.AirlinesId,
+                        Baggage = x.Baggage,
+                        BaggageFee = x.BaggageFee,
+                        Description = x.Description,
+                        DisplayOrder = x.DisplayOrder,
+                        IsFree = x.IsFree,
+                        IsHandLuggage = x.IsHandLuggage,
+                    };
+                }),
+                Total = conditions.Count()
+            };
+
+
+            return new JsonResult
+            {
+                Data = gridModel
+            };
+        }
+
+        public ActionResult AirlineBaggageConditionCreate()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var model = new ArilinesBaggageConditionModel();
+
+            return View(model);
+        }
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
+        public ActionResult AirlineBaggageConditionCreate(ArilinesBaggageConditionModel model, bool continueEditing)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            if (ModelState.IsValid)
+            {
+                var entity = model.ToEntity();
+                _clickBayService.InsertAirlinesBaggageCondition(entity);
+                SuccessNotification(_localizationService.GetResource("Admin.ContentManagement.News.NewsItems.Updated"));
+
+                if (continueEditing)
+                {
+                    return RedirectToAction("AirlineBaggageConditionEdit", new { id = entity.Id });
+                }
+                else
+                {
+                    return RedirectToAction("AirlineBaggageConditionList");
+                }
+            }
+
+            return View(model);
+        }
+
+        public ActionResult AirlineBaggageConditionEdit(int id)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var baggage = _clickBayService.ArilinesBaggageConditionById(id);
+            if (baggage == null || baggage.Deleted)
+                return RedirectToAction("AirlineBaggageConditionList");
+
+            var model = baggage.ToModel();
+
+            return View(model);
+        }
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
+        public ActionResult AirlineBaggageConditionEdit(ArilinesBaggageConditionModel model, bool continueEditing)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var baggage = _clickBayService.ArilinesBaggageConditionById(model.Id);
+            if (baggage == null || baggage.Deleted)
+                return RedirectToAction("AirlineBaggageConditionList");
+            if (ModelState.IsValid)
+            {
+                baggage.AirlinesId = model.AirlinesId;
+                baggage.Baggage = model.Baggage;
+                baggage.BaggageFee = model.BaggageFee;
+                baggage.Description = model.Description;
+                baggage.DisplayOrder = model.DisplayOrder;
+                baggage.IsFree = model.IsFree;
+                baggage.IsHandLuggage = model.IsHandLuggage;
+
+                _clickBayService.UpdateAirlinesBaggageCondition(baggage);
+                SuccessNotification(_localizationService.GetResource("Admin.ContentManagement.News.NewsItems.Updated"));
+
+                if (continueEditing)
+                {
+                    return RedirectToAction("AirlineBaggageConditionEdit", new { id = model.Id });
+                }
+                else
+                {
+                    return RedirectToAction("AirlineBaggageConditionList");
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AirlineBaggageConditionDelete(int id)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var baggage = _clickBayService.ArilinesBaggageConditionById(id);
+            if (baggage == null || baggage.Deleted)
+                return RedirectToAction("AirlineBaggageConditionList");
+
+            _clickBayService.DeleteAirlinesBaggageCondition(baggage);
+            SuccessNotification(_localizationService.GetResource("Admin.ContentManagement.News.NewsItems.Updated"));
+            
+            return RedirectToAction("AirlineBaggageConditionList");
+
+        }
+        #endregion
+
+
+        #region Airline Condition
+
+        public ActionResult AirlineConditionList()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var model = new SearchConditionsModel();
+
+            model.Airlines = _clickBayService.GetListAirline().Select(x => new SelectListItem { Text = x.AirlinesName, Value = x.Id.ToString() }).ToList();
+            model.Airlines.Insert(0, new SelectListItem() { Text = _localizationService.GetResource("Admin.Common.All"), Value = "0" });
+
+            return View(model);
+        }
+
+        [GridAction(EnableCustomBinding = true)]
+        [HttpPost]
+        public ActionResult AirlineConditionList1(GridCommand command, SearchConditionsModel searchModel)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var conditions = _clickBayService.GetListAirlinesConditionByAirlineId(searchModel.AirlineId);
+
+            var gridModel = new GridModel<AirlinesConditionModel>
+            {
+                Data = conditions.Select(x =>
+                {
+                    return new AirlinesConditionModel()
+                    {
+                        Id = x.Id,
+                        AirlinesId = x.AirlinesId,
+                        ConditionName = x.ConditionName,
+                        ConditionDescription = x.ConditionDescription,
+                        DisplayOrder = x.DisplayOrder,
+                        TicketType = x.TicketType,
+                    };
+                }),
+                Total = conditions.Count()
+            };
+
+
+            return new JsonResult
+            {
+                Data = gridModel
+            };
+        }
+
+        public ActionResult AirlineConditionCreate()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var model = new AirlinesConditionModel();
+
+            return View(model);
+        }
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
+        public ActionResult AirlineConditionCreate(AirlinesConditionModel model, bool continueEditing)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            if (ModelState.IsValid)
+            {
+                var entity = model.ToEntity();
+                _clickBayService.InsertAirlinesCondition(entity);
+                SuccessNotification(_localizationService.GetResource("Admin.ContentManagement.News.NewsItems.Updated"));
+
+                if (continueEditing)
+                {
+                    return RedirectToAction("AirlineConditionEdit", new { id = entity.Id });
+                }
+                else
+                {
+                    return RedirectToAction("AirlineConditionList");
+                }
+            }
+
+            return View(model);
+        }
+
+        public ActionResult AirlineConditionEdit(int id)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var condition = _clickBayService.AirlinesConditionById(id);
+            if (condition == null || condition.Deleted)
+                return RedirectToAction("AirlineConditionList");
+
+            var model = condition.ToModel();
+
+            return View(model);
+        }
+        [HttpPost, ParameterBasedOnFormName("save-continue", "continueEditing")]
+        public ActionResult AirlineConditionEdit(AirlinesConditionModel model, bool continueEditing)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var condition = _clickBayService.AirlinesConditionById(model.Id);
+            if (condition == null || condition.Deleted)
+                return RedirectToAction("AirlineConditionList");
+            if (ModelState.IsValid)
+            {
+                condition.ConditionName = model.ConditionName;
+                condition.ConditionDescription = model.ConditionDescription;
+                condition.DisplayOrder = model.DisplayOrder;
+                condition.AirlinesId = model.AirlinesId;
+                condition.TicketType = model.TicketType;
+
+                _clickBayService.UpdateAirlinesCondition(condition);
+                SuccessNotification(_localizationService.GetResource("Admin.ContentManagement.News.NewsItems.Updated"));
+
+                if (continueEditing)
+                {
+                    return RedirectToAction("AirlineConditionEdit", new { id = model.Id });
+                }
+                else
+                {
+                    return RedirectToAction("AirlineConditionList");
+                }
+            }
+
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult AirlineConditionDelete(int id)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return AccessDeniedView();
+
+            var condition = _clickBayService.AirlinesConditionById(id);
+            if (condition == null || condition.Deleted)
+                return RedirectToAction("AirlineConditionList");
+
+            _clickBayService.DeleteAirlinesCondition(condition);
+            SuccessNotification(_localizationService.GetResource("Admin.ContentManagement.News.NewsItems.Updated"));
+
+            return RedirectToAction("AirlineConditionList");
+
+        }
         #endregion
     }
 }
