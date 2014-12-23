@@ -98,8 +98,20 @@ namespace PlanX.Services.ClickBay
         void UpdateAirport(Airport airport);
         //void InsertOrupdateAirline(Airline Airline);
 
+        #region Airline Condition
         IList<AirlinesCondition> GetListAirlinesConditionByAirlineId(int airlineId);
+        AirlinesCondition AirlinesConditionById(int airlinesConditionId);
+        void InsertAirlinesCondition(AirlinesCondition airlinesCondition);
+        void UpdateAirlinesCondition(AirlinesCondition airlinesCondition);
+        void DeleteAirlinesCondition(AirlinesCondition airlinesCondition);
+        #endregion
+        #region Airlines baggage condition
         IList<ArilinesBaggageCondition> GetListArilinesBaggageCondition(int airlineId);
+        ArilinesBaggageCondition ArilinesBaggageConditionById(int airlinesBaggageConditionId);
+        void InsertAirlinesBaggageCondition(ArilinesBaggageCondition airlinesBaggageCondition);
+        void UpdateAirlinesBaggageCondition(ArilinesBaggageCondition airlinesBaggageCondition);
+        void DeleteAirlinesBaggageCondition(ArilinesBaggageCondition airlinesBaggageCondition);
+        #endregion
         IList<Airline> GetListAirline();
 
         Airline GetAirlineById(int id);

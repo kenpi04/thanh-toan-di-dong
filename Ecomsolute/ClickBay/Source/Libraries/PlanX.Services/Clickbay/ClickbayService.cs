@@ -369,18 +369,79 @@ namespace PlanX.Services.ClickBay
             _airportRepository.Insert(airport);
         }
 
-
+        #region Airlines Condition
         public IList<AirlinesCondition> GetListAirlinesConditionByAirlineId(int airlineId)
         {
-            return _airlinesConditionRepository.Table.Where(x => x.AirlinesId == airlineId).OrderBy(x => x.DisplayOrder).ToList();
+            var query = _airlinesConditionRepository.Table;
+            if(airlineId > 0)                
+                query = query.Where(x => x.AirlinesId == airlineId).OrderBy(x => x.DisplayOrder);
+            if (query == null)
+                return null;
+            return query.ToList();
         }
-
-        public IList<ArilinesBaggageCondition> GetListArilinesBaggageCondition(int airlineId)
+        public virtual AirlinesCondition AirlinesConditionById(int airlinesConditionId)
         {
-            return _airlineBaggageConditionRepository.Table.Where(x => x.AirlinesId == airlineId).OrderBy(x => x.DisplayOrder).ToList();
+            if (airlinesConditionId == 0)
+                return null;
+            return _airlinesConditionRepository.GetById(airlinesConditionId);
+        }
+        public virtual void InsertAirlinesCondition(AirlinesCondition airlinesCondition)
+        {
+            if (airlinesCondition== null)
+                throw new ArgumentNullException("Airlines Condition is null");
+            _airlinesConditionRepository.Insert(airlinesCondition);
+        }
+        public virtual void UpdateAirlinesCondition(AirlinesCondition airlinesCondition)
+        {
+            if (airlinesCondition == null)
+                throw new ArgumentNullException("Airlines Condition is null");
+            _airlinesConditionRepository.Update(airlinesCondition);
+        }
+        public virtual void DeleteAirlinesCondition(AirlinesCondition airlinesCondition)
+        {
+            if (airlinesCondition == null)
+                throw new ArgumentNullException("Airlines Condition is null");
+            _airlinesConditionRepository.Delete(airlinesCondition);
+        }
 
+        #endregion
+        #region Airlines baggage conditions
+        public virtual IList<ArilinesBaggageCondition> GetListArilinesBaggageCondition(int airlineId)
+        {
+            var query = _airlineBaggageConditionRepository.Table;
+            if(airlineId >0 )
+                query = query.Where(x => x.AirlinesId == airlineId).OrderBy(x => x.DisplayOrder);
+            if (query == null)
+                return null;
+            return query.ToList();
 
         }
+        public virtual ArilinesBaggageCondition ArilinesBaggageConditionById(int airlinesBaggageConditionId)
+        {
+            if (airlinesBaggageConditionId == 0)
+                return null;
+            return _airlineBaggageConditionRepository.GetById(airlinesBaggageConditionId);
+        }
+        public virtual void InsertAirlinesBaggageCondition(ArilinesBaggageCondition airlinesBaggageCondition)
+        {
+            if (airlinesBaggageCondition == null)
+                throw new ArgumentNullException("Airlines baggage Condition is null");
+            _airlineBaggageConditionRepository.Insert(airlinesBaggageCondition);
+        }
+        public virtual void UpdateAirlinesBaggageCondition(ArilinesBaggageCondition airlinesBaggageCondition)
+        {
+            if (airlinesBaggageCondition == null)
+                throw new ArgumentNullException("Airlines baggage Condition is null");
+            _airlineBaggageConditionRepository.Update(airlinesBaggageCondition);
+        }
+        public virtual void DeleteAirlinesBaggageCondition(ArilinesBaggageCondition airlinesBaggageCondition)
+        {
+            if (airlinesBaggageCondition == null)
+                throw new ArgumentNullException("Airlines baggage Condition is null");
+            _airlineBaggageConditionRepository.Delete(airlinesBaggageCondition);
+        }
+        #endregion
+
         public IList<Airline>GetListAirline()
         {
             return _airlineRepository.Table.ToList();
