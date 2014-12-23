@@ -79,14 +79,19 @@
         //    .OnComplete("onComplete"))
                         .Columns(columns =>
                         {
-                            columns.Bound(x => x.TicketId);
-                            columns.Bound(x => x.ContactName);
-                            columns.Bound(x => x.ContactPhone);
-                            columns.Bound(x => x.ContactEmail);
-                            columns.Bound(x => x.CreatedOn);
-                            columns.Bound(x => x.BookingStatus);
-                            columns.Bound(x => x.PaymentStatus);
-                            columns.Bound(x => x.TotalAmount);
+                            columns.Bound(x => x.TicketId).Title("Mã phiếu đặt");
+                            columns.Bound(x => x.ContactName).Title("Khách hàng");
+                            columns.Bound(x => x.ContactPhone).Title("Điện thoại");
+                            columns.Bound(x => x.ContactEmail).Title("Email");
+                            columns.Bound(x => x.CreatedOn).Title("Thời gian").Centered();
+                            columns.Bound(x => x.BookingStatus).Title("Trạng thái").Centered()
+                                .HtmlAttributes(new { @class = "status-text" })
+                                .ClientTemplate("<span class=\"status-text-<#= BookingStatusId #>\">" + "<#= BookingStatus #>" + "</span>");
+                            columns.Bound(x => x.PaymentStatus).Title("Thanh toán");
+                            columns.Bound(x => x.TotalAmount)
+                                .Format("{0:#,0}")
+                                .Title("Tổng tiền")
+                                .HtmlAttributes(new { style = "text-align:right" });
                             columns.Bound(x => x.Id)
                                 .Template(x => Html.ActionLink(T("Admin.Common.View").Text, "Edit", new { id = x.Id }))
                                 .ClientTemplate("<a href=\"Edit/<#= Id #>\">" + T("Admin.Common.View").Text + "</a>")

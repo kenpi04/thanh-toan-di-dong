@@ -16,13 +16,14 @@
                             columns.Bound(x => x.BookingStatus)
                                 .Width(150)
                                 .Centered()
+                                .Title("Trạng thái")
                                 .ClientTemplate("<span class=\"booking-status status-<#= BookingStatusId #>\"\">" + "<#= BookingStatus #>" + "</span>");
-                            columns.Bound(x => x.ContactName);
-                            columns.Bound(x => x.ContactPhone);
+                            columns.Bound(x => x.ContactName).Title("Khách hàng");
+                            columns.Bound(x => x.ContactPhone).Title("Điện thoại");
                             //columns.Bound(x => x.ContactEmail);
-                            columns.Bound(x => x.CreatedOn);                            
-                            columns.Bound(x => x.PaymentStatus);
-                            columns.Bound(x => x.TotalAmount).Format("{0:#,0}");
+                            columns.Bound(x => x.CreatedOn).Title("Thời gian");
+                            columns.Bound(x => x.PaymentStatus).Title("Thanh toán");
+                            columns.Bound(x => x.TotalAmount).Format("{0:#,0}").Title("Tổng tiền");
                             columns.Bound(x => x.Id)
                                 .Template(x => Html.ActionLink(T("Admin.Common.View").Text, "Edit", new { id = x.Id }))
                                 .ClientTemplate("<a href=\"Admin/ClickBay/Edit/<#= Id #>\">" + T("Admin.Common.View").Text + "</a>")

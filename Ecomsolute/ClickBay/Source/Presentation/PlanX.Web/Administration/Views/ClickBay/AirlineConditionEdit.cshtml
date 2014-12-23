@@ -1,0 +1,21 @@
+﻿@model AirlinesConditionModel
+@{
+    //page title
+    ViewBag.Title = "Sửa chi tiết điều kiện giá vé";
+}
+@using (Html.BeginForm("AirlineConditionEdit", "ClickBay", FormMethod.Post, new { id = "condition-form" }))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            Sửa chi tiêt điều kiện giá vé - @Model.ConditionName @Html.ActionLink("(" + T("Admin.Catalog.Categories.BackToList") + ")", "AirlineConditionList")
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
+            <input type="submit" name="save-continue" class="t-button" value="@T("Admin.Common.SaveContinue")" />
+            <span id="condition-delete" class="t-button">@T("Admin.Common.Delete")</span>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdateCondition", Model)
+}
+@Html.DeleteConfirmation("AirlineConditionDelete", "condition-delete")
