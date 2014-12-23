@@ -177,6 +177,8 @@
     <Compile Include="MappingExtensions.cs" />
     <Compile Include="Infrastructure\AdminStartupTask.cs" />
     <Compile Include="Infrastructure\AutoMapperStartupTask.cs" />
+    <Compile Include="Models\ClickBay\AirlinesConditionModel.cs" />
+    <Compile Include="Models\ClickBay\ArilinesBaggageConditionModel.cs" />
     <Compile Include="Models\ClickBay\BookingAverageReportLineSummaryModel.cs" />
     <Compile Include="Models\ClickBay\BookingBaggageModel.cs" />
     <Compile Include="Models\ClickBay\BookingInfoConditionModel.cs" />
@@ -186,6 +188,7 @@
     <Compile Include="Models\ClickBay\BookingPassengerModel.cs" />
     <Compile Include="Models\ClickBay\BookingPriceDetailModel.cs" />
     <Compile Include="Models\ClickBay\BookTicketNoteModel.cs" />
+    <Compile Include="Models\ClickBay\SearchConditionsModel.cs" />
     <Compile Include="Models\Cms\RenderWidgetModel.cs" />
     <Compile Include="Models\Common\LanguageSelectorModel.cs" />
     <Compile Include="Models\Common\SearchTermReportLineModel.cs" />
@@ -680,6 +683,30 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ClickBay\ListReport.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\AirlineBaggageConditionList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\AirlineBaggageConditionEdit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\_CreateOrUpdateBaggageCondition.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\AirlineBaggageConditionCreate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\AirlineConditionList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\AirlineConditionCreate.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\_CreateOrUpdateCondition.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ClickBay\AirlineConditionEdit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
