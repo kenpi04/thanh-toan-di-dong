@@ -131,11 +131,16 @@ namespace PlanX.Admin.Infrastructure
             #region BookTicketNote
             Mapper.CreateMap<BookTicketNoteModel, BookTicketNote>()
                 .ForMember(dest => dest.Booking, mo => mo.Ignore());
-                
-
-            Mapper.CreateMap<BookTicketNote, BookTicketNoteModel>();                
+            Mapper.CreateMap<BookTicketNote, BookTicketNoteModel>();
             #endregion
-
+            #region Airline Conditions
+            Mapper.CreateMap<AirlinesConditionModel, AirlinesCondition>();                
+            Mapper.CreateMap<AirlinesCondition, AirlinesConditionModel>();
+            #endregion
+            #region Airline Baggage Conditions
+            Mapper.CreateMap<ArilinesBaggageConditionModel, ArilinesBaggageCondition>();
+            Mapper.CreateMap<ArilinesBaggageCondition, ArilinesBaggageConditionModel>();
+            #endregion
             #endregion
 
             #region newscate
