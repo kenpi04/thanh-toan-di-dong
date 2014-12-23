@@ -162,5 +162,10 @@ ul.t-header{background:none;border:none;}
 .status-10{background:#F27208;}
 .status-20{background:#082EF2;}
 .status-30{background:#74CF01;}
+.status-text{font-weight:500;}
+.status-text-50{color:#565656;}
+.status-text-10{color:#F27208;}
+.status-text-20{color:#082EF2;}
+.status-text-30{color:#74CF01;}
 .t-grid table tbody{font-size:14px;}
 .t-grid table td{height:30px;}
