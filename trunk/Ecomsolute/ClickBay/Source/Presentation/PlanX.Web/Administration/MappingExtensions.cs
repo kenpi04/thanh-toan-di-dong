@@ -169,6 +169,40 @@ namespace PlanX.Admin
             return Mapper.Map(model, destination);
         }
         #endregion
+
+        #region Airlines Conditions
+        public static AirlinesConditionModel ToModel(this AirlinesCondition entity)
+        {
+            return Mapper.Map<AirlinesCondition, AirlinesConditionModel>(entity);
+        }
+
+        public static AirlinesCondition ToEntity(this AirlinesConditionModel model)
+        {
+            return Mapper.Map<AirlinesConditionModel, AirlinesCondition>(model);
+        }
+
+        public static AirlinesCondition ToEntity(this AirlinesConditionModel model, AirlinesCondition destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+        #endregion
+        #region Airlines Baggage Conditions
+        public static ArilinesBaggageConditionModel ToModel(this ArilinesBaggageCondition entity)
+        {
+            return Mapper.Map<ArilinesBaggageCondition, ArilinesBaggageConditionModel>(entity);
+        }
+
+        public static ArilinesBaggageCondition ToEntity(this ArilinesBaggageConditionModel model)
+        {
+            return Mapper.Map<ArilinesBaggageConditionModel, ArilinesBaggageCondition>(model);
+        }
+
+        public static ArilinesBaggageCondition ToEntity(this ArilinesBaggageConditionModel model, ArilinesBaggageCondition destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+        #endregion
+
         #endregion
 
         #region Category
