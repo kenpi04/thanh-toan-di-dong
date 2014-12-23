@@ -31,6 +31,10 @@ namespace PlanX.Admin.Models.ClickBay
 
         [NopResourceDisplayName("Admin.ClickBay.List.BookingId")]
         public int BookingId { get; set; }
+        [NopResourceDisplayName("Admin.ClickBay.List.PRNCode")]
+        public string PRNCode { get; set; }
+        [NopResourceDisplayName("Admin.ClickBay.List.TicketId")]
+        public string TicketId { get; set; }
 
         public IList<SelectListItem> AvailableBookingStatuses { get; set; }
     }

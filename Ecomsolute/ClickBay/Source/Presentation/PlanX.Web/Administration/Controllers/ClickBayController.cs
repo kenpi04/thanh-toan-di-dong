@@ -78,7 +78,7 @@ namespace PlanX.Admin.Controllers
             var bookings = _clickBayService.GetAllBooking(fromDate: model.CreateDate,
                 toDate: model.CreateDate, bookingStatusId: model.BookingStatusId, paymentStatusId: null,
                 contactStatusId: null, customerId: model.CustomerId,
-                contactNameOrPhone: model.CustomerNameOrPhone, pageIndex: command.Page - 1, pageSize: command.PageSize, id: model.BookingId);
+                contactNameOrPhone: model.CustomerNameOrPhone, pageIndex: command.Page - 1, pageSize: command.PageSize, id: model.BookingId, pRNCode: model.PRNCode, ticketId:model.TicketId);
 
             var gridModel = new GridModel<BookingModel>
             {
@@ -93,7 +93,9 @@ namespace PlanX.Admin.Controllers
                         CreatedOn = x.CreatedOn,
                         BookingStatus = x.BookingStatus.GetLocalizedEnum(_localizationService, _workContext.WorkingLanguage.Id),
                         PaymentStatus = x.PaymentStatus.GetLocalizedEnum(_localizationService, _workContext.WorkingLanguage.Id),
-                        TotalAmount = x.TotalAmount
+                        BookingStatusId = x.BookingStatusId,
+                        TotalAmount = x.TotalAmount,
+                        TicketId = x.TicketId
                     };
                 }),
                 Total = bookings.TotalCount
@@ -190,7 +192,7 @@ namespace PlanX.Admin.Controllers
 
             model = booking.ToModel();
             model.BookingStatus = booking.BookingStatus.GetLocalizedEnum(_localizationService, _workContext);
-            var contractCountry = _countryService.GetCountryById(booking.ContactCountryId);
+            var contractCountry = _clickBayService.GetCountryById(booking.ContactCountryId);
             model.ContactCountryId = booking.ContactCountryId;
             model.ContactCountryName = contractCountry != null ? contractCountry.Name : "";
             model.ContactStatus = booking.ContactStatus.GetLocalizedEnum(_localizationService, _workContext);
@@ -339,6 +341,109 @@ namespace PlanX.Admin.Controllers
 
             return BookingNotesSelect(bookingNoteId, command);
         }
+        #endregion
+
+        #region Sumary
+        [NonAction]
+        protected virtual IList<BookingAverageReportLineSummaryModel> GetBookingAverageReportModel()
+        {
+            var report = new List<BookingAverageReportLineSummary>();
+            report.Add(_clickBayService.BookingAverageReport(BookingStatus.ChuaXyLy));
+            report.Add(_clickBayService.BookingAverageReport(BookingStatus.GiuCho));
+            report.Add(_clickBayService.BookingAverageReport(BookingStatus.HoanThanh));
+            report.Add(_clickBayService.BookingAverageReport(BookingStatus.HoanVe));
+            report.Add(_clickBayService.BookingAverageReport(BookingStatus.DaHuy));
+            var model = report.Select(x =>
+            {
+                return new BookingAverageReportLineSummaryModel()
+                {
+                    BookingStatus = x.BookingStatus.GetLocalizedEnum(_localizationService, _workContext),
+                    SumTodayBookings= x.SumTodayBookings.ToString("#,0"),
+                    SumThisWeekBookings= x.SumThisWeekBookings.ToString("#,0"),
+                    SumThisMonthBookings = x.SumThisMonthBookings.ToString("#,0"),
+                    SumThisYearBookings = x.SumThisYearBookings.ToString("#,0"),
+                    SumAllTimeBookings = x.SumAllTimeBookings.ToString("#,0"),
+                };
+            }).ToList();
+
+            return model;
+        }
+
+        [ChildActionOnly]
+        public ActionResult BookingAverageReport()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return Content("");
+            
+            var model = GetBookingAverageReportModel();
+
+            return PartialView(model);
+        }
+
+        [GridAction(EnableCustomBinding = true)]
+        public ActionResult BookingrAverageReportList(GridCommand command)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return Content("");
+
+            var model = GetBookingAverageReportModel();
+            var gridModel = new GridModel<BookingAverageReportLineSummaryModel>
+            {
+                Data = model,
+                Total = model.Count
+            };
+            return new JsonResult
+            {
+                Data = gridModel
+            };
+        }
+
+        [ChildActionOnly]
+        public ActionResult ListReport()
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return Content("");            
+            return PartialView();
+        }
+
+        [GridAction(EnableCustomBinding = true)]
+        public ActionResult BookingListReport(GridCommand command)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
+                return Content("");
+
+            var bookings = _clickBayService.GetAllBooking(fromDate: null,
+                toDate: null, bookingStatusId: null, paymentStatusId: null,
+                contactStatusId: null, customerId: 0,
+                contactNameOrPhone: null, pageIndex: command.Page - 1, pageSize: command.PageSize, id: 0);
+
+            var gridModel = new GridModel<BookingModel>
+            {
+                Data = bookings.Select(x =>
+                {
+                    return new BookingModel()
+                    {
+                        Id = x.Id,
+                        ContactName = x.ContactName,
+                        ContactPhone = x.ContactPhone,
+                        ContactEmail = x.ContactEmail,
+                        CreatedOn = x.CreatedOn,
+                        BookingStatus = x.BookingStatus.GetLocalizedEnum(_localizationService, _workContext.WorkingLanguage.Id),
+                        PaymentStatus = x.PaymentStatus.GetLocalizedEnum(_localizationService, _workContext.WorkingLanguage.Id),
+                        BookingStatusId = x.BookingStatusId,
+                        TotalAmount = x.TotalAmount
+                    };
+                }),
+                Total = bookings.TotalCount
+            };
+
+
+            return new JsonResult
+            {
+                Data = gridModel
+            };
+        }
+
         #endregion
     }
 }

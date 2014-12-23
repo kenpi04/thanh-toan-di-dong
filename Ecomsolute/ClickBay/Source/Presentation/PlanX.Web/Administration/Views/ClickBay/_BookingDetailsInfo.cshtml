@@ -49,10 +49,10 @@
                     </tr>
                     <tr>
                         <td class="adminTitle bold600">
-                            ID:
+                            Mã đặt vé:
                         </td>
                         <td class="adminData">
-                            @Model.Id
+                            @Model.TicketId
                         </td>
                     </tr>
                     <tr>
@@ -68,7 +68,7 @@
                             Số lượng hành khách:
                         </td>
                         <td class="adminData">
-                            @(Model.Adult == 0 ? "" : string.Format("{0} người lớn", Model.Adult)) @(Model.Child == 0 ? "" : string.Format(" | {0} trẻ em", Model.Child)) @(Model.Infant == 0 ? "" : string.Format("  | {0} trẻ sơ sinh", Model.Infant))
+                            @(Model.Adult == 0 ? "" : string.Format("{0} người lớn", Model.Adult)) @(Model.Child == 0 ? "" : string.Format(" , {0} trẻ em", Model.Child)) @(Model.Infant == 0 ? "" : string.Format("  , {0} trẻ sơ sinh", Model.Infant))
                         </td>
                     </tr>
                     <tr>
@@ -105,7 +105,7 @@
                             Tổng giá:
                         </td>
                         <td class="adminData">
-                            @Model.TotalAmount
+                            @Model.TotalAmount.ToString("#,0") (vnd)
                         </td>
                     </tr>
                     <tr>
@@ -113,7 +113,7 @@
                             Tổng thuế & phí:
                         </td>
                         <td class="adminData">
-                            @(Model.TotalFeeAmount + Model.TotalTaxAmount + Model.TotalFeeOtherAmount)
+                            @((Model.TotalFeeAmount + Model.TotalTaxAmount + Model.TotalFeeOtherAmount).ToString("#,0")) (vnd)
                         </td>
                     </tr>
                     <tr>
@@ -121,7 +121,7 @@
                             Tổng phí hành lý:
                         </td>
                         <td class="adminData">
-                            @Model.TotalBaggageFeeAmount
+                            @Model.TotalBaggageFeeAmount.ToString("#,0") (vnd)
                         </td>
                     </tr>
                     <tr>
@@ -129,7 +129,7 @@
                             Tổng giảm giá:
                         </td>
                         <td class="adminData">
-                            @Model.TotalDiscountAmount
+                            @Model.TotalDiscountAmount.ToString("#,0") (vnd)
                         </td>
                     </tr>
                     <tr>
@@ -137,7 +137,7 @@
                             Tổng cộng:
                         </td>
                         <td class="adminData bold600">
-                            @(Model.TotalAmount + Model.TotalFeeAmount + Model.TotalTaxAmount + Model.TotalFeeOtherAmount - Model.TotalDiscountAmount)  @Model.CurrencyCode
+                            @((Model.TotalAmount + Model.TotalFeeAmount + Model.TotalTaxAmount + Model.TotalFeeOtherAmount - Model.TotalDiscountAmount).ToString("#,0"))  (vnd)
                         </td>
                     </tr>
                 </table>
@@ -155,17 +155,17 @@
                             <tr>
                                 <td class="adminTitle bold600">
                                     @if (pass.PassengerType == 0)
-                                    {<text>Người lớn(Từ 12 tuổi):</text>}
+                                    {<text>Người lớn:</text>}
                                     else if (pass.PassengerType == 1)
-                                    {<text>Trẻ em(Từ 2 -> 11 tuổi):</text>}
+                                    {<text>Trẻ em:</text>}
                                     else if (pass.PassengerType == 2)
-                                    {<text>Trẻ sơ sinh(Dưới 2 tuổi):</text>}
+                                    {<text>Trẻ sơ sinh:</text>}
+                                </td>
+                                <td style="text-transform:uppercase">
+                                    @string.Format("{0}, {1} {2} {3}", T("PasserType." + (PlanX.Core.Domain.ClickBay.PasserType)pass.PassengerType), pass.LastName, pass.MiddleName, pass.FirstName)
                                 </td>
                                 <td>
-                                    @string.Format("{0}, {1} {2} {3}", pass.Title, pass.LastName, pass.MiddleName, pass.FirstName)
-                                </td>
-                                <td>
-                                    @if (pass.PassengerType != 0)
+                                    @if (pass.BirthDay.HasValue)
                                     {
                                         @("Ngày sinh: "+ (pass.BirthDay.HasValue? pass.BirthDay.Value.ToString("dd-MM-yyyy"):""))
                                     }
