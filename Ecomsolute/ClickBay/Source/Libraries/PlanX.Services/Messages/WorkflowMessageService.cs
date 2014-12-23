@@ -17,6 +17,8 @@ using PlanX.Services.Events;
 using PlanX.Services.Localization;
 using PlanX.Services.Stores;
 using PlanX.Core.Domain.News;
+using PlanX.Core.Domain.ClickBay;
+using System.Net.Mail;
 
 namespace PlanX.Services.Messages
 {
@@ -34,6 +36,7 @@ namespace PlanX.Services.Messages
         private readonly IStoreContext _storeContext;
         private readonly EmailAccountSettings _emailAccountSettings;
         private readonly IEventPublisher _eventPublisher;
+        private readonly IEmailSender _emailSender;
 
         #endregion
 
@@ -48,7 +51,8 @@ namespace PlanX.Services.Messages
             IStoreService storeService,
             IStoreContext storeContext,
             EmailAccountSettings emailAccountSettings,
-            IEventPublisher eventPublisher)
+            IEventPublisher eventPublisher,
+            IEmailSender emailSender)
         {
             this._messageTemplateService = messageTemplateService;
             this._queuedEmailService = queuedEmailService;
@@ -60,6 +64,7 @@ namespace PlanX.Services.Messages
             this._storeContext = storeContext;
             this._emailAccountSettings = emailAccountSettings;
             this._eventPublisher = eventPublisher;
+            this._emailSender = emailSender;
         }
 
         #endregion
@@ -69,7 +74,7 @@ namespace PlanX.Services.Messages
         protected virtual int SendNotification(MessageTemplate messageTemplate, 
             EmailAccount emailAccount, int languageId, IEnumerable<Token> tokens,
             string toEmailAddress, string toName,
-            string attachmentFilePath = null, string attachmentFileName = null)
+            string attachmentFilePath = null, string attachmentFileName = null, bool isWaitInQueuedEmail = true)
         {
             //retrieve localized message template data
             var bcc = messageTemplate.GetLocalized((mt) => mt.BccEmailAddresses, languageId);
@@ -93,14 +98,32 @@ namespace PlanX.Services.Messages
                 Body = bodyReplaced,
                 AttachmentFilePath = attachmentFilePath,
                 AttachmentFileName = attachmentFileName,
-                CreatedOnUtc = DateTime.UtcNow,
-                EmailAccountId = emailAccount.Id
+                CreatedOnUtc = DateTime.Now,
+                EmailAccountId = emailAccount.Id,                
             };
 
             _queuedEmailService.InsertQueuedEmail(email);
+
+            if(!isWaitInQueuedEmail)
+            {
+                try
+                {
+                    var from = new MailAddress(email.From, email.FromName);
+                    var to = new MailAddress(email.To, email.ToName);
+                    string subj = email.Subject;
+                    string bo = email.Body;
+                    _emailSender.SendEmail(emailAccount, subject, body, from, to, email.Bcc.Split(','), email.CC.Split(','));
+                    email.SentOnUtc = DateTime.Now;
+                    _queuedEmailService.UpdateQueuedEmail(email);
+                }catch
+                {
+
+                }
+            }
+
             return email.Id;
         }
-
+       
         protected virtual MessageTemplate GetLocalizedActiveMessageTemplate(string messageTemplateName, 
             int languageId, int storeId)
         {
@@ -155,6 +178,39 @@ namespace PlanX.Services.Messages
         #endregion
 
         #region Methods
+
+        #region Booking
+        /// <summary>
+        /// Sends password recovery message to a customer
+        /// </summary>
+        /// <param name="booking">Booking instance</param>
+        /// <returns>Queued email identifier</returns>
+        public virtual int SendCustomerBookingSuccessfullMessage(Booking booking)
+        {
+            if (booking == null)
+                throw new ArgumentNullException("booking");
+
+            var messageTemplate = GetLocalizedActiveMessageTemplate("Booking.Successfull", 0, 0);
+            if (messageTemplate == null)
+                return 0;
+
+            //tokens
+            var tokens = new List<Token>();
+            //_messageTokenProvider.AddStoreTokens(tokens, store);
+            //_messageTokenProvider.AddCustomerTokens(tokens, customer);
+
+
+            //event notification
+            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
+
+            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, 0);
+            var toEmail = booking.ContactEmail;
+            var toName = booking.ContactName;           
+
+            return SendNotification(messageTemplate, emailAccount, 0, tokens, toEmail, toName, null, null, false);
+        }
+
+        #endregion
 
         #region Customer workflow
 

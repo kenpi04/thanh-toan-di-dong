@@ -97,6 +97,8 @@
     <Compile Include="Domain\ClickBay\Airport.cs" />
     <Compile Include="Domain\ClickBay\ArilinesBaggageCondition.cs" />
     <Compile Include="Domain\ClickBay\Booking.cs" />
+    <Compile Include="Domain\ClickBay\BookingAverageReportLine.cs" />
+    <Compile Include="Domain\ClickBay\BookingAverageReportLineSummary.cs" />
     <Compile Include="Domain\ClickBay\BookingBaggage.cs" />
     <Compile Include="Domain\ClickBay\BookingInfoCondition.cs" />
     <Compile Include="Domain\ClickBay\BookingInfoFlight.cs" />

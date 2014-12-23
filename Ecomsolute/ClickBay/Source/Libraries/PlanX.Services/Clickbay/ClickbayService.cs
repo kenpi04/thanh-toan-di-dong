@@ -108,8 +108,8 @@ namespace PlanX.Services.ClickBay
 
             string data = JsonConvert.SerializeObject(searchModel);
 
-            string result = GetData(url, false, null, data);
-            //string result = readFile("data_detail.txt");
+            //string result = GetData(url, false, null, data);
+            string result = readFile("data_detail.txt");
             if (string.IsNullOrEmpty(result))
                 return new List<Ticket>();
             return JsonConvert.DeserializeObject<IEnumerable<Ticket>>(result);

@@ -16,6 +16,13 @@ namespace PlanX.Services.Messages
         #region Customer workflow
 
         /// <summary>
+        /// Sends password recovery message to a customer
+        /// </summary>
+        /// <param name="booking">Booking instance</param>
+        /// <returns>Queued email identifier</returns>
+        int SendCustomerBookingSuccessfullMessage(PlanX.Core.Domain.ClickBay.Booking booking);
+
+        /// <summary>
         /// Sends 'New customer' notification message to a store owner
         /// </summary>
         /// <param name="customer">Customer instance</param>

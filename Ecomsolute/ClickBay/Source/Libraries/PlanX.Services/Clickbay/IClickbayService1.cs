@@ -12,7 +12,7 @@ namespace PlanX.Services.ClickBay
         void DeletedBooking(Booking booking);
         Booking GetBookingById(int bookingId);
         Booking GetBookingByTickedId(string ticketId);
-        IPagedList<Booking> GetAllBooking(DateTime? fromDate, DateTime? toDate, int? bookingStatusId, int? paymentStatusId, int? contactStatusId, int customerId = 0, string contactNameOrPhone = "", int pageIndex = 0, int pageSize = int.MaxValue, int id=0);
+        IPagedList<Booking> GetAllBooking(DateTime? fromDate, DateTime? toDate, int? bookingStatusId, int? paymentStatusId, int? contactStatusId, int customerId = 0, string contactNameOrPhone = "", int pageIndex = 0, int pageSize = int.MaxValue, int id = 0, string pRNCode = "", string ticketId = "");
         string GetTicketId(int bookingId);
         void InsertBookingInfoFlight(BookingInfoFlight bookingInfoFlight);
         void UpdateBookingInfoFlight(BookingInfoFlight bookingInfoFlight);
@@ -29,6 +29,14 @@ namespace PlanX.Services.ClickBay
         BookTicketNote GetBookTicketNoteById(int id);
         IList<BookTicketNote> GetAllBookTicketNoteByBokingId(int bookingId);
         void DeletedBookTicketNote(BookTicketNote bookTicketNote);
+
+        #region report
+
+        BookingAverageReportLine GetBookingAverageReportLine(BookingStatus? os,
+            PaymentStatus? ps, DateTime? startTimeUtc, DateTime? endTimeUtc);
+
+        BookingAverageReportLineSummary BookingAverageReport(BookingStatus os);
+        #endregion
     }
 }
 
