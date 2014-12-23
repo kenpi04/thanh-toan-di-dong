@@ -204,6 +204,7 @@
     <Compile Include="Models\Messages\MessageTemplateListModel.cs" />
     <Compile Include="Models\News\NewsItemListModel.cs" />
     <Compile Include="Models\News\NewsItemModel.cs" />
+    <Compile Include="Models\Settings\ClickBaySettingsModel.cs" />
     <Compile Include="Models\Settings\NewsSettingsModel.cs" />
     <Compile Include="Models\Settings\StoreScopeConfigurationModel.cs" />
     <Compile Include="Models\Stores\StoreModel.cs" />
@@ -707,6 +708,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ClickBay\AirlineConditionEdit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Setting\ClickBay.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

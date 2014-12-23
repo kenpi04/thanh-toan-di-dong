@@ -203,6 +203,20 @@ namespace PlanX.Admin
         }
         #endregion
 
+        #region Clickbay settings
+        public static ClickBaySettingsModel ToModel(this ClickBaySettings entity)
+        {
+            return Mapper.Map<ClickBaySettings, ClickBaySettingsModel>(entity);
+        }
+        public static ClickBaySettings ToEntity(this ClickBaySettingsModel model)
+        {
+            return Mapper.Map<ClickBaySettingsModel, ClickBaySettings>(model);
+        }
+        public static ClickBaySettings ToEntity(this ClickBaySettingsModel model, ClickBaySettings destination)
+        {
+            return Mapper.Map(model, destination);
+        }
+        #endregion
         #endregion
 
         #region Category
