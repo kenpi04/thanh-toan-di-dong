@@ -217,26 +217,26 @@
                 <div class="box-content">
                     @foreach (var pr in Model.TotalPriceShows)
                     {
-                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("0,#") @currencyCode</span></p>
+                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("#,0") @currencyCode</span></p>
                     }
                 </div>
                 <h4><span>Thuế và phí</span></h4>
                 <div class="box-content">
                     @foreach (var pr in Model.TotalPriceShows)
                     {
-                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.TaxAndFee.ToString("0,#") @currencyCode</span></p>
+                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.TaxAndFee.ToString("#,0") @currencyCode</span></p>
                     }
                 </div>
                 <div class="box-content sumPrice">
-                    <p><span>Tổng giá</span><span id="sumprice-totalprice">@totalPrice.ToString("0,#") @currencyCode</span></p>
-                    <p><span>Hành lý thêm</span> <span id="sumprice-totalbaggagefee" data-price="0">@totalBaggageFee.ToString("0") @currencyCode</span></p>
+                    <p><span>Tổng giá</span><span id="sumprice-totalprice">@totalPrice.ToString("#,0") @currencyCode</span></p>
+                    <p><span>Hành lý thêm</span> <span id="sumprice-totalbaggagefee" data-price="0">@totalBaggageFee.ToString("#,0") @currencyCode</span></p>
                     @if (totalDiscount > 0)
                     {
-                        <p><span>Giảm giá</span> <span id="sumprice-totaldiscountamount">- @totalDiscount.ToString("0,#") @currencyCode</span></p>
+                        <p><span>Giảm giá</span> <span id="sumprice-totaldiscountamount">- @totalDiscount.ToString("#,0") @currencyCode</span></p>
                     }
                 </div>
                 <div class="box-content sumPrice">
-                    <p><span>TỔNG</span> <span id="sumprice-totalfinaly" data-price="@(totalPrice-totalDiscount)">@((totalPrice - totalDiscount + totalBaggageFee).ToString("0,#")) @currencyCode</span></p>
+                    <p><span>TỔNG</span> <span id="sumprice-totalfinaly" data-price="@(totalPrice-totalDiscount)">@((totalPrice - totalDiscount + totalBaggageFee).ToString("#,0")) @currencyCode</span></p>
                 </div>
             </div>
         </div>
