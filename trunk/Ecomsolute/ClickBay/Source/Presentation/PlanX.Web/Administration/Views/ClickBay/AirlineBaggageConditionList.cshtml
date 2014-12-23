@@ -1,0 +1,82 @@
+﻿@model PlanX.Admin.Models.ClickBay.SearchConditionsModel
+@using Telerik.Web.Mvc.UI
+
+@{
+    var gridPageSize = EngineContext.Current.Resolve<PlanX.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+    //page title
+    ViewBag.Title = "Danh sách điều kiện hành lý";
+
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-sales.png")" alt="" />
+            Danh sách điều kiện hành lý
+        </div>
+        <div class="options">
+            <a href="@Url.Action("AirlineBaggageConditionCreate")" class="t-button">@T("Admin.Common.AddNew")</a>
+        </div>
+    </div>
+    <table style="width:100%">
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.AirlineId):
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("AirlineId", Model.Airlines)
+            </td>           
+        </tr>
+    </table>
+    <p>
+    </p>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<PlanX.Admin.Models.ClickBay.ArilinesBaggageConditionModel>()
+                        .Name("baggage-grid")
+                        .ClientEvents(events => events
+                        .OnDataBinding("onDataBinding"))       
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.Id);
+                            columns.Bound(x => x.AirlinesId);
+                            columns.Bound(x => x.Baggage).Format("{0:#,0}");
+                            columns.Bound(x => x.BaggageFee).Format("{0:#,0}");
+                            columns.Bound(x => x.Description);
+                            columns.Bound(x => x.DisplayOrder);
+                            columns.Bound(x => x.IsFree);
+                            columns.Bound(x => x.IsHandLuggage);                                
+                            columns.Bound(x => x.Id)
+                                .Template(x => Html.ActionLink(T("Admin.Common.View").Text, "Edit", new { id = x.Id }))
+                                .ClientTemplate("<a href=\"AirlineBaggageConditionEdit/<#= Id #>\">" + T("Admin.Common.View").Text + "</a>")
+                                .Width(50)
+                                .Centered()
+                                .Title(T("Admin.Common.View").Text);
+                        })
+                        //.Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                        .DataBinding(dataBinding => dataBinding.Ajax().Select("AirlineBaggageConditionList1", "ClickBay"))
+                        .EnableCustomBinding(true))
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //search button
+            $('#AirlineId').change(function () {
+                //search
+                var grid = $('#baggage-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();               
+                return false;
+            });
+
+        });
+        function onDataBinding(e) {
+            var searchModel = {
+                AirlineId: $('#@Html.FieldIdFor(model => model.AirlineId)').val(),                
+            };
+            e.data = searchModel;
+        }
+    </script>
+}

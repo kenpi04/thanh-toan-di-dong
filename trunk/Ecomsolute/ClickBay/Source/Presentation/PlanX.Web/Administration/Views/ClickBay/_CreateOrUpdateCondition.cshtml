@@ -1,0 +1,51 @@
+﻿@model AirlinesConditionModel
+@using Telerik.Web.Mvc.UI;
+@Html.ValidationSummary(false)
+@Html.HiddenFor(model => model.Id)
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.AirlinesId):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.AirlinesId)
+            @Html.ValidationMessageFor(model => model.AirlinesId)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.ConditionName):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.ConditionName)
+            @Html.ValidationMessageFor(model => model.ConditionName)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.ConditionDescription):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.ConditionDescription)
+            @Html.ValidationMessageFor(model => model.ConditionDescription)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.DisplayOrder):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.DisplayOrder)
+            @Html.ValidationMessageFor(model => model.DisplayOrder)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.TicketType):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.TicketType)
+            @Html.ValidationMessageFor(model => model.TicketType)
+        </td>
+    </tr>
+</table>

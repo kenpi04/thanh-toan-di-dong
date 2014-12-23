@@ -1,0 +1,72 @@
+﻿@model ArilinesBaggageConditionModel
+@using Telerik.Web.Mvc.UI;
+@Html.ValidationSummary(false)
+@Html.HiddenFor(model => model.Id)
+
+
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.AirlinesId):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.AirlinesId)
+            @Html.ValidationMessageFor(model => model.AirlinesId)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Baggage):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Baggage)
+            @Html.ValidationMessageFor(model => model.Baggage)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.BaggageFee):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.BaggageFee)
+            @Html.ValidationMessageFor(model => model.BaggageFee)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.DisplayOrder):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.DisplayOrder)
+            @Html.ValidationMessageFor(model => model.DisplayOrder)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.IsHandLuggage):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.IsHandLuggage)
+            @Html.ValidationMessageFor(model => model.IsHandLuggage)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.IsFree):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.IsFree)
+            @Html.ValidationMessageFor(model => model.IsFree)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Description):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(x => x.Description, new { style="width:500px;" })
+            @Html.ValidationMessageFor(model => model.Description)
+        </td>
+    </tr>
+   
+</table>

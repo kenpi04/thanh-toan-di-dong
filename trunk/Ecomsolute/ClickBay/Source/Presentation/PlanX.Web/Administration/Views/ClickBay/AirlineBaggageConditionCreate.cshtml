@@ -1,21 +1,21 @@
-﻿@model CategoryNewsModel
+﻿@model ArilinesBaggageConditionModel
 @{
     //page title
-    ViewBag.Title = @T("Admin.Catalog.Categories.EditCategoryDetails").Text;
+    ViewBag.Title = "Tạo mới điều kiện hành lý";
 }
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "category-form" }))
+@using (Html.BeginForm("AirlineBaggageConditionCreate", "ClickBay", FormMethod.Post, new { id = "baggage-form" }))
 {
     <div class="section-header">
         <div class="title">
             <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
-            @T("Admin.Catalog.Categories.EditCategoryDetails") - @Model.Name @Html.ActionLink("(" + T("Admin.Catalog.Categories.BackToList") + ")", "List")
+            @T("Admin.Catalog.Categories.AddNew") @Html.ActionLink("(" + T("Admin.Catalog.Categories.BackToList") + ")", "AirlineBaggageConditionList")
         </div>
-        <div class="options">     
+        <div class="options">
             <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
             <input type="submit" name="save-continue" class="t-button" value="@T("Admin.Common.SaveContinue")" />
             <span id="category-delete" class="t-button">@T("Admin.Common.Delete")</span>
         </div>
     </div>
-    @Html.Partial("_CreateOrUpdate", Model)
+    @Html.Partial("_CreateOrUpdateBaggageCondition", Model)
 }
-@Html.DeleteConfirmation("category-delete")
+@Html.DeleteConfirmation("baggage-delete")
