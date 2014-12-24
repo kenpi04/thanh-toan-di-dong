@@ -394,6 +394,10 @@ namespace PlanX.Web.Framework
 
             return MvcHtmlString.Create(tag.ToString(TagRenderMode.Normal));
         }
+        public static MvcHtmlString FptBanner(this HtmlHelper helper, int? Position = null, string viewName = "")
+        {
+            return helper.Action("BannerShow", "FptBanner", new { Position = Position,viewName = viewName });
+        }
 
         #endregion
     }
