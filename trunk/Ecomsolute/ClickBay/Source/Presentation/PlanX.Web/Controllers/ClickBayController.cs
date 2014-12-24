@@ -771,14 +771,16 @@ namespace PlanX.Web.Controllers
                 });
             }
             #endregion
-            //send mail for customer & admin
-            #region
-            _workflowMessageService.SendCustomerBookingSuccessfullMessage(booking);
-            #endregion
+            
 
             Session[string.Format(SUCCESS_BOOKING_SESSION, _workContext.CurrentCustomer.Id)] = booking.Id;
             //update TicketId
-            _clickBayService.GetTicketId(booking.Id);
+            booking.TicketId = _clickBayService.GetTicketId(booking.Id);
+            #endregion
+
+            //send mail for customer & admin
+            #region
+            _workflowMessageService.SendCustomerBookingSuccessfullMessage(booking);
             #endregion
 
             return new JsonResult
