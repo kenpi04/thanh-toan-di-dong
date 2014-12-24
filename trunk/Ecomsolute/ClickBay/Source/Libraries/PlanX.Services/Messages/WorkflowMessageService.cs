@@ -112,7 +112,7 @@ namespace PlanX.Services.Messages
                     var to = new MailAddress(email.To, email.ToName);
                     string subj = email.Subject;
                     string bo = email.Body;
-                    _emailSender.SendEmail(emailAccount, subject, body, from, to, email.Bcc.Split(','), email.CC.Split(','));
+                    _emailSender.SendEmail(emailAccount, subject, body, from, to, !string.IsNullOrEmpty(email.Bcc) ? email.Bcc.Split(',') : null, !string.IsNullOrEmpty(email.CC) ? email.CC.Split(',') : null);
                     email.SentOnUtc = DateTime.Now;
                     _queuedEmailService.UpdateQueuedEmail(email);
                 }catch
@@ -196,7 +196,7 @@ namespace PlanX.Services.Messages
 
             //tokens
             var tokens = new List<Token>();
-            //_messageTokenProvider.AddStoreTokens(tokens, store);
+            _messageTokenProvider.AddBookingTokens(tokens, booking);
             //_messageTokenProvider.AddCustomerTokens(tokens, customer);
 
 
@@ -205,9 +205,52 @@ namespace PlanX.Services.Messages
 
             var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, 0);
             var toEmail = booking.ContactEmail;
-            var toName = booking.ContactName;           
+            var toName = booking.ContactName;
 
-            return SendNotification(messageTemplate, emailAccount, 0, tokens, toEmail, toName, null, null, false);
+            //retrieve localized message template data
+            var bcc = messageTemplate.GetLocalized((mt) => mt.BccEmailAddresses, 0);
+            var subject = messageTemplate.GetLocalized((mt) => mt.Subject, 0);
+            var body = messageTemplate.GetLocalized((mt) => mt.Body, 0);
+
+            //Replace subject and body tokens 
+            var subjectReplaced = _tokenizer.Replace(subject, tokens, false);
+            var bodyReplaced = _tokenizer.Replace(body, tokens, true);
+
+            var email = new QueuedEmail()
+            {
+                Priority = 5,
+                From = emailAccount.Email,
+                FromName = emailAccount.DisplayName,
+                To = booking.ContactEmail,
+                ToName = booking.ContactName,
+                CC = string.Empty,
+                Bcc = bcc,
+                Subject = booking.TicketId.ToUpper() +" - "+ subjectReplaced,
+                Body = bodyReplaced,
+                AttachmentFilePath = null,
+                AttachmentFileName = null,
+                CreatedOnUtc = DateTime.Now,
+                EmailAccountId = emailAccount.Id,
+            };
+
+            _queuedEmailService.InsertQueuedEmail(email);
+            //xay ra loi la die luon
+                //try
+                //{
+                    var from = new MailAddress(email.From, email.FromName);
+                    var to = new MailAddress(email.To, email.ToName);
+                    string subj = email.Subject;
+                    string bo = email.Body;
+                    _emailSender.SendEmail(emailAccount, email.Subject, email.Body, from, to, !string.IsNullOrEmpty(email.Bcc) ? email.Bcc.Split(';') : null, !string.IsNullOrEmpty(email.CC) ? email.CC.Split(';') : null);
+                    email.SentOnUtc = DateTime.Now;
+                    _queuedEmailService.UpdateQueuedEmail(email);
+                //}
+                //catch
+                //{
+
+                //}
+
+                return 1;//SendNotification(messageTemplate, emailAccount, 0, tokens, toEmail, toName, null, null, false);
         }
 
         #endregion

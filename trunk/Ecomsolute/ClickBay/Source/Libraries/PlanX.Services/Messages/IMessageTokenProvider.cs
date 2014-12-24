@@ -9,11 +9,13 @@ using PlanX.Core.Domain.Messages;
 //using PlanX.Core.Domain.Shipping;
 using PlanX.Core.Domain.Stores;
 using PlanX.Core.Domain.News;
+using PlanX.Core.Domain.ClickBay;
 
 namespace PlanX.Services.Messages
 {
     public partial interface IMessageTokenProvider
     {
+        void AddBookingTokens(IList<Token> tokens, Booking booking);
         void AddStoreTokens(IList<Token> tokens, Store store);
 
         //void AddOrderTokens(IList<Token> tokens, Order order, int languageId);
