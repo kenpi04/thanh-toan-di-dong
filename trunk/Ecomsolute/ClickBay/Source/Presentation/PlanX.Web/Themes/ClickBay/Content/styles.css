@@ -65,7 +65,9 @@ width: 173px;}
 .share{text-align:right}
 .content{min-height:400px}
 .footer{background:#189b96;color:#fff;padding:30px 0;display:inline-block;width:100%;}
-.footer .block{float:left;width:24%;margin-right:10px}
+.footer .wrapper-content{display:inline-block;width:100%;margin:0;}
+.footer .block{float:left;width:25%;box-sizing:border-box;}
+.footer .block.support{padding-left:30px;}
 .footer .block .block-title{font-size: 16px;text-transform: uppercase;font-weight: bold;}
 .footer .support ul li a{line-height:25px;color:#fff}
 .footer p.link-site{margin:0;}
@@ -520,3 +522,14 @@ width: 164px;
 .tt-tai-nha{background:url(/Themes/ClickBay/Content/images/thanh_toan_tai_nha.png) top left no-repeat;}
 .tt-chuyen-khoan{background:url(/Themes/ClickBay/Content/images/thanh_toan_chuyen_khoan.png) top left no-repeat;}
 a.showmap{cursor:pointer;color:#000;font-size:13px;text-decoration:underline;}
+/*Contact Page*/
+.contact-page{}
+.contact-page .page-title{font-size:20px;}
+.contact-page .box-50{float:left;}
+.contact-page .contact-address{font-size:14px;}
+.contact-page .buttons{margin:5px 0;}
+.contact-page input.default{border-radius:0;}
+.contact-page textarea{min-height:93px;width:100%; max-width:100%;box-sizing:border-box;padding:10px;}
+.contact-page .map-canvas{box-shadow:1px 2px 5px 1px #ddd;}
+.field-validation-error{color:red;}
+.contact-page .form-fields{border:0;padding:0;}
