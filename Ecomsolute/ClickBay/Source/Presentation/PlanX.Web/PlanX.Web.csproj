@@ -200,6 +200,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\FptBannerController.cs" />
     <Compile Include="Controllers\KeepAliveController.cs" />
     <Compile Include="Controllers\ExternalAuthenticationController.cs" />
     <Compile Include="Controllers\InstallController.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Models\Common\AdminHeaderLinksModel.cs" />
     <Compile Include="Models\Common\FooterModel.cs" />
     <Compile Include="Models\Common\FaviconModel.cs" />
+    <Compile Include="Models\Common\FptBannerShowModel.cs" />
     <Compile Include="Models\Common\PagerModel.cs" />
     <Compile Include="Models\Common\StoreThemeModel.cs" />
     <Compile Include="Models\Common\LanguageSelectorModel.cs" />
@@ -848,9 +850,11 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.flexslider.js" />
     <Content Include="Scripts\public.common.mobile.js" />
     <None Include="Scripts\_references.js" />
     <Content Include="Scripts\search.js" />
+    <Content Include="Themes\ClickBay\Content\flexslider.css" />
     <Content Include="Themes\ClickBay\Content\ie6.css" />
     <Content Include="Themes\ClickBay\Content\ie7.css" />
     <Content Include="Themes\ClickBay\Content\images\ajax_loader_large.gif" />
@@ -1351,6 +1355,8 @@
     <Content Include="Themes\ClickBay\Views\ClickBay\_FlightBaggageCondition.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\Map.cshtml" />
     <Content Include="Themes\ClickBay\Views\Home\Index - Copy.cshtml" />
+    <Content Include="Views\FptBanner\BannerShow.cshtml" />
+    <Content Include="Views\FptBanner\BannerSlideShow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\Thumbs\" />
