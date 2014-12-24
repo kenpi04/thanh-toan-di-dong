@@ -29,6 +29,8 @@ using PlanX.Services.Media;
 //using PlanX.Services.Payments;
 using PlanX.Services.Seo;
 using PlanX.Core.Domain.News;
+using PlanX.Core.Domain.ClickBay;
+using PlanX.Services.ClickBay;
 
 namespace PlanX.Services.Messages
 {
@@ -55,6 +57,7 @@ namespace PlanX.Services.Messages
         //private readonly TaxSettings _taxSettings;
 
         private readonly IEventPublisher _eventPublisher;
+        private readonly IClickBayService _clickBayService;
 
         #endregion
 
@@ -69,10 +72,11 @@ namespace PlanX.Services.Messages
             //IOrderService orderService, IPaymentService paymentService,
             //IProductAttributeParser productAttributeParser,
             MessageTemplatesSettings templatesSettings,
-            EmailAccountSettings emailAccountSettings, 
+            EmailAccountSettings emailAccountSettings,
             //CatalogSettings catalogSettings,
             //TaxSettings taxSettings, 
-            IEventPublisher eventPublisher)
+            IEventPublisher eventPublisher,
+            IClickBayService clickBayService)
         {
             this._languageService = languageService;
             this._localizationService = localizationService;
@@ -92,381 +96,322 @@ namespace PlanX.Services.Messages
             //this._catalogSettings = catalogSettings;
             //this._taxSettings = taxSettings;
             this._eventPublisher = eventPublisher;
+            this._clickBayService = clickBayService;
         }
 
         #endregion
 
         #region Utilities
-
-        /// <summary>
-        /// Convert a collection to a HTML table
-        /// </summary>
-        /// <param name="order">Order</param>
-        /// <param name="languageId">Language identifier</param>
-        /// <returns>HTML table of products</returns>
-        /*
-        protected virtual string ProductListToHtmlTable(Order order, int languageId)
+        private string GetCountryName(string cityCode)
         {
-            var result = "";
-
-            var language = _languageService.GetLanguageById(languageId);
-
-            var sb = new StringBuilder();
-            sb.AppendLine("<table border=\"0\" style=\"width:100%;\">");
-
-            #region Products
-            sb.AppendLine(string.Format("<tr style=\"background-color:{0};text-align:center;\">", _templatesSettings.Color1));
-            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Name", languageId)));
-            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Price", languageId)));
-            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Quantity", languageId)));
-            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Total", languageId)));
-            sb.AppendLine("</tr>");
-
-            var table = order.OrderItems.ToList();
-            for (int i = 0; i <= table.Count - 1; i++)
+            try
             {
-                var orderItem = table[i];
-                var product = orderItem.Product;
-                if (product == null)
-                    continue;
-
-                sb.AppendLine(string.Format("<tr style=\"background-color: {0};text-align: center;\">", _templatesSettings.Color2));
-                //product name
-                string productName = product.GetLocalized(x => x.Name, languageId);
-
-                sb.AppendLine("<td style=\"padding: 0.6em 0.4em;text-align: left;\">" + HttpUtility.HtmlEncode(productName));
-                //add download link
-                if (_downloadService.IsDownloadAllowed(orderItem))
-                {
-                    //TODO add a method for getting URL (use routing because it handles all SEO friendly URLs)
-                    string downloadUrl = string.Format("{0}download/getdownload/{1}", _webHelper.GetStoreLocation(false), orderItem.OrderItemGuid);
-                    string downloadLink = string.Format("<a class=\"link\" href=\"{0}\">{1}</a>", downloadUrl, _localizationService.GetResource("Messages.Order.Product(s).Download", languageId));
-                    sb.AppendLine("&nbsp;&nbsp;(");
-                    sb.AppendLine(downloadLink);
-                    sb.AppendLine(")");
-                }
-                //attributes
-                if (!String.IsNullOrEmpty(orderItem.AttributeDescription))
-                {
-                    sb.AppendLine("<br />");
-                    sb.AppendLine(orderItem.AttributeDescription);
-                }
-                //sku
-                if (_catalogSettings.ShowProductSku)
-                {
-                    var sku = product.FormatSku(orderItem.AttributesXml, _productAttributeParser);
-                    if (!String.IsNullOrEmpty(sku))
-                    {
-                        sb.AppendLine("<br />");
-                        sb.AppendLine(string.Format(_localizationService.GetResource("Messages.Order.Product(s).SKU", languageId), HttpUtility.HtmlEncode(sku)));
-                    }
-                }
-                sb.AppendLine("</td>");
-
-                string unitPriceStr = string.Empty;
-                switch (order.CustomerTaxDisplayType)
-                {
-                    case TaxDisplayType.ExcludingTax:
-                        {
-                            var unitPriceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.UnitPriceExclTax, order.CurrencyRate);
-                            unitPriceStr = _priceFormatter.FormatPrice(unitPriceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, false);
-                        }
-                        break;
-                    case TaxDisplayType.IncludingTax:
-                        {
-                            var unitPriceInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.UnitPriceInclTax, order.CurrencyRate);
-                            unitPriceStr = _priceFormatter.FormatPrice(unitPriceInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, true);
-                        }
-                        break;
-                }
-                sb.AppendLine(string.Format("<td style=\"padding: 0.6em 0.4em;text-align: right;\">{0}</td>", unitPriceStr));
-
-                sb.AppendLine(string.Format("<td style=\"padding: 0.6em 0.4em;text-align: center;\">{0}</td>", orderItem.Quantity));
-
-                string priceStr = string.Empty;
-                switch (order.CustomerTaxDisplayType)
-                {
-                    case TaxDisplayType.ExcludingTax:
-                        {
-                            var priceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.PriceExclTax, order.CurrencyRate);
-                            priceStr = _priceFormatter.FormatPrice(priceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, false);
-                        }
-                        break;
-                    case TaxDisplayType.IncludingTax:
-                        {
-                            var priceInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.PriceInclTax, order.CurrencyRate);
-                            priceStr = _priceFormatter.FormatPrice(priceInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, true);
-                        }
-                        break;
-                }
-                sb.AppendLine(string.Format("<td style=\"padding: 0.6em 0.4em;text-align: right;\">{0}</td>", priceStr));
-
-                sb.AppendLine("</tr>");
+                var city = _clickBayService.GetcityByCode(cityCode);
+                var c = _clickBayService.GetCountryById(city.CountryId);
+                if (c != null)
+                    return c.Name;
+                return "";
             }
-            #endregion
-
-            #region Checkout Attributes
-
-            if (!String.IsNullOrEmpty(order.CheckoutAttributeDescription))
-            {
-                sb.AppendLine("<tr><td style=\"text-align:right;\" colspan=\"1\">&nbsp;</td><td colspan=\"3\" style=\"text-align:right\">");
-                sb.AppendLine(order.CheckoutAttributeDescription);
-                sb.AppendLine("</td></tr>");
-            }
-
-            #endregion
-
-            #region Totals
-
-            string cusSubTotal = string.Empty;
-            bool dislaySubTotalDiscount = false;
-            string cusSubTotalDiscount = string.Empty;
-            string cusShipTotal = string.Empty;
-            string cusPaymentMethodAdditionalFee = string.Empty;
-            var taxRates = new SortedDictionary<decimal, decimal>();
-            string cusTaxTotal = string.Empty;
-            string cusDiscount = string.Empty;
-            string cusTotal = string.Empty;
-            //subtotal, shipping, payment method fee
-            switch (order.CustomerTaxDisplayType)
-            {
-                case TaxDisplayType.ExcludingTax:
-                    {
-                        //subtotal
-                        var orderSubtotalExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderSubtotalExclTax, order.CurrencyRate);
-                        cusSubTotal = _priceFormatter.FormatPrice(orderSubtotalExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, false);
-                        //discount (applied to order subtotal)
-                        var orderSubTotalDiscountExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderSubTotalDiscountExclTax, order.CurrencyRate);
-                        if (orderSubTotalDiscountExclTaxInCustomerCurrency > decimal.Zero)
-                        {
-                            cusSubTotalDiscount = _priceFormatter.FormatPrice(-orderSubTotalDiscountExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, false);
-                            dislaySubTotalDiscount = true;
-                        }
-                        //shipping
-                        var orderShippingExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderShippingExclTax, order.CurrencyRate);
-                        cusShipTotal = _priceFormatter.FormatShippingPrice(orderShippingExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, false);
-                        //payment method additional fee
-                        var paymentMethodAdditionalFeeExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(order.PaymentMethodAdditionalFeeExclTax, order.CurrencyRate);
-                        cusPaymentMethodAdditionalFee = _priceFormatter.FormatPaymentMethodAdditionalFee(paymentMethodAdditionalFeeExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, false);
-                    }
-                    break;
-                case TaxDisplayType.IncludingTax:
-                    {
-                        //subtotal
-                        var orderSubtotalInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderSubtotalInclTax, order.CurrencyRate);
-                        cusSubTotal = _priceFormatter.FormatPrice(orderSubtotalInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, true);
-                        //discount (applied to order subtotal)
-                        var orderSubTotalDiscountInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderSubTotalDiscountInclTax, order.CurrencyRate);
-                        if (orderSubTotalDiscountInclTaxInCustomerCurrency > decimal.Zero)
-                        {
-                            cusSubTotalDiscount = _priceFormatter.FormatPrice(-orderSubTotalDiscountInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, true);
-                            dislaySubTotalDiscount = true;
-                        }
-                        //shipping
-                        var orderShippingInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderShippingInclTax, order.CurrencyRate);
-                        cusShipTotal = _priceFormatter.FormatShippingPrice(orderShippingInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, true);
-                        //payment method additional fee
-                        var paymentMethodAdditionalFeeInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(order.PaymentMethodAdditionalFeeInclTax, order.CurrencyRate);
-                        cusPaymentMethodAdditionalFee = _priceFormatter.FormatPaymentMethodAdditionalFee(paymentMethodAdditionalFeeInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, language, true);
-                    }
-                    break;
-            }
-
-            //shipping
-            bool dislayShipping = order.ShippingStatus != ShippingStatus.ShippingNotRequired;
-
-            //payment method fee
-            bool displayPaymentMethodFee = true;
-            if (order.PaymentMethodAdditionalFeeExclTax == decimal.Zero)
-            {
-                displayPaymentMethodFee = false;
-            }
-
-            //tax
-            bool displayTax = true;
-            bool displayTaxRates = true;
-            if (_taxSettings.HideTaxInOrderSummary && order.CustomerTaxDisplayType == TaxDisplayType.IncludingTax)
-            {
-                displayTax = false;
-                displayTaxRates = false;
-            }
-            else
-            {
-                if (order.OrderTax == 0 && _taxSettings.HideZeroTax)
-                {
-                    displayTax = false;
-                    displayTaxRates = false;
-                }
-                else
-                {
-                    taxRates = new SortedDictionary<decimal, decimal>();
-                    foreach (var tr in order.TaxRatesDictionary)
-                        taxRates.Add(tr.Key, _currencyService.ConvertCurrency(tr.Value, order.CurrencyRate));
-
-                    displayTaxRates = _taxSettings.DisplayTaxRates && taxRates.Count > 0;
-                    displayTax = !displayTaxRates;
-
-                    var orderTaxInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderTax, order.CurrencyRate);
-                    string taxStr = _priceFormatter.FormatPrice(orderTaxInCustomerCurrency, true, order.CustomerCurrencyCode, false, language);
-                    cusTaxTotal = taxStr;
-                }
-            }
-
-            //discount
-            bool dislayDiscount = false;
-            if (order.OrderDiscount > decimal.Zero)
-            {
-                var orderDiscountInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderDiscount, order.CurrencyRate);
-                cusDiscount = _priceFormatter.FormatPrice(-orderDiscountInCustomerCurrency, true, order.CustomerCurrencyCode, false, language);
-                dislayDiscount = true;
-            }
-
-            //total
-            var orderTotalInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderTotal, order.CurrencyRate);
-            cusTotal = _priceFormatter.FormatPrice(orderTotalInCustomerCurrency, true, order.CustomerCurrencyCode, false, language);
-
-
-
-
-            //subtotal
-            sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, _localizationService.GetResource("Messages.Order.SubTotal", languageId), cusSubTotal));
-
-            //discount (applied to order subtotal)
-            if (dislaySubTotalDiscount)
-            {
-                sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, _localizationService.GetResource("Messages.Order.SubTotalDiscount", languageId), cusSubTotalDiscount));
-            }
-
-
-            //shipping
-            if (dislayShipping)
-            {
-                sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, _localizationService.GetResource("Messages.Order.Shipping", languageId), cusShipTotal));
-            }
-
-            //payment method fee
-            if (displayPaymentMethodFee)
-            {
-                string paymentMethodFeeTitle = _localizationService.GetResource("Messages.Order.PaymentMethodAdditionalFee", languageId);
-                sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, paymentMethodFeeTitle, cusPaymentMethodAdditionalFee));
-            }
-
-            //tax
-            if (displayTax)
-            {
-                sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, _localizationService.GetResource("Messages.Order.Tax", languageId), cusTaxTotal));
-            }
-            if (displayTaxRates)
-            {
-                foreach (var item in taxRates)
-                {
-                    string taxRate = String.Format(_localizationService.GetResource("Messages.Order.TaxRateLine"), _priceFormatter.FormatTaxRate(item.Key));
-                    string taxValue = _priceFormatter.FormatPrice(item.Value, true, order.CustomerCurrencyCode, false, language);
-                    sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, taxRate, taxValue));
-                }
-            }
-
-            //discount
-            if (dislayDiscount)
-            {
-                sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, _localizationService.GetResource("Messages.Order.TotalDiscount", languageId), cusDiscount));
-            }
-
-            //gift cards
-            var gcuhC = order.GiftCardUsageHistory;
-            foreach (var gcuh in gcuhC)
-            {
-                string giftCardText = String.Format(_localizationService.GetResource("Messages.Order.GiftCardInfo", languageId), HttpUtility.HtmlEncode(gcuh.GiftCard.GiftCardCouponCode));
-                string giftCardAmount = _priceFormatter.FormatPrice(-(_currencyService.ConvertCurrency(gcuh.UsedValue, order.CurrencyRate)), true, order.CustomerCurrencyCode, false, language);
-                sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, giftCardText, giftCardAmount));
-            }
-
-            //reward points
-            if (order.RedeemedRewardPointsEntry != null)
-            {
-                string rpTitle = string.Format(_localizationService.GetResource("Messages.Order.RewardPoints", languageId), -order.RedeemedRewardPointsEntry.Points);
-                string rpAmount = _priceFormatter.FormatPrice(-(_currencyService.ConvertCurrency(order.RedeemedRewardPointsEntry.UsedAmount, order.CurrencyRate)), true, order.CustomerCurrencyCode, false, language);
-                sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, rpTitle, rpAmount));
-            }
-
-            //total
-            sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, _localizationService.GetResource("Messages.Order.OrderTotal", languageId), cusTotal));
-            #endregion
-
-            sb.AppendLine("</table>");
-            result = sb.ToString();
-            return result;
+            catch { return ""; }
         }
-        */
+        private string GetFlightDuration(decimal number)
+        {
+            int h = (int)(number / 60);
+            if (h == 0)
+                return string.Format("{0} phút", Convert.ToInt32(number));
+            decimal m = number % 60;
+            return string.Format("{0} giờ {1} phút", h, m);
+        }
         /// <summary>
         /// Convert a collection to a HTML table
         /// </summary>
         /// <param name="shipment">Shipment</param>
         /// <param name="languageId">Language identifier</param>
         /// <returns>HTML table of products</returns>
-        /*
-        protected virtual string ProductListToHtmlTable(Shipment shipment, int languageId)
+
+        protected virtual string BookingListPassengerToHtmlTable(List<BookingPassenger> passengers)
         {
             var result = "";
-            
+
             var sb = new StringBuilder();
-            sb.AppendLine("<table border=\"0\" style=\"width:100%;\">");
+            sb.AppendLine("<table style=\"width:100%;border-collapse:collapse;\"><tbody>");
 
-            #region Products
-            sb.AppendLine(string.Format("<tr style=\"background-color:{0};text-align:center;\">", _templatesSettings.Color1));
-            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Name", languageId)));
-            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Quantity", languageId)));
-            sb.AppendLine("</tr>");
-
-            var table = shipment.ShipmentItems.ToList();
-            for (int i = 0; i <= table.Count - 1; i++)
+            #region Passenger
+            //hearder
+            sb.AppendLine("<tr style=\"text-decoration:underline\"><td style=\"padding:5px 0px 5px 10px;text-decoration:underline;\">Quý danh</td><td>Họ và tên</td><td>Ngày sinh</td></tr>");
+            //details
+            var table = passengers;
+            foreach (var i in passengers)
             {
-                var si = table[i];
-                var orderItem = _orderService.GetOrderItemById(si.OrderItemId);
-                if (orderItem == null)
-                    continue;
-
-                var product = orderItem.Product;
-                if (product == null)
-                    continue;
-
-                sb.AppendLine(string.Format("<tr style=\"background-color: {0};text-align: center;\">", _templatesSettings.Color2));
-                //product name
-                string productName = product.GetLocalized(x => x.Name, languageId);
-
-                sb.AppendLine("<td style=\"padding: 0.6em 0.4em;text-align: left;\">" + HttpUtility.HtmlEncode(productName));
-                //attributes
-                if (!String.IsNullOrEmpty(orderItem.AttributeDescription))
-                {
-                    sb.AppendLine("<br />");
-                    sb.AppendLine(orderItem.AttributeDescription);
-                }
-                //sku
-                if (_catalogSettings.ShowProductSku)
-                {
-                    var sku = product.FormatSku(orderItem.AttributesXml, _productAttributeParser);
-                    if (!String.IsNullOrEmpty(sku))
-                    {
-                        sb.AppendLine("<br />");
-                        sb.AppendLine(string.Format(_localizationService.GetResource("Messages.Order.Product(s).SKU", languageId), HttpUtility.HtmlEncode(sku)));
-                    }
-                }
-                sb.AppendLine("</td>");
-
-                sb.AppendLine(string.Format("<td style=\"padding: 0.6em 0.4em;text-align: center;\">{0}</td>", si.Quantity));
-
-                sb.AppendLine("</tr>");
+                sb.AppendLine(string.Format("<tr style=\"border-bottom:1px dashed #ccc;\"><td style=\"padding:5px 10px;\">{0}</td><td style=\"text-transform: uppercase;\">{1} {2} {3}</td><td>{4}</td></tr>", _localizationService.GetResource("passertype." + i.PasserType.ToString()), i.FirstName, i.MiddleName, i.LastName, i.BirthDay.HasValue ? i.BirthDay.Value.ToString("dd/MM/yyyy") : ""));
             }
             #endregion
-            
-            sb.AppendLine("</table>");
+
+            sb.AppendLine("</tbody></table>");
             result = sb.ToString();
             return result;
         }
-        */
+        protected virtual string BookingListPriceToHtmlTable(Booking booking)
+        {
+            var result = "";
+            decimal totalBaggage = 0;
+            decimal totalPrice = 0;
+
+            var listPrice = booking.BookingInfoFlight.BookingPriceDetails.ToList();
+            totalBaggage = booking.BookingInfoFlight.BookingBaggages.Where(x => !x.IsFree).Sum(b => b.BaggageFee);
+
+            if (booking.BookingInfoFlightReturn != null)
+            {
+                listPrice.AddRange(booking.BookingInfoFlightReturn.BookingPriceDetails.ToList());
+                totalBaggage += booking.BookingInfoFlightReturn.BookingBaggages.Where(x => !x.IsFree).Sum(b => b.BaggageFee);
+            }
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<table style=\"width:100%;border-collapse:collapse;text-align:right;\"><tbody>");
+            //hearder
+            sb.AppendLine("<tr style=\"text-decoration:underline;\"><td style=\"padding:10px;text-align:left;\">Hành khách</td><td>Số lượng</td><td>Giá vé/1 KH</td><td>Thuế và phí/1 HK</td><td>Giảm giá/1 HK</td><td style=\"padding-right:10px;\">Tổng(VND)</td></tr>");
+
+            if (booking.Adult > 0)
+            {
+                decimal[] arr = new decimal[4];
+                var pr = listPrice.Where(x => x.PassengerType == PassengerType.ADT.ToString()).ToList();
+                arr[0] = pr.Where(p => p.CodeFee == "NET").Sum(p => p.TotalPrice);
+                arr[1] = pr.Where(p => p.CodeFee != "NET" && p.CodeFee != "DIS").Sum(p => p.TotalPrice);
+                arr[2] = pr.Where(p => p.CodeFee == "DIS").Sum(p => p.TotalPrice);                
+                arr[3] = (arr[0] + arr[1] - arr[2]) * booking.Adult;
+                sb.AppendLine(string.Format("<tr style=\"border-bottom:1px dashed #ccc;\"><td style=\"padding:5px 10px;text-align:left;\">{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td style=\"padding-right:10px;\">{5}</td></tr>", _localizationService.GetResource("passertype." + PassengerType.ADT.ToString(), _workContext.WorkingLanguage.Id), booking.Adult.ToString("#,0"), arr[0].ToString("#,0"), arr[1].ToString("#,0"), arr[2].ToString("#,0"), arr[3].ToString("#,0")));
+                totalPrice += arr[3];
+            }
+            if (booking.Child > 0)
+            {
+                decimal[] arr = new decimal[4];
+                var pr = listPrice.Where(x => x.PassengerType == PassengerType.CHD.ToString()).ToList();
+                arr[0] = pr.Where(p => p.CodeFee == "NET").Sum(p => p.TotalPrice);
+                arr[1] = pr.Where(p => p.CodeFee != "NET" && p.CodeFee != "DIS").Sum(p => p.TotalPrice);
+                arr[2] = pr.Where(p => p.CodeFee == "DIS").Sum(p => p.TotalPrice);                
+                arr[3] = (arr[0] + arr[1] - arr[2]) * booking.Child;
+                sb.AppendLine(string.Format("<tr style=\"border-bottom:1px dashed #ccc;\"><td style=\"padding:5px 10px;text-align:left;\">{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td style=\"padding-right:10px;\">{5}</td></tr>", _localizationService.GetResource("passertype." + PassengerType.CHD.ToString(), _workContext.WorkingLanguage.Id), booking.Adult.ToString("#,0"), arr[0].ToString("#,0"), arr[1].ToString("#,0"), arr[2].ToString("#,0"), arr[3].ToString("#,0")));
+                totalPrice += arr[3];
+            }
+            if (booking.Infant > 0)
+            {
+                decimal[] arr = new decimal[4];
+                var pr = listPrice.Where(x => x.PassengerType == PassengerType.INF.ToString()).ToList();
+                arr[0] = pr.Where(p => p.CodeFee == "NET").Sum(p => p.TotalPrice);
+                arr[1] = pr.Where(p => p.CodeFee != "NET" && p.CodeFee != "DIS").Sum(p => p.TotalPrice);
+                arr[2] = pr.Where(p => p.CodeFee == "DIS").Sum(p => p.TotalPrice);                
+                arr[3] = (arr[0] + arr[1] - arr[2]) * booking.Infant;
+                sb.AppendLine(string.Format("<tr style=\"border-bottom:1px dashed #ccc;\"><td style=\"padding:5px 10px;text-align:left;\">{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td style=\"padding-right:10px;\">{5}</td></tr>", _localizationService.GetResource("passertype." + PassengerType.INF.ToString(), _workContext.WorkingLanguage.Id), booking.Adult.ToString("#,0"), arr[0].ToString("#,0"), arr[1].ToString("#,0"), arr[2].ToString("#,0"), arr[3].ToString("#,0")));
+                totalPrice += arr[3];
+            }
+            sb.AppendLine(string.Format("<tr><td colspan=\"5\" style=\"padding:5px 10px;\">Tổng cộng:</td><td style=\"font-size:14px;font-weight:600;padding-right:10px;\">{0}</td></tr>", totalPrice.ToString("#,0")));
+            //Total Baggage
+            sb.AppendLine(string.Format("<tr><td colspan=\"5\" style=\"padding:5px 10px;\">Tổng phí hành lý:</td><td style=\"font-size:14px;font-weight:600;padding-right:10px;\">{0}</td></tr>", totalBaggage.ToString("#,0")));
+            //Total final
+            sb.AppendLine(string.Format("<tr><td colspan=\"5\" style=\"padding:5px 10px;\">Tổng cộng:</td><td style=\"font-size:14px;font-weight:600;padding-right:10px;\">{0}</td></tr>", (totalPrice + totalBaggage).ToString("#,0")));
+
+            sb.AppendLine("</tbody></table>");
+            result = sb.ToString();
+            return result;
+        }
+        protected virtual string BookingListConditionToHtmlTable(Booking booking)
+        {
+            var result = "";
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<table style=\"width:100%;border-collapse:collapse;\"><tbody>");
+
+            #region Conditions
+            if (booking.BookingInfoFlightReturn != null && booking.RoundTrip)
+            {
+                //neu khac Airline hoac TicketType
+                if (booking.BookingInfoFlight.AirlinesId != booking.BookingInfoFlightReturn.AirlinesId || booking.BookingInfoFlight.TicketType != booking.BookingInfoFlightReturn.TicketType)
+                {
+                    sb.AppendLine("<tr><td colspan=\"2\" style=\"padding:5px 10px;font-weight:600;\">Điều kiện chiều đi</td></tr>");
+                    foreach (var con in booking.BookingInfoFlight.BookingInfoConditions)
+                    {
+                        sb.AppendLine(string.Format("<tr><td style=\"padding:5px 20px;width:140px\">{0}</td><td style=\"padding:5px 0px;border-bottom:1px dashed #ccc;\">{1}</td></tr>", con.ConditionType, con.ConditionDescription));
+                    }
+                    sb.AppendLine("<tr><td colspan=\"2\" style=\"padding:5px 10px;font-weight:600;\">Điều kiện chiều về</td></tr>");
+                    foreach (var con in booking.BookingInfoFlightReturn.BookingInfoConditions)
+                    {
+                        sb.AppendLine(string.Format("<tr><td style=\"padding:5px 20px;width:140px\">{0}</td><td style=\"padding:5px 0px;border-bottom:1px dashed #ccc;\">{1}</td></tr>", con.ConditionType, con.ConditionDescription));
+                    }
+                }
+            }
+            else
+            {
+                foreach (var con in booking.BookingInfoFlight.BookingInfoConditions)
+                {
+                    sb.AppendLine(string.Format("<tr><td style=\"padding:5px 20px;width:140px\">{0}</td><td style=\"padding:5px 0px;border-bottom:1px dashed #ccc;\">{1}</td></tr>", con.ConditionType, con.ConditionDescription));
+                }
+            }
+
+            #endregion
+
+            sb.AppendLine("</tbody></table>");
+            result = sb.ToString();
+            return result;
+        }
+        protected virtual string BookingListBaggageToHtmlTable(Booking booking)
+        {
+            var result = "";
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<table style=\"width:100%;border-collapse:collapse;\"><tbody>");
+
+            #region Conditions
+            int hasHandLuggage = 1;
+            if (booking.BookingInfoFlightReturn != null && booking.RoundTrip)
+            {
+                sb.AppendLine("<tr><td colspan=\"2\" style=\"padding:5px 10px;font-weight:600;\">Hành lý chiều đi</td></tr>");
+                foreach (var con in booking.BookingInfoFlight.BookingBaggages.Where(x => x.IsHandLuggage && x.IsFree))
+                {
+
+                    sb.AppendLine(string.Format("<tr><td style=\"padding:5px 10px\">Hành lý xách tay</td><td>{0}</td></tr>", con.Description));
+                }
+                sb.AppendLine("<tr><td style=\"padding:5px 10px\">Hành lý ký gửi</td><td>");
+                foreach (var con in booking.BookingInfoFlight.BookingBaggages.Where(x => !x.IsHandLuggage && !x.IsFree && x.BaggageFee > 0))
+                {
+                    sb.AppendLine(string.Format("<p>Hành khách {0}: {1} kg</p>", hasHandLuggage, con.Baggage));
+                    hasHandLuggage++;
+                }
+                sb.AppendLine("</td></tr>");
+                //return
+                hasHandLuggage = 1;
+                sb.AppendLine("<tr><td colspan=\"2\" style=\"padding:5px 10px;font-weight:600;\">Hành lý chiều về</td></tr>");
+                foreach (var con in booking.BookingInfoFlightReturn.BookingBaggages.Where(x => x.IsHandLuggage && x.IsFree))
+                {
+
+                    sb.AppendLine(string.Format("<tr><td style=\"padding:5px 10px\">Hành lý xách tay</td><td>{0}</td></tr>", con.Description));
+                }
+                sb.AppendLine("<tr><td style=\"padding:5px 10px\">Hành lý ký gửi</td><td>");
+                foreach (var con in booking.BookingInfoFlightReturn.BookingBaggages.Where(x => !x.IsHandLuggage && !x.IsFree && x.BaggageFee > 0))
+                {
+                    sb.AppendLine(string.Format("<p>Hành khách {0}: {1} kg</p>", hasHandLuggage, con.Baggage));
+                    hasHandLuggage++;
+                }
+                sb.AppendLine("</td></tr>");
+            }
+            else
+            {
+                foreach (var con in booking.BookingInfoFlight.BookingBaggages.Where(x => x.IsHandLuggage && x.IsFree))
+                {
+                    sb.AppendLine(string.Format("<tr><td style=\"padding:5px 10px\">Hành lý xách tay</td><td>{0}</td></tr>", con.Description));
+                }
+                sb.AppendLine("<tr><td style=\"padding:5px 10px\">Hành lý ký gửi</td><td>");
+                foreach (var con in booking.BookingInfoFlight.BookingBaggages.Where(x => !x.IsHandLuggage && !x.IsFree && x.BaggageFee > 0))
+                {
+                    sb.AppendLine(string.Format("<p>Hành khách {0}: {1} kg</p>", hasHandLuggage, con.Baggage));
+                    hasHandLuggage++;
+                }
+                sb.AppendLine("</td></tr>");
+            }
+
+            #endregion
+
+            sb.AppendLine("</tbody></table>");
+            result = sb.ToString();
+            return result;
+        }
+        protected virtual string BookingListInfoFlightToHtmlTable(Booking booking)
+        {
+            var result = "";
+            var fromCountryName = GetCountryName(booking.BookingInfoFlight.FromPlaceCode);
+            var sb = new StringBuilder();
+            sb.AppendLine("<table style=\"width:100%;border-collapse:collapse;\"><tbody>");
+
+            #region info
+            //hearder
+            sb.AppendLine(string.Format("<tr style=\"background:#f2f2f2;\"><td><img src=\"http://clickbay.com.vn/Themes/ClickBay/Content/images/{0}.gif\" /></td><td>Khởi hành từ <strong>{1}, {2}</strong></td><td></td>"+
+                                                    "<td>Thời gian bay: <strong>{3}</strong></td></tr><tr><td></td><td style=\"padding:5px 0\">Từ: <strong>{4} ({5})</strong></td>"+
+                                                    "<td>tới: <strong>{6} ({7})</strong></td><td>{8} ({9})</td></tr><tr><td></td>"+
+                                                    "<td style=\"padding:5px 0\"><strong>{10}</strong></td><td><strong>{11}</strong></td><td>Loại vé: {12}</td></tr>",
+                                                    booking.BookingInfoFlight.Brand,
+                                                    booking.BookingInfoFlight.FromPlaceName,
+                                                    fromCountryName,
+                                                    GetFlightDuration((decimal)booking.BookingInfoFlight.FlightDuration),
+                                                    booking.BookingInfoFlight.FromPlaceName,
+                                                    booking.BookingInfoFlight.FromPlaceCode,
+                                                    booking.BookingInfoFlight.ToPlaceName,
+                                                    booking.BookingInfoFlight.ToPlaceCode,
+                                                    booking.BookingInfoFlight.BrandName,booking.BookingInfoFlight.FlightNumber,
+                                                    booking.BookingInfoFlight.DepartDateTime.HasValue? booking.BookingInfoFlight.DepartDateTime.Value.ToString("HH'h':mm dd-MM-yyyy"):"",
+                                                    booking.BookingInfoFlight.ArrivalDateTime.HasValue? booking.BookingInfoFlight.ArrivalDateTime.Value.ToString("HH'h':mm dd-MM-yyyy"):"",
+                                                    booking.BookingInfoFlight.TicketType));
+            
+            if(booking.BookingInfoFlightReturn!= null)
+            {
+                var returnCountryName = GetCountryName(booking.BookingInfoFlightReturn.FromPlaceCode);
+
+                sb.AppendLine(string.Format("<tr style=\"background:#f2f2f2;\"><td><img src=\"http://clickbay.com.vn/Themes/ClickBay/Content/images/{0}.gif\" /></td><td>Khởi hành từ <strong>{1}, {2}</strong></td><td></td>" +
+                                                    "<td>Thời gian bay: <strong>{3}</strong></td></tr><tr><td></td><td style=\"padding:5px 0\">Từ: <strong>{4} ({5})</strong></td>" +
+                                                    "<td>tới: <strong>{6} ({7})</strong></td><td>{8} ({9})</td></tr><tr><td></td>" +
+                                                    "<td style=\"padding:5px 0\"><strong>{10}</strong></td><td><strong>{11}</strong></td><td>Loại vé: {12}</td></tr>",
+                                                    booking.BookingInfoFlightReturn.Brand,
+                                                    booking.BookingInfoFlightReturn.FromPlaceName,
+                                                    returnCountryName,
+                                                    GetFlightDuration((decimal)booking.BookingInfoFlight.FlightDuration),
+                                                    booking.BookingInfoFlightReturn.FromPlaceName,
+                                                    booking.BookingInfoFlightReturn.FromPlaceCode,
+                                                    booking.BookingInfoFlightReturn.ToPlaceName,
+                                                    booking.BookingInfoFlightReturn.ToPlaceCode,
+                                                    booking.BookingInfoFlightReturn.BrandName, booking.BookingInfoFlight.FlightNumber,
+                                                    booking.BookingInfoFlightReturn.DepartDateTime.HasValue ? booking.BookingInfoFlightReturn.DepartDateTime.Value.ToString("HH'h':mm dd-MM-yyyy") : "",
+                                                    booking.BookingInfoFlightReturn.ArrivalDateTime.HasValue ? booking.BookingInfoFlightReturn.ArrivalDateTime.Value.ToString("HH'h':mm dd-MM-yyyy") : "",
+                                                    booking.BookingInfoFlightReturn.TicketType));
+            }
+            #endregion
+
+            sb.AppendLine("</tbody></table>");
+            result = sb.ToString();
+            return result;
+        }
         #endregion
 
         #region Methods
+
+        public virtual void AddBookingTokens(IList<Token> tokens, Booking booking)
+        {
+            tokens.Add(new Token("Booking.TicketId", booking.TicketId));
+            tokens.Add(new Token("Booking.CreatedOn", booking.CreatedOn.ToString("dd-MM-yyyy")));
+            tokens.Add(new Token("Booking.RoundTrip", booking.RoundTrip ? "Khứ hồi" : "Một chiều"));
+
+            string quantityPassenger = "";
+            if (booking.Adult > 0)
+                quantityPassenger += booking.Adult.ToString() + " người lớn";
+            if (booking.Child > 0)
+                quantityPassenger += (!string.IsNullOrEmpty(quantityPassenger) ? ", " : "") + booking.Child.ToString() + " trẻ em";
+            if (booking.Infant > 0)
+                quantityPassenger += (!string.IsNullOrEmpty(quantityPassenger) ? ", " : "") + booking.Infant.ToString() + " em bé";
+            tokens.Add(new Token("Booking.QuantityPassenger", quantityPassenger));
+            tokens.Add(new Token("Booking.DepartDateTime", booking.BookingInfoFlight.DepartDateTime.HasValue ? booking.BookingInfoFlight.DepartDateTime.Value.ToString("dd-MM-yyyy") : ""));
+            string returnDate = "";
+            if (booking.BookingInfoFlightReturn != null)
+            {
+                returnDate = booking.BookingInfoFlightReturn.DepartDateTime.HasValue ? booking.BookingInfoFlightReturn.DepartDateTime.Value.ToString("dd-MM-yyyy") : "";
+            }
+
+            tokens.Add(new Token("Booking.ContactRequestMore", booking.ContactRequestMore));
+
+            tokens.Add(new Token("Booking.ReturnDateTime", returnDate));
+            //info
+            tokens.Add(new Token("Booking.InfoFlight", BookingListInfoFlightToHtmlTable(booking),true));
+            //price
+            tokens.Add(new Token("Booking.Prices", BookingListPriceToHtmlTable(booking),true));
+            //passenger
+            tokens.Add(new Token("Booking.Passengers", BookingListPassengerToHtmlTable(booking.BookingPassengers.ToList()),true));
+            //condition
+            tokens.Add(new Token("Booking.Conditions", BookingListConditionToHtmlTable(booking),true));
+            //baggage
+            tokens.Add(new Token("Booking.Baggages", BookingListBaggageToHtmlTable(booking),true));
+            //payment
+            string paymentmethod = string.Format(_localizationService.GetResource("booking.paymentmethod." + booking.PaymentMethodId.ToString(), _workContext.WorkingLanguage.Id), booking.ContactAddress + "," + booking.ContactCityName, booking.ContactPhone, booking.ContactName);
+            tokens.Add(new Token("Booking.PaymentMethod", paymentmethod));
+
+            //event notification
+            _eventPublisher.EntityTokensAdded(booking, tokens);
+        }
 
         public virtual void AddStoreTokens(IList<Token> tokens, Store store)
         {
@@ -852,7 +797,7 @@ namespace PlanX.Services.Messages
             };
             return allowedTokens.ToArray();
         }
-        
+
         #endregion
     }
 }
