@@ -1,5 +1,17 @@
 ﻿@model PlanX.Web.Models.ClickBay.SearchModel
-@{Html.AppendScriptParts(ResourceLocation.Foot, "~/Scripts/search.js");}
+@{
+    Html.AppendScriptParts(ResourceLocation.Foot, "~/Scripts/search.js");
+    var listAdult = new List<SelectListItem>();
+    for(int i=0; i<100;i++)
+    {
+        listAdult.Add(new SelectListItem{Value=i.ToString(), Text=i.ToString()});
+    }
+    var listInfant = new List<SelectListItem>();
+    for (int i = 0; i < 5; i++)
+    {
+        listInfant.Add(new SelectListItem { Value = i.ToString(), Text = i.ToString() });
+    }
+}
 <form action="@Url.RouteUrl("Search")" method="get" id="frmSearch">
     <div class="box-head">
         <span class="search-text">TÌM VÉ MÁY BAY</span>
@@ -26,23 +38,22 @@
             </div>
         </div>
         <div class="clear"></div>
-
         <div class="box-footer">
             <span>
                 <label>Người lớn</label><br>
-                @Html.TextBoxFor(x => x.Adult, new { @class = "textbox center number", maxlength = 3, Value = 1 })
+                @Html.DropDownListFor(x => x.Adult, listAdult, new { @class = "textbox center number" })
                 <br /><label class="font-small">từ 12 tuổi</label>
             </span>
             <span>
                 <label>Trẻ em</label>
                 <br />
-                @Html.TextBoxFor(x => x.Child, new { @class = "textbox center number", maxlength = 3 })
+                @Html.DropDownListFor(x => x.Child, listAdult ,new { @class = "textbox center number"})
                 <br />
                 <label class="font-small">từ 2 đến 11 tuổi</label>
             </span>
             <span>
                 <label>Trẻ sơ sinh</label><br />
-                @Html.TextBoxFor(x => x.Flant, new { @class = "textbox center number", maxlength = 3 })
+                @Html.DropDownListFor(x => x.Flant, listInfant, new { @class = "textbox center number" })
                 <br>
                 <label class="font-small">dưới 2 tuổi</label>
             </span>
@@ -55,7 +66,7 @@
 </form>
 
 <div id="dialog-form" class="dialog-form-contain">
-    <div><p id="title-text" class="title"><span id="title-text-id">Chọn điểm đi</span><span style="float:right;"><a class="close" onclick="hidePopup()">X</a></span></p></div>
+    <div><p id="title-text" class="title"><span id="title-text-id">Chọn điểm đi</span><span style="float:right;"><a class="close" onclick="hidePopup()">X</a></span></p></div>    
     <div class="domestic-col">
         <ul>
             <li class="title">Miền Bắc </li>

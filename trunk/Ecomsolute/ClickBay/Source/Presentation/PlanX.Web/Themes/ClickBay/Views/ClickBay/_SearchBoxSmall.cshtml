@@ -1,5 +1,17 @@
 ﻿@model PlanX.Web.Models.ClickBay.SearchModel
-@{Html.AppendScriptParts(ResourceLocation.Foot, "~/Scripts/search.js");}
+@{
+    Html.AppendScriptParts(ResourceLocation.Foot, "~/Scripts/search.js");
+    var listAdult = new List<SelectListItem>();
+    for (int i = 0; i < 100; i++)
+    {
+        listAdult.Add(new SelectListItem { Value = i.ToString(), Text = i.ToString() });
+    }
+    var listInfant = new List<SelectListItem>();
+    for (int i = 0; i < 5; i++)
+    {
+        listInfant.Add(new SelectListItem { Value = i.ToString(), Text = i.ToString() });
+    }
+    }
 <aside class="search-box-small">
     <form action="@Url.RouteUrl("Search")" method="get" id="frmSearch">
         <div class="search-head">
@@ -33,19 +45,19 @@
                     <div class="box-footer">
                         <span>
                             <label>Người lớn</label><br>
-                            @Html.TextBoxFor(x => x.Adult, new { @class = "textbox center number", maxlength = 3, Value = 1 })
+                            @Html.DropDownListFor(x => x.Adult, listAdult, new { @class = "textbox center number"})
                             <br /><label class="font-small">&nbsp;&nbsp;  >11 tuổi</label>
                         </span>
                         <span>
                             <label>Trẻ em</label>
                             <br />
-                            @Html.TextBoxFor(x => x.Child, new { @class = "textbox center number", maxlength = 3 })
+                            @Html.DropDownListFor(x => x.Child, listAdult, new { @class = "textbox center number"})
                             <br />
                             <label class="font-small">2 &ndash;> 11 tuổi</label>
                         </span>
                         <span>
                             <label>Trẻ sơ sinh</label><br />
-                            @Html.TextBoxFor(x => x.Flant, new { @class = "textbox center number", maxlength = 3 })
+                            @Html.DropDownListFor(x => x.Flant, listInfant, new { @class = "textbox center number"})
                             <br>
                             <label class="font-small">&nbsp;&nbsp;  &lt;2 tuổi</label>
                         </span>

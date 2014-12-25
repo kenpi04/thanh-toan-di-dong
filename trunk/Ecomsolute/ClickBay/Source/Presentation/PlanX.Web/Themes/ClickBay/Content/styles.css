@@ -349,6 +349,7 @@ cursor:pointer;
     #From,#To{cursor:pointer;padding-left:10px;padding-right:10px;box-sizing:border-box;}
     .section table.orange tbody tr[show]:hover{background:none}
     .birthday select{margin-right:10px}
+    #Adult,#Child,#Flant{padding-left:15%;}
 
 /*News*/
 .section-right-search {float: right;width: 24%;margin-bottom: 20px;}
