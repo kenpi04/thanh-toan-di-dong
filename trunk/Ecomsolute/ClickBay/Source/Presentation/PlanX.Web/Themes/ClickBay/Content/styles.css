@@ -24,7 +24,7 @@ a:hover{color:#B80709;text-decoration:underline;}
 h1,h2,h3,h4,h5,h6{font-family:arial,helvetica,sans-serif;}
 h2,h3{font-size:16px;}
 
-checkbox,input,radio,select,button{}
+checkbox,input,radio,select,button{}.search-smalll
 fieldset{margin:0px 0px 15px;border:1px solid #c9c9c9;padding:15px;}
 legend{font-weight:bold;line-height:20px;font-size:16px;}
 
@@ -76,7 +76,7 @@ width: 173px;}
 .head{background:url(images/slide2.jpg);width:100%;height:400px}
 .box-search .box-head{border-bottom:dashed 1px;line-height: 40px;}
 .box-search{width:530px;height:300px;background:#f3f3f3;border-radius:5px;z-index: 1000;
-position: relative;}
+}
 .col{float:left;width:230px;padding-left:10px}
 .col label{font-weight:bold}
 .textbox{padding:8px 2px;width:80%;border-radius:5px;border:solid 1px #ddd}
@@ -213,6 +213,8 @@ img.icon-small{width:10px;margin:0 4px;}
 .info-filter p span{margin-right:7px;font-size:18px;color:#F2C127;}
 .info-filter .info-title-search{font-size:20px;color:#4C8EE5;font-weight:700;}
 .info-passenger p span{font-size:14px;margin-right:7px;}
+.search-box-small #dialog-form{width:auto;}
+.search-box-small #dialog-form .domestic-group-50{float:left;width:50%;}
 /*news*/
 .news,.news-detail{margin-right:6%;}
 .news article aside{margin-bottom:10px;padding-bottom:15px;border-bottom:1px solid #189b96;display:inline-block;}
@@ -308,8 +310,8 @@ font-size: 19px;}
 .select-date select{height: 26px;}
 #dialog-form{position: absolute;
 z-index: 10;
-top: 269px;
-left: 802px; /*863px*/
+top: 113px;
+/*left: 802px;*/
 background: #fff;
 /*padding: 11px;*/
 line-height: 24px;
@@ -319,6 +321,7 @@ box-shadow: 6px 6px 7px -4px #ccc;
 border-top:0;
 display:none;
 padding-bottom:10px;
+width:100%;
     }
 
 #dialog-form p.title{margin:0;margin-bottom:7px;padding:8px 0px 8px 10px;box-sizing:border-box;line-height:12px;}
@@ -334,7 +337,7 @@ border-radius: 5px;
     }
     #fromPlace,#toPlace{background: #fff;
 display: block;
-padding: 0 4px;
+padding: 0 10px;
 height: 29px;
 line-height: 29px;
 width: 80%;
@@ -343,7 +346,7 @@ border: solid 1px #ddd;
 box-sizing:border-box;
 cursor:pointer;
     }
-    #From,#To{cursor:pointer;}
+    #From,#To{cursor:pointer;padding-left:10px;padding-right:10px;box-sizing:border-box;}
     .section table.orange tbody tr[show]:hover{background:none}
     .birthday select{margin-right:10px}
 

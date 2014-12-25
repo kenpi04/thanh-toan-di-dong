@@ -23,8 +23,10 @@
                     <div class="col">
                         <label>Ngày đi</label><br>
                         <input id="From" name="DepartDate" type="text" class="textbox"><br><br>
+                        <div id="return-div">
                             <label>Ngày về</label><br>
-                            <input id="To" name="ReturnDate" type="text" class="textbox">                        
+                            <input id="To" name="ReturnDate" type="text" class="textbox">
+                        </div>
                     </div>
                     <div class="clear"></div>
 
@@ -58,43 +60,47 @@
     </form>
     <div id="dialog-form" class="dialog-form-contain">
         <div><p id="title-text" class="title"><span id="title-text-id">Chọn điểm đi</span><span style="float:right;"><a class="close" onclick="hidePopup()">X</a></span></p></div>
-        <div class="domestic-col">
-            <ul>
-                <li class="title">Miền Bắc </li>
-                <li><a airportcode="HAN">Hà Nội<span> (HAN)</span> </a></li>
-                <li><a airportcode="HPH">Hải Phòng<span> (HPH)</span> </a></li>
-                <li><a airportcode="DIN">Điện Biên<span> (DIN)</span> </a></li>
-            </ul>
+        <div class="domestic-group-50">
+            <div class="domestic-col">
+                <ul>
+                    <li class="title">Miền Bắc </li>
+                    <li><a airportcode="HAN">Hà Nội<span> (HAN)</span> </a></li>
+                    <li><a airportcode="HPH">Hải Phòng<span> (HPH)</span> </a></li>
+                    <li><a airportcode="DIN">Điện Biên<span> (DIN)</span> </a></li>
+                </ul>
+            </div>
+            <div class="domestic-col">
+                <ul>
+                    <li class="title">Miền Trung </li>
+                    <li><a airportcode="THD">Thanh Hóa<span> (THD)</span> </a></li>
+                    <li><a airportcode="VII">Vinh<span> (VII)</span> </a></li>
+                    <li><a airportcode="HUI">Huế<span> (HUI)</span> </a></li>
+                    <li><a airportcode="VDH">Đồng Hới<span> (VDH)</span> </a></li>
+                    <li><a airportcode="DAD">Đà Nẵng<span> (DAD)</span> </a></li>
+                    <li><a airportcode="TMK">Tam Kỳ<span> (VCL)</span> </a></li>
+                    <li><a airportcode="PXU">Pleiku<span> (PXU)</span> </a></li>
+                    <li><a airportcode="TBB">Tuy Hòa<span> (TBB)</span> </a></li>
+                </ul>
+            </div>
         </div>
-        <div class="domestic-col">
-            <ul>
-                <li class="title">Miền Trung </li>
-                <li><a airportcode="THD">Thanh Hóa<span> (THD)</span> </a></li>
-                <li><a airportcode="VII">Vinh<span> (VII)</span> </a></li>
-                <li><a airportcode="HUI">Huế<span> (HUI)</span> </a></li>
-                <li><a airportcode="VDH">Đồng Hới<span> (VDH)</span> </a></li>
-                <li><a airportcode="DAD">Đà Nẵng<span> (DAD)</span> </a></li>
-                <li><a airportcode="TMK">Tam Kỳ<span> (VCL)</span> </a></li>
-                <li><a airportcode="PXU">Pleiku<span> (PXU)</span> </a></li>
-                <li><a airportcode="TBB">Tuy Hòa<span> (TBB)</span> </a></li>
-            </ul>
-        </div>
-        <div class="domestic-col">
-            <ul>
-                <li class="title">Miền Nam </li>
-                <li><a airportcode="SGN">Hồ Chí Minh<span> (SGN)</span> </a></li>
-                <li><a airportcode="CXR">Nha Trang<span> (CXR)</span> </a></li>
-                <li><a airportcode="DLI">Đà Lạt <span> (DLI)</span> </a></li>
-                <li><a airportcode="PQC">Phú Quốc<span> (PQC)</span> </a></li>
-                <li><a airportcode="UIH">Qui Nhơn<span> (UIH)</span> </a></li>
-                <li><a airportcode="VCA">Cần Thơ<span> (VCA)</span> </a></li>
-                <li><a airportcode="VCS">Côn Đảo<span> (VCS)</span> </a></li>
-                <li><a airportcode="BMV">Ban Mê Thuột<span>(BMV)</span> </a></li>
-                <li><a airportcode="VKG">Rạch Giá <span> (VKG)</span> </a></li>
-                <li><a airportcode="CAH">Cà Mau<span> (CAH)</span> </a></li>
-            </ul>
-        </div>
-        @*<div class="internation-city">
+        <div class="domestic-group-50">
+            <div class="domestic-col">
+                <ul>
+                    <li class="title">Miền Nam </li>
+                    <li><a airportcode="SGN">Hồ Chí Minh<span> (SGN)</span> </a></li>
+                    <li><a airportcode="CXR">Nha Trang<span> (CXR)</span> </a></li>
+                    <li><a airportcode="DLI">Đà Lạt <span> (DLI)</span> </a></li>
+                    <li><a airportcode="PQC">Phú Quốc<span> (PQC)</span> </a></li>
+                    <li><a airportcode="UIH">Qui Nhơn<span> (UIH)</span> </a></li>
+                    <li><a airportcode="VCA">Cần Thơ<span> (VCA)</span> </a></li>
+                    <li><a airportcode="VCS">Côn Đảo<span> (VCS)</span> </a></li>
+                    <li><a airportcode="BMV">Ban Mê Thuột<span>(BMV)</span> </a></li>
+                    <li><a airportcode="VKG">Rạch Giá <span> (VKG)</span> </a></li>
+                    <li><a airportcode="CAH">Cà Mau<span> (CAH)</span> </a></li>
+                </ul>
+            </div>
+            </div>
+            @*<div class="internation-city">
                 <h3 style="font-weight: bold; font-size: 13px;">
                     Quốc tế
                 </h3>
@@ -112,7 +118,7 @@
                 </p>
             </div>*@
 
-    </div>
+        </div>
     </aside>
 
 <script>
