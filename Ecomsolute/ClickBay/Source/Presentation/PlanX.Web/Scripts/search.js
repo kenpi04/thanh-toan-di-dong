@@ -19,6 +19,10 @@ $.datepicker.regional["vi-VN"] =
 	};
 $.datepicker.setDefaults($.datepicker.regional["vi-VN"]);
 
+$(document).ready(function () {
+    $("select[name=Adult]").val('1');
+})
+
 
 var CURRENT_TXT = null, ISSHOW = false;
 $("input[name=Return]").change(function () {
@@ -145,5 +149,14 @@ $(function () {
                 .append("<a>" + t + "</a>")
             .appendTo(ul);
             };
+
 });
 
+$("#Adult").keyup(function (e) {
+    alert($("#Adult").val());
+    if ($(this).val() > 100) {
+        $(this).val(99);
+    }
+    else if ($(this).val() < 0)
+    { $(this).val(0); }
+});
