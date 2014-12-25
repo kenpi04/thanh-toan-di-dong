@@ -271,10 +271,15 @@ namespace PlanX.Services.Messages
                     sb.AppendLine(string.Format("<tr><td style=\"padding:5px 10px\">Hành lý xách tay</td><td>{0}</td></tr>", con.Description));
                 }
                 sb.AppendLine("<tr><td style=\"padding:5px 10px\">Hành lý ký gửi</td><td>");
-                foreach (var con in booking.BookingInfoFlight.BookingBaggages.Where(x => !x.IsHandLuggage && !x.IsFree && x.BaggageFee > 0))
+                foreach (var con in booking.BookingInfoFlight.BookingBaggages.Where(x => !x.IsHandLuggage).OrderByDescending(x=> x.IsFree))
                 {
-                    sb.AppendLine(string.Format("<p>Hành khách {0}: {1} kg</p>", hasHandLuggage, con.Baggage));
-                    hasHandLuggage++;
+                    if (!con.IsFree)
+                    {
+                        sb.AppendLine(string.Format("<p>Hành khách {0}: {1} kg</p>", hasHandLuggage, con.Baggage));
+                        hasHandLuggage++;
+                    }
+                    else sb.AppendLine(string.Format("<p>{0}</p>", con.Description));
+                    
                 }
                 sb.AppendLine("</td></tr>");
                 //return
@@ -282,28 +287,35 @@ namespace PlanX.Services.Messages
                 sb.AppendLine("<tr><td colspan=\"2\" style=\"padding:5px 10px;font-weight:600;\">Hành lý chiều về</td></tr>");
                 foreach (var con in booking.BookingInfoFlightReturn.BookingBaggages.Where(x => x.IsHandLuggage && x.IsFree))
                 {
-
                     sb.AppendLine(string.Format("<tr><td style=\"padding:5px 10px\">Hành lý xách tay</td><td>{0}</td></tr>", con.Description));
                 }
                 sb.AppendLine("<tr><td style=\"padding:5px 10px\">Hành lý ký gửi</td><td>");
-                foreach (var con in booking.BookingInfoFlightReturn.BookingBaggages.Where(x => !x.IsHandLuggage && !x.IsFree && x.BaggageFee > 0))
+                foreach (var con in booking.BookingInfoFlightReturn.BookingBaggages.Where(x => !x.IsHandLuggage).OrderByDescending(x=> x.IsFree))
                 {
-                    sb.AppendLine(string.Format("<p>Hành khách {0}: {1} kg</p>", hasHandLuggage, con.Baggage));
-                    hasHandLuggage++;
+                    if (!con.IsFree)
+                    {
+                        sb.AppendLine(string.Format("<p>Hành khách {0}: {1} kg</p>", hasHandLuggage, con.Baggage));
+                        hasHandLuggage++;
+                    }
+                    else sb.AppendLine(string.Format("<p>{0}</p>", con.Description));
                 }
                 sb.AppendLine("</td></tr>");
             }
             else
             {
-                foreach (var con in booking.BookingInfoFlight.BookingBaggages.Where(x => x.IsHandLuggage && x.IsFree))
+                foreach (var con in booking.BookingInfoFlight.BookingBaggages.Where(x => x.IsHandLuggage))
                 {
                     sb.AppendLine(string.Format("<tr><td style=\"padding:5px 10px\">Hành lý xách tay</td><td>{0}</td></tr>", con.Description));
                 }
                 sb.AppendLine("<tr><td style=\"padding:5px 10px\">Hành lý ký gửi</td><td>");
-                foreach (var con in booking.BookingInfoFlight.BookingBaggages.Where(x => !x.IsHandLuggage && !x.IsFree && x.BaggageFee > 0))
+                foreach (var con in booking.BookingInfoFlight.BookingBaggages.Where(x => !x.IsHandLuggage).OrderByDescending(x=> x.IsFree))
                 {
-                    sb.AppendLine(string.Format("<p>Hành khách {0}: {1} kg</p>", hasHandLuggage, con.Baggage));
-                    hasHandLuggage++;
+                    if (!con.IsFree)
+                    {
+                        sb.AppendLine(string.Format("<p>Hành khách {0}: {1} kg</p>", hasHandLuggage, con.Baggage));
+                        hasHandLuggage++;
+                    }
+                    else sb.AppendLine(string.Format("<p>{0}</p>", con.Description));
                 }
                 sb.AppendLine("</td></tr>");
             }
@@ -408,7 +420,17 @@ namespace PlanX.Services.Messages
             //payment
             string paymentmethod = string.Format(_localizationService.GetResource("booking.paymentmethod." + booking.PaymentMethodId.ToString(), _workContext.WorkingLanguage.Id), booking.ContactAddress + "," + booking.ContactCityName, booking.ContactPhone, booking.ContactName);
             tokens.Add(new Token("Booking.PaymentMethod", paymentmethod));
+            //contact
+            tokens.Add(new Token("Booking.ContactAddress", booking.ContactAddress));
+            tokens.Add(new Token("Booking.ContactName", booking.ContactName));
+            tokens.Add(new Token("Booking.ContactPassengerType", _localizationService.GetResource("passertype." + booking.PasserType.ToString())));
+            tokens.Add(new Token("Booking.ContactPhone", booking.ContactPhone));
+            tokens.Add(new Token("Booking.ContactEmail", booking.ContactEmail));
+            tokens.Add(new Token("Booking.ContactBirthDate", booking.ContactBirthDate.HasValue ? booking.ContactBirthDate.Value.ToString("dd/MM/yyyy") : ""));
+            tokens.Add(new Token("Booking.ContactCityName", booking.ContactCityName));
+            var contactCountry = _clickBayService.GetCountryById(booking.ContactCountryId);
 
+            tokens.Add(new Token("Booking.GetCountryById", contactCountry!= null?contactCountry.Name:""));
             //event notification
             _eventPublisher.EntityTokensAdded(booking, tokens);
         }
