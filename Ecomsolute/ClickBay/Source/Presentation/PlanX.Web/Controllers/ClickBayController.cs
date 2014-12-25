@@ -678,7 +678,7 @@ namespace PlanX.Web.Controllers
                 ContactCityName = model.ContactCityName,
                 ContactCountryId = model.ContactCountryId,
                 ContactEmail = model.ContactEmail,
-                ContactGender = ((PassengerType)model.ContactPassengerType).ToString(),
+                ContactGender = _localizationService.GetResource("PasserType." + ((PasserType)model.ContactPassengerType).ToString()),
                 ContactPhone = model.ContactPhone,
                 ContactName = model.ContactName,
                 ContactStatusId = (int)ContactStatus.ChuaLienLac,
@@ -780,7 +780,11 @@ namespace PlanX.Web.Controllers
 
             //send mail for customer & admin
             #region
-            _workflowMessageService.SendCustomerBookingSuccessfullMessage(booking);
+            try
+            {
+                _workflowMessageService.SendCustomerBookingSuccessfullMessage(booking);
+            }
+            catch { }
             #endregion
 
             return new JsonResult
