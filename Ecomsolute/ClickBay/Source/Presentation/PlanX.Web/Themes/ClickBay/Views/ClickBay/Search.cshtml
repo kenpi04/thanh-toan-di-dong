@@ -151,7 +151,12 @@
     }
     function showDetail(id,isReturn)
     {       
-        var table = $("#detail_" + id);       
+        var parentTable;
+        if(!isReturn)
+        {parentTable = $("#table-data");}
+        else{parentTable = $("#table-data-return");}
+        var table = parentTable.find("#detail_" + id);
+         
         if (!table.attr('show')) {             
             var sessionId="";
             if (!isReturn)
@@ -163,19 +168,19 @@
                 table.show('slow');
                 table.attr('show', '1');                
             });
-            $("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
+            parentTable.find("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
     }
     else {
             
             if (table.is(":hidden"))
             {
                 table.show('slow');
-                $("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
+                parentTable.find("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
             }
             else
             {
                 table.hide('slow');
-                $("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/plus-icon.png");
+                parentTable.find("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/plus-icon.png");
             }
         }
          
