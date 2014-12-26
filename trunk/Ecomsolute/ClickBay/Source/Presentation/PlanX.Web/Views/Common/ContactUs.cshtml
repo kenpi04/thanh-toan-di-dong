@@ -92,28 +92,20 @@
         var content = "<strong>Công ty TNHH PK Pro</strong> <br> Số điện thoại:(08) 6268 5656 <br> Email: clickbay@pkprovn.com <br> Địa chỉ :41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh";
         geocoder = new google.maps.Geocoder();
         var myOptions = {
-
-            zoom: 16,
+            center: new google.maps.LatLng(10.789665, 106.6420385),
+            zoom: 18,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
         map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
         var info = new google.maps.InfoWindow({ content: content });
-        geocoder.geocode({ 'address': diachi }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
-                center = results[0].geometry.location;
-                map.setCenter(center);
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: center
-                });
-                google.maps.event.addListener(marker, "click", function ()
-                { info.open(map, marker); });
-                info.open(map, marker);
-            } else {
-            }
+        var marker = new google.maps.Marker({
+            map: map,
+            position: new google.maps.LatLng(10.789665, 106.6420385)
         });
+        google.maps.event.addListener(marker, "click", function ()
+        { info.open(map, marker); });
+        info.open(map, marker);
 
         infowindow = new google.maps.InfoWindow(
         {
