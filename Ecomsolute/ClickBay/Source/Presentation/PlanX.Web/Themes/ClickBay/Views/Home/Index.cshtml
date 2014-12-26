@@ -3,7 +3,7 @@
 }
 <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
 <div class="head">
-    @Html.FptBanner(3,"BannerSlideShow")
+    @Html.Action("BannerShow", "FptBanner", new { Position = 3, viewName = "BannerSlideShow" })
     <div class="container">
         <div class="search-head">
             <div class="box-search" style="float: right; margin-top: 47px;">
@@ -40,7 +40,7 @@
         <div class="box box-50">
             <section class="box-line">
                 <div class="nv-title">ĐẶT VÉ NHANH 24/24</div><div class="line"><p class="boder-dashed line"></p></div>
-            </section>              
+            </section>
             <div class="box-c home">
                 <div>
                     <p class="green-text">Quý khách có thể mua vé máy bay bằng nhiều hình thức sau:</p>
