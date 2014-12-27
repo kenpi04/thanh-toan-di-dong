@@ -33,7 +33,7 @@ $("input[name=Return]").change(function () {
         $("#return-div").hide('slow');
 })
 $("#From").datepicker({
-    defaultDate: "+1w",
+    //defaultDate: "+1w",
     dateFormat: "dd/mm/yy",
     minDate: new Date(),
     changeMonth: false,
@@ -44,7 +44,7 @@ $("#From").datepicker({
     }
 });
 $("#To").datepicker({
-    defaultDate: "+1w",
+    //defaultDate: "+1w",
     dateFormat: "dd/mm/yy",
     changeMonth: false,
     numberOfMonths: 1,
@@ -134,7 +134,7 @@ $(function () {
     $('#small-searchterms').autocomplete({
         delay: 500,
         minLength: 2,
-        source: '@(Url.Action("GetCity"))',
+        source: 'clickbay/GetCity',
         select: function (event, ui) {
             selectedValue(ui.item.Name, ui.item.Code);
             return false;
