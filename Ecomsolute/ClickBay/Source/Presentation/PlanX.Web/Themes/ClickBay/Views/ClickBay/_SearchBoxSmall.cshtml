@@ -72,7 +72,6 @@
     </form>
     <div id="dialog-form" class="dialog-form-contain">
         <div><p id="title-text" class="title"><span id="title-text-id">Chọn điểm đi</span><span style="float:right;"><a class="close" onclick="hidePopup()">X</a></span></p></div>
-        <div class="domestic-group-50">
             <div class="domestic-col">
                 <ul>
                     <li class="title">Miền Bắc </li>
@@ -94,8 +93,7 @@
                     <li><a airportcode="TBB">Tuy Hòa<span> (TBB)</span> </a></li>
                 </ul>
             </div>
-        </div>
-        <div class="domestic-group-50">
+        
             <div class="domestic-col">
                 <ul>
                     <li class="title">Miền Nam </li>
@@ -111,34 +109,39 @@
                     <li><a airportcode="CAH">Cà Mau<span> (CAH)</span> </a></li>
                 </ul>
             </div>
-            </div>
-            @*<div class="internation-city">
-                <h3 style="font-weight: bold; font-size: 13px;">
-                    Quốc tế
-                </h3>
+            <div class="internation-city">
+                <h3 style="font-weight: bold; font-size: 13px;">Quốc tế</h3>
                 <p>
                     <b style="color: black; font-weight: bold">
                         Hãy nhập vào tên thành phố hoặc mã sân bay
                     </b>
                 </p>
-                <p class="error-departure" style="color: red;">
+                @*<p class="error-departure" style="color: red;">
                     &nbsp;
-                </p>
-                <input id="small-searchterms" name="" type="text" autocomplete="off">
-                <p>
+                </p>*@
+                <input id="small-searchterms" name="" type="text" autocomplete="on" class="textbox">
+                @*<p>
                    <input id="btncitySelect" class="default" value="Chọn" />
-                </p>
-            </div>*@
-
+                </p>*@
+            </div>
         </div>
     </aside>
 
 <script>
     $("#fromPlace,#toPlace").click(function () {
         openPopup($(this).attr("id"));
-        var pos = $(this).position();
+        var boxSmall = $(".search-box-small");
+        var posBox = $(this).position();
 
-        $("#dialog-form").css({"left": pos.left + "px","top":(pos.top+32)+"px"});
+        var left = boxSmall.position().left - boxSmall.width() - $(this).width();
+        //var pos = $("#search-box-small").posision();
+        //var posWith = $("#search-box-small").width();
+        
+        $("#dialog-form").css({
+            "left": left+ "px"
+            , "top": ($(this).position().top + 32) + "px"
+        });
+        //$("#dialog-form").css({"left": pos.left + "px","top":(pos.top+32)+"px"});
         CURRENT_TXT = $(this).attr("id");
     })
 </script>

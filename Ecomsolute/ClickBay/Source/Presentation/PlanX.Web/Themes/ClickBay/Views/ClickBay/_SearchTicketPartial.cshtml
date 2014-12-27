@@ -5,8 +5,8 @@
     <p>Không tìm thấy kết quả</p>
 }
 else{
-    <div class="bordered">
-        <table class="table none-border pointer main-background">
+    @*<div class="bordered">*@
+        @*<table class="table none-border pointer main-background">
             <thead>
                 <tr>
                     @{
@@ -20,7 +20,7 @@ else{
                     }                    
                 </tr>
             </thead>
-        </table>
+        </table>*@
         <table class="orange none-border" id="tblTicket">
             <tbody>
                 @foreach(var item in Model.Tickets)
@@ -39,6 +39,6 @@ else{
                 }               
             </tbody>
         </table>       
-    </div>
+    @*</div>*@
  <input type="hidden" value="@Model.SessionId" id="@(Model.Return?"sessionid-return":"sessionid")" />
 }
