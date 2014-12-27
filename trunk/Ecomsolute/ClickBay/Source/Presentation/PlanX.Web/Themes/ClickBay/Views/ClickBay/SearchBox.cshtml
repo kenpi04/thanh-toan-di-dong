@@ -61,7 +61,6 @@
                 <input type="submit" class="btn-search" value="Tìm chuyến bay">
             </span>
         </div>
-
     </div>
 </form>
 
@@ -103,30 +102,30 @@
             <li><a airportcode="CAH">Cà Mau<span> (CAH)</span> </a></li>
         </ul>
     </div>
-    @*<div class="internation-city">
-            <h3 style="font-weight: bold; font-size: 13px;">
-                Quốc tế
-            </h3>
+    <div class="internation-city">
+            <h3 style="font-weight: bold; font-size: 13px;">Quốc tế</h3>
             <p>
                 <b style="color: black; font-weight: bold">
                     Hãy nhập vào tên thành phố hoặc mã sân bay
                 </b>
             </p>
-            <p class="error-departure" style="color: red;">
+            @*<p class="error-departure" style="color: red;">
                 &nbsp;
-            </p>
-            <input id="small-searchterms" name="" type="text" autocomplete="off">
-            <p>
+            </p>*@
+            <input id="small-searchterms" name="" type="text" autocomplete="off" class="textbox">
+            @*<p>
                <input id="btncitySelect" class="default" value="Chọn" />
-            </p>
-        </div>*@
+            </p>*@
+        </div>
 
 </div>
 <script>
     $("#fromPlace,#toPlace").click(function () {
         openPopup($(this).attr("id"));
-        var pos = $("#fromPlace").position();
-        $("#dialog-form").css("left", pos.left + "px");
+        var pos = $(this).position();
+        var left = pos.left - 715 + $(this).width() + 22;
+        $("#dialog-form").css("left", left + "px");
+        
         CURRENT_TXT = $(this).attr("id");
     })
 </script>

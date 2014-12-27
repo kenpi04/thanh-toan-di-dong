@@ -1,11 +1,19 @@
 ﻿@model PlanX.Web.Models.ClickBay.SearchModel
 @{
-    Layout = "~/Views/Shared/_ColumnOne.cshtml";    
+    Layout = "~/Views/Shared/_ColumnOne.cshtml";
+    var currentCulture = new System.Globalization.CultureInfo("vi-VN");
+    System.Threading.Thread.CurrentThread.CurrentCulture = currentCulture;// = new System.Globalization.CultureInfo("vi-VN");
+    DateTime _departDate = DateTime.ParseExact(Model.DepartDate, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentCulture);
+    DateTime _returnDate = DateTime.Now;
+    if (!string.IsNullOrEmpty(Model.ReturnDate))
+    {
+        _returnDate = DateTime.ParseExact(Model.ReturnDate, "dd/MM/yyyy", System.Globalization.CultureInfo.CurrentCulture);
+    }
 }
 <div class="wrapper-body">
     <div class="wrapper-content inline">
         <section class="section-top">
-            @Html.Partial("_BreadCrumb", new Dictionary<string, string> {{"Tìm kiếm",""},{"Chọn chuyến bay","active"},{"Khách hàng",""},{"Hoàn thành",""}})
+            @Html.Partial("_BreadCrumb", new Dictionary<string, string> { { "Tìm kiếm", "" }, { "Chọn chuyến bay", "active" }, { "Khách hàng", "" }, { "Hoàn thành", "" } })
         </section>
         <div style="width:825px;float:left">
             <section class="section">
@@ -19,7 +27,26 @@
                     <p><span>Số lượng người lớn:</span><span>@Model.Adult</span>@if(Model.Child>0){<span>Số lượng trẻ em:</span><span>@Model.Child</span>}@if(Model.Flant>0){<span>Số lượng em bé:</span><span>@Model.Flant</span>}</p>
                 </div>
             </section>
-            <section class="section-left-search section" id="table-data">
+            <section class="section-left-search section">
+                <div class="bordered">
+                    <table class="table none-border pointer main-background">
+                        <thead>
+                            <tr>
+                                @{
+                                    DateTime startDate = _departDate.AddDays(-3);
+                                    for (int i = 0; i <= 6; i++)
+                                    {
+                                        var date = startDate.AddDays(i);
+                                        var day = currentCulture.DateTimeFormat.GetDayName(date.DayOfWeek);
+                                <th @(i == 3 ? "class=active" : "") onclick='searchByDate("@date.ToString("dd/MM/yyyy")")'><p>@day</p><p>@date.ToString("dd-MM-yyyy")</p></th>
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="table-data">
+                </div>
             </section>
             @if (Model.Return)
             {
@@ -34,7 +61,26 @@
                         <p><span>Số lượng người lớn:</span><span>@Model.Adult</span><span>Số lượng trẻ em:</span><span>@Model.Child</span><span>Số lượng em bé:</span><span>@Model.Flant</span></p>
                     </div>
                 </div>
-                <section class="section-left-search section" id="table-data-return">
+                <section class="section-left-search section">
+                    <div class="bordered">
+                        <table class="table none-border pointer main-background">
+                            <thead>
+                                <tr>
+                                    @{
+                                        DateTime endDate = _returnDate.AddDays(-3);
+                                        for (int i = 0; i <= 6; i++)
+                                        {
+                                            var date = endDate.AddDays(i);
+                                            var day = currentCulture.DateTimeFormat.GetDayName(date.DayOfWeek);
+                                            <th @(i == 3 ? "class=active" : "") onclick='searchByDate("@date.ToString("dd/MM/yyyy")")'><p>@day</p><p>@date.ToString("dd-MM-yyyy")</p></th>
+                                        }
+                                    }
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div id="table-data-return">
+                    </div>
                 </section>
             }
             <input type="button" value="Tiếp tục" class="default" id="btnContinue" onclick="selectTicket()" name="btnContinue">
@@ -47,9 +93,9 @@
                             <span class="title-left">Sắp xếp</span>
                         </div>
                         <div class="box-content">
-                            <p><input type="radio"  checked="checked" value="1" name="radioSort"><span>Giá (thấp -&gt; cao)</span></p>
-                            <p><input type="radio"  value="2" name="radioSort"><span>Thời gian đi</span></p>
-                            <p><input type="radio"  value="3" name="radioSort"><span>Hãng hàng không</span></p>
+                            <p><input type="radio" checked="checked" value="1" name="radioSort"><span>Giá (thấp -&gt; cao)</span></p>
+                            <p><input type="radio" value="2" name="radioSort"><span>Thời gian đi</span></p>
+                            <p><input type="radio" value="3" name="radioSort"><span>Hãng hàng không</span></p>
                         </div>
                     </div>
                 </aside>
@@ -69,8 +115,8 @@
             </article>
         </section>
         <div class="clear"></div>
-        </div>
     </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         search();
@@ -96,68 +142,70 @@
             date='@Model.DepartDate';
         $("input[name=checkFlight]:checked").each(function(i,e){
             selectedSource+=$(this).val()+',';
-        });            
+        });
         var data = {
             FromID:'@(Model.FromId!=null?Model.FromId:"")',
             ToId:'@(Model.ToId!=null?Model.ToId:"")',
             DepartDate: date,
-            ReturnDate:'@Model.ReturnDate', 
+            ReturnDate:'@Model.ReturnDate',
             Adult:@Model.Adult,
             Child:@Model.Child,
             Flant:@Model.Flant,
             Sort:$("input[name=radioSort]:checked").val(),
             Source:selectedSource.trim(),
             SessionId: $("#sessionid").val()
-           
+
         };
         $("#table-data").html("<img src='/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")
+        @if(Model.Return){<text>$("#table-data-return").html("<img src='~/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")</text>}
+
         $.get("@Url.Action("TicketSearchGo")",data,function(d){
             $("#table-data").html(d);
-            // displayAjaxLoading(false)
-            
+
+            @if(Model.Return)
+            {<text>
+            var data = {
+                FromID:'@(Model.ToId != null ? Model.ToId : "")',
+                ToId:'@(Model.FromId != null ? Model.FromId : "")',
+                DepartDate: '@Model.ReturnDate',
+                ReturnDate:'@Model.ReturnDate',
+                Adult:@Model.Adult,
+                Child:@Model.Child,
+                Flant:@Model.Flant,
+                Sort:$("input[name=radioSort]:checked").val(),
+                Source:selectedSource,
+                SessionId: $("#sessionid-return").val(),
+                Return:true
+
+
+            };
+            $.get("@Url.Action("TicketSearchReturn")",data,function(d){
+                $("#table-data-return").html(d);
+                // displayAjaxLoading(false)
+            }).error(function(){
+                alert("Lỗi kết nối! vui lòng thử lại");
+                //  displayAjaxLoading(false);
+                $("#table-data").html("")
+            })</text>
+            }
+
         }).error(function(){
             alert("Lỗi kết nối! vui lòng thử lại");
-           // displayAjaxLoading(false);
+            // displayAjaxLoading(false);
             $("#table-data").html("")
         })
-         @if(Model.Return)
-         {<text>
-              var data = {
-                  FromID:'@(Model.ToId != null ? Model.ToId : "")',
-                  ToId:'@(Model.FromId != null ? Model.FromId : "")',
-                  DepartDate: '@Model.ReturnDate',
-                  ReturnDate:'@Model.ReturnDate',
-                  Adult:@Model.Adult,
-                  Child:@Model.Child,
-                  Flant:@Model.Flant,
-                  Sort:$("input[name=radioSort]:checked").val(),
-                  Source:selectedSource,
-                  SessionId: $("#sessionid-return").val(),
-                  Return:true
 
-           
-              };
-             $("#table-data-return").html("<img src='~/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")
-             $.get("@Url.Action("TicketSearchReturn")",data,function(d){
-                 $("#table-data-return").html(d);
-                 // displayAjaxLoading(false)
-             }).error(function(){
-                 alert("Lỗi kết nối! vui lòng thử lại");
-                 //  displayAjaxLoading(false);
-                 $("#table-data").html("")
-             })</text>
-         }
-       
+
     }
     function showDetail(id,isReturn)
-    {       
+    {
         var parentTable;
         if(!isReturn)
         {parentTable = $("#table-data");}
         else{parentTable = $("#table-data-return");}
         var table = parentTable.find("#detail_" + id);
-         
-        if (!table.attr('show')) {             
+
+        if (!table.attr('show')) {
             var sessionId="";
             if (!isReturn)
                 sessionId= $("#sessionid").val();
@@ -166,12 +214,12 @@
             $.get("@Url.Action("GetTicketDetail")", { sessionId:sessionId, index: id }, function (d) {
                 table.html("<td colspan='7'>"+d+"</td>");
                 table.show('slow');
-                table.attr('show', '1');                
+                table.attr('show', '1');
             });
             parentTable.find("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
-    }
-    else {
-            
+        }
+        else {
+
             if (table.is(":hidden"))
             {
                 table.show('slow');
@@ -183,19 +231,21 @@
                 parentTable.find("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/plus-icon.png");
             }
         }
-         
+
     }
 
     function ticketChecked(id,isReturn)
     {
+        var parentTable;
         if(!isReturn)
         {
-            $("#table-data").find("tr[id^=ticketChecked_]").removeClass('active-detail');
+            parentTable = $("#table-data");
         }
         else{
-            $("#table-data").find("tr[id^=ticketChecked_]").removeClass('active-detail');            
+            parentTable = $("#table-data-return");
         }
-        $("#ticketChecked_"+id).addClass('active-detail');
+        parentTable.find("tr[id^=ticketChecked_]").removeClass('active-detail');
+        parentTable.find("#ticketChecked_"+id).addClass('active-detail');
     }
 
     function selectTicket()
@@ -207,55 +257,55 @@
         var selectedRadioReturn=$("input[name=ticketChecked-return]:checked");
         if(selectRadion.length==0)
             alert("Vui lòng chọn vé!");
-        @if(Model.Return)
+            @if(Model.Return)
         {
             <text>
 
-            else if(selectedRadioReturn.length==0)
-            {
-                alert("Vui lòng chọn vé lượt về!");
-            }
+        else if(selectedRadioReturn.length==0)
+        {
+            alert("Vui lòng chọn vé lượt về!");
+        }
             </text>
-        }         
+        }
         else
         {
-              
+
         }
-    else
-    {
-          var data= { 
-              index: selectRadion.val(),
-              session:sessionId,
-              adult:@Model.Adult,
-              child:@Model.Child,
-              iflant:@Model.Flant,
-          };
-          @if(Model.Return)
+        else
+        {
+            var data= {
+                index: selectRadion.val(),
+                session:sessionId,
+                adult:@Model.Adult,
+                child:@Model.Child,
+                iflant:@Model.Flant,
+            };
+            @if(Model.Return)
           {
               <text>
-                data.indexReturn=selectedRadioReturn.val();
-              data.sessionReturn=$("#sessionid-return").val();
-              </text>
+            data.indexReturn=selectedRadioReturn.val();
+            data.sessionReturn=$("#sessionid-return").val();
+            </text>
           }
 
 
-        displayAjaxLoading(true);
-        $.post("@Url.Action("SelectedTicket")",data, function (d) {
-            if (d == "OK")
-                window.location.href = '@Url.RouteUrl("Booking")';
-            else
-            {
-                alert("Đã có lỗi xảy ra! vui lòng nhấn F5");
-            }
-            displayAjaxLoading(false);
-        }).error(function () {
-            alert("Loi sever");
-            displayAjaxLoading(false);
-        })
-    }
+            displayAjaxLoading(true);
+            $.post("@Url.Action("SelectedTicket")",data, function (d) {
+                if (d == "OK")
+                    window.location.href = '@Url.RouteUrl("Booking")';
+                else
+                {
+                    alert("Đã có lỗi xảy ra! vui lòng nhấn F5");
+                }
+                displayAjaxLoading(false);
+            }).error(function () {
+                alert("Loi sever");
+                displayAjaxLoading(false);
+            })
+        }
     }
 </script>
 
-        
+
 
 
