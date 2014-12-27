@@ -213,7 +213,7 @@ img.icon-small{width:10px;margin:0 4px;}
 .info-filter p span{margin-right:7px;font-size:18px;color:#F2C127;}
 .info-filter .info-title-search{font-size:20px;color:#4C8EE5;font-weight:700;}
 .info-passenger p span{font-size:14px;margin-right:7px;}
-.search-box-small #dialog-form{width:auto;}
+/*.search-box-small #dialog-form{width:auto;}*/
 .search-box-small #dialog-form .domestic-group-50{float:left;width:50%;}
 /*news*/
 .news,.news-detail{margin-right:6%;}
@@ -298,11 +298,11 @@ font-size: 19px;}
 .listCity ul li a:hover b{font-weight: bold;}
 .listCity ul li a b{float: left;font-weight: normal;}
 .listCity ul li a span{float: right;font-weight: bold;font-size: 10px;color: #999;display: none;}
-.domestic-col{float: left;padding-right: 35px;font-size: 14px;min-width:15px;margin-left:12px;}
+.domestic-col{float: left;font-size: 14px;min-width:15px;margin-left:20px;}
 .domestic-col .title{padding:0;}
 .domestic-col ul li{padding-left:8px;background:none;color:rgb(255, 87, 0);font-weight:700;}
 .domestic-col a:hover{cursor:pointer;text-decoration:underline;}
-.internation-city{float: left;width: 260px;}
+.internation-city{float: left;width: 260px;margin-left:20px;}
 .internation-city h3{font-size: 13px;padding: 5px 0;margin: 0;color: #ff7b0f;text-transform: uppercase;}
 .internation-city p{font-size: 11px;color: #888;}
 .internation-city input{height: 24px;width: 250px;border: 1px solid #ccc;padding: 2px 5px;margin: 7px 0;}
@@ -321,7 +321,7 @@ box-shadow: 6px 6px 7px -4px #ccc;
 border-top:0;
 display:none;
 padding-bottom:10px;
-width:100%;
+width:715px;
     }
 
 #dialog-form p.title{margin:0;margin-bottom:7px;padding:8px 0px 8px 10px;box-sizing:border-box;line-height:12px;}
@@ -541,3 +541,4 @@ a.showmap{cursor:pointer;color:#000;font-size:13px;text-decoration:underline;}
 .flexslider {height:400px;overflow:hidden;position:absolute!important;}
 .head .container{position:absolute;}
 .map-dialog{position:absolute;z-index:1001;}
+#table-data,#table-data-return{border:1px #189b96 solid;border-top:none;max-height:393px;overflow:auto;}
