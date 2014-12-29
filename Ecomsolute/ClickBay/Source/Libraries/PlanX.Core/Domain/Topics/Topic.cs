@@ -58,5 +58,10 @@ namespace PlanX.Core.Domain.Topics
         /// </summary>
         public bool LimitedToStores { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public int GroupId { get; set; }
+
     }
 }

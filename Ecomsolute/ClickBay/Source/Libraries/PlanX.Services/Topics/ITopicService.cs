@@ -34,7 +34,7 @@ namespace PlanX.Services.Topics
         /// </summary>
         /// <param name="storeId">Store identifier; pass 0 to load all records</param>
         /// <returns>Topics</returns>
-        IList<Topic> GetAllTopics(int storeId);
+        IList<Topic> GetAllTopics(int storeId, int groupId = 0);
 
         /// <summary>
         /// Inserts a topic
