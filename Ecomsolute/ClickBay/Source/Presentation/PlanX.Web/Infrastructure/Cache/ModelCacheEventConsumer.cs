@@ -285,6 +285,7 @@ namespace PlanX.Web.Infrastructure.Cache
         /// </remarks>
         public const string TOPIC_MODEL_KEY = "PlanX.pres.topic.details-{0}-{1}-{2}";
         public const string TOPIC_PATTERN_KEY = "PlanX.pres.topic.details";
+        public const string TOPIC_LIST_MODEL_KEY = "PlanX.pres.topic.details.list-{0}-{1}";
 
         /// <summary>
         /// Key for CategoryTemplate caching
