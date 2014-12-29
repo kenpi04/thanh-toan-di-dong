@@ -106,11 +106,13 @@ namespace PlanX.Services.Topics
         /// </summary>
         /// <param name="storeId">Store identifier; pass 0 to load all records</param>
         /// <returns>Topics</returns>
-        public virtual IList<Topic> GetAllTopics(int storeId)
+        public virtual IList<Topic> GetAllTopics(int storeId, int groupId = 0)
         {
             var query = _topicRepository.Table;
+            if (groupId > 0)
+                query = query.Where(t => t.GroupId==groupId);
             query = query.OrderBy(t => t.SystemName);
-
+            
             //Store mapping
             if (storeId > 0)
             {
