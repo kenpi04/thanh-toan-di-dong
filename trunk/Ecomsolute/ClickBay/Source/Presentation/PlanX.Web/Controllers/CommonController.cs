@@ -835,6 +835,11 @@ namespace PlanX.Web.Controllers
             return View();
         }
 
+        public ActionResult BlockLink()
+        {
+            return View();
+        }
+
         #endregion
     }
 }

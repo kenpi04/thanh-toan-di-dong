@@ -5,6 +5,8 @@ using PlanX.Services.Localization;
 using PlanX.Services.Topics;
 using PlanX.Web.Infrastructure.Cache;
 using PlanX.Web.Models.Topics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PlanX.Web.Controllers
 {
@@ -24,7 +26,7 @@ namespace PlanX.Web.Controllers
 
         public TopicController(ITopicService topicService,
             ILocalizationService localizationService,
-            IWorkContext workContext, 
+            IWorkContext workContext,
             IStoreContext storeContext,
             ICacheManager cacheManager)
         {
@@ -59,6 +61,27 @@ namespace PlanX.Web.Controllers
                 MetaDescription = topic.GetLocalized(x => x.MetaDescription),
                 MetaTitle = topic.GetLocalized(x => x.MetaTitle),
             };
+            return model;
+        }
+
+        [NonAction]
+        protected List<TopicModel> PrepareListTopicModel(int groupId)
+        {
+            //load by store
+            var topics = _topicService.GetAllTopics(_storeContext.CurrentStore.Id, 0);
+            if (topics == null)
+                return null;
+
+            var model = topics.Select(topic =>
+            new TopicModel
+             {
+                 Id = topic.Id,
+                 SystemName = topic.SystemName,
+                 IncludeInSitemap = topic.IncludeInSitemap,
+                 IsPasswordProtected = topic.IsPasswordProtected,
+                 Title = topic.IsPasswordProtected ? "" : topic.Title,
+             }).ToList();
+
             return model;
         }
 
@@ -124,6 +147,19 @@ namespace PlanX.Web.Controllers
                 }
             }
             return Json(new { Authenticated = authResult, Title = title, Body = body, Error = error });
+        }
+
+        public ActionResult TopicBlockLink(int groupId, string viewName)
+        {
+            var cacheKey = string.Format(ModelCacheEventConsumer.TOPIC_LIST_MODEL_KEY, groupId, viewName);
+            var cacheModel = _cacheManager.Get(cacheKey, () => PrepareListTopicModel(groupId));
+
+            if (cacheModel == null)
+                return Content("");
+
+            if(!string.IsNullOrEmpty(viewName))
+                return PartialView(viewName,cacheModel);
+            return PartialView(cacheModel);
         }
 
         #endregion
