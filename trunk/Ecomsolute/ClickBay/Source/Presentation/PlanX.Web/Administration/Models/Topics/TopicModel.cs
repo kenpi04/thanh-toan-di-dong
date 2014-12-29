@@ -62,7 +62,10 @@ namespace PlanX.Admin.Models.Topics
         [NopResourceDisplayName("Admin.ContentManagement.Topics.Fields.MetaTitle")]
         [AllowHtml]
         public string MetaTitle { get; set; }
-        
+
+        [NopResourceDisplayName("Admin.ContentManagement.Topics.Fields.GroupId")]
+        public int GroupId { get; set; }
+
         public IList<TopicLocalizedModel> Locales { get; set; }
     }
 
