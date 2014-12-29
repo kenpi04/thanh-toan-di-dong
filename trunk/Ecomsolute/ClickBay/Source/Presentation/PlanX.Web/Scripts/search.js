@@ -64,7 +64,7 @@ function openPopup(name) {
         $("#title-text-id").append("Chọn điểm đến");
       
     }
-    $("#dialog-form").show('slow');
+    $("#dialog-form").show();
 
 }
 //function openPopup(top) {
@@ -100,7 +100,7 @@ $(document).on('click', function (e) {
     }
 })
 function hidePopup() {
-    $('#dialog-form').hide('slow');
+    $('#dialog-form').hide();
 }
 
 
