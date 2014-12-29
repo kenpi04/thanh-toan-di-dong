@@ -77,10 +77,10 @@ namespace PlanX.Web.Controllers
             {
                 term = term.RemoveSign4VietnameseString();
             }
-            var data = _clickBayService.GetListCity(0, term);
+            var data = _clickBayService.GetListCity(0, term).Select(x => new { x.Code, Name = x.Name+" ("+x.Code+")", x.Id }).Distinct();
             return new JsonResult
             {
-                Data = data.Select(x => new { x.Code, x.Name, x.Id }).ToList(),
+                Data = data.ToList(),
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
@@ -1137,17 +1137,17 @@ namespace PlanX.Web.Controllers
 
             return Content(result);
         }
-        /*  public string a()
-        {
-            var country = _clickBayService.GetCountry();
-           country.ToList().ForEach(x => _clickBayService.InsertCountry(x));
-                //var city = _clickBayService.GetCity();
-         //  city.ToList().ForEach(x => _clickBayService.UpdateCity(x));
-           // var airport = _clickBayService.GetAirport();
+        //public string a()
+        //{
+        //    var country = _clickBayService.GetCountry();
+        //   country.ToList().ForEach(x => _clickBayService.InsertCountry(x));
+        //        var city = _clickBayService.GetCity();
+        //   city.ToList().ForEach(x => _clickBayService.UpdateCity(x));
+        //    var airport = _clickBayService.GetAirport();
         //    airport.ToList().ForEach(x => _clickBayService.InsertAirport(x));
-          // string a=_clickBayService.GetData();
-            return "a";
-        }*/
+        //   string a=_clickBayService.GetData();
+        //    return "a";
+        //}
         public ActionResult Map()
         {
             return View();
