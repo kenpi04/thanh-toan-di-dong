@@ -1,6 +1,6 @@
 ﻿@model FooterModel
 @using PlanX.Web.Models.Common;
-
+@Html.Action("BlockLink", "Common")
 <footer class="footer">
     <div class="container">
         <div class="wrapper-content">
@@ -26,10 +26,10 @@
                 </div>
                 <ul>
                     <li><a href="@Url.RouteUrl("Topic", new { SystemName = "huong-dan-thanh-toan" })">Hướng dẫn thanh toán</a></li>
-                    <li><a href="@Url.RouteUrl("ContactUs")">Thông tin chuyển khoản</a></li>
+                    <li><a href="@Url.RouteUrl("Topic", new { SystemName = "thong-tin-chuyen-khoan" })">Thông tin chuyển khoản</a></li>
                     <li><a href="@Url.RouteUrl("Topic", new { SystemName = "huong-dan-dat-ve" })">Hướng dẫn đặt vé</a></li>
                     <li><a href="@Url.RouteUrl("Topic", new { SystemName = "cau-hoi-thuong-gap" })">Câu hỏi thường gặp</a></li>
-                    <li><a href="@Url.RouteUrl("ContactUs")">Hổ trợ khách hàng</a></li>
+                    <li><a href="@Url.RouteUrl("Topic", new { SystemName = "ho-tro-khach-hang" })">Hổ trợ khách hàng</a></li>
                 </ul>
             </div>
             <div class="block">

@@ -132,16 +132,11 @@
         openPopup($(this).attr("id"));
         var boxSmall = $(".search-box-small");
         var posBox = $(this).position();
-
         var left = boxSmall.position().left - 717 + boxSmall.width();
-        //var pos = $("#search-box-small").posision();
-        //var posWith = $("#search-box-small").width();
-        
         $("#dialog-form").css({
             "left": left+ "px"
             , "top": ($(this).position().top + 32) + "px"
         });
-        //$("#dialog-form").css({"left": pos.left + "px","top":(pos.top+32)+"px"});
         CURRENT_TXT = $(this).attr("id");
     })
 </script>

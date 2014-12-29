@@ -542,3 +542,11 @@ a.showmap{cursor:pointer;color:#000;font-size:13px;text-decoration:underline;}
 .head .container{position:absolute;}
 .map-dialog{position:absolute;z-index:1001;}
 #table-data,#table-data-return{border:1px #189b96 solid;border-top:none;max-height:393px;overflow:auto;}
+/*blocklink*/
+.block-link{margin:0;display:inline-block;width:100%;}
+.block-link aside{width:25%;float:left;}
+.block-link aside a{color:#189b96;}
+.block-link aside a:hover{color:#ccc;}
+.block-link aside p{margin:2px 0;font-size:12px;}
+.block-link div.box-inside{padding-right:100px;}
+.block-link aside .box-inside .inside{max-height:200px;overflow:auto;}
