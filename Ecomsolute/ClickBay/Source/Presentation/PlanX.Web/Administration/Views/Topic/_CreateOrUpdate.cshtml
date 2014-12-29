@@ -46,6 +46,15 @@
         </tr>
         <tr>
             <td class="adminTitle">
+                @Html.NopLabelFor(model => model.GroupId):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.GroupId)
+                @Html.ValidationMessageFor(model => model.GroupId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
                 @Html.NopLabelFor(model => model.IsPasswordProtected):
             </td>
             <td class="adminData">
