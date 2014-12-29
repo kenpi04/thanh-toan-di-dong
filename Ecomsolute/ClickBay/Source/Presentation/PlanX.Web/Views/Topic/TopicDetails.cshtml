@@ -70,14 +70,19 @@
         }
     </div>
 }
-<div class="page topic-page" id="ph-topic">
-    <div id="ph-title">
-        <div class="page-title">
-            <h1>
-                @Model.Title</h1>
-        </div>
-    </div>
-    <div class="page-body">
-        @Html.Raw(Model.Body)
-    </div>
+<div class="wrapper-body">
+    <div class="wrapper-content inline">        
+        <section class="section-top"><p></p></section>
+            <section class="section-left news-detail">
+                <div class="news-title"><h1>@Model.Title</h1></div>
+                <div class="page-body">
+                    @Html.Raw(Model.Body)
+                </div>
+            </section>
+            <section class="section-right-search section">
+                <article>
+                    @Html.Action("SearchBox", "ClickBay", new { isSmall = true })
+                </article>
+            </section>
+</div>
 </div>
