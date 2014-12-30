@@ -1,0 +1,27 @@
+﻿@using Telerik.Web.Mvc.UI;
+@using PlanX.Services.News;
+
+@{
+    var _categoryService = EngineContext.Current.Resolve<PlanX.Services.News.ICategoryNewsService>();
+    var allCategories = _categoryService.GetAllCategories();
+
+
+    var categoryList = new List<System.Web.Mvc.SelectListItem>();
+    foreach (var c in allCategories)
+    {
+        var name = _categoryService.GetCategoryById(c.Id).GetCategoryBreadCrumb(_categoryService);
+        if (name != null)
+        {
+            name = name.Replace("\"", "");
+        }
+        var item = new SelectListItem()
+        {
+            Text = name,
+            Value = c.Id.ToString()
+        };
+        categoryList.Add(item);
+    }
+
+}
+
+@Html.Telerik().DropDownList().Name("NewsCate").BindTo(categoryList)

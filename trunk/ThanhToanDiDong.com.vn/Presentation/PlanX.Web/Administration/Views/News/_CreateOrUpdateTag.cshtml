@@ -1,0 +1,41 @@
+﻿@model TagModel
+@using Telerik.Web.Mvc.UI;
+@Html.ValidationSummary(false)
+@Html.HiddenFor(model => model.Id)
+@if (ViewBag.RefreshPage == true)
+{
+    <script type="text/javascript">
+        try {window.opener.document.forms['@(ViewBag.formId)'].@(ViewBag.btnId).click();}
+        catch (e){}
+        window.close();
+    </script>
+}
+<table class="adminContent">
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Name):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.EnglishName):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.EnglishName)
+            @Html.ValidationMessageFor(model => model.EnglishName)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.IsShowHomePage):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.IsShowHomePage)
+            @Html.ValidationMessageFor(model => model.IsShowHomePage)
+        </td>
+    </tr>
+</table>
