@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "~/Administration/Views/Shared/_AdminPopupLayout.cshtml";
+}
+@model TagModel
+@{
+    //page title
+    ViewBag.Title = "Sửa chi tiết tag";
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            Sửa chi tiết tag - @Model.Name
+        </div>
+        <div class="options">
+            <input type="submit" name="save" class="t-button" value="@T("Admin.Common.Save")" />
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdateTag", Model)
+}

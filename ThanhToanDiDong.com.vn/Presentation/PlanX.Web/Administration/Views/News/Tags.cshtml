@@ -1,0 +1,72 @@
+﻿@{
+    var gridPageSize = EngineContext.Current.Resolve<PlanX.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+
+    //page title
+    ViewBag.Title = "Quản lý tags";
+}
+@using Telerik.Web.Mvc.UI;
+@using System.Linq;
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "tags-form" }))
+{
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            Quản lý tags;
+        </div>
+    </div>
+    <table class="adminContent">
+        <tr>
+            <td>
+                @(Html.Telerik().Grid<TagModel>()
+                    .Name("tags-grid")
+                    .DataKeys(x =>
+                    {
+                        x.Add(y => y.Id).RouteKey("Id");
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.Name);
+                        columns.Bound(x => x.EnglishName);
+                        columns.Bound(x => x.IsShowHomePage);
+                        columns.Bound(x => x.NewsItemCount).Width(150);
+                        columns.Bound(x => x.Id)
+                            .Centered()
+                            .Width(100)
+                            .Filterable(false)
+                            .ClientTemplate("<input type='submit' value='" + @T("Admin.Common.Edit").Text + "' onclick=\"" + "javascript:OpenWindow('" + @Url.Content("~/Admin/News/EditTag/") + "<#= Id #>?btnId=btnRefresh&formId=tags-form', 800, 250, true); return false;\" class='t-button' />")
+                            .Title(T("Admin.Common.Edit").Text);
+                        columns.Command(commands =>
+                        {
+                            commands.Delete().Text(T("Admin.Common.Delete").Text);
+                        }).Width(90)
+                        .Title(T("Admin.Common.Delete").Text);
+
+                    })
+                    .Filterable()
+                    .Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax().Select("Tags", "News")
+                            .Delete("TagDelete", "News");
+                    })
+                    .EnableCustomBinding(true))
+            </td>
+        </tr>
+        <tr>
+            <td width="100%">
+                <input type="submit" id="btnRefresh" name="btnRefresh" style="display: none" />
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#btnRefresh').click(function () {
+                            //refresh grid
+                            var optionsGrid = $("#tags-grid");
+                            optionsGrid.data('tGrid').ajaxRequest();
+                            //return false to don't reload a page
+                            return false;
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
+}
