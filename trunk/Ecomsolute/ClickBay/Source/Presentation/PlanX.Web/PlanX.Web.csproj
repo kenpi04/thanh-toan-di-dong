@@ -1354,14 +1354,17 @@
     <Content Include="Themes\ClickBay\Views\ClickBay\_BookingPrice.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\_FlightBaggageCondition.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\Map.cshtml" />
-    <Content Include="Themes\ClickBay\Views\Home\Index - Copy.cshtml" />
     <Content Include="Views\FptBanner\BannerShow.cshtml" />
     <Content Include="Views\FptBanner\BannerSlideShow.cshtml" />
+    <Content Include="Themes\ClickBay\Views\Common\BlockLink.cshtml" />
+    <Content Include="Themes\ClickBay\Views\ClickBay\BookingRecent.cshtml" />
+    <Content Include="Themes\ClickBay\Views\News\HomePageNews.cshtml" />
+    <Content Include="Themes\ClickBay\Views\News\NewsRelated.cshtml" />
+    <Content Include="Themes\ClickBay\Views\News\_BoxNewsItems2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\Thumbs\" />
     <Folder Include="Plugins\bin\" />
-    <Folder Include="Themes\ClickBay\Views\Catalog\" />
     <Folder Include="Views\OnePay\" />
   </ItemGroup>
   <ItemGroup>
