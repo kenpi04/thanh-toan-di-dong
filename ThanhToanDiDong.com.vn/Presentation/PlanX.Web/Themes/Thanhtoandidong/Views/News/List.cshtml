@@ -1,0 +1,80 @@
+﻿@model NewsItemListModel
+@using PlanX.Web.Extensions;
+@using PlanX.Web.Models.News;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.CategoryName);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+    
+    var firstNews = Model.NewsItems.Count>0? Model.NewsItems.FirstOrDefault():null;
+}
+<section class="mainContent">
+    <!--left-->
+    <div class="mainContent_left">
+        <div class="submenu">
+            <a href="@Url.RouteUrl("HomePage")" class="button blue color_white" title="Trang chủ">Trang chủ</a>
+            <a href="trangchu.html" class="button grey2" title="Trang chủ">Trang chủ</a>            
+        </div>
+        @if (Model.NewsItems.Count > 0) {            
+        <div class="first-news">
+            <div class="inside">
+                <div class="image_default" id="@firstNews.Id">
+                    <a href="@Url.RouteUrl("NewsItem", new { SeName = firstNews.SeName })"><img src="@firstNews.DefaultPictureModel.FullSizeImageUrl" alt="@firstNews.Title" onload="imageResize(@firstNews.Id)"></a>
+                    <p class="date"><span class="day">@string.Format("{0}/{1}",firstNews.CreatedOn.Day,firstNews.CreatedOn.Month)</span><br /><span class="year">@firstNews.CreatedOn.Year.ToString()</span></p>
+                </div>
+            </div>
+            <div class="group-title">
+                <div class="item_content_preview">
+                    <h3><a href="@Url.RouteUrl("NewsItem", new { SeName = firstNews.SeName })" title="@firstNews.Title">@firstNews.Title</a></h3>
+                    <p><span>@firstNews.Short.TrimString(200)</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="news-category">
+        @foreach (var item in Model.NewsItems.Where(x=>x != firstNews).ToList())
+        {
+        @Html.Partial("_NewsItemBox", item)
+        }
+        </div>
+    <div class="newsItem_Row">
+        <div class="newsItem">
+            <div class="inside"><span><input type="button" class="inactive" value="MỚI HƠN" title="Tin mới hơn" /></span></div>
+        </div>
+        <div class="newsItem text-right">
+            <div class="inside"><span class="right"><input type="button" class="blue" value="CŨ HƠN" title="Tin cũ hơn" /></span></div>
+        </div>
+    </div>
+        }
+    </div>
+    <!--right-->
+    <article class="mainContent_right">
+        <!--hot view-->
+        @Html.Action("HotView","News")
+        <!--ads box-->
+        <aside class="ads_box">
+            <div class="ads_box"></div>
+        </aside>
+        <!--hot view-->
+        @Html.Action("MostView","News")
+        <!--ads box-->
+        <aside class="ads_box">
+            <div class="ads_box"></div>
+        </aside>
+        <!--tags box-->
+        <aside class="tags_box">
+            <div class="tags_box">
+                <div class="left">
+                    <h2 class="grey color_white"><span>TAG</span><span class="small">S</span></h2>
+                </div>
+                <div class="right">
+                    <div>
+                        <p><a href="#">ví điện tử</a></p><p><a href="#">cổng thanh toán</a></p><p><a href="#">cổng thanh toán trực tuyến</a></p><p><a href="#">giao dịch online</a></p><p><a href="#">thương mại điện tử</a></p><p><a href="#">e-commerce</a></p><p><a href="#">thanh toán tạm giữ</a></p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </article>
+</section>

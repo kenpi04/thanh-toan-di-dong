@@ -1,0 +1,20 @@
+﻿@model PlanX.Web.Models.News.NavigativeCategory
+<div class="navigati">
+    <nav class="header_menu">
+        <ul>
+            @foreach(var category in Model.CategoryNewsChild)
+            {
+            <li><a href="@Url.RouteUrl("CategoryNews", new { SeName = category.SeName })" title="@category.Name" class="@(category.Id == Model.CurrentCategoryId ? "active":"")">@category.Name</a>
+            @if(category.CategoryNewsChild.Count>0)
+            {
+                <ul class="sub" style="display:none">
+                    @foreach (var child in category.CategoryNewsChild) 
+                    { 
+                    <li><a href="@Url.RouteUrl("CategoryNews", new{SeName=child.SeName})" title="@child.Name"><span>@child.Name</span><span class="number_Items">123</span></a></li>}
+                </ul>                    
+            }
+            </li>
+            }                      
+        </ul>
+    </nav>
+</div>

@@ -1,0 +1,61 @@
+﻿@model FooterModel
+@using PlanX.Web.Models.Common;
+<footer>
+    <div class="footer">
+        <div class="area_left">
+            <div class="abouts">
+                <div>
+                    <h2>Về chúng tôi</h2>
+                    <p>
+                        <span>
+                            <a>thanhtoandidong.com.vn</a> là kênh thông tin, tin tức mới nhất về xu hướng tương lai, công nghệ, marketing trong lĩnh vực thanh toán qua di động tại Việt Nam và các nước trên thế giới.
+                            <br /><span class="lien_lac">Thông tin liên lạc</span>
+                            <br />Phone: <span class="phone">0939448124</span>
+                            <br />Email: <a class="email" href="mailto:info@thanhtoandidong.com.vn">info@thanhtoandidong.com.vn</a>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="partner">
+                <div>
+                    <h2>Hợp tác</h2>
+                    <p><span>Kết nối với chúng tôi</span></p>
+                    <a href="#"><img src="~/Themes/Thanhtoandidong/Content/images/facebook_icon.jpg" alt="facebook"></a><a href="#"><img src="~/Themes/Thanhtoandidong/Content/images/youtube_icon.jpg" alt="youtube"></a>
+                </div>
+            </div>
+            <div class="link">
+                <div>
+                    <h2>Liên kết</h2>
+                    <ul>
+                        <li><a href="http://thachpham.com" target="_blank" title="thachPham.com">thachpham.com</a></li>
+                        <li><a href="http://giaiphapso.info" target="_blank" title="giaiPhapso.info">giaiphapso.info</a></li>
+                        <li><a href="http://vuhoangtam.com" target="_blank" title="vuHoangTam.com">vuhoangtam.com</a></li>
+                        <li><a href="http://duyvm.com" target="_blank" title="duyVM.com">duyvm.com</a></li>
+                        <li><a href="http://zhouse.com.vn" target="_blank" title="zHouse.com.vn">zhouse.com.vn</a></li>
+                        <li><a href="http://planx.com" target="_blank" title="planX.vn">planX.vn</a></li>
+                        <li><a href="http://clickbay.com.vn" target="_blank" title="clickbay.com.vn">clickbay.com.vn</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="area_right">
+            <div class="newsletter">
+                <h2>Đăng ký nhận tin</h2>
+                <div class="list_box">
+                    <div class="newsletter_email">
+                        <div class="text"><input class="textbox" id="newsletter_email" name="newsletter_email" type="text" placeholder="eMail của bạn" /></div>
+                        <div class="text input"><input type="button" value="Gửi" id="newsletter-subscribe-button" name="newsletter-subscribe-button" class="default"></div>
+                        <span class="field-validation-valid" data-valmsg-for="NewsletterEmail" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="buttons">
+                        <span id="subscribe-loading-progress" style="display: none;" class="please-wait">Đang xử lý...</span>
+                    </div>
+                </div>
+                <div id="newsletter-result-block" class="newsletter-result-block">
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Action("ChangeDeviceBlock", "Common")
+    @Html.Widget("footer")
+</footer>

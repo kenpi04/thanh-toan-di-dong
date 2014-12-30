@@ -1,0 +1,15 @@
+﻿@model List<PlanX.Web.Models.News.NewsItemModel>
+<aside class="hot_view">
+    <div class="left">
+        <h2 class="blue color_white"><span>TOP</span><br /><span class="small">VIEW</span></h2>
+    </div>
+    <div class="right">
+        <div>
+            <ul class="ul_default">
+                @foreach (var item in Model)
+                {
+                <li><a href="@Url.RouteUrl("NewsItem",new{SeName = item.SeName})" title="@item.Title">@item.Title</a></li>}
+            </ul>
+        </div>
+    </div>
+</aside>
