@@ -1,0 +1,17 @@
+﻿@{
+    //current category ID
+    int currentCategoryId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("news", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("list", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentCategoryId = Convert.ToInt32(Url.RequestContext.RouteData.Values["categoryId"].ToString());
+    }
+}
+<div class="header">
+    <div class="div-center">
+        <div class="logo">
+            <a href="/"><img src="~/Themes/Thanhtoandidong/Content/images/logo.jpg" alt="logo thanhtoandidong.com.vn" title="thanhtoandidong.com.vn" /></a>
+        </div>
+        @Html.Action("NewsCateNavigation", "News", new { categoryId = 0, currentCategoryId = currentCategoryId })
+    </div>
+</div>

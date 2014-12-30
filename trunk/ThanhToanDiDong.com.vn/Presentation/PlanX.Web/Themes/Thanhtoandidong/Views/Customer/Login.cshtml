@@ -1,0 +1,79 @@
+﻿@model LoginModel
+@using PlanX.Web.Models.Customer;
+@using PlanX.Core;
+@using PlanX.Core.Infrastructure;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts("Đăng nhập");
+
+    var registerUrl = Url.RouteUrl("Register");
+    if (!String.IsNullOrEmpty(this.Context.Request.QueryString["returnUrl"]))
+    {
+        var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+        registerUrl = webHelper.ModifyQueryString(registerUrl, "returnurl=" + HttpUtility.UrlEncode(this.Context.Request.QueryString["returnUrl"]), null);
+    }
+}
+<div class="page login-page">
+    <div class="page-title">
+        <h1>Đăng nhập</h1>
+    </div>
+    @Html.Partial("_ExternalAuthentication.AssociateMessage")
+    @Html.Partial("_ExternalAuthentication.Errors")
+    <div class="page-body">
+        <div class="customer-blocks">            
+            <div class="returning-wrapper">                
+                <div class="form-fields">
+                    @using (Html.BeginForm())
+                    {
+                        <div class="message-error">
+                            @Html.ValidationSummary(true, "Đăng nhập không thành công.")
+                        </div>
+                        if (Model.UsernamesEnabled)
+                        {
+                        <div class="inputs">
+                            @Html.LabelFor(m => m.Username, new { }, ":") 
+                            @Html.TextBoxFor(m => m.Username, new { @class = "username", autofocus = "autofocus" })
+                            @Html.ValidationMessageFor(m => m.Username)
+                        </div>
+                        }
+                        else
+                        {
+                        <div class="inputs">
+                            @Html.LabelFor(m => m.Email, new { }, ":")
+                            @Html.TextBoxFor(m => m.Email, new { @class = "email", autofocus = "autofocus" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                        }
+                        <div class="inputs">
+                            @Html.LabelFor(m => m.Password, new { }, ":")
+                            @Html.PasswordFor(m => m.Password, new { @class = "password" })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                        <div class="inputs reversed">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                            <span class="forgot-password">
+                                @Html.RouteLink(T("Account.Login.ForgotPassword").Text, "PasswordRecovery")
+                            </span>
+                        </div>
+                        if (Model.DisplayCaptcha)
+                        {
+                        <div class="captcha-box">
+                            @Html.Raw(Html.GenerateCaptcha())
+                        </div>
+                        }
+                        <div class="buttons">
+                            <input class="button-1 default" type="submit" value="Đăng nhập" />
+                        </div>                       
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="external-authentication">
+            @Html.Action("ExternalMethods", "ExternalAuthentication")
+        </div>
+        @Html.Action("TopicBlock", "Topic", new { systemName = "LoginRegistrationInfo" })
+    </div>
+</div>

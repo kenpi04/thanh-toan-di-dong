@@ -1,0 +1,18 @@
+﻿@model PlanX.Web.Models.Common.ListBannerModel
+@if (Model.Banners.Count > 0)
+{
+    foreach (var i in Model.Banners)
+    {
+        <div class="ads_box_item item_@i.Id">
+            @if(i.BannerType == 1)
+            { <a href="@i.Url" target="@i.Target" title="@i.Title">
+                <img src="@i.PictureUrl" title="@i.Title" class="ads_imgage" />
+            </a>
+            }
+            else
+            {
+                @Html.Raw(i.Description)
+            }
+        </div>
+    }
+}

@@ -1,0 +1,18 @@
+﻿@model PlanX.Web.Models.News.HomePageNewsItemsModel
+@if (Model.NewsItems.Count > 0)
+{
+    <div class="news-homepage">
+        @foreach (var item in Model.NewsItems)
+        {
+        @Html.Partial("_NewsItemBox", item)
+        }
+    </div>
+    <div class="newsItem_Row">
+        <div class="newsItem">
+            <div class="inside"><span><input type="button" class="inactive" value="MỚI HƠN" title="Tin mới hơn" /></span></div>
+        </div>
+        <div class="newsItem text-right">
+            <div class="inside"><span class="right"><input type="button" class="blue" value="CŨ HƠN" title="Tin cũ hơn" /></span></div>
+        </div>
+    </div>
+}

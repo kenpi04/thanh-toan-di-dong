@@ -1,0 +1,34 @@
+﻿@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+    Html.AddTitleParts("Kênh thông tin, tin tức, công nghệ và marketing trong lĩnh vực thanh toán qua di động");
+}
+<!--Menu-->
+@Html.Partial("_HeaderContent")
+<!--mainContent-->
+<section class="mainContent">
+    <!--left-->
+    <article class="mainContent_left">
+        @Html.Action("HomePageNews", "News", new { pageSize = 20, thumsImageSize = 365 })
+    </article>
+    <!--right-->
+    <article class="mainContent_right">
+        <!--ads box-->
+        <aside class="ads_box">
+            @Html.Action("BannerShow", "Banner", new { position = 21 })
+        </aside>
+        <!--hot view-->
+        @Html.Action("HotView","News")
+        <!--facebook box-->
+        <aside class="facebook_box">
+            <div class="facebook_box"></div>
+        </aside>
+        <!--ads box-->
+        <aside class="ads_box">
+            @Html.Action("BannerShow", "Banner", new { position = 22 })
+        </aside>
+        <!--tags box-->
+        <aside class="tags_box">
+            @Html.Action("HomePageTags","News")
+        </aside>
+    </article>
+</section>
