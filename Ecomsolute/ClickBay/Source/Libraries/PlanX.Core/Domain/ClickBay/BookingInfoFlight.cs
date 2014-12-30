@@ -77,5 +77,11 @@ namespace PlanX.Core.Domain.ClickBay
             get { return _bookingBaggages ?? (_bookingBaggages = new List<BookingBaggage>()); }
             protected set { _bookingBaggages = value; }
         }
+        private ICollection<BookingInfoFlightDetail> _bookingInfoFlightDetails { get; set; }
+        public virtual ICollection<BookingInfoFlightDetail> BookingInfoFlightDetails
+        {
+            get { return _bookingInfoFlightDetails ?? (_bookingInfoFlightDetails = new List<BookingInfoFlightDetail>()); }
+            protected set { _bookingInfoFlightDetails = value; }
+        }
     }
 }
