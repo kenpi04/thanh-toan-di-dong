@@ -122,6 +122,28 @@ namespace PlanX.Services.ClickBay
         }
         #endregion
 
+        #region Booking Info Flight Detail
+        public virtual void InsertBookingInfoFlightDetail(BookingInfoFlightDetail bookingInfoFlightDetail)
+        {
+            if (bookingInfoFlightDetail == null)
+                throw new ArgumentNullException("BookingInfoFlightDetail is null");
+
+            _bookingInfoFlightDetailRepository.Insert(bookingInfoFlightDetail);
+        }
+        public virtual void UpdateBookingInfoFlightDetail(BookingInfoFlightDetail bookingInfoFlightDetail)
+        {
+            if (bookingInfoFlightDetail == null)
+                throw new ArgumentNullException("BookingInfoFlightDetail is null");
+
+            _bookingInfoFlightDetailRepository.Update(bookingInfoFlightDetail);
+        }
+
+        public virtual BookingInfoFlightDetail GetBookingInfoFightDetailById(int infoFlightDetailId)
+        {
+            return _bookingInfoFlightDetailRepository.GetById(infoFlightDetailId);
+        }
+        #endregion
+
         #region Booking Baggage
         public virtual void InsertBookingBaggage(BookingBaggage bookingBaggage)
         {
