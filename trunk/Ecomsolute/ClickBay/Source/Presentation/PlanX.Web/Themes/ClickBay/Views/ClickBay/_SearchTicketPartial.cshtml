@@ -1,44 +1,29 @@
 ﻿@model PlanX.Web.Models.ClickBay.SearchModel
 @{var culture = new System.Globalization.CultureInfo("vi-VN");}
-@if(Model.Tickets.Count==0)
+@if (Model.Tickets.Count == 0)
 {
     <p>Không tìm thấy kết quả</p>
 }
-else{
-    @*<div class="bordered">*@
-        @*<table class="table none-border pointer main-background">
-            <thead>
-                <tr>
-                    @{
-                        DateTime startDate=Model.SearchDate.AddDays(-3);
-                        for (int i = 0; i <= 6;i++ )
-                        {
-                            var date = startDate.AddDays(i);
-                             var day = culture.DateTimeFormat.GetDayName(date.DayOfWeek);
-                        <th @(i==3?"class=active":"") onclick='searchByDate("@date.ToString("dd/MM/yyyy")")'><p>@day</p><p>@date.ToString("dd-MM-yyyy")</p></th>
-                        }
-                    }                    
-                </tr>
-            </thead>
-        </table>*@
-        <table class="orange none-border" id="tblTicket">
-            <tbody>
-                @foreach(var item in Model.Tickets)
-                { 
+else
+{
+    <table class="orange none-border" id="tblTicket">
+        <tbody>
+            @foreach (var item in Model.Tickets)
+            {
                 <tr id="ticketChecked_@item.Index">
-                    <td><img src="@Url.Content("~/Themes/ClickBay/Content/images/"+item.BrandCode+".gif")" /></td> 
-                    <td>@item.FlightNumber</td>
+                    <td><img src="@Url.Content("~/Themes/ClickBay/Content/images/"+item.BrandCode+".gif")" /></td>
+                    <td>@(item.Stops > 0 ? string.Format("{0} điểm dừng ({1})", item.Stops, item.FlightDurationString) : item.FlightNumber)</td>
                     <td class="big-font" id="">@item.DepartTime.ToString("HH:mm") - @item.LandingTime.ToString("HH:mm")</td>
                     <td class="big-font">@item.Price.ToString("#,##")</td>
-                    <td class="currency">@item.Currency</td>
-                    <td><a onclick="showDetail(@item.Index,@(Model.Return?"true":"false"))">Chi tiết<img src="@Url.Content("~/Themes/ClickBay/content/images/plus-icon.png")" class="icon-small"></a>                  
+                    <td class="currency">vnđ</td>
+                    <td>
+                        <a onclick="showDetail(@item.Index,@(Model.Return?"true":"false"))">Chi tiết<img src="@Url.Content("~/Themes/ClickBay/content/images/plus-icon.png")" class="icon-small"></a>
                     </td>
-                    <td ><input onclick="ticketChecked(@item.Index,@(Model.Return?"true":"false"))" type="radio" name="@(Model.Return?"ticketChecked-return":"ticketChecked")" value="@item.Index"></td>
+                    <td><input onclick="ticketChecked(@item.Index,@(Model.Return?"true":"false"))" type="radio" name="@(Model.Return?"ticketChecked-return":"ticketChecked")" value="@item.Index"></td>
                 </tr>
-                    <tr id="detail_@item.Index" style="display:none"></tr>
-                }               
-            </tbody>
-        </table>       
-    @*</div>*@
- <input type="hidden" value="@Model.SessionId" id="@(Model.Return?"sessionid-return":"sessionid")" />
+                <tr id="detail_@item.Index" style="display:none"></tr>
+            }
+        </tbody>
+    </table>
+    <input type="hidden" value="@Model.SessionId" id="@(Model.Return?"sessionid-return":"sessionid")" />
 }

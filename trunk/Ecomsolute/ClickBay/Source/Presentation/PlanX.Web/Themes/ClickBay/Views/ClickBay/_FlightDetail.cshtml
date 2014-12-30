@@ -4,6 +4,7 @@
     if (Model.Adult > 0) {soLuongHanhKhach += Model.Adult.ToString() + " người lớn";}
     if (Model.Child > 0) { soLuongHanhKhach += ", "+ Model.Child.ToString() + " trẻ em"; }
     if (Model.Infant > 0) { soLuongHanhKhach += ", "+ Model.Infant.ToString() + " em bé"; }
+    bool rowFirst = true;
 }           
 <article>
     <h2>Thông Tin Chuyến Bay</h2>
@@ -27,12 +28,14 @@
         </div>
     </div>
     <div class="info-flight div-table">
+        @if (Model.TicketInfo.Stops == 0)
+        {
         <div class="div-table-row place-flight">
             <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/"+Model.TicketInfo.BrandCode+".gif")" /></div>
             <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfo.FromPlace, @Model.TicketInfo.FromCountry</span></div>
             <div class="div-table-cell"></div>
             <div class="div-table-cell">Thời gian bay: <span>@Model.TicketInfo.FlightDurationString</span></div>
-        </div>
+        </div>        
         <div class="div-table-row">
             <div class="div-table-cell"></div>
             <div class="div-table-cell">Từ <span>@Model.TicketInfo.FromPlace (@Model.TicketInfo.FromCode)</span></div>
@@ -44,9 +47,36 @@
             <div class="div-table-cell"><span>@Model.TicketInfo.DepartTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
             <div class="div-table-cell"><span>@Model.TicketInfo.LandingTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
             <div class="div-table-cell">Loại vé: <span>@Model.TicketInfo.TicketType</span></div>
-        </div>
+        </div>}
+        else if (Model.TicketInfo.FlightInfoDetails.Count > 1)
+        {
+            <div class="div-table-row place-flight">
+                <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/"+Model.TicketInfo.BrandCode+".gif")" /></div>
+                <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfo.FromPlace, @Model.TicketInfo.FromCountry</span></div>
+                <div class="div-table-cell">Số điểm dừng <span>@Model.TicketInfo.Stops</span></div>
+                <div class="div-table-cell">Tổng thời gian: <span>@Model.TicketInfo.FlightDurationString</span></div>
+            </div>
+            rowFirst = true;
+            foreach (var item in Model.TicketInfo.FlightInfoDetails)
+            {
+            <div class="div-table-row bg-grey-white">
+                <div class="div-table-cell right bg-white"></div>
+                <div class="div-table-cell">Từ <span>@item.FromPlace</span></div>
+                <div class="div-table-cell">tới: <span>@item.ToPlace</span></div>
+                <div class="div-table-cell">Thời gian bay: <span>@item.FlightDuration</span></div>
+            </div>
+            <div class="div-table-row">
+                <div class="div-table-cell"></div>
+                <div class="div-table-cell"><span>@item.DepartTime</span></div>
+                <div class="div-table-cell"><span>@item.LandingTime</span></div>
+                <div class="div-table-cell">@item.Airline (<span>@item.FlightNumber</span>)</div>
+            </div>
+            rowFirst = false;
+            }
+        }
         @if(Model.TicketInfoReturn!=null)
         {
+            if (Model.TicketInfoReturn.Stops == 0) { 
            <div class="div-table-row place-flight">
             <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/" + Model.TicketInfoReturn.BrandCode + ".gif")" /></div>
             <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfoReturn.FromPlace, @Model.TicketInfoReturn.FromCountry</span></div>
@@ -64,7 +94,33 @@
             <div class="div-table-cell"><span>@Model.TicketInfoReturn.DepartTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
             <div class="div-table-cell"><span>@Model.TicketInfoReturn.LandingTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
             <div class="div-table-cell">Loại vé: <span>@Model.TicketInfoReturn.TicketType</span></div>
-        </div>
+        </div>}
+            else if (Model.TicketInfoReturn.FlightInfoDetails.Count > 1)
+            {
+                <div class="div-table-row place-flight">
+                    <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/" + Model.TicketInfoReturn.BrandCode + ".gif")" /></div>
+                    <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfoReturn.FromPlace, @Model.TicketInfoReturn.FromCountry</span></div>
+                    <div class="div-table-cell">Số điểm dừng <span>@Model.TicketInfoReturn.Stops</span></div>
+                    <div class="div-table-cell">Tổng thời gian: <span>@Model.TicketInfoReturn.FlightDurationString</span></div>
+                </div>
+                rowFirst = true;
+                foreach (var item in Model.TicketInfoReturn.FlightInfoDetails)
+                {
+                    <div class="div-table-row bg-grey-white">
+                        <div class="div-table-cell right bg-white"></div>
+                        <div class="div-table-cell">Từ <span>@item.FromPlace</span></div>
+                        <div class="div-table-cell">tới: <span>@item.ToPlace</span></div>
+                        <div class="div-table-cell">Thời gian bay: <span>@item.FlightDuration</span></div>
+                    </div>
+                    <div class="div-table-row">
+                        <div class="div-table-cell"></div>
+                        <div class="div-table-cell"><span>@item.DepartTime</span></div>
+                        <div class="div-table-cell"><span>@item.LandingTime</span></div>
+                        <div class="div-table-cell">@item.Airline (<span>@item.FlightNumber</span>)</div>
+                    </div>
+                    rowFirst = false;
+                }
+            }
         }
     </div>
 </article>

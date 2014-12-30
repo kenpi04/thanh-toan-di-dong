@@ -146,7 +146,7 @@ span.active{color:#F2C127;}
 .title{display:inline-block;font-size:15px;color:#fff;background:#189b96;width:100%;padding:8px 0}
 .title-left{float:left;padding:0 8px;}
 .title-right{float:right;padding:0 8px;}
-.big-font{color:orange;font-size:20px;font-weight:600;margin-right:7px;width:19%;text-align:right;}
+.big-font{color:#E05D00;font-size:20px;font-weight:600;margin-right:7px;width:19%;text-align:right;}
 .currency{width:7%}
 .section .search input{padding:6px;}
 .section .search{padding:10px 10px 10px 0px}
@@ -156,13 +156,14 @@ span.active{color:#F2C127;}
 table tr{display:table-row;vertical-align:inherit;border-color:inherit;}
 table th{border-left:1px #eaeaea solid; border-bottom:1px #eaeaea solid;}
 table tbody{display: table-row-group;vertical-align:inherit;border-color:inherit;}
-table tr td, table th{padding:8px;font-size:14px;line-height:14pt;vertical-align:top;border-left:1px #eaeaea solid;border-bottom:1px #eaeaea solid;}
+table tr td, table th{padding:8px;font-size:14px;line-height:14pt;vertical-align:middle;border-left:1px #eaeaea solid;border-bottom:1px #eaeaea solid;}
 table tr td p,table tr th p{margin:0;}
 table tr th.active{background:#F2C127}
 table.none-border, table.none-border tr, table.none-border tr td{border:none;}
 table.none-border tr th:first-child{border-left:none;}
 /*.section table tbody tr:nth-child(2n+1){background:#eeeeee;}*/
-.section table.orange tbody tr:hover{background:#d0d959;}
+.section table.orange tbody tr:hover{background:#dadada;}
+
 .section table tbody tr td a{cursor:pointer;}
 .bordered{border:1px #189b96 solid;}
 .pointer {cursor:pointer;}
@@ -389,10 +390,8 @@ div#pages {float: right;padding: 10px 0;}
 .note {width: 46% !important;}
 .detail-ticket {background: rgb(242, 255, 158);}
 table th {border-left: 1px #eaeaea solid;border-bottom: 1px #eaeaea solid;}
-.section table.orange tbody tr:hover {background: #d0d959;}
 table tr td p, table tr th p {margin: 0;}
 table tr th.active {background: #F2C127;}
-table.none-border, table.none-border tr, table.none-border tr td {border: none;}
 table.none-border tr th:first-child {border-left: none;}
 hr.style-two {border: 0;height: 1px;
         background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
@@ -447,7 +446,8 @@ ul.simple-pagination {list-style: none;}
 .form-fields .inputs {margin:8px 0;}
 .form-fields label[for=Email]{padding-right:32px;}
 .form-fields label[for=Password]{padding-right:8px;}
-.active-detail{background: #d0d959}
+/*.active-detail{background: #d0d959}*/
+.active-detail{background: #DADADA;}
 select[name^=day],select[name^=month],select[name^=year]{max-width:120px;}
 .select-id-ticketinfo p {margin-bottom:6px;}
 .uppercase{text-transform:uppercase;}
@@ -550,3 +550,5 @@ a.showmap{cursor:pointer;color:#000;font-size:13px;text-decoration:underline;}
 .block-link aside p{margin:2px 0;font-size:12px;}
 .block-link div.box-inside{padding-right:100px;}
 .block-link aside .box-inside .inside{max-height:200px;overflow:auto;}
+.bg-grey-white{background:#f0f0f0;}
+.bg-white{background:#ffffff;}
