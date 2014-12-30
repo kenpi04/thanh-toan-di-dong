@@ -102,6 +102,7 @@
     <Compile Include="Domain\ClickBay\BookingBaggage.cs" />
     <Compile Include="Domain\ClickBay\BookingInfoCondition.cs" />
     <Compile Include="Domain\ClickBay\BookingInfoFlight.cs" />
+    <Compile Include="Domain\ClickBay\BookingInfoFlightDetail.cs" />
     <Compile Include="Domain\ClickBay\BookingPassenger.cs" />
     <Compile Include="Domain\ClickBay\BookingPriceDetail.cs" />
     <Compile Include="Domain\ClickBay\BookingStatus.cs" />
