@@ -24,7 +24,7 @@ namespace PlanX.Services.ClickBay
         private readonly IRepository<AirlinesCondition> _airlinesConditionRepository;
         private readonly IRepository<ArilinesBaggageCondition> _airlineBaggageConditionRepository;
         private readonly IWebHelper _webHelper;
-        //private readonly IRepository<Booking> _bookingRepository;
+        
         private readonly IRepository<BookingInfoFlight> _bookingInfoFlightRepository;
         private readonly IRepository<BookingBaggage> _bookingBaggageRepository;
         private readonly IRepository<BookingPassenger> _bookingPassengerRepository;
@@ -32,6 +32,7 @@ namespace PlanX.Services.ClickBay
         private readonly IRepository<BookingInfoCondition> _bookingInfoConditionRepository;
         private readonly IRepository<BookTicketNote> _bookTicketNoteRepository;
         private readonly IRepository<Airline> _airlineRepository;
+        private readonly IRepository<BookingInfoFlightDetail> _bookingInfoFlightDetailRepository;
         private readonly IDbContext _dbContext;
 
         public ClickBayService(IRepository<Booking> BookingRepository,
@@ -48,6 +49,7 @@ namespace PlanX.Services.ClickBay
             IRepository<BookTicketNote> bookTicketNoteRepository,
             IRepository<Airline> airlineRepository,
             IRepository<BookingInfoFlight> bookingInfoFlightRepository,
+            IRepository<BookingInfoFlightDetail> bookingInfoFlightDetailRepository,
             IDbContext dbContext
             )
         {
@@ -65,6 +67,7 @@ namespace PlanX.Services.ClickBay
             this._bookTicketNoteRepository = bookTicketNoteRepository;
             this._airlineRepository = airlineRepository;
             this._bookingInfoFlightRepository = bookingInfoFlightRepository;
+            this._bookingInfoFlightDetailRepository = bookingInfoFlightDetailRepository;
             this._dbContext = dbContext;
         }
 
@@ -318,7 +321,8 @@ namespace PlanX.Services.ClickBay
                 q = q.Where(x => x.CountryId == countryId);
             if (!string.IsNullOrEmpty(name))
             {
-                q = q.Where(x => x.EnglishName.Contains(name.ToLower())|| x.Name.Contains(name.ToLower())).OrderBy(x=> x.Name);
+                name = name.ToLower();
+                q = q.Where(x => x.EnglishName.Contains(name) || x.Name.Contains(name) || x.Code.Contains(name)).OrderBy(x=> x.Name);
             }
             return q.AsEnumerable();
         }

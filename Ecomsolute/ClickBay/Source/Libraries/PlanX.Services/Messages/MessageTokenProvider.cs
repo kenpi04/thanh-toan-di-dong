@@ -238,6 +238,13 @@ namespace PlanX.Services.Messages
                         sb.AppendLine(string.Format("<tr><td style=\"padding:5px 20px;width:140px\">{0}</td><td style=\"padding:5px 0px;border-bottom:1px dashed #ccc;\">{1}</td></tr>", con.ConditionType, con.ConditionDescription));
                     }
                 }
+                else
+                {
+                    foreach (var con in booking.BookingInfoFlight.BookingInfoConditions)
+                    {
+                        sb.AppendLine(string.Format("<tr><td style=\"padding:5px 20px;width:140px\">{0}</td><td style=\"padding:5px 0px;border-bottom:1px dashed #ccc;\">{1}</td></tr>", con.ConditionType, con.ConditionDescription));
+                    }
+                }
             }
             else
             {
@@ -333,45 +340,105 @@ namespace PlanX.Services.Messages
             var sb = new StringBuilder();
             sb.AppendLine("<table style=\"width:100%;border-collapse:collapse;\"><tbody>");
 
-            #region info
-            //hearder
-            sb.AppendLine(string.Format("<tr style=\"background:#f2f2f2;\"><td><img src=\"http://clickbay.com.vn/Themes/ClickBay/Content/images/{0}.gif\" /></td><td>Khởi hành từ <strong>{1}, {2}</strong></td><td></td>"+
-                                                    "<td>Thời gian bay: <strong>{3}</strong></td></tr><tr><td></td><td style=\"padding:5px 0\">Từ: <strong>{4} ({5})</strong></td>"+
-                                                    "<td>tới: <strong>{6} ({7})</strong></td><td>{8} ({9})</td></tr><tr><td></td>"+
-                                                    "<td style=\"padding:5px 0\"><strong>{10}</strong></td><td><strong>{11}</strong></td><td>Loại vé: {12}</td></tr>",
-                                                    booking.BookingInfoFlight.Brand,
-                                                    booking.BookingInfoFlight.FromPlaceName,
-                                                    fromCountryName,
-                                                    GetFlightDuration((decimal)booking.BookingInfoFlight.FlightDuration),
-                                                    booking.BookingInfoFlight.FromPlaceName,
-                                                    booking.BookingInfoFlight.FromPlaceCode,
-                                                    booking.BookingInfoFlight.ToPlaceName,
-                                                    booking.BookingInfoFlight.ToPlaceCode,
-                                                    booking.BookingInfoFlight.BrandName,booking.BookingInfoFlight.FlightNumber,
-                                                    booking.BookingInfoFlight.DepartDateTime.HasValue? booking.BookingInfoFlight.DepartDateTime.Value.ToString("HH'h':mm dd-MM-yyyy"):"",
-                                                    booking.BookingInfoFlight.ArrivalDateTime.HasValue? booking.BookingInfoFlight.ArrivalDateTime.Value.ToString("HH'h':mm dd-MM-yyyy"):"",
-                                                    booking.BookingInfoFlight.TicketType));
-            
+            #region info            
+            if (booking.BookingInfoFlight.Stops == 0)
+            {
+                sb.AppendLine(string.Format("<tr style=\"background:#f2f2f2;\"><td><img src=\"http://clickbay.com.vn/Themes/ClickBay/Content/images/{0}.gif\" /></td><td>Khởi hành từ <strong>{1}, {2}</strong></td><td></td>" +
+                                                        "<td>Thời gian bay: <strong>{3}</strong></td></tr><tr><td></td><td style=\"padding:5px 0\">Từ: <strong>{4} ({5})</strong></td>" +
+                                                        "<td>tới: <strong>{6} ({7})</strong></td><td>{8} ({9})</td></tr><tr><td></td>" +
+                                                        "<td style=\"padding:5px 0\"><strong>{10}</strong></td><td><strong>{11}</strong></td><td>Loại vé: {12}</td></tr>",
+                                                        booking.BookingInfoFlight.Brand,
+                                                        booking.BookingInfoFlight.FromPlaceName,
+                                                        fromCountryName,
+                                                        GetFlightDuration((decimal)booking.BookingInfoFlight.FlightDuration),
+                                                        booking.BookingInfoFlight.FromPlaceName,
+                                                        booking.BookingInfoFlight.FromPlaceCode,
+                                                        booking.BookingInfoFlight.ToPlaceName,
+                                                        booking.BookingInfoFlight.ToPlaceCode,
+                                                        booking.BookingInfoFlight.BrandName, booking.BookingInfoFlight.FlightNumber,
+                                                        booking.BookingInfoFlight.DepartDateTime.HasValue ? booking.BookingInfoFlight.DepartDateTime.Value.ToString("HH'h':mm dd-MM-yyyy") : "",
+                                                        booking.BookingInfoFlight.ArrivalDateTime.HasValue ? booking.BookingInfoFlight.ArrivalDateTime.Value.ToString("HH'h':mm dd-MM-yyyy") : "",
+                                                        booking.BookingInfoFlight.TicketType));
+            }else
+            {
+                sb.AppendLine(string.Format("<tr style=\"background:#f2f2f2;\"><td><img src=\"http://clickbay.com.vn/Themes/ClickBay/Content/images/{0}.gif\" /></td>"+
+                                                                                                    "<td>Khởi hành từ <strong>{1}, {2}</strong></td>"+
+                                                                                                    "<td>Số điểm dừng: <strong>{3}</strong></td>"+
+                                                                                                    "<td>Tổng thời gian: <strong>{4}</strong></td>"+
+                                                                                                    "</tr>", 
+                                                                                                    booking.BookingInfoFlight.Brand,
+                                                                                                    booking.BookingInfoFlight.FromPlaceName,
+                                                                                                    fromCountryName,
+                                                                                                    booking.BookingInfoFlight.Stops,
+                                                                                                    GetFlightDuration((decimal)booking.BookingInfoFlight.FlightDuration)));
+                foreach(var item in booking.BookingInfoFlight.BookingInfoFlightDetails)
+                {
+                    sb.AppendLine(string.Format("<tr><td></td><td style=\"padding:5px 0\">Từ: <strong>{0}</strong></td>"+
+                                                        "<td>tới: <strong>{1}</strong></td>"+
+                                                        "<td>Thời gian bay: <strong>{2}</strong></td></tr>"+
+                                                        "<tr><td></td>"+
+                                                        "<td style=\"padding:5px 0\"><strong>{3}</strong></td>"+
+                                                        "<td><strong>{4}</strong></td>"+
+                                                        "<td>{5} (<strong>{6}</strong>)</td></tr>",
+                                                        item.FromPlace,
+                                                        item.ToPlace,
+                                                        item.FlightDuration,
+                                                        item.DepartTime,
+                                                        item.LandingTime,
+                                                        item.Airline,item.AirlineCode));
+                }
+            }
             if(booking.BookingInfoFlightReturn!= null)
             {
                 var returnCountryName = GetCountryName(booking.BookingInfoFlightReturn.FromPlaceCode);
-
-                sb.AppendLine(string.Format("<tr style=\"background:#f2f2f2;\"><td><img src=\"http://clickbay.com.vn/Themes/ClickBay/Content/images/{0}.gif\" /></td><td>Khởi hành từ <strong>{1}, {2}</strong></td><td></td>" +
-                                                    "<td>Thời gian bay: <strong>{3}</strong></td></tr><tr><td></td><td style=\"padding:5px 0\">Từ: <strong>{4} ({5})</strong></td>" +
-                                                    "<td>tới: <strong>{6} ({7})</strong></td><td>{8} ({9})</td></tr><tr><td></td>" +
-                                                    "<td style=\"padding:5px 0\"><strong>{10}</strong></td><td><strong>{11}</strong></td><td>Loại vé: {12}</td></tr>",
-                                                    booking.BookingInfoFlightReturn.Brand,
-                                                    booking.BookingInfoFlightReturn.FromPlaceName,
-                                                    returnCountryName,
-                                                    GetFlightDuration((decimal)booking.BookingInfoFlight.FlightDuration),
-                                                    booking.BookingInfoFlightReturn.FromPlaceName,
-                                                    booking.BookingInfoFlightReturn.FromPlaceCode,
-                                                    booking.BookingInfoFlightReturn.ToPlaceName,
-                                                    booking.BookingInfoFlightReturn.ToPlaceCode,
-                                                    booking.BookingInfoFlightReturn.BrandName, booking.BookingInfoFlight.FlightNumber,
-                                                    booking.BookingInfoFlightReturn.DepartDateTime.HasValue ? booking.BookingInfoFlightReturn.DepartDateTime.Value.ToString("HH'h':mm dd-MM-yyyy") : "",
-                                                    booking.BookingInfoFlightReturn.ArrivalDateTime.HasValue ? booking.BookingInfoFlightReturn.ArrivalDateTime.Value.ToString("HH'h':mm dd-MM-yyyy") : "",
-                                                    booking.BookingInfoFlightReturn.TicketType));
+                if (booking.BookingInfoFlightReturn.Stops == 0)
+                {
+                    sb.AppendLine(string.Format("<tr style=\"background:#f2f2f2;\"><td><img src=\"http://clickbay.com.vn/Themes/ClickBay/Content/images/{0}.gif\" /></td><td>Khởi hành từ <strong>{1}, {2}</strong></td><td></td>" +
+                                                        "<td>Thời gian bay: <strong>{3}</strong></td></tr><tr><td></td><td style=\"padding:5px 0\">Từ: <strong>{4} ({5})</strong></td>" +
+                                                        "<td>tới: <strong>{6} ({7})</strong></td><td>{8} ({9})</td></tr><tr><td></td>" +
+                                                        "<td style=\"padding:5px 0\"><strong>{10}</strong></td><td><strong>{11}</strong></td><td>Loại vé: {12}</td></tr>",
+                                                        booking.BookingInfoFlightReturn.Brand,
+                                                        booking.BookingInfoFlightReturn.FromPlaceName,
+                                                        returnCountryName,
+                                                        GetFlightDuration((decimal)booking.BookingInfoFlight.FlightDuration),
+                                                        booking.BookingInfoFlightReturn.FromPlaceName,
+                                                        booking.BookingInfoFlightReturn.FromPlaceCode,
+                                                        booking.BookingInfoFlightReturn.ToPlaceName,
+                                                        booking.BookingInfoFlightReturn.ToPlaceCode,
+                                                        booking.BookingInfoFlightReturn.BrandName, booking.BookingInfoFlight.FlightNumber,
+                                                        booking.BookingInfoFlightReturn.DepartDateTime.HasValue ? booking.BookingInfoFlightReturn.DepartDateTime.Value.ToString("HH'h':mm dd-MM-yyyy") : "",
+                                                        booking.BookingInfoFlightReturn.ArrivalDateTime.HasValue ? booking.BookingInfoFlightReturn.ArrivalDateTime.Value.ToString("HH'h':mm dd-MM-yyyy") : "",
+                                                        booking.BookingInfoFlightReturn.TicketType));
+                }
+                else
+                {
+                    sb.AppendLine(string.Format("<tr style=\"background:#f2f2f2;\"><td><img src=\"http://clickbay.com.vn/Themes/ClickBay/Content/images/{0}.gif\" /></td>" +
+                                                                                                    "<td>Khởi hành từ <strong>{1}, {2}</strong></td>" +
+                                                                                                    "<td>Số điểm dừng: <strong>{3}</strong></td>" +
+                                                                                                    "<td>Tổng thời gian: <strong>{4}</strong></td>" +
+                                                                                                    "</tr>",
+                                                                                                    booking.BookingInfoFlightReturn.Brand,
+                                                                                                    booking.BookingInfoFlightReturn.FromPlaceName,
+                                                                                                    fromCountryName,
+                                                                                                    booking.BookingInfoFlightReturn.Stops,
+                                                                                                    GetFlightDuration((decimal)booking.BookingInfoFlightReturn.FlightDuration)));
+                    foreach (var item in booking.BookingInfoFlightReturn.BookingInfoFlightDetails)
+                    {
+                        sb.AppendLine(string.Format("<tr><td></td><td style=\"padding:5px 0\">Từ: <strong>{0}</strong></td>" +
+                                                            "<td>tới: <strong>{1}</strong></td>" +
+                                                            "<td>Thời gian bay: <strong>{2}</strong></td></tr>" +
+                                                            "<tr><td></td>" +
+                                                            "<td style=\"padding:5px 0\"><strong>{3}</strong></td>" +
+                                                            "<td><strong>{4}</strong></td>" +
+                                                            "<td>{5} (<strong>{6}</strong>)</td></tr>",
+                                                            item.FromPlace,
+                                                            item.ToPlace,
+                                                            item.FlightDuration,
+                                                            item.DepartTime,
+                                                            item.LandingTime,
+                                                            item.Airline, item.AirlineCode));
+                    }
+                }
             }
             #endregion
 

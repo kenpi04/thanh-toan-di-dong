@@ -17,6 +17,9 @@ namespace PlanX.Services.ClickBay
         void InsertBookingInfoFlight(BookingInfoFlight bookingInfoFlight);
         void UpdateBookingInfoFlight(BookingInfoFlight bookingInfoFlight);
         BookingInfoFlight GetBookingInfoFightById(int infoFlightId);
+        void InsertBookingInfoFlightDetail(BookingInfoFlightDetail bookingInfoFlightDetail);
+        void UpdateBookingInfoFlightDetail(BookingInfoFlightDetail bookingInfoFlightDetail);
+        BookingInfoFlightDetail GetBookingInfoFightDetailById(int infoFlightDetailId);
         void InsertBookingBaggage(BookingBaggage bookingBaggage);
         void UpdateBookingPassenger(BookingPassenger bookingPassenger);
         BookingPassenger GetAllBookingPassengerById(int id);
