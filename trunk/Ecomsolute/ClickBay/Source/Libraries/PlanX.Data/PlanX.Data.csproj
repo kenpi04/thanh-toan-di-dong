@@ -79,6 +79,7 @@
     <Compile Include="Mapping\ClickBay\ArilinesBaggageConditionMapping.cs" />
     <Compile Include="Mapping\ClickBay\BookingBaggageMapping.cs" />
     <Compile Include="Mapping\ClickBay\BookingInfoConditionMapping.cs" />
+    <Compile Include="Mapping\ClickBay\BookingInfoFlightDetailMapping.cs" />
     <Compile Include="Mapping\ClickBay\BookingInfoFlightMapping.cs" />
     <Compile Include="Mapping\ClickBay\BookingMapping.cs" />
     <Compile Include="Mapping\ClickBay\BookingPassengerMapping.cs" />
