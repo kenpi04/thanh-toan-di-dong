@@ -203,6 +203,7 @@ namespace PlanX.Web.Controllers
         #endregion
 
         #region Methods
+        [ChildActionOnly]
         public ActionResult NewsCateNavigation(int? categoryId=0, int currentCategoryId = 0, string viewReturn="", bool isShowNewsCount = false)
         {
             categoryId = categoryId ?? 0;
