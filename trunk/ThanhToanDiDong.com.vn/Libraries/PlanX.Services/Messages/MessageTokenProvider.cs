@@ -43,7 +43,7 @@ namespace PlanX.Services.Messages
         //private readonly ICurrencyService _currencyService;
         private readonly IWebHelper _webHelper;
         private readonly IWorkContext _workContext;
-        private readonly IDownloadService _downloadService;
+        //private readonly IDownloadService _downloadService;
         //private readonly IOrderService _orderService;
         //private readonly IPaymentService _paymentService;
         //private readonly IProductAttributeParser _productAttributeParser;
@@ -64,7 +64,7 @@ namespace PlanX.Services.Messages
             IEmailAccountService emailAccountService,
             //IPriceFormatter priceFormatter, ICurrencyService currencyService,
             IWebHelper webHelper,
-            IWorkContext workContext, IDownloadService downloadService,
+            IWorkContext workContext, //IDownloadService downloadService,
             //IOrderService orderService, IPaymentService paymentService,
             //IProductAttributeParser productAttributeParser,
             MessageTemplatesSettings templatesSettings,
@@ -81,7 +81,7 @@ namespace PlanX.Services.Messages
             //this._currencyService = currencyService;
             this._webHelper = webHelper;
             this._workContext = workContext;
-            this._downloadService = downloadService;
+            //this._downloadService = downloadService;
             //this._orderService = orderService;
             //this._paymentService = paymentService;
             //this._productAttributeParser = productAttributeParser;
