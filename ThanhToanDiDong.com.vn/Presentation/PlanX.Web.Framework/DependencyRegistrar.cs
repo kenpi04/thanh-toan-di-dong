@@ -171,10 +171,14 @@ namespace PlanX.Web.Framework
                 .InstancePerHttpRequest();
 
             builder.RegisterType<GeoLookupService>().As<IGeoLookupService>().InstancePerHttpRequest();
-            builder.RegisterType<CountryService>().As<ICountryService>().InstancePerHttpRequest();
+            builder.RegisterType<CountryService>().As<ICountryService>()
+                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                .InstancePerHttpRequest();
             //builder.RegisterType<CurrencyService>().As<ICurrencyService>().InstancePerHttpRequest();
             //builder.RegisterType<MeasureService>().As<IMeasureService>().InstancePerHttpRequest();
-            builder.RegisterType<StateProvinceService>().As<IStateProvinceService>().InstancePerHttpRequest();
+            builder.RegisterType<StateProvinceService>().As<IStateProvinceService>()
+                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                .InstancePerHttpRequest();
 
             builder.RegisterType<StoreService>().As<IStoreService>().InstancePerHttpRequest();
             //pass MemoryCacheManager as cacheManager (cache settings between requests)
@@ -200,10 +204,14 @@ namespace PlanX.Web.Framework
             builder.RegisterType<LocalizedEntityService>().As<ILocalizedEntityService>()
                 .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
                 .InstancePerHttpRequest();
-            builder.RegisterType<LanguageService>().As<ILanguageService>().InstancePerHttpRequest();
+            builder.RegisterType<LanguageService>()
+                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                .As<ILanguageService>().InstancePerHttpRequest();
 
-            builder.RegisterType<DownloadService>().As<IDownloadService>().InstancePerHttpRequest();
-            builder.RegisterType<PictureService>().As<IPictureService>().InstancePerHttpRequest();
+            //builder.RegisterType<DownloadService>().As<IDownloadService>().InstancePerHttpRequest();
+            builder.RegisterType<PictureService>()
+                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                .As<IPictureService>().InstancePerHttpRequest();
 
             builder.RegisterType<MessageTemplateService>().As<IMessageTemplateService>().InstancePerHttpRequest();
             builder.RegisterType<QueuedEmailService>().As<IQueuedEmailService>().InstancePerHttpRequest();
@@ -261,9 +269,15 @@ namespace PlanX.Web.Framework
             //builder.RegisterType<PollService>().As<IPollService>().InstancePerHttpRequest();
             //builder.RegisterType<BlogService>().As<IBlogService>().InstancePerHttpRequest();
             builder.RegisterType<WidgetService>().As<IWidgetService>().InstancePerHttpRequest();
-            builder.RegisterType<TopicService>().As<ITopicService>().InstancePerHttpRequest();
-            builder.RegisterType<NewsService>().As<INewsService>().InstancePerHttpRequest();
-            builder.RegisterType<CategoryNewsService>().As<ICategoryNewsService>().InstancePerHttpRequest();
+            builder.RegisterType<TopicService>()
+                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                .As<ITopicService>().InstancePerHttpRequest();
+            builder.RegisterType<NewsService>()
+                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                .As<INewsService>().InstancePerHttpRequest();
+            builder.RegisterType<CategoryNewsService>()
+                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                .As<ICategoryNewsService>().InstancePerHttpRequest();
 
             builder.RegisterType<DateTimeHelper>().As<IDateTimeHelper>().InstancePerHttpRequest();
             builder.RegisterType<SitemapGenerator>().As<ISitemapGenerator>().InstancePerHttpRequest();
@@ -293,9 +307,13 @@ namespace PlanX.Web.Framework
             builder.RegisterType<NetAdvImageService>().As<INetAdvImageService>().InstancePerHttpRequest();
 
             //banner
-            builder.RegisterType<BannerService>().As<IBannerService>().InstancePerHttpRequest();
+            builder.RegisterType<BannerService>()
+                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                .As<IBannerService>().InstancePerHttpRequest();
             //tags
-            builder.RegisterType<TagService>().As<ITagService>().InstancePerHttpRequest();
+            builder.RegisterType<TagService>()
+                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                .As<ITagService>().InstancePerHttpRequest();
 
             //Register event consumers
             var consumers = typeFinder.FindClassesOfType(typeof(IConsumer<>)).ToList();

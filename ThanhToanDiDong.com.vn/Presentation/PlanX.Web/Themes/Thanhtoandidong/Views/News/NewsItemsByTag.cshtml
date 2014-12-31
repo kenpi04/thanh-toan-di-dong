@@ -15,7 +15,7 @@
         <div class="submenu">
             <a href="@Url.RouteUrl("HomePage")" class="button blue color_white" title="Trang chủ">Trang chủ</a>
             <a class="button grey2 tag-name" title="@Model.TagName">
-                <img src="http://thanhtoandidong.xxx/themes/thanhtoandidong/content/images/ico-tag.png" />
+                <img src="@Url.Content("~/themes/thanhtoandidong/content/images/ico-tag.png")" />
             <span>@Model.TagName</span></a>
         </div>
         @if (Model.NewsItems.Count > 0)
