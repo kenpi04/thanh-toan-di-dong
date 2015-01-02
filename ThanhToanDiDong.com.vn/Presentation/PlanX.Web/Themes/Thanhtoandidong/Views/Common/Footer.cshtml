@@ -42,17 +42,9 @@
             <div class="newsletter">
                 <h2>Đăng ký nhận tin</h2>
                 <div class="list_box">
-                    <div class="newsletter_email">
-                        <div class="text"><input class="textbox" id="newsletter_email" name="newsletter_email" type="text" placeholder="eMail của bạn" /></div>
-                        <div class="text input"><input type="button" value="Gửi" id="newsletter-subscribe-button" name="newsletter-subscribe-button" class="default"></div>
-                        <span class="field-validation-valid" data-valmsg-for="NewsletterEmail" data-valmsg-replace="true"></span>
-                    </div>
-                    <div class="buttons">
-                        <span id="subscribe-loading-progress" style="display: none;" class="please-wait">Đang xử lý...</span>
-                    </div>
+                   @Html.Action("Newsletterbox","NewsLetter")
                 </div>
-                <div id="newsletter-result-block" class="newsletter-result-block">
-                </div>
+               
             </div>
         </div>
     </div>
