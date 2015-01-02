@@ -1319,6 +1319,7 @@
     <Content Include="Themes\Thanhtoandidong\Content\images\top-menu-list-image.png" />
     <Content Include="Themes\Thanhtoandidong\Content\images\top-menu-triangle.png" />
     <Content Include="Themes\Thanhtoandidong\Content\images\youtube_icon.jpg" />
+    <Content Include="Themes\Thanhtoandidong\Content\responsive.css" />
     <Content Include="Themes\Thanhtoandidong\Content\styles.css" />
     <Content Include="Themes\Thanhtoandidong\Content\styles.rtl.css" />
     <Content Include="Themes\Thanhtoandidong\preview.jpg" />
