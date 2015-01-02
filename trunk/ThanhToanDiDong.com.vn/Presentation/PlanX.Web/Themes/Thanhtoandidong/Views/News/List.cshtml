@@ -33,20 +33,46 @@
                 </div>
             </div>
         </div>
+    <div id="list-news">
         <div class="news-category">
-        @foreach (var item in Model.NewsItems.Where(x=>x != firstNews).ToList())
-        {
-        @Html.Partial("_NewsItemBox", item)
-        }
+            @foreach (var item in Model.NewsItems.Where(x => x != firstNews).ToList())
+            {
+                @Html.Partial("_NewsItemBox", item)
+            }
         </div>
-    <div class="newsItem_Row">
-        <div class="newsItem">
-            <div class="inside"><span><input type="button" class="inactive" value="MỚI HƠN" title="Tin mới hơn" /></span></div>
+        <div class="newsItem_Row">
+            <div class="newsItem">
+                <div class="inside"><span><input type="button" @(Model.PagingFilteringContext.PageIndex != 1 ? "id=btnPrev" : "") class="@(Model.PagingFilteringContext.PageIndex != 1 ? "blue" : "inactive")" value="MỚI HƠN" title="Tin mới hơn" /></span></div>
+            </div>
+            <div class="newsItem text-right">
+                <div class="inside"><span class="right"><input type="button" @(Model.PagingFilteringContext.PageIndex != Model.PagingFilteringContext.TotalPages ? "id=btnNext" : "") class="@(Model.PagingFilteringContext.PageIndex != Model.PagingFilteringContext.TotalPages ? "blue" : "inactive")" value="CŨ HƠN" title="Tin cũ hơn" /></span></div>
+            </div>
         </div>
-        <div class="newsItem text-right">
-            <div class="inside"><span class="right"><input type="button" class="blue" value="CŨ HƠN" title="Tin cũ hơn" /></span></div>
-        </div>
+        <input type="hidden" id="totalPage" value="@Model.PagingFilteringContext.TotalPages" />
+        <input type="hidden" id="newsPageIndex" value="@(Model.PagingFilteringContext.PageIndex)" />
     </div>
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on("click", "#btnPrev,#btnNext", function () {
+                var currentPage = parseInt($("#newsPageIndex").val());
+                if ($(this).attr("id") == "btnPrev")
+                    currentPage--;
+                else
+                    currentPage++;
+                $("#list-news").load("@Url.Action("HomePageNews", "News")", { pageindex: currentPage,thumsImageSize:365,pageSize:5,cate:@Model.PagingFilteringContext.CategoryId }, function (d) {
+                    $("html,body").animate({
+                        scrollTop: $("#list-news").position().top
+
+                    }, 400);
+                  
+                }).error(function () {
+                    alert("Lỗi kết nối server! vui lòng thử lại");
+                });
+
+
+            })
+        })
+    </script>
         }
     </div>
     <!--right-->
