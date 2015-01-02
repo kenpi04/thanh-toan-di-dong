@@ -195,3 +195,4 @@ footer .email{color:#0066cc;text-decoration:none;}
 a.cd-top:hover {opacity: 1;}
 .cd-top{height:40px;width:40px;right:15px;bottom:20px;display:inline-block;position:fixed;box-shadow:0 0 10px rgba(0, 0, 0, 0.05);overflow:hidden;text-indent:100%;white-space:nowrap;background:rgba(232, 98, 86, 0.8) url(images/icon-top.png) no-repeat center 50%;visibility:hidden;opacity:0;}
 /*reposonsive*/
+.newsletter-result-block{color:#fff;font-size:12px}
