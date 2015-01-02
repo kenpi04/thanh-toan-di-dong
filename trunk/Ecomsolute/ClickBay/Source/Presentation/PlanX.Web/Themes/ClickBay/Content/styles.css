@@ -64,7 +64,7 @@ border:none;
 width: 173px;}
 .share{text-align:right}
 .content{min-height:400px}
-.footer{background:#189b96;color:#fff;padding:30px 0;display:inline-block;width:100%;}
+.footer{background:#189b96;color:#fff;padding-top:30px;display:inline-block;width:100%;}
 .footer .wrapper-content{display:inline-block;width:100%;margin:0;}
 .footer .block{float:left;width:25%;box-sizing:border-box;}
 .footer .block.support{padding-left:30px;}
