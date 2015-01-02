@@ -35,7 +35,7 @@ input.inactive:hover{background:#cccccc;}
 .div-center{width:90%;margin:0 auto;min-width:1200px;}
 ::-webkit-input-placeholder {color: #666666;}
 .wrapper-body{width:100%;display:inline-block;}
-.wrapper-content{width:90%;margin:0 auto;}
+.wrapper-content{width:90%;margin:0 auto;min-width:1200px;}
 .logo {float:left}
 .navigati{display:inline-block;width:calc(100% - 180px);height:100%;text-align:right;}
 .navigati .header_menu {background-color: #fff;position: relative;z-index: 101;border-bottom: 0px solid #cccccc;display:table;width:100%;height:100%;}
@@ -56,7 +56,7 @@ input.inactive:hover{background:#cccccc;}
 .menu_container_item {background: #CCCCCC;}
 .menu_container_item ul {color: #000;border:0;list-style: none;margin:0;padding:0;}
 .menu_container_item ul li{padding:0 0 0 10px;margin:0;}
-.menu_container_item ul li a {line-height: 35px;font-weight: 600;text-transform: none;padding: 0px 5px;text-decoration: none;display: block;position: relative;	margin-bottom: 3px;font-size: 15px;color:#333;}
+.menu_container_item ul li a {line-height: 35px;font-weight: 500;text-transform: none;padding: 0px 5px;text-decoration: none;display: block;position: relative;	margin-bottom: 3px;font-size: 15px;color:#333;}
 .menu_container_item ul li:hover{background:#7AB242;color:#fff;}
 .menu_container_item ul li:hover span.number_Items{background:none;}
 .menu_container_item ul li:hover a{color:#fff;}
@@ -113,7 +113,7 @@ span.small{font-size:10px;}
 /*footer*/
 footer{background:#ededed;display:inline-block;}
 footer h2{font-size:16px;font-weight:normal;}
-footer .footer{width:90%;margin:0 auto;display:flex;}
+footer .footer{width:90%;margin:0 auto;display:flex;min-width:1200px;}
 footer .area_left{float:left;width:66%;padding-bottom:20px;font-size:14px;}
 footer .area_right{width:33.33%;float:right;}
 footer .abouts,footer .partner,footer .link{float:left;width:33%;}
@@ -193,5 +193,5 @@ footer .email{color:#0066cc;text-decoration:none;}
 .cd-top.cd-is-visible {visibility: visible;opacity: 1;}
 .cd-top.cd-fade-out {opacity: .5;}
 a.cd-top:hover {opacity: 1;}
-.cd-top{height:50px;width:50px;right:10px;bottom:20px;display:inline-block;position:fixed;box-shadow:0 0 10px rgba(0, 0, 0, 0.05);overflow:hidden;text-indent:100%;white-space:nowrap;background:rgba(232, 98, 86, 0.8) url(images/icon-top.png) no-repeat center 50%;visibility:hidden;opacity:0;}
+.cd-top{height:40px;width:40px;right:15px;bottom:20px;display:inline-block;position:fixed;box-shadow:0 0 10px rgba(0, 0, 0, 0.05);overflow:hidden;text-indent:100%;white-space:nowrap;background:rgba(232, 98, 86, 0.8) url(images/icon-top.png) no-repeat center 50%;visibility:hidden;opacity:0;}
 /*reposonsive*/
