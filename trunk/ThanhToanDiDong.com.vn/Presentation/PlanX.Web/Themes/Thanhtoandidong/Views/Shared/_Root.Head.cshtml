@@ -7,15 +7,16 @@
 
     //resources
     //Html.AppendCssFileParts("~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.0.custom.min.css");
-    @*<link href='http://fonts.googleapis.com/css?family=Open+Sans:300&subset=latin,vietnamese' rel='stylesheet' type='text/css'>*@
     //Html.AppendScriptParts("~/Scripts/public.ajaxcart.js");
     Html.AppendScriptParts("~/Scripts/public.common.js");
-    //Html.AppendScriptParts("~/Scripts/jquery-ui-1.10.0.min.js");
+    Html.AppendScriptParts("~/Scripts/jquery-ui-1.10.0.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.validate.unobtrusive.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.validate.min.js");
-    Html.AppendScriptParts("~/Scripts/jquery.unobtrusive-ajax.min.js");
+    //Html.AppendScriptParts("~/Scripts/jquery.unobtrusive-ajax.min.js");
     Html.AppendScriptParts("~/Scripts/jquery-1.7.1.min.js");
+    Html.AppendCssFileParts("~/Themes/Thanhtoandidong/Content/responsive.css");
     Html.AppendCssFileParts("~/Themes/Thanhtoandidong/Content/styles.css");
+    
     //X-UA-Compatible tag
     var commonSettings = EngineContext.Current.Resolve<CommonSettings>();
     if (commonSettings.RenderXuaCompatible)
@@ -30,7 +31,9 @@
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
     <meta name="description" content="@(Html.NopMetaDescription())" />
     <meta name="keywords" content="@(Html.NopMetaKeywords())" />
-    <meta name="generator" content="nopCommerce" />
+    <meta name="generator" content="planX" />
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+    <link rel="shortcut icon" href="@Url.Content("~/favicon.ico")">
     @Html.NopHeadCustom()
     @*This is used so that themes can inject content into the header*@
     @*@Html.Partial("Head")*@
@@ -41,7 +44,8 @@
     @*@Html.Action("RssHeaderLink", "News")*@
     @*@Html.Action("RssHeaderLink", "Blog")*@
     @*Favicon - upload favicon.ico file to the root directory*@
-    @Html.Action("Favicon", "Common")
+    @*@Html.Action("Favicon", "Common")*@
+
     @*@if (displayMiniProfiler)
     {
         @StackExchange.Profiling.MiniProfiler.RenderIncludes()

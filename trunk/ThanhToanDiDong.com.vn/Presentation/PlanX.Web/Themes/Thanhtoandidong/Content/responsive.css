@@ -1,0 +1,39 @@
+﻿/*=====================================================
+    
+    TABLETS LANDSCAPE & NETBOOKS
+
+=====================================================*/
+@media screen and (max-width:1200px) and (min-width:938px) {
+    .navigati{width:auto;}   
+    
+}
+
+/*=====================================================
+    
+    TABLETS LANDSCAPE & NETBOOKS
+
+=====================================================*/
+@media screen and (max-width:940px) and (min-width:769px) {
+   
+
+}
+
+
+/*=====================================================
+    
+    TABLETS PORTRAIT & SMARTPHONES LANDSCAPE
+
+=====================================================*/
+@media screen and (max-width:768px) and (min-width:481px) {
+
+
+}
+/*=====================================================
+    
+    SMALLER MOBILE DEVICES
+
+=====================================================*/
+@media screen and (max-width:480px) {
+
+
+}
