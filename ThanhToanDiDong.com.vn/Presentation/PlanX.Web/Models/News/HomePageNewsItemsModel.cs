@@ -13,7 +13,8 @@ namespace PlanX.Web.Models.News
 
         public int WorkingLanguageId { get; set; }
         public IList<NewsItemModel> NewsItems { get; set; }
-
+        public int TotalPage { get; set; }
+        public int PageIndex { get; set; }
         public object Clone()
         {
             //we use a shallow copy (deep clone is not required here)

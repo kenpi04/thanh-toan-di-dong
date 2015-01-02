@@ -7,9 +7,33 @@
 <!--mainContent-->
 <section class="mainContent">
     <!--left-->
-    <article class="mainContent_left">
-        @Html.Action("HomePageNews", "News", new { pageSize = 20, thumsImageSize = 365 })
+    <article class="mainContent_left" id="list-news">
+        @Html.Action("HomePageNews", "News", new { pageSize = 5, thumsImageSize = 365 })
+
     </article>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on("click", "#btnPrev,#btnNext", function () {
+                var currentPage = parseInt($("#newsPageIndex").val());
+                if ($(this).attr("id") == "btnPrev")
+                    currentPage--;
+                else
+                    currentPage++;
+                $("#list-news").load("@Url.Action("HomePageNews", "News")", { pageindex: currentPage,thumsImageSize:365,pageSize:5 }, function (d) {
+                    $("html,body").animate({
+                        scrollTop: $("#list-news").position().top
+
+                    }, 400);
+                  
+                }).error(function () {
+                    alert("Lỗi kết nối server! vui lòng thử lại");
+                });
+
+
+            })
+        })
+    </script>
     <!--right-->
     <article class="mainContent_right">
         <!--ads box-->
