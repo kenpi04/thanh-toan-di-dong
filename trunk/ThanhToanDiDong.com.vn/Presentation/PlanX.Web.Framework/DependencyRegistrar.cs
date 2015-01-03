@@ -311,8 +311,7 @@ namespace PlanX.Web.Framework
                 .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
                 .As<IBannerService>().InstancePerHttpRequest();
             //tags
-            builder.RegisterType<TagService>()
-                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+            builder.RegisterType<TagService>()                
                 .As<ITagService>().InstancePerHttpRequest();
 
             //Register event consumers
