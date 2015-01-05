@@ -426,15 +426,15 @@ namespace PlanX.Web.Controllers
         {
             var model = new FooterModel()
             {
-                StoreName = _storeContext.CurrentStore.GetLocalized(x => x.Name),
+                //StoreName = _storeContext.CurrentStore.GetLocalized(x => x.Name),
                 //WishlistEnabled = _permissionService.Authorize(StandardPermissionProvider.EnableWishlist),
                 //ShoppingCartEnabled = _permissionService.Authorize(StandardPermissionProvider.EnableShoppingCart),
-                SitemapEnabled = _commonSettings.SitemapEnabled,
-                WorkingLanguageId = _workContext.WorkingLanguage.Id,
-                FacebookLink = _storeInformationSettings.FacebookLink,
-                TwitterLink = _storeInformationSettings.TwitterLink,
-                YoutubeLink = _storeInformationSettings.YoutubeLink,
-                GooglePlusLink = _storeInformationSettings.GooglePlusLink,
+                //SitemapEnabled = _commonSettings.SitemapEnabled,
+                //WorkingLanguageId = _workContext.WorkingLanguage.Id,
+                //FacebookLink = _storeInformationSettings.FacebookLink,
+                //TwitterLink = _storeInformationSettings.TwitterLink,
+                //YoutubeLink = _storeInformationSettings.YoutubeLink,
+                //GooglePlusLink = _storeInformationSettings.GooglePlusLink,
                 //BlogEnabled = _blogSettings.Enabled,
                 //CompareProductsEnabled = _catalogSettings.CompareProductsEnabled,
                 //ForumEnabled = _forumSettings.ForumsEnabled,
