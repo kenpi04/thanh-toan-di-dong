@@ -142,14 +142,14 @@ namespace PlanX.Web.Infrastructure.Cache
         /// {2} : roles of the current user
         /// {3} : current store ID
         /// </remarks>
-        public const string MANUFACTURER_NAVIGATION_MODEL_KEY = "PlanX.pres.manufacturer.navigation-{0}-{1}-{2}-{3}";
-        public const string MANUFACTURER_NAVIGATION_PATTERN_KEY = "PlanX.pres.manufacturer.navigation";
+        //public const string MANUFACTURER_NAVIGATION_MODEL_KEY = "PlanX.pres.manufacturer.navigation-{0}-{1}-{2}-{3}";
+        //public const string MANUFACTURER_NAVIGATION_PATTERN_KEY = "PlanX.pres.manufacturer.navigation";
 
         /// <summary>
         /// Key for VendorNavigationModel caching
         /// </summary>
-        public const string VENDOR_NAVIGATION_MODEL_KEY = "PlanX.pres.vendor.navigation";
-        public const string VENDOR_NAVIGATION_PATTERN_KEY = "PlanX.pres.vendor.navigation";
+        //public const string VENDOR_NAVIGATION_MODEL_KEY = "PlanX.pres.vendor.navigation";
+        //public const string VENDOR_NAVIGATION_PATTERN_KEY = "PlanX.pres.vendor.navigation";
 
         /// <summary>
         /// Key for caching of a value indicating whether a manufacturer has featured products
@@ -159,8 +159,8 @@ namespace PlanX.Web.Infrastructure.Cache
         /// {1} : roles of the current user
         /// {2} : current store ID
         /// </remarks>
-        public const string MANUFACTURER_HAS_FEATURED_PRODUCTS_KEY = "PlanX.pres.manufacturer.hasfeaturedproducts-{0}-{1}-{2}";
-        public const string MANUFACTURER_HAS_FEATURED_PRODUCTS_PATTERN_KEY = "PlanX.pres.manufacturer.hasfeaturedproducts";
+        //public const string MANUFACTURER_HAS_FEATURED_PRODUCTS_KEY = "PlanX.pres.manufacturer.hasfeaturedproducts-{0}-{1}-{2}";
+        //public const string MANUFACTURER_HAS_FEATURED_PRODUCTS_PATTERN_KEY = "PlanX.pres.manufacturer.hasfeaturedproducts";
         
         /// <summary>
         /// Key for CategoryNavigationModel caching
@@ -459,6 +459,8 @@ namespace PlanX.Web.Infrastructure.Cache
         public const string HOMEPAGE_NEWSMODEL_KEY = "PlanX.pres.news.homepage-{0}-{1}-{2}-{3}-{4}";
         public const string NEWS_PATTERN_KEY = "PlanX.pres.news.";
         public const string NEWS_PICTURE_KEY = "PlanX.pres.news.picture-{0}";
+        public const string NEWS_BREADCRUMB_MODEL_KEY = "PlanX.pres.news.breadcrumb-{0}-{1}-{2}-{3}";
+        public const string NEWS_BREADCRUMB_PATTERN_KEY = "PlanX.pres.news.breadcrumb";
         /// <summary>
         /// Key for states by country id
         /// </summary>
@@ -502,7 +504,7 @@ namespace PlanX.Web.Infrastructure.Cache
         {
             //clear all localizable models
             _cacheManager.RemoveByPattern(SEARCH_CATEGORIES_PATTERN_KEY);
-            _cacheManager.RemoveByPattern(MANUFACTURER_NAVIGATION_PATTERN_KEY);
+            //_cacheManager.RemoveByPattern(MANUFACTURER_NAVIGATION_PATTERN_KEY);
             _cacheManager.RemoveByPattern(PRODUCT_SPECS_PATTERN_KEY);
             _cacheManager.RemoveByPattern(TOPIC_PATTERN_KEY);
             _cacheManager.RemoveByPattern(PRODUCT_BREADCRUMB_PATTERN_KEY);
@@ -517,7 +519,7 @@ namespace PlanX.Web.Infrastructure.Cache
         {
             //clear all localizable models
             _cacheManager.RemoveByPattern(SEARCH_CATEGORIES_PATTERN_KEY);
-            _cacheManager.RemoveByPattern(MANUFACTURER_NAVIGATION_PATTERN_KEY);
+            //_cacheManager.RemoveByPattern(MANUFACTURER_NAVIGATION_PATTERN_KEY);
             _cacheManager.RemoveByPattern(PRODUCT_SPECS_PATTERN_KEY);
             _cacheManager.RemoveByPattern(TOPIC_PATTERN_KEY);
             _cacheManager.RemoveByPattern(PRODUCT_BREADCRUMB_PATTERN_KEY);
@@ -532,7 +534,7 @@ namespace PlanX.Web.Infrastructure.Cache
         {
             //clear all localizable models
             _cacheManager.RemoveByPattern(SEARCH_CATEGORIES_PATTERN_KEY);
-            _cacheManager.RemoveByPattern(MANUFACTURER_NAVIGATION_PATTERN_KEY);
+            //_cacheManager.RemoveByPattern(MANUFACTURER_NAVIGATION_PATTERN_KEY);
             _cacheManager.RemoveByPattern(PRODUCT_SPECS_PATTERN_KEY);
             _cacheManager.RemoveByPattern(TOPIC_PATTERN_KEY);
             _cacheManager.RemoveByPattern(PRODUCT_BREADCRUMB_PATTERN_KEY);
@@ -562,8 +564,8 @@ namespace PlanX.Web.Infrastructure.Cache
         {
             //clear models which depend on settings
             _cacheManager.RemoveByPattern(PRODUCTTAG_POPULAR_PATTERN_KEY); //depends on CatalogSettings.NumberOfProductTags
-            _cacheManager.RemoveByPattern(MANUFACTURER_NAVIGATION_PATTERN_KEY); //depends on CatalogSettings.ManufacturersBlockItemsToDisplay
-            _cacheManager.RemoveByPattern(VENDOR_NAVIGATION_PATTERN_KEY); //depends on VendorSettings.VendorBlockItemsToDisplay
+            //_cacheManager.RemoveByPattern(MANUFACTURER_NAVIGATION_PATTERN_KEY); //depends on CatalogSettings.ManufacturersBlockItemsToDisplay
+            //_cacheManager.RemoveByPattern(VENDOR_NAVIGATION_PATTERN_KEY); //depends on VendorSettings.VendorBlockItemsToDisplay
             _cacheManager.RemoveByPattern(CATEGORY_NAVIGATION_PATTERN_KEY); //depends on CatalogSettings.ShowCategoryProductNumber and CatalogSettings.ShowCategoryProductNumberIncludingSubcategories
             _cacheManager.RemoveByPattern(CATEGORY_MENU_PATTERN_KEY); //depends on CatalogSettings.ShowCategoryProductNumber and CatalogSettings.ShowCategoryProductNumberIncludingSubcategories and CatalogSettings.TopCategoryMenuSubcategoryLevelsToDisplay
             _cacheManager.RemoveByPattern(CATEGORY_NUMBER_OF_PRODUCTS_PATTERN_KEY); //depends on CatalogSettings.ShowCategoryProductNumberIncludingSubcategories
