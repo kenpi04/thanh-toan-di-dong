@@ -1,0 +1,49 @@
+﻿@model IList<PlanX.Web.Models.News.NewsItemModel>
+           @{
+               Html.AppendScriptParts("~/Scripts/jquery.flexslider.js");
+               Html.AppendCssFileParts("~/Themes/Thanhtoandidong/Content/flexslider.css");
+           }
+
+@if(Model.Count>0)
+{ 
+<div id="slider" class="flexslider">
+
+    <ul class="slides">
+        @foreach (var banner in Model)
+        {
+            <li>
+                <div class="banner-title">
+                    <div class="top_news_1">
+                        <a><h3>@banner.Title</h3></a>
+                    </div>
+                    <div class="top_news_2">
+                        <a><span>
+                            @banner.Short
+                            </span>></a>
+                    </div>
+                </div>
+                <img src="~/Themes/Thanhtoandidong/Content/images/hot_news.jpg" alt="top news">
+            </li>
+        }
+
+    </ul>
+
+
+</div>
+<script type="text/javascript">
+    $(window).load(function () {
+        $('#slider').flexslider({
+            animation: "fade",
+            controlNav: false,
+            randomize: true,
+            directionNav: true
+        });
+    });
+
+</script>
+}
+
+
+
+
+

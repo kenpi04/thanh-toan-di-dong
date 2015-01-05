@@ -456,7 +456,7 @@ namespace PlanX.Web.Infrastructure.Cache
         /// {0} : language ID
         /// {1} : current store ID
         /// </remarks>
-        public const string HOMEPAGE_NEWSMODEL_KEY = "PlanX.pres.news.homepage-{0}-{1}-{2}-{3}";
+        public const string HOMEPAGE_NEWSMODEL_KEY = "PlanX.pres.news.homepage-{0}-{1}-{2}-{3}-{4}";
         public const string NEWS_PATTERN_KEY = "PlanX.pres.news.";
         public const string NEWS_PICTURE_KEY = "PlanX.pres.news.picture-{0}";
         /// <summary>
