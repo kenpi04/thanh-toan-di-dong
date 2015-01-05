@@ -10,6 +10,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace PlanX.Services.News
 {
@@ -173,11 +174,22 @@ namespace PlanX.Services.News
         /// <returns>Product tags</returns>
         public virtual IList<Tag> GetAllTags(bool isShowHomePage = false)
         {
-            var query = _tagRepository.Table;
-            if (isShowHomePage)
-                query = query.Where(x => x.IsShowHomePage);
-            var tags = query.ToList();
-            return tags;
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            {
+                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+            }
+            ))
+            {
+                var query = _tagRepository.Table;
+                if (isShowHomePage)
+                    query = query.Where(x => x.IsShowHomePage);
+                var tags = query.ToList();
+                return tags;
+            }
+        }
+        public virtual async Task<IList<Tag>> GetAllTagsAsync(bool isShowHomePage = false)
+        {
+            return await Task.Factory.StartNew<IList<Tag>>(() => GetAllTags(isShowHomePage));
         }
 
         /// <summary>
@@ -206,6 +218,28 @@ namespace PlanX.Services.News
 
             var tag = query.FirstOrDefault();
             return tag;
+        }
+        public virtual IList<Tag> GetAllTagsByCategoryNewsId(int categoryNewsId, int pageSize=10)
+        {
+            if (categoryNewsId == 0)
+                return null;
+
+            var pCategoryId = _dataProvider.GetParameter();
+            pCategoryId.ParameterName = "categoryId";
+            pCategoryId.Value = categoryNewsId;
+            pCategoryId.DbType = DbType.Int32;
+
+            var pPageSize = _dataProvider.GetParameter();
+            pPageSize.ParameterName = "pageSize";
+            pPageSize.Value = pageSize;
+            pPageSize.DbType = DbType.Int32;
+
+            var tags = _dbContext.ExecuteStoredProcedureList<Tag>(
+                "GetAllTagsByCategory",
+                pCategoryId,
+                pPageSize);
+
+            return tags;
         }
 
         /// <summary>

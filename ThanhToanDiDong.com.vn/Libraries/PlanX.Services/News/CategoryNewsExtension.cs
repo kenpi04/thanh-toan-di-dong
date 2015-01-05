@@ -58,6 +58,32 @@ namespace PlanX.Services.News
             }
             return result;
         }
+        public static IList<CategoryNews> GetCategoryBreadCrumb(this CategoryNews category,
+            ICategoryNewsService categoryService,
+            bool showHidden = false)
+        {
+            if (category == null)
+                throw new ArgumentNullException("category");
+
+            var result = new List<CategoryNews>();
+
+            //used to prevent circular references
+            var alreadyProcessedCategoryIds = new List<int>() { };
+
+            while (category != null && //not null
+                !category.Deleted && //not deleted
+                (showHidden || category.Published) && //published
+                !alreadyProcessedCategoryIds.Contains(category.Id)) //prevent circular references
+            {
+                result.Add(category);
+
+                alreadyProcessedCategoryIds.Add(category.Id);
+
+                category = categoryService.GetCategoryById(category.ParentCategoryNewsId);
+            }
+            result.Reverse();
+            return result;
+        }
     }
 
 }

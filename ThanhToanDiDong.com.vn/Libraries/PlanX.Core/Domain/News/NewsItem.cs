@@ -88,11 +88,27 @@ namespace PlanX.Core.Domain.News
         /// </summary>
         public DateTime CreatedOnUtc { get; set; }
 
+        /// <summary>
+        /// Gets or sets the pictureid
+        /// </summary>
         public int? PictureId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the deleted
+        /// </summary>
         public bool Deleted { get; set; }
 
         public bool IsShowSlider { get; set; }
+
+        /// <summary>
+        /// Gets or set Viewcount
+        /// </summary>
+        public int ViewCount { get; set; }
+
+        /// <summary>
+        /// Gets or set Is hot view
+        /// </summary>
+        public bool IsHotView { get; set; }
 
         /// <summary>
         /// Gets or sets the news comments

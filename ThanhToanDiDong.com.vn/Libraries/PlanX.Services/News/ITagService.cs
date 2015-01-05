@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PlanX.Core.Domain.News;
+using System.Threading.Tasks;
 
 namespace PlanX.Services.News
 {
@@ -16,7 +17,14 @@ namespace PlanX.Services.News
         /// </summary>
         /// <returns>tags</returns>
         IList<Tag> GetAllTags(bool isShowHomePage = false);
-
+        Task<IList<Tag>> GetAllTagsAsync(bool isShowHomePage = false);
+        /// <summary>
+        /// Get all tags by category news id
+        /// </summary>
+        /// <param name="categoryNewsId">category news id</param>
+        /// <param name="pageSize">pagesizes</param>
+        /// <returns>tags</returns>
+        IList<Tag> GetAllTagsByCategoryNewsId(int categoryNewsId, int pageSize = 10);
         /// <summary>
         /// Gets tag
         /// </summary>
