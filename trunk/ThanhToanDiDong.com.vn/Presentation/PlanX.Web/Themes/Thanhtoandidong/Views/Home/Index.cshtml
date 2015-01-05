@@ -8,8 +8,7 @@
 <section class="mainContent">
     <!--left-->
     <article class="mainContent_left" id="list-news">
-        @Html.Action("HomePageNews", "News", new { pageSize = 5, thumsImageSize = 365 })
-
+        @Html.Action("HomePageNews", "News", new { pageSize = 10, thumsImageSize = 365 })
     </article>
     
     <script type="text/javascript">
@@ -20,17 +19,14 @@
                     currentPage--;
                 else
                     currentPage++;
-                $("#list-news").load("@Url.Action("HomePageNews", "News")", { pageindex: currentPage,thumsImageSize:365,pageSize:5 }, function (d) {
+                $("#list-news").load("@Url.Action("HomePageNews", "News")", { pageindex: currentPage,thumsImageSize:365,pageSize:10 }, function (d) {
                     $("html,body").animate({
                         scrollTop: $("#list-news").position().top
-
                     }, 400);
                   
                 }).error(function () {
                     alert("Lỗi kết nối server! vui lòng thử lại");
                 });
-
-
             })
         })
     </script>
@@ -38,21 +34,25 @@
     <article class="mainContent_right">
         <!--ads box-->
         <aside class="ads_box">
-            @Html.Action("BannerShow", "Banner", new { position = 21 })
+            <div class="load-ajax" data-url="@Url.Action("BannerShow", "Banner", new { position = 21 })"></div>
+            @*@Html.Action("BannerShow", "Banner", new { position = 21 })*@
         </aside>
         <!--hot view-->
-        @Html.Action("HotView","News")
+        <div class="load-ajax" data-url="@Url.Action("HotView", "News")"></div>
+        @*@Html.Action("HotView","News")*@
         <!--facebook box-->
         <aside class="facebook_box">
             <div class="facebook_box"></div>
         </aside>
         <!--ads box-->
         <aside class="ads_box">
-            @Html.Action("BannerShow", "Banner", new { position = 22 })
+            <div class="load-ajax" data-url="@Url.Action("BannerShow", "Banner", new { position = 22 })"></div>
+            @*@Html.Action("BannerShow", "Banner", new { position = 22 })*@
         </aside>
         <!--tags box-->
         <aside class="tags_box">
-            @Html.Action("HomePageTags","News")
+            <div class="load-ajax" data-url="@Url.Action("HomePageTags", "News")"></div>
+            @*@Html.Action("HomePageTags","News")*@
         </aside>
     </article>
 </section>

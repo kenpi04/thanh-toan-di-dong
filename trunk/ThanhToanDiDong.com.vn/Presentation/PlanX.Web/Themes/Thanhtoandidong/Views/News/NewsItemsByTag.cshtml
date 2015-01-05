@@ -40,13 +40,13 @@
     <!--right-->
     <article class="mainContent_right">
         <!--hot view-->
-        @Html.Action("HotView", "News")
+        <div class="load-ajax" data-url="@Url.Action("HotView", "News", new { categoryId = 0 })"></div>
         <!--ads box-->
         <aside class="ads_box">
             <div class="ads_box"></div>
         </aside>
         <!--hot view-->
-        @Html.Action("MostView", "News")
+        <div class="load-ajax" data-url="@Url.Action("MostView", "News", new { categoryId = 0 })"></div>
         <!--ads box-->
         <aside class="ads_box">
             <div class="ads_box"></div>

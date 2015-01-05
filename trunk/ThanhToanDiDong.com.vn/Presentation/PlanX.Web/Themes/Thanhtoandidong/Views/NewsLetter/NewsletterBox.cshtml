@@ -3,41 +3,12 @@
 <div class="newsletter_email">
     <div class="text"><input class="textbox" id="newsletter-email" style="width:260px" name="NewsletterEmail" type="text" placeholder="eMail của bạn"></div>
     <div class="text input"><input type="button" value="Gửi" id="newsletter-subscribe-button" name="newsletter-subscribe-button" class="default"></div>
-    
 </div>
 <span class="field-validation-valid" data-valmsg-for="NewsletterEmail" data-valmsg-replace="true"></span><br />
 <div id="newsletter-result-block" class="newsletter-result-block">
 </div>
-<script type="text/javascript">
+@*<script type="text/javascript">
         $(document).ready(function () {
-            $('#newsletter-subscribe-button').click(function () {
-
-                var email = $("#newsletter-email").val();
-                var $this = $(this);
-                $this.val("Gửi...");
-              
-                $.ajax({
-                    cache: false,
-                    type: "POST",
-                    url: "@(Url.RouteUrl("SubscribeNewsletter"))",
-                    data: { "email": email },
-                    success: function (data) {
-                        $this.val("Gửi");
-                        $("#newsletter-result-block").html(data.Result);
-                         if (data.Success) {
-                            $('#newsletter-subscribe-block').hide();
-                            $('#newsletter-result-block').show();
-                         }
-                         else {
-                            $('#newsletter-result-block').fadeIn("slow").delay(2000).fadeOut("slow");
-                         }
-                    },
-                    error:function (xhr, ajaxOptions, thrownError){
-                        alert('Failed to subscribe.');
-                        $this.val("Gửi");
-                    }
-                });
-                return false;
-            });
+            
         });
-</script>
+</script>*@
