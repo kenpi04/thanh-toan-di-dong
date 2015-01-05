@@ -1,0 +1,38 @@
+﻿@model PlanX.Web.Models.News.NewsItemModel.NewsBreadcrumbModel
+
+<div class="div-breadcrumb">
+    <ul class="breadcrumb">
+        <li class="news-homepage">
+            <span class="item" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="@Url.RouteUrl("HomePage")" itemprop="url">
+                    <span itemprop="title">Trang chủ</span>
+                </a>
+            </span>
+        </li>
+        @foreach (var category in Model.CategoryBreadcrumb)
+        {
+            <li id="@category.Id">
+                <span class="item" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <a href="@Url.RouteUrl("CategoryNews", new { SeName = category.SeName })" itemprop="url">
+                        <span itemprop="title">@category.Name</span>                        
+                    </a>
+                    @if (category.CategoryNewsChild.Count() > 0)
+                    {<span class="image_down" onclick="ShowSub(@category.Id)"><img src="~/Themes/Thanhtoandidong/Content/images/icon_down.png" /></span>}
+                </span>
+                @if (category.CategoryNewsChild.Count() > 0)
+                {
+                    <ul class="sub-breadcrumb" style="display:none;">
+                        @foreach (var sub in category.CategoryNewsChild)
+                        {
+                            <li class="sub-category-item">
+                                <span class="item">
+                                    <a href="@Url.RouteUrl("CategoryNews", new { SeName = sub.SeName })">
+                                        <span class="sub-category-title">@sub.Name</span>
+                                    </a>
+                                </span>
+                            </li>}
+                    </ul>}
+            </li>
+        }        
+    </ul>
+</div>

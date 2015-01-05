@@ -15,8 +15,7 @@
     <!--left-->
     <div class="mainContent_left">
         <div class="submenu">
-            <a href="@Url.RouteUrl("HomePage")" class="button blue color_white" title="Trang chủ">Trang chủ</a>
-            <a href="trangchu.html" class="button grey2" title="Trang chủ">Trang chủ</a>            
+            @Html.Action("NewsBreadcrumb", "News", new { newsId = 0, categoryId = Model.CategoryId })
         </div>
         @if (Model.NewsItems.Count > 0) {            
         <div class="first-news">
@@ -78,29 +77,20 @@
     <!--right-->
     <article class="mainContent_right">
         <!--hot view-->
-        @Html.Action("HotView","News")
+        <div class="load-ajax" data-url="@Url.Action("HotView", "News", new { categoryId = Model.CategoryId })"></div>
         <!--ads box-->
         <aside class="ads_box">
             <div class="ads_box"></div>
         </aside>
         <!--hot view-->
-        @Html.Action("MostView","News")
+        <div class="load-ajax" data-url="@Url.Action("MostView", "News", new { categoryId = Model.CategoryId })"></div>
         <!--ads box-->
         <aside class="ads_box">
             <div class="ads_box"></div>
         </aside>
         <!--tags box-->
         <aside class="tags_box">
-            <div class="tags_box">
-                <div class="left">
-                    <h2 class="grey color_white"><span>TAG</span><span class="small">S</span></h2>
-                </div>
-                <div class="right">
-                    <div>
-                        <p><a href="#">ví điện tử</a></p><p><a href="#">cổng thanh toán</a></p><p><a href="#">cổng thanh toán trực tuyến</a></p><p><a href="#">giao dịch online</a></p><p><a href="#">thương mại điện tử</a></p><p><a href="#">e-commerce</a></p><p><a href="#">thanh toán tạm giữ</a></p>
-                    </div>
-                </div>
-            </div>
+            <div class="load-ajax" data-url="@Url.Action("ListTags", "News", new { categoryId = Model.CategoryId, viewName = "HomePageTags" })"></div>
         </aside>
     </article>
 </section>
