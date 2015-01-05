@@ -197,5 +197,15 @@ a.cd-top:hover {opacity: 1;}
 /*reposonsive*/
 .newsletter-result-block{color:#fff;font-size:12px}
 .banner-title{position:relative;z-index:10;margin-bottom:-234px;}
-.banner-title  .top_news_1 { background: #003051; color: #FFF; width: 285px; padding: 0 10px; text-align: center; text-transform: uppercase; padding: 10px 0px; }
-.banner-title  .top_news_2 { width: 404px; background: #0E76BC; color: #FFF; padding: 11px;}
+.banner-title  .top_news_1 { background: #003051; color: #FFF; width: 50%; padding: 0 10px;opacity:0.8;margin-bottom:10px; text-align: center; text-transform: uppercase; padding: 10px 0px; }
+.banner-title  .top_news_2 { width: 74%; background: #0E76BC; color: #FFF; padding: 11px;opacity:0.8}
+.flexslider {
+    width: 100%;
+    height: 100%;
+}
+
+.flexslider .slides img {
+    width: 100%;
+    height: 100%;
+}
+..date { padding: 10px; background: #003051; color: #FFF; display: block; width: 30px; font-size: 11px; line-height: 11px; margin-top: -48px; position: relative; text-align: center; }
