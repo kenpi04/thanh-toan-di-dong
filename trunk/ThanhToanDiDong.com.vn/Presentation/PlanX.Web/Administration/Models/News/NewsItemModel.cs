@@ -91,7 +91,13 @@ namespace PlanX.Admin.Models.News
 
         [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.TagsString")]
         public string TagsString { get; set; }
-        
+
+        [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.ViewCount")]
+        public int ViewCount { get; set; }
+        [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.IsHotView")]
+        public bool IsHotView { get; set; }
+        [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.Fields.IsShowSlider")]
+        public bool IsShowSlider { get; set; }
         #region Nested classes
 
         public partial class CategoryNewsMapModel : BaseNopEntityModel

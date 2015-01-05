@@ -14,6 +14,14 @@ namespace PlanX.Admin.Models.News
 
         [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.List.SearchStore")]
         public int SearchStoreId { get; set; }
+        [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.List.IsHotView")]
+        public bool IsHotView { get; set; }
         public IList<SelectListItem> AvailableStores { get; set; }
+        [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.List.SearchCategory")]
+        public int SearchCategoryId { get; set; }
+        public IList<SelectListItem> AvailableCategory { get; set; }
+        [NopResourceDisplayName("Admin.ContentManagement.News.NewsItems.List.IsShowSlider")]
+        public bool IsShowSlider { get; set; }
+        
     }
 }
