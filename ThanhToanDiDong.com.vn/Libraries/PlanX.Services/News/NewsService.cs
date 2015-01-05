@@ -96,7 +96,8 @@ namespace PlanX.Services.News
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>News items</returns>
         public virtual IPagedList<NewsItem> GetAllNews(int languageId, int storeId,
-            int pageIndex, int pageSize, bool showHidden = false, int categoryNewsId = 0, int newsTagId = 0)
+            int pageIndex, int pageSize, bool showHidden = false, int categoryNewsId = 0, 
+            int newsTagId = 0,bool includeBannerItem=false)
         {
             using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
                 {
@@ -109,6 +110,8 @@ namespace PlanX.Services.News
 
                 if (languageId > 0)
                     query = query.Where(n => languageId == n.LanguageId);
+                if (includeBannerItem)
+                    query = query.Where(n => n.IsShowSlider);
                 if (!showHidden)
                 {
                     var utcNow = DateTime.Now;
@@ -248,6 +251,14 @@ namespace PlanX.Services.News
                 throw new ArgumentNullException("newsComment");
 
             _newsCommentRepository.Delete(newsComment);
+        }
+
+        public virtual Task<IPagedList<NewsItem>> GetAllNewShowBanner(int languageid,int pageSize = 0)
+        {
+            return Task.Factory.StartNew<IPagedList<NewsItem>>(() =>
+            {
+                return GetAllNews(languageid, 0, 0, pageSize, includeBannerItem: true);
+            });
         }
 
         #endregion

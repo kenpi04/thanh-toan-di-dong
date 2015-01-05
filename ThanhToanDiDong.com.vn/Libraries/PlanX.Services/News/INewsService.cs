@@ -34,7 +34,8 @@ namespace PlanX.Services.News
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>News items</returns>
         IPagedList<NewsItem> GetAllNews(int languageId, int storeId,
-            int pageIndex, int pageSize, bool showHidden = false, int categoryNewsId = 0, int newsTagId = 0);
+            int pageIndex, int pageSize, bool showHidden = false, int categoryNewsId = 0,
+            int newsTagId = 0, bool includeBannerItem = false);
         Task<IPagedList<NewsItem>> GetAllNewsAsync(int languageId, int storeId,
             int pageIndex, int pageSize, bool showHidden = false, int categoryNewsId = 0, int newsTagId = 0);
 
@@ -69,6 +70,8 @@ namespace PlanX.Services.News
         /// </summary>
         /// <param name="newsComment">News comment</param>
         void DeleteNewsComment(NewsComment newsComment);
+
+        Task<IPagedList<NewsItem>> GetAllNewShowBanner(int languageid, int pageSize = 0);
 
     }
 }
