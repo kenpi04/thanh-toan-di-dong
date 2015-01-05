@@ -202,10 +202,20 @@ a.cd-top:hover {opacity: 1;}
 .flexslider {
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 .flexslider .slides img {
     width: 100%;
     height: 100%;
 }
-..date { padding: 10px; background: #003051; color: #FFF; display: block; width: 30px; font-size: 11px; line-height: 11px; margin-top: -48px; position: relative; text-align: center; }
+.date {padding: 10px;
+background: #003051;
+color: #FFF;
+display: block;
+width: 38px;
+font-size: 16px;
+line-height: 18px;
+margin-top: -119px;
+position: relative;
+text-align: center;}
