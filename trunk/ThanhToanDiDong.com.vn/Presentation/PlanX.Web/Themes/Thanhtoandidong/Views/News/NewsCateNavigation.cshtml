@@ -4,13 +4,16 @@
         <ul>
             @foreach(var category in Model.CategoryNewsChild)
             {
-            <li><a href="@Url.RouteUrl("CategoryNews", new { SeName = category.SeName })" title="@category.Name" class="@(category.Id == Model.CurrentCategoryId ? "active":"")">@category.Name</a>
+            <li class="menu-item"><a href="@Url.RouteUrl("CategoryNews", new { SeName = category.SeName })" title="@category.Name" class="@(category.Id == Model.CurrentCategoryId ? "active":"")">@category.Name</a>
             @if(category.CategoryNewsChild.Count>0)
             {
                 <ul class="sub" style="display:none">
                     @foreach (var child in category.CategoryNewsChild) 
                     { 
-                    <li><a href="@Url.RouteUrl("CategoryNews", new{SeName=child.SeName})" title="@child.Name"><span>@child.Name</span><span class="number_Items">123</span></a></li>}
+                    <li><a href="@Url.RouteUrl("CategoryNews", new{SeName=child.SeName})" title="@child.Name"><span>@child.Name</span><span class="number_Items">123</span></a>
+                    
+                    </li>
+                    }
                 </ul>                    
             }
             </li>
@@ -18,3 +21,17 @@
         </ul>
     </nav>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () { 
+    $(".menu-item,.menu-item.sub").mouseover(function () {
+        $(this).find("ul").show();
+    }).mouseout(function () {
+        $(this).find("ul").hide();
+    })
+    $(".menu-item.sub").mouseover(function () {
+        $(this).show();
+    }).mouseout(function () {
+        $(this).hide();
+    })
+    })
+</script>

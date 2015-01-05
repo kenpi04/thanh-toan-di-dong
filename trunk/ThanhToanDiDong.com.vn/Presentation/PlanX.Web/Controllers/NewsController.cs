@@ -233,15 +233,15 @@ namespace PlanX.Web.Controllers
             }
             return View(model);
         }
-        public ActionResult HomePageNews( int? pageSize, int? thumsImageSize,int pageIndex=1)
+        public ActionResult HomePageNews( int? pageSize, int? thumsImageSize,int pageIndex=1,int cate=0)
         {
             if (!_newsSettings.Enabled || !_newsSettings.ShowNewsOnMainPage)
                 return Content("");
             int pagesize=pageSize ?? _newsSettings.MainPageNewsCount;
-            var cacheKey = string.Format(ModelCacheEventConsumer.HOMEPAGE_NEWSMODEL_KEY, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id, pageIndex, pagesize);
+            var cacheKey = string.Format(ModelCacheEventConsumer.HOMEPAGE_NEWSMODEL_KEY, _workContext.WorkingLanguage.Id, _storeContext.CurrentStore.Id, pageIndex, pagesize,cate);
             var cachedModel = _cacheManager.Get(cacheKey,5, () =>
             {
-                var newsItems = Task.Run(async () => await _newsService.GetAllNewsAsync(_workContext.WorkingLanguage.Id, 0, pageIndex-1, pagesize)).Result;
+                var newsItems = Task.Run(async () => await _newsService.GetAllNewsAsync(_workContext.WorkingLanguage.Id, 0, pageIndex-1, pagesize,categoryNewsId:cate)).Result;
                 return new HomePageNewsItemsModel()
                 {
                     WorkingLanguageId = _workContext.WorkingLanguage.Id,
@@ -301,6 +301,7 @@ namespace PlanX.Web.Controllers
                 return _newsService.GetAllNewsAsync(0, _storeContext.CurrentStore.Id, categoryNewsId: command.CategoryId,
                     pageIndex: command.PageNumber - 1, pageSize: command.PageSize);
             });
+
             model.PagingFilteringContext.LoadPagedList(newsItems);
 
             model.NewsItems = newsItems
@@ -311,6 +312,17 @@ namespace PlanX.Web.Controllers
                     return newsModel;
                 })
                 .ToList();
+            if(Request.IsAjaxRequest())
+            {
+                var lsModel = new HomePageNewsItemsModel
+                {
+                    NewsItems=model.NewsItems,
+                    PageIndex=command.PageNumber,
+                    TotalPage=command.TotalPages
+                };
+                return PartialView("HomePageNews", lsModel);
+
+            }
             var cate = await _cateNewsService.GetCategoryByIdAsync(command.CategoryId);
             if (cate == null)
                 return RedirectToRoute("HomePage");
@@ -319,7 +331,9 @@ namespace PlanX.Web.Controllers
             model.MetaTitle = cate.MetaTitle;
             model.MetaKeywords = cate.MetaKeywords;
             model.MetaDescription = cate.MetaDescription;
-
+            model.CategoryId = command.CategoryId;
+           
+           
             return View(model);
         }
 
@@ -505,6 +519,17 @@ namespace PlanX.Web.Controllers
             return Content(link);
         }
         */
+        
+        public ActionResult BannerSlideShow(int pictureThumbSize,int?numitem)
+        {
+            string cachekey=string.Format("BannerSlideShow-{0}-{1}",numitem,pictureThumbSize);
+            var banners = _cacheManager.Get(cachekey, () =>
+            {
+                var news= _newsService.GetAllNewShowBanner(_workContext.WorkingLanguage.Id,numitem ?? 5).Result;
+                return news.Select(x=>PrepareNewsItemModel(x,false,true,pictureThumbSize)).ToList();
+            });
+            return View(banners);
+        }
         #endregion
 
         #region tags
