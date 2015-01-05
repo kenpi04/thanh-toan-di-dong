@@ -22,7 +22,10 @@
                             </span>></a>
                     </div>
                 </div>
-                <img src="~/Themes/Thanhtoandidong/Content/images/hot_news.jpg" alt="top news">
+                <img src="@banner.DefaultPictureModel.FullSizeImageUrl" alt="top news">
+                <p class="date"><span class="day">@banner.CreatedOn.ToString("dd/MM")</span><br>
+                <span class="year">@banner.CreatedOn.ToString("yyyy")</span>
+                </p>
             </li>
         }
 
