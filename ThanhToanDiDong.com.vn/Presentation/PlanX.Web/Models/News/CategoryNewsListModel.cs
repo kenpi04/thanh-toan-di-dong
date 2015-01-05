@@ -34,5 +34,7 @@ namespace PlanX.Web.Models.News
         public string SeName { get; set; }
 
         public int NewsCount { get; set; }
+
+        public CategoryNewsModel ParentCategory { get; set; }
     }
 }

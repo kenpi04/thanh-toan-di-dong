@@ -26,9 +26,4 @@ namespace PlanX.Web.Models.News
         public string MetaDescription { get; set; }
     }
 
-    public class Breadcrumb
-    { 
-
-    }
-
 }
