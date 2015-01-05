@@ -78,7 +78,7 @@
     <Compile Include="Mapping\News\NewsCategoryNewsMap.cs" />
     <Compile Include="Mapping\News\NewsCommentMap.cs" />
     <Compile Include="Mapping\News\NewsItemMap.cs" />
-    <Compile Include="Mapping\News\ProductTagMap.cs" />
+    <Compile Include="Mapping\News\TagMap.cs" />
     <Compile Include="Mapping\Stores\StoreMappingMap.cs" />
     <Compile Include="Mapping\Stores\StoreMap.cs" />
     <Compile Include="Mapping\Security\AclRecordMap.cs" />
