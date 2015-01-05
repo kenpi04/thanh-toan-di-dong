@@ -7,31 +7,31 @@
 @if(Model.Count>0)
 { 
 <div id="slider" class="flexslider">
-
     <ul class="slides">
         @foreach (var banner in Model)
         {
             <li>
                 <div class="banner-title">
                     <div class="top_news_1">
-                        <a><h3>@banner.Title</h3></a>
+                        <a href="@Url.RouteUrl("NewsItem", new { SeName = banner.SeName })"><h3>@banner.Title</h3></a>
                     </div>
                     <div class="top_news_2">
-                        <a><span>
-                            @banner.Short
-                            </span>></a>
+                        <p>
+                            <span>
+                                @banner.Short.TrimString(100)
+                            </span>
+                        </p>
                     </div>
                 </div>
-                <img src="@banner.DefaultPictureModel.FullSizeImageUrl" style="height:100%" alt="top news">
-                <p class="date"><span class="day">@banner.CreatedOn.ToString("dd/MM")</span><br>
+                <div class="slide_image">
+                    <img src="@banner.DefaultPictureModel.FullSizeImageUrl" style="height:100%" alt="@banner.Title" title="@banner.Title">
+                </div>
+                @*<p class="date"><span class="day">@banner.CreatedOn.ToString("dd/MM")</span><br>
                 <span class="year">@banner.CreatedOn.ToString("yyyy")</span>
-                </p>
+                </p>*@
             </li>
         }
-
     </ul>
-
-
 </div>
 <script type="text/javascript">
     $(window).load(function () {
@@ -45,8 +45,3 @@
 
 </script>
 }
-
-
-
-
-
