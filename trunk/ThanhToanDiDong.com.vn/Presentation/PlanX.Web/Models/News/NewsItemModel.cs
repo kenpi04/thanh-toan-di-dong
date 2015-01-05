@@ -15,7 +15,7 @@ namespace PlanX.Web.Models.News
         {
             Comments = new List<NewsCommentModel>();
             AddNewComment = new AddNewsCommentModel();
-            parentCategoryNews = new List<CategoryNews>();
+            //CategoryNewsModel = new CategoryNewsModel();
         }
 
         public string MetaKeywords { get; set; }
@@ -29,11 +29,25 @@ namespace PlanX.Web.Models.News
         public bool AllowComments { get; set; }
         public int NumberOfComments { get; set; }
         public DateTime CreatedOn { get; set; }
-        public string CateName { get; set; }
-        public string CategorySename { get; set; }
+        
+        //public string CateName { get; set; }
+        //public string CategorySename { get; set; }
         public IList<NewsCommentModel> Comments { get; set; }
         public AddNewsCommentModel AddNewComment { get; set; }
-        public List<CategoryNews> parentCategoryNews { get; set; }
+        public CategoryNewsModel CategoryNewsModel { get; set; }
         public PictureModel DefaultPictureModel { get; set; }
+
+        public partial class NewsBreadcrumbModel : BaseNopModel
+        {
+            public NewsBreadcrumbModel()
+            {
+                CategoryBreadcrumb = new List<CategoryNewsModel>();
+            }
+
+            public int NewsId { get; set; }
+            public string NewsName { get; set; }
+            public string NewsSeName { get; set; }
+            public IList<CategoryNewsModel> CategoryBreadcrumb { get; set; }
+        }
     }
 }
