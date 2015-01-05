@@ -164,7 +164,7 @@ namespace PlanX.Services.News
         /// <returns>List categories news</returns>
         public virtual async Task<IList<CategoryNews>> GetAllCategoriesAsync(bool showHidden = false)
         {
-            return await Task.Factory.StartNew<IList<CategoryNews>>(()=>
+            return await Task.Factory.StartNew<IList<CategoryNews>>(() =>
             {
                 return GetAllCategories(null, showHidden);
             });
@@ -284,8 +284,30 @@ namespace PlanX.Services.News
         {
             return await Task.Factory.StartNew<IList<CategoryNews>>(() =>
             {
-               return GetAllCategoriesByParentCategoryId(parentCategoryId, showHidden);
+                return GetAllCategoriesByParentCategoryId(parentCategoryId, showHidden);
             }).ConfigureAwait(false);
+        }
+        /// <summary>
+        /// Gets all categories filtered by category identifier
+        /// </summary>
+        /// <param name="categoryId">category identifier</param>
+        /// <returns>Category collection</returns>
+        public IList<CategoryNews> GetParentCategoryById(int categoryId)
+        {
+            using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+            {
+                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+            }
+            ))
+            {
+                
+                var query = _categoryRepository.Table;                
+                query = query.Where(c => c.ParentCategoryNewsId == categoryId && !c.Deleted && c.Published).OrderBy(x => x.DisplayOrder);
+
+                if (query == null)
+                    return null;
+                return query.ToList();
+            }
         }
         /// <summary>
         /// Inserts category
@@ -413,7 +435,7 @@ namespace PlanX.Services.News
                 return new List<NewsCategoryNews>();
             return await Task.Factory.StartNew<IList<NewsCategoryNews>>(() =>
             {
-                return GetNewsCategoriesByNewsId(newsId,showHidden);
+                return GetNewsCategoriesByNewsId(newsId, showHidden);
             });
         }
 

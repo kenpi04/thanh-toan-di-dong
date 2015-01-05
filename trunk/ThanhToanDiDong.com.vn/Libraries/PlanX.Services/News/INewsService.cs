@@ -34,10 +34,11 @@ namespace PlanX.Services.News
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>News items</returns>
         IPagedList<NewsItem> GetAllNews(int languageId, int storeId,
-            int pageIndex, int pageSize, bool showHidden = false, int categoryNewsId = 0,
-            int newsTagId = 0, bool includeBannerItem = false);
+            int pageIndex, int pageSize, bool showHidden = false, List<int> categoryNewsIds = null,
+            int newsTagId = 0, bool isHostView = false, bool isMostView = false,
+            bool includeBannerItem = false);
         Task<IPagedList<NewsItem>> GetAllNewsAsync(int languageId, int storeId,
-            int pageIndex, int pageSize, bool showHidden = false, int categoryNewsId = 0, int newsTagId = 0);
+            int pageIndex, int pageSize, bool showHidden = false, List<int> categoryNewsIds = null, int newsTagId = 0, bool isHostView = false, bool isMostView = false, bool includeBannerItem = false);
 
         /// <summary>
         /// Inserts a news item

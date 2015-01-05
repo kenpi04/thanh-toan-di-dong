@@ -28,7 +28,7 @@ namespace PlanX.Services.News
 
         #region Ctor
 
-        public NewsService(IRepository<NewsItem> newsItemRepository, 
+        public NewsService(IRepository<NewsItem> newsItemRepository,
             IRepository<NewsComment> newsCommentRepository,
             IRepository<StoreMapping> storeMappingRepository,
             IRepository<NewsCategoryNews> newsCategoryNews,
@@ -56,7 +56,7 @@ namespace PlanX.Services.News
 
             newsItem.Deleted = true;
             _newsItemRepository.Update(newsItem);
-            
+
             //event notification
             _eventPublisher.EntityUpdated(newsItem);
         }
@@ -71,9 +71,9 @@ namespace PlanX.Services.News
             if (newsId == 0)
                 return null;
             using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
-                {
-                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
-                }
+            {
+                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+            }
                 ))
             {
                 return _newsItemRepository.GetById(newsId);
@@ -96,14 +96,15 @@ namespace PlanX.Services.News
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>News items</returns>
         public virtual IPagedList<NewsItem> GetAllNews(int languageId, int storeId,
-            int pageIndex, int pageSize, bool showHidden = false, int categoryNewsId = 0, 
-            int newsTagId = 0,bool includeBannerItem=false)
+            int pageIndex, int pageSize, bool showHidden = false, List<int> categoryNewsIds = null,
+            int newsTagId = 0, bool isHostView = false, bool isMostView = false,
+            bool includeBannerItem = false)
         {
             using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
-                {
-                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
-                }
-                ))
+            {
+                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+            }
+            ))
             {
                 var query = _newsItemRepository.Table;
                 query = query.Where(n => !n.Deleted);
@@ -119,21 +120,23 @@ namespace PlanX.Services.News
                     query = query.Where(n => !n.StartDateUtc.HasValue || n.StartDateUtc <= utcNow);
                     query = query.Where(n => !n.EndDateUtc.HasValue || n.EndDateUtc >= utcNow);
                 }
-                if (categoryNewsId > 0)
+                if (categoryNewsIds != null && categoryNewsIds.Count() > 0)
                 {
                     query = from a in query
                             join cn in _newsCategoryNews.Table on a.Id equals cn.NewsId
-                            where cn.CategoryNewsId == categoryNewsId
+                            where categoryNewsIds.Any(x => x == cn.CategoryNewsId)
                             select a;
                 }
-                if(newsTagId>0)
+                if (newsTagId > 0)
                 {
-                    query = query.Where(t => t.Tags.Any(x=> x.Id== newsTagId));
+                    query = query.Where(t => t.Tags.Any(x => x.Id == newsTagId));
                 }
+                if (isHostView)
+                    query = query.Where(n => n.IsHotView);
 
-                query = query.OrderByDescending(n => n.CreatedOnUtc);
 
                 //Store mapping
+                #region
                 if (storeId > 0)
                 {
                     query = from n in query
@@ -151,15 +154,22 @@ namespace PlanX.Services.News
                                 select nGroup.FirstOrDefault();
                     query = query.OrderByDescending(n => n.CreatedOnUtc);
                 }
+                #endregion
+                query = query.Distinct();
+                if (isMostView)
+                    query = query.OrderByDescending(n => n.ViewCount);
+
+                query = query.OrderByDescending(n => n.CreatedOnUtc);
+
 
                 var news = new PagedList<NewsItem>(query, pageIndex, pageSize);
                 return news;
             }
         }
         public virtual async Task<IPagedList<NewsItem>> GetAllNewsAsync(int languageId, int storeId,
-            int pageIndex, int pageSize, bool showHidden = false, int categoryNewsId = 0, int newsTagId = 0)
+            int pageIndex, int pageSize, bool showHidden = false, List<int> categoryNewsIds = null, int newsTagId = 0, bool isHostView = false, bool isMostView = false, bool includeBannerItem = false)
         {
-            return await Task.Factory.StartNew<IPagedList<NewsItem>>(()=>{ return GetAllNews(languageId, storeId, pageIndex, pageSize, showHidden, categoryNewsId, newsTagId);});
+            return await Task.Factory.StartNew<IPagedList<NewsItem>>(() => { return GetAllNews(languageId, storeId, pageIndex, pageSize, showHidden, categoryNewsIds, newsTagId, isHostView, isMostView, includeBannerItem); });
         }
 
         /// <summary>
@@ -187,11 +197,11 @@ namespace PlanX.Services.News
                 throw new ArgumentNullException("news");
 
             _newsItemRepository.Update(news);
-            
+
             //event notification
             _eventPublisher.EntityUpdated(news);
         }
-        
+
         /// <summary>
         /// Gets all comments
         /// </summary>
@@ -200,9 +210,9 @@ namespace PlanX.Services.News
         public virtual IList<NewsComment> GetAllComments(int customerId)
         {
             using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
-                {
-                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
-                }
+            {
+                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+            }
                 ))
             {
                 var query = from c in _newsCommentRepository.Table
@@ -228,9 +238,9 @@ namespace PlanX.Services.News
             if (newsCommentId == 0)
                 return null;
             using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
-                {
-                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
-                }
+            {
+                IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+            }
                 ))
             {
                 return _newsCommentRepository.GetById(newsCommentId);
@@ -253,7 +263,7 @@ namespace PlanX.Services.News
             _newsCommentRepository.Delete(newsComment);
         }
 
-        public virtual Task<IPagedList<NewsItem>> GetAllNewShowBanner(int languageid,int pageSize = 0)
+        public virtual Task<IPagedList<NewsItem>> GetAllNewShowBanner(int languageid, int pageSize = 0)
         {
             return Task.Factory.StartNew<IPagedList<NewsItem>>(() =>
             {
