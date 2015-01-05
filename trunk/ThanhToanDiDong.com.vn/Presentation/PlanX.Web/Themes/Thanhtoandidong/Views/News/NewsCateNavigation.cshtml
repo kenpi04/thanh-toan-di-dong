@@ -10,7 +10,7 @@
                 <ul class="sub" style="display:none">
                     @foreach (var child in category.CategoryNewsChild) 
                     { 
-                    <li><a href="@Url.RouteUrl("CategoryNews", new{SeName=child.SeName})" title="@child.Name"><span>@child.Name</span><span class="number_Items">123</span></a>
+                    <li><a href="@Url.RouteUrl("CategoryNews", new{SeName=child.SeName})" title="@child.Name"><span>@child.Name</span></a>
                     
                     </li>
                     }
