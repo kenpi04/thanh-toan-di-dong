@@ -92,6 +92,8 @@ namespace PlanX.Core.Domain.News
 
         public bool Deleted { get; set; }
 
+        public bool IsShowSlider { get; set; }
+
         /// <summary>
         /// Gets or sets the news comments
         /// </summary>
