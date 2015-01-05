@@ -27,7 +27,51 @@ $(document).ready(function () {
         }, scroll_top_duration
 		);
     });
+
+    $('#newsletter-subscribe-button').click(function () {
+        var email = $("#newsletter-email").val();
+        var $this = $(this);
+        $this.val("Gửi...");
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: "/subscribenewsletter",
+            data: { "email": email },
+        success: function (data) {
+            $this.val("Gửi");                        
+            $("#newsletter-result-block").html(data.Result);
+            if (data.Success) {
+                $('#newsletter-subscribe-block').hide();
+                $('#newsletter-result-block').show();
+                $("#newsletter-email").val("");
+            }
+            else {
+                $('#newsletter-result-block').fadeIn("slow").delay(2000).fadeOut("slow");
+            }
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+            alert('Failed to subscribe.');
+            $this.val("Gửi");
+        }
+    });
+    return false;
+    });
+
+    $(".load-ajax").each(function (index, item) {
+        var url = $(item).data("url");
+        if (url && url.length > 0) {
+            $(item).html("<div class=loading-img></div>").load(url);
+        }
+    })
 })
+//show sub breadcumb
+function ShowSub(id) {
+    var sub = $("li[id=" + id + "]").find("ul");
+    if (sub.css("display") == "none") {
+        sub.fadeIn(400);
+    }
+    else { sub.fadeOut(400); }
+};
 
 function imageResize(id) {
     var margin = '';
