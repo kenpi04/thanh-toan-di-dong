@@ -196,7 +196,9 @@ a.cd-top:hover {opacity: 1;}
 .cd-top{height:40px;width:40px;right:15px;bottom:20px;display:inline-block;position:fixed;box-shadow:0 0 10px rgba(0, 0, 0, 0.05);overflow:hidden;text-indent:100%;white-space:nowrap;background:rgba(232, 98, 86, 0.8) url(images/icon-top.png) no-repeat center 50%;visibility:hidden;opacity:0;}
 /*reposonsive*/
 .newsletter-result-block{color:#fff;font-size:12px}
-.banner-title{position:relative;z-index:10;margin-bottom:-234px;}
+.banner-title{position: absolute;
+z-index: 10;
+margin-top: 96px;}
 .banner-title  .top_news_1 { background: #003051; color: #FFF; width: 50%; padding: 0 10px;opacity:0.8;margin-bottom:10px; text-align: center; text-transform: uppercase; padding: 10px 0px; }
 .banner-title  .top_news_2 { width: 74%; background: #0E76BC; color: #FFF; padding: 11px;opacity:0.8}
 .flexslider {
