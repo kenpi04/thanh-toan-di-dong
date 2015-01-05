@@ -273,10 +273,10 @@ namespace PlanX.Web.Framework
                 .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
                 .As<ITopicService>().InstancePerHttpRequest();
             builder.RegisterType<NewsService>()
-                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                //.WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
                 .As<INewsService>().InstancePerHttpRequest();
             builder.RegisterType<CategoryNewsService>()
-                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                //.WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
                 .As<ICategoryNewsService>().InstancePerHttpRequest();
 
             builder.RegisterType<DateTimeHelper>().As<IDateTimeHelper>().InstancePerHttpRequest();
