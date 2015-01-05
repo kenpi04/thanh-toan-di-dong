@@ -10,6 +10,8 @@ namespace PlanX.Data.Mapping.News
             this.ToTable("Tags");
             this.HasKey(pt => pt.Id);
             this.Property(pt => pt.Name).IsRequired().HasMaxLength(400);
+
+            this.Ignore(pt => pt.NewsItems);            
         }
     }
 }
