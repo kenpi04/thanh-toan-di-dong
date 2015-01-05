@@ -26,6 +26,22 @@
         </td>
     </tr>
     <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.IsHotView):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.IsHotView)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.IsShowSlider):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.IsShowSlider)
+        </td>
+    </tr>
+    <tr>
         <td colspan="2">
             <input type="button" id="search-newsitem" class="t-button" value="@T("Admin.Common.Search")" />
         </td>
@@ -42,6 +58,9 @@
                     {
                         columns.Bound(x => x.Title);
                         columns.Bound(x => x.LanguageName);
+                        columns.Bound(x => x.ViewCount);
+                        columns.Bound(x => x.IsHotView);
+                        columns.Bound(x => x.IsShowSlider);
                         columns.Bound(x => x.Comments)
                             .Centered()
                             .Template(
@@ -78,9 +97,7 @@
         </td>
     </tr>
 </table>
-
 <script type="text/javascript">
-
     $(document).ready(function () {
         //search button
         $('#search-newsitem').click(function () {
@@ -95,7 +112,9 @@
 
     function onDataBinding(e) {
         var searchModel = {
-            SearchStoreId: $('#SearchStoreId').val()
+            SearchStoreId: $('#SearchStoreId').val(),
+            IsHotView: $('#IsHotView').is(':checked'),
+            IsShowSlider: $('#IsShowSlider').is(':checked'),            
         };
         e.data = searchModel;
     }

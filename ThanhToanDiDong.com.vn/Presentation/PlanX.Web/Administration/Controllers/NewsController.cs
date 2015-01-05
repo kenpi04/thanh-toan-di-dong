@@ -246,7 +246,7 @@ namespace PlanX.Admin.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageNews))
                 return AccessDeniedView();
 
-            var news = _newsService.GetAllNews(0, model.SearchStoreId, command.Page - 1, command.PageSize, true);
+            var news = _newsService.GetAllNews(0, model.SearchStoreId, command.Page - 1, command.PageSize, true, isHostView:model.IsHotView, includeBannerItem:model.IsShowSlider);
             var gridModel = new GridModel<NewsItemModel>
             {
                 Data = news.Select(x =>
@@ -259,6 +259,9 @@ namespace PlanX.Admin.Controllers
                     m.CreatedOn = x.CreatedOnUtc;
                     m.LanguageName = x.Language.Name;
                     m.Comments = x.CommentCount;
+                    m.ViewCount = x.ViewCount;
+                    m.IsHotView = x.IsHotView;
+                    m.IsShowSlider = x.IsShowSlider;
                     return m;
                 }),
                 Total = news.TotalCount

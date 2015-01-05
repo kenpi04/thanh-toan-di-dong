@@ -94,6 +94,24 @@
         </tr>
         <tr>
             <td class="adminTitle">
+                @Html.NopLabelFor(model => model.IsHotView):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.IsHotView)
+                @Html.ValidationMessageFor(model => model.IsHotView)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.NopLabelFor(model => model.IsShowSlider):
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.IsShowSlider)
+                @Html.ValidationMessageFor(model => model.IsShowSlider)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
                 @Html.NopLabelFor(model => model.Published):
             </td>
             <td class="adminData">
