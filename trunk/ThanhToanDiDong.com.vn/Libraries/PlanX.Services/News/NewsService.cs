@@ -207,7 +207,8 @@ namespace PlanX.Services.News
         /// </summary>
         /// <param name="customerId">Customer identifier; 0 to load all records</param>
         /// <returns>Comments</returns>
-        public virtual IList<NewsComment> GetAllComments(int customerId)
+        public virtual IPagedList<NewsComment> GetAllComments(int customerId, int newsId = 0, int parentId = 0,bool onlyApprove=false,
+            int pageIndex = 0, int pageSize = 20)
         {
             using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
             {
@@ -215,17 +216,23 @@ namespace PlanX.Services.News
             }
                 ))
             {
-                var query = from c in _newsCommentRepository.Table
-                            orderby c.CreatedOnUtc
-                            where (customerId == 0 || c.CustomerId == customerId)
-                            select c;
-                var content = query.ToList();
-                return content;
+                var query =  _newsCommentRepository.Table.Where(x=>!x.Deleted);
+               
+                if (onlyApprove)
+                    query = query.Where(x => x.IsApproved);                
+                if (customerId != 0)
+                    query = query.Where(x => x.CustomerId == customerId);
+                if (newsId != 0)
+                    query = query.Where(x => x.NewsItemId == newsId);
+                if (parentId != 0)
+                    query = query.Where(x => x.ParentId == parentId);
+                query = query.OrderByDescending(x => x.CreatedOnUtc);
+                return new PagedList<NewsComment>(query, pageIndex, pageSize);
             }
         }
-        public virtual async Task<IList<NewsComment>> GetAllCommentsAsync(int customerId)
+        public virtual async Task<IPagedList<NewsComment>> GetAllCommentsAsync(int customerId, int newsId = 0, int parentId = 0,bool onlyApprove=false, int pageIndex = 0, int pageSize = 20)
         {
-            return await Task.Factory.StartNew<IList<NewsComment>>(() => { return GetAllComments(customerId); });
+            return await Task.Factory.StartNew<IPagedList<NewsComment>>(() => { return GetAllComments(customerId,newsId,parentId,onlyApprove,pageIndex,pageSize); });
         }
 
         /// <summary>
@@ -262,6 +269,12 @@ namespace PlanX.Services.News
 
             _newsCommentRepository.Delete(newsComment);
         }
+       public virtual void UpdateNewsComment(NewsComment entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("NewsComment");
+            _newsCommentRepository.Update(entity);
+       }
 
         public virtual Task<IPagedList<NewsItem>> GetAllNewShowBanner(int languageid, int pageSize = 0)
         {

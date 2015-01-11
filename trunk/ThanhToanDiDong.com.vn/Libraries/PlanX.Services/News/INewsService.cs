@@ -57,8 +57,8 @@ namespace PlanX.Services.News
         /// </summary>
         /// <param name="customerId">Customer identifier; 0 to load all records</param>
         /// <returns>Comments</returns>
-        IList<NewsComment> GetAllComments(int customerId);
-        Task<IList<NewsComment>> GetAllCommentsAsync(int customerId);
+        IPagedList<NewsComment> GetAllComments(int customerId, int newsId = 0,int parentId=0,bool onlyApprove=false, int pageIndex = 0, int pageSize = 20);
+        Task<IPagedList<NewsComment>> GetAllCommentsAsync(int customerId, int newsId = 0, int parentId = 0, bool onlyApprove = false, int pageIndex = 0, int pageSize = 20);
         /// <summary>
         /// Gets a news comment
         /// </summary>
@@ -66,6 +66,8 @@ namespace PlanX.Services.News
         /// <returns>News comment</returns>
         NewsComment GetNewsCommentById(int newsCommentId);
         Task<NewsComment> GetNewsCommentByIdAsync(int newsCommentId);
+
+        void UpdateNewsComment(NewsComment entity);
         /// <summary>
         /// Deletes a news comment
         /// </summary>
