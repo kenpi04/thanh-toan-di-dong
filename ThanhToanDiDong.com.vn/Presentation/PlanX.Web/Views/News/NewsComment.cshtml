@@ -1,4 +1,8 @@
 ﻿@model PlanX.Web.Models.News.AddNewsCommentModel
+           @{
+               Html.AddScriptParts(ResourceLocation.Head, "~/Scripts/cities.js");
+               Html.AddScriptParts(ResourceLocation.Foot, "~/Scripts/comment.js");
+           }
 <article class="comment" style="width:100%">
     <div class="left">
         <h2 class="blue color_white"><span class="small">BÌNH</span><br /><span>LUẬN</span></h2>
@@ -34,121 +38,7 @@
         </div>
     </div>
 </article>
-<script type="text/javascript">
-    $(function () {
-        loadComment(0,20);
-        $(document).on("submit","form[name=frmComment]",function () {
-            addComment($(this));
-            return false;
-        })
-        $('#txtCommentPlace').autocomplete({
-            delay: 500,
-            minLength: 3,
-            source: CITIES,
-            select: function( event, ui ) {
-                $("#txtCommentPlace").val(ui.item.name);
-                $("#txtCommentPlaceId").val(ui.item.id);
-                return false;
-            }
-        })
-                .data("ui-autocomplete")._renderItem = function( ul, item ) {
-                    var t = item.name;
-                    //html encode
-                    t = htmlEncode(t);
-                    return $("<li></li>")
-                    .data("item.autocomplete", item)
-                    .append("<a>" + t + "</a>")
-                .appendTo(ul);
-                };
-    });
-    function addComment(frm)
-    {
-       if(frm.valid())
-        
-        {
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("NewsCommentAdd")",
-                data: frm.serialize(),
-                success:function(d)
-                {
-                    alert(d);
-                    frm.find("input[type=text],textarea").val("");
-                    loadComment(0,5);
-                },
-                error: function (e)
-                {
-                    alert("Lỗi ");
-                }
-            })
-       }
-        return false;
-    }
-    function viewMore(id)
-    {
-        var span = $("#comment-d-" + id).find(".more");
-        var a=$("#comment-d-"+id).find(".comment-cmd");
-        if (span.is(":hidden"))
-        {
-            
-            span.show();
-            a.html("Thu lại")
-        }
-        else
-        {
-            a.html("Xem thêm...")
-            span.hide();
-        }
-    }
-    function ShowCommentReply(id) {
-        var divParent=$("#comment-d-" + id);
-        var showDiv = divParent.find($(".comment-form"));
-        var div = $("div[id=comment-detail]");
-        var form = div.find($(".comment-form"));
-        if (form.length != 0) {
-            form.each(function () {
-                $(this).remove();
-            });
-        }
-        if (showDiv.length == 0) {
-            var frmComment=$("#frmAddComment").clone();
-            if(divParent.attr("parent"))
-            {
-                frmComment.append("<input type='hidden' value='"+divParent.attr("parent")+"' name='ParentId'/>");
-             }
-            $("div[id=comment-d-" + id + "]").append(frmComment);
-        }
-    };
 
-    function CommentLike(id) {
-        var lt=$("#lt-"+id);
-        $.ajax({
-            type:"POST",
-            url:"@Url.Action("CommentLike")",
-            data:{id:id},
-            success:function(d){
-                if(d!="NOT OK")
-                {
-                    lt.hide()
-                    .html("[Thích "+d+"]")
-                    .show("slow");
-                }
-            }
-        })
-        return false;
-    };
-
-    
-
-    function loadComment(pageindex,pageSize)
-    {
-        $.get("@Url.Action("CommentList")", {pageIndex:pageindex,pageSize:pageSize,newsId:@Model.CustomProperties["newsId"]},function(d){
-            $("#comment-detail").replaceWith(d);
-        }).error(function(){
-            alert("lỗi !")
-        });
-    }
-</script>
 <style>
     .error{display:none}
 </style>
