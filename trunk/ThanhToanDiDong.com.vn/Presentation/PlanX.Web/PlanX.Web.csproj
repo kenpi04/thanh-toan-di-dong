@@ -258,6 +258,7 @@
     <Compile Include="Models\News\CategoryNewsListModel.cs" />
     <Compile Include="Models\News\HomePageNewsItemsModel.cs" />
     <Compile Include="Models\News\NewsByTagModel.cs" />
+    <Compile Include="Models\News\NewsCommentListModel.cs" />
     <Compile Include="Models\News\NewsCommentModel.cs" />
     <Compile Include="Models\News\NewsItemListModel.cs" />
     <Compile Include="Models\News\NewsItemModel.cs" />
@@ -277,7 +278,7 @@
     <Compile Include="Validators\Install\InstallValidator.cs" />
     <Compile Include="Validators\Customer\PasswordRecoveryConfirmValidator.cs" />
     <Compile Include="Validators\Customer\PasswordRecoveryValidator.cs" />
-    <Compile Include="Validators\News\NewsItemValidator.cs" />
+    <Compile Include="Validators\News\NewsItemCommentValidator.cs" />
     <Compile Include="Validators\PrivateMessages\SendPrivateMessageValidator.cs" />
     <Compile Include="Validators\Customer\ChangePasswordValidator.cs" />
     <Compile Include="Validators\Customer\RegisterValidator.cs" />
@@ -831,7 +832,12 @@
     <Content Include="Scripts\2013.2.611\telerik.treeview.min.js" />
     <Content Include="Scripts\2013.2.611\telerik.upload.min.js" />
     <Content Include="Scripts\2013.2.611\telerik.window.min.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\cities.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery.flexslider.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\public.common.mobile.js" />
     <Content Include="Themes\DefaultClean\Content\images\free-shipping.png" />
     <Content Include="Themes\DefaultClean\Content\images\top-menu-background.png" />
@@ -1407,6 +1413,8 @@
     <Content Include="Views\Common\Config.cshtml" />
     <Content Include="Views\Customer\MyAccount.cshtml" />
     <Content Include="Views\Shared\_Notifications.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\News\NewsComment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\Thumbs\" />
