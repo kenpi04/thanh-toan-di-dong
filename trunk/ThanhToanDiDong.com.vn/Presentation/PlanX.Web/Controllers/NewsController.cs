@@ -27,6 +27,8 @@ using PlanX.Web.Infrastructure.Cache;
 using PlanX.Web.Models.Media;
 using PlanX.Web.Models.News;
 using System.Threading.Tasks;
+using PlanX.Services.Directory;
+using System.Web;
 
 namespace PlanX.Web.Controllers
 {
@@ -47,7 +49,7 @@ namespace PlanX.Web.Controllers
         private readonly IStoreMappingService _storeMappingService;
         private readonly ICategoryNewsService _cateNewsService;
         private readonly ITagService _tagService;
-
+        private readonly IStateProvinceService _stateProvinceService;
         private readonly MediaSettings _mediaSettings;
         private readonly NewsSettings _newsSettings;
         private readonly LocalizationSettings _localizationSettings;
@@ -67,6 +69,7 @@ namespace PlanX.Web.Controllers
             MediaSettings mediaSettings, NewsSettings newsSettings,
             LocalizationSettings localizationSettings, CustomerSettings customerSettings,
             CaptchaSettings captchaSettings, ICategoryNewsService cateNewsService,
+            IStateProvinceService stateProvinceService,
             ITagService tagService)
         {
             this._cateNewsService = cateNewsService;
@@ -80,6 +83,7 @@ namespace PlanX.Web.Controllers
             this._cacheManager = cacheManager;
             this._customerActivityService = customerActivityService;
             this._storeMappingService = storeMappingService;
+            this._stateProvinceService = stateProvinceService;
 
             this._mediaSettings = mediaSettings;
             this._newsSettings = newsSettings;
@@ -551,27 +555,27 @@ namespace PlanX.Web.Controllers
             return View(model);
         }
 
-        [HttpPost, ActionName("NewsItem")]
-        [FormValueRequired("add-comment")]
+
+        [HttpPost]       
         [CaptchaValidator]
-        public async Task<ActionResult> NewsCommentAdd(int newsItemId, NewsItemModel model, bool captchaValid)
+        public async Task<ActionResult> NewsCommentAdd(int newsItemId, AddNewsCommentModel model, bool captchaValid)      
         {
             if (!_newsSettings.Enabled)
-                return RedirectToRoute("HomePage");
+                return Json("UNENABLE");
 
             var newsItem = await _newsService.GetNewsByIdAsync(newsItemId);
             if (newsItem == null || !newsItem.Published || !newsItem.AllowComments)
-                return RedirectToRoute("HomePage");
+                return Json("UNENABLE");
 
             //validate CAPTCHA
             if (_captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage && !captchaValid)
             {
-                ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptcha"));
+                return Json( _localizationService.GetResource("Common.WrongCaptcha"));
             }
 
             if (_workContext.CurrentCustomer.IsGuest() && !_newsSettings.AllowNotRegisteredUsersToLeaveComments)
             {
-                ModelState.AddModelError("", _localizationService.GetResource("News.Comments.OnlyRegisteredUsersLeaveComments"));
+                return Json( _localizationService.GetResource("News.Comments.OnlyRegisteredUsersLeaveComments"));
             }
 
             if (ModelState.IsValid)
@@ -580,8 +584,13 @@ namespace PlanX.Web.Controllers
                 {
                     NewsItemId = newsItem.Id,
                     CustomerId = _workContext.CurrentCustomer.Id,
-                    CommentTitle = model.AddNewComment.CommentTitle,
-                    CommentText = model.AddNewComment.CommentText,
+                    CommentTitle = model.CommentTitle,
+                    CommentText = model.CommentText,
+                    CustomerPlace=model.Place,
+                    CustomerName=model.UserName,
+                    CustomerEmail=_workContext.CurrentCustomer.Email,
+                    IsApproved=_workContext.CurrentCustomer.IsAdmin(),
+                    ParentId=model.ParentId,
                     CreatedOnUtc = DateTime.Now,
                 };
                 newsItem.NewsComments.Add(comment);
@@ -599,14 +608,13 @@ namespace PlanX.Web.Controllers
 
                 //The text boxes should be cleared after a comment has been posted
                 //That' why we reload the page
-                TempData["nop.news.addcomment.result"] = _localizationService.GetResource("News.Comments.SuccessfullyAdded");
-                return RedirectToRoute("NewsItem", new { SeName = newsItem.GetSeName(newsItem.LanguageId, ensureTwoPublishedLanguages: false) });
+                return Json( _localizationService.GetResource("News.Comments.SuccessfullyAdded"));
+               // return RedirectToRoute("NewsItem", new { SeName = newsItem.GetSeName(newsItem.LanguageId, ensureTwoPublishedLanguages: false) });
             }
 
 
             //If we got this far, something failed, redisplay form
-            model = PrepareNewsItemModel(newsItem, true);
-            return View(model);
+            return Json(_localizationService.GetResource("News.Comments.NotSuccessfullyAdded"));
         }
 
         /*
@@ -632,6 +640,91 @@ namespace PlanX.Web.Controllers
                 return news.Select(x=>PrepareNewsItemModel(x,false,true,pictureThumbSize)).ToList();
             });
             return View(banners);
+        }
+
+        public ActionResult NewsComment(int newsId)
+        {
+            var model = new AddNewsCommentModel();
+            model.CustomProperties.Add("newsId", newsId);
+            return View(model);
+        }
+        [HttpGet]
+        public ActionResult CommentList(int pageIndex,int pageSize,int newsId,int parentId=0)
+        {
+            var data = _newsService.GetAllComments(0, newsId,0,true, pageIndex-1, pageSize);
+            var comments = PreparingCommentModel(data);
+            var model = new NewsCommentListModel { 
+            PageIndex=pageIndex,
+            TotalPage=data.TotalPages,
+            Comments=comments,
+            NewsId=newsId
+            };
+            return View(model);
+        }
+        public IList<NewsCommentModel> PreparingCommentModel(IEnumerable<NewsComment> ls,int parentId=0)
+        {
+            var result=new List<NewsCommentModel>();
+          var parentList=  ls.Where(x=>x.ParentId==parentId);
+            foreach(var e in parentList)
+            {
+            result.Add( new NewsCommentModel
+                    {
+                        Id=e.Id,
+                        CommentText=e.CommentText,
+                        CommentTitle=e.CommentTitle,
+                        CreatedOn=e.CreatedOnUtc,
+                        CustomerAvatarUrl = _pictureService.GetPictureUrl(
+                        e.Customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
+                        _mediaSettings.AvatarPictureSize,
+                        true,null,PictureType.Avatar),
+                        CustomerId=e.Customer.Id,
+                        CustomerName=e.CustomerName,
+                        Place=e.CustomerPlace,
+                        TotalLike=e.LikeTotal,
+                        SubComments =parentId==0? PreparingCommentModel(ls,e.Id):new List<NewsCommentModel>()
+                
+                    }
+            );
+            }
+            return result;
+            
+        }
+        public ActionResult GetCity()
+        {
+            
+           var data= _stateProvinceService.GetStateProvincesByCountryId(230).Select(x => new {name=x.Name,id=x.Id}).ToList();
+           return Json(data, JsonRequestBehavior.AllowGet);
+            
+        }
+        [HttpPost]
+        public ActionResult CommentLike(int id)
+        {
+            string cookieName="nlcids";
+            var listIds = new List<string>();
+             var cookieNewsIds = Request.Cookies[cookieName];
+            if(cookieNewsIds!=null)
+                 listIds=cookieNewsIds.Value.Split(',').ToList();
+                if (!listIds.Contains(id.ToString()))
+                {
+                    var comment = _newsService.GetNewsCommentById(id);
+                    if (comment == null)
+                        return Json("NOT OK");
+           
+                   
+                        comment.LikeTotal++;
+                        listIds.Add(id.ToString());
+                        var cookie = new HttpCookie(cookieName);
+                        cookie.Expires = DateTime.Now.AddDays(365);
+                        cookie.Value = listIds.Aggregate((a, b) => a + "," + b);
+                        Response.Cookies.Add(cookie);
+                        _newsService.UpdateNewsComment(comment);
+
+                        return Json(comment.LikeTotal);
+                    
+                }
+                return Json("NOT OK");
+           
+
         }
         #endregion
 

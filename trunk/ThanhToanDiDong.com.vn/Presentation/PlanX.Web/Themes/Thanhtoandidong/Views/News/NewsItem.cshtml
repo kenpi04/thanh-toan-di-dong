@@ -2,14 +2,21 @@
 @using PlanX.Web.Models.News;
 @{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
-
+     
     //title
     Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title);
+
+    Html.AddCssFileParts("~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.0.custom.css");
     Html.AddMetaDescriptionParts(Model.MetaDescription);
     Html.AddMetaKeywordParts(Model.MetaKeywords);
     System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("vi-VN");
+
+    
+
     var categoryId = Model.CategoryNewsModel != null? Model.CategoryNewsModel.Id:0;
+
 }
+
 <section class="mainContent">
     <!--left-->
     <div class="mainContent_left">
@@ -28,175 +35,7 @@
             <article>
                 <p><img src="~/Themes/Thanhtoandidong/Content/images/f-like.jpg" /></p>
             </article>
-            <article class="comment">
-                <div class="left">
-                    <h2 class="blue color_white"><span class="small">BÌNH</span><br /><span>LUẬN</span></h2>
-                </div>
-                <div class="box_right">
-                    <div class="box_content">
-                        <div class="comment_box">
-                            <div class="comment_box_1">
-                                <div class="avata"><img src="~/Themes/Thanhtoandidong/Content/images/avata.jpg" /></div>
-                                <div class="comment-form-0" id="comment-form-0">
-                                    <p><input type="text" id="txtCommentName" name="txtCommentName" placeholder="Tên của bạn" /><input type="text" id="txtCommentPlace" name="txtCommentPlace" placeholder="Thành phố" /></p>
-                                    <p><textarea id="txtCommentContent" name="txtCommentContent" placeholder="Nội dung trả lời"></textarea></p>
-                                    <div class="comment_box_2"><input type="submit" value="Bình luận" class="default" id="0" name="comment-form-0" onclick="CommentReply(0)" /></div>
-                                </div>
-                            </div>                            
-                        </div>
-                        <div class="clear"></div>
-                        <!--Comment detail-->
-                        <div class="comment-detail" id="comment-detail">
-                            <!--Comment detail 1-->
-                            <div class="comment-detail-item">
-                                <div class="cmt-ava"><img src="~/Themes/Thanhtoandidong/Content/images/avata.jpg" /></div>
-                                <div class="comment-d" id="comment-d-1">
-                                    <div>
-                                        <span class="font-bold">duy nhat</span>
-                                        <span class="font-bold color_blue dot">.</span>
-                                        <span class="color_grey city">Hà Nội</span>
-                                    </div>
-                                    <p class="comment-text">
-                                        Xài tốt, hợp giá tiền, phù hợp sinh viên và người mới đi làm giống mình, nên mua. Hi vọng anh Sam có nhiều mẫu giá rẻ để nhiều người có cơ hội sử dụng Smartphone.
-                                    </p>
-                                    <div class="comment-cmd">
-                                        <span class="color_blue"><a>...xem thêm</a></span>
-                                        <span style="float:right">
-                                            <span class="color_blue"><a onclick="ShowCommentReply(1)">Trả lời</a> <span class="font-bold dot">.</span> <a onclick="CommentLike(1)">Thích [3]</a> <span class="font-bold dot">.</span></span><span class="color_grey2"> 2 giờ trước</span>
-                                        </span>
-                                    </div>                                    
-                                </div>                                
-                                <div class="clear"></div>
-                            </div>
-                            <!--Comment detail 1-->
-                            <div class="clear"></div>
-                            <!--Comment detail 2-->
-                            <div class="comment-detail-item">
-                                <div class="cmt-ava"><img src="~/Themes/Thanhtoandidong/Content/images/avata.jpg" /></div>
-                                <div class="comment-d" id="comment-d-2">
-                                    <div>
-                                        <span class="font-bold">duy nhat</span>
-                                        <span class="font-bold color_blue" style="font-size:14px">-</span>
-                                        <span class="color_grey" style="font-size:11px">Hà Nội</span>
-                                    </div>
-                                    <p class="comment-text">
-                                        Xài tốt, hợp giá tiền, phù hợp sinh viên và người mới đi làm giống mình, nên mua. Hi vọng anh Sam có nhiều mẫu giá rẻ để nhiều người có cơ hội sử dụng Smartphone.
-                                    </p>
-                                    <div class="comment-cmd">
-                                        <span class="color_blue">...xem thêm</span>
-                                        <span class="right" id="anwser_10">
-                                            <span class="color_blue"><a onclick="ShowCommentReply(2)">Trả lời</a> <span class="font-bold dot">.</span> <a onclick="CommentLike(2)">Thích [3]</a> <span class="font-bold dot">.</span></span><span class="color_grey2"> 2 giờ trước</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="div_canvas" id="div_canvas_10"><canvas id="10" class="canvas"></canvas></div>
-                                <div class="comment-detail-item sub">
-                                    <div class="cmt-ava"><img src="~/Themes/Thanhtoandidong/Content/images/avata.jpg" /></div>
-                                    <div class="comment-d" id="comment-d-21">
-                                        <div>
-                                            <span class="font-bold">duy nhat</span>
-                                            <span class="font-bold color_blue" style="font-size:14px">-</span>
-                                            <span class="color_grey" style="font-size:11px">Hà Nội</span>
-                                        </div>
-                                        <p class="comment-text">
-                                            Xài tốt, hợp giá tiền, phù hợp sinh viên và người mới đi làm giống mình, nên mua. Hi vọng anh Sam có nhiều mẫu giá rẻ để nhiều người có cơ hội sử dụng Smartphone.
-                                        </p>
-                                        <div class="comment-cmd">
-                                            <span class="color_blue">...xem thêm</span>
-                                            <span style="float:right">
-                                                <span class="color_blue"><a onclick="ShowCommentReply(21)">Trả lời</a> <span class="font-bold dot">.</span> <a onclick="CommentLike(21)">Thích [3]</a> <span class="font-bold dot">.</span></span><span class="color_grey2"> 2 giờ trước</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="clear"></div>
-                                </div>
-                                <div class="comment-detail-item sub">
-                                    <div class="cmt-ava"><img src="~/Themes/Thanhtoandidong/Content/images/avata.jpg" /></div>
-                                    <div class="comment-d">
-                                        <div>
-                                            <span class="font-bold">duy nhat</span>
-                                            <span class="font-bold color_blue" style="font-size:14px">-</span>
-                                            <span class="color_grey" style="font-size:11px">Hà Nội</span>
-                                        </div>
-                                        <p class="comment-text">
-                                            Xài tốt, hợp giá tiền, phù hợp sinh viên và người mới đi làm giống mình, nên mua. Hi vọng anh Sam có nhiều mẫu giá rẻ để nhiều người có cơ hội sử dụng Smartphone.
-                                        </p>
-                                        <div class="comment-cmd">
-                                            <span class="color_blue">...xem thêm</span>
-                                            <span style="float:right">
-                                                <span class="color_blue">Trả lời <span class="font-bold dot">.</span> Thích [3] <span class="font-bold dot">.</span></span><span class="color_grey2"> 2 giờ trước</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="clear"></div>
-                                </div>
-                                <div class="comment-detail-item sub">
-                                    <div class="cmt-ava"><img src="~/Themes/Thanhtoandidong/Content/images/avata.jpg" /></div>
-                                    <div class="comment-d">
-                                        <div>
-                                            <span class="font-bold">duy nhat</span>
-                                            <span class="font-bold color_blue" style="font-size:14px">-</span>
-                                            <span class="color_grey" style="font-size:11px">Hà Nội</span>
-                                        </div>
-                                        <p class="comment-text">
-                                            Xài tốt, hợp giá tiền, phù hợp sinh viên và người mới đi làm giống mình, nên mua. Hi vọng anh Sam có nhiều mẫu giá rẻ để nhiều người có cơ hội sử dụng Smartphone.
-                                        </p>
-                                        <div class="comment-cmd">
-                                            <span class="color_blue">...xem thêm</span>
-                                            <span class="right">
-                                                <span class="color_blue">Trả lời <span class="font-bold dot">.</span> Thích [3] <span class="font-bold dot">.</span></span><span class="color_grey2"> 2 giờ trước</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="clear"></div>
-                                </div>
-                            </div>
-                            <!--Comment detail 3-->
-                            <div class="comment-detail-item">
-                                <div class="cmt-ava"><img src="~/Themes/Thanhtoandidong/Content/images/avata.jpg" /></div>
-                                <div class="comment-d">
-                                    <div>
-                                        <span class="font-bold">duy nhat</span>
-                                        <span class="font-bold color_blue dot">.</span>
-                                        <span class="color_grey city">Hà Nội</span>
-                                    </div>
-                                    <p class="comment-text">
-                                        Xài tốt, hợp giá tiền, phù hợp sinh viên và người mới đi làm giống mình, nên mua. Hi vọng anh Sam có nhiều mẫu giá rẻ để nhiều người có cơ hội sử dụng Smartphone.
-                                    </p>
-                                    <div class="comment-cmd">
-                                        <span class="color_blue">...xem thêm</span>
-                                        <span class="right" id="anwser_111">
-                                            <span class="color_blue">Trả lời <span class="font-bold dot">.</span> Thích [3] <span class="font-bold dot">.</span></span><span class="color_grey2"> 2 giờ trước</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="div_canvas" id="div_canvas_111"><canvas id="111" class="canvas"></canvas></div>
-                                <div class="comment-detail-item sub">
-                                    <div class="cmt-ava"><img src="~/Themes/Thanhtoandidong/Content/images/avata.jpg" /></div>
-                                    <div class="comment-d">
-                                        <div>
-                                            <span class="font-bold">duy nhat</span>
-                                            <span class="font-bold color_blue" style="font-size:14px">-</span>
-                                            <span class="color_grey" style="font-size:11px">Hà Nội</span>
-                                        </div>
-                                        <p class="comment-text">
-                                            Xài tốt, hợp giá tiền, phù hợp sinh viên và người mới đi làm giống mình, nên mua. Hi vọng anh Sam có nhiều mẫu giá rẻ để nhiều người có cơ hội sử dụng Smartphone.
-                                        </p>
-                                        <div class="comment-cmd">
-                                            <span class="color_blue">...xem thêm</span>
-                                            <span style="float:right">
-                                                <span class="color_blue">Trả lời <span class="font-bold dot">.</span> Thích [3] <span class="font-bold dot">.</span></span><span class="color_grey2"> 2 giờ trước</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="clear"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="viewAll"><input type="button" class="default" value="Xem tất cả" /></div>
-                    </div>
-                </div>
-            </article>
+           @Html.Action("NewsComment", new {newsId=Model.Id })
         </div>
     </div>
     <!--right-->
@@ -222,42 +61,3 @@
         </aside>
     </article>
 </section>
-<script>    
-    function ShowCommentReply(id) {
-        var showDiv = $("div[id=comment-d-" + id + "]").find($(".comment-form"));
-        var div = $("div[id=comment-detail]");
-        var form = div.find($(".comment-form"));
-        if (form.length != 0) {
-            form.each(function () {
-                $(this).remove();
-            });
-        }
-        if (showDiv.length == 0) {
-            $("div[id=comment-d-" + id + "]").append("<div class=\"comment-form\" id=\"comment-form-"+id+"\" >\
-                                        <p><input type=\"text\" id=\"txtCommentName\" placeholder=\"Tên của bạn\" /><input type=\"text\" id=\"txtCommentPlace\" name=\"txtCommentPlace\" placeholder=\"Thành phố\" /></p></p>\
-                                        <p><textarea id=\"txtCommentContent\" placeholder=\"Nội dung trả lời\"></textarea></p>\
-                                        <div class=\"comment_box_2\"><input type=\"submit\" value=\"Bình luận\" class=\"default\" id=\""+id+"\" name=\"comment-form-\""+id+"\" onclick=\"CommentReply("+id+")\" /></div>\
-                                    </div>");
-        }
-    };
-
-    function CommentLike(id) {
-        alert('Thanks for like: ' + id);
-    };
-
-    function CommentReply(id)
-    {
-        var formComment = $("div[id=comment-form-" + id + "]");
-        var name = formComment.find("#txtCommentName").val();
-        var place = formComment.find("#txtCommentPlace").val();
-        var content = formComment.find("#txtCommentContent").val();
-        alert(name + " // " + place + " //" + content);
-        if (id != 0) {
-            var showDiv = $("div[id=comment-d-" + id + "]").find($(".comment-form")).remove();
-        } else {
-            formComment.find("#txtCommentName").val("");
-            formComment.find("#txtCommentPlace").val("");
-            formComment.find("#txtCommentContent").val("");
-        }
-    }
-</script>
