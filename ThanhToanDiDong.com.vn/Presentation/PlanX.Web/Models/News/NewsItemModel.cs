@@ -8,7 +8,7 @@ using PlanX.Web.Validators.News;
 
 namespace PlanX.Web.Models.News
 {
-    [Validator(typeof(NewsItemValidator))]
+    [Validator(typeof(NewsItemCommentValidator))]
     public partial class NewsItemModel : BaseNopEntityModel
     {
         public NewsItemModel()
