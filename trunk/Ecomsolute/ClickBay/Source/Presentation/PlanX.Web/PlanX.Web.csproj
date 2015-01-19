@@ -847,13 +847,26 @@
     <Content Include="Scripts\2013.2.611\telerik.upload.min.js" />
     <Content Include="Scripts\2013.2.611\telerik.window.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\booking.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.11.2.js" />
     <Content Include="Scripts\jquery.flexslider.js" />
+    <Content Include="Scripts\jquery.mousewheel.js" />
+    <Content Include="Scripts\jquery.qtip-1.0.0-rc3.js" />
+    <Content Include="Scripts\jquery.qtip.min.js" />
+    <Content Include="Scripts\jquery.simplePagination.js" />
+    <Content Include="Scripts\jquery.timepicker.js" />
+    <Content Include="Scripts\jquery.widget.min.js" />
+    <Content Include="Scripts\main.js" />
+    <Content Include="Scripts\modernizr.js" />
     <Content Include="Scripts\public.common.mobile.js" />
+    <Content Include="Scripts\search.mobile.js" />
+    <Content Include="Scripts\search.menu.js" />
     <None Include="Scripts\_references.js" />
     <Content Include="Scripts\search.js" />
+    <Content Include="Scripts\skype-uri.js" />
     <Content Include="Themes\ClickBay\Content\flexslider.css" />
     <Content Include="Themes\ClickBay\Content\ie6.css" />
     <Content Include="Themes\ClickBay\Content\ie7.css" />
@@ -903,8 +916,9 @@
     <Content Include="Themes\ClickBay\Content\images\top-menu-list-image.png" />
     <Content Include="Themes\ClickBay\Content\images\top-menu-triangle.png" />
     <Content Include="Themes\ClickBay\Content\images\twiter.png" />
+    <Content Include="Themes\ClickBay\Content\jquery.qtip.min.css" />
+    <Content Include="Themes\ClickBay\Content\responsive.css" />
     <Content Include="Themes\ClickBay\Content\styles.css" />
-    <Content Include="Themes\ClickBay\Content\stylesMore.css" />
     <Content Include="Themes\ClickBay\Content\styles.rtl.css" />
     <Content Include="Themes\ClickBay\preview.jpg" />
     <Content Include="Themes\DefaultClean\Content\images\free-shipping.png" />
@@ -1333,7 +1347,6 @@
     <Content Include="Views\Customer\MyAccount.cshtml" />
     <Content Include="Views\Shared\_Notifications.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\ClickBay\Search.cshtml" />
     <Content Include="Themes\ClickBay\Views\Shared\_ColumnTwo.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\_SearchTicketPartial.cshtml" />
     <Content Include="Themes\ClickBay\Views\ClickBay\_TicketDetail.cshtml" />
@@ -1361,10 +1374,22 @@
     <Content Include="Themes\ClickBay\Views\News\HomePageNews.cshtml" />
     <Content Include="Themes\ClickBay\Views\News\NewsRelated.cshtml" />
     <Content Include="Themes\ClickBay\Views\News\_BoxNewsItems2.cshtml" />
+    <Content Include="Themes\ClickBay\Views\TicketConcession\HomeTicketConcession.cshtml" />
+    <Content Include="Themes\ClickBay\Views\TicketConcession\List.cshtml" />
+    <Content Include="Themes\ClickBay\Views\TicketConcession\TicketConcessionPost.cshtml" />
+    <Content Include="Themes\ClickBay\Views\TicketConcession\_ListTicketConcession.cshtml" />
+    <Content Include="Views\News\NewsRelated.cshtml" />
+    <Content Include="Views\TicketConcession\HomeTicketConcession.cshtml" />
+    <Content Include="Themes\ClickBay\Views\ClickBay\_FormSearchMobile.cshtml" />
+    <Content Include="Themes\ClickBay\Views\ClickBay\_FormSearchMenu.cshtml" />
+    <Content Include="Themes\ClickBay\Views\Shared\_Root.Head.cshtml" />
+    <Content Include="Themes\ClickBay\Views\News\List.cshtml" />
+    <Content Include="Themes\ClickBay\Views\News\NewsItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\Thumbs\" />
     <Folder Include="Plugins\bin\" />
+    <Folder Include="Views\ClickBay\" />
     <Folder Include="Views\OnePay\" />
   </ItemGroup>
   <ItemGroup>
