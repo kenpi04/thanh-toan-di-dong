@@ -48,9 +48,9 @@ $("#To").datepicker({
     dateFormat: "dd/mm/yy",
     changeMonth: false,
     numberOfMonths: 1,
-    onClose: function (selectedDate) {
-        $("#From").datepicker("option", "maxDate", selectedDate);
-    }
+    //onClose: function (selectedDate) {
+    //    $("#From").datepicker("option", "maxDate", selectedDate);
+    //}
 });
 
 function openPopup(name) {
@@ -152,11 +152,17 @@ $(function () {
 
 });
 
-$("#Adult").keyup(function (e) {
-    alert($("#Adult").val());
-    if ($(this).val() > 100) {
-        $(this).val(99);
+$(document).on("click", "a[data-ng-click=click]", function () {
+    var id = $(this).attr("data-bind");
+    var divName = $(this).attr("data-name");
+    var divParent = $(this).parents("#booking-detail-" + id);
+    var div = divParent.find("div[class^=" + divName + "]");
+    if (div.is(":hidden")) {
+        div.css("display", "table");
+        divParent.find("#label-" + divName).find("i").attr("class", "fa fa-minus-square-o fa-lg");
+
+    } else {
+        div.hide();
+        divParent.find("#label-" + divName).find("i").attr("class", "fa fa-plus-square-o fa-lg");
     }
-    else if ($(this).val() < 0)
-    { $(this).val(0); }
 });
