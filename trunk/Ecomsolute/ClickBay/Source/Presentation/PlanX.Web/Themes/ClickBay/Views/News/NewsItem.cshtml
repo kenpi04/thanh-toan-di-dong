@@ -1,0 +1,55 @@
+﻿@model NewsItemModel
+@using PlanX.Web.Models.News;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title);
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+}
+<div class="wrapper-body">
+    <div class="wrapper-content inline">
+        <section class="section-top">
+            <div class="breadcrumb">
+                <p>
+                    <a href="@Url.RouteUrl("Homepage")">Trang chủ</a>
+                    <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" />
+                    <a href="@Url.RouteUrl("CateNews", new { SeName = Model.CategorySeName })">@Model.Category</a>
+                    <img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" />
+                    <span class="active">@Model.Title</span>
+                </p>
+            </div>
+        </section>
+        <section class="section-left news-detail">
+            <div class="news-title"><h1>@Model.Title</h1></div>
+            <div class="info-small">
+                <p><span class="time-small">@Model.CreatedOn.ToString("dd/MM/yyyy")</span><span>@Model.Category</span><span>@Model.Comments.Count Comment</span></p>
+            </div>
+            <div class="content-preview">
+                <p>
+                    @Html.Raw(Model.Full)
+                </p>
+            </div>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'clickbay'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        </section>
+        <section class="section-right-search section">
+            <article class="load-ajax" data-url="@Url.Action("SearchBox", "ClickBay", new { isSmall = true })">                
+            </article>
+            <div class="load-ajax" data-url="@Url.Action("NewsRelated", "News", new { newsItemId = Model.Id, pageSize = 5, categoryId = 0 })"></div>            
+        </section>
+    </div>
+</div>
+

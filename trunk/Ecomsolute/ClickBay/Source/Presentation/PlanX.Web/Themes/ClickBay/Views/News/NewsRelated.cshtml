@@ -13,7 +13,7 @@
                         <p><span class="time-small">@item.CreatedOn.ToString("dd/MM/yyyy")</span><a class="info-small" href="@Url.RouteUrl("CateNews", new { SeName= item.CategorySeName })"><span>@item.Category</span></a><span>@item.Comments.Count Comment</span></p>
                     </div>
                     <div class="content-preview"><p>@Html.Raw(item.Short)</p></div>
-                    <div><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" class="default">Chi tiết</a></div>
+                    <div class="desktop"><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" class="default">Chi tiết</a></div>
                 </div>
             </aside>
         }

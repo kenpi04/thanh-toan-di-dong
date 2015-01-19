@@ -2,7 +2,6 @@
 @using PlanX.Core.Infrastructure;
 @using PlanX.Web.Framework.UI
 @{
-    //add browser specific CSS files
     var browser = Request.Browser;
     if (browser.Browser == "IE" && browser.MajorVersion == 6)
     {
@@ -12,7 +11,6 @@
     {
         Html.AppendCssFileParts("~/Themes/ClickBay/Content/ie7.css");
     }
-    
     //add main CSS file
     var supportRtl = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Rtl;
     if (supportRtl)
@@ -20,7 +18,9 @@
         Html.AppendCssFileParts("~/Themes/ClickBay/Content/styles.rtl.css");
     }
     else
-    {
-        Html.AppendCssFileParts("~/Themes/ClickBay/Content/styles.css");
+    {        
+        Html.AppendCssFileParts("~/Themes/ClickBay/Content/responsive.css");
+        Html.AppendCssFileParts("~/Themes/ClickBay/Content/step4.css");
+        Html.AppendCssFileParts("~/Themes/ClickBay/Content/styles.css");        
     }
 }

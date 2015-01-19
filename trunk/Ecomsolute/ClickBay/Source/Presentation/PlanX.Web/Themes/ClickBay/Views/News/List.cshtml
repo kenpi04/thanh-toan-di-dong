@@ -1,0 +1,51 @@
+﻿@model NewsItemListModel
+@using PlanX.Web.Extensions;
+@using PlanX.Web.Models.News;
+@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+
+    //title
+    Html.AddTitleParts(Model.CurrentCategoryName);    
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeyWords);
+}
+<div class="wrapper-body">
+    <div class="wrapper-content inline">
+        <section class="section-top">
+            <div class="breadcrumb">
+                <p>
+                    <a href="@Url.RouteUrl("Homepage")">Trang chủ</a><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" />
+                    <span class="active">@Model.CurrentCategoryName</span>
+                </p>
+            </div>
+        </section>
+        @Html.Widget("newslist_page_before_items")
+        <section class="section-left news">
+            <article>
+                @foreach (var item in Model.NewsItems)
+                {
+                    <aside>
+                        <div class="news-image" id="@item.Id"><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })"><img src="@item.Picture.ImageUrl" title="@item.Title" alt="@item.Title" onload="imageResize(@item.Id)" /></a></div>
+                        <div class="news-content-preview">
+                            <div><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
+                            <div class="info-small">
+                                <p><span class="time-small">@item.CreatedOn.ToString("dd/MM/yyyy")</span><span>@Model.CurrentCategoryName</span></p>
+                            </div>
+                            <div class="content-preview"><p>@Html.Raw(item.Short)</p></div>
+                            <div class="desktop"><a class="default" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">Chi tiết</a></div>
+                        </div>
+                    </aside>
+                }
+            </article>
+            <div class="pager">
+                @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+            </div>
+            @Html.Widget("newslist_page_after_items")
+        </section>
+        <section class="section-right-search">
+            <article>
+                @Html.Action("SearchBox", "ClickBay" ,new { isSmall = true })
+            </article>
+        </section>
+    </div>
+</div>

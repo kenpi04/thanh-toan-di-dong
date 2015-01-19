@@ -3,7 +3,7 @@
     <h2>Thông Tin Hành Lý</h2>
     <div class="div-table info-baggage">
         <div class="div-table-row">
-            <div class="div-table-cell"><span>Hành lý chiều đi</span></div><div class="div-table-cell"></div>
+            <div class="div-table-cell"><span>Hành lý chiều đi</span></div><div class="div-table-cell desktop"></div>
         </div>
         @Html.HiddenFor(model => model.TicketInfoBaggages)
         @if (Model.TicketInfo.ArilinesBaggageConditions.Count > 0)
@@ -38,12 +38,11 @@
         else
         {
             <div><p>@T("booking.baggage.infonotfound")</p></div>
-        }
-        
+        }        
         @if (Model.TicketInfoReturn != null)
         {
             <div class="div-table-row">
-                <div class="div-table-cell"><span>Hành lý chiều về</span></div><div class="div-table-cell"></div>
+                <div class="div-table-cell"><span>Hành lý chiều về</span></div><div class="div-table-cell desktop"></div>
             </div>
             @Html.HiddenFor(model => model.TicketInfoReturnBaggages)
             if (Model.TicketInfoReturn.ArilinesBaggageConditions.Count > 0)
@@ -104,15 +103,19 @@
             });
             $("#@Html.IdFor(x=>x.TicketInfoReturnBaggages)").val(idreturn);
 
-            var spanTotalBagaggaFee = $("#sumprice-totalbaggagefee");
-            spanTotalBagaggaFee.attr("data-price", totalBaggage);
-            spanTotalBagaggaFee.contents().remove();
-            spanTotalBagaggaFee.append(FormatString(totalBaggage) + ' ' + $("#currencyCode").val());
+            //var spanTotalBagaggaFee = $("#sumprice-totalbaggagefee");
+            $("span[id=sumprice-totalbaggagefee]").each(function (f) {
+                $(this).attr("data-price", totalBaggage);
+                $(this).contents().remove();
+                $(this).append(FormatString(totalBaggage) + ' ' + $("#currencyCode").val());
+            });
 
             var total = $("#sumprice-totalfinaly");
             var totalPrice = parseFloat(total.attr("data-price"));
             totalPrice = totalPrice + totalBaggage;
-            total.contents().remove();
-            total.append(FormatString(totalPrice) + ' ' + $("#currencyCode").val());
+            $("span[id=sumprice-totalfinaly]").each(function (f) {
+                $(this).contents().remove();
+                $(this).append(FormatString(totalPrice) + ' ' + $("#currencyCode").val());
+            });
         }
 </script>

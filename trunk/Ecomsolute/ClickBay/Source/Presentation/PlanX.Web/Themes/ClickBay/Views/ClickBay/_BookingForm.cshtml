@@ -5,20 +5,22 @@
 @using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "POST", OnSuccess = "postSuccess", Url = Url.Action("InsertBooking"), OnBegin = "postBegin", OnFailure = "postFail" }))
 {
     @Html.Partial("_FlightBaggageCondition", Model)
+    <!--Thông Tin Hành Khách-->
     <article>
         <h2>Thông Tin Hành Khách</h2>
         <div class="div-table info-passenger">
-            <div class="div-table-row">
+            <div class="div-table-row desktop">
                 <div class="div-table-cell col-1"><span>Hành khách</span></div>
                 <div class="div-table-cell col-2"><span>Quý danh</span></div>
                 <div class="div-table-cell col-3"><span>Họ và Tên <span class="info-small">( ví dụ: VO TAN DUNG )</span></span></div>
                 <div class="div-table-cell col-4"><span>Ngày sinh <span class="info-small">( ví dụ: 30/01/1987 )</span></span></div>
             </div>
+            <div class="div-table-cell mobile"><i class="required">Vui lòng nhập đầy đủ thông tin hành khách.</i></div>
             @{int count = 0;}
             @foreach (var i in Model.BookingPassers)
             {
                 <div class="div-table-row">
-                    <div class="div-table-cell">                        
+                    <div class="div-table-cell personal-type">
                         @{
                             string personTypeName = "Người lớn";
                             if (i.PassserType == 2)
@@ -30,7 +32,8 @@
                         }
                         @personTypeName
                     </div>
-                    <div class="div-table-cell">
+                    <i class="mobile">Quý danh</i>
+                    <div class="div-table-cell">                        
                         <select class="fullwitdth" name="BookingPassers[@count].PassserType">
                             @if (i.PassserType == 1)
                             {
@@ -55,9 +58,11 @@
                             }
                         </select>
                     </div>
+                    <i class="mobile"><span>Họ và Tên <span class="info-small">( ví dụ: VO TAN DUNG )</span></span></i>
                     <div class="div-table-cell">@Html.TextBoxFor(x => x.BookingPassers[count].FirstName)</div>
                     @if (i.PassserType > 1)
                     {
+                        <i class="mobile"><span>Ngày sinh <span class="info-small">( ví dụ: 30/01/1987 )</span></span></i>
                         <div class="div-table-cell birthday">
                             @Html.DatePickerDropDowns("day", "month", "year", localizeLabels:true)
                             @Html.HiddenFor(x => x.BookingPassers[count].BirthDay)
@@ -68,6 +73,7 @@
             }
         </div>
     </article>
+    <!--Thông Tin Người Liên Hệ-->
     <article>
         <h2>Thông Tin Người Liên Hệ</h2>
         <div>
@@ -145,51 +151,53 @@
             </div>
         </aside>
         <div>
-            <p><input type="checkbox" id="checkedInvoid" name="checkedInvoid"><label>Tôi muốn xuất hóa đơn</label></p>
-            <p><input type="checkbox" checked="checked" id="checkedNewsletter" name="NewLetterAccept"><label>Tôi muốn nhận được thông tin về chương trình khuyến mãi, tin tức</label></p>
+            <p><input type="checkbox" id="checkedInvoid" name="checkedInvoid"><label for="checkedInvoid">Tôi muốn xuất hóa đơn</label></p>
+            <p><input type="checkbox" checked="checked" id="checkedNewsletter" name="NewLetterAccept"><label for="checkedNewsletter">Tôi muốn nhận được thông tin về chương trình khuyến mãi, tin tức</label></p>
         </div>
     </article>
-
+    <!--Yeu cau dac biet-->
     <article>
-        <!--Yeu cau dac biet-->
         <h2>Yêu Cầu Đặt Biệt</h2>
         <div><p>Viết yêu cầu của bạn vào ô bên dưới (Tiếng Anh hoặc Tiếng Việt).</p></div>
         <div>
             @Html.TextAreaFor(x => x.CustomerNote)
         </div>
     </article>
-
-    <article>
-        <!--Yeu cau dac biet-->
+    <!--Phương thức thanh toán-->
+    <article>        
         <h2>Phương thức thanh toán</h2>
         <div><p>Vui lòng chọn phương thức thanh toán</p></div>
-        <div class="div-table-row">
+        <div class="div-table-row info-payment">
             <div class="div-table-cell col-1">
-                <input type="radio" name="PaymentMethodId" value="1" checked="checked" /><label>Thanh toán khi giao vé tận nhà</label>
+                <input type="radio" name="PaymentMethodId" value="1" checked="checked" id="PaymentMethodId-1" /><label for="PaymentMethodId-1">Thanh toán khi giao vé tận nhà</label>
             </div>
             <div class="div-table-cell col-2">
-                <input type="radio" name="PaymentMethodId" value="2" /><label>Thanh toán qua chuyển khoản ATM</label>
+                <input type="radio" name="PaymentMethodId" value="2" id="PaymentMethodId-2" /><label for="PaymentMethodId-2">Thanh toán qua chuyển khoản ATM</label>
             </div>
             @*<div class="div-table-cell col-3">
-                <input type="radio" name="PaymentMethodId" value="3"><label>Thanh toán qua OnePay</label>
+                <input type="radio" name="PaymentMethodId" value="3" id="PaymentMethodId-3"><label for="PaymentMethodId-3">Thanh toán qua OnePay</label>
             </div>*@
             <div class="div-table-cell col-3">
-                <input type="radio" name="PaymentMethodId" value="4"><label>Thanh toán tại văn phòng clickbay</label>
+                <input type="radio" name="PaymentMethodId" value="4" id="PaymentMethodId-4"><label for="PaymentMethodId-4">Thanh toán tại văn phòng clickbay</label>
             </div>
         </div>
     </article>
     <article>
-        <p class="policy"><input type="checkbox" id="checkedPolicy" name="checkedPolicy"><label>Tôi đồng ý với các điều kiện và điều khoản của ClickBay.com.vn (được quy định <a href="@Url.RouteUrl("Topic", new { SystemName = "PrivacyInfo" })" target="_blank">tại đây</a>)</label></p>
+        <p class="policy"><input type="checkbox" id="checkedPolicy" name="checkedPolicy"><label for="checkedPolicy">Tôi đồng ý với các điều kiện và điều khoản của ClickBay.com.vn (được quy định <a href="@Url.RouteUrl("Topic", new { SystemName = "PrivacyInfo" })" target="_blank">tại đây</a>)</label></p>
         <p><input type="submit" class="btn-search" id="btnBooking" name="btnBooking" value="Đặt Vé và Tiếp Tục"></p>
     </article>
 }
 <script>
     function postSuccess(d) {
-        displayAjaxLoading(false);
+        //displayAjaxLoading(false);
         if (d.error == "")
             window.location.href = d.url;
-        else
+        else {
+            $("div[class=Progressbar]").remove();
+            $("section[class^=section-left-search]").show();
+            $("section[class^=section-right-search]").show();
             alert(d.error);
+        }
     }
     function postBegin() {
         if (!$("#checkedPolicy").is(":checked")) {
@@ -201,7 +209,11 @@
             alert("Lỗi ngày tháng");
             return false;
         }
-        displayAjaxLoading(true);
+        $('html, body').animate({ scrollTop: 0 }, 'slow');
+        $("section[class^=section-left-search]").hide();
+        $("section[class^=section-right-search]").hide();
+        $("section[class^=section-left-search]").before("<div class=\"Progressbar\"><div>Đang xử lý...</div><img src='/Themes/ClickBay/Content/images/WindowsPhoneProgressbar.gif'/></div>");
+        //displayAjaxLoading(true);
     }
     function postFail() {
         displayAjaxLoading(false);
@@ -238,6 +250,5 @@
         if (date == '0' || moth == '0' || year == '0')
             return null;
         return DateFull(date) + '/' + DateFull(moth) + '/' + year;
-    }
-        
+    }        
 </script>

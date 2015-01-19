@@ -4,123 +4,162 @@
     if (Model.Adult > 0) {soLuongHanhKhach += Model.Adult.ToString() + " người lớn";}
     if (Model.Child > 0) { soLuongHanhKhach += ", "+ Model.Child.ToString() + " trẻ em"; }
     if (Model.Infant > 0) { soLuongHanhKhach += ", "+ Model.Infant.ToString() + " em bé"; }
-    bool rowFirst = true;
+    
+    var totalDiscount = Model.TotalPriceShows.Sum(x => x.DiscountAmount);
+    var totalPrice = Model.TotalPriceShows.Sum(x => (x.Price + x.TaxAndFee) * x.Quantity);
+    string currencyCode = string.IsNullOrEmpty(Model.TicketInfo.Currency) ? "VND" : Model.TicketInfo.Currency;
 }           
-<article>
-    <h2>Thông Tin Chuyến Bay</h2>
-    <div class="info-flight">
+<article class="article-info-flight">
+    <h2>Thông Tin Chuyến Bay <a data-ng-click="click" data-bind="@Model.Id" data-name="info-flight" id="label-info-flight"><i class="fa fa-plus-square-o fa-lg"></i></a></h2>
+    <div>
         <div class="div-table-row">
-            <div class="div-table-cell">Chuyến bay: </div>
-            <div class="div-table-cell"><span>@(Model.TicketInfoReturn!=null ? "Khứ hồi" : "Một chiều")</span></div>
-            <div class="div-table-cell">Số lượng hành khách: </div>
-            <div class="div-table-cell"><span>@soLuongHanhKhach</span></div>
+            <div class="div-table-cell desktop">Chuyến bay: </div>
+            <div class="div-table-cell"><span><i class="fa fa-fighter-jet fa-lg"></i>  @(Model.TicketInfoReturn != null ? "Khứ hồi" : "Một chiều")</span></div>
+            <div class="div-table-cell desktop">Số lượng hành khách: </div>
+            <div class="div-table-cell"><span><i class="fa fa-male fa-lg"></i>  @soLuongHanhKhach</span></div>
         </div>
         <div class="div-table-row">
-            <div class="div-table-cell">Ngày đi:</div>
-            <div class="div-table-cell"><span>@Model.TicketInfo.DepartTime.ToString("dd-MM-yyyy")</span></div>
-           @if(Model.TicketInfoReturn!=null)
-                {
-            <div class="div-table-cell">Ngày về:</div>
-            <div class="div-table-cell"><span>
-                    @Model.TicketInfoReturn.DepartTime.ToString("dd-MM-yyyy")
-                </span></div>
-           }
+            <div class="div-table-cell desktop">Ngày đi:</div>
+            <div class="div-table-cell"><span><i class="fa fa-calendar"></i> <i class="fa fa-arrow-circle-o-right fa-lg"></i>  @Model.TicketInfo.DepartTime.ToString("dd-MM-yyyy")</span></div>
+            @if (Model.TicketInfoReturn != null)
+            {
+            <div class="div-table-cell desktop">Ngày về:</div>
+            <div class="div-table-cell">
+                <span><i class="fa fa-calendar"></i> <i class="fa fa-arrow-circle-o-left fa-lg"></i>  @Model.TicketInfoReturn.DepartTime.ToString("dd-MM-yyyy")</span>
+            </div>
+            }
         </div>
     </div>
     <div class="info-flight div-table">
         @if (Model.TicketInfo.Stops == 0)
         {
-        <div class="div-table-row place-flight">
-            <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/"+Model.TicketInfo.BrandCode+".gif")" /></div>
-            <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfo.FromPlace, @Model.TicketInfo.FromCountry</span></div>
-            <div class="div-table-cell"></div>
-            <div class="div-table-cell">Thời gian bay: <span>@Model.TicketInfo.FlightDurationString</span></div>
-        </div>        
-        <div class="div-table-row">
-            <div class="div-table-cell"></div>
-            <div class="div-table-cell">Từ <span>@Model.TicketInfo.FromPlace (@Model.TicketInfo.FromCode)</span></div>
-            <div class="div-table-cell">tới: <span>@Model.TicketInfo.ToPlace (@Model.TicketInfo.ToCode)</span></div>
-            <div class="div-table-cell">@Model.TicketInfo.AirlineName <span>(@Model.TicketInfo.FlightNumber)</span></div>
-        </div>
-        <div class="div-table-row">
-            <div class="div-table-cell"></div>
-            <div class="div-table-cell"><span>@Model.TicketInfo.DepartTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
-            <div class="div-table-cell"><span>@Model.TicketInfo.LandingTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
-            <div class="div-table-cell">Loại vé: <span>@Model.TicketInfo.TicketType</span></div>
-        </div>}
+            <div class="div-table-row place-flight">
+                <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/"+Model.TicketInfo.BrandCode+".gif")" /></div>
+                <div class="div-table-cell"><label class="desktop">Khởi hành từ</label> <span><i class="fa fa-plane"></i>  @Model.TicketInfo.FromPlace, @Model.TicketInfo.FromCountry</span></div>
+                <div class="div-table-cell desktop"></div>
+                <div class="div-table-cell"><label class="desktop">Thời gian bay:</label><span><i>&sum;</i>  @Model.TicketInfo.FlightDurationString</span></div>
+            </div>
+            <div class="div-table-row">
+                <div class="div-table-cell"></div>
+                <div class="div-table-cell"><label class="desktop">Từ:</label> <span class="none-icon">@Model.TicketInfo.FromPlace (@Model.TicketInfo.FromCode)</span><span class="mobile"><i class="fa fa-long-arrow-right"></i>@Model.TicketInfo.ToPlace (@Model.TicketInfo.ToCode)</span></div>
+                <div class="div-table-cell desktop">tới: <span>@Model.TicketInfo.ToPlace (@Model.TicketInfo.ToCode)</span></div>
+                <div class="div-table-cell">@Model.TicketInfo.AirlineName <span>(@Model.TicketInfo.FlightNumber)</span></div>
+            </div>
+            <div class="div-table-row">
+                <div class="div-table-cell"></div>
+                <div class="div-table-cell"><span class="none-icon">  <i class="fa fa-clock-o"></i> @Model.TicketInfo.DepartTime.ToString("HH'h':mm dd-MM-yyyy")</span><span class="mobile"><i class="fa fa-arrow-right"></i><i class="fa fa-clock-o"></i>  @Model.TicketInfo.LandingTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
+                <div class="div-table-cell desktop"><span>@Model.TicketInfo.LandingTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
+                <div class="div-table-cell"><label class="desktop">Loại vé:</label> <span><i class="fa fa-file-o"></i> @Model.TicketInfo.TicketType</span></div>
+            </div>}
         else if (Model.TicketInfo.FlightInfoDetails.Count > 1)
         {
             <div class="div-table-row place-flight">
                 <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/"+Model.TicketInfo.BrandCode+".gif")" /></div>
-                <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfo.FromPlace, @Model.TicketInfo.FromCountry</span></div>
-                <div class="div-table-cell">Số điểm dừng <span>@Model.TicketInfo.Stops</span></div>
-                <div class="div-table-cell">Tổng thời gian: <span>@Model.TicketInfo.FlightDurationString</span></div>
+                <div class="div-table-cell"><label class="desktop">Khởi hành từ</label> <span><i class="fa fa-plane"></i>  @Model.TicketInfo.FromPlace, @Model.TicketInfo.FromCountry</span></div>
+                <div class="div-table-cell desktop">Số điểm dừng <span>@Model.TicketInfo.Stops</span></div>
+                <div class="div-table-cell"><label class="desktop">Tổng thời gian:</label><i>&sum;</i> <span>@Model.TicketInfo.FlightDurationString</span></div>
             </div>
-            rowFirst = true;
+            //rowFirst = true;
             foreach (var item in Model.TicketInfo.FlightInfoDetails)
             {
-            <div class="div-table-row bg-grey-white">
-                <div class="div-table-cell right bg-white"></div>
-                <div class="div-table-cell">Từ <span>@item.FromPlace</span></div>
-                <div class="div-table-cell">tới: <span>@item.ToPlace</span></div>
-                <div class="div-table-cell">Thời gian bay: <span>@item.FlightDuration</span></div>
-            </div>
-            <div class="div-table-row">
-                <div class="div-table-cell"></div>
-                <div class="div-table-cell"><span>@item.DepartTime</span></div>
-                <div class="div-table-cell"><span>@item.LandingTime</span></div>
-                <div class="div-table-cell">@item.Airline (<span>@item.FlightNumber</span>)</div>
-            </div>
-            rowFirst = false;
+                <div class="div-table-row bg-grey-white">
+                    <div class="div-table-cell right bg-white"></div>
+                    <div class="div-table-cell"><label class="desktop">Từ:</label> <span class="none-icon">@item.FromPlace</span><label class="mobile"><i class="fa fa-long-arrow-right"></i>@item.ToPlace</label></div>
+                    <div class="div-table-cell desktop">tới: <span>@item.ToPlace</span></div>
+                    <div class="div-table-cell"><label class="desktop">Thời gian bay:</label><i>&Xi;</i> <span>@item.FlightDuration</span></div>
+                </div>
+                <div class="div-table-row">
+                    <div class="div-table-cell"></div>
+                    <div class="div-table-cell"><span class="none-icon"><i class="fa fa-clock-o"></i>  @item.DepartTime</span><label class="mobile"><i class="fa fa-arrow-right"></i>  <i class="fa fa-clock-o"></i>  @item.LandingTime</label></div>
+                    <div class="div-table-cell desktop"><span>@item.LandingTime</span></div>
+                    <div class="div-table-cell">@item.Airline (<span>@item.FlightNumber</span>)</div>
+                </div>
+                //rowFirst = false;
             }
         }
-        @if(Model.TicketInfoReturn!=null)
+        @if (Model.TicketInfoReturn != null)
         {
-            if (Model.TicketInfoReturn.Stops == 0) { 
-           <div class="div-table-row place-flight">
-            <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/" + Model.TicketInfoReturn.BrandCode + ".gif")" /></div>
-            <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfoReturn.FromPlace, @Model.TicketInfoReturn.FromCountry</span></div>
-            <div class="div-table-cell"></div>
-            <div class="div-table-cell">Thời gian bay: <span>@Model.TicketInfoReturn.FlightDurationString</span></div>
-        </div>
-        <div class="div-table-row">
-            <div class="div-table-cell"></div>
-            <div class="div-table-cell">Từ <span>@Model.TicketInfoReturn.FromPlace (@Model.TicketInfoReturn.FromCode)</span></div>
-            <div class="div-table-cell">tới: <span>@Model.TicketInfoReturn.ToPlace (@Model.TicketInfoReturn.ToCode)</span></div>
-            <div class="div-table-cell">@Model.TicketInfoReturn.AirlineName <span>(@Model.TicketInfoReturn.FlightNumber)</span></div>
-        </div>
-        <div class="div-table-row">
-            <div class="div-table-cell"></div>
-            <div class="div-table-cell"><span>@Model.TicketInfoReturn.DepartTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
-            <div class="div-table-cell"><span>@Model.TicketInfoReturn.LandingTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
-            <div class="div-table-cell">Loại vé: <span>@Model.TicketInfoReturn.TicketType</span></div>
-        </div>}
+            if (Model.TicketInfoReturn.Stops == 0)
+            {
+                <div class="div-table-row place-flight">
+                    <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/" + Model.TicketInfoReturn.BrandCode + ".gif")" /></div>
+                    <div class="div-table-cell"><label class="desktop">Khởi hành từ</label> <span><i class="fa fa-plane"></i>  @Model.TicketInfoReturn.FromPlace, @Model.TicketInfoReturn.FromCountry</span></div>
+                    <div class="div-table-cell desktop"></div>
+                    <div class="div-table-cell"><label class="desktop">Thời gian bay: </label><span><i>&sum;</i>  @Model.TicketInfoReturn.FlightDurationString</span></div>
+                </div>
+                <div class="div-table-row">
+                    <div class="div-table-cell"></div>
+                    <div class="div-table-cell"><label class="desktop">Từ:</label> <span class="none-icon">@Model.TicketInfoReturn.FromPlace (@Model.TicketInfoReturn.FromCode)</span><span class="mobile"><i class="fa fa-long-arrow-right"></i>  @Model.TicketInfoReturn.ToPlace (@Model.TicketInfoReturn.ToCode)</span></div>
+                    <div class="div-table-cell desktop">tới: <span>@Model.TicketInfoReturn.ToPlace (@Model.TicketInfoReturn.ToCode)</span></div>
+                    <div class="div-table-cell">@Model.TicketInfoReturn.AirlineName <span>(@Model.TicketInfoReturn.FlightNumber)</span></div>
+                </div>
+                <div class="div-table-row">
+                    <div class="div-table-cell"></div>
+                    <div class="div-table-cell"><span class="none-icon"><i class="fa fa-clock-o"></i>  @Model.TicketInfoReturn.DepartTime.ToString("hh'h':mm dd-MM-yyyy")</span><span class="mobile"><i class="fa fa-arrow-right"></i>  <i class="fa fa-clock-o"></i> @Model.TicketInfoReturn.LandingTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
+                    <div class="div-table-cell desktop"><span>@Model.TicketInfoReturn.LandingTime.ToString("hh'h':mm dd-MM-yyyy")</span></div>
+                    <div class="div-table-cell"><label class="desktop">Loại vé:</label> <span><i class="fa fa-file-o"></i>  @Model.TicketInfoReturn.TicketType</span></div>
+                </div>}
             else if (Model.TicketInfoReturn.FlightInfoDetails.Count > 1)
             {
                 <div class="div-table-row place-flight">
                     <div class="div-table-cell logo-brand"><img src="@Url.Content("~/Themes/ClickBay/Content/images/" + Model.TicketInfoReturn.BrandCode + ".gif")" /></div>
-                    <div class="div-table-cell">Khởi hành từ <span>@Model.TicketInfoReturn.FromPlace, @Model.TicketInfoReturn.FromCountry</span></div>
-                    <div class="div-table-cell">Số điểm dừng <span>@Model.TicketInfoReturn.Stops</span></div>
-                    <div class="div-table-cell">Tổng thời gian: <span>@Model.TicketInfoReturn.FlightDurationString</span></div>
+                    <div class="div-table-cell"><label class="desktop">Khởi hành từ</label><i class="fa fa-plane"></i>  <span>@Model.TicketInfoReturn.FromPlace, @Model.TicketInfoReturn.FromCountry</span></div>
+                    <div class="div-table-cell desktop">Số điểm dừng <span>@Model.TicketInfoReturn.Stops</span></div>
+                    <div class="div-table-cell"><label class="desktop">Tổng thời gian:</label><i>&sum;</i> <span>@Model.TicketInfoReturn.FlightDurationString</span></div>
                 </div>
-                rowFirst = true;
+                //rowFirst = true;
                 foreach (var item in Model.TicketInfoReturn.FlightInfoDetails)
                 {
                     <div class="div-table-row bg-grey-white">
                         <div class="div-table-cell right bg-white"></div>
-                        <div class="div-table-cell">Từ <span>@item.FromPlace</span></div>
-                        <div class="div-table-cell">tới: <span>@item.ToPlace</span></div>
-                        <div class="div-table-cell">Thời gian bay: <span>@item.FlightDuration</span></div>
+                        <div class="div-table-cell"><label class="desktop">Từ:</label> <span class="none-icon">@item.FromPlace</span><label class="mobile"><i class="fa fa-long-arrow-right"></i>@item.ToPlace</label></div>
+                        <div class="div-table-cell desktop">tới: <span>@item.ToPlace</span></div>
+                        <div class="div-table-cell"><label class="desktop">Thời gian bay:</label><i>&Xi;</i> <span>@item.FlightDuration</span></div>
                     </div>
                     <div class="div-table-row">
                         <div class="div-table-cell"></div>
-                        <div class="div-table-cell"><span>@item.DepartTime</span></div>
-                        <div class="div-table-cell"><span>@item.LandingTime</span></div>
+                        <div class="div-table-cell"><span class="none-icon"><i class="fa fa-clock-o"></i>  @item.DepartTime</span><label class="mobile"><i class="fa fa-arrow-right"></i>  <i class="fa fa-clock-o"></i>  @item.LandingTime</label></div>
+                        <div class="div-table-cell desktop"><span>@item.LandingTime</span></div>
                         <div class="div-table-cell">@item.Airline (<span>@item.FlightNumber</span>)</div>
                     </div>
-                    rowFirst = false;
+                    //rowFirst = false;
                 }
             }
         }
     </div>
+</article>
+@*price mobile*@
+<article class="mobile">
+    <h2>Chi Tiết Giá <a data-ng-click="click" data-bind="@Model.Id" data-name="priceDetail" id="label-priceDetail"><i class="fa fa-plus-square-o fa-lg"></i></a></h2>
+    <aside>
+        <div class="priceDetail div-table">
+            <div class="detail">
+                <h4><span>Giá cơ bản</span></h4>
+                <div class="box-content">
+                    @foreach (var pr in Model.TotalPriceShows)
+                    {
+                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("#,0") @currencyCode</span></p>
+                    }
+                </div>
+                <h4><span>Thuế và phí</span></h4>
+                <div class="box-content">
+                    @foreach (var pr in Model.TotalPriceShows)
+                    {
+                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.TaxAndFee.ToString("#,0") @currencyCode</span></p>
+                    }
+                </div>
+                <div class="box-content sumPrice">
+                    <p><span>Tổng giá</span><span id="sumprice-totalprice">@totalPrice.ToString("#,0") @currencyCode</span></p>
+                    <p><span>Hành lý thêm</span> <span id="sumprice-totalbaggagefee" data-price="0">0 @currencyCode</span></p>
+                    @if (totalDiscount > 0)
+                    {
+                        <p><span>Giảm giá</span> <span id="sumprice-totaldiscountamount">- @totalDiscount.ToString("#,0") @currencyCode</span></p>
+                    }
+                </div>
+                <div class="box-content sumPrice">
+                    <p><span>TỔNG</span> <span id="sumprice-totalfinaly" data-price="@(totalPrice-totalDiscount)">@((totalPrice - totalDiscount).ToString("#,0")) @currencyCode</span></p>
+                </div>
+            </div>
+        </div>
+    </aside>
 </article>

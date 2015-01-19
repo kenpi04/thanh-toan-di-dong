@@ -1,9 +1,9 @@
 ﻿@model TicketConcessionPostModel
 @using PlanX.Web.Models.ClickBay;
-<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<script src="~/Scripts/jquery-ui-1.11.2.js"></script>
 <script src="~/Scripts/jquery.timepicker.js"></script>
-<script src="http://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js?ver=4.0.1"></script>
-<link href="http://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css?ver=4.0.1" rel="stylesheet" />
+<script src="~/Scripts/jquery.qtip.min.js"></script>
+<link href="~/Themes/ClickBay/Content/jquery.qtip.min.css" rel="stylesheet" />
 @{
     ViewBag.Title = T("TicketConcessionPost");
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
@@ -199,7 +199,7 @@
         </section>
         <section class="section-right">
             <article>
-               @Html.Action("HomePageNews", "News")
+                <div class="load-ajax" data-url="@Url.Action("NewsRelated", "News", new { newsItemId = 1, pageSize = 5, categoryId = 1 })"></div>
             </article>
         </section>
     </div>
@@ -302,7 +302,8 @@
 
     #Description {
         min-height: 50px;
-        max-width: 250px;
+        max-width: 220px;
+        width:100%;
     }
 
     .div-group .field-name {

@@ -1,6 +1,5 @@
 ﻿@model PlanX.Web.Models.ClickBay.SearchModel
-@{
-    Html.AppendScriptParts(ResourceLocation.Foot, "~/Scripts/search.js");
+@{    
     var listAdult = new List<SelectListItem>();
     for(int i=0; i<100;i++)
     {
@@ -16,22 +15,28 @@
     <div class="box-head">
         <span class="search-text">TÌM VÉ MÁY BAY</span>
         <span class="search-roundtrip">
-            <input type="radio" name="Return" checked="checked" value="true"><label>Khứ hồi</label>
-            <input type="radio" name="Return" value="false"><label>Một chiều</label>
+            <input type="radio" name="Return" checked="checked" value="true" id="Return_true"><label for="Return_true">Khứ hồi</label>
+            <input type="radio" name="Return" value="false" id="Return_false"><label for="Return_false">Một chiều</label>
         </span>
     </div>
     <div class="box-content">
-        <div class="col">
-            <label>Điểm đi</label><br>
-            <span id="fromPlace" class="textbox">Hồ Chí Minh(SGN)</span><br>
-            <input type="hidden" id="FromId" value="SGN" name="FromId" />
-            <label>Ngày đi</label><br>
-            <input id="From" name="DepartDate" type="text" class="textbox">
+        <div class="div-table-row">
+            <div class="fromplace-div">
+                <label>Điểm đi</label><br>
+                <span id="fromPlace" class="textbox">Hồ Chí Minh(SGN)</span>
+                <input type="hidden" id="FromId" value="SGN" name="FromId" />
+            </div>
+            <div class="toplace-div">
+                <label>Điểm đến</label><br>
+                <span id="toPlace" class="textbox">Hà Nội(HAN)</span>
+                <input type="hidden" name="ToId" value="HAN" id="ToId" />
+            </div>
         </div>
-        <div class="col">
-            <label>Điểm đến</label><br>
-            <span id="toPlace" class="textbox">Hà Nội(HAN)</span><br>
-            <input type="hidden" name="ToId" value="HAN" id="ToId" />
+        <div class="div-table-row">
+            <div id="to-div">
+                <label>Ngày đi</label><br>
+                <input id="From" name="DepartDate" type="text" class="textbox">
+            </div>
             <div id="return-div">
                 <label>Ngày về</label><br>
                 <input id="To" name="ReturnDate" type="text" class="textbox">
@@ -57,13 +62,12 @@
                 <br>
                 <label class="font-small">dưới 2 tuổi</label>
             </span>
-            <span>
+            <span class="button-search">
                 <input type="submit" class="btn-search" value="Tìm chuyến bay">
             </span>
         </div>
     </div>
 </form>
-
 <div id="dialog-form" class="dialog-form-contain">
     <div><p id="title-text" class="title"><span id="title-text-id">Chọn điểm đi</span><span style="float:right;"><a class="close" onclick="hidePopup()">X</a></span></p></div>    
     <div class="domestic-col">
@@ -108,16 +112,9 @@
                 <b style="color: black; font-weight: bold">
                     Hãy nhập vào tên thành phố hoặc mã sân bay
                 </b>
-            </p>
-            @*<p class="error-departure" style="color: red;">
-                &nbsp;
-            </p>*@
-            <input id="small-searchterms" name="" type="text" autocomplete="off" class="textbox">
-            @*<p>
-               <input id="btncitySelect" class="default" value="Chọn" />
-            </p>*@
+            </p>           
+            <input id="small-searchterms" name="" type="text" autocomplete="off" class="textbox">            
         </div>
-
 </div>
 <script>
     $("#fromPlace,#toPlace").click(function () {
@@ -128,9 +125,9 @@
         CURRENT_TXT = $(this).attr("id");
     })
 </script>
+<script src="~/Scripts/search.js"></script>
 <style>
     .box-search {
         position: relative;
     }
 </style>
-
