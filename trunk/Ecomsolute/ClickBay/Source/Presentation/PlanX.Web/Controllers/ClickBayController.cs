@@ -12,6 +12,7 @@ using PlanX.Core.Caching;
 using PlanX.Services.Localization;
 using System.Globalization;
 using PlanX.Services.Messages;
+using System.Threading.Tasks;
 
 namespace PlanX.Web.Controllers
 {
@@ -112,6 +113,13 @@ namespace PlanX.Web.Controllers
             return View(model);
         }
 
+        public ActionResult SearchBoxMobile(string viewName)
+        {
+            if (!string.IsNullOrEmpty(viewName))
+                return PartialView(viewName);
+            return PartialView(); 
+        }
+
         public ActionResult Search(SearchModel model)
         {
             if (!string.IsNullOrEmpty(model.FromId))
@@ -153,16 +161,16 @@ namespace PlanX.Web.Controllers
         }
 
 
-        public ActionResult TicketSearchGo(SearchModel model)
+        public async Task<ActionResult> TicketSearchGo(SearchModel model)
         {
-            model = TicketSearch(model);
+            model = await TicketSearchAsync(model).ConfigureAwait(true);
             return PartialView("_SearchTicketPartial", model);
         }
 
 
-        public ActionResult TicketSearchReturn(SearchModel model)
+        public async Task<ActionResult> TicketSearchReturn(SearchModel model)
         {
-            model = TicketSearch(model);
+            model = await TicketSearchAsync(model).ConfigureAwait(true);
             return PartialView("_SearchTicketPartial", model);
         }
 
@@ -224,13 +232,88 @@ namespace PlanX.Web.Controllers
                     priceSummaries: true,
                     roundTrip: false
                     );
-                var ticket = PrepairingTicketModel(result, true, model.Adult, model.Child, model.Flant);
+                var ticket = PrepairingTicketModel(result, true, model);
 
                 //DateTime dt = DateTime.Now;
                 //model.SessionId = string.Format(SESSION_SEARCH_NAME, model.FromId,
                 //    model.ToId, datePart.ToString("ddMMyyyy"),
                 //    returnDate.HasValue ? returnDate.Value.ToString("ddMMyyyy") : "",
                 //    model.Adult, model.Child, model.Flant);
+
+                Session[model.SessionId] = model.Tickets = ticket.OrderBy(x => x.Price).ToList();
+
+            }
+            if (model.Sort == (int)Sort.Price)
+            {
+                model.Tickets = model.Tickets.OrderBy(x => x.Price).ToList();
+            }
+            else
+                if (model.Sort == (int)Sort.Date)
+                {
+                    model.Tickets = model.Tickets.OrderBy(x => x.DepartTime).ToList();
+                }
+                else
+                {
+                    model.Tickets = model.Tickets.OrderByDescending(x => x.AirlineName).ToList();
+                }
+            return model;
+        }
+        private async Task<SearchModel> TicketSearchAsync(SearchModel model)
+        {
+            //checked parameter is valid
+            DateTime datePart = DateTime.ParseExact(model.DepartDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            model.SearchDate = datePart;
+
+            DateTime? returnDate = null;
+            if (model.Return && !string.IsNullOrWhiteSpace(model.ReturnDate))
+            {
+                returnDate = DateTime.ParseExact(model.ReturnDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
+
+            if (datePart < DateTime.Now.Date)
+                throw new ArgumentException("Depart date is isvalid");
+            if (model.Return && (returnDate < DateTime.Now.Date || datePart > returnDate))
+                throw new ArgumentException("Return date is isvalid");
+
+            if (model.Adult < 1 && model.Child < 1 && model.Flant < 1)
+                throw new ArgumentException("Adult or child or infant is isvalid");
+
+            model.Tickets = new List<TicketModel>();
+
+            //create sessionId
+            model.SessionId = string.Format(SESSION_SEARCH_NAME, model.FromId,
+                    model.ToId, datePart.ToString("ddMMyyyy"),
+                    model.Return ? returnDate.Value.ToString("ddMMyyyy") : "",
+                    model.Adult, model.Child, model.Flant);
+            //find session has value
+            if (Session[model.SessionId] != null)
+                model.Tickets = Session[model.SessionId] as List<TicketModel>;
+
+            var sources = new List<string>();
+            if (!string.IsNullOrWhiteSpace(model.Source))
+            {
+                sources = model.Source.Split(',').ToList();
+            }
+
+            if (model.Tickets != null && model.Tickets.Count > 0)
+            {
+                if (sources.Count > 0)
+                    model.Tickets = model.Tickets.Where(x => sources.Contains(x.AirlineName)).OrderBy(x => x.Price).ToList();
+            }
+            else//create new session if not found
+            {
+                var result = await _clickBayService.SearchTicketAsync(
+                    model.FromId, model.ToId,
+                    datePart, model.Adult,
+                    model.Child, model.Flant,
+                    returnDate: null,
+                    source: sources.Count > 0 ? sources.Aggregate((a, b) => a + "," + b) : null,
+                    expendDetails: true,
+                    expendTicketPriceDetails: false,
+                    priceSummaries: true,
+                    roundTrip: false
+                    );
+                var ticket = PrepairingTicketModel(result, true, model);
 
                 Session[model.SessionId] = model.Tickets = ticket.OrderBy(x => x.Price).ToList();
 
@@ -698,7 +781,7 @@ namespace PlanX.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult InsertBooking(BookingModel model)
+        public async Task<ActionResult> InsertBooking(BookingModel model)
         {
 
             var selectedTicket = Session[string.Format(SELECTED_TICKET_SESSION, _workContext.CurrentCustomer.Id)] as TicketSessionModel;
@@ -834,10 +917,10 @@ namespace PlanX.Web.Controllers
             #endregion
 
             //send mail for customer & admin
-            #region
+            #region send mail to customer and administrator
             try
             {
-                _workflowMessageService.SendCustomerBookingSuccessfullMessage(booking);
+                await Task.Factory.StartNew(()=> _workflowMessageService.SendCustomerBookingSuccessfullMessage(booking)).ConfigureAwait(false);
             }
             catch { }
             #endregion
@@ -1043,7 +1126,6 @@ namespace PlanX.Web.Controllers
             return ticket;
         }
 
-
         #endregion
 
         #region Until
@@ -1055,9 +1137,9 @@ namespace PlanX.Web.Controllers
             decimal m = number % 60;
             return string.Format("{0} giờ {1} phút", h, m);
         }
-        private IEnumerable<TicketModel> PrepairingTicketModel(IEnumerable<Ticket> data, bool preparingPrice = false, int adult = 0, int child = 0, int infant = 0)
+        private IEnumerable<TicketModel> PrepairingTicketModel(IEnumerable<Ticket> data, bool preparingPrice = false, SearchModel searchModel=null)
         {
-            if (data == null)
+            if (data == null || searchModel==null)
                 return new List<TicketModel>();
             int i = 1;
 
@@ -1068,9 +1150,9 @@ namespace PlanX.Web.Controllers
                 {
                     Id = x.Id,
                     Price = x.Price,
-                    Adult = (short)adult,
-                    Child = (short)child,
-                    Infant = (short)infant,
+                    Adult = (short)searchModel.Adult,
+                    Child = (short)searchModel.Child,
+                    Infant = (short)searchModel.Flant,
                     FlightNumber = x.FlightNumber,
                     DepartTime = x.DepartTime,
                     LandingTime = x.LandingTime,
@@ -1088,8 +1170,8 @@ namespace PlanX.Web.Controllers
                     AirlineCode = x.AirlineCode,
                     Index = i,
                     Stops = x.Stops,
-                    FromCode = _clickBayService.GetCityById(x.FromPlaceId).Code,
-                    ToCode = _clickBayService.GetCityById(x.ToPlaceId).Code,
+                    FromCode = searchModel.FromId,//
+                    ToCode = searchModel.ToId,//
                     FlightDuration = x.FlightDurationTime.TotalMinutes,
                     TicketType = x.TicketType,
                 };
