@@ -1,12 +1,16 @@
 ﻿<header class="header">
     <div class="container">
         <div class="top">
-            <div class="logo">
+            <div class="nav-open-div"><a class="nav-btn" id="nav-open-btn" href="#nav"><i class="fa fa-bars fa-2x"></i></a></div>
+            <div class="logo">                
                 <a href="@Url.RouteUrl("HomePage")"><img src="@Url.Content("~/Themes/ClickBay/Content/images/logo-2.png")"></a>
+            </div>
+            <div class="hotline">
+                <span class="hotline">Hotline</span>
+                <span class="hotline-number">0989 448 449</span>
             </div>
             <div class="formsearch">
                 <p class="share">
-
                     <img src="@Url.Content("~/Themes/ClickBay/Content/images/facebook.png")">
                     <img src="@Url.Content("~/Themes/ClickBay/Content/images/google.png")">
                     <img src="@Url.Content("~/Themes/ClickBay/Content/images/link.png")">
@@ -22,11 +26,27 @@
                 <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "ve-noi-dia" })">Vé nội địa</a></li>
                 <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "ve-quoc-te" })">Vé quốc tế</a></li>
                 <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "khuyen-mai" })">Khuyến mãi</a></li>
-                @*<li><a href="@Url.RouteUrl("NewsItem", new { SeName = "dich-vu-khac" })">Dịch vụ khác</a></li>*@
                 <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "tin-tuc" })">Tin tức</a></li>
+                <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "thong-tin-can-biet" })">Thông tin cần biết</a></li>
                 <li><a href="@Url.RouteUrl("ContactUs")">Liên hệ</a></li>
                 <li><span class="hotline">Hotline 0989 448 449</span></li>
             </ul>
         </div>
-    </nav>
+    </nav>    
 </header>
+<nav id="nav" role="navigation">
+    <div class="container">
+        <ul>
+            <li><a href="@Url.RouteUrl("HomePage")">Trang chủ</a></li>
+            <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "ve-noi-dia" })">Vé nội địa</a></li>
+            <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "ve-quoc-te" })">Vé quốc tế</a></li>
+            <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "khuyen-mai" })">Khuyến mãi</a></li>
+            <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "tin-tuc" })">Tin tức</a></li>
+            <li><a href="@Url.RouteUrl("NewsItem", new { SeName = "thong-tin-can-biet" })">Thông tin cần biết</a></li>
+            <li><a href="@Url.RouteUrl("ContactUs")">Liên hệ</a></li>            
+        </ul>
+        <div class="load-ajax search-box-menu" id="formSearch-menu" data-url="@Url.Action("SearchBoxMobile", "ClickBay", new { viewName="_FormSearchMenu" })">
+        </div>
+        <a class="close-btn" id="nav-close-btn" href="#top"></a>
+    </div>
+</nav>

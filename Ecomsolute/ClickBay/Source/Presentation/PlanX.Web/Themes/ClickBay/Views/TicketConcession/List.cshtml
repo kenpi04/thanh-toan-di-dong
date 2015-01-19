@@ -1,6 +1,6 @@
 ﻿@model TicketConcessionListModel
 @using PlanX.Web.Models.ClickBay;
-<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<script src="~/Scripts/jquery-ui-1.11.2.js"></script>
 <script src="~/Scripts/jquery.simplePagination.js"></script>
 @{
     ViewBag.Title = "List";
@@ -8,7 +8,7 @@
     var i = 0;
 }
 <div class="wrapper-body">
-    <div class="wrapper-content">
+    <div class="wrapper-content inline">
         <section class="section-top">
             <div class="breadcrumb">
                 <p><a href="@Url.RouteUrl("HomePage")"><span>Trang chủ</span></a><img src="~/Themes/ClickBay/Content/images/forward-icon.png" class="icon-small" /><span class="active">Nhượng vé máy bay</span></p>
@@ -36,7 +36,7 @@
             </div>
         </section>
         <section class="section">
-            <div class="ticketconcesstable" id="top">
+            <div class="ticketconcesstable">
                 <div>
                     <table class="table">
                         <thead>

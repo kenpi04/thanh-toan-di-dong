@@ -24,10 +24,10 @@
 @Html.Partial("_FlightCondition", Model)
 
 <article>
-    <h2>Thông Tin Hành Lý</h2>
-    <div class="div-table info-baggage">
+    <h2>Thông Tin Hành Lý  <a data-ng-click="click" data-bind="@Model.Id" data-name="info-baggage" id="label-info-baggage"><i class="fa fa-plus-square-o fa-lg"></i></a></h2>
+    <div class="info-baggage successfull div-table">
         <div class="div-table-row">
-            <div class="div-table-cell"><span>Hành lý chiều đi</span></div><div class="div-table-cell"></div>
+            <div class="div-table-cell"><span>Hành lý chiều đi</span></div><div class="div-table-cell desktop"></div>
         </div>
         @if (Model.TicketInfo.ArilinesBaggageConditions.Count > 0)
         {
@@ -42,9 +42,9 @@
                 <div class="div-table-row">
                     <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
                     <div class="div-table-cell">
-                    @foreach (var f in Model.TicketInfo.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
-                    {
-                        j++;
+                        @foreach (var f in Model.TicketInfo.ArilinesBaggageConditions.Where(x => !x.IsHandLuggage && !x.IsFree).OrderBy(x => x.DisplayOrder).ToList())
+                        {
+                            j++;
                             <p>
                                 <span>Hành khách @j: </span>@f.Description
                             </p>}
@@ -60,7 +60,7 @@
         @if (Model.TicketInfoReturn != null)
         {
             <div class="div-table-row">
-                <div class="div-table-cell"><span>Hành lý chiều về</span></div><div class="div-table-cell"></div>
+                <div class="div-table-cell"><span>Hành lý chiều về</span></div><div class="div-table-cell desktop"></div>
             </div>
             @Html.HiddenFor(model => model.TicketInfoReturnBaggages)
             if (Model.TicketInfoReturn.ArilinesBaggageConditions.Count > 0)
@@ -94,9 +94,9 @@
     </div>
 </article>
 <article>
-    <h2>Thông Tin Hành Khách</h2>
-    <div class="div-table info-passenger">
-        <div class="div-table-row">            
+    <h2>Thông Tin Hành Khách <a data-ng-click="click" data-bind="@Model.Id" data-name="info-passenger" id="label-info-passenger"><i class="fa fa-plus-square-o fa-lg"></i></a></h2>
+    <div class="info-passenger successfull div-table">
+        <div class="div-table-row desktop">
             <div class="div-table-cell"><span>Quý danh</span></div>
             <div class="div-table-cell"><span>Họ và Tên </span></div>
             <div class="div-table-cell"><span>Ngày sinh</span></div>
@@ -107,18 +107,18 @@
                 <div class="div-table-cell">
                     <label>@T("PasserType." + (((PlanX.Core.Domain.ClickBay.PasserType)i.PassserType).ToString()))</label>
                 </div>
-                <div class="div-table-cell uppercase"><label>@(string.Format("{0} {1} {2}",i.LastName, i.MiddleName, i.FirstName))</label></div>
+                <div class="div-table-cell uppercase"><label>@(string.Format("{0} {1} {2}", i.LastName, i.MiddleName, i.FirstName))</label></div>
                 <div class="div-table-cell birthday">
-                    <label>@(i.PassserType>4?i.BirthDay:"")</label>
+                    <label>@(i.PassserType > 4 ? i.BirthDay : "")</label>
                 </div>
             </div>
         }
     </div>
 </article>
 <article>
-    <h2>Thông Tin Người Liên Hệ</h2>   
+    <h2>Thông Tin Người Liên Hệ <a data-ng-click="click" data-bind="@Model.Id" data-name="info-contact" id="label-info-contact"><i class="fa fa-plus-square-o fa-lg"></i></a></h2>   
     <aside>
-        <div class="div-table info-contact">
+        <div class="info-contact successfull div-table">
             <div class="div-table-row">
                 <div class="div-table-cell haft">
                     <div class="div-table-cell">
@@ -129,7 +129,7 @@
                         <span>Họ và Tên: </span>
                         @Html.DisplayTextFor(x => x.ContactName)
                     </div>
-                </div>                
+                </div>
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell">
@@ -141,7 +141,7 @@
                 <div class="div-table-cell">
                     <div>
                         <span>Thành phố: </span>
-                        @Html.DisplayTextFor(x => x.ContactCityName) , @Html.DisplayTextFor(x=> x.ContactCountryName)
+                        @Html.DisplayTextFor(x => x.ContactCityName) , @Html.DisplayTextFor(x => x.ContactCountryName)
                     </div>
                 </div>
             </div>
@@ -157,56 +157,54 @@
                         <span>Địa chỉ: </span>@Html.DisplayTextFor(x => x.ContactAddress)
                     </div>
                 </div>
-            </div>            
+            </div>
             <div class="div-table-row">
                 <div class="div-table-cell">
-                    <div class="div-table">
+                    <div class="info-contact successfull div-table">
                         <div class="div-table-row birthday">
-                            <span>Ngày sinh: </span>@Html.DisplayTextFor(x=>x.ContactBirthDate)
+                            <span>Ngày sinh: </span>@Html.DisplayTextFor(x => x.ContactBirthDate)
                         </div>
                     </div>
                 </div>
-                <div class="div-table-cell"></div>
+                <div class="div-table-cell desktop"></div>
             </div>
         </div>
-    </aside>
-   
+    </aside>   
 </article>
 @if(Model.CustomerNote!=null)
 { 
 <article>
     <!--Yeu cau dac biet-->
-    <h2>Yêu Cầu Đặt Biệt</h2>    
-    <div>
+    <h2>Yêu Cầu Đặt Biệt <a data-ng-click="click" data-bind="@Model.Id" data-name="info-request" id="label-info-request"><i class="fa fa-plus-square-o fa-lg"></i></a></h2>    
+    <div class="info-request div-table">
         @Html.DisplayTextFor(x => x.CustomerNote)
     </div>
 </article>
 }
-
 <article>
     <!--Phuong thuc thanh toan-->
     <h2>Phương thức thanh toán</h2>
     <div class="div-table-row">
-       @if(Model.PaymentMethodId==1)
-       {
-           @("Thanh toán khi giao vé tận nhà")
-       }
-       else if(Model.PaymentMethodId==2)
-       {
-           @("Thanh toán qua chuyển khoản ATM")
-       }
-       else if(Model.PaymentMethodId==3)
-       {
-           @("Thanh toán qua OnePay")
-       }
-       else
-       {
-           @("Thanh toán tại văn phòng clickbay")
-       }
+        @if (Model.PaymentMethodId == 1)
+        {
+            @("Thanh toán khi giao vé tận nhà")
+        }
+        else if (Model.PaymentMethodId == 2)
+        {
+            @("Thanh toán qua chuyển khoản ATM")
+        }
+        else if (Model.PaymentMethodId == 3)
+        {
+            @("Thanh toán qua OnePay")
+        }
+        else
+        {
+            @("Thanh toán tại văn phòng clickbay")
+        }
     </div>
 </article>
 @section right{
-<article>
+<article class="desktop">
     <aside>
         <div class="box-sort priceDetail">
             <div class="title box-head">
@@ -243,3 +241,4 @@
     </aside>    
 </article>
 }
+<script src="~/Scripts/booking.js"></script>

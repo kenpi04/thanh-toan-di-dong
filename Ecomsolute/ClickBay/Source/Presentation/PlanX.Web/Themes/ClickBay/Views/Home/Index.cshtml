@@ -1,13 +1,14 @@
 ﻿@{
     Layout = "~/Views/Shared/_ColumnOne.cshtml";
 }
-<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
+<script type="text/javascript" src="~/Scripts/skype-uri.js"></script>
 <div class="head">
     @Html.Action("BannerShow", "FptBanner", new { Position = 3, viewName = "BannerSlideShow" })
     <div class="container">
         <div class="search-head">
-            <div class="box-search" style="float: right; margin-top: 47px;">
-             @Html.Action("SearchBox","ClickBay")
+            <div class="load-ajax desktop box-search" data-url="@Url.Action("SearchBox", "ClickBay")" style="float: right; margin-top: 47px;">             
+            </div>
+            <div class="load-ajax mobile box-search" id="frmSearch-mobile" data-url="@Url.Action("SearchBoxMobile", "ClickBay", new { viewName = "_FormSearchMobile" })">
             </div>
         </div>
         <div class="clear"></div>
@@ -32,131 +33,131 @@
         </div>*@
     </div>
 </div>
-
-<div class="container">
-    @*<div class="sologan">Chất lượng là yếu tố sống còn của Clickbay.com.vn</div>*@
-    <div class="col2">
-        @*<div class="load-ajax" data-url="@Url.Action("BookingRecent", "ClickBay", new { numberBooking = 5 })"></div>*@
-        <div class="box box-50">
-            <section class="box-line">
-                <div class="nv-title">ĐẶT VÉ NHANH 24/24</div><div class="line"><p class="boder-dashed line"></p></div>
-            </section>
-            <div class="box-c home">
-                <div>
-                    <p class="green-text">Quý khách có thể mua vé máy bay bằng nhiều hình thức sau:</p>
-                    <ul class="ht">
-                        <li>
-                            <b>1.</b>Trực tiếp trên ClickBay.com.vn nhanh nhất và tiện nhất.
-                        </li>
-                        <li>
-                            <b>2.</b>Qua chat (Nội địa & Quốc tế):<br>
-                            <div class="chat-box">
-                                <div class="chat-box-yahoo">
-                                    Yahoo:
-                                    <div class="chat-box-yahoo-box">
-                                        <a href="ymsgr:sendIM?thanhphu86">
-                                            <img src="http://opi.yahoo.com/online?u=thanhphu86&t=17" />
-                                        </a>
-                                    </div>
-                                    <div class="chat-box-yahoo-box">
-                                        <a href="ymsgr:sendIM?thanhphu86">
-                                            <img src="http://opi.yahoo.com/online?u=thanhphu86&t=17" />
-                                        </a>
-                                    </div>
-                                    <div class="chat-box-yahoo-box">
-                                        <a href="ymsgr:sendIM?diemmypkpro">
-                                            <img src="http://opi.yahoo.com/online?u=diemmypkpro&t=17" />
-                                        </a>
-                                    </div>
-                                    <div class="chat-box-yahoo-box">
-                                        <a href="ymsgr:sendIM?diemmypkpro">
-                                            <img src="http://opi.yahoo.com/online?u=diemmypkpro&t=17" />
-                                        </a>
+<div class="wrapper-body">
+    <div class="wrapper-content">
+        <div class="col2">
+            @*<div class="load-ajax" data-url="@Url.Action("BookingRecent", "ClickBay", new { numberBooking = 5 })"></div>*@
+            <div class="box box-50">
+                <section class="box-line">
+                    <div class="nv-title">ĐẶT VÉ NHANH 24/24</div><div class="line"><p class="boder-dashed line"></p></div>
+                </section>
+                <div class="box-c home">
+                    <div>
+                        <p class="green-text">Quý khách có thể mua vé máy bay bằng nhiều hình thức sau:</p>
+                        <ul class="ht">
+                            <li>
+                                <b>1.</b>Trực tiếp trên ClickBay.com.vn nhanh nhất và tiện nhất.
+                            </li>
+                            <li>
+                                <b>2.</b>Qua chat (Nội địa & Quốc tế):<br>
+                                <div class="chat-box">
+                                    <div class="chat-box-yahoo">
+                                        Yahoo:
+                                        <div class="chat-box-yahoo-box">
+                                            <a href="ymsgr:sendIM?thanhphu86">
+                                                <img src="http://opi.yahoo.com/online?u=thanhphu86&t=17" />
+                                            </a>
+                                        </div>
+                                        <div class="chat-box-yahoo-box">
+                                            <a href="ymsgr:sendIM?thanhphu86">
+                                                <img src="http://opi.yahoo.com/online?u=thanhphu86&t=17" />
+                                            </a>
+                                        </div>
+                                        <div class="chat-box-yahoo-box">
+                                            <a href="ymsgr:sendIM?diemmypkpro">
+                                                <img src="http://opi.yahoo.com/online?u=diemmypkpro&t=17" />
+                                            </a>
+                                        </div>
+                                        <div class="chat-box-yahoo-box">
+                                            <a href="ymsgr:sendIM?diemmypkpro">
+                                                <img src="http://opi.yahoo.com/online?u=diemmypkpro&t=17" />
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="chat-box">
-                                <div style="display:table-row">
-                                    Skype:
-                                    <div id="SkypeButton_Call_thanhphu86_1" class="chat-skype">
-                                        <script type="text/javascript">
+                                <div class="chat-box">
+                                    <div style="display:table-row">
+                                        Skype:
+                                        <div id="SkypeButton_Call_thanhphu86_1" class="chat-skype">
+                                            <script type="text/javascript">
                                             Skype.ui({
                                                 "name": "chat",
                                                 "element": "SkypeButton_Call_thanhphu86_1",
                                                 "participants": ["thanhphu86"],
                                                 "imageSize": 24
                                             });
-                                        </script>
-                                    </div>
-                                    <div id="SkypeButton_Call_diemmypkpro_1" class="chat-skype">
-                                        <script type="text/javascript">
+                                            </script>
+                                        </div>
+                                        <div id="SkypeButton_Call_diemmypkpro_1" class="chat-skype">
+                                            <script type="text/javascript">
                                             Skype.ui({
                                                 "name": "chat",
                                                 "element": "SkypeButton_Call_diemmypkpro_1",
                                                 "participants": ["diemmypkpro"],
                                                 "imageSize": 24
                                             });
-                                        </script>
-                                    </div>
-                                    <div id="SkypeButton_Call_thanhphu86_2" class="chat-skype">
-                                        <script type="text/javascript">
+                                            </script>
+                                        </div>
+                                        <div id="SkypeButton_Call_thanhphu86_2" class="chat-skype">
+                                            <script type="text/javascript">
                                             Skype.ui({
                                                 "name": "chat",
                                                 "element": "SkypeButton_Call_thanhphu86_2",
                                                 "participants": ["thanhphu86"],
                                                 "imageSize": 24
                                             });
-                                        </script>
-                                    </div>
-                                    <div id="SkypeButton_Call_diemmypkpro_2" class="chat-skype">
-                                        <script type="text/javascript">
+                                            </script>
+                                        </div>
+                                        <div id="SkypeButton_Call_diemmypkpro_2" class="chat-skype">
+                                            <script type="text/javascript">
                                             Skype.ui({
                                                 "name": "chat",
                                                 "element": "SkypeButton_Call_diemmypkpro_2",
                                                 "participants": ["diemmypkpro"],
                                                 "imageSize": 24
                                             });
-                                        </script>
+                                            </script>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </li>
+                            <li>
+                                <b>3.</b>Gọi cho ClickBay.com.vn<strong class="call-number"><span style="padding:0 8px;">0989 448 449</span>-<span style="padding:0 8px;">08 6268 5656</span></strong>
+                            </li>
+                            <li>
+                                <b>4.</b>Đến trực tiếp văn phòng ClickBay tại Sài Gòn. ( <a onclick="showMap()" style="cursor:pointer;color:#000;font-size:13px;text-decoration:underline;">xem bản đồ</a> )
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="box box-50 payment">
+                <section class="box-line">
+                    <div class="nv-title">CÁC PHƯƠNG THỨC THANH TOÁN</div><div class="line"><p class="boder-dashed line"></p></div>
+                </section>
+                <div class="box-c home">
+                    <p class="green-text">Các hình thức thanh toán:</p>
+                    <ul class="ht">
+                        <li class="tt-van-phong">
+                            <strong>Tại văn phòng công ty</strong>
+                            <p>Sau khi đặt hàng thành công, Quý khách vui lòng qua văn phòng ClickBay để thanh toán và nhận vé.</p>
+                            <p>Đ/c: 41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh. ( <a class="showmap" onclick="showMap()">bản đồ</a> )</p>
                         </li>
-                        <li>
-                            <b>3.</b>Gọi cho ClickBay.com.vn<strong style="color:#f00000;font-size:18px;"><span style="padding:0 8px;">0989 448 449</span>-<span style="padding:0 8px;">08 6268 5656</span></strong>
+                        <li class="tt-tai-nha">
+                            <strong>Tại nhà:</strong><p>Nhân viên ClickBay sẽ giao vé và thu tiền tại nhà theo địa chỉ của Quý khách cung cấp.</p>
                         </li>
-                        <li>
-                            <b>4.</b>Đến trực tiếp văn phòng ClickBay tại Sài Gòn. ( <a onclick="showMap()"  style="cursor:pointer;color:#000;font-size:13px;text-decoration:underline;">xem bản đồ</a> )
+                        <li class="tt-chuyen-khoan">
+                            <strong>Qua chuyển khoản ATM</strong>
+                            <p>Quý khách có thể thanh toán cho chúng tôi bằng cách chuyển khoản trực tiếp tại ngân hàng, chuyển qua thẻ ATM, hoặc qua Internet banking.</p>
                         </li>
+                        @*<li>
+                                <b>4.</b>Thanh toán Online: Qua cổng thanh toán OnePay.
+                            </li>*@
                     </ul>
                 </div>
             </div>
+            <div class="clear"></div>
         </div>
-        <div class="box box-50 payment">
-            <section class="box-line">
-                <div class="nv-title">CÁC PHƯƠNG THỨC THANH TOÁN</div><div class="line"><p class="boder-dashed line"></p></div>
-            </section>
-            <div class="box-c home">
-                <p class="green-text">Các hình thức thanh toán:</p>
-                <ul class="ht">
-                    <li class="tt-van-phong">
-                        <strong>Tại văn phòng công ty</strong>
-                        <p>Sau khi đặt hàng thành công, Quý khách vui lòng qua văn phòng ClickBay để thanh toán và nhận vé.</p>
-                        <p>Đ/c: 41 Bế Văn Đàn, P.14, Q.Tân Bình, Tp.Hồ Chí Minh. ( <a class="showmap" onclick="showMap()">bản đồ</a> )</p>
-                    </li>
-                    <li class="tt-tai-nha">
-                        <strong>Tại nhà:</strong><p>Nhân viên ClickBay sẽ giao vé và thu tiền tại nhà theo địa chỉ của Quý khách cung cấp.</p>
-                    </li>
-                    <li class="tt-chuyen-khoan">
-                        <strong>Qua chuyển khoản ATM</strong>
-                        <p>Quý khách có thể thanh toán cho chúng tôi bằng cách chuyển khoản trực tiếp tại ngân hàng, chuyển qua thẻ ATM, hoặc qua Internet banking.</p>
-                    </li>
-                    @*<li>
-                        <b>4.</b>Thanh toán Online: Qua cổng thanh toán OnePay.
-                    </li>*@
-                </ul>
-            </div>
-        </div>
-        <div class="clear"></div>
     </div>
 </div>
 <div class="load-ajax" data-url="@Url.Action("HomeTicketConcession", "TicketConcession", new { Page = 1, PageSize = 5 })"></div>
@@ -170,7 +171,7 @@
         draggable: false,
         resizable: false,
         minWidth: 600,
-        minHeight: 500,
+        minHeight: 500,        
         modal: true,
     });
     function showMap()

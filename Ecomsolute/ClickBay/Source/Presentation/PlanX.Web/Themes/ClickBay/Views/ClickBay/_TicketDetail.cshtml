@@ -2,30 +2,32 @@
 @{
     string currencyCode = string.IsNullOrEmpty(Model.Currency) ? "VND" : Model.Currency;
     bool rowFirst = true;
+    var totalDiscount = Model.TotalPriceShows.Sum(x => x.DiscountAmount);
+    var totalPrice = Model.TotalPriceShows.Sum(x => (x.Price + x.TaxAndFee) * x.Quantity);
 }
-<div class="booking" style="width:97%;font-size:12px;background:#ededed;">
-    <h2>Thông Tin Chuyến Bay</h2>
+<div class="booking detail" id="booking-detail-@Model.Index">
+    <h2>Thông Tin Chuyến Bay <a data-ng-click="click" data-bind="@Model.Index" data-name="info-flight" id="label-info-flight"><i class="fa fa-plus-square-o fa-lg"></i></a></h2>
     <div class="info-flight div-table">
-        @if (Model.Stops == 0) { 
+        @if (Model.Stops == 0) {
         <div class="div-table-row place-flight">
             <div class="div-table-cell"><img></div>
-            <div class="div-table-cell">Khởi hành từ <span>@Model.FromPlace, @Model.FromCountry</span></div>
-            <div class="div-table-cell"></div>
-            <div class="div-table-cell">Thời gian bay: <span>@Model.FlightDurationString</span></div>
+            <div class="div-table-cell"><label class="desktop">Khởi hành từ</label> <span><i class="fa fa-plane"></i>  @Model.FromPlace, @Model.FromCountry</span></div>
+            <div class="div-table-cell desktop"></div>
+            <div class="div-table-cell"><label class="desktop">Thời gian bay:</label> <span><i>&Xi;</i>  @Model.FlightDurationString</span></div>
         </div>
         <div class="div-table-row">
             <div class="div-table-cell"><img></div>
-            <div class="div-table-cell">Từ <span>@Model.FromPlace (@Model.FromCode)</span></div>
-            <div class="div-table-cell">tới: <span>@Model.ToPlace (@Model.ToCode)</span></div>
+            <div class="div-table-cell"><label class="desktop">Từ:</label> <span class="none-icon">@Model.FromPlace (@Model.FromCode)</span><span class="mobile"><i class="fa fa-long-arrow-right"></i>  @Model.ToPlace (@Model.ToCode)</span></div>
+            <div class="div-table-cell desktop">tới: <span>@Model.ToPlace (@Model.ToCode)</span></div>
             <div class="div-table-cell">@Model.AirlineName <span>(@Model.FlightNumber)</span></div>
         </div>
         <div class="div-table-row">
             <div class="div-table-cell"></div>
-            <div class="div-table-cell"><span>@Model.DepartTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
-            <div class="div-table-cell"><span>@Model.LandingTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
+            <div class="div-table-cell"><span class="none-icon"><i class="fa fa-clock-o"></i> @Model.DepartTime.ToString("HH'h':mm dd-MM-yyyy")</span><span class="mobile"><i class="fa fa-arrow-right"></i><i class="fa fa-clock-o"></i>  @Model.LandingTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
+            <div class="div-table-cell desktop"><span>@Model.LandingTime.ToString("HH'h':mm dd-MM-yyyy")</span></div>
             @if (Model.TicketType != null)
             {
-                <div class="div-table-cell">Loại vé: <span>@Model.TicketType</span></div>
+                <div class="div-table-cell"><label class="desktop">Loại vé:</label> <span><i class="fa fa-file-o"></i> @Model.TicketType</span></div>
             }
         </div>}
         else
@@ -35,14 +37,14 @@
             { 
             <div class="div-table-row place-flight">
                 <div class="div-table-cell">@if(!rowFirst){<img src="~/Themes/ClickBay/Content/images/forward-icon.png" />}</div>
-                <div class="div-table-cell">Từ <span>@item.FromPlace</span></div>
-                <div class="div-table-cell">tới: <span>@item.ToPlace</span></div>
-                <div class="div-table-cell">Thời gian bay: <span>@item.FlightDuration</span></div>
+                <div class="div-table-cell"><label class="desktop">Từ:</label> <span>@item.FromPlace</span><span class="mobile"><i class="fa fa-long-arrow-right"></i>  @item.ToPlace</span></div>
+                <div class="div-table-cell desktop">tới: <span>@item.ToPlace</span></div>
+                <div class="div-table-cell"><label class="desktop">Thời gian bay:</label> <span><i>&Xi;</i>  @item.FlightDuration</span></div>
             </div>
             <div class="div-table-row">
                 <div class="div-table-cell"></div>
-                <div class="div-table-cell"><span>@item.DepartTime</span></div>
-                <div class="div-table-cell"><span>@item.LandingTime</span></div>
+                <div class="div-table-cell"><span class="none-icon"><i class="fa fa-clock-o"></i> @item.DepartTime</span><span class="mobile"><i class="fa fa-arrow-right"></i>  <i class="fa fa-clock-o"></i> @item.LandingTime</span></div>
+                <div class="div-table-cell desktop"><span>@item.LandingTime</span></div>
                 <div class="div-table-cell">@item.Airline (<span>@item.FlightNumber</span>)</div>
             </div>
                 rowFirst = false;
@@ -50,18 +52,19 @@
         }              
     </div>
     <article>
-        <h2>Chi Tiết Giá</h2>
-        <div class="div-table">
-            <div class="div-table-row right priceDetail">
-                <div class="div-table-cell left detail"><h4><span>Hành khách</span></h4></div>
-                <div class="div-table-cell detail"><h4><span>Số lượng</span></h4></div>
-                <div class="div-table-cell detail"><h4><span>Giá vé/1 HK</span></h4></div>
-                <div class="div-table-cell detail"><h4><span>Thuế và phí/1 HK</span></h4></div>
-                <div class="div-table-cell detail"><h4><span>Giảm giá/1 HK</span></h4></div>
-                <div class="div-table-cell detail"><h4><span>Tổng(@currencyCode)</span></h4></div>
-            </div>
-            @foreach (var i in Model.TotalPriceShows)
-            {
+        <h2>Chi Tiết Giá <a data-ng-click="click" data-bind="@Model.Index" data-name="info-pricedetail" id="label-info-pricedetail"><i class="fa fa-plus-square-o fa-lg"></i></a></h2>
+        <div class="info-pricedetail div-table priceDetail">
+            <div class="desktop div-table">
+                <div class="div-table-row right priceDetail">
+                    <div class="div-table-cell left detail"><h4><span>Hành khách</span></h4></div>
+                    <div class="div-table-cell detail"><h4><span>Số lượng</span></h4></div>
+                    <div class="div-table-cell detail"><h4><span>Giá vé/1 HK</span></h4></div>
+                    <div class="div-table-cell detail"><h4><span>Thuế và phí/1 HK</span></h4></div>
+                    <div class="div-table-cell detail"><h4><span>Giảm giá/1 HK</span></h4></div>
+                    <div class="div-table-cell detail"><h4><span>Tổng(@currencyCode)</span></h4></div>
+                </div>
+                @foreach (var i in Model.TotalPriceShows)
+                {
                 <div class="div-table-row right">
                     <div class="div-table-cell left">@T("PasserType." + i.PassengerType)</div>
                     <div class="div-table-cell">@i.Quantity</div>
@@ -70,55 +73,82 @@
                     <div class="div-table-cell">@i.DiscountAmount.ToString("#,0")</div>
                     <div class="div-table-cell"><span>@(((i.Price + i.TaxAndFee - i.DiscountAmount) * i.Quantity).ToString("#,0"))</span></div>
                 </div>
-            }
-            <div class="div-table-row right boder-dashed-top">
-                <div class="div-table-cell"></div>
-                <div class="div-table-cell"></div>
-                <div class="div-table-cell"></div>
-                <div class="div-table-cell"></div>
-                <div class="div-table-cell">Tổng cộng</div>
-                <div class="div-table-cell"><span>@Model.TotalPriceShows.Sum(x => (x.Price + x.TaxAndFee - x.DiscountAmount) * x.Quantity).ToString("#,0")</span></div>
+                }
+                <div class="div-table-row right boder-dashed-top">
+                    <div class="div-table-cell"></div>
+                    <div class="div-table-cell"></div>
+                    <div class="div-table-cell"></div>
+                    <div class="div-table-cell"></div>
+                    <div class="div-table-cell">Tổng cộng</div>
+                    <div class="div-table-cell"><span>@Model.TotalPriceShows.Sum(x => (x.Price + x.TaxAndFee - x.DiscountAmount) * x.Quantity).ToString("#,0")</span></div>
+                </div>
             </div>
+            <div class="mobile detail">
+                <h4><span>Giá cơ bản</span></h4>
+                <div class="box-content">
+                    @foreach (var pr in Model.TotalPriceShows)
+                    {
+                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.Price.ToString("#,0") @currencyCode</span></p>
+                    }
+                </div>
+                <h4><span>Thuế và phí</span></h4>
+                <div class="box-content">
+                    @foreach (var pr in Model.TotalPriceShows)
+                    {
+                        <p><span>@T("PasserType." + pr.PassengerType)</span> <span>@pr.Quantity x @pr.TaxAndFee.ToString("#,0") @currencyCode</span></p>
+                    }
+                </div>
+                <div class="box-content sumPrice">
+                    <p><span>Tổng giá</span><span id="sumprice-totalprice">@totalPrice.ToString("#,0") @currencyCode</span></p>
+                    @if (totalDiscount > 0)
+                    {
+                        <p><span>Giảm giá</span> <span id="sumprice-totaldiscountamount">- @totalDiscount.ToString("#,0") @currencyCode</span></p>
+                    }
+                </div>
+                <div class="box-content sumPrice">
+                    <p><span>TỔNG</span> <span id="sumprice-totalfinaly" data-price="@(totalPrice-totalDiscount)">@((totalPrice - totalDiscount).ToString("#,0"))</span></p>
+                </div>
+            </div>
+        </div>        
+    </article>
+    <article>
+        <h2>Điều kiện hành lý <a data-ng-click="click" data-bind="@Model.Index" data-name="info-baggages" id="label-info-baggages"><i class="fa fa-plus-square-o fa-lg"></i></a></h2>
+        <div class="info-baggages div-table">
+            @if (Model.ArilinesBaggageConditions.Count > 0)
+            {
+                foreach (var i in Model.ArilinesBaggageConditions.Where(x => x.IsFree).ToList())
+                {
+                    <div class="div-table-row">
+                        <div class="div-table-cell"><span class="normal">@(i.IsHandLuggage ? "Hành lý xách tay" : "Hành lý ký gửi")</span></div><div class="div-table-cell">@i.Description</div>
+                    </div>
+                }
+                if (Model.ArilinesBaggageConditions.Any(x => !x.IsHandLuggage && !x.IsFree))
+                {
+                    <div class="div-table-row">
+                        <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
+                        <div class="div-table-cell">Vui lòng xem ở bước sau.</div>
+                    </div>
+                }
+            }
+            else
+            {<p>@T("booking.baggage.infonotfound")</p>}
         </div>
     </article>
     <article>
-        <h2>Điều kiện hành lý</h2>
-        @if (Model.ArilinesBaggageConditions.Count > 0)
-        {
-            foreach (var i in Model.ArilinesBaggageConditions.Where(x => x.IsFree).ToList())
+        <h2>Điều Kiện Giá Vé <a data-ng-click="click" data-bind="@Model.Index" data-name="info-conditions" id="label-info-conditions"><i class="fa fa-plus-square-o fa-lg"></i></a></h2>
+        <div class="info-conditions div-table">
+            @if (Model.AirlinesConditions.Count > 0)
             {
-                <div class="div-table-row">
-                    <div class="div-table-cell"><span class="normal">@(i.IsHandLuggage ? "Hành lý xách tay" : "Hành lý ký gửi")</span></div><div class="div-table-cell">@i.Description</div>
-                </div>
-            }
-            if (Model.ArilinesBaggageConditions.Any(x => !x.IsHandLuggage && !x.IsFree))
-            {
-                <div class="div-table-row">
-                    <div class="div-table-cell"><span class="normal">Hành lý ký gửi</span></div>
-                    <div class="div-table-cell">Vui lòng xem ở bước sau.</div>
-                </div>
-            }
-        }
-        else
-        { <div><p>@T("booking.baggage.infonotfound")</p></div> }
-    </article>
-    <article>
-        <h2>Điều Kiện Giá Vé</h2>
-        @if (Model.AirlinesConditions.Count > 0)
-        {
-            <div class="div-table info-baggage">
-                <div class="div-table condition-price">
-                    @foreach (var i in Model.AirlinesConditions)
+                    foreach (var i in Model.AirlinesConditions)
                     {
                         <div class="div-table-row">
                             <div class="div-table-cell"><span class="normal">@i.ConditionName</span></div>
                             <div class="div-table-cell"><p>@i.ConditionDescription</p></div>
                         </div>
                     }
-                </div>
-
-            </div>}
-        else
-        { <div><p>@T("booking.baggage.infonotfound")</p></div> }
+            }
+            else
+            {<p>@T("booking.baggage.infonotfound")</p>}
+        </div>
     </article>
 </div>

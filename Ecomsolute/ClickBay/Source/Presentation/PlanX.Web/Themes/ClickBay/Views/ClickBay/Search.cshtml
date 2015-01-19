@@ -15,7 +15,7 @@
         <section class="section-top">
             @Html.Partial("_BreadCrumb", new Dictionary<string, string> { { "Tìm kiếm", "" }, { "Chọn chuyến bay", "active" }, { "Khách hàng", "" }, { "Hoàn thành", "" } })
         </section>
-        <div style="width:825px;float:left">
+        <div class="search-content">
             <section class="section">
                 <div class="info-filter">
                     <p>
@@ -24,7 +24,9 @@
                     </p>
                 </div>
                 <div class="info-passenger">
-                    <p><span>Số lượng người lớn:</span><span>@Model.Adult</span>@if(Model.Child>0){<span>Số lượng trẻ em:</span><span>@Model.Child</span>}@if(Model.Flant>0){<span>Số lượng em bé:</span><span>@Model.Flant</span>}</p>
+                    <p><span>Số lượng người lớn:</span><span>@Model.Adult</span>@if(Model.Child>0){<span>Số lượng trẻ em:</span><span>@Model.Child</span>}@if(Model.Flant>0){<span>Số lượng em bé:</span><span>@Model.Flant</span>}
+                    <span class="note-price">(Giá chưa bao gồm thuế và phí)</span>
+                    </p>
                 </div>
             </section>
             <section class="section-left-search section">
@@ -38,7 +40,7 @@
                                     {
                                         var date = startDate.AddDays(i);
                                         var day = currentCulture.DateTimeFormat.GetDayName(date.DayOfWeek);
-                                <th @(i == 3 ? "class=active" : "") onclick='searchByDate("@date.ToString("dd/MM/yyyy")")'><p>@day</p><p>@date.ToString("dd-MM-yyyy")</p></th>
+                                        <th @(i == 3 ? "class=active" : "") @(i != 3 ? string.Format("onclick=window.location='{0}'", Url.RouteUrl("Search", new { Return = Model.Return, FromId = Model.FromId, ToId = Model.ToId, DepartDate = date.ToString("dd/MM/yyyy"), ReturnDate = Model.ReturnDate, Adult = Model.Adult, Child = Model.Child, Flant=Model.Flant })) : "")><p>@day</p><p>@date.ToString("dd-MM-yyyy")</p></th>
                                     }
                                 }
                             </tr>
@@ -50,7 +52,7 @@
             </section>
             @if (Model.Return)
             {
-                <div class="section" style="float:left">
+                <div class="section return">
                     <div class="info-filter">
                         <p>
                             <span class="info-title-search">@Model.ToName</span><span>đi</span><span class="info-title-search">@Model.FromName</span><span style="color:#000">|</span>
@@ -60,7 +62,8 @@
                     <div class="info-passenger">
                         <p><span>Số lượng người lớn:</span><span>@Model.Adult</span>@if (Model.Child > 0)
                         {<span>Số lượng trẻ em:</span><span>@Model.Child</span>}@if (Model.Flant > 0)
-                        {<span>Số lượng em bé:</span><span>@Model.Flant</span>}</p>
+                        {<span>Số lượng em bé:</span><span>@Model.Flant</span>}
+                            <span class="note-price">(Giá chưa bao gồm thuế và phí)</span></p>                        
                     </div>
                 </div>
                 <section class="section-left-search section">
@@ -69,13 +72,13 @@
                             <thead>
                                 <tr>
                                     @{
-                                        DateTime endDate = _returnDate.AddDays(-3);
-                                        for (int i = 0; i <= 6; i++)
-                                        {
-                                            var date = endDate.AddDays(i);
-                                            var day = currentCulture.DateTimeFormat.GetDayName(date.DayOfWeek);
-                                            <th @(i == 3 ? "class=active" : "") onclick='searchByDate("@date.ToString("dd/MM/yyyy")")'><p>@day</p><p>@date.ToString("dd-MM-yyyy")</p></th>
-                                        }
+                                    DateTime endDate = _returnDate.AddDays(-3);
+                                    for (int i = 0; i <= 6; i++)
+                                    {
+                                        var date = endDate.AddDays(i);
+                                        var day = currentCulture.DateTimeFormat.GetDayName(date.DayOfWeek);
+                                        <th @(i == 3 ? "class=active" : "") @(i != 3 ? string.Format("onclick=window.location='{0}'", Url.RouteUrl("Search", new { Return = Model.Return, FromId = Model.FromId, ToId = Model.ToId, DepartDate = Model.DepartDate, ReturnDate = date.ToString("dd/MM/yyyy"), Adult = Model.Adult, Child = Model.Child, Flant = Model.Flant })) : "")><p>@day</p><p>@date.ToString("dd-MM-yyyy")</p></th>
+                                    }
                                     }
                                 </tr>
                             </thead>
@@ -127,7 +130,7 @@
         });
         $("input[name=radioSort]").click(function(){
             search();
-        })
+        });        
     })
     function searchByDate(date)
     {
@@ -158,8 +161,8 @@
             SessionId: $("#sessionid").val()
 
         };
-        $("#table-data").html("<img src='/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")
-        @if(Model.Return){<text>$("#table-data-return").html("<img src='~/Themes/ClickBay/Content/images/ajax_loader_small.gif'/>")</text>}
+        $("#table-data").html("<img src='/Themes/ClickBay/Content/images/WindowsPhoneProgressbar.gif'/>")
+        @if(Model.Return){<text>$("#table-data-return").html("<img src='~/Themes/ClickBay/Content/images/WindowsPhoneProgressbar.gif'/>")</text>}
 
         $.get("@Url.Action("TicketSearchGo")",data,function(d){
             $("#table-data").html(d);
@@ -196,8 +199,6 @@
             // displayAjaxLoading(false);
             $("#table-data").html("")
         })
-
-
     }
     function showDetail(id,isReturn)
     {
@@ -213,27 +214,29 @@
                 sessionId= $("#sessionid").val();
             else
                 sessionId=$("#sessionid-return").val();
+
+            table.html("<td colspan=7><img src='/Themes/ClickBay/Content/images/WindowsPhoneProgressbar.gif'/></td>")
+            table.show('slow');
             $.get("@Url.Action("GetTicketDetail")", { sessionId:sessionId, index: id }, function (d) {
                 table.html("<td colspan='7'>"+d+"</td>");
                 table.show('slow');
                 table.attr('show', '1');
             });
-            parentTable.find("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
+            parentTable.find("#ticketChecked_"+id).find("i").attr("class","fa fa-minus-square-o fa-lg");
         }
         else {
 
             if (table.is(":hidden"))
             {
                 table.show('slow');
-                parentTable.find("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/minus-icon.png");
+                parentTable.find("#ticketChecked_"+id).find("i").attr("class","fa fa-minus-square-o fa-lg");
             }
             else
             {
                 table.hide('slow');
-                parentTable.find("#ticketChecked_"+id).find("img[class=icon-small]").first().attr("src","/Themes/ClickBay/content/images/plus-icon.png");
+                parentTable.find("#ticketChecked_"+id).find("i").attr("class","fa fa-plus-square-o fa-lg");
             }
         }
-
     }
 
     function ticketChecked(id,isReturn)
@@ -252,9 +255,7 @@
 
     function selectTicket()
     {
-
         var  sessionId= $("#sessionid").val();
-
         var selectRadion=$("input[name=ticketChecked]:checked");
         var selectedRadioReturn=$("input[name=ticketChecked-return]:checked");
         if(selectRadion.length==0)
@@ -307,7 +308,3 @@
         }
     }
 </script>
-
-
-
-

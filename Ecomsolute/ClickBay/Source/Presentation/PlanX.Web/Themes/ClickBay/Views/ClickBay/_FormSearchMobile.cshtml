@@ -1,0 +1,121 @@
+﻿@{    
+    var listAdult = new List<SelectListItem>();
+    for (int i = 0; i < 100; i++)
+    {
+        listAdult.Add(new SelectListItem { Value = i.ToString(), Text = i.ToString() });
+    }
+    var listInfant = new List<SelectListItem>();
+    for (int i = 0; i < 5; i++)
+    {
+        listInfant.Add(new SelectListItem { Value = i.ToString(), Text = i.ToString() });
+    }
+    var listCity = new List<SelectListItem>(){
+        new SelectListItem{Value="", Text=""}
+    };
+    
+}
+
+    <div class="box-head">
+        <span class="search-text">TÌM VÉ MÁY BAY</span>
+        <span class="search-roundtrip">
+            <input type="radio" name="Return_m" checked="checked" value="false" id="Return_m_false"><label for="Return_m_false">Một chiều</label>
+            <input type="radio" name="Return_m" value="true" id="Return_m_true"><label for="Return_m_true">Khứ hồi</label>
+        </span>
+    </div>
+    <div class="box-content">
+        <div class="div-table-row">
+            <div class="fromplace-div">
+                <label>Điểm đi</label><br>
+                <select id="FromId_m" class="textbox">
+                    <option value="HAN">Hà Nội(HAN)</option>
+                    <option value="HPH">Hải Phòng (HPH)</option>
+                    <option value="DIN">Điện Biên (DIN)</option>
+                    <option value="THD">Thanh Hóa (THD)</option>
+                    <option value="VII">Vinh (VII)</option>
+                    <option value="HUI">Huế (HUI)</option>
+                    <option value="VDH">Đồng Hới (VDH)</option>
+                    <option value="DAD">Đà Nẵng (DAD)</option>
+                    <option value="TMK">Tam Kỳ (VCL)</option>
+                    <option value="PXU">Pleiku (PXU)</option>
+                    <option value="TBB">Tuy Hòa (TBB)</option>
+                    <option value="SGN">Hồ Chí Minh (SGN)</option>
+                    <option value="CXR">Nha Trang (CXR)</option>
+                    <option value="DLI">Đà Lạt  (DLI)</option>
+                    <option value="PQC">Phú Quốc (PQC)</option>
+                    <option value="UIH">Qui Nhơn (UIH)</option>
+                    <option value="VCA">Cần Thơ (VCA)</option>
+                    <option value="VCS">Côn Đảo (VCS)</option>
+                    <option value="BMV">Ban Mê Thuột (BMV)</option>
+                    <option value="VKG">Rạch Giá (VKG)</option>
+                    <option value="CAH">Cà Mau (CAH)</option>
+                </select>
+                <label class="message-error" id="FromId_m_message"></label>
+            </div>
+            <div class="toplace-div">
+                <label>Điểm đến</label><br>
+                <select id="ToId_m" class="textbox">
+                    <option value="HAN">Hà Nội(HAN)</option>
+                    <option value="HPH">Hải Phòng (HPH)</option>
+                    <option value="DIN">Điện Biên (DIN)</option>
+                    <option value="THD">Thanh Hóa (THD)</option>
+                    <option value="VII">Vinh (VII)</option>
+                    <option value="HUI">Huế (HUI)</option>
+                    <option value="VDH">Đồng Hới (VDH)</option>
+                    <option value="DAD">Đà Nẵng (DAD)</option>
+                    <option value="TMK">Tam Kỳ (VCL)</option>
+                    <option value="PXU">Pleiku (PXU)</option>
+                    <option value="TBB">Tuy Hòa (TBB)</option>
+                    <option value="SGN">Hồ Chí Minh (SGN)</option>
+                    <option value="CXR">Nha Trang (CXR)</option>
+                    <option value="DLI">Đà Lạt  (DLI)</option>
+                    <option value="PQC">Phú Quốc (PQC)</option>
+                    <option value="UIH">Qui Nhơn (UIH)</option>
+                    <option value="VCA">Cần Thơ (VCA)</option>
+                    <option value="VCS">Côn Đảo (VCS)</option>
+                    <option value="BMV">Ban Mê Thuột (BMV)</option>
+                    <option value="VKG">Rạch Giá (VKG)</option>
+                    <option value="CAH">Cà Mau (CAH)</option>
+                </select>
+                <label class="message-error" id="ToId_m_message"></label>
+            </div>
+        </div>
+        <div class="div-table-row">
+            <div id="to-div">
+                <label>Ngày đi</label><br>
+                <input id="DepartDate_m" name="DepartDate_m" type="text" class="textbox">
+                <label class="message-error" id="DepartDate_m_message"></label>
+            </div>
+            <div id="return-div-m" class="return-div">
+                <label>Ngày về</label><br>
+                <input id="ReturnDate_m" name="ReturnDate_m" type="text" class="textbox">
+                <label class="message-error" id="ReturnDate_m_message"></label>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="box-footer">
+            <span>
+                <label>Người lớn</label><br>
+                @Html.DropDownList("Adult_m", listAdult, new { @class = "textbox center number" })
+                <br /><label class="font-small">từ 12 tuổi</label>
+            </span>
+            <span>
+                <label>Trẻ em</label>
+                <br />
+                @Html.DropDownList("Child_m", listAdult, new { @class = "textbox center number" })
+                <br />
+                <label class="font-small">từ 2 đến 11 tuổi</label>
+            </span>
+            <span>
+                <label>Trẻ sơ sinh</label><br />
+                @Html.DropDownList("Flant_m", listInfant, new { @class = "textbox center number" })
+                <br>
+                <label class="font-small">dưới 2 tuổi</label>
+            </span>
+            <label class="message-error" id="passenger_m_message"></label>
+        </div>
+        <div class="center">
+            <input type="button" id="btnSearchMobile" class="btn-search-mobile" value="Tìm chuyến bay">
+        </div>
+    </div>
+
+<script src="~/Scripts/search.mobile.js"></script>
