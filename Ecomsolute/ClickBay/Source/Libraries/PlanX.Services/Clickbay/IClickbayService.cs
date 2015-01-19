@@ -1,6 +1,7 @@
 ﻿using PlanX.Core.Domain.ClickBay;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PlanX.Services.ClickBay
 {
@@ -36,6 +37,13 @@ namespace PlanX.Services.ClickBay
         /// <param name="source"></param>
         /// <returns>Danh sách vé</returns>
         IEnumerable<Ticket> SearchTicket(string fromPlace, string toPlace, DateTime departDate,
+    int Adult = 0, int child = 0, int Infant = 0,
+    string FareBasis = null,
+    bool roundTrip = false, DateTime? returnDate = null,
+    string CasyncurrencyType = "VND", string source = null, bool expendDetails = false,
+    bool expendTicketPriceDetails = false, bool expandOption = false, bool priceSummaries = false
+    );
+        Task<List<Ticket>> SearchTicketAsync(string fromPlace, string toPlace, DateTime departDate,
     int Adult = 0, int child = 0, int Infant = 0,
     string FareBasis = null,
     bool roundTrip = false, DateTime? returnDate = null,
