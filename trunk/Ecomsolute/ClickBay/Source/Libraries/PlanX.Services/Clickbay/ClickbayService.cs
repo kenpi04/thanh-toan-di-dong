@@ -111,11 +111,57 @@ namespace PlanX.Services.ClickBay
 
             string data = JsonConvert.SerializeObject(searchModel);
 
-            string result = GetData(url, false, null, data);
-            //string result = readFile("data_detail.txt");
+            //string result = GetData(url, false, null, data);
+            string result = readFile("data_detail.txt");
             if (string.IsNullOrEmpty(result))
                 return new List<Ticket>();
             return JsonConvert.DeserializeObject<IEnumerable<Ticket>>(result);
+        }
+
+        public async Task<List<Ticket>> SearchTicketAsync(string fromPlace, string toPlace, DateTime departDate,
+            int Adult = 0, int child = 0, int Infant = 0,
+            string FareBasis = null,
+            bool roundTrip = false, DateTime? returnDate = null,
+            string CurrencyType = "VND", string source = null, bool expendDetails = false,
+            bool expendTicketPriceDetails = false, bool expandOption = false, bool priceSummaries = false
+            )
+        {
+            string url = ClickBayContant.URL_SEARCH;
+            if (expendDetails || expendTicketPriceDetails || expandOption || priceSummaries)
+            {
+                List<string> querys = new List<string>();
+                if (expendDetails)
+                    querys.Add("Details");
+                if (expendTicketPriceDetails)
+                    querys.Add("TicketPriceDetails");
+                if (expandOption)
+                    querys.Add("TicketOptions");
+                if (priceSummaries)
+                    querys.Add("PriceSummaries");
+                url += "?$expand=" + querys.Aggregate((a, b) => a + "," + b);
+
+            }
+
+            var searchModel = new TicketSearch();
+
+            searchModel.Adult = Adult;
+            searchModel.Child = child;
+            searchModel.Infant = Infant;
+            searchModel.RoundTrip = false;
+            searchModel.DepartDate = departDate.ToString("yyyy-MM-ddT00:00:00");
+            searchModel.ReturnDate = departDate.ToString("yyyy-MM-ddT00:00:00");
+            searchModel.FromPlace = fromPlace;
+            searchModel.ToPlace = toPlace;
+            searchModel.CurrencyType = "VND";
+            searchModel.Sources = string.IsNullOrEmpty(source) ? "VietJetAir,VietnamAirlines,JetStar" : source;
+
+            string data = JsonConvert.SerializeObject(searchModel);
+
+            //string result = GetData(url, false, null, data);
+            string result = readFile("data_detail.txt");
+            if (string.IsNullOrEmpty(result))
+                return new List<Ticket>();
+            return await Task.Factory.StartNew<List<Ticket>>(() => { return JsonConvert.DeserializeObject<List<Ticket>>(result); });
         }
 
         public string SearchTicketJson(string fromPlace, string toPlace, DateTime departDate,
@@ -231,6 +277,42 @@ namespace PlanX.Services.ClickBay
             return null;
         }
 
+        private async Task<string> GetDataAsync(string url, bool isGET = true, List<KeyValuePair<string, string>> para = null, string dataString = null)
+        {
+            string resultJson = string.Empty;
+            HttpClient client = new HttpClient();
+            String encoded = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(ClickBayContant.USERNAME + ":" + ClickBayContant.PASSWORD));
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", encoded);
+            HttpResponseMessage response;
+            if (isGET)
+                response = await client.GetAsync(new Uri(url)).ConfigureAwait(false);
+            else
+            {
+                HttpContent data;
+                if (!string.IsNullOrWhiteSpace(dataString))
+                {
+                    data = new StringContent(dataString, Encoding.UTF8, "application/json");
+                }
+                else { data = new FormUrlEncodedContent(para); }
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                response = await client.PostAsync(url, data).ConfigureAwait(false);
+            }
+            response.EnsureSuccessStatusCode();
+            if (response.IsSuccessStatusCode)
+            {
+                string result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                if (result != null)
+                {
+                    //convert dang bi sai?
+                    var convertModel = JsonConvert.DeserializeObject<ConvertDataModel>(result);
+                    if (convertModel.Value != null)
+                        return convertModel.Value.ToString();
+                }
+            }
+            return null;
+        }
+
         private string GetData1(string url, bool isGET = true, IEnumerable<KeyValuePair<string, string>> para = null, string dataString = null)
         {
             bool error= false;
@@ -253,8 +335,6 @@ namespace PlanX.Services.ClickBay
             try
             {
                 string resultJson = string.Empty;
-                //HttpClientHandler handler = new HttpClientHandler();
-                //handler.Credentials = new NetworkCredential(ClickBayContant.USERNAME, ClickBayContant.PASSWORD);
                 HttpClient client = new HttpClient();
                 String encoded = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(ClickBayContant.USERNAME + ":" + ClickBayContant.PASSWORD));
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", encoded);
@@ -266,7 +346,6 @@ namespace PlanX.Services.ClickBay
                     HttpContent data;
                     if (!string.IsNullOrWhiteSpace(dataString))
                     {
-                        //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         data = new StringContent(dataString, Encoding.UTF8, "application/json");
                     }
                     else { data = new FormUrlEncodedContent(para); }
@@ -322,7 +401,7 @@ namespace PlanX.Services.ClickBay
             if (!string.IsNullOrEmpty(name))
             {
                 name = name.ToLower();
-                q = q.Where(x => x.EnglishName.Contains(name) || x.Name.Contains(name) || x.Code.Contains(name)).OrderBy(x=> x.Name);
+                q = q.Where(x => x.EnglishName.StartsWith(name) || x.Name.StartsWith(name) || x.Code.StartsWith(name)).OrderBy(x => x.Name);
             }
             return q.AsEnumerable();
         }
