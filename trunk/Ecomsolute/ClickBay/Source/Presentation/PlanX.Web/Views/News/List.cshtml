@@ -25,14 +25,14 @@
                 @foreach (var item in Model.NewsItems)
                 {
                     <aside>
-                        <div class="news-image" id="@item.Id"><img src="@item.Picture.ImageUrl" title="@item.Title" alt="@item.Title" onload="imageResize(@item.Id)"/></div>
+                        <div class="news-image" id="@item.Id"><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })"><img src="@item.Picture.ImageUrl" title="@item.Title" alt="@item.Title" onload="imageResize(@item.Id)" /></a></div>
                         <div class="news-content-preview">
                             <div><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
                             <div class="info-small">
-                                <p><span class="time-small">@item.CreatedOn.ToString("dd/MM/yyyy")</span><span>@Model.CurrentCategoryName</span>@*<span>25 Comment</span>*@</p>
+                                <p><span class="time-small">@item.CreatedOn.ToString("dd/MM/yyyy")</span><span>@Model.CurrentCategoryName</span></p>
                             </div>
                             <div class="content-preview"><p>@Html.Raw(item.Short)</p></div>
-                            <div><a class="default" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">Chi tiết</a></div>
+                            <div class="desktop"><a class="default" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">Chi tiết</a></div>
                         </div>
                     </aside>
                 }
@@ -43,8 +43,8 @@
             @Html.Widget("newslist_page_after_items")
         </section>
         <section class="section-right-search">
-            <article>
-                @Html.Action("SearchBox", "ClickBay" ,new { isSmall = true })
+            <article class="load-ajax" data-url="@Url.Action("SearchBox", "ClickBay" ,new { isSmall = true })">
+                @*@Html.Action("SearchBox", "ClickBay", new { isSmall = true })*@
             </article>
         </section>
     </div>
