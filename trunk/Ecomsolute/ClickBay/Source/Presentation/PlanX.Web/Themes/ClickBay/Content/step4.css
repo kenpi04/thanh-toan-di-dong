@@ -1,90 +1,79 @@
-﻿@charset "UTF-8";
+﻿/*@charset "UTF-8";
 @-ms-viewport {
   width: device-width;
-}
+}*/
 
-audio,
+/*audio,
 canvas,
 video {
   display: inline-block;
-}
+}*/
 
-audio:not([controls]) {
+/*audio:not([controls]) {
   display: none;
   height: 0;
-}
+}*/
 
-[hidden] {
+/*[hidden] {
   display: none;
-}
+}*/
 
-html {  
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-}
 
-a:focus {
+
+/*a:focus {
   outline: thin dotted;
-}
+}*/
 
-a:active,
-a:hover {
-  outline: 0;
-}
 
-h1 {
-  font-size: 2em;
-}
-
-abbr[title] {
+/*abbr[title] {
   border-bottom: 1px dotted;
-}
+}*/
 
-b,
+/*b,
 strong {
   font-weight: bold;
-}
+}*/
 
-dfn {
+/*dfn {
   font-style: italic;
-}
+}*/
 
-mark {
+/*mark {
   background: #ff0;
   color: #000;
-}
+}*/
 
-code,
+/*code,
 kbd,
 pre,
 samp {
   font-family: monospace, serif;
   font-size: 1em;
-}
+}*/
 
-pre {
+/*pre {
   white-space: pre;
   white-space: pre-wrap;
   word-wrap: break-word;
-}
+}*/
 
-q {
+/*q {
   quotes: "\201C" "\201D" "\2018" "\2019";
-}
+}*/
 
-small {
+/*small {
   font-size: 80%;
-}
+}*/
 
-sub,
+/*sub,
 sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
   vertical-align: baseline;
-}
+}*/
 
-sup {
+/*sup {
   top: -0.5em;
 }
 
@@ -229,28 +218,12 @@ textarea {
   margin: 0 auto;
   padding: 1.5em 1.25em;
   max-width: 60em;
-}
+}*/
 
-.close-btn {
-  display: block;
-  width: 2.625em;
-  height: 2.25em;
-  padding: 0;
-  border: 0;
-  outline: none;
-  background: #333333 url("../Content/images/close-btn.svg") left center no-repeat;
-  background-size: 1.875em 1.875em;
-  overflow: hidden;
-  white-space: nowrap;
-  text-indent: 100%;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-.no-svg .close-btn {
+/*.no-svg .close-btn {
   background-image: url("../img/close-btn.png");
-}
-.close-btn:focus, .close-btn:hover {
+}*/
+/*.close-btn:focus, .close-btn:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -261,20 +234,11 @@ textarea {
 .nav-btn:hover, .nav-btn:focus {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
-}
+}*/
 
-#outer-wrap {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-}
 
-#inner-wrap {
-  position: relative;
-  width: 100%;
-}
 
-#nav {
+/*#nav {
   z-index: 200;
   position: relative;
   overflow: hidden;
@@ -358,7 +322,7 @@ textarea {
 
 footer[role="contentinfo"] {
   background: #ddd;
-}
+}*/
 
 /*@media screen and (min-width: 45.0625em) {
   #top .nav-btn {
