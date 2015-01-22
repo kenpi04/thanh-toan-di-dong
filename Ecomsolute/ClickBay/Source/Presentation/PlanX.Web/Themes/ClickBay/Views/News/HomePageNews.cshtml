@@ -14,7 +14,11 @@
                         <div class="box-inside">
                             <div class="news-image" id="@item.Id"><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })"><img src="@item.Picture.ImageUrl" title="@item.Title" alt="@item.Title" onload="imageResize(@item.Id)" /></a></div>
                             <div class="news-content-preview">
-                                <div><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>                                
+                                <div><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
+                                <div class="mobile info-small">
+                                    <p><span class="time-small">@item.CreatedOn.ToString("dd/MM/yyyy")</span><span>@item.Category</span></p>
+                                </div>
+                                <div class="mobile content-preview"><p>@Html.Raw(item.Short)</p></div>
                             </div>
                         </div>
                     </aside>

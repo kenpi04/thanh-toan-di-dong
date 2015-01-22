@@ -18,16 +18,15 @@
                     <span class="active">@Model.CurrentCategoryName</span>
                 </p>
             </div>
-        </section>
-        @Html.Widget("newslist_page_before_items")
+        </section>@Html.Widget("newslist_page_before_items")        
         <section class="section-left news">
             <article>
                 @foreach (var item in Model.NewsItems)
                 {
                     <aside>
-                        <div class="news-image" id="@item.Id"><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })"><img src="@item.Picture.ImageUrl" title="@item.Title" alt="@item.Title" onload="imageResize(@item.Id)" /></a></div>
+                        <div class="news-image" id="@item.Id"><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })"><img src="@item.Picture.ImageUrl" title="@Html.Raw(item.Title)" alt="@Html.Raw(item.Title)" onload="imageResize(@item.Id)" /></a></div>
                         <div class="news-content-preview">
-                            <div><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@item.Title</a></div>
+                            <div><a class="news-title" href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })">@Html.Raw(item.Title)</a></div>
                             <div class="info-small">
                                 <p><span class="time-small">@item.CreatedOn.ToString("dd/MM/yyyy")</span><span>@Model.CurrentCategoryName</span></p>
                             </div>
@@ -39,12 +38,10 @@
             </article>
             <div class="pager">
                 @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
-            </div>
-            @Html.Widget("newslist_page_after_items")
+            </div>@Html.Widget("newslist_page_after_items")            
         </section>
-        <section class="section-right-search">
-            <article>
-                @Html.Action("SearchBox", "ClickBay" ,new { isSmall = true })
+        <section class="desktop section-right-search news">
+            <article class="load-ajax" data-url="@Url.Action("SearchBox", "ClickBay" ,new { isSmall = true })">
             </article>
         </section>
     </div>
