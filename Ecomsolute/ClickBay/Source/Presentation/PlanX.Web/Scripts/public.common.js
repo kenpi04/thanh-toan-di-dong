@@ -6,6 +6,7 @@ $(document).ready(function (e) {
         var url = $(item).data("url");
         if (url && url.length > 0) {
             $(item).html("<div class=loading-img></div>").load(url);
+            $(item).removeAttr("data-url");
         }
     });
 
