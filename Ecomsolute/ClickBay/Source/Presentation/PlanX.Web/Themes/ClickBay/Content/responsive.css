@@ -4,7 +4,23 @@
 
 =====================================================*/
 @media screen and (max-width:1200px) and (min-width:938px) {   
-    
+    .container, .wrapper-body, .center-2{width:96%;}
+    .header,.wrapper-content{min-width:0;}   
+    .wrapper-content.inline{margin:0;min-width:0;}
+    #menu{height:auto;}
+    #menu li:last-child{display:none;}
+    #menu .container ul{display:inline-block;width:100%;}   
+    div.hotline,.formsearch{width:calc(100% - 220px);display:block;float:right;text-align:right;padding-right:20px;box-sizing:border-box;}
+    .hotline{color:#189b96;}
+    .hotline-number{font-weight:500;}
+    .box-c{height:344px;}
+    .section-left.news{}
+    .section-right-search.news{width:30%;min-width:237px;}
+    .box-search .box-content{padding-right:0;}
+    .search-content{min-width:0;}
+    .big-font{min-width:128px;}
+    .explan-detail{min-width:63px;}
+    .booking.detail{width:100%;}
 }
 
 /*=====================================================
@@ -12,21 +28,172 @@
     TABLETS LANDSCAPE & NETBOOKS
 
 =====================================================*/
-@media screen and (max-width:940px) and (min-width:769px) {
-   
-
-}
-
 
 /*=====================================================
     
     TABLETS PORTRAIT & SMARTPHONES LANDSCAPE
 
 =====================================================*/
-@media screen and (max-width:768px) and (min-width:481px) {
-    /*.container, .wrapper-body, .center-2{width:100%;}
-    .formsearch{display:none;}*/
+@media screen and (max-width:940px) and (min-width:481px) {
+    /*master*/
+    h1{font-size:20px;}
+    .wrapper-body{width:100%;}
+    .wrapper-content{min-width:100%;padding:0 15px;box-sizing:border-box;margin:0;}
+    .col2{margin-bottom:0;}
+    /*home page*/
+    .header{min-width:100%}
+    #menu{height:auto;}
+    .container{width:100%;}
+    #menu li:last-child{display:none;}
+    #menu .container ul{display:inline-block;width:100%;}
+    #menu li{margin-right:0;}
+    .logo{max-width:150px;}
+    div.hotline,.formsearch{width:calc(100% - 220px);display:block;float:right;text-align:right;padding-right:20px;box-sizing:border-box;}
+    .hotline{color:#189b96;}
+    .hotline-number{font-weight:500;}
+    .desktop{display:none;}
+    .mobile{display:block;}   
+    .mobile.box-search{margin-top:47px;margin-left:auto;margin-right:auto;}
+    #return-div-m{width:50%;float:left;display:none;}
+    .box-search .box-content{padding-left:25px;padding-right:25px;}
+    .col2 .box{float:none;}
+    .box-c{height:auto;}
+    .box-50{width:100%;}
+    .TicketConcession-home .wrapper-content{padding:0 15px;box-sizing:border-box;}
+    .news-home aside{float:none;width:100%;height:auto;padding:0;}
+    .news-home .news-image{width:30%;overflow:hidden;float:left;margin-right:2%;}
+    .block-link aside{width:50%;margin-bottom:10px;}
+    .map-dialog{max-width:100%;max-height:100%;}
+    #nav{display:block;}
+    .nav-btn{display:block;float:left;height:80%;width:80%;margin:10%;color:#189b96;}
+    a.nav-btn:hover{color:#189b96;}    
+    .nav-open-div{display:block;float:left;height:30px;width:30px;margin-top:20px;margin-left:10px;}
+    .csstransforms3d.csstransitions.js-nav #inner-wrap {
+    -webkit-transform: translate3d(70%, 0, 0) scale3d(1, 1, 1);
+    -moz-transform: translate3d(70%, 0, 0) scale3d(1, 1, 1);
+    -ms-transform: translate3d(70%, 0, 0) scale3d(1, 1, 1);
+    -o-transform: translate3d(70%, 0, 0) scale3d(1, 1, 1);
+    transform: translate3d(70%, 0, 0) scale3d(1, 1, 1);
+    }
+    #frmSearch{display:none;}
+    /*box search in menu*/
+    .search-box-menu{margin-top:10px;}
+    .search-box-menu .search-text{width:100%;display:block;text-align:center;box-sizing:border-box;padding:0;font-size:20px;margin-bottom:3px;}
+    .search-box-menu .search-roundtrip{width:100%;display:block;text-align:center;box-sizing:border-box;margin:0;padding:0 20px}
+    .search-box-menu .search-roundtrip label{margin:0 5px;}
+    .search-box-menu .box-content{margin-top:5px;font-size:12px;padding:0 10px;}
+    .search-box-menu .box-content label{line-height:20px;}
+    #return-div-menu{width:50%;float:left;}
+    .fromplace-div, .toplace-div, #to-div,#return-div-menu,#return-div-m{padding:0 5px;box-sizing:border-box;}
+    .textbox{width:100%;}
+    .search-box-menu .box-footer{width:100%;float:none;display:inline-block;padding:0;}
+    .search-box-menu .box-content .box-footer span{width:calc(100% / 3);padding-left:15px;padding-right:5px;box-sizing:border-box;margin:0;}
+    /*menu*/
+    #nav ul{display:none;}
+    #nav {position: absolute;top: 0;}
+    #nav:not(:target) {z-index: 1;height: 0;}
+    #nav:target .close-btn {display: block;}
+    #nav .close-btn {position: absolute;top: -3.75em;left: 1.875em;}
+    #nav .block {position: relative;padding: 0;}
+    #nav li {position: relative;border-top: 1px solid rgba(255, 255, 255, 0.1);}
+    #nav li:last-child {border-bottom: 1px solid rgba(255, 255, 255, 0.1);}
+    #nav li.is-active:after {
+    z-index: 50;
+    display: block;
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -0.03125em;
+    margin-top: -0.625em;
+    border-top: 0.625em transparent solid;
+    border-bottom: 0.625em transparent solid;
+    border-right: 0.625em white solid;
+    }
+    #nav li a {padding: 0.85714em 2.14286em;}
+    .js-ready #nav {
+    height: 100%;
+    width: 70%;
+    background: #006B66;
+    -webkit-box-shadow: inset -1.5em 0 1.5em -0.75em rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: inset -1.5em 0 1.5em -0.75em rgba(0, 0, 0, 0.25);
+    box-shadow: inset -1.5em 0 1.5em -0.75em rgba(0, 0, 0, 0.25);
+    }    
+   /*footer*/   
+   .footer .block{width:50%;height:200px;}
+   .footer .block.support{padding-left:0;}
+   /*page search*/
+   .wrapper-content.inline{min-width:100%;margin:0;}
+    .section-top{margin-top:10px;}
+    .search-content{min-width:100%;float:none;padding-right:0;}
+    .info-filter .info-title-search{font-size:14px;}
+    .info-filter p span,.info-passenger p span{font-size:12px;}
+    .breadcrumb{font-size:12px;}
+    .info-filter{margin-top:10px;}
+    .info-filter p,.info-passenger p{margin:0;}
+    .info-passenger{margin-bottom:5px;}
+    .section-left-search{float:none;}
+    .search-box-small{display:none;}
+    .section-left-search table th{display:none;}
+    .section-left-search table tr th.active{display:block;}
+    .section-left-search table tr td, table th{font-size:12px;padding:4px;}
+    .cell-radio{width:25px;text-align:center;}
+    .big-font{font-size:15px!important;white-space:nowrap;min-width:128px;}
+    .stops{display:none;}    
+    .explan-detail{max-width:30px;text-align:center;min-width:63px;}
+    .booking.detail{width:100%;}
+    .explan-detail label{display:none;}    
+    .icon-flight{min-width:15px;max-width:25px;}
+    .return{float:none;}
+    .section-left,.section-right-search{width:100%;float:none;margin:0;}    
+    #btnContinue{float:none;}
+    .box-filter .box-content p.airline span, .box-sort .box-content p span{margin-left:5px;}
+    .box-filter .box-content p.airline img{max-width:40px;}
+    .detail .div-table{display:none;}
+    .booking h2{font-size:12px;}
+    .note-price{width:100%;float:none;display:block;}
+    #table-data, #table-data-return{max-height:none;}
+    .booking.detail{width:100%;padding:0;}
+    .booking.detail h2{padding-left:5px;}
+    .booking.detail a{float:right;margin-right:5px;display:block;}
+    .info-flight.div-table .div-table-row .div-table-cell:first-child{display:none;}
+    .desktop{display:none!important;}
+    .mobile{display:block!important;}
+    .priceDetail .detail{padding:0 5px;}
+    .priceDetail .detail .box-content.sumPrice p span:last-child{font-size:12px;font-weight:bold;}
+    /*booking page*/
+    .booking{width:100%;font-size:12px;padding:0;box-sizing:border-box;border:none;}
+    .booking article .div-table,.booking article .info-baggage.successfull.div-table,
+    .booking article .info-passenger.successfull.div-table,
+    .booking article .info-contact.successfull.div-table{display:none;}
+    .booking .div-table-row .div-table-cell i,.booking h2 i{display:inline;}
+    .booking .div-table-row .div-table-cell label{font-weight:bold;}
+    .none-icon{padding-left:14px;}
+    .booking article .div-table.info-baggage,.booking article .div-table.info-passenger,.booking article .div-table.info-contact{display:table}
+    .booking article .div-table.info-baggage .div-table-row,.booking article .div-table.info-passenger .div-table-row{display:block;border-bottom:1px dashed #ccc;}
+    .booking article .div-table.info-baggage .div-table-row .div-table-cell,
+    .booking article .div-table.info-contact .div-table-row,
+    .booking article .div-table.info-contact .div-table-row .div-table-cell,
+    .booking article .div-table-row.info-payment,
+    .booking article .div-table-row.info-payment  .div-table-cell{display:block;}
+    .info-contact .div-table-row .div-table-cell.haft{width:100%;}
+    .info-contact select{width:100%;}
+    .booking article .div-table.info-passenger .div-table-row .div-table-cell{display:block;text-decoration:underline;}
+    .info-baggage .div-table-row .div-table-cell .normal{text-decoration:underline;font-style:italic;padding-left:0;}
+    .personal-type{font-weight:bold;}
+    .booking article .div-table.info-passenger i{padding:0 5px;}
+    .booking .successfull .div-table-row .div-table-cell label{font-weight:normal;}
+    .booking article .div-table.info-passenger.successfull .div-table-row .div-table-cell{text-decoration:none;display:table-cell}
+    news page
+    .section-left{width:100%;float:none;margin-right:0;}
+    .news article aside{padding-bottom:0;}
+    /*contact page*/
+    .contact-page .page-title{margin-top:20px;}
+    .contact-page .box-50{float:none;width:100%;padding:0 10px;margin-bottom:20px;}
+    .contact-page .box-50 input,.contact-page .box-50 select{width:100%;box-sizing:border-box;}
+    #map_canvas{max-width:100%;max-height:100%;}
+    .section-left.news{width:100%;}
 }
+
 /*=====================================================
     
     SMALLER MOBILE DEVICES
@@ -40,7 +207,7 @@
     .title{padding:2px 0;font-size:13px;}
     /*head*/
     .container, .wrapper-body, .center-2,.wrapper-content{width:100%;}
-    .wrapper-content{min-width:100%;}
+    .wrapper-content{min-width:100%;margin:0}
     .formsearch{display:none;}
     #menu .container ul{display:none;}
     .flexslider{display:none;}
@@ -84,14 +251,12 @@
     #formSearch-menu #return-div-menu{display:block;}
     #Adult, #Child, #Flant{}
     .header{min-width:100%;}
-    
     /*box search in menu*/
     .search-box-menu{margin-top:10px;}
     .search-box-menu .search-text{width:100%;display:block;text-align:center;box-sizing:border-box;padding:0;font-size:13px;margin-bottom:3px;}
     .search-box-menu .search-roundtrip{width:100%;display:block;text-align:center;box-sizing:border-box;margin:0;padding:0 20px}
     .search-box-menu .search-roundtrip label{margin:0 5px;}
     .search-box-menu .box-content{margin-top:5px;font-size:12px;}
-
     /*dat ve*/
     .col2 .box{float:none;width:100%;display:inline-block;}
     .box-c{height:auto;padding:10px;}
@@ -102,10 +267,10 @@
     /*nhuong ve*/
     .box-line{padding:0 10px;box-sizing:border-box;}
     .TicketConcession-home {display:none;}
-
     /*news home*/
     .news-home aside{float:none;width:100%;height:auto;}
     .news-home .news-image{height:auto;max-width:100%;max-height:210px;}
+    .news-home .info-small, .news-home .news-content-preview .content-preview{display:none!important;}
     /*block link*/
     .block-link aside{float:none;width:100%;margin-bottom:20px;}
     .block-link div.box-inside{padding-right:0;}
@@ -145,7 +310,6 @@
     .booking h2{font-size:12px;}
     .note-price{width:100%;float:none;display:block;}
     #table-data, #table-data-return{max-height:none;}
-
     .booking.detail{width:100%;padding:0;}
     .booking.detail h2{padding-left:5px;}
     .booking.detail a{float:right;margin-right:5px;display:block;}
@@ -160,25 +324,10 @@
     #nav:target .close-btn {display: block;}
     #nav .close-btn {position: absolute;top: -3.75em;left: 1.875em;}
     #nav .block {position: relative;padding: 0;}
-    #nav li {position: relative;border-top: 1px solid rgba(255, 255, 255, 0.1);}
-    #nav li:last-child {border-bottom: 1px solid rgba(255, 255, 255, 0.1);}
-    #nav li.is-active:after {
-    z-index: 50;
-    display: block;
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: -0.03125em;
-    margin-top: -0.625em;
-    border-top: 0.625em transparent solid;
-    border-bottom: 0.625em transparent solid;
-    border-right: 0.625em white solid;
-    }
-    #nav li a {padding: 0.85714em 2.14286em;}
     .js-ready #nav {
     height: 100%;
     width: 70%;
-    background: #333333;
+    background: #006B66;
     -webkit-box-shadow: inset -1.5em 0 1.5em -0.75em rgba(0, 0, 0, 0.25);
     -moz-box-shadow: inset -1.5em 0 1.5em -0.75em rgba(0, 0, 0, 0.25);
     box-shadow: inset -1.5em 0 1.5em -0.75em rgba(0, 0, 0, 0.25);
@@ -186,40 +335,6 @@
     .js-ready #nav .block {background: transparent;}
     .js-ready #nav .close-btn {display: block;filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);opacity: 0.7;}
     .js-ready #nav .close-btn:focus, .js-ready #nav .close-btn:hover {filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);opacity: 1;}
-    .js-ready #nav {left: -70%;}
-    .js-ready #inner-wrap {left: 0;}
-    .js-nav #inner-wrap {left: 70%;}
-    .csstransforms3d.csstransitions.js-ready #nav {
-    left: 0;
-    -webkit-transform: translate3d(-100%, 0, 0);
-    -moz-transform: translate3d(-100%, 0, 0);
-    -ms-transform: translate3d(-100%, 0, 0);
-    -o-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -ms-backface-visibility: hidden;
-    -o-backface-visibility: hidden;
-    backface-visibility: hidden;
-    }
-    .csstransforms3d.csstransitions.js-ready #inner-wrap {
-    left: 0 !important;
-    -webkit-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-    -ms-transform: translate3d(0, 0, 0);
-    -o-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    -webkit-transition: -webkit-transform 500ms ease;
-    -moz-transition: -moz-transform 500ms ease;
-    -o-transition: -o-transform 500ms ease;
-    transition: transform 500ms ease;
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -ms-backface-visibility: hidden;
-    -o-backface-visibility: hidden;
-    backface-visibility: hidden;
-    }
-
     .csstransforms3d.csstransitions.js-nav #inner-wrap {
     -webkit-transform: translate3d(70%, 0, 0) scale3d(1, 1, 1);
     -moz-transform: translate3d(70%, 0, 0) scale3d(1, 1, 1);
@@ -227,41 +342,11 @@
     -o-transform: translate3d(70%, 0, 0) scale3d(1, 1, 1);
     transform: translate3d(70%, 0, 0) scale3d(1, 1, 1);
     }
-
-    .csstransforms3d.csstransitions.js-ready #nav .block {
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
-    opacity: 0.7;
-    -webkit-transition: opacity 300ms 100ms, -webkit-transform 500ms ease;
-    -webkit-transition-delay: ease, 0s;
-    -moz-transition: opacity 300ms 100ms ease, -moz-transform 500ms ease;
-    -o-transition: opacity 300ms 100ms ease, -o-transform 500ms ease;
-    transition: opacity 300ms 100ms ease, transform 500ms ease;
-    -webkit-transform: translate3d(70%, 0, 0) scale3d(0.9, 0.9, 0.9);
-    -moz-transform: translate3d(70%, 0, 0) scale3d(0.9, 0.9, 0.9);
-    -ms-transform: translate3d(70%, 0, 0) scale3d(0.9, 0.9, 0.9);
-    -o-transform: translate3d(70%, 0, 0) scale3d(0.9, 0.9, 0.9);
-    transform: translate3d(70%, 0, 0) scale3d(0.9, 0.9, 0.9);
-    -webkit-transform-origin: 50% 0%;
-    -moz-transform-origin: 50% 0%;
-    -ms-transform-origin: 50% 0%;
-    -o-transform-origin: 50% 0%;
-    transform-origin: 50% 0%;
-    }
-
-    .csstransforms3d.csstransitions.js-nav #nav .block {
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-    opacity: 1;
-    -webkit-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-    -ms-transform: translate3d(0, 0, 0);
-    -o-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    }
-
     /*booking page*/
     .booking{width:100%;font-size:12px;padding:5px;box-sizing:border-box;border:none;}
     .booking article .div-table,.booking article .info-baggage.successfull.div-table,
-    .booking article .info-passenger.successfull.div-table{display:none;}
+    .booking article .info-passenger.successfull.div-table,
+    .booking article .info-contact.successfull.div-table{display:none;}
     .booking .div-table-row .div-table-cell i,.booking h2 i{display:inline;}
     .booking .div-table-row .div-table-cell label{font-weight:bold;}
     .none-icon{padding-left:14px;}
@@ -282,7 +367,9 @@
     .booking article .div-table.info-passenger.successfull .div-table-row .div-table-cell{text-decoration:none;display:table-cell}
 
     /*news pages*/
+    .news, .news-detail{padding-right:0;}
     .news article aside{height:100px;overflow:hidden;box-sizing:border-box;padding-bottom:3px;}
+    .section-right-search article.news-box-small aside{height:auto;}
     .news-image{height:100%;}
     .news-content-preview{font-size:12px;}
     .news-content-preview .content-preview{display:none;}
@@ -291,6 +378,7 @@
     .news-detail .content-preview{font-size:13px;}
     .title-left{padding:0 5px;}
     /*contact page*/
+    .contact-page .page-title{margin-top:20px;}
     .contact-page .box-50{float:none;width:100%;padding:0 10px;margin-bottom:20px;}
     .contact-page .box-50 input,.contact-page .box-50 select{width:100%;box-sizing:border-box;}
 }
