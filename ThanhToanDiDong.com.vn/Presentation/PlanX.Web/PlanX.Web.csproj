@@ -1416,6 +1416,9 @@
     <Content Include="Views\Shared\_Notifications.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\News\NewsComment.cshtml" />
+    <Content Include="Themes\Thanhtoandidong\Views\News\NewsBreadcrumb.cshtml" />
+    <Content Include="Themes\Thanhtoandidong\Views\News\ListNews.cshtml" />
+    <Content Include="Themes\Thanhtoandidong\Views\News\ListNewsByTag.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\Thumbs\" />
@@ -1522,7 +1525,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Thanhtoandidong\theme.config" />
-    <Content Include="Themes\Thanhtoandidong\Views\Shared\Head.cshtml" />
     <Content Include="Themes\Thanhtoandidong\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -1550,10 +1552,8 @@
     <Content Include="Themes\Thanhtoandidong\Views\News\HomePageNews.cshtml" />
     <Content Include="Themes\Thanhtoandidong\Views\News\HomePageNewsCate.cshtml" />
     <Content Include="Themes\Thanhtoandidong\Views\News\List.cshtml" />
-    <Content Include="Themes\Thanhtoandidong\Views\News\List.Mobile.cshtml" />
     <Content Include="Themes\Thanhtoandidong\Views\News\NewsCateNavigation.cshtml" />
     <Content Include="Themes\Thanhtoandidong\Views\News\NewsItem.cshtml" />
-    <Content Include="Themes\Thanhtoandidong\Views\News\NewsItem.Mobile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Thanhtoandidong\Views\News\_NewsItemBox.cshtml" />
@@ -1572,10 +1572,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Thanhtoandidong\Views\News\NewsCateNavigationLeft.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Themes\Thanhtoandidong\Views\Banner\BannerShow.cshtml" />
-    <Content Include="Themes\Thanhtoandidong\Views\Banner\BannerSlideShow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Thanhtoandidong\Views\Customer\Login.cshtml" />
