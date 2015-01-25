@@ -39,6 +39,7 @@ using PlanX.Web.Infrastructure.Cache;
 //using PlanX.Web.Models.Catalog;
 using PlanX.Web.Models.Common;
 using PlanX.Web.Models.Topics;
+using System.Threading.Tasks;
 
 namespace PlanX.Web.Controllers
 {
@@ -95,15 +96,15 @@ namespace PlanX.Web.Controllers
             IWorkContext workContext, IStoreContext storeContext,
             IQueuedEmailService queuedEmailService, IEmailAccountService emailAccountService,
             ISitemapGenerator sitemapGenerator, IThemeContext themeContext,
-            IThemeProvider themeProvider, 
+            IThemeProvider themeProvider,
             //IForumService forumService,
             IGenericAttributeService genericAttributeService, IWebHelper webHelper,
             IPermissionService permissionService, IMobileDeviceHelper mobileDeviceHelper,
             HttpContextBase httpContext, ICacheManager cacheManager,
-            ICustomerActivityService customerActivityService, CustomerSettings customerSettings, 
+            ICustomerActivityService customerActivityService, CustomerSettings customerSettings,
             //TaxSettings taxSettings, CatalogSettings catalogSettings,
             StoreInformationSettings storeInformationSettings, EmailAccountSettings emailAccountSettings,
-            CommonSettings commonSettings, 
+            CommonSettings commonSettings,
             //BlogSettings blogSettings, 
             //NewsSettings newsSettings, ForumSettings forumSettings,
             LocalizationSettings localizationSettings, CaptchaSettings captchaSettings)
@@ -343,13 +344,13 @@ namespace PlanX.Web.Controllers
             //    taxModel.Enabled)
             //    return PartialView();
             //else
-                return Content("");
+            return Content("");
         }
         public ActionResult Config()
         {
             return View();
         }
-        
+
         //footer
         [ChildActionOnly]
         public ActionResult JavaScriptDisabledWarning()
@@ -490,8 +491,8 @@ namespace PlanX.Web.Controllers
                 {
                     from = emailAccount.Email;
                     fromName = emailAccount.DisplayName;
-                    body = string.Format("<strong>From</strong>: {0} - {1}<br /><br />{2}", 
-                        Server.HtmlEncode(fullName), 
+                    body = string.Format("<strong>From</strong>: {0} - {1}<br /><br />{2}",
+                        Server.HtmlEncode(fullName),
                         Server.HtmlEncode(email), body);
                 }
                 else
@@ -511,7 +512,7 @@ namespace PlanX.Web.Controllers
                     CreatedOnUtc = DateTime.UtcNow,
                     EmailAccountId = emailAccount.Id
                 });
-                
+
                 model.SuccessfullySent = true;
                 model.Result = _localizationService.GetResource("ContactUs.YourEnquiryHasBeenSent");
 
@@ -618,7 +619,7 @@ namespace PlanX.Web.Controllers
         public ActionResult StoreThemeSelected(string themeName)
         {
             _themeContext.WorkingDesktopTheme = themeName;
-            
+
             var model = new StoreThemeSelectorModel();
             var currentTheme = _themeProvider.GetThemeConfiguration(_themeContext.WorkingDesktopTheme);
             model.CurrentStoreTheme = new StoreThemeModel()
@@ -694,7 +695,7 @@ namespace PlanX.Web.Controllers
 
             return View();
         }
-        
+
         ////EU Cookie law
         //[ChildActionOnly]
         //public ActionResult EuCookieLaw()
@@ -832,6 +833,13 @@ namespace PlanX.Web.Controllers
         public ActionResult StoreClosed()
         {
             return View();
+        }
+
+        public ActionResult AjaxPartialView(string viewName)
+        {
+            if (!String.IsNullOrEmpty(viewName))
+                return PartialView(viewName);
+            return PartialView();
         }
 
         #endregion

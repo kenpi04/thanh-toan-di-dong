@@ -19,7 +19,7 @@ using PlanX.Services.Messages;
 using PlanX.Services.News;
 using PlanX.Services.Seo;
 using PlanX.Services.Stores;
-using PlanX.Web.Framework;
+using PlanX.Web.Framework;  
 using PlanX.Web.Framework.Controllers;
 using PlanX.Web.Framework.Security;
 using PlanX.Web.Framework.UI.Captcha;
@@ -226,7 +226,7 @@ namespace PlanX.Web.Controllers
         #endregion
 
         #region Methods
-        [ChildActionOnly]
+        //[ChildActionOnly]
         public ActionResult NewsCateNavigation(int? categoryId = 0, int currentCategoryId = 0, string viewReturn = "", bool isShowNewsCount = false)
         {
             categoryId = categoryId ?? 0;
@@ -315,51 +315,13 @@ namespace PlanX.Web.Controllers
 
         }
 
+        //category page
         public async Task<ActionResult> List(NewsPagingFilteringModel command)
         {
             if (!_newsSettings.Enabled)
                 return RedirectToRoute("HomePage");
 
-            var model = new NewsItemListModel();
-            // model.WorkingLanguageId = _workContext.WorkingLanguage.Id;
-            if (command.PageSize <= 0) command.PageSize = _newsSettings.NewsArchivePageSize;
-            if (command.PageNumber <= 0) command.PageNumber = 1;
-            //get all child category
-            List<int> cateIds = new List<int>();
-            if(command.CategoryId>0)
-            {
-                cateIds.Add(command.CategoryId);
-                GetAllChildCategoryNewsIds(command.CategoryId, cateIds);                
-            }
-
-            string keyCache = string.Format("GetAllNews-{0}-{1}-{2}-{3}-{4}", 0, _storeContext.CurrentStore.Id, command.CategoryId, command.PageNumber, command.PageSize);
-            var newsItems = await _cacheManager.Get(keyCache, 30, () =>
-            {
-                return _newsService.GetAllNewsAsync(0, _storeContext.CurrentStore.Id, categoryNewsIds: cateIds,
-                    pageIndex: command.PageNumber - 1, pageSize: command.PageSize);
-            });
-
-            model.PagingFilteringContext.LoadPagedList(newsItems);
-
-            model.NewsItems = newsItems
-                .Select(x =>
-                {
-                    var newsModel = new NewsItemModel();
-                    newsModel = PrepareNewsItemModel(x, false, true);
-                    return newsModel;
-                })
-                .ToList();
-            if(Request.IsAjaxRequest())
-            {
-                var lsModel = new HomePageNewsItemsModel
-                {
-                    NewsItems=model.NewsItems,
-                    PageIndex=command.PageNumber,
-                    TotalPage=command.TotalPages
-                };
-                return PartialView("HomePageNews", lsModel);
-
-            }
+            var model = new NewsItemListModel();            
             var cate = await _cateNewsService.GetCategoryByIdAsync(command.CategoryId);
             if (cate == null)
                 return RedirectToRoute("HomePage");
@@ -371,8 +333,44 @@ namespace PlanX.Web.Controllers
             model.MetaDescription = cate.MetaDescription;
             model.CategoryId = command.CategoryId;
            
-           
             return View(model);
+        }
+        //category page ajax
+        public async Task<ActionResult> ListNews(NewsPagingFilteringModel command)
+        {
+            if (!_newsSettings.Enabled)
+                return Content("");
+
+            var model = new NewsItemListModel();
+            if (command.PageSize <= 0) command.PageSize = _newsSettings.NewsArchivePageSize;
+            if (command.PageNumber <= 0) command.PageNumber = 1;
+            //get all child category
+            List<int> cateIds = new List<int>();
+            if (command.CategoryId > 0)
+            {
+                cateIds.Add(command.CategoryId);
+                GetAllChildCategoryNewsIds(command.CategoryId, cateIds);
+            }
+
+            string keyCache = string.Format("GetAllNews-{0}-{1}-{2}-{3}-{4}", 0, _storeContext.CurrentStore.Id, command.CategoryId, command.PageNumber, command.PageSize);
+            var newsItems = await _cacheManager.Get(keyCache, 30, () =>
+            {
+                return _newsService.GetAllNewsAsync(0, _storeContext.CurrentStore.Id, categoryNewsIds: cateIds,
+                    pageIndex: command.PageNumber - 1, pageSize: command.PageSize);
+            });
+
+            model.PagingFilteringContext.LoadPagedList(newsItems);
+
+            model.NewsItems = newsItems.Select(x =>
+                {
+                    var newsModel = new NewsItemModel();
+                    newsModel = PrepareNewsItemModel(x, false, true);
+                    return newsModel;
+                }).ToList();
+            
+            model.CategoryId = command.CategoryId;
+            model.PagingFilteringContext.PageNumber = command.PageNumber;
+            return PartialView(model);
         }
 
         public async Task<ActionResult> HotView(int? pageSize, int categoryId = 0)
@@ -452,7 +450,6 @@ namespace PlanX.Web.Controllers
             return View(model);
         }
 
-        [ChildActionOnly]
         public ActionResult NewsBreadcrumb(int newsId, int categoryId = 0)
         {
             var cacheKey = string.Format(ModelCacheEventConsumer.NEWS_BREADCRUMB_MODEL_KEY, newsId, categoryId, "", 0);
@@ -506,31 +503,6 @@ namespace PlanX.Web.Controllers
             return PartialView(cacheModel);
         }
 
-        /*
-        public ActionResult ListRss(int languageId)
-        {
-            var feed = new SyndicationFeed(
-                                    string.Format("{0}: News", _storeContext.CurrentStore.GetLocalized(x => x.Name)),
-                                    "News",
-                                    new Uri(_webHelper.GetStoreLocation(false)),
-                                    "NewsRSS",
-                                    DateTime.UtcNow);
-
-            if (!_newsSettings.Enabled)
-                return new RssActionResult() { Feed = feed };
-
-            var items = new List<SyndicationItem>();
-            var newsItems = _newsService.GetAllNews(languageId, _storeContext.CurrentStore.Id, 0, 0, int.MaxValue);
-            foreach (var n in newsItems)
-            {
-                string newsUrl = Url.RouteUrl("NewsItem", new { SeName = n.GetSeName(n.LanguageId, ensureTwoPublishedLanguages: false) }, "http");
-                items.Add(new SyndicationItem(n.Title, n.Short, new Uri(newsUrl), String.Format("Blog:{0}", n.Id), n.CreatedOnUtc));
-            }
-            feed.Items = items;
-            return new RssActionResult() { Feed = feed };
-        }
-        */
-
         public async Task<ActionResult> NewsItem(int newsItemId)
         {
             if (!_newsSettings.Enabled)
@@ -554,7 +526,6 @@ namespace PlanX.Web.Controllers
 
             return View(model);
         }
-
 
         [HttpPost]       
         [CaptchaValidator]
@@ -616,21 +587,7 @@ namespace PlanX.Web.Controllers
             //If we got this far, something failed, redisplay form
             return Json(_localizationService.GetResource("News.Comments.NotSuccessfullyAdded"));
         }
-
-        /*
-        [ChildActionOnly]
-        public ActionResult RssHeaderLink()
-        {
-            if (!_newsSettings.Enabled || !_newsSettings.ShowHeaderRssUrl)
-                return Content("");
-
-            string link = string.Format("<link href=\"{0}\" rel=\"alternate\" type=\"application/rss+xml\" title=\"{1}: News\" />",
-                Url.RouteUrl("NewsRSS", new { languageId = _workContext.WorkingLanguage.Id }, _webHelper.IsCurrentConnectionSecured() ? "https" : "http"), _storeContext.CurrentStore.GetLocalized(x => x.Name));
-
-            return Content(link);
-        }
-        */
-        
+       
         public ActionResult BannerSlideShow(int pictureThumbSize,int?numitem)
         {
             string cachekey=string.Format("BannerSlideShow-{0}-{1}",numitem,pictureThumbSize);
@@ -798,8 +755,8 @@ namespace PlanX.Web.Controllers
             return PartialView(model);
         }
 
-        //page news by tags
-        public async Task<ActionResult> NewsItemsByTag(int newsTagId, NewsPagingFilteringModel command)
+        //page tag news
+        public ActionResult NewsItemsByTag(int newsTagId, NewsPagingFilteringModel command)
         {
             var newsTag = _tagService.GetTagById(newsTagId);
             if (newsTag == null)
@@ -813,25 +770,48 @@ namespace PlanX.Web.Controllers
 
             if (command.PageSize <= 0) command.PageSize = _newsSettings.NewsArchivePageSize;
             if (command.PageNumber <= 0) command.PageNumber = 1;
-            
-            string keyCache = string.Format("getallnews.by.tags-{0}-{1}-{2}-{3}-{4}", 0, _storeContext.CurrentStore.Id, newsTagId, command.PageNumber, command.PageSize);
-            var newsItems = await _cacheManager.Get(keyCache, 30, () =>
-            {
-                return _newsService.GetAllNewsAsync(languageId: 0, storeId: _storeContext.CurrentStore.Id, categoryNewsIds: null,
-                    pageIndex: command.PageNumber - 1, pageSize: command.PageSize, showHidden: false, newsTagId: newsTagId);
-            });
-            model.PagingFilteringContext.LoadPagedList(newsItems);
-
-            model.NewsItems = newsItems.Select(x =>
-                                        {
-                                            var newsModel = new NewsItemModel();
-                                            newsModel = PrepareNewsItemModel(x, false, true);
-                                            return newsModel;
-                                        }).ToList();
+            model.PagingFilteringContext.PageSize = command.PageSize;
+            model.PagingFilteringContext.PageNumber = command.PageNumber;
 
             return View(model);
         }
 
+        //page tag news ajax
+        public async Task<ActionResult> ListNewsByTag(int newsTagId, NewsPagingFilteringModel command)
+        {
+            var newsTag = _tagService.GetTagById(newsTagId);
+            if (newsTag == null)
+                return Content("");
+
+            var model = new NewsByTagModel()
+            {
+                Id = newsTagId,
+                TagName = newsTag.Name,
+                SeName = newsTag.GetSeName()
+            };
+
+            if (command.PageSize <= 0) command.PageSize = _newsSettings.NewsArchivePageSize;
+            if (command.PageNumber <= 0) command.PageNumber = 1;
+
+            string keyCache = string.Format("getallnews.by.tags-{0}-{1}-{2}-{3}-{4}", 0, _storeContext.CurrentStore.Id, newsTagId, command.PageNumber, command.PageSize);
+            var newsItems = await _cacheManager.Get(keyCache, 30, () =>
+            {
+                return _newsService.GetAllNewsAsync(languageId: 0, storeId: _storeContext.CurrentStore.Id, categoryNewsIds: null,
+                    pageIndex: command.PageIndex, pageSize: command.PageSize, showHidden: false, newsTagId: newsTagId);
+            });
+            model.PagingFilteringContext.LoadPagedList(newsItems);
+            model.PagingFilteringContext.PageNumber = command.PageNumber;
+            model.PagingFilteringContext.PageSize = command.PageSize;
+
+            model.NewsItems = newsItems.Select(x =>
+            {
+                var newsModel = new NewsItemModel();
+                newsModel = PrepareNewsItemModel(x, false, true);
+                return newsModel;
+            }).ToList();
+
+            return PartialView(model);
+        }
         #endregion
     }
 }
