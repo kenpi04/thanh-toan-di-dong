@@ -5,8 +5,10 @@
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
     //title
-    Html.AddTitleParts(Model.TagName);
-    Html.AddMetaDescriptionParts(Model.TagName);
+    Html.AddTitleParts("Tìm các bài viết về \""+ Model.TagName+"\"");
+    Html.AddMetaDescriptionParts(System.Web.HttpUtility.HtmlDecode(Html.NopMetaDescription().ToString()));
+    Html.AddMetaDescriptionParts("Tìm các bài viết về \"" + Model.TagName + "\".");
+    Html.AddMetaKeywordParts(System.Web.HttpUtility.HtmlDecode(Html.NopMetaKeywords().ToString()));
     Html.AddMetaKeywordParts(Model.TagName);
 }
 <section class="mainContent">
@@ -14,28 +16,11 @@
     <div class="mainContent_left">
         <div class="submenu">
             <a href="@Url.RouteUrl("HomePage")" class="button blue color_white" title="Trang chủ">Trang chủ</a>
-            <a class="button grey2 tag-name" title="@Model.TagName">
+            <a class="button grey2 tag-name" title="@Html.Raw(Model.TagName)">
                 <img src="@Url.Content("~/themes/thanhtoandidong/content/images/ico-tag.png")" />
-            <span>@Model.TagName</span></a>
+            <span>@Html.Raw(Model.TagName)</span></a>
         </div>
-        @if (Model.NewsItems.Count > 0)
-        {    
-            <div class="tags-page">
-            @foreach(var item in Model.NewsItems)   
-            {
-                @Html.Partial("_NewsItemBox", item)
-            }
-            </div>
-            <div class="newsItem_Row">
-                <div class="newsItem">
-                    <div class="inside"><span><input type="button" class="default iscurrent" value="MỚI HƠN" title="Tin mới hơn" /></span></div>
-                </div>
-                <div class="newsItem">
-                    <div class="inside"><span class="right"><input type="button" class="default" value="CŨ HƠN" title="Tin cũ hơn" /></span></div>
-                </div>
-            </div>
-        }else
-        {<div><p>Không tìm thấy tin.</p></div>}
+        <div class="load-ajax" data-url="@Url.Action("ListNewsByTag", "News", new { newsTagId = Model.Id, PageNumber = Model.PagingFilteringContext.PageNumber, PageSize = 10 })"></div>        
     </div>
     <!--right-->
     <article class="mainContent_right">

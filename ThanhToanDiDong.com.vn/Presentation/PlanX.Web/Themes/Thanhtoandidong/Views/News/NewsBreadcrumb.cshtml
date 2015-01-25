@@ -1,5 +1,4 @@
 ﻿@model PlanX.Web.Models.News.NewsItemModel.NewsBreadcrumbModel
-
 <div class="div-breadcrumb">
     <ul class="breadcrumb">
         <li class="news-homepage">
@@ -14,7 +13,7 @@
             <li id="@category.Id">
                 <span class="item" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
                     <a href="@Url.RouteUrl("CategoryNews", new { SeName = category.SeName })" itemprop="url">
-                        <span itemprop="title">@category.Name</span>                        
+                        <span itemprop="title">@Html.Raw(category.Name)</span>                        
                     </a>
                     @if (category.CategoryNewsChild.Count() > 0)
                     {<span class="image_down" onclick="ShowSub(@category.Id)"><img src="~/Themes/Thanhtoandidong/Content/images/icon_down.png" /></span>}
@@ -27,12 +26,11 @@
                             <li class="sub-category-item">
                                 <span class="item">
                                     <a href="@Url.RouteUrl("CategoryNews", new { SeName = sub.SeName })">
-                                        <span class="sub-category-title">@sub.Name</span>
+                                        <span class="sub-category-title">@Html.Raw(sub.Name)</span>
                                     </a>
                                 </span>
                             </li>}
                     </ul>}
-            </li>
-        }        
+            </li>}        
     </ul>
 </div>

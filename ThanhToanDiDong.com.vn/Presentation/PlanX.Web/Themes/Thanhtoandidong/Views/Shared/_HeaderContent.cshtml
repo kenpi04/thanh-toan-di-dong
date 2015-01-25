@@ -1,28 +1,9 @@
-﻿@{
-    Layout = null;
-   
-  }
-<section class="headerContent">
-    <div class="menu_container">
-        @Html.Action("NewsCateNavigation", "News", new { categoryId = 10, viewReturn = "NewsCateNavigationLeft", isShowNewsCount = true })
-    </div>
+﻿<section class="headerContent">
+    <div class="load-ajax menu_container" data-url="@Url.Action("NewsCateNavigation", "News", new { categoryId = 10, viewReturn = "NewsCateNavigationLeft", isShowNewsCount = true })"></div>
     <div class="banner_content">
-        <div class="banner_content_left">
-            @*<div class="banner"></div>*@
-            <div class="top_news">
-             @Html.Action("BannerSlideShow", "News", new {numite=1,picturethumbsize=500 })
-             
-              
-                <!--<div class="top_news_list">
-                    <div class="icon_left"><img src="Images/icon_left.jpg" alt="icon left"></div>
-                    <div class="icon_right"><img src="Images/icon_right.jpg" alt="icon right"></div>
-                    <ul class="top_news_listitem">
-                        <li class="top_news_item"><a><img src="Images/list_hot_new_1.jpg" alt="list hot new 1"></a></li>
-                        <li class="top_news_item"><a><img src="Images/list_hot_new_2.jpg" alt="list hot new 2"></a></li>
-                        <li class="top_news_item"><a><img src="Images/list_hot_new_3.jpg" alt="list hot new 3"></a></li>
-                        <li class="top_news_item"><a><img src="Images/list_hot_new_4.jpg" alt="list hot new 4"></a></li>
-                    </ul>
-                </div>-->
+        <div class="banner_content_left">@*<div class="banner"></div>*@
+            <div class="top_news" data-url="@Url.Action("BannerSlideShow", "News", new {numite=1,picturethumbsize=500 })">
+                @Html.Action("BannerSlideShow", "News", new {numite=1,picturethumbsize=500 })
             </div>
         </div>
     </div>

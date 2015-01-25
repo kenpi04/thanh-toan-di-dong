@@ -2,22 +2,15 @@
 @using PlanX.Core.Domain.Common;
 @using PlanX.Core.Infrastructure;
 @{
-    //var displayMiniProfiler = CommonHelper.GetTrustLevel() >= AspNetHostingPermissionLevel.High &&
-    //    EngineContext.Current.Resolve<PlanX.Core.Domain.StoreInformationSettings>().DisplayMiniProfilerInPublicStore;
-
     //resources
-    //Html.AppendCssFileParts("~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.0.custom.min.css");
-    //Html.AppendScriptParts("~/Scripts/public.ajaxcart.js");
     Html.AppendScriptParts("~/Scripts/public.common.js");
     Html.AppendScriptParts("~/Scripts/jquery-ui-1.10.0.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.validate.unobtrusive.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.validate.min.js");
-    //Html.AppendScriptParts("~/Scripts/jquery.unobtrusive-ajax.min.js");
     Html.AppendScriptParts("~/Scripts/jquery-1.7.1.min.js");
     Html.AppendCssFileParts("~/Themes/Thanhtoandidong/Content/responsive.css");
     Html.AppendCssFileParts("~/Themes/Thanhtoandidong/Content/styles.css");
-    
-    //X-UA-Compatible tag
+    Html.AppendCssFileParts("~/Content/font-awesome-4.2.0/css/font-awesome.min.css");
     var commonSettings = EngineContext.Current.Resolve<CommonSettings>();
     if (commonSettings.RenderXuaCompatible)
     {
@@ -25,31 +18,19 @@
     }
 }
 <!DOCTYPE html>
-<html @Html.Partial("LanguageAttributes")>
+<html>
 <head>
     <title>@Html.NopTitle(true)</title>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
     <meta name="description" content="@(Html.NopMetaDescription())" />
     <meta name="keywords" content="@(Html.NopMetaKeywords())" />
     <meta name="generator" content="planX" />
-    <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no" />
     <link rel="shortcut icon" href="@Url.Content("~/favicon.ico")">
     @Html.NopHeadCustom()
-    @*This is used so that themes can inject content into the header*@
-    @*@Html.Partial("Head")*@
     @Html.Widget("head_html_tag")
     @Html.NopCssFiles(this.Url, ResourceLocation.Head)
-    @Html.NopScripts(this.Url, ResourceLocation.Head)
-    @Html.NopCanonicalUrls()
-    @*@Html.Action("RssHeaderLink", "News")*@
-    @*@Html.Action("RssHeaderLink", "Blog")*@
-    @*Favicon - upload favicon.ico file to the root directory*@
-    @*@Html.Action("Favicon", "Common")*@
-
-    @*@if (displayMiniProfiler)
-    {
-        @StackExchange.Profiling.MiniProfiler.RenderIncludes()
-    }*@
+    @Html.NopScripts(this.Url, ResourceLocation.Head)    
 </head>
 <body>
     @RenderBody()

@@ -1,16 +1,13 @@
 ﻿@{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
-    Html.AddTitleParts("Kênh thông tin, tin tức, công nghệ và marketing trong lĩnh vực thanh toán qua di động");
+    Html.AddTitleParts("Kênh thông tin, tin tức, công nghệ và marketing trong lĩnh vực thanh toán di động");
 }
 <!--Menu-->
 @Html.Partial("_HeaderContent")
 <!--mainContent-->
 <section class="mainContent">
     <!--left-->
-    <article class="mainContent_left" id="list-news">
-        @Html.Action("HomePageNews", "News", new { pageSize = 10, thumsImageSize = 365 })
-    </article>
-    
+    <article class="load-ajax mainContent_left" id="list-news" data-url="@Url.Action("HomePageNews", "News", new { pageSize = 10, thumsImageSize = 365 })"></article>
     <script type="text/javascript">
         $(document).ready(function () {
             $(document).on("click", "#btnPrev,#btnNext", function () {
@@ -19,11 +16,10 @@
                     currentPage--;
                 else
                     currentPage++;
-                $("#list-news").load("@Url.Action("HomePageNews", "News")", { pageindex: currentPage,thumsImageSize:365,pageSize:10 }, function (d) {
+                $("#list-news").load("@Url.Action("HomePageNews", "News")", { pageindex: currentPage, thumsImageSize: 365, pageSize: 10 }, function (d) {
                     $("html,body").animate({
                         scrollTop: $("#list-news").position().top
                     }, 400);
-                  
                 }).error(function () {
                     alert("Lỗi kết nối server! vui lòng thử lại");
                 });
@@ -35,11 +31,9 @@
         <!--ads box-->
         <aside class="ads_box">
             <div class="load-ajax" data-url="@Url.Action("BannerShow", "Banner", new { position = 21 })"></div>
-            @*@Html.Action("BannerShow", "Banner", new { position = 21 })*@
         </aside>
         <!--hot view-->
         <div class="load-ajax" data-url="@Url.Action("HotView", "News")"></div>
-        @*@Html.Action("HotView","News")*@
         <!--facebook box-->
         <aside class="facebook_box">
             <div class="facebook_box"></div>
@@ -47,12 +41,10 @@
         <!--ads box-->
         <aside class="ads_box">
             <div class="load-ajax" data-url="@Url.Action("BannerShow", "Banner", new { position = 22 })"></div>
-            @*@Html.Action("BannerShow", "Banner", new { position = 22 })*@
         </aside>
         <!--tags box-->
         <aside class="tags_box">
             <div class="load-ajax" data-url="@Url.Action("HomePageTags", "News")"></div>
-            @*@Html.Action("HomePageTags","News")*@
         </aside>
     </article>
 </section>

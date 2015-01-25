@@ -1,0 +1,112 @@
+﻿@model PlanX.Web.Models.News.NewsCommentListModel
+@using PlanX.Web.Framework.UI.Paging;
+
+@if(Model.TotalPage>0)
+{
+        <div class="comment-detail" id="comment-detail">                
+                        @foreach (var cm in Model.Comments)
+            {
+                <div class="comment-detail-item">
+                    <div class="cmt-ava"><img src="@cm.CustomerAvatarUrl" /></div>
+                    <div class="comment-d" id="comment-d-@cm.Id" parent="@cm.Id">
+                        <div>
+                            <span class="font-bold">@cm.CustomerName</span>
+                            <span class="font-bold color_blue dot">.</span>
+                            <span class="color_grey city">@cm.Place</span>
+                        </div>
+                        <p class="comment-text">
+                            @if (cm.CommentText.Length > 300)
+                            {
+                                @Html.Raw(cm.CommentText.Substring(0, 300));
+                                <span class="more" style="display:none">
+                                    @cm.CommentText.Substring(300)
+                                </span>
+                            }
+                            else
+                            {
+                                @cm.CommentText
+                            }
+
+                        </p>
+                        <div class="comment-cmd">
+                            @if (cm.CommentText.Length > 300)
+                            {
+                                <span class="color_blue"><a onclick="viewMore(@cm.Id)">...xem thêm</a></span>
+                            }
+                            <span style="float:right">
+                                <span class="color_blue"><a onclick="ShowCommentReply(@cm.Id)">Trả lời</a> <span class="font-bold dot">.</span> <a id="lt-@cm.Id" onclick="CommentLike(@cm.Id)">Thích [@cm.TotalLike]</a> <span class="font-bold dot">.</span></span><span class="color_grey2"> @cm.CreatedOn.ToString("dd-MM-yyy")</span>
+                            </span>
+                        </div>
+
+                        @foreach (var ccm in cm.SubComments)
+                        {
+                            <div class="comment-detail-item sub">
+                                <div class="cmt-ava"><img src="@ccm.CustomerAvatarUrl"></div>
+                                <div class="comment-d" id="comment-d-@ccm.Id" parent="@cm.Id">
+                                    <div>
+                                        <span class="font-bold">@ccm.CustomerName</span>
+                                        <span class="font-bold color_blue" style="font-size:14px">-</span>
+                                        <span class="color_grey" style="font-size:11px">@ccm.Place</span>
+                                    </div>
+                                    <p class="comment-text">
+                                        @if (cm.CommentText.Length > 300)
+                                        {
+                                            @Html.Raw(cm.CommentText.Substring(0, 300))
+                                            <span class="more" style="display:none">
+                                                @cm.CommentText.Substring(300)
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            @cm.CommentText
+                                        }
+                                    </p>
+                                    <div class="comment-cmd">
+                                        @if (cm.CommentText.Length > 300)
+                                        {
+                                            <span class="color_blue"><a onclick="viewMore(@ccm.Id)">...xem thêm</a></span>
+                                        }
+
+
+                                        <span style="float:right">
+                                            <span class="color_blue"><a onclick="ShowCommentReply(@ccm.Id)">Trả lời</a> <span class="font-bold dot">.</span> <a id="lt-@ccm.Id" onclick="CommentLike(@ccm.Id)">Thích [@ccm.TotalLike]</a> <span class="font-bold dot">.</span></span><span class="color_grey2">@ccm.CreatedOn.ToString("dd-MM-yyyy")</span>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+
+                        }
+
+                    </div>
+                    <div class="clear"></div>
+                </div>
+               
+                <div class="clear"></div>
+                        }
+            @if(Model.TotalPage>1)
+            { 
+            <div class="pager" id="page-comment" style="text-align:right">
+                @if (Model.PageIndex > 1)
+                {
+                    <input type="button" class="default" page="@(Model.PageIndex-1)" value="Prev" />
+                }
+                @for (int i = 1; i < Model.TotalPage; i++)
+                {
+                    <input type="button" class="default @(i==Model.PageIndex?"active":"")" value="@(i)" />
+                }
+                @if (Model.PageIndex < Model.TotalPage-1)
+                {
+                    <input type="button" class="default" value="Next" page="@(Model.PageIndex+1)" />
+                }
+            </div>
+            }
+             </div>
+    
+   
+            
+                        
+            
+   
+}

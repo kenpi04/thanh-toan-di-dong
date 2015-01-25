@@ -4,14 +4,13 @@
 }
 @if (Model.CategoryNewsChild.Count > 0) { 
     <div class="menu_container_title">
-        <div class="menu_container_title_1"><a href="@Url.RouteUrl("CategoryNews", new { SeName = parentCategory.SeName })" title="@parentCategory.Name">@parentCategory.Name</a></div>
+        <div class="menu_container_title_1"><a href="@Url.RouteUrl("CategoryNews", new { SeName = parentCategory.SeName })" title="@Html.Raw(parentCategory.Name)">@Html.Raw(parentCategory.Name)</a></div>
     </div>
     <div class="menu_container_item">
         @if (parentCategory.CategoryNewsChild.Count > 0) { 
         <ul>
         @foreach (var item in parentCategory.CategoryNewsChild) { 
-            <li><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@item.Name"><span>@item.Name</span><span class="number_Items">@item.NewsCount</span></a></li>
+            <li><a href="@Url.RouteUrl("NewsItem", new { SeName = item.SeName })" title="@Html.Raw(item.Name)"><span>@Html.Raw(item.Name)</span><span class="number_Items">@item.NewsCount</span></a></li>
         }            
         </ul>}
-    </div>
-}
+    </div>}

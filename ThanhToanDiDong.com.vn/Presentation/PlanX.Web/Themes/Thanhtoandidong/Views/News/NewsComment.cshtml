@@ -1,0 +1,44 @@
+﻿@model PlanX.Web.Models.News.AddNewsCommentModel
+           @{
+               Html.AddScriptParts(ResourceLocation.Head, "~/Scripts/cities.js");
+               Html.AddScriptParts(ResourceLocation.Foot, "~/Scripts/comment.js");
+           }
+<article class="comment" style="width:100%">
+    <div class="left">
+        <h2 class="blue color_white"><span class="small">BÌNH</span><br /><span>LUẬN</span></h2>
+    </div>
+    <div class="box_right">
+        <div class="box_content">
+            <div class="comment_box">
+                <div class="comment_box_1">
+                    <div class="avata"><img src="~/Themes/Thanhtoandidong/Content/images/avata.jpg" /></div>
+                    <form id="frmAddComment" name="frmComment" method="post">
+                      
+                        <div class="comment-form-0" id="comment-form-0">
+                            <p>
+                                <input type="text" id="txtCommentName" name="UserName" class="required" placeholder="Tên của bạn" />
+                              
+                                <input type="text" id="txtCommentPlace" class="required" name="Place" placeholder="Thành phố" />
+                            </p>
+                            <p><textarea id="txtCommentContent" class="required" name="CommentText" placeholder="Nội dung trả lời"></textarea></p>
+                            <div class="comment_box_2"><input type="submit" value="Bình luận" class="default" id="0" name="comment-form-0" /></div>
+                          
+                            <input type="hidden" name="newsItemId" value="@Model.CustomProperties["newsId"]">
+                        </div>
+                    </form>
+                </div>
+                <div id="comment-detail">
+
+                </div>
+            </div>
+            <div class="clear"></div>
+            <!--Comment detail-->
+        
+           
+        </div>
+    </div>
+</article>
+
+<style>
+    .error{display:none}
+</style>

@@ -2,12 +2,12 @@
 <div class="newsItem">
     <div class="inside">
         <div class="image_default" id="@Model.Id">
-            <a href="@Url.RouteUrl("NewsItem", new { SeName = Model.SeName })"><img src="@Model.DefaultPictureModel.ImageUrl" alt="@Model.Title" onload="imageResize(@Model.Id)"></a>
+            <a href="@Url.RouteUrl("NewsItem", new { SeName = Model.SeName })"><img src="@Model.DefaultPictureModel.ImageUrl" alt="@Html.Raw(Model.Title)" onload="imageResize(@Model.Id)"></a>
             <p class="date"><span class="day">@Model.CreatedOn.ToString("dd/MM")</span><br /><span class="year">@Model.CreatedOn.Year.ToString()</span></p>
         </div>
         <div class="item_content_preview">
-            <h3><a href="@Url.RouteUrl("NewsItem", new { SeName = Model.SeName })" title="@Model.Title">@Model.Title</a></h3>
-            <p><span>@Model.Short.TrimString(100)</span></p>
+            <h3><a href="@Url.RouteUrl("NewsItem", new { SeName = Model.SeName })" title="@Html.Raw(Model.Title)">@Html.Raw(Model.Title)</a></h3>
+            <p><span>@Html.Raw(Model.Short.TrimString(100))</span></p>
         </div>
     </div>
 </div>
