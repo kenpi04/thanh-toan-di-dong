@@ -361,9 +361,9 @@ namespace PlanX.Services.News
             if (categoryId == 0)
                 return new PagedList<NewsCategoryNews>(new List<NewsCategoryNews>(), pageIndex, pageSize);
 
-            string key = string.Format(NEWSCATEGORIES_ALLBYCATEGORYID_KEY, showHidden, categoryId, pageIndex, pageSize);
-            return _cacheManager.Get(key, () =>
-            {
+            //string key = string.Format(NEWSCATEGORIES_ALLBYCATEGORYID_KEY, showHidden, categoryId, pageIndex, pageSize);
+            //return _cacheManager.Get(key, () =>
+            //{
                 using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
                 {
                     IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
@@ -378,7 +378,7 @@ namespace PlanX.Services.News
                     var newsCategories = new PagedList<NewsCategoryNews>(query, pageIndex, pageSize);
                     return newsCategories;
                 }
-            });
+            //});
         }
         /// <summary>
         /// Gets news category mapping collection
@@ -409,9 +409,9 @@ namespace PlanX.Services.News
             if (newsId == 0)
                 return new List<NewsCategoryNews>();
 
-            string key = string.Format(NEWSCATEGORIES_ALLBYNEWSID_KEY, showHidden, newsId);
-            return _cacheManager.Get(key, () =>
-            {
+            //string key = string.Format(NEWSCATEGORIES_ALLBYNEWSID_KEY, showHidden, newsId);
+            //return _cacheManager.Get(key, () =>
+            //{
                 var query = from pc in _newsCategoryRepository.Table
                             join c in _newsRepository.Table on pc.NewsId equals c.Id
                             where pc.NewsId == newsId &&
@@ -421,7 +421,7 @@ namespace PlanX.Services.News
                 if (query == null)
                     return null;
                 return query.ToList();
-            });
+            //});
         }
         /// <summary>
         /// Gets a news category mapping collection
@@ -449,9 +449,9 @@ namespace PlanX.Services.News
             if (newsCategoryId == 0)
                 return null;
 
-            string key = string.Format(NEWSCATEGORIES_BY_ID_KEY, newsCategoryId);
-            return _cacheManager.Get(key, () =>
-            {
+            //string key = string.Format(NEWSCATEGORIES_BY_ID_KEY, newsCategoryId);
+            //return _cacheManager.Get(key, () =>
+            //{
                 using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
                 {
                     IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
@@ -460,7 +460,7 @@ namespace PlanX.Services.News
                 {
                     return _newsCategoryRepository.GetById(newsCategoryId);
                 }
-            });
+            //});
         }
 
         /// <summary>
