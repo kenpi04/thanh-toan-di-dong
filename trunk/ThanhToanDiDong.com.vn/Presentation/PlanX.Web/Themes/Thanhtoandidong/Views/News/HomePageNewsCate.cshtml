@@ -1,4 +1,4 @@
-﻿@model List<PlanX.Web.Models.News.FNewsItemListModel>
+﻿@model List<PlanX.Web.Models.News.NewsItemListModel>
 @{
     Layout = null;
 }
@@ -9,12 +9,11 @@
         <ul>
             @foreach(var news in row.NewsItems)
             { 
-            <li><a title="@news.Title" href="@Url.RouteUrl("NewsItem", new {SeName=news.SeName })">@news.Title</a></li>
-            }
-           
+            <li><a title="@Html.Raw(news.Title)" href="@Url.RouteUrl("NewsItem", new {SeName=news.SeName })">@Html.Raw(news.Title)</a></li>
+            }           
         </ul>
         <div class="nhonDown"></div>
     </div>
-    <h4 class="pinkNarrowTitle">@row.CategoryName</h4>
+    <h4 class="pinkNarrowTitle">@Html.Raw(row.CategoryName)</h4>
 </div>
 }

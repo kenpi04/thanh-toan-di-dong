@@ -3,9 +3,7 @@
 {
     <div class="news-homepage">
         @foreach (var item in Model.NewsItems)
-        {
-        @Html.Partial("_NewsItemBox", item)
-        }
+        {@Html.Partial("_NewsItemBox", item)}
     </div>
     <div class="newsItem_Row">
         <div class="newsItem">
@@ -16,6 +14,4 @@
         </div>
     </div>
     <input type="hidden" id="totalPage" value="@Model.TotalPage" />
-    <input type="hidden" id="newsPageIndex" value="@(Model.PageIndex)" />
-
-}
+    <input type="hidden" id="newsPageIndex" value="@(Model.PageIndex)" />}

@@ -1,11 +1,8 @@
 ﻿@model IList<PlanX.Web.Models.News.NewsItemModel>
-           @{
-               Html.AppendScriptParts("~/Scripts/jquery.flexslider.js");
-               Html.AppendCssFileParts("~/Themes/Thanhtoandidong/Content/flexslider.css");
-           }
-
-@if(Model.Count>0)
-{ 
+@if (Model.Count > 0)
+{
+<script src="~/Scripts/jquery.flexslider.js"></script>
+<link type="text/css" rel="stylesheet" href="~/Themes/Thanhtoandidong/Content/flexslider.css" />
 <div id="slider" class="flexslider">
     <ul class="slides">
         @foreach (var banner in Model)
@@ -13,22 +10,19 @@
             <li>
                 <div class="banner-title">
                     <div class="top_news_1">
-                        <a href="@Url.RouteUrl("NewsItem", new { SeName = banner.SeName })"><h3>@banner.Title</h3></a>
+                        <a href="@Url.RouteUrl("NewsItem", new { SeName = banner.SeName })"><h3>@Html.Raw(banner.Title)</h3></a>
                     </div>
                     <div class="top_news_2">
                         <p>
                             <span>
-                                @banner.Short.TrimString(100)
+                                @Html.Raw(banner.Short.TrimString(100))
                             </span>
                         </p>
                     </div>
                 </div>
                 <div class="slide_image">
-                    <img src="@banner.DefaultPictureModel.FullSizeImageUrl" style="height:100%" alt="@banner.Title" title="@banner.Title">
-                </div>
-                @*<p class="date"><span class="day">@banner.CreatedOn.ToString("dd/MM")</span><br>
-                <span class="year">@banner.CreatedOn.ToString("yyyy")</span>
-                </p>*@
+                    <img src="@banner.DefaultPictureModel.FullSizeImageUrl" style="height:100%" alt="@Html.Raw(banner.Title)" title="@Html.Raw(banner.Title)">
+                </div>                
             </li>
         }
     </ul>
@@ -42,6 +36,4 @@
             directionNav: true
         });
     });
-
-</script>
-}
+</script>}

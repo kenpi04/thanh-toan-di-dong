@@ -1,0 +1,18 @@
+﻿@model PlanX.Web.Models.News.NewsByTagModel
+@using PlanX.Web.Extensions;
+@if (Model.NewsItems.Count > 0)
+{
+    <div class="tags-page">
+    @foreach (var item in Model.NewsItems)
+    {
+        @Html.Partial("_NewsItemBox", item)
+    }
+    </div>
+    <div class="newsItem_Row">
+        <div class="pager">
+            @Html.Pager(Model.PagingFilteringContext).Link(i => string.Format("{0}?pagenumber={1}", Url.RouteUrl("NewsItemsByTag", new { SeName = Model.SeName, newsTagId = Model.Id }),i)).QueryParam("pagenumber")
+        </div>        
+    </div>
+}
+else
+{<div><p>Không tìm thấy tin.</p></div>}

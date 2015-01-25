@@ -14,65 +14,28 @@
 <section class="mainContent">
     <!--left-->
     <div class="mainContent_left">
-        <div class="submenu">
-            @Html.Action("NewsBreadcrumb", "News", new { newsId = 0, categoryId = Model.CategoryId })
-        </div>
-        @if (Model.NewsItems.Count > 0) {            
-        <div class="first-news">
-            <div class="inside">
-                <div class="image_default" id="@firstNews.Id">
-                    <a href="@Url.RouteUrl("NewsItem", new { SeName = firstNews.SeName })"><img src="@firstNews.DefaultPictureModel.FullSizeImageUrl" alt="@firstNews.Title" onload="imageResize(@firstNews.Id)"></a>
-                    <p class="date"><span class="day">@string.Format("{0}/{1}",firstNews.CreatedOn.Day,firstNews.CreatedOn.Month)</span><br /><span class="year">@firstNews.CreatedOn.Year.ToString()</span></p>
-                </div>
-            </div>
-            <div class="group-title">
-                <div class="item_content_preview">
-                    <h3><a href="@Url.RouteUrl("NewsItem", new { SeName = firstNews.SeName })" title="@firstNews.Title">@firstNews.Title</a></h3>
-                    <p><span>@firstNews.Short.TrimString(200)</span></p>
-                </div>
-            </div>
-        </div>
-    <div id="list-news">
-        <div class="news-category">
-            @foreach (var item in Model.NewsItems.Where(x => x != firstNews).ToList())
-            {
-                @Html.Partial("_NewsItemBox", item)
-            }
-        </div>
-        <div class="newsItem_Row">
-            <div class="newsItem">
-                <div class="inside"><span><input type="button" @(Model.PagingFilteringContext.PageIndex != 1 ? "id=btnPrev" : "") class="@(Model.PagingFilteringContext.PageIndex != 1 ? "blue" : "inactive")" value="MỚI HƠN" title="Tin mới hơn" /></span></div>
-            </div>
-            <div class="newsItem text-right">
-                <div class="inside"><span class="right"><input type="button" @(Model.PagingFilteringContext.PageIndex != Model.PagingFilteringContext.TotalPages ? "id=btnNext" : "") class="@(Model.PagingFilteringContext.PageIndex != Model.PagingFilteringContext.TotalPages ? "blue" : "inactive")" value="CŨ HƠN" title="Tin cũ hơn" /></span></div>
-            </div>
-        </div>
-        <input type="hidden" id="totalPage" value="@Model.PagingFilteringContext.TotalPages" />
-        <input type="hidden" id="newsPageIndex" value="@(Model.PagingFilteringContext.PageIndex)" />
-    </div>
-        <script type="text/javascript">
+        <div class="load-ajax submenu" data-url="@Url.Action("NewsBreadcrumb", "News", new { newsId = 0, categoryId = Model.CategoryId })"></div>
+        <div id="category-news" class="load-ajax" data-url="@Url.Action("ListNews", "News", new { PageNumber = 1, PageSize = 11, CategoryId = Model.CategoryId })"></div>
+    <script type="text/javascript">
         $(document).ready(function () {
             $(document).on("click", "#btnPrev,#btnNext", function () {
-                var currentPage = parseInt($("#newsPageIndex").val());
+                var currentPage = parseInt($("#newsPageNumber").val());
                 if ($(this).attr("id") == "btnPrev")
                     currentPage--;
                 else
-                    currentPage++;
-                $("#list-news").load("@Url.Action("HomePageNews", "News")", { pageindex: currentPage,thumsImageSize:365,pageSize:5,cate:@Model.PagingFilteringContext.CategoryId }, function (d) {
-                    $("html,body").animate({
-                        scrollTop: $("#list-news").position().top
-
-                    }, 400);
-                  
+                    currentPage++;                
+                $("html,body").animate({
+                    scrollTop: 0
+                }, 600);
+                $("#category-news").hide();
+                $("#category-news").html("<div class=loading-img></div>").load("@Url.Action("ListNews", "News")", { PageNumber: currentPage,PageSize:11,CategoryId:@Model.CategoryId }, function (d) {
+                    $("#category-news").fadeIn(1500);
                 }).error(function () {
                     alert("Lỗi kết nối server! vui lòng thử lại");
                 });
-
-
             })
         })
     </script>
-        }
     </div>
     <!--right-->
     <article class="mainContent_right">

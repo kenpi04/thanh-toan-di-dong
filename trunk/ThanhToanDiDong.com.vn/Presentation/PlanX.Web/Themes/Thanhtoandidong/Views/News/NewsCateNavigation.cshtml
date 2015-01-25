@@ -4,20 +4,18 @@
         <ul>
             @foreach(var category in Model.CategoryNewsChild)
             {
-            <li class="menu-item"><a href="@Url.RouteUrl("CategoryNews", new { SeName = category.SeName })" title="@category.Name" class="@(category.Id == Model.CurrentCategoryId ? "active":"")">@category.Name</a>
+            <li class="menu-item"><a href="@Url.RouteUrl("CategoryNews", new { SeName = category.SeName })" title="@Html.Raw(category.Name)" class="@(category.Id == Model.CurrentCategoryId ? "active":"")">@Html.Raw(category.Name)</a>
             @if(category.CategoryNewsChild.Count>0)
             {
                 <ul class="sub" style="display:none">
                     @foreach (var child in category.CategoryNewsChild) 
                     { 
-                    <li><a href="@Url.RouteUrl("CategoryNews", new{SeName=child.SeName})" title="@child.Name"><span>@child.Name</span></a>
-                    
-                    </li>
+                    <li><a href="@Url.RouteUrl("CategoryNews", new{SeName=child.SeName})" title="@Html.Raw(child.Name)"><span>@Html.Raw(child.Name)</span></a></li>
                     }
-                </ul>                    
+                </ul>
             }
             </li>
-            }                      
+            }
         </ul>
     </nav>
 </div>

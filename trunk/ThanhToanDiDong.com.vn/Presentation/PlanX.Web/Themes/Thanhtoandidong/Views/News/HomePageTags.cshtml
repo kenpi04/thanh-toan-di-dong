@@ -7,7 +7,7 @@
     <div class="right">
         <div>
             @foreach (var item in Model) { 
-            <p><a href="@Url.RouteUrl("NewsItemsByTag", new { SeName = item.SeName, newsTagId = item.Id })" title="@item.Name">@item.Name</a></p>}            
+            <p><a href="@Url.RouteUrl("NewsItemsByTag", new { SeName = item.SeName, newsTagId = item.Id })" title="@Html.Raw(item.Name)">@Html.Raw(item.Name)</a></p>}            
         </div>
     </div>
 </div>}
