@@ -37,7 +37,8 @@ namespace PlanX.Web.Framework.UI
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             html.AppendTitleParts(part);
-            return MvcHtmlString.Create(html.Encode(pageHeadBuilder.GenerateTitle(addDefaultTitle)));
+            //return MvcHtmlString.Create(html.Encode(pageHeadBuilder.GenerateTitle(addDefaultTitle)));
+            return MvcHtmlString.Create(pageHeadBuilder.GenerateTitle(addDefaultTitle));
         }
 
 
@@ -71,7 +72,8 @@ namespace PlanX.Web.Framework.UI
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             html.AppendMetaDescriptionParts(part);
-            return MvcHtmlString.Create(html.Encode(pageHeadBuilder.GenerateMetaDescription()));
+            //return MvcHtmlString.Create(html.Encode(pageHeadBuilder.GenerateMetaDescription()));
+            return MvcHtmlString.Create(pageHeadBuilder.GenerateMetaDescription());
         }
 
 
@@ -105,7 +107,8 @@ namespace PlanX.Web.Framework.UI
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             html.AppendMetaKeywordParts(part);
-            return MvcHtmlString.Create(html.Encode(pageHeadBuilder.GenerateMetaKeywords()));
+            //return MvcHtmlString.Create(html.Encode(pageHeadBuilder.GenerateMetaKeywords()));
+            return MvcHtmlString.Create(pageHeadBuilder.GenerateMetaKeywords());
         }
 
 
