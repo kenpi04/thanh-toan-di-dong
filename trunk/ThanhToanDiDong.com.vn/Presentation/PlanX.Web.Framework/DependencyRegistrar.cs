@@ -270,7 +270,7 @@ namespace PlanX.Web.Framework
             //builder.RegisterType<BlogService>().As<IBlogService>().InstancePerHttpRequest();
             builder.RegisterType<WidgetService>().As<IWidgetService>().InstancePerHttpRequest();
             builder.RegisterType<TopicService>()
-                .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
+                //.WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
                 .As<ITopicService>().InstancePerHttpRequest();
             builder.RegisterType<NewsService>()
                 //.WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"))
