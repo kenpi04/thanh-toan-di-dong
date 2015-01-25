@@ -60,7 +60,8 @@ $(document).ready(function () {
     $(".load-ajax").each(function (index, item) {
         var url = $(item).data("url");
         if (url && url.length > 0) {
-            $(item).html("<div class=loading-img></div>").load(url);
+            $(item).html("<div class=loading-img></div>").load(url).fadeIn(600);
+            $(item).removeAttr("data-url");
         }
     })
 })
