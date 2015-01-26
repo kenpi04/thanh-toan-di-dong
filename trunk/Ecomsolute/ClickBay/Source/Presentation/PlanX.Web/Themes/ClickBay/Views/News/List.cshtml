@@ -37,7 +37,7 @@
                 }
             </article>
             <div class="pager">
-                @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+                @Html.Pager(Model.PagingFilteringContext).Link(i => string.Format("{0}?pagenumber={1}", Url.RouteUrl("CateNews", new { SeName = Model.CurrentCategorySeName }), i)).QueryParam("pagenumber")
             </div>@Html.Widget("newslist_page_after_items")            
         </section>
         <section class="desktop section-right-search news">
