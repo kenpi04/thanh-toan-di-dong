@@ -16,7 +16,7 @@
                         <span itemprop="title">@Html.Raw(category.Name)</span>                        
                     </a>
                     @if (category.CategoryNewsChild.Count() > 0)
-                    {<span class="image_down" onclick="ShowSub(@category.Id)"><img src="~/Themes/Thanhtoandidong/Content/images/icon_down.png" /></span>}
+                    {<span class="image_down" onclick="ShowSub(@category.Id)"><i class="fa fa-angle-down fa-lg"></i></span>}
                 </span>
                 @if (category.CategoryNewsChild.Count() > 0)
                 {

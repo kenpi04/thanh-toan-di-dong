@@ -17,24 +17,37 @@
         <div class="load-ajax submenu" data-url="@Url.Action("NewsBreadcrumb", "News", new { newsId = 0, categoryId = Model.CategoryId })"></div>
         <div id="category-news" class="load-ajax" data-url="@Url.Action("ListNews", "News", new { PageNumber = 1, PageSize = 11, CategoryId = Model.CategoryId })"></div>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $(document).on("click", "#btnPrev,#btnNext", function () {
-                var currentPage = parseInt($("#newsPageNumber").val());
-                if ($(this).attr("id") == "btnPrev")
-                    currentPage--;
-                else
-                    currentPage++;                
-                $("html,body").animate({
-                    scrollTop: 0
-                }, 600);
-                $("#category-news").hide();
-                $("#category-news").html("<div class=loading-img></div>").load("@Url.Action("ListNews", "News")", { PageNumber: currentPage,PageSize:11,CategoryId:@Model.CategoryId }, function (d) {
-                    $("#category-news").fadeIn(1500);
-                }).error(function () {
-                    alert("Lỗi kết nối server! vui lòng thử lại");
-                });
-            })
+    $(document).ready(function () {
+        $(document).on("click", "#btnPrev,#btnNext", function () {
+            var currentPage = parseInt($("#newsPageNumber").val());
+            if ($(this).attr("id") == "btnPrev")
+                currentPage--;
+            else
+                currentPage++;
+            $("html,body").animate({
+                scrollTop: 0
+            }, 600);
+            $("#category-news").hide();
+            $("#category-news").html("<div class=loading-img></div>").load("@Url.Action("ListNews", "News")", { PageNumber: currentPage,PageSize:11,CategoryId:@Model.CategoryId }, function (d) {
+                $("#category-news").fadeIn(1500);
+            }).error(function () {
+                alert("Lỗi kết nối server! vui lòng thử lại");
+            });
         })
+
+        $(document).on("click", "#btnMore", function () {
+            var currentPage = parseInt($(this).attr("data-index"));
+            { currentPage++; }
+
+            $("#newsitem-more").html("<div class=loading-img></div>");
+            $.get("@Url.Action("ListNews", "News")", { PageNumber: currentPage,PageSize:11,CategoryId:@Model.CategoryId }, function (d) {
+                $("#category-news").find(".newsItem_Row:last").remove();
+                $("#category-news").append(d);
+            }).error(function () {
+                alert("Lỗi kết nối server! vui lòng thử lại");
+            });
+        })
+    })
     </script>
     </div>
     <!--right-->

@@ -2,7 +2,7 @@
 @using PlanX.Web.Models.News;
 @{
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
-     
+
     //title
     Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title);
 
@@ -11,51 +11,49 @@
     Html.AddMetaKeywordParts(Model.MetaKeywords);
     System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("vi-VN");
 
-    
 
-    var categoryId = Model.CategoryNewsModel != null? Model.CategoryNewsModel.Id:0;
+
+    var categoryId = Model.CategoryNewsModel != null ? Model.CategoryNewsModel.Id : 0;
 
 }
-<section class="mainContent">
-    <!--left-->
-    <div class="mainContent_left">
-        <div class="load-ajax submenu" data-url="@Url.Action("NewsBreadcrumb", "News", new { newsId = Model.Id, categoryId = 0 })">
-        </div>
-        <div class="detail">
-            <h1>@Model.Title</h1>
-            <p class="margin0"><span class="color_grey2">@Model.CreatedOn.ToString("dddd, dd/MM/yyyy HH:mm", culture)</span></p>
-            <p><img src="~/Themes/Thanhtoandidong/Content/images/f-like.jpg" /></p>
-            <h2 class="color_grey">@Html.Raw(Model.Short)</h2>
-            <div class="load-ajax" data-url="@Html.Action("Related", "News", new { pageSize = 10, newsId=Model.Id })"></div>            
-            <article class="content">
-                @Html.Raw(Model.Full)
-            </article>
-            <article>
-                <p><img src="~/Themes/Thanhtoandidong/Content/images/f-like.jpg" /></p>
-            </article>
-            <article class="load-ajax" data-url="@Url.Action("NewsComment", new {newsId=Model.Id })"></article>           
-        </div>
+<!--left-->
+<div class="mainContent_left">
+    <div class="load-ajax submenu" data-url="@Url.Action("NewsBreadcrumb", "News", new { newsId = Model.Id, categoryId = 0 })">
     </div>
-    <!--right-->
-    <article class="mainContent_right">
-        <!--hot view-->
-        <div class="load-ajax" data-url="@Url.Action("HotView", "News", new { categoryId = categoryId })"></div>
-        @*@Html.Action("HotView", "News")*@
-        <!--ads box-->
-        <aside class="ads_box">
-            <div class="ads_box"></div>
-        </aside>
-        <!--hot view-->
-        <div class="load-ajax" data-url="@Url.Action("MostView", "News", new { categoryId = categoryId })"></div>
-        @*@Html.Action("MostView", "News")*@
-        <!--ads box-->
-        <aside class="ads_box">
-            <div class="ads_box"></div>
-        </aside>
-        <!--tags box-->
-        <aside class="tags_box">
-            <div class="load-ajax" data-url="@Url.Action("NewsItemTags", "News", new { newsId = Model.Id, viewName = "HomePageTags" })"></div>
-            @*@Html.Action("NewsItemTags", "News", new { newsId = Model.Id, viewName = "HomePageTags" })*@
-        </aside>
-    </article>
-</section>
+    <div class="detail">
+        <h1>@Model.Title</h1>
+        <p class="margin0"><span class="color_grey2">@Model.CreatedOn.ToString("dddd, dd/MM/yyyy HH:mm", culture)</span></p>
+        <p><img src="~/Themes/Thanhtoandidong/Content/images/f-like.jpg" /></p>
+        <h2 class="color_grey">@Html.Raw(Model.Short)</h2>
+        <div class="load-ajax" data-url="@Html.Action("Related", "News", new { pageSize = 10, newsId=Model.Id })"></div>
+        <article class="content">
+            @Html.Raw(Model.Full)
+        </article>
+        <article>
+            <p><img src="~/Themes/Thanhtoandidong/Content/images/f-like.jpg" /></p>
+        </article>
+        <article class="load-ajax" data-url="@Url.Action("NewsComment", new {newsId=Model.Id })"></article>
+    </div>
+</div>
+<!--right-->
+<article class="mainContent_right">
+    <!--hot view-->
+    <div class="load-ajax" data-url="@Url.Action("HotView", "News", new { categoryId = categoryId })"></div>
+    @*@Html.Action("HotView", "News")*@
+    <!--ads box-->
+    <aside class="ads_box">
+        <div class="ads_box"></div>
+    </aside>
+    <!--hot view-->
+    <div class="load-ajax" data-url="@Url.Action("MostView", "News", new { categoryId = categoryId })"></div>
+    @*@Html.Action("MostView", "News")*@
+    <!--ads box-->
+    <aside class="ads_box">
+        <div class="ads_box"></div>
+    </aside>
+    <!--tags box-->
+    <aside class="tags_box">
+        <div class="load-ajax" data-url="@Url.Action("NewsItemTags", "News", new { newsId = Model.Id, viewName = "HomePageTags" })"></div>
+        @*@Html.Action("NewsItemTags", "News", new { newsId = Model.Id, viewName = "HomePageTags" })*@
+    </aside>
+</article>

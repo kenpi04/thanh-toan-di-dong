@@ -1,10 +1,7 @@
 ﻿@{Layout = "~/Views/Shared/_Root.Head.cshtml";}
 <div class="master-wrapper-page">
-    <div class="master-wrapper-content">        
-        @Html.Partial("Header")
-        <div class="wrapper-content">
-            @RenderBody()
-        </div>
-    </div>
+    <div class="master-wrapper-content">@Html.Partial("Header")
+        <div class="wrapper-content">@RenderBody()</div>
+    </div>    
     @Html.Action("Footer", "Common")
 </div>

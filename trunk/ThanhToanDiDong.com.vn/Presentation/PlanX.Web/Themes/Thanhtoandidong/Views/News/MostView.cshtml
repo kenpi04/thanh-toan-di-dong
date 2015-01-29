@@ -8,7 +8,7 @@
             <ul class="ul_default">
                 @foreach (var item in Model)
                 {
-                <li><a href="@Url.RouteUrl("NewsItem",new{SeName = item.SeName})" title="@Html.Raw(item.Title)">@Html.Raw(item.Title)</a></li>}
+                <li><i class="fa fa-angle-double-right mobile"></i><a href="@Url.RouteUrl("NewsItem",new{SeName = item.SeName})" title="@Html.Raw(item.Title)">@Html.Raw(item.Title)</a></li>}
             </ul>
         </div>
     </div>
