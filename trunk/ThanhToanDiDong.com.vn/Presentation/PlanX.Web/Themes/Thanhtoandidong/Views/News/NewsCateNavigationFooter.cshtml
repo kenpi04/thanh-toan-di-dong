@@ -1,0 +1,11 @@
+﻿@model PlanX.Web.Models.News.NavigativeCategory
+<div class="navigati-footer">
+    <nav class="header_menu">
+        <ul>
+            @foreach (var category in Model.CategoryNewsChild)
+            {
+                <li class="menu-item"><a href="@Url.RouteUrl("CategoryNews", new { SeName = category.SeName })" title="@Html.Raw(category.Name)" class="@(category.Id == Model.CurrentCategoryId ? "active":"")">@Html.Raw(category.Name)</a></li>
+            }
+         </ul>
+    </nav>
+</div>
