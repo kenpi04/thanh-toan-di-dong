@@ -456,11 +456,18 @@ namespace PlanX.Web.Infrastructure.Cache
         /// {0} : language ID
         /// {1} : current store ID
         /// </remarks>
+        public const string NEWS_CATEGORY_BY_ID_KEY = "PlanX.pres.newscategory.categorybyId-{0}";
+        public const string NEWS_GET_ALL_CHILD_CATEGORY = "PlanX.pres.newscategory.getallchildcategorynewsids-{0}";
         public const string HOMEPAGE_NEWSMODEL_KEY = "PlanX.pres.news.homepage-{0}-{1}-{2}-{3}-{4}";
+        public const string NEWS_LIST_NEWS_KEY = "PlanX.pres.news.listnews-{0}-{1}-{2}-{3}-{4}";
         public const string NEWS_PATTERN_KEY = "PlanX.pres.news.";
         public const string NEWS_PICTURE_KEY = "PlanX.pres.news.picture-{0}";
         public const string NEWS_BREADCRUMB_MODEL_KEY = "PlanX.pres.news.breadcrumb-{0}-{1}-{2}-{3}";
         public const string NEWS_BREADCRUMB_PATTERN_KEY = "PlanX.pres.news.breadcrumb";
+        public const string NEWS_NAVIGATION_KEY = "PlanX.pres.news.navigation-{0}-{1}-{2}-{3}";
+        public const string NEWS_LIST_HOT_NEWS_KEY = "PlanX.pres.news.listhotnews-{0}-{1}";
+        public const string NEWS_LIST_MOST_NEWS_KEY = "PlanX.pres.news.listmostnews-{0}-{1}";
+        
         /// <summary>
         /// Key for states by country id
         /// </summary>
