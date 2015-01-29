@@ -6,11 +6,14 @@
         {@Html.Partial("_NewsItemBox", item)}
     </div>
     <div class="newsItem_Row">
-        <div class="newsItem">
+        <div class="desktop newsItem">
             <div class="inside"><span><input type="button" @(Model.PageIndex != 1 ? "id=btnPrev" : "") class="@(Model.PageIndex!=1?"blue":"inactive")" value="MỚI HƠN" title="Tin mới hơn" /></span></div>
         </div>
-        <div class="newsItem text-right">
+        <div class="desktop newsItem text-right">
             <div class="inside"><span class="right"><input type="button" @(Model.PageIndex !=Model.TotalPage ? "id=btnNext" : "") class="@(Model.PageIndex!=Model.TotalPage?"blue":"inactive")" value="CŨ HƠN" title="Tin cũ hơn" /></span></div>
+        </div>
+        <div class="mobile" id="newsitem-more">
+            <div class="inside"><span><input type="button" @(Model.PageIndex != Model.TotalPage ? "id=btnMore" : "") class="@(Model.PageIndex!=Model.TotalPage?"blue fullwidth":"inactive fullwidth")" value="XEM THÊM" title="XEM THÊM" data-index="@Model.PageIndex" /></span></div>
         </div>
     </div>
     <input type="hidden" id="totalPage" value="@Model.TotalPage" />

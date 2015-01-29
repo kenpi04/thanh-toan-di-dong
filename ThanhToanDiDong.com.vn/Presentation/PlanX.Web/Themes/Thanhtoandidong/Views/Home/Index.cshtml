@@ -4,29 +4,42 @@
 }
 <!--Menu-->
 @Html.Partial("_HeaderContent")
-<!--mainContent-->
 <section class="mainContent">
-    <!--left-->
     <article class="load-ajax mainContent_left" id="list-news" data-url="@Url.Action("HomePageNews", "News", new { pageSize = 10, thumsImageSize = 365 })"></article>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $(document).on("click", "#btnPrev,#btnNext", function () {
-                var currentPage = parseInt($("#newsPageIndex").val());
-                if ($(this).attr("id") == "btnPrev")
-                    currentPage--;
-                else
-                    currentPage++;
-                $("#list-news").load("@Url.Action("HomePageNews", "News")", { pageindex: currentPage, thumsImageSize: 365, pageSize: 10 }, function (d) {
-                    $("html,body").animate({
-                        scrollTop: $("#list-news").position().top
-                    }, 400);
+    $(document).ready(function () {
+        $(document).on("click", "#btnPrev,#btnNext", function () {
+            var currentPage = parseInt($("#newsPageIndex").val());
+            if ($(this).attr("id") == "btnPrev")
+                currentPage--;
+            else
+                currentPage++;
+            $("html,body").animate({
+                scrollTop: $("#list-news").position().top
+            }, 600);
+            $("#list-news").hide();
+            $("#list-news").html("<div class=loading-img></div>").load("@Url.Action("HomePageNews", "News")", { pageindex: currentPage, thumsImageSize: 365, pageSize: 10 }, function (d) {
+                    $("#list-news").fadeIn(1500);
                 }).error(function () {
                     alert("Lỗi kết nối server! vui lòng thử lại");
                 });
             })
+
+            $(document).on("click", "#btnMore", function () {
+                var currentPage = parseInt($(this).attr("data-index"));
+                { currentPage++; }
+
+                $("#newsitem-more").html("<div class=loading-img></div>");
+                $.get("@Url.Action("HomePageNews", "News")", { pageindex: currentPage, thumsImageSize: 365, pageSize: 10 }, function (d) {
+                    $("#list-news").find(".newsItem_Row:last").remove();                    
+                    $("#list-news").append(d);
+                
+                }).error(function () {
+                    alert("Lỗi kết nối server! vui lòng thử lại");
+                });                
         })
+    })
     </script>
-    <!--right-->
     <article class="mainContent_right">
         <!--ads box-->
         <aside class="ads_box">
