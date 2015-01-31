@@ -12,5 +12,10 @@
             <a href="/"><img src="~/Themes/Thanhtoandidong/Content/images/logo.jpg" alt="logo thanhtoandidong.com.vn" title="thanhtoandidong.com.vn" /></a>
         </div>
         @Html.Action("NewsCateNavigation", "News", new { categoryId = 0, currentCategoryId = currentCategoryId })
+        <div class="mobile nav-open-div"><a class="nav-btn" id="nav-open-btn" href="#nav"><i class="fa fa-bars fa-2x"></i></a></div>
     </div>
 </div>
+<nav id="nav" role="navigation" class="mobile">
+    <div class="load-ajax container" data-url="@Url.Action("NewsCateNavigation", "News", new { categoryId = 0, currentCategoryId = 0, viewReturn = "NewsCateNavigationFooter" })"></div>
+    <a class="close-btn" id="nav-close-btn" href="#top"></a>
+</nav>

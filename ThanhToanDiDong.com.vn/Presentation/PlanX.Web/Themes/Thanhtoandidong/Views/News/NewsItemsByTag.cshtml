@@ -5,36 +5,36 @@
     Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
     //title
-    Html.AddTitleParts("Tìm các bài viết về \""+ Model.TagName+"\"");
+    Html.AddTitleParts("Tìm các bài viết về \"" + Model.TagName + "\"");
     Html.AddMetaDescriptionParts(System.Web.HttpUtility.HtmlDecode(Html.NopMetaDescription().ToString()));
     Html.AddMetaDescriptionParts("Tìm các bài viết về \"" + Model.TagName + "\".");
     Html.AddMetaKeywordParts(System.Web.HttpUtility.HtmlDecode(Html.NopMetaKeywords().ToString()));
     Html.AddMetaKeywordParts(Model.TagName);
 }
-<section class="mainContent">
-    <!--left-->
-    <div class="mainContent_left">
-        <div class="submenu">
-            <a href="@Url.RouteUrl("HomePage")" class="button blue color_white" title="Trang chủ">Trang chủ</a>
-            <a class="button grey2 tag-name" title="@Html.Raw(Model.TagName)">
-                <img src="@Url.Content("~/themes/thanhtoandidong/content/images/ico-tag.png")" />
-            <span>@Html.Raw(Model.TagName)</span></a>
-        </div>
-        <div class="load-ajax" data-url="@Url.Action("ListNewsByTag", "News", new { newsTagId = Model.Id, PageNumber = Model.PagingFilteringContext.PageNumber, PageSize = 10 })"></div>        
+
+<!--left-->
+<div class="mainContent_left">
+    <div class="submenu">
+        <a href="@Url.RouteUrl("HomePage")" class="button blue color_white" title="Trang chủ">Trang chủ</a>
+        <a class="button grey2 tag-name" title="@Html.Raw(Model.TagName)">
+            <i class="fa fa-tags"></i>
+            <span>@Html.Raw(Model.TagName)</span>
+        </a>
     </div>
-    <!--right-->
-    <article class="mainContent_right">
-        <!--hot view-->
-        <div class="load-ajax" data-url="@Url.Action("HotView", "News", new { categoryId = 0 })"></div>
-        <!--ads box-->
-        <aside class="ads_box">
-            <div class="ads_box"></div>
-        </aside>
-        <!--hot view-->
-        <div class="load-ajax" data-url="@Url.Action("MostView", "News", new { categoryId = 0 })"></div>
-        <!--ads box-->
-        <aside class="ads_box">
-            <div class="ads_box"></div>
-        </aside>        
-    </article>
-</section>
+    <div class="load-ajax" data-url="@Url.Action("ListNewsByTag", "News", new { newsTagId = Model.Id, PageNumber = Model.PagingFilteringContext.PageNumber, PageSize = 10 })"></div>
+</div>
+<!--right-->
+<article class="mainContent_right">
+    <!--hot view-->
+    <div class="load-ajax" data-url="@Url.Action("HotView", "News", new { categoryId = 0 })"></div>
+    <!--ads box-->
+    <aside class="ads_box">
+        <div class="ads_box"></div>
+    </aside>
+    <!--hot view-->
+    <div class="load-ajax" data-url="@Url.Action("MostView", "News", new { categoryId = 0 })"></div>
+    <!--ads box-->
+    <aside class="ads_box">
+        <div class="ads_box"></div>
+    </aside>
+</article>

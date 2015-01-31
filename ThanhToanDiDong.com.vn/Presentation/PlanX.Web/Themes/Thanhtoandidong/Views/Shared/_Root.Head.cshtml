@@ -8,6 +8,7 @@
     Html.AppendScriptParts("~/Scripts/jquery.validate.unobtrusive.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.validate.min.js");
     Html.AppendScriptParts("~/Scripts/jquery-1.7.1.min.js");
+    Html.AppendScriptParts("~/Scripts/modernizr.js");
     Html.AppendCssFileParts("~/Themes/Thanhtoandidong/Content/responsive.css");
     Html.AppendCssFileParts("~/Themes/Thanhtoandidong/Content/styles.css");
     Html.AppendCssFileParts("~/Content/font-awesome-4.2.0/css/font-awesome.min.css");
@@ -37,5 +38,6 @@
     <a href="#0" id="top-link-block" name="top-link-block" class="cd-top">Top</a>
     @Html.NopCssFiles(this.Url, ResourceLocation.Foot)
     @Html.NopScripts(this.Url, ResourceLocation.Foot)    
+    <script src="~/Scripts/main.js"></script>
 </body>
 </html>

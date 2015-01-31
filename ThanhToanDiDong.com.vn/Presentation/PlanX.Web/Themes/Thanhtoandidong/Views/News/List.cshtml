@@ -8,65 +8,63 @@
     Html.AddTitleParts(!String.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.CategoryName);
     Html.AddMetaDescriptionParts(Model.MetaDescription);
     Html.AddMetaKeywordParts(Model.MetaKeywords);
-    
-    var firstNews = Model.NewsItems.Count>0? Model.NewsItems.FirstOrDefault():null;
+
+    var firstNews = Model.NewsItems.Count > 0 ? Model.NewsItems.FirstOrDefault() : null;
 }
-<section class="mainContent">
-    <!--left-->
-    <div class="mainContent_left">
-        <div class="load-ajax submenu" data-url="@Url.Action("NewsBreadcrumb", "News", new { newsId = 0, categoryId = Model.CategoryId })"></div>
-        <div id="category-news" class="load-ajax" data-url="@Url.Action("ListNews", "News", new { PageNumber = 1, PageSize = 11, CategoryId = Model.CategoryId })"></div>
+<!--left-->
+<div class="mainContent_left">
+    <div class="load-ajax submenu" data-url="@Url.Action("NewsBreadcrumb", "News", new { newsId = 0, categoryId = Model.CategoryId })"></div>
+    <div id="category-news" class="load-ajax" data-url="@Url.Action("ListNews", "News", new { PageNumber = 1, PageSize = 11, CategoryId = Model.CategoryId })"></div>
     <script type="text/javascript">
-    $(document).ready(function () {
-        $(document).on("click", "#btnPrev,#btnNext", function () {
-            var currentPage = parseInt($("#newsPageNumber").val());
-            if ($(this).attr("id") == "btnPrev")
-                currentPage--;
-            else
-                currentPage++;
-            $("html,body").animate({
-                scrollTop: 0
-            }, 600);
-            $("#category-news").hide();
-            $("#category-news").html("<div class=loading-img></div>").load("@Url.Action("ListNews", "News")", { PageNumber: currentPage,PageSize:11,CategoryId:@Model.CategoryId }, function (d) {
-                $("#category-news").fadeIn(1500);
-            }).error(function () {
-                alert("Lỗi kết nối server! vui lòng thử lại");
-            });
-        })
+        $(document).ready(function () {
+            $(document).on("click", "#btnPrev,#btnNext", function () {
+                var currentPage = parseInt($("#newsPageNumber").val());
+                if ($(this).attr("id") == "btnPrev")
+                    currentPage--;
+                else
+                    currentPage++;
+                $("html,body").animate({
+                    scrollTop: 0
+                }, 600);
+                $("#category-news").hide();
+                $("#category-news").html("<div class=loading-img></div>").load("@Url.Action("ListNews", "News")", { PageNumber: currentPage,PageSize:11,CategoryId:@Model.CategoryId }, function (d) {
+                    $("#category-news").fadeIn(1500);
+                }).error(function () {
+                    alert("Lỗi kết nối server! vui lòng thử lại");
+                });
+            })
 
-        $(document).on("click", "#btnMore", function () {
-            var currentPage = parseInt($(this).attr("data-index"));
-            { currentPage++; }
+            $(document).on("click", "#btnMore", function () {
+                var currentPage = parseInt($(this).attr("data-index"));
+                { currentPage++; }
 
-            $("#newsitem-more").html("<div class=loading-img></div>");
-            $.get("@Url.Action("ListNews", "News")", { PageNumber: currentPage,PageSize:11,CategoryId:@Model.CategoryId }, function (d) {
-                $("#category-news").find(".newsItem_Row:last").remove();
-                $("#category-news").append(d);
-            }).error(function () {
-                alert("Lỗi kết nối server! vui lòng thử lại");
-            });
+                $("#newsitem-more").html("<div class=loading-img></div>");
+                $.get("@Url.Action("ListNews", "News")", { PageNumber: currentPage,PageSize:11,CategoryId:@Model.CategoryId }, function (d) {
+                    $("#category-news").find(".newsItem_Row:last").remove();
+                    $("#category-news").append(d);
+                }).error(function () {
+                    alert("Lỗi kết nối server! vui lòng thử lại");
+                });
+            })
         })
-    })
     </script>
-    </div>
-    <!--right-->
-    <article class="mainContent_right">
-        <!--hot view-->
-        <div class="load-ajax" data-url="@Url.Action("HotView", "News", new { categoryId = Model.CategoryId })"></div>
-        <!--ads box-->
-        <aside class="ads_box">
-            <div class="ads_box"></div>
-        </aside>
-        <!--hot view-->
-        <div class="load-ajax" data-url="@Url.Action("MostView", "News", new { categoryId = Model.CategoryId })"></div>
-        <!--ads box-->
-        <aside class="ads_box">
-            <div class="ads_box"></div>
-        </aside>
-        <!--tags box-->
-        <aside class="tags_box">
-            <div class="load-ajax" data-url="@Url.Action("ListTags", "News", new { categoryId = Model.CategoryId, viewName = "HomePageTags" })"></div>
-        </aside>
-    </article>
-</section>
+</div>
+<!--right-->
+<article class="mainContent_right">
+    <!--hot view-->
+    <div class="load-ajax" data-url="@Url.Action("HotView", "News", new { categoryId = Model.CategoryId })"></div>
+    <!--ads box-->
+    <aside class="ads_box">
+        <div class="ads_box"></div>
+    </aside>
+    <!--hot view-->
+    <div class="load-ajax" data-url="@Url.Action("MostView", "News", new { categoryId = Model.CategoryId })"></div>
+    <!--ads box-->
+    <aside class="ads_box">
+        <div class="ads_box"></div>
+    </aside>
+    <!--tags box-->
+    <aside class="tags_box">
+        <div class="load-ajax" data-url="@Url.Action("ListTags", "News", new { categoryId = Model.CategoryId, viewName = "HomePageTags" })"></div>
+    </aside>
+</article>
