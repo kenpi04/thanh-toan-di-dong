@@ -4,7 +4,7 @@
 }
 <!--Menu-->
 @Html.Partial("_HeaderContent")
-<section class="mainContent">
+<div>
     <article class="load-ajax mainContent_left" id="list-news" data-url="@Url.Action("HomePageNews", "News", new { pageSize = 10, thumsImageSize = 365 })"></article>
     <script type="text/javascript">
     $(document).ready(function () {
@@ -60,4 +60,4 @@
             <div class="load-ajax" data-url="@Url.Action("HomePageTags", "News")"></div>
         </aside>
     </article>
-</section>
+</div>
