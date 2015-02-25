@@ -278,7 +278,7 @@ namespace Nop.Services.Directory
             _eventPublisher.EntityUpdated(stateProvince);
         }
 
-
+        #region District
         public virtual District GetDistrictById(int districtId)
         {
             if (districtId == 0)
@@ -334,9 +334,32 @@ namespace Nop.Services.Directory
             //event notification
             _eventPublisher.EntityDeleted(district);
         }
-
         #endregion
+        
 
+        #region Ward
+        public virtual Ward GetWardById(int wardId)
+        {
+            if (wardId < 0)
+                return null;
+
+            return _cacheManager.Get(string.Format("Nop.wardbyid-{0}", wardId), () =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    return _wardRepository.GetById(wardId);
+                }
+            });
+        }
+        public virtual async Task<Ward> GetWardByIdAsync(int wardId)
+        {
+            if(wardId<=0){return null;}
+            return await Task.Factory.StartNew<Ward>(() => { return GetWardById(wardId); });
+        }
         public virtual IList<Ward> GetWardByDistrictId(int districtId)
         {
             if (districtId < 0)
@@ -382,6 +405,31 @@ namespace Nop.Services.Directory
                     }
                 });
             });
+        }
+        #endregion
+
+        #region Street
+        public virtual Street GetStreetById(int streetId)
+        {
+            if (streetId < 0)
+                return null;
+
+            return _cacheManager.Get(string.Format("Nop.streetbyid-{0}", streetId), () =>
+            {
+                using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+                    ))
+                {
+                    return _streetRepository.GetById(streetId);
+                }
+            });
+        }
+        public virtual async Task<Street> GetStreetByIdAsync(int streetId)
+        {
+            if (streetId <= 0) { return null; }
+            return await Task.Factory.StartNew<Street>(() => { return GetStreetById(streetId); });
         }
         public virtual IList<Street> GetStreetByDistrictId(int districtId)
         {
@@ -429,5 +477,7 @@ namespace Nop.Services.Directory
                 });
             });
         }
+        #endregion
+        #endregion
     }
 }

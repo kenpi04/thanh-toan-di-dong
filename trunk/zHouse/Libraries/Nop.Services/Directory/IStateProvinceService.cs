@@ -60,9 +60,13 @@ namespace Nop.Services.Directory
 
         void DeleteDistrict(District district);
 
+        Ward GetWardById(int wardId);
+        Task<Ward> GetWardByIdAsync(int wardId);
         IList<Ward> GetWardByDistrictId(int districtId);
         Task<IList<Ward>> GetWardByDistrictIdAsync(int districtId);
 
+        Street GetStreetById(int streetId);
+        Task<Street> GetStreetByIdAsync(int streetId);
         IList<Street> GetStreetByDistrictId(int districtId);
         Task<IList<Street>> GetStreetByDistrictIdAsync(int districtId);
     }
