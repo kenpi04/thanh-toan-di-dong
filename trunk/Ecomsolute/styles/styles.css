@@ -32,7 +32,7 @@ p {
 
 img {
     max-width: 100%;
-    position:relative !important;
+    position: relative !important;
 }
 
 #wrapper {
@@ -42,28 +42,27 @@ img {
 
     #wrapper .wrapper-content {
         width: 100%;
+        padding-top:10px;
     }
 
 #header {
-    background: url(header-background.png) no-repeat #001c38 center;
+    background: url(header-background.png) no-repeat #001c38;
     width: 100%;
-    padding-top: 10px;
 }
 
 .headerTop {
     width: 80%;
-    margin:0 auto;
+    margin: 0 auto;
+    min-width:720px;
 }
 
 .menu-top {
-    float: left;
-    width: 50%;
+    float: right;
     text-align: right;
 }
 
 .logo {
     float: left;
-    width: 50%;
 }
 
 .menu-top li {
@@ -79,8 +78,8 @@ img {
 .banner {
     padding-top: 20px;
     height: 587px;
-    width:100% !important;
-    margin:0 auto;
+    width: 100% !important;
+    margin: 0 auto;
 }
 
     .banner .text {
@@ -91,7 +90,7 @@ img {
 
         .banner .text .text-content {
             margin-top: 57%;
-            font-size: 14px;            
+            font-size: 14px;
         }
 
             .banner .text .text-content .text1 {
@@ -102,7 +101,10 @@ img {
             .banner .text .text-content .text2 {
                 font-size: 50px;
             }
-            .banner .text .text-content p{white-space:normal;}
+
+            .banner .text .text-content p {
+                white-space: normal;
+            }
 
 .picture {
     width: 60%;
@@ -144,6 +146,14 @@ img {
     float: left;
 }
 
+.col-2 {
+    padding-top: 40px;
+}
+
+.info-teams {
+    margin-top: 32px;
+}
+
 .content-box {
     padding-left: 20px;
     padding-bottom: 10px;
@@ -177,35 +187,53 @@ img {
         font-size: 14px;
     }
 
-    .box .col50:first-child {
-        border-right: solid 1px #888;
-        margin-left: -1px;
-    }
 
-#pofilo{width:80%;margin:0 auto;margin-top:40px;}
+
+#pofilo {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 40px;
+}
 
 .projects {
     background: url(background-project.png);
-    margin-top:40px;
-    padding:0;
+    margin-top: 40px;
+    padding: 0;
 }
-.projects .div-title{width:100%;height:100px;position:relative;background:#000;opacity:0.5;}
+
+    .projects .div-title {
+        width: 100%;
+        height: 100px;
+        position: relative;
+        background: #000;
+        opacity: 0.5;
+    }
+
     .projects h2 {
         text-align: center;
         font-size: 40px;
-        color:#fff;
-        width:100%;
-        position:absolute;
-        margin-top:-53px;
+        color: #fff;
+        width: 100%;
+        position: absolute;
+        margin-top: -53px;
     }
-    .projects .div-items{background:#000;opacity:0.85;}
-    .projects ul{background:#000;opacity:0.5;}
+
+    .projects .div-items {
+        background: #000;
+        opacity: 0.85;
+        text-align:center;
+    }
+
     .projects li {
         float: left;
         height: 189px;
-        width:291px;
-        overflow:hidden;
+        width: calc(100% / 3);
+        overflow: hidden;
+        text-align:center;
+        opacity:0.5;
     }
+
+    .projects li:hover{opacity:1;}
 
         .projects li img {
             max-height: 100%;
@@ -224,8 +252,7 @@ img {
 }
 
     .per .infoLeft {
-        float: left;
-        width: 50%;
+        float: right;
         text-align: right;
         margin-right: 10px;
     }
@@ -243,21 +270,35 @@ img {
 
     .per .avatar {
         max-width: 100px;
-        float: left;
+        float: right;
     }
 
         .per .avatar img {
             border-radius: 100px;
         }
 
+.col-2 .per .avatar {
+    max-width: 100px;
+    float: left;
+}
+
 .team-left {
     float: right;
 }
-#team{margin:auto 0;margin-top:40px;margin-bottom:40px;}
-#team h2{font-size:40px;text-align:center;}
+
+#team {
+    margin: auto 0;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+    #team h2 {
+        font-size: 40px;
+        text-align: center;
+    }
 
 #footer {
-    background: url(header-background.png);
+    background: url(header-background.png) center;
     width: 100%;
     height: 300px;
 }
@@ -320,9 +361,20 @@ img {
         padding: 10px 0px 10px 20px;
     }
 
+#slideshow2,#slideshow3{width:962px!important;max-width:96%!important}
+.slide-item{width:100%;text-align:center;display:inline-block;}
+#slideshow3{display:none;}
+#slideshow3 .slide-item{padding-top:10px;height:calc(100% - 10px);overflow:hidden;box-sizing:border-box;}
+#slideshow3 .slide-item p{margin:0;}
+.icon-menu{display:none;float:right;}
 /*tablet*/
 @media only screen and (max-width: 768px) {
-    .headerTop{display:inline-block;margin:0 5% 0 5%;}
+    .headerTop {
+        display: inline-block;
+        margin: 0 5% 0 5%;
+        min-width:0;
+    }
+
     .menu-top {
         width: 100%;
         text-align: left;
@@ -365,12 +417,26 @@ img {
         .col-cell .content-marketing {
             border: 0;
         }
-        .picture .item{margin-top:0;}
+
+    .picture .item {
+        margin-top: 0;
+    }
+    .projects li{opacity:1;}
 }
 /*iphone*/
-@media (max-width: 480px) {
-    .menu-top li{float:none;line-height:30px;text-align:left;background:url(menu-icon.png) no-repeat left 64%;}
-    .menu-top li:last-child{background:url(menu-icon.png) no-repeat left 64%}
+@media only screen and (max-width: 480px) {
+    .menu-top li {
+        line-height: 30px;
+        text-align: left;
+        background: url(menu-icon.png) no-repeat left 64%;
+    }
+
+        .menu-top li:last-child {
+            background: url(menu-icon.png) no-repeat left 64%;
+        }
+    .banner{padding-bottom:0;}
+    .banner.ns_nerveSlider{height:80%!important;}
+
     .box {
         padding: 20px 0 20px 0;
     }
@@ -378,7 +444,12 @@ img {
     .col50 {
         width: 100%;
     }
-
+    .col-2{
+        padding-top:0;
+    }
+    .col-2 .per .avatar{
+        float:none;
+    }
     .content-box {
         padding-left: 0;
     }
@@ -424,5 +495,35 @@ img {
         margin: 0;
         text-align: center;
     }
-    .picture .item{margin-top:0;}
+
+    .picture .item {
+        margin-top: 0;
+    }
+
+    #pofilo {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    .col-cell .content-web {
+        padding-right: 20px;
+    }
+
+    .box .icon-box {
+        width: 20%;
+    }
+
+    .box .text-box {
+        width: 80%;
+        box-sizing: border-box;
+        margin-left: 0;
+        padding-left: 14px;
+    }
+    #slideshow2{display:none;}
+    #slideshow3{display:inline-block;}
+    .icon-menu{display:block;}
+    .headerTop{width:100%;padding:0 5%;box-sizing:border-box;margin:0;}
+    #footer {height:auto;padding:20px 0;}
+    #footer h2{font-size:18px;}
+    #footer h3{font-size:14px;}
 }
